@@ -10,6 +10,10 @@ const docTemplate = `{
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
         "contact": {},
+        "license": {
+            "name": "GNU Affero General Public License v3.0",
+            "url": "https://github.com/Nico87LBS/hopla/blob/main/LICENSE"
+        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
@@ -325,15 +329,6 @@ const docTemplate = `{
                             }
                         }
                     },
-                    "403": {
-                        "description": "error: Only plus members can access this endpoint",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
                     "404": {
                         "description": "error: No calendar URL generated",
                         "schema": {
@@ -389,15 +384,6 @@ const docTemplate = `{
                                 "type": "string"
                             }
                         }
-                    },
-                    "403": {
-                        "description": "error: Only plus members can access this endpoint",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
                     }
                 }
             },
@@ -427,15 +413,6 @@ const docTemplate = `{
                     },
                     "401": {
                         "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: Only plus members can access this endpoint",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -482,15 +459,6 @@ const docTemplate = `{
                                 "type": "string"
                             }
                         }
-                    },
-                    "403": {
-                        "description": "error: Only plus members can access this endpoint",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
                     }
                 }
             }
@@ -522,7 +490,7 @@ const docTemplate = `{
                         }
                     },
                     "403": {
-                        "description": "Invalid calendar token, or the owner is not a plus member",
+                        "description": "Invalid calendar token",
                         "schema": {
                             "type": "string"
                         }
@@ -1483,83 +1451,6 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "error: Failed to fetch chore history entry | Error deleting history",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/chores/{id}/nudge": {
-            "post": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Sends a reminder notification to chore assignee(s)",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "chores"
-                ],
-                "summary": "Send a nudge notification",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Chore ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Nudge request",
-                        "name": "nudge",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/chore.NudgeRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "message: Nudge sent status",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid chore ID | Invalid request payload | Chore has no assignees | Cannot nudge yourself",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "error: Chore not found",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -3102,6 +2993,85 @@ const docTemplate = `{
                 }
             }
         },
+        "/circles/members/requests/decline": {
+            "delete": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Declines a pending circle join request (admin only). The request is removed, so the user may request to join again later.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "circles"
+                ],
+                "summary": "Decline a join request",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Request ID",
+                        "name": "requestId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "res: Join request declined successfully",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error: Invalid request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "error: Authentication failed",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "error: You are not an admin of this circle",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "error: Error declining join request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/circles/members/role": {
             "put": {
                 "security": [
@@ -3832,7 +3802,7 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Retrieves all projects for the current user's circle",
+                "description": "Retrieves the projects of the current user's circle the user can see: circle-wide ones, their own private ones and the ones shared with them",
                 "consumes": [
                     "application/json"
                 ],
@@ -3882,7 +3852,7 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Creates a new project for the current user's circle",
+                "description": "Creates a new project for the current user's circle. visibility is \"private\" (only me), \"members\" (me and memberIds) or \"circle\" (everyone in the circle, the default).",
                 "consumes": [
                     "application/json"
                 ],
@@ -3954,7 +3924,7 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Updates the name, description, color, and icon of an existing project by ID",
+                "description": "Updates name, description, color and icon of a project owned by the current user and, optionally, who can see it (visibility, memberIds). Fields that are not sent keep their current value. Changing who can see the project also adjusts the assignees of its tasks; use POST /projects/{id}/access-preview to see the effect first.",
                 "consumes": [
                     "application/json"
                 ],
@@ -3994,7 +3964,7 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "error: Invalid project ID or Error binding project data",
+                        "description": "error: Invalid project ID, Error binding project data or invalid members",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -4004,6 +3974,24 @@ const docTemplate = `{
                     },
                     "401": {
                         "description": "error: Error getting current user",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "error: not the project owner",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "error: project not found",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -4031,7 +4019,7 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Deletes a project by ID; restricted to the current user's circle",
+                "description": "Deletes a project by ID; restricted to the current user's circle. Its tasks are kept without a project and follow their own privacy from then on.",
                 "consumes": [
                     "application/json"
                 ],
@@ -4081,6 +4069,83 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "error: Error deleting project",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/projects/{id}/access-preview": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Returns, without changing anything, which tasks of the project would change assignees and who would gain or lose access if the given visibility and members were saved. Only the project owner may call it.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "projects"
+                ],
+                "summary": "Preview a change of who can see a project",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Project ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Target visibility and members",
+                        "name": "access",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/project.AccessPreviewReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "res: chRepo.ProjectAccessPlan",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "error: not the project owner",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "error: project not found",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -4678,6 +4743,12 @@ const docTemplate = `{
                         "$ref": "#/definitions/model.ChoreAssignees"
                     }
                 },
+                "completionActions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.CompletionAction"
+                    }
+                },
                 "completionWindow": {
                     "type": "integer"
                 },
@@ -4825,19 +4896,6 @@ const docTemplate = `{
                 }
             }
         },
-        "chore.NudgeRequest": {
-            "type": "object",
-            "properties": {
-                "all_assignees": {
-                    "description": "If true, send to all assignees; if false, send to current assignee",
-                    "type": "boolean"
-                },
-                "message": {
-                    "description": "Optional custom message",
-                    "type": "string"
-                }
-            }
-        },
         "chore.PriorityReq": {
             "type": "object",
             "required": [
@@ -4964,10 +5022,6 @@ const docTemplate = `{
                 },
                 "updated_at": {
                     "description": "Updated at",
-                    "type": "string"
-                },
-                "webhook_url": {
-                    "description": "Webhook URL",
                     "type": "string"
                 }
             }
@@ -5125,6 +5179,12 @@ const docTemplate = `{
                 "circleId": {
                     "description": "The circle this chore is in",
                     "type": "integer"
+                },
+                "completionActions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.CompletionAction"
+                    }
                 },
                 "completionWindow": {
                     "description": "Number seconds before the chore is due that it can be completed",
@@ -5348,6 +5408,20 @@ const docTemplate = `{
                 "ChoreHistoryStatusMissed",
                 "ChoreHistoryStatusRescheduled"
             ]
+        },
+        "model.CompletionAction": {
+            "type": "object",
+            "properties": {
+                "operation": {
+                    "type": "string"
+                },
+                "thingId": {
+                    "type": "integer"
+                },
+                "value": {
+                    "type": "string"
+                }
+            }
         },
         "model.Filter": {
             "type": "object",
@@ -5695,7 +5769,7 @@ const docTemplate = `{
                     "type": "boolean"
                 },
                 "isPrivate": {
-                    "description": "Whether the project is only visible to its creator",
+                    "description": "Whether the project is hidden from the circle",
                     "type": "boolean"
                 },
                 "name": {
@@ -5722,13 +5796,41 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "isPrivate": {
-                    "description": "IsPrivate is optional: when omitted on update the current value is kept, so\nolder clients that don't know about the field can't accidentally unset it.",
+                    "description": "IsPrivate is optional: when omitted on update the current value is kept, so\nolder clients that don't know about the field can't accidentally unset it.\nClients that only know isPrivate keep a \"members\" project shared as long as\nthey send isPrivate=true; isPrivate=false opens it to the whole circle.",
                     "type": "boolean"
+                },
+                "memberIds": {
+                    "description": "MemberIDs is only read together with visibility \"members\". When omitted\nthere, the current member list is kept.",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 },
                 "name": {
                     "type": "string"
+                },
+                "visibility": {
+                    "description": "Visibility takes precedence over IsPrivate when both are sent.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.ProjectVisibility"
+                        }
+                    ]
                 }
             }
+        },
+        "model.ProjectVisibility": {
+            "type": "string",
+            "enum": [
+                "private",
+                "members",
+                "circle"
+            ],
+            "x-enum-varnames": [
+                "ProjectVisibilityPrivate",
+                "ProjectVisibilityMembers",
+                "ProjectVisibilityCircle"
+            ]
         },
         "model.Status": {
             "type": "integer",
@@ -5950,6 +6052,23 @@ const docTemplate = `{
                 "WeekPatternWeekOfQuarter"
             ]
         },
+        "project.AccessPreviewReq": {
+            "type": "object",
+            "properties": {
+                "isPrivate": {
+                    "type": "boolean"
+                },
+                "memberIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "visibility": {
+                    "$ref": "#/definitions/model.ProjectVisibility"
+                }
+            }
+        },
         "thing.ThingRequest": {
             "type": "object",
             "required": [
@@ -5971,17 +6090,31 @@ const docTemplate = `{
                 }
             }
         }
+    },
+    "securityDefinitions": {
+        "APIKeyAuth": {
+            "description": "hopla issued apikey",
+            "type": "apiKey",
+            "name": "secretkey",
+            "in": "header"
+        },
+        "JWTKeyAuth": {
+            "description": "Type \"Bearer\" followed by a space and JWT token.",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
+	Version:          "1.0",
 	Host:             "",
-	BasePath:         "",
+	BasePath:         "/api/v1",
 	Schemes:          []string{},
-	Title:            "",
-	Description:      "",
+	Title:            "Hopla Swagger API",
+	Description:      "Hopla swagger documentation.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

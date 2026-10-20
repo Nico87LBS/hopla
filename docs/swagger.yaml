@@ -1,3 +1,4 @@
+basePath: /api/v1
 definitions:
   chore.ActionOptions:
     properties:
@@ -36,6 +37,10 @@ definitions:
       assignees:
         items:
           $ref: '#/definitions/model.ChoreAssignees'
+        type: array
+      completionActions:
+        items:
+          $ref: '#/definitions/model.CompletionAction'
         type: array
       completionWindow:
         type: integer
@@ -144,15 +149,6 @@ definitions:
       performedAt:
         type: string
     type: object
-  chore.NudgeRequest:
-    properties:
-      all_assignees:
-        description: If true, send to all assignees; if false, send to current assignee
-        type: boolean
-      message:
-        description: Optional custom message
-        type: string
-    type: object
   chore.PriorityReq:
     properties:
       priority:
@@ -241,9 +237,6 @@ definitions:
         type: string
       updated_at:
         description: Updated at
-        type: string
-      webhook_url:
-        description: Webhook URL
         type: string
     type: object
   circle.Role:
@@ -360,6 +353,10 @@ definitions:
       circleId:
         description: The circle this chore is in
         type: integer
+      completionActions:
+        items:
+          $ref: '#/definitions/model.CompletionAction'
+        type: array
       completionWindow:
         description: Number seconds before the chore is due that it can be completed
         type: integer
@@ -514,6 +511,15 @@ definitions:
     - ChoreHistoryStatusRejected
     - ChoreHistoryStatusMissed
     - ChoreHistoryStatusRescheduled
+  model.CompletionAction:
+    properties:
+      operation:
+        type: string
+      thingId:
+        type: integer
+      value:
+        type: string
+    type: object
   model.Filter:
     properties:
       circleId:
@@ -758,7 +764,7 @@ definitions:
       isDefault:
         type: boolean
       isPrivate:
-        description: Whether the project is only visible to its creator
+        description: Whether the project is hidden from the circle
         type: boolean
       name:
         type: string
@@ -777,12 +783,35 @@ definitions:
         description: |-
           IsPrivate is optional: when omitted on update the current value is kept, so
           older clients that don't know about the field can't accidentally unset it.
+          Clients that only know isPrivate keep a "members" project shared as long as
+          they send isPrivate=true; isPrivate=false opens it to the whole circle.
         type: boolean
+      memberIds:
+        description: |-
+          MemberIDs is only read together with visibility "members". When omitted
+          there, the current member list is kept.
+        items:
+          type: integer
+        type: array
       name:
         type: string
+      visibility:
+        allOf:
+        - $ref: '#/definitions/model.ProjectVisibility'
+        description: Visibility takes precedence over IsPrivate when both are sent.
     required:
     - name
     type: object
+  model.ProjectVisibility:
+    enum:
+    - private
+    - members
+    - circle
+    type: string
+    x-enum-varnames:
+    - ProjectVisibilityPrivate
+    - ProjectVisibilityMembers
+    - ProjectVisibilityCircle
   model.Status:
     enum:
     - 0
@@ -939,6 +968,17 @@ definitions:
     - WeekpatternEveryWeek
     - WeekPatternWeekOfMonth
     - WeekPatternWeekOfQuarter
+  project.AccessPreviewReq:
+    properties:
+      isPrivate:
+        type: boolean
+      memberIds:
+        items:
+          type: integer
+        type: array
+      visibility:
+        $ref: '#/definitions/model.ProjectVisibility'
+    type: object
   thing.ThingRequest:
     properties:
       id:
@@ -955,6 +995,12 @@ definitions:
     type: object
 info:
   contact: {}
+  description: Hopla swagger documentation.
+  license:
+    name: GNU Affero General Public License v3.0
+    url: https://github.com/Nico87LBS/hopla/blob/main/LICENSE
+  title: Hopla Swagger API
+  version: "1.0"
 paths:
   /chores:
     get:
@@ -1661,56 +1707,6 @@ paths:
       - JWTKeyAuth: []
       - APIKeyAuth: []
       summary: Modify chore history entry
-      tags:
-      - chores
-  /chores/{id}/nudge:
-    post:
-      consumes:
-      - application/json
-      description: Sends a reminder notification to chore assignee(s)
-      parameters:
-      - description: Chore ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Nudge request
-        in: body
-        name: nudge
-        required: true
-        schema:
-          $ref: '#/definitions/chore.NudgeRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 'message: Nudge sent status'
-          schema:
-            additionalProperties: true
-            type: object
-        "400":
-          description: 'error: Invalid chore ID | Invalid request payload | Chore
-            has no assignees | Cannot nudge yourself'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "404":
-          description: 'error: Chore not found'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      security:
-      - JWTKeyAuth: []
-      - APIKeyAuth: []
-      summary: Send a nudge notification
       tags:
       - chores
   /chores/{id}/pause:
@@ -2510,7 +2506,7 @@ paths:
           schema:
             type: string
         "403":
-          description: Invalid calendar token, or the owner is not a plus member
+          description: Invalid calendar token
           schema:
             type: string
         "500":
@@ -2537,12 +2533,6 @@ paths:
             additionalProperties:
               type: string
             type: object
-        "403":
-          description: 'error: Only plus members can access this endpoint'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
@@ -2563,12 +2553,6 @@ paths:
             type: object
         "401":
           description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: 'error: Only plus members can access this endpoint'
           schema:
             additionalProperties:
               type: string
@@ -2609,12 +2593,6 @@ paths:
             additionalProperties:
               type: string
             type: object
-        "403":
-          description: 'error: Only plus members can access this endpoint'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
@@ -2636,12 +2614,6 @@ paths:
             type: object
         "401":
           description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: 'error: Only plus members can access this endpoint'
           schema:
             additionalProperties:
               type: string
@@ -3065,6 +3037,57 @@ paths:
       summary: Accept a join request
       tags:
       - circles
+  /circles/members/requests/decline:
+    delete:
+      consumes:
+      - application/json
+      description: Declines a pending circle join request (admin only). The request
+        is removed, so the user may request to join again later.
+      parameters:
+      - description: Request ID
+        in: query
+        name: requestId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'res: Join request declined successfully'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: 'error: Invalid request'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: 'error: Authentication failed'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: 'error: You are not an admin of this circle'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: 'error: Error declining join request'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Decline a join request
+      tags:
+      - circles
   /circles/members/role:
     put:
       consumes:
@@ -3409,7 +3432,9 @@ paths:
     get:
       consumes:
       - application/json
-      description: Retrieves all projects for the current user's circle
+      description: 'Retrieves the projects of the current user''s circle the user
+        can see: circle-wide ones, their own private ones and the ones shared with
+        them'
       produces:
       - application/json
       responses:
@@ -3440,7 +3465,9 @@ paths:
     post:
       consumes:
       - application/json
-      description: Creates a new project for the current user's circle
+      description: Creates a new project for the current user's circle. visibility
+        is "private" (only me), "members" (me and memberIds) or "circle" (everyone
+        in the circle, the default).
       parameters:
       - description: Project creation request
         in: body
@@ -3485,7 +3512,9 @@ paths:
     delete:
       consumes:
       - application/json
-      description: Deletes a project by ID; restricted to the current user's circle
+      description: Deletes a project by ID; restricted to the current user's circle.
+        Its tasks are kept without a project and follow their own privacy from then
+        on.
       parameters:
       - description: Project ID
         in: path
@@ -3528,8 +3557,11 @@ paths:
     put:
       consumes:
       - application/json
-      description: Updates the name, description, color, and icon of an existing project
-        by ID
+      description: Updates name, description, color and icon of a project owned by
+        the current user and, optionally, who can see it (visibility, memberIds).
+        Fields that are not sent keep their current value. Changing who can see the
+        project also adjusts the assignees of its tasks; use POST /projects/{id}/access-preview
+        to see the effect first.
       parameters:
       - description: Project ID
         in: path
@@ -3552,13 +3584,26 @@ paths:
               $ref: '#/definitions/model.Project'
             type: object
         "400":
-          description: 'error: Invalid project ID or Error binding project data'
+          description: 'error: Invalid project ID, Error binding project data or invalid
+            members'
           schema:
             additionalProperties:
               type: string
             type: object
         "401":
           description: 'error: Error getting current user'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: 'error: not the project owner'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: 'error: project not found'
           schema:
             additionalProperties:
               type: string
@@ -3573,6 +3618,57 @@ paths:
       - JWTKeyAuth: []
       - APIKeyAuth: []
       summary: Update a project
+      tags:
+      - projects
+  /projects/{id}/access-preview:
+    post:
+      consumes:
+      - application/json
+      description: Returns, without changing anything, which tasks of the project
+        would change assignees and who would gain or lose access if the given visibility
+        and members were saved. Only the project owner may call it.
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Target visibility and members
+        in: body
+        name: access
+        required: true
+        schema:
+          $ref: '#/definitions/project.AccessPreviewReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'res: chRepo.ProjectAccessPlan'
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: 'error: not the project owner'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: 'error: project not found'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Preview a change of who can see a project
       tags:
       - projects
   /sync/changes:
@@ -3916,4 +4012,15 @@ paths:
       summary: Update thing state
       tags:
       - things
+securityDefinitions:
+  APIKeyAuth:
+    description: hopla issued apikey
+    in: header
+    name: secretkey
+    type: apiKey
+  JWTKeyAuth:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

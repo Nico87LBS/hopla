@@ -28,6 +28,12 @@ const (
 	// they should refresh their project list and sync. Older clients ignore it.
 	EventTypeProjectUpdated EventType = "project.updated"
 
+	// Change events tell clients to refresh data that has no detailed event:
+	// rewards and redemptions, things, and the circle's members.
+	EventTypeRewardsUpdated EventType = "rewards.updated"
+	EventTypeThingsUpdated  EventType = "things.updated"
+	EventTypeCircleUpdated  EventType = "circle.updated"
+
 	// Subtask events
 	EventTypeSubtaskUpdated   EventType = "subtask.updated"
 	EventTypeSubtaskCompleted EventType = "subtask.completed"
@@ -77,6 +83,11 @@ type SubtaskEventData struct {
 	SubtaskID   int          `json:"subtaskId"`
 	CompletedAt *time.Time   `json:"completedAt"`
 	User        *uModel.User `json:"user"`
+}
+
+// ChangeEventData identifies who made a change announced by a change event.
+type ChangeEventData struct {
+	UserID int `json:"userId"`
 }
 
 // ConnectionEstablishedData contains data sent when connection is established

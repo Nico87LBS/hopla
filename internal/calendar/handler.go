@@ -119,7 +119,6 @@ func (h *Handler) issueToken(c *gin.Context, userID int) (*calModel.CalendarToke
 //	@Security		APIKeyAuth
 //	@Success		200	{object}	map[string]string	"url: calendar subscription URL"
 //	@Failure		401	{object}	map[string]string	"error: Authentication failed"
-//	@Failure		403	{object}	map[string]string	"error: Only plus members can access this endpoint"
 //	@Failure		404	{object}	map[string]string	"error: No calendar URL generated"
 //	@Router			/chores/calendar/url [get]
 func (h *Handler) GetCalendarURL(c *gin.Context) {
@@ -156,7 +155,6 @@ func (h *Handler) GetCalendarURL(c *gin.Context) {
 //	@Success		200	{object}	map[string]string	"url: existing calendar subscription URL"
 //	@Success		201	{object}	map[string]string	"url: newly generated calendar subscription URL"
 //	@Failure		401	{object}	map[string]string	"error: Authentication failed"
-//	@Failure		403	{object}	map[string]string	"error: Only plus members can access this endpoint"
 //	@Router			/chores/calendar/url [post]
 func (h *Handler) CreateCalendarURL(c *gin.Context) {
 	logger := logging.FromContext(c)
@@ -199,7 +197,6 @@ func (h *Handler) CreateCalendarURL(c *gin.Context) {
 //	@Security		APIKeyAuth
 //	@Success		200	{object}	map[string]string	"url: new calendar subscription URL"
 //	@Failure		401	{object}	map[string]string	"error: Authentication failed"
-//	@Failure		403	{object}	map[string]string	"error: Only plus members can access this endpoint"
 //	@Router			/chores/calendar/url/rotate [post]
 func (h *Handler) RotateCalendarURL(c *gin.Context) {
 	logger := logging.FromContext(c)
@@ -231,7 +228,6 @@ func (h *Handler) RotateCalendarURL(c *gin.Context) {
 //	@Security		APIKeyAuth
 //	@Success		204	{string}	string	"No content"
 //	@Failure		401	{object}	map[string]string	"error: Authentication failed"
-//	@Failure		403	{object}	map[string]string	"error: Only plus members can access this endpoint"
 //	@Router			/chores/calendar/url [delete]
 func (h *Handler) RevokeCalendarURL(c *gin.Context) {
 	logger := logging.FromContext(c)
@@ -260,7 +256,7 @@ func (h *Handler) RevokeCalendarURL(c *gin.Context) {
 //	@Produce		text/calendar
 //	@Param			token	path		string	true	"Calendar token (obtained from /chores/calendar/url)"
 //	@Success		200		{string}	string	"iCal calendar data"
-//	@Failure		403		{string}	string	"Invalid calendar token, or the owner is not a plus member"
+//	@Failure		403		{string}	string	"Invalid calendar token"
 //	@Failure		500		{string}	string	"Failed to generate calendar"
 //	@Router			/chores/calendar/{token} [get]
 func (h *Handler) ServeCalendar(c *gin.Context) {
@@ -516,7 +512,6 @@ func stripHTMLTags(s string) string {
 // Routes registers calendar-specific routes
 func Routes(router *gin.Engine, h *Handler, multiAuthMiddleware *auth.MultiAuthMiddleware, limiter *limiter.Limiter) {
 	// Authenticated endpoints to manage the user's personal calendar URL.
-	// Calendar sync is a plus feature; self-hosted instances are always plus.
 	calRoutes := router.Group("api/v1/chores/calendar")
 	calRoutes.Use(
 		multiAuthMiddleware.MiddlewareFunc(),
