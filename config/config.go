@@ -1,0 +1,443 @@
+package config
+
+import (
+	"crypto/rand"
+	_ "embed"
+	"encoding/base64"
+	"errors"
+	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
+	"time"
+
+	"go.uber.org/zap/zapcore"
+
+	"github.com/mcuadros/go-defaults"
+	"github.com/spf13/viper"
+)
+
+var (
+	Version   = "dev"
+	Commit    = "dev"
+	BuildDate = "dev"
+)
+
+type Config struct {
+	Name                   string         `mapstructure:"name" yaml:"name"`
+	Database               DatabaseConfig `mapstructure:"database" yaml:"database"`
+	Jwt                    JwtConfig      `mapstructure:"jwt" yaml:"jwt"`
+	Server                 ServerConfig   `mapstructure:"server" yaml:"server"`
+	EmailConfig            EmailConfig    `mapstructure:"email" yaml:"email"`
+	OAuth2Config           OAuth2Config   `mapstructure:"oauth2" yaml:"oauth2"`
+	RealTimeConfig         RealTimeConfig `mapstructure:"realtime" yaml:"realtime"`
+	MFAConfig              MFAConfig      `mapstructure:"mfa" yaml:"mfa"`
+	Logging                LogConfig      `mapstructure:"logging" yaml:"logging"`
+	IsUserCreationDisabled bool           `mapstructure:"is_user_creation_disabled" yaml:"is_user_creation_disabled"`
+	MinVersion             string         `mapstructure:"min_version" yaml:"min_version"`
+	Storage                StorageConfig  `mapstructure:"storage" yaml:"storage"`
+	SingleCircleInstance   bool           `mapstructure:"single_circle_instance" yaml:"single_circle_instance"`
+	DisablePasswordAuth    bool           `mapstructure:"disable_password_auth" yaml:"disable_password_auth"`
+	Info                   Info
+}
+
+type Info struct {
+	Version   string
+	Commit    string
+	BuildDate string
+}
+
+type StorageConfig struct {
+	StorageType string `mapstructure:"storage_type" yaml:"storage_type"`
+	// CloudStorage:
+	BucketName     string `mapstructure:"bucket_name" yaml:"bucket_name"`
+	Region         string `mapstructure:"region" yaml:"region"`
+	BasePath       string `mapstructure:"base_path" yaml:"base_path"`
+	AccessKey      string `mapstructure:"access_key" yaml:"access_key"`
+	SecretKey      string `mapstructure:"secret_key" yaml:"secret_key"`
+	Endpoint       string `mapstructure:"endpoint" yaml:"endpoint"`
+	MaxUserStorage int    `mapstructure:"max_user_storage" yaml:"max_user_storage"`
+	MaxFileSize    int64  `mapstructure:"max_file_size" yaml:"max_file_size"`
+	PublicHost     string `mapstructure:"public_host" yaml:"public_host"`
+	// PublicRead returns unsigned URLs instead of SigV4 presigned URLs.
+	// The bucket/prefix must be configured for public anonymous reads
+	// (e.g. via a bucket policy). Intended for self-hosted deployments
+	// that don't want the 7-day presigned URL ceiling.
+	PublicRead bool `mapstructure:"public_read" yaml:"public_read"`
+	// PublicBucketName is an optional separate bucket for publicly readable
+	// assets (e.g. profile photos). If empty, public uploads fall back to the
+	// private bucket (BucketName).
+	PublicBucketName string `mapstructure:"public_bucket_name" yaml:"public_bucket_name"`
+	// PublicBucketHost is the CDN / custom-domain host used to construct bare
+	// (unsigned) URLs for objects in PublicBucketName. Example: "pub.example.com".
+	// If empty, GetPublicURL falls back to a presigned URL from the private bucket.
+	PublicBucketHost string `mapstructure:"public_bucket_host" yaml:"public_bucket_host"`
+	// PathStyle forces path-style S3 addressing (endpoint/bucket/key)
+	// instead of the default virtual-hosted style (bucket.endpoint/key).
+	// Required for S3-compatible backends like MinIO that don't expose
+	// a DNS wildcard at `*.<endpoint-host>`, as well as for plain HTTP
+	// endpoints without matching TLS wildcard certs.
+	PathStyle bool `mapstructure:"path_style" yaml:"path_style"`
+}
+type DatabaseConfig struct {
+	Type      string `mapstructure:"type" yaml:"type" default:"sqlite"`
+	Host      string `mapstructure:"host" yaml:"host"`
+	Port      int    `mapstructure:"port" yaml:"port"`
+	User      string `mapstructure:"user" yaml:"user"`
+	Password  string `mapstructure:"password" yaml:"password"`
+	Name      string `mapstructure:"name" yaml:"name"`
+	Migration bool   `mapstructure:"migration" yaml:"migration" default:"true"`
+	LogLevel  int    `mapstructure:"logger" yaml:"logger"`
+}
+
+type JwtConfig struct {
+	Secret      string        `mapstructure:"secret" yaml:"secret"`
+	SessionTime time.Duration `mapstructure:"session_time" yaml:"session_time" default:"24h"` // 24 hours
+	MaxRefresh  time.Duration `mapstructure:"max_refresh" yaml:"max_refresh" default:"1440h"` // 60 days
+}
+
+type ServerConfig struct {
+	Port             int           `mapstructure:"port" yaml:"port" default:"2021"`
+	RatePeriod       time.Duration `mapstructure:"rate_period" yaml:"rate_period" default:"60s"`
+	RateLimit        int           `mapstructure:"rate_limit" yaml:"rate_limit" default:"300"`
+	ReadTimeout      time.Duration `mapstructure:"read_timeout" yaml:"read_timeout" default:"5s"`
+	WriteTimeout     time.Duration `mapstructure:"write_timeout" yaml:"write_timeout" default:"5s"`
+	CorsAllowOrigins []string      `mapstructure:"cors_allow_origins" yaml:"cors_allow_origins"`
+	ServeFrontend    bool          `mapstructure:"serve_frontend" yaml:"serve_frontend"`
+	ServeSwagger     bool          `mapstructure:"serve_swagger" yaml:"serve_swagger"`
+	PublicHost       string        `mapstructure:"public_host" yaml:"public_host" default:"http://localhost:2021"`
+}
+
+type EmailConfig struct {
+	Email string `mapstructure:"email"`
+	User  string `mapstructure:"user"`
+	Key   string `mapstructure:"key"`
+	Host  string `mapstructure:"host"`
+	Port  int    `mapstructure:"port"`
+	// Renamed from "appHost" to match this struct's snake_case convention;
+	// see the legacy fallback in LoadConfig.
+	AppHost   string `mapstructure:"app_host" yaml:"app_host"`
+	LogRawURL bool   `mapstructure:"log_raw_url" yaml:"log_raw_url"`
+	// Provider selects which email sender implementation to use.
+	// "smtp" (default, empty also means smtp) uses host/port/user/key as SMTP creds.
+	// "smtp2go" uses the SMTP2Go HTTP API with `key` as the API key and the
+	// template IDs below.
+	Provider                string `mapstructure:"provider" yaml:"provider" default:"smtp"`
+	VerifyTemplateID        string `mapstructure:"verify_template_id" yaml:"verify_template_id"`
+	ResetPasswordTemplateID string `mapstructure:"reset_password_template_id" yaml:"reset_password_template_id"`
+}
+
+type OAuth2Config struct {
+	ClientID      string   `mapstructure:"client_id" yaml:"client_id"`
+	ClientSecret  string   `mapstructure:"client_secret" yaml:"client_secret"`
+	RedirectURL   string   `mapstructure:"redirect_url" yaml:"redirect_url"`
+	PKCE          bool     `mapstructure:"pkce" yaml:"pkce"`
+	Scopes        []string `mapstructure:"scopes" yaml:"scopes"`
+	AuthURL       string   `mapstructure:"auth_url" yaml:"auth_url"`
+	TokenURL      string   `mapstructure:"token_url" yaml:"token_url"`
+	UserInfoURL   string   `mapstructure:"user_info_url" yaml:"user_info_url"`
+	Name          string   `mapstructure:"name" yaml:"name"`
+	AdminGroups   []string `mapstructure:"admin_groups" yaml:"admin_groups"`
+	ManagerGroups []string `mapstructure:"manager_groups" yaml:"manager_groups"`
+}
+
+type RealTimeConfig struct {
+	Enabled               bool          `mapstructure:"enabled" yaml:"enabled" default:"true"`
+	WebSocketEnabled      bool          `mapstructure:"websocket_enabled" yaml:"websocket_enabled" default:"true"`
+	SSEEnabled            bool          `mapstructure:"sse_enabled" yaml:"sse_enabled" default:"true"`
+	HeartbeatInterval     time.Duration `mapstructure:"heartbeat_interval" yaml:"heartbeat_interval" default:"30s"`
+	ConnectionTimeout     time.Duration `mapstructure:"connection_timeout" yaml:"connection_timeout" default:"60s"`
+	MinConnectionInterval time.Duration `mapstructure:"min_connection_interval" yaml:"min_connection_interval" default:"5s"`
+	MaxConnections        int           `mapstructure:"max_connections" yaml:"max_connections" default:"1000"`
+	MaxConnectionsPerUser int           `mapstructure:"max_connections_per_user" yaml:"max_connections_per_user" default:"5"`
+	EventQueueSize        int           `mapstructure:"event_queue_size" yaml:"event_queue_size" default:"2048"`
+	CleanupInterval       time.Duration `mapstructure:"cleanup_interval" yaml:"cleanup_interval" default:"2m"`
+	StaleThreshold        time.Duration `mapstructure:"stale_threshold" yaml:"stale_threshold" default:"5m"`
+	EnableCompression     bool          `mapstructure:"enable_compression" yaml:"enable_compression" default:"true"`
+	EnableStats           bool          `mapstructure:"enable_stats" yaml:"enable_stats" default:"true"`
+	AllowedOrigins        []string      `mapstructure:"allowed_origins" yaml:"allowed_origins"`
+	MaxSSETickets         int           `mapstructure:"max_sse_tickets" yaml:"max_sse_tickets" default:"10000"`
+}
+
+type MFAConfig struct {
+	Enabled                 bool          `mapstructure:"enabled" yaml:"enabled" default:"true"`
+	SessionTimeoutMinutes   int           `mapstructure:"session_timeout_minutes" yaml:"session_timeout_minutes" default:"15"`
+	BackupCodeCount         int           `mapstructure:"backup_code_count" yaml:"backup_code_count" default:"10"`
+	MaxVerificationAttempts int           `mapstructure:"max_verification_attempts" yaml:"max_verification_attempts" default:"5"`
+	RateLimitWindow         time.Duration `mapstructure:"rate_limit_window" yaml:"rate_limit_window" default:"5m"`
+}
+
+type LogConfig struct {
+	Level       string `mapstructure:"level" yaml:"level" default:"info"`
+	Encoding    string `mapstructure:"encoding" yaml:"encoding" default:"console"`
+	Development bool   `mapstructure:"development" yaml:"development" default:"false"`
+}
+
+func NewConfig() *Config {
+	// Generate a secure secret instead of using a weak default
+	secureSecret, err := generateSecureSecret()
+	if err != nil {
+		// If we can't generate a secure secret, panic - this is a security requirement
+		panic(fmt.Sprintf("Failed to generate secure JWT secret: %v", err))
+	}
+
+	config := &Config{
+		Database: DatabaseConfig{
+			Type:      "sqlite",
+			Migration: true,
+		},
+		Jwt: JwtConfig{
+			Secret:      secureSecret,
+			SessionTime: 24 * time.Hour,
+			MaxRefresh:  60 * 24 * time.Hour,
+		},
+		RealTimeConfig: RealTimeConfig{
+			Enabled:               true,
+			WebSocketEnabled:      false,
+			SSEEnabled:            true,
+			HeartbeatInterval:     30 * time.Second,
+			ConnectionTimeout:     60 * time.Second,
+			MinConnectionInterval: 5 * time.Second,
+			MaxConnections:        1000,
+			MaxConnectionsPerUser: 5,
+			EventQueueSize:        2048,
+			CleanupInterval:       2 * time.Minute,
+			StaleThreshold:        5 * time.Minute,
+			EnableCompression:     true,
+			EnableStats:           true,
+			AllowedOrigins:        []string{"*"},
+			MaxSSETickets:         10000,
+		},
+		Logging: LogConfig{
+			Level:       "info",
+			Encoding:    "console",
+			Development: false,
+		},
+	}
+
+	// Apply default values for fields with default tags
+	defaults.SetDefaults(config)
+
+	return config
+}
+
+func configEnvironmentOverrides(config *Config) {
+	if os.Getenv("HOPLA_DISABLE_SIGNUP") == "true" {
+		config.IsUserCreationDisabled = true
+	}
+
+	// Logging environment overrides
+	if os.Getenv("HOPLA_LOG_LEVEL") != "" {
+		config.Logging.Level = os.Getenv("HOPLA_LOG_LEVEL")
+	}
+	if os.Getenv("HOPLA_LOG_ENCODING") != "" {
+		config.Logging.Encoding = os.Getenv("HOPLA_LOG_ENCODING")
+	}
+	if os.Getenv("HOPLA_LOG_DEVELOPMENT") == "true" {
+		config.Logging.Development = true
+	}
+}
+func LoadConfig() *Config {
+	// https://github.com/spf13/viper/issues/1895#issuecomment-3316091229
+	viper.SetOptions(viper.ExperimentalBindStruct())
+
+	// set the config name based on the environment:
+	switch env := os.Getenv("HOPLA_ENV"); env {
+	case "local":
+		viper.SetConfigName("local")
+	case "prod":
+		viper.SetConfigName("prod")
+	case "selfhosted":
+		viper.SetConfigName("selfhosted")
+	case "r2":
+		viper.SetConfigName("r2")
+	default:
+		viper.SetConfigName("local")
+	}
+	// get logger and log the current environment:
+	fmt.Printf("--ConfigLoad config for environment: %s\n", os.Getenv("HOPLA_ENV"))
+	viper.SetEnvPrefix("HOPLA")
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+
+	viper.AddConfigPath("./config")
+	viper.SetConfigType("yaml")
+
+	err := viper.ReadInConfig()
+	// print a useful error:
+	if err != nil {
+		var configNotFoundError viper.ConfigFileNotFoundError
+		if errors.As(err, &configNotFoundError) {
+			if os.Getenv("HOPLA_ENV") == "selfhosted" {
+				fmt.Println("Config file not found, generating default config...")
+				if writeErr := generateDefaultConfigFile("./config"); writeErr != nil {
+					fmt.Printf("Warning: could not write default config: %v\n", writeErr)
+					fmt.Println("Continuing with defaults and environment variables")
+				} else {
+					// Re-read the newly written config
+					if readErr := viper.ReadInConfig(); readErr != nil {
+						fmt.Printf("Warning: could not read generated config: %v\n", readErr)
+					}
+				}
+			} else {
+				fmt.Println("Config file not found, using defaults and environment variables")
+			}
+		} else {
+			fmt.Printf("Error reading config file: %v", err)
+			panic(err)
+		}
+	}
+	// Override with environment variables if set:
+	viper.AutomaticEnv()
+
+	var config Config
+	err = viper.Unmarshal(&config)
+	if err != nil {
+		panic(err)
+	}
+
+	// Legacy fallback for YAML configs still using the old "appHost" key.
+	if config.EmailConfig.AppHost == "" {
+		if legacy := viper.GetString("email.appHost"); legacy != "" {
+			config.EmailConfig.AppHost = legacy
+		}
+	}
+
+	// Apply default values for fields with default tags
+	defaults.SetDefaults(&config)
+
+	fmt.Printf("--ConfigLoad name : %s ", config.Name)
+
+	configEnvironmentOverrides(&config)
+
+	// Validate JWT secret strength
+	if config.Name != "local" {
+		validateJWTSecret(config.Jwt.Secret)
+	}
+
+	config.Info.Version = Version
+	config.Info.Commit = Commit
+	config.Info.BuildDate = BuildDate
+
+	// set the timezone to UTC if not set:
+	if os.Getenv("TZ") == "" {
+		os.Setenv("TZ", "UTC")
+	}
+	time.Local, _ = time.LoadLocation(os.Getenv("TZ"))
+
+	return &config
+
+	// return LocalConfig()
+}
+
+// List of known weak secrets that should not be allowed
+var weakSecrets = []string{
+	"secret",
+	"mysecret",
+	"jwt_secret",
+	"default",
+	"password",
+	"123456",
+	"changeme",
+	"hopla",
+	"jwt",
+	"token",
+	"key",
+	"secretkey",
+	"change_this_to_a_secure_random_string_32_characters_long",
+}
+
+// validateJWTSecret validates that the JWT secret is strong enough
+func validateJWTSecret(secret string) error {
+	var err error
+	if len(secret) < 32 {
+		err = fmt.Errorf("JWT secret must be at least 32 characters long, got %d characters", len(secret))
+	}
+
+	// Check against known weak secrets (case-insensitive)
+	secretLower := strings.ToLower(secret)
+	for _, weak := range weakSecrets {
+		if secretLower == weak {
+			err = fmt.Errorf("JWT secret is too weak: '%s' is not allowed", weak)
+			break
+		}
+	}
+	if err != nil {
+		fmt.Printf("\n\n🚨 SECURITY ERROR: %s\n", err.Error())
+		fmt.Printf("\n💡 To fix this issue:\n")
+		fmt.Printf("   1. Generate a secure JWT secret:\n")
+		if secureSecret, genErr := generateSecureSecret(); genErr == nil {
+			fmt.Printf("      Suggested secret: %s\n", secureSecret)
+		}
+		fmt.Printf("   2. Set it in your configuration:\n")
+		fmt.Printf("      - YAML: jwt.secret: \"<your_secure_secret>\"\n")
+		fmt.Printf("      - ENV:  export HOPLA_JWT_SECRET=\"<your_secure_secret>\"\n")
+		fmt.Printf("\n❌ Application will not start with weak JWT secrets for security reasons.\n\n")
+		panic("Weak JWT secret detected - application startup aborted for security")
+	}
+	return nil
+}
+
+// selfhostedConfigTemplate is written as selfhosted.yaml on first startup,
+// with the placeholder JWT secret replaced by a generated one.
+//
+//go:embed selfhosted.yaml.example
+var selfhostedConfigTemplate string
+
+const placeholderJWTSecret = "change_this_to_a_secure_random_string_32_characters_long"
+
+// generateDefaultConfigFile writes a default selfhosted.yaml to the given directory.
+// This persists the generated JWT secret so it survives restarts.
+func generateDefaultConfigFile(configDir string) error {
+	secret, err := generateSecureSecret()
+	if err != nil {
+		return fmt.Errorf("generate JWT secret: %w", err)
+	}
+
+	if !strings.Contains(selfhostedConfigTemplate, placeholderJWTSecret) {
+		return errors.New("config template is missing the placeholder JWT secret")
+	}
+	configContent := strings.Replace(selfhostedConfigTemplate, placeholderJWTSecret, secret, 1)
+
+	if err := os.MkdirAll(configDir, 0755); err != nil {
+		return fmt.Errorf("create config dir: %w", err)
+	}
+
+	configPath := filepath.Join(configDir, "selfhosted.yaml")
+	if err := os.WriteFile(configPath, []byte(configContent), 0600); err != nil {
+		return fmt.Errorf("write config file: %w", err)
+	}
+
+	fmt.Printf("Generated default config at %s\n", configPath)
+	return nil
+}
+
+// generateSecureSecret generates a cryptographically secure random secret
+func generateSecureSecret() (string, error) {
+	bytes := make([]byte, 32) // 256 bits
+	if _, err := rand.Read(bytes); err != nil {
+		return "", err
+	}
+	return base64.URLEncoding.EncodeToString(bytes), nil
+}
+
+// ParseLogLevel converts a string log level to zapcore.Level
+func (c *LogConfig) ParseLogLevel() zapcore.Level {
+	switch strings.ToLower(c.Level) {
+	case "debug":
+		return zapcore.DebugLevel
+	case "info":
+		return zapcore.InfoLevel
+	case "warn", "warning":
+		return zapcore.WarnLevel
+	case "error":
+		return zapcore.ErrorLevel
+	case "dpanic":
+		return zapcore.DPanicLevel
+	case "panic":
+		return zapcore.PanicLevel
+	case "fatal":
+		return zapcore.FatalLevel
+	default:
+		return zapcore.InfoLevel
+	}
+}

@@ -1,0 +1,18 @@
+# Exemple d'installation de Hopla avec Docker Compose.
+# Le fichier config/selfhosted.yaml est créé au premier démarrage avec un
+# secret JWT aléatoire ; modifiez-le puis redémarrez le conteneur.
+---
+services:
+  hopla:
+    image: ghcr.io/nico87lbs/hopla:latest
+    container_name: hopla
+    restart: unless-stopped
+    ports:
+      - "2021:2021"
+    volumes:
+      - ./data:/data
+      - ./config:/config
+    environment:
+      - HOPLA_ENV=selfhosted
+      - HOPLA_SQLITE_PATH=/data/hopla.db
+      - TZ=Europe/Paris

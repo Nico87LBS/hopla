@@ -1,0 +1,511 @@
+package chore
+
+import (
+	"errors"
+	"strconv"
+	"strings"
+	"time"
+
+	jwt "github.com/appleboy/gin-jwt/v2"
+	"github.com/gin-gonic/gin"
+	"github.com/nico87lbs/hopla/config"
+	"github.com/nico87lbs/hopla/internal/auth"
+	authMiddleware "github.com/nico87lbs/hopla/internal/auth"
+	chRepo "github.com/nico87lbs/hopla/internal/chore/repo"
+	"github.com/nico87lbs/hopla/internal/utils"
+	"github.com/nico87lbs/hopla/logging"
+
+	limiter "github.com/ulule/limiter/v3"
+
+	chModel "github.com/nico87lbs/hopla/internal/chore/model"
+	cRepo "github.com/nico87lbs/hopla/internal/circle/repo"
+	pjRepo "github.com/nico87lbs/hopla/internal/project/repo"
+	"github.com/nico87lbs/hopla/internal/storage"
+	stRepo "github.com/nico87lbs/hopla/internal/subtask/repo"
+	uRepo "github.com/nico87lbs/hopla/internal/user/repo"
+)
+
+type API struct {
+	choreRepo  *chRepo.ChoreRepository
+	userRepo   *uRepo.UserRepository
+	circleRepo *cRepo.CircleRepository
+	stRepo     *stRepo.SubTasksRepository
+	pjRepo     *pjRepo.ProjectRepository
+	handler    *Handler
+	signer     storage.URLSigner
+}
+
+func NewAPI(cr *chRepo.ChoreRepository, userRepo *uRepo.UserRepository, circleRepo *cRepo.CircleRepository, stRepo *stRepo.SubTasksRepository, pjRepo *pjRepo.ProjectRepository, handler *Handler, signer storage.URLSigner) *API {
+	return &API{
+		choreRepo:  cr,
+		userRepo:   userRepo,
+		circleRepo: circleRepo,
+		stRepo:     stRepo,
+		pjRepo:     pjRepo,
+		handler:    handler,
+		signer:     signer,
+	}
+}
+
+func (h *API) GetAllChores(c *gin.Context) {
+	user := auth.MustCurrentUser(c)
+
+	includeSubtasks := false
+
+	if c.Query("includeSubtasks") == "true" {
+		includeSubtasks = true
+	}
+
+	chores, err := h.choreRepo.GetChores(c, user.CircleID, user.ID, false, nil, includeSubtasks)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(200, chores)
+}
+
+func (h *API) CreateChore(c *gin.Context) {
+	log := logging.FromContext(c)
+	var choreRequest chModel.ChoreLiteReq
+	user := auth.MustCurrentUser(c)
+
+	if err := c.BindJSON(&choreRequest); err != nil {
+		log.Debugw("chore.api.CreateChore failed to bind JSON", "error", err)
+		c.JSON(400, gin.H{"error": "Invalid request body"})
+		return
+	}
+
+	// Validate required fields
+	if strings.TrimSpace(choreRequest.Name) == "" {
+		c.JSON(400, gin.H{"error": "Chore name is required"})
+		return
+	}
+
+	// Parse due date if provided
+	var nextDueDate *time.Time
+	if choreRequest.DueDate != "" {
+		parsedDate, err := time.Parse(time.RFC3339, choreRequest.DueDate)
+		if err != nil {
+			parsedDateSimple, errSimple := time.Parse("2006-01-02", choreRequest.DueDate)
+			if errSimple != nil {
+				c.JSON(400, gin.H{"error": "Invalid due date format. Use RFC3339 or YYYY-MM-DD"})
+				return
+			}
+			// Set time to now UTC
+			now := time.Now().UTC()
+			parsedDate = time.Date(parsedDateSimple.Year(), parsedDateSimple.Month(), parsedDateSimple.Day(), now.Hour(), now.Minute(), now.Second(), 0, time.UTC)
+			err = nil
+		}
+		if err != nil {
+			c.JSON(400, gin.H{"error": "Invalid due date format. Use RFC3339 format"})
+			return
+		}
+		nextDueDate = &parsedDate
+	}
+	// get all circle members:
+	circleUsers, err := h.circleRepo.GetCircleUsers(c, user.CircleID)
+	if err != nil {
+		log.Errorw("chore.api.CreateChore failed to get circle users", "error", err)
+		c.JSON(500, gin.H{"error": "Failed to get circle members"})
+		return
+	}
+	createdBy := user.ID
+	if choreRequest.CreatedBy != nil {
+		// Check if the specified user exists in the circle
+		var found bool
+		for _, u := range circleUsers {
+			if u.UserID == *choreRequest.CreatedBy {
+				found = true
+				createdBy = u.UserID
+				break
+			}
+		}
+		if !found {
+			log.Errorw("chore.api.CreateChore specified user not found in circle", "userID", *choreRequest.CreatedBy)
+			c.JSON(400, gin.H{"error": "Specified user not found in circle"})
+			return
+		}
+	}
+
+	if choreRequest.ProjectID != nil {
+		// The project must exist and be visible to the API user; a project the user
+		// can't see is reported as missing so its existence does not leak.
+		proj, _ := h.pjRepo.GetProjectByID(c, *choreRequest.ProjectID, user.CircleID)
+		if proj == nil || !proj.CanView(user.ID) {
+			c.JSON(400, gin.H{"error": "Specified project not found"})
+			return
+		}
+		if proj.IsPrivate && !proj.CanView(createdBy) {
+			c.JSON(400, gin.H{"error": chRepo.ErrAssigneeOutsideProject.Error()})
+			return
+		}
+	}
+
+	chore := &chModel.Chore{
+		CreatedBy:     createdBy,
+		CircleID:      user.CircleID,
+		Name:          choreRequest.Name,
+		IsActive:      true,
+		FrequencyType: chModel.FrequencyTypeOnce,
+		// Frequency:                choreRequest.Frequency,
+		AssignStrategy: chModel.AssignmentStrategyRandom,
+		AssignedTo:     &createdBy,
+		Description:    choreRequest.Description,
+		NextDueDate:    nextDueDate,
+		CreatedAt:      time.Now().UTC(),
+		ProjectID:      choreRequest.ProjectID,
+	}
+
+	// Same path as the app: takes the project's lock, inherits its privacy and keeps
+	// the assignee inside a restricted project's audience.
+	id, err := h.choreRepo.CreateChoreWithAssignees(c, chore, []int{createdBy}, user.ID)
+	if err != nil {
+		log.Errorw("chore.api.CreateChore failed to create chore", "error", err)
+		if errors.Is(err, chRepo.ErrAssigneeOutsideProject) {
+			c.JSON(400, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(500, gin.H{"error": "Error creating chore"})
+		return
+	}
+
+	// Fetch the created chore with all relations
+	createdChore, err := h.choreRepo.GetChore(c, id, user.ID, user.CircleID)
+	if err != nil {
+		log.Errorw("chore.api.CreateChore failed to fetch created chore", "error", err)
+		c.JSON(500, gin.H{"error": "Error fetching created chore"})
+		return
+	}
+
+	c.JSON(201, createdChore)
+}
+
+func (h *API) UpdateChore(c *gin.Context) {
+	log := logging.FromContext(c)
+	var choreRequest chModel.ChoreLiteReq
+	user := auth.MustCurrentUser(c)
+
+	choreIDRaw := c.Param("id")
+	choreID, err := strconv.Atoi(choreIDRaw)
+	if err != nil {
+		log.Debugw("chore.api.UpdateChore failed to parse chore ID", "error", err)
+		c.JSON(400, gin.H{"error": "Invalid chore ID"})
+		return
+	}
+
+	if err := c.BindJSON(&choreRequest); err != nil {
+		log.Debugw("chore.api.UpdateChore failed to bind JSON", "error", err)
+		c.JSON(400, gin.H{"error": "Invalid request body"})
+		return
+	}
+
+	// Get existing chore
+	existingChore, err := h.choreRepo.GetChore(c, choreID, user.ID, user.CircleID)
+	if err != nil {
+		log.Errorw("chore.api.UpdateChore failed to get chore", "error", err)
+		c.JSON(404, gin.H{"error": "Chore not found"})
+		return
+	}
+	// get circle members:
+	circleUsers, err := h.circleRepo.GetCircleUsers(c, user.CircleID)
+	if err != nil {
+		log.Errorw("chore.api.UpdateChore failed to get circle users", "error", err)
+		c.JSON(500, gin.H{"error": "Failed to get circle members"})
+		return
+	}
+	// Match external API delete permissions. Partial updates do not supply a
+	// client updatedAt value, so the web editor's stale-data check does not apply.
+	if existingChore.CreatedBy != user.ID && !user.IsAdminOrManager(circleUsers) {
+		log.Debugw("chore.api.UpdateChore edit denied", "userID", user.ID, "circleID", user.CircleID, "choreCreatedBy", existingChore.CreatedBy)
+		c.JSON(403, gin.H{"error": "Only the chore creator or a circle admin/manager can update this chore"})
+		return
+	}
+
+	if strings.TrimSpace(choreRequest.Name) == "" {
+		choreRequest.Name = existingChore.Name
+	}
+
+	if choreRequest.Description == nil {
+		choreRequest.Description = existingChore.Description
+	}
+
+	// Parse due date if provided
+	var nextDueDate *time.Time
+	if choreRequest.DueDate != "" {
+
+		parsedDate, err := time.Parse(time.RFC3339, choreRequest.DueDate)
+		if err != nil {
+			parsedDateSimple, errSimple := time.Parse("2006-01-02", choreRequest.DueDate)
+			if errSimple != nil {
+				c.JSON(400, gin.H{"error": "Invalid due date format. Use RFC3339 or YYYY-MM-DD"})
+				return
+			}
+			// Set time to now UTC
+			now := time.Now().UTC()
+			parsedDate = time.Date(parsedDateSimple.Year(), parsedDateSimple.Month(), parsedDateSimple.Day(), now.Hour(), now.Minute(), now.Second(), 0, time.UTC)
+			err = nil
+		}
+		if err != nil {
+			c.JSON(400, gin.H{"error": "Invalid due date format. Use RFC3339 format"})
+			return
+		}
+		nextDueDate = &parsedDate
+	} else {
+		nextDueDate = existingChore.NextDueDate
+	}
+
+	// Update only name and due date
+	updates := map[string]interface{}{
+		"name":          choreRequest.Name,
+		"description":   choreRequest.Description,
+		"next_due_date": nextDueDate,
+		"updated_by":    user.ID,
+		"updated_at":    time.Now().UTC(),
+	}
+	if choreRequest.ForceUnarchive {
+		updates["is_active"] = true
+	}
+
+	err = h.choreRepo.UpdateChoreFields(c, choreID, updates)
+	if err != nil {
+		log.Errorw("chore.api.UpdateChore failed to update chore", "error", err)
+		c.JSON(500, gin.H{"error": "Error updating chore"})
+		return
+	}
+
+	// Fetch the updated chore
+	updatedChore, err := h.choreRepo.GetChore(c, choreID, user.ID, user.CircleID)
+	if err != nil {
+		log.Errorw("chore.api.UpdateChore failed to fetch updated chore", "error", err)
+		c.JSON(500, gin.H{"error": "Error fetching updated chore"})
+		return
+	}
+
+	c.JSON(200, updatedChore)
+}
+
+func (h *API) CompleteChore(c *gin.Context) {
+	log := logging.FromContext(c)
+	completedDate := time.Now().UTC()
+	choreIDRaw := c.Param("id")
+	choreID, err := strconv.Atoi(choreIDRaw)
+	if err != nil {
+		log.Debugw("chore.api.CompleteChore failed to parse chore ID", "error", err)
+		c.JSON(400, gin.H{
+			"error": "Invalid ID",
+		})
+		return
+	}
+	completedByRaw := c.Query("completedBy")
+	completedBy, err := strconv.Atoi(completedByRaw)
+
+	currentUser := auth.MustCurrentUser(c)
+	performer := currentUser.ID
+	if completedBy != 0 {
+		log.Debugw("chore.api.CompleteChore completedBy is set", "completedBy", completedBy)
+		performer = completedBy
+	}
+	chore, err := h.choreRepo.GetChore(c, choreID, currentUser.ID, currentUser.CircleID)
+	if err != nil {
+		log.Errorw("chore.api.CompleteChore failed to get chore", "error", err)
+		c.JSON(500, gin.H{
+			"error": "Error getting chore",
+		})
+		return
+	}
+
+	// user need to be assigned to the chore to complete it
+	circleUsers, err := h.circleRepo.GetCircleUsers(c, currentUser.CircleID)
+	if err != nil {
+		log.Errorw("Failed to retrieve circle users", "error", err)
+		c.JSON(500, gin.H{
+			"error": "Failed to retrieve circle users",
+		})
+		return
+	}
+	if !chore.CanComplete(performer, circleUsers) {
+		log.Debugw("chore.api.CompleteChore user is not assigned to chore", "userID", performer, "choreID", choreID)
+		c.JSON(400, gin.H{
+			"error": "User is not assigned to chore",
+		})
+		return
+	}
+
+	// confirm that the chore in completion window:
+	if chore.CompletionWindow != nil {
+		if completedDate.Before(chore.NextDueDate.Add(time.Hour * time.Duration(-*chore.CompletionWindow))) {
+			log.Debugw("chore.api.CompleteChore chore is in completion window", "choreID", choreID, "completionWindow", chore.CompletionWindow)
+			c.JSON(400, gin.H{
+				"error": "Chore is out of completion window",
+			})
+			return
+		}
+	}
+
+	// A chore that requires approval waits for an admin, as it does in the app.
+	if chore.RequireApproval {
+		updatedChore, err := h.handler.submitForApproval(c, chore, nil, performer, completedDate, currentUser, currentUser)
+		if err != nil {
+			c.JSON(500, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+		c.JSON(200, updatedChore)
+		return
+	}
+
+	var nextDueDate *time.Time
+	if chore.FrequencyType == "adaptive" {
+		history, err := h.choreRepo.GetChoreHistoryWithLimit(c, chore.ID, 5)
+		if err != nil {
+			c.JSON(500, gin.H{
+				"error": "Error getting chore history",
+			})
+			return
+		}
+		nextDueDate, err = scheduleAdaptiveNextDueDate(chore, completedDate, history)
+		if err != nil {
+			log.Debugw("chore.api.CompleteChore failed to schedule adaptive next due date", "error", err)
+
+			c.JSON(500, gin.H{
+				"error": "Error scheduling next due date",
+			})
+			return
+		}
+
+	} else {
+		nextDueDate, err = scheduleNextDueDate(c, chore, completedDate.UTC())
+		if err != nil {
+			log.Debugw("chore.api.CompleteChore failed to schedule next due date", "error", err)
+			c.JSON(500, gin.H{
+				"error": "Error scheduling next due date",
+			})
+			return
+		}
+	}
+	choreHistory, err := h.choreRepo.GetChoreHistory(c, chore.ID)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"error": "Error getting chore history",
+		})
+		return
+	}
+
+	nextAssignedTo, err := checkNextAssignee(chore, choreHistory, performer, circleUsers)
+	if err != nil {
+		log.Debugw("chore.api.CompleteChore failed to check next assignee", "error", err)
+		c.JSON(500, gin.H{
+			"error": "Error checking next assignee",
+		})
+		return
+	}
+
+	if err := h.choreRepo.CompleteChore(c, chore, nil, performer, nextDueDate, &completedDate, nextAssignedTo, true); err != nil {
+		c.JSON(500, gin.H{
+			"error": "Error completing chore",
+		})
+		return
+	}
+	if chore.SubTasks != nil && chore.FrequencyType != chModel.FrequencyTypeOnce {
+		h.stRepo.ResetSubtasksCompletion(c, chore.ID)
+	}
+
+	updatedChore, err := h.choreRepo.GetChore(c, choreID, currentUser.ID, currentUser.CircleID)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"error": "Error getting chore",
+		})
+		return
+	}
+	c.JSON(200,
+		updatedChore,
+	)
+}
+
+func (h *API) GetCircleMembers(c *gin.Context) {
+	currentUser := auth.MustCurrentUser(c)
+	users, err := h.circleRepo.GetCircleUsers(c, currentUser.CircleID)
+	if err != nil {
+		c.JSON(500, gin.H{"error": "Failed to get circle members"})
+		return
+	}
+	if len(users) == 0 {
+		c.JSON(404, gin.H{"error": "No members found in the circle"})
+		return
+	}
+	for i := range users {
+		users[i].Image = h.signer.SignIfLocal(users[i].Image)
+	}
+	c.JSON(200, users)
+}
+func (h *API) DeleteChore(c *gin.Context) {
+	choreIDRaw := c.Param("id")
+	choreID, err := strconv.Atoi(choreIDRaw)
+	if err != nil {
+		c.JSON(400, gin.H{"error": "Invalid chore ID"})
+		return
+	}
+	currentUser := auth.MustCurrentUser(c)
+	chore, err := h.choreRepo.GetChore(c, choreID, currentUser.ID, currentUser.CircleID)
+	if err != nil {
+		c.JSON(404, gin.H{"error": "Chore not found"})
+		return
+	}
+	if chore.CreatedBy != currentUser.ID {
+		circleUsers, err := h.circleRepo.GetCircleUsers(c, currentUser.CircleID)
+		if err != nil {
+			c.JSON(500, gin.H{"error": "Failed to get circle members"})
+			return
+		}
+		if !currentUser.IsAdminOrManager(circleUsers) {
+			c.JSON(403, gin.H{"error": "Only the chore creator or a circle admin/manager can delete this chore"})
+			return
+		}
+	}
+	if _, err := h.choreRepo.DeleteChore(c, choreID); err != nil {
+		c.JSON(500, gin.H{"error": "Failed to delete chore"})
+		return
+	}
+	c.JSON(200, gin.H{"message": "Chore deleted successfully"})
+}
+
+func APIs(cfg *config.Config, api *API, r *gin.Engine, auth *jwt.GinJWTMiddleware, limiter *limiter.Limiter, userRepo *uRepo.UserRepository) {
+
+	tasksAPI := r.Group("eapi/v1/chore")
+	tasksAPI.Use(
+		utils.TimeoutMiddleware(cfg.Server.WriteTimeout),
+		utils.RateLimitMiddleware(limiter),
+		authMiddleware.APITokenMiddleware(userRepo),
+	)
+	{
+		tasksAPI.GET("", api.GetAllChores)
+		tasksAPI.POST("", api.CreateChore)
+		tasksAPI.DELETE("/:id", api.DeleteChore)
+	}
+
+	// Plus member only endpoints
+	tasksPlusAPI := r.Group("eapi/v1/chore")
+	tasksPlusAPI.Use(
+		utils.TimeoutMiddleware(cfg.Server.WriteTimeout),
+		utils.RateLimitMiddleware(limiter),
+		authMiddleware.APITokenMiddleware(userRepo),
+	)
+	{
+		tasksPlusAPI.POST("/:id/complete", api.CompleteChore)
+		tasksPlusAPI.PUT("/:id", api.UpdateChore)
+		tasksPlusAPI.POST("/:id/approve", api.handler.ApproveChore)
+		tasksPlusAPI.POST("/:id/reject", api.handler.RejectChore)
+	}
+
+	circleAPI := r.Group("eapi/v1/circle")
+	circleAPI.Use(
+		utils.TimeoutMiddleware(cfg.Server.WriteTimeout),
+		utils.RateLimitMiddleware(limiter),
+		authMiddleware.APITokenMiddleware(userRepo),
+	)
+	{
+		circleAPI.GET("/members", api.GetCircleMembers)
+	}
+
+}

@@ -1,0 +1,7 @@
+hopla.db
+*.db
+data/
+.vscode/launch.json
+*.exe
+config/prod.yaml
+config/selfhosted.yaml
