@@ -42,6 +42,7 @@ import { useCircleMembers, useUserProfile } from '../../queries/UserQueries.jsx'
 import { RedeemPoints } from '../../utils/Fetcher.jsx'
 import { resolvePhotoURL } from '../../utils/Helpers.jsx'
 import LoadingComponent from '../components/Loading.jsx'
+import GamesView from '../Games/GamesView.jsx'
 import RedeemPointsModal from '../Modals/RedeemPointsModal'
 import { useRedemptions } from '../Rewards/RewardQueries.jsx'
 import RewardsView from '../Rewards/RewardsView.jsx'
@@ -172,7 +173,9 @@ const UserPoints = () => {
       ? 'requests'
       : requestedSection === 'rewards' || requestedSection === 'requests'
         ? 'rewards'
-        : 'overview'
+        : requestedSection === 'games'
+          ? 'games'
+          : 'overview'
 
   const handlePeriodChange = nextPeriod => {
     setPeriod(nextPeriod)
@@ -237,7 +240,7 @@ const UserPoints = () => {
         borderRadius: 'lg',
         mb: 3,
         p: 0.5,
-        width: { xs: '100%', sm: canManageRewards ? 430 : 320 },
+        width: { xs: '100%', sm: canManageRewards ? 600 : 470 },
       }}
     >
       <TabList disableUnderline sx={{ gap: 0.5 }}>
@@ -270,6 +273,21 @@ const UserPoints = () => {
           }}
         >
           {t('common:navigation.rewards')}
+        </Tab>
+        <Tab
+          value='games'
+          disableIndicator
+          sx={{
+            borderRadius: 'md',
+            flex: 1,
+            fontWeight: 600,
+            '&.Mui-selected': {
+              bgcolor: 'background.surface',
+              boxShadow: 'sm',
+            },
+          }}
+        >
+          {t('games:tab')}
         </Tab>
         {canManageRewards && (
           <Tab
@@ -323,6 +341,18 @@ const UserPoints = () => {
     (isCircleMembersLoading || !userProfile)
   ) {
     return <LoadingComponent />
+  }
+
+  if (activeSection === 'games') {
+    return (
+      <Container
+        maxWidth='md'
+        sx={{ px: { xs: 2, sm: 3 }, pb: 6, pt: { xs: 1, sm: 2 } }}
+      >
+        {pageTabs}
+        <GamesView />
+      </Container>
+    )
   }
 
   if (activeSection === 'rewards' || activeSection === 'requests') {

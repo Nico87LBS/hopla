@@ -25,6 +25,7 @@ import (
 	"github.com/nico87lbs/hopla/internal/mfa"
 	"github.com/nico87lbs/hopla/internal/project"
 	pjRepo "github.com/nico87lbs/hopla/internal/project/repo"
+	pointsAPI "github.com/nico87lbs/hopla/internal/points/api"
 	reward "github.com/nico87lbs/hopla/internal/reward"
 	rwRepo "github.com/nico87lbs/hopla/internal/reward/repo"
 
@@ -119,6 +120,7 @@ func main() {
 		// Rewards:
 		fx.Provide(rwRepo.NewRewardRepository),
 		fx.Provide(reward.NewHandler),
+		fx.Provide(pointsAPI.NewHandler),
 
 		// Projects:
 		fx.Provide(pjRepo.NewProjectRepository),
@@ -174,6 +176,8 @@ func main() {
 			label.Routes,
 			reward.Routes,
 			reward.APIs,
+			pointsAPI.Routes,
+			pointsAPI.APIs,
 			project.Routes,
 			filter.Routes,
 

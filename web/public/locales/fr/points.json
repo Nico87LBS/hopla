@@ -1,5 +1,8 @@
 {
   "redeem": "Utiliser des points",
+  "sections": {
+    "overview": "Résumé"
+  },
   "redeemModal": {
     "redeemButton": "Utiliser",
     "pointsAvailable": "Disponibles : {{count}}",
@@ -53,6 +56,7 @@
     }
   },
   "summary": {
+    "selectUser": "Choisis le membre dont tu veux voir les points",
     "unknownUser": "Utilisateur inconnu",
     "allTime": "toute la période",
     "last6Months": "les 6 derniers mois",

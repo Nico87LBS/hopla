@@ -11,6 +11,8 @@ import (
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
 	cModel "github.com/nico87lbs/hopla/internal/circle/model"
 	"github.com/nico87lbs/hopla/internal/project/access"
+	ptModel "github.com/nico87lbs/hopla/internal/points"
+	ptRepo "github.com/nico87lbs/hopla/internal/points/repo"
 	pModel "github.com/nico87lbs/hopla/internal/project/model"
 	storageModel "github.com/nico87lbs/hopla/internal/storage/model"
 	stModel "github.com/nico87lbs/hopla/internal/subtask/model"
@@ -763,6 +765,9 @@ func (r *ChoreRepository) ApproveChore(c context.Context, chore *chModel.Chore, 
 			if err := tx.Model(&cModel.UserCircle{}).Where("user_id = ? AND circle_id = ?", history.CompletedBy, chore.CircleID).Update("points", gorm.Expr("points + ?", chore.Points)).Error; err != nil {
 				return err
 			}
+			if err := ptRepo.Record(tx, taskPoints(chore, history.CompletedBy, adminUserID, *chore.Points)); err != nil {
+				return err
+			}
 		}
 
 		// Save the updated history
@@ -876,6 +881,9 @@ func (r *ChoreRepository) CompleteChore(c context.Context, chore *chModel.Chore,
 		if applyPoints && chore.Points != nil && *chore.Points > 0 {
 			ch.Points = chore.Points
 			if err := tx.Model(&cModel.UserCircle{}).Where("user_id = ? AND circle_id = ?", userID, chore.CircleID).Update("points", gorm.Expr("points + ?", chore.Points)).Error; err != nil {
+				return err
+			}
+			if err := ptRepo.Record(tx, taskPoints(chore, userID, userID, *chore.Points)); err != nil {
 				return err
 			}
 		}
@@ -1543,13 +1551,18 @@ func (r *ChoreRepository) UndoChoreAction(c context.Context, choreID int, histor
 			(historyToUndo.Status == chModel.ChoreHistoryStatusCompleted) {
 			// Get the chore to find circle ID
 			var chore chModel.Chore
-			if err := tx.Select("circle_id").First(&chore, choreID).Error; err != nil {
+			if err := tx.Select("id", "name", "circle_id").First(&chore, choreID).Error; err != nil {
 				return err
 			}
 			// Subtract points from user
 			if err := tx.Model(&cModel.UserCircle{}).
 				Where("user_id = ? AND circle_id = ?", historyToUndo.CompletedBy, chore.CircleID).
 				Update("points", gorm.Expr("points - ?", *historyToUndo.Points)).Error; err != nil {
+				return err
+			}
+			undo := taskPoints(&chore, historyToUndo.CompletedBy, historyToUndo.CompletedBy, *historyToUndo.Points)
+			undo.Action = ptModel.PointsHistoryActionRemove
+			if err := ptRepo.Record(tx, undo); err != nil {
 				return err
 			}
 		}

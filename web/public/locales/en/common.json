@@ -569,5 +569,20 @@
       "voice": "Capture by voice",
       "scan": "Scan to task"
     }
+  },
+  "liveTask": {
+    "title": {
+      "completed": "Task completed",
+      "updated": "Task updated",
+      "status": "Task status changed",
+      "skipped": "Task skipped"
+    },
+    "message": "{{name}}: {{task}}"
+  },
+  "momentCalendar": {
+    "today": "[Today]",
+    "tomorrow": "[Tomorrow]",
+    "yesterday": "[Yesterday]",
+    "lastWeek": "[Last] dddd"
   }
 }

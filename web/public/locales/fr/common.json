@@ -58,6 +58,7 @@
     "filters": "Filtres",
     "activities": "Activités",
     "points": "Points",
+    "rewards": "Récompenses",
     "settings": "Paramètres",
     "openMenu": "Ouvrir le menu",
     "collapseMenu": "Réduire le menu",
@@ -568,5 +569,20 @@
       "voice": "Saisir à la voix",
       "scan": "Scanner pour créer une tâche"
     }
+  },
+  "liveTask": {
+    "title": {
+      "completed": "Tâche terminée",
+      "updated": "Tâche modifiée",
+      "status": "Statut de tâche modifié",
+      "skipped": "Tâche passée"
+    },
+    "message": "{{name}} : {{task}}"
+  },
+  "momentCalendar": {
+    "today": "[Aujourd’hui]",
+    "tomorrow": "[Demain]",
+    "yesterday": "[Hier]",
+    "lastWeek": "dddd [dernier]"
   }
 }

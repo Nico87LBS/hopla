@@ -292,7 +292,6 @@
   "calendar": {
     "title": "Calendar Sync",
     "description": "Keep your Hopla tasks visible in your preferred calendar app with a private iCalendar subscription.",
-    "upgrade": "Upgrade to Plus",
     "activeTitle": "Calendar subscription",
     "activeStatus": "Active",
     "urlLabel": "Private calendar subscription URL",

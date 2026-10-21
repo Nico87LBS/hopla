@@ -1,0 +1,71 @@
+{
+  "redeem": "Échanger",
+  "notEnoughPoints": "Pas assez de points",
+  "approve": "Valider",
+  "reject": "Refuser",
+  "actions": {
+    "menu": "Actions pour {{name}}"
+  },
+  "pointsCost_one": "{{count}} point",
+  "pointsCost_other": "{{count}} points",
+  "tabs": {
+    "store": "Boutique",
+    "requests": "Demandes"
+  },
+  "status": {
+    "pending": "En attente",
+    "approved": "Validée",
+    "rejected": "Refusée"
+  },
+  "delete": {
+    "title": "Supprimer la récompense",
+    "message": "Supprimer cette récompense ? On ne pourra plus l'échanger."
+  },
+  "redeemConfirm": {
+    "title": "Échanger une récompense",
+    "message": "Demander « {{name}} » pour {{cost}} points ? Un parent devra valider."
+  },
+  "requests": {
+    "emptyTitle": "Aucune demande",
+    "emptyDescription": "Les demandes de récompense apparaîtront ici dès que quelqu'un en échangera une."
+  },
+  "modal": {
+    "errorEmptyName": "Le nom ne peut pas être vide",
+    "errorInvalidCost": "Le coût doit être un nombre supérieur à 0",
+    "saveFailedTitle": "Échec de l'enregistrement",
+    "saveFailedMessage": "La récompense n'a pas pu être enregistrée. Réessaie.",
+    "name": "Nom",
+    "description": "Description",
+    "pointsCost": "Coût en points",
+    "active": "Active",
+    "editTitle": "Modifier la récompense",
+    "addTitle": "Ajouter une récompense",
+    "saveChanges": "Enregistrer",
+    "addReward": "Ajouter la récompense",
+    "errorInvalidQuota": "La limite doit être un nombre entier, 0 ou plus",
+    "quota": "Limite par membre",
+    "quotaNone": "Sans limite",
+    "quotaPeriod": "Période de la limite",
+    "perDay": "par jour",
+    "perWeek": "par semaine",
+    "perMonth": "par mois",
+    "quotaHelp": "Combien de fois chaque membre peut l'échanger par jour, par semaine (à partir du lundi) ou par mois. Laisse vide pour ne pas limiter."
+  },
+  "view": {
+    "subtitle": "Utilise les points gagnés pour choisir quelque chose de spécial.",
+    "availableBalance": "Solde disponible",
+    "pointsLabel": "points",
+    "rewardFallbackDescription": "Une petite surprise à attendre avec impatience.",
+    "emptyTitle": "Aucune récompense pour l'instant",
+    "emptyDescription": "Ajoute une récompense, comme une soirée film ou une gourmandise, contre laquelle les membres pourront échanger leurs points.",
+    "createReward": "Créer une récompense"
+  },
+  "quota": {
+    "day_one": "{{count}} par jour",
+    "day_other": "{{count}} par jour",
+    "week_one": "{{count}} par semaine",
+    "week_other": "{{count}} par semaine",
+    "month_one": "{{count}} par mois",
+    "month_other": "{{count}} par mois"
+  }
+}

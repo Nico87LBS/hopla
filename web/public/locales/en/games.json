@@ -1,0 +1,55 @@
+{
+  "tab": "Games",
+  "adjust": {
+    "title": "Bonuses and penalties",
+    "subtitle": "Give extra points, or take some away. A penalty never takes the balance below zero, and never costs a rank.",
+    "pickMember": "Pick a member first.",
+    "available_one": "{{name}} has {{count}} point available.",
+    "available_other": "{{name}} has {{count}} points available.",
+    "presets": "Presets",
+    "custom": "Other amount",
+    "bonus": "Bonus",
+    "penalty": "Penalty",
+    "points": "Points",
+    "reason": "Reason (optional)",
+    "give": "Confirm",
+    "failed": "The points could not be changed.",
+    "done": {
+      "bonus_one": "{{count}} bonus point for {{name}}.",
+      "bonus_other": "{{count}} bonus points for {{name}}.",
+      "penalty_one": "{{count}} point taken from {{name}}.",
+      "penalty_other": "{{count}} points taken from {{name}}."
+    }
+  },
+  "presets": {
+    "title": "Presets",
+    "subtitle": "The usual bonuses and penalties, one touch away here and on the tablet.",
+    "add": "Add",
+    "name": "Name, for example \"Tidy bedroom\"",
+    "points": "Points",
+    "pointsHelp": "A positive number for a bonus, negative for a penalty (between -1000 and 1000).",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleteTitle": "Delete preset",
+    "deleteMessage": "Delete \"{{name}}\"? The points history stays as it is.",
+    "empty": "No presets yet.",
+    "failed": "The preset could not be saved."
+  },
+  "history": {
+    "title": "Points history",
+    "everyone": "Everyone",
+    "empty": "No points changes yet.",
+    "unknown": "Unknown member",
+    "by": "by {{name}}",
+    "more": "Show more",
+    "actions": {
+      "task": "Task",
+      "undo": "Task undone",
+      "redeem": "Points spent",
+      "bonus": "Bonus",
+      "penalty": "Penalty"
+    }
+  }
+}

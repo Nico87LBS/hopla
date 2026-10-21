@@ -104,13 +104,18 @@ export const useSSE = () => {
           case 'chore.completed':
           case 'chore.status':
           case 'chore.skipped': {
-            console.log('userProfile: ', userProfile, eventData.data.user)
+            queryClient.invalidateQueries({ queryKey: ['pointsHistory'] })
 
             if (eventData?.data?.user?.id !== userProfile?.id) {
               showNotification({
                 type: 'info',
-                title: `Task ${eventData.type.replace('chore.', '')}`,
-                message: `${eventData.data.user.displayName}  ${eventData.type.replace('chore.', '')} "${eventData.data.chore.name}"`,
+                title: t(
+                  `liveTask.title.${eventData.type.replace('chore.', '')}`,
+                ),
+                message: t('liveTask.message', {
+                  name: eventData.data.user.displayName,
+                  task: eventData.data.chore.name,
+                }),
                 duration: 5000,
               })
             }
@@ -204,6 +209,7 @@ export const useSSE = () => {
             queryClient.invalidateQueries({ queryKey: ['rewards'] })
             queryClient.invalidateQueries({ queryKey: ['redemptions'] })
             queryClient.invalidateQueries({ queryKey: ['circleMembers'] })
+            queryClient.invalidateQueries({ queryKey: ['pointsHistory'] })
             break
 
           case 'things.updated':
@@ -215,6 +221,8 @@ export const useSSE = () => {
             queryClient.invalidateQueries({ queryKey: ['allCircleMembers'] })
             queryClient.invalidateQueries({ queryKey: ['childUsers'] })
             queryClient.invalidateQueries({ queryKey: ['userCircle'] })
+            queryClient.invalidateQueries({ queryKey: ['pointsHistory'] })
+            queryClient.invalidateQueries({ queryKey: ['pointsPresets'] })
             break
 
           case 'subtask.updated':
