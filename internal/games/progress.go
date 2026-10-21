@@ -29,22 +29,46 @@ func RanksFor(db *gorm.DB, circleID int) ([]Rank, error) {
 }
 
 // RankLevel is a member's rank: its level from 1, and the next rank to reach.
+// Past the last rank, a member earns a prestige star and starts a new round
+// from the first rank: Points are the points earned in the current round, and
+// StarAt the round's points that give the next star.
 type RankLevel struct {
-	Level int   `json:"level"`
-	Rank  Rank  `json:"rank"`
-	Next  *Rank `json:"next"`
+	Level  int   `json:"level"`
+	Rank   Rank  `json:"rank"`
+	Next   *Rank `json:"next"`
+	Stars  int   `json:"stars"`
+	Points int   `json:"points"`
+	StarAt int   `json:"starAt"`
+}
+
+// roundLength is the points of one round of ranks: the last rank is kept for
+// as many points as it took to reach it from the rank before, then a star is
+// given. It is 0 when the ranks give no star.
+func roundLength(ranks []Rank) int {
+	if len(ranks) < 2 {
+		return 0
+	}
+	top := ranks[len(ranks)-1].MinPoints
+	span := top - ranks[len(ranks)-2].MinPoints
+	if top <= 0 || span <= 0 {
+		return 0
+	}
+	return top + span
 }
 
 // RankOf returns the rank reached with the given points earned. The ranks
 // must be sorted from the lowest.
 func RankOf(ranks []Rank, earned int) RankLevel {
-	level := RankLevel{Level: 1}
+	level := RankLevel{Level: 1, Points: earned}
 	if len(ranks) == 0 {
 		return level
 	}
+	if round := roundLength(ranks); round > 0 {
+		level.Stars, level.Points, level.StarAt = earned/round, earned%round, round
+	}
 	level.Rank = ranks[0]
 	for i, rank := range ranks {
-		if earned >= rank.MinPoints {
+		if level.Points >= rank.MinPoints {
 			level.Level, level.Rank = i+1, rank
 		}
 	}
