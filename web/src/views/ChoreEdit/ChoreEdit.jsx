@@ -72,6 +72,7 @@ import { usePageShortcutScope } from '../../contexts/KeyboardShortcutScopeContex
 import {
   useArchiveChore,
   useChore,
+  useChores,
   useCreateChore,
   useDeleteChores,
   useUnArchiveChore,
@@ -84,6 +85,7 @@ import {
   DeleteChoreAttachment,
   DeleteDraftAttachment,
   GetAllCircleMembers,
+  GetChoreByID,
   GetThings,
   UploadChoreAttachment,
 } from '../../utils/Fetcher'
@@ -98,6 +100,11 @@ import {
 } from '../../utils/ProjectAccess'
 import { getIconComponent } from '../../utils/ProjectIcons'
 import { getSafeBottomPadding } from '../../utils/SafeAreaUtils.js'
+import {
+  copiesOf,
+  copyUpdate,
+  perMemberChores,
+} from '../../utils/taskCopies.js'
 import { useSinglePageTaskEditor } from '../../utils/TaskEditorPreferences'
 import { generateUUID } from '../../utils/UUID'
 import { useProjectFilter } from '../Chores/hooks/useProjectFilter.js'
@@ -164,6 +171,10 @@ const ChoreEdit = () => {
   const [assignableTo, setAssignableTo] = useState([])
   const [performers, setPerformers] = useState([])
   const [assignStrategy, setAssignStrategy] = useState(DEFAULT_ASSIGN_STRATEGY)
+  // A new task for several members can be saved as one copy per member, and
+  // an edit can be applied to the other copies of a task.
+  const [perMember, setPerMember] = useState(false)
+  const [applyToCopies, setApplyToCopies] = useState(true)
   const [dueDate, setDueDate] = useState(null)
   const [dueDateOnly, setDueDateOnly] = useState(null)
   const [dueTime, setDueTime] = useState(null)
@@ -223,6 +234,15 @@ const ChoreEdit = () => {
   const archiveChore = useArchiveChore()
   const unarchiveChore = useUnArchiveChore()
   const deleteChores = useDeleteChores()
+  const isEditing = choreId > 0 && searchParams.get('clone') !== 'true'
+  const { data: allChores } = useChores(true, { enabled: isEditing })
+  const copies = isEditing ? copiesOf(chore, allChores?.res) : []
+  const syncCopies = applyToCopies && copies.length > 0
+  const copyOwners = copies
+    .flatMap(copy => copy.assignees || [])
+    .map(a => performers.find(p => p.userId === a.userId)?.displayName)
+    .filter(Boolean)
+    .join(', ')
   const {
     data: choreData,
     isError: isChoreError,
@@ -603,6 +623,28 @@ const ChoreEdit = () => {
   // `shouldCreateAnother` is passed explicitly by the split-button menu so a
   // menu pick performs the save right away instead of only changing the
   // default (state updates wouldn't be visible to this call anyway).
+  // Apply the saved task's shared settings to each of its other copies. A copy
+  // that fails is reported, the others are still saved.
+  const updateCopies = async saved => {
+    let failed = 0
+    for (const copy of copies) {
+      try {
+        const resp = await GetChoreByID(copy.id)
+        if (!resp?.ok) throw new Error(`HTTP ${resp?.status}`)
+        const data = await resp.json()
+        await updateChoreMutation.mutateAsync(copyUpdate(data.res, saved))
+      } catch (error) {
+        console.error('Failed to update task copy:', error)
+        failed += 1
+      }
+    }
+    if (failed > 0) {
+      showError({
+        title: t('taskEditor.copies.failedTitle'),
+        message: t('taskEditor.copies.failed', { count: failed }),
+      })
+    }
+  }
   const HandleSaveChore = (shouldCreateAnother = createAnother) => {
     if (updateChoreMutation.isPending || createChoreMutation.isPending) return
     setAttemptToSave(true)
@@ -662,7 +704,22 @@ const ChoreEdit = () => {
         searchParams.get('clone') === 'true' ? 'clone' : 'full_page'
     }
 
-    SaveFunction(chore)
+    const createCopies =
+      !(newChoreId > 0) && perMember && !anyone && assignees.length > 1
+    const save = async () => {
+      if (createCopies) {
+        let result
+        for (const copy of perMemberChores(chore, assignees)) {
+          result = await createChoreMutation.mutateAsync(copy)
+        }
+        return result
+      }
+      const result = await SaveFunction(chore)
+      if (syncCopies) await updateCopies(chore)
+      return result
+    }
+
+    save()
       .then(result => {
         if (
           result?._pendingUpdate ||
@@ -972,22 +1029,27 @@ const ChoreEdit = () => {
       title: t('choreEdit.deleteChoreTitle'),
       confirmText: t('common:delete'),
       cancelText: t('common:cancel'),
-      message: t('edit.deleteConfirm'),
+      message: syncCopies
+        ? t('taskEditor.copies.deleteConfirm', { count: copies.length })
+        : t('edit.deleteConfirm'),
       onClose: isConfirmed => {
         if (isConfirmed === true) {
-          deleteChores.mutate([choreId], {
-            onSuccess: () => {
-              Navigate('/chores')
+          deleteChores.mutate(
+            syncCopies ? [choreId, ...copies.map(copy => copy.id)] : [choreId],
+            {
+              onSuccess: () => {
+                Navigate('/chores')
+              },
+              onError: error => {
+                showError({
+                  title: t('choreEdit.deleteFailedTitle'),
+                  message: t('choreEdit.deleteChoreFailed', {
+                    error: error.message,
+                  }),
+                })
+              },
             },
-            onError: error => {
-              showError({
-                title: t('choreEdit.deleteFailedTitle'),
-                message: t('choreEdit.deleteChoreFailed', {
-                  error: error.message,
-                }),
-              })
-            },
-          })
+          )
         }
         setConfirmModelConfig({})
       },
@@ -1764,54 +1826,97 @@ const ChoreEdit = () => {
                 )}
               </Box>
 
-              {assignees.length > 1 && (
-                <Box className='task-properties'>
-                  <Box mb={2}>
-                    <Typography level='h4'>
-                      {t('taskEditor.assignedNow')}
-                    </Typography>
-                    <Select
-                      placeholder={
-                        assignees.length === 0
-                          ? t('taskEditor.noAssigneesYet')
-                          : t('taskEditor.selectAssignee')
-                      }
-                      disabled={assignees.length === 0}
-                      value={assignedTo > -1 ? assignedTo : null}
-                      onChange={(_, selectedUserId) =>
-                        setAssignedTo(selectedUserId)
-                      }
-                    >
-                      {assignablePerformers
-                        .filter(p => assignees.some(a => a.userId == p.userId))
-                        .map((item, index) => (
-                          <Option value={item.userId} key={item.displayName}>
-                            {item.displayName}
-                          </Option>
-                        ))}
-                    </Select>
-                  </Box>
-
-                  <Box>
-                    <Typography level='h4'>
-                      {t('taskEditor.nextAssignment')}
-                    </Typography>
-                    <Select
-                      aria-label={t('taskEditor.nextAssignment')}
-                      value={assignStrategy}
-                      onChange={(_, value) => {
-                        if (value) setAssignStrategy(value)
-                      }}
-                    >
-                      {ASSIGN_STRATEGIES.map(value => (
-                        <Option key={value} value={value}>
-                          {t(`taskEditor.strategy.${value}`)}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Box>
+              {!isEditing && !anyone && assignees.length > 1 && (
+                <Box mb={2}>
+                  <Typography level='h4'>
+                    {t('taskEditor.copies.title')}
+                  </Typography>
+                  <RadioGroup
+                    value={perMember ? 'each' : 'shared'}
+                    onChange={e => setPerMember(e.target.value === 'each')}
+                    sx={{ mt: 1, gap: 1 }}
+                  >
+                    <Radio
+                      value='shared'
+                      label={t('taskEditor.copies.shared')}
+                    />
+                    <Radio value='each' label={t('taskEditor.copies.each')} />
+                  </RadioGroup>
+                  {perMember && (
+                    <FormHelperText>
+                      {t('taskEditor.copies.eachHelp', {
+                        count: assignees.length,
+                      })}
+                    </FormHelperText>
+                  )}
                 </Box>
               )}
+              {copies.length > 0 && (
+                <Box mb={2}>
+                  <Checkbox
+                    checked={applyToCopies}
+                    onChange={e => setApplyToCopies(e.target.checked)}
+                    label={t('taskEditor.copies.apply', {
+                      count: copies.length,
+                      names: copyOwners,
+                    })}
+                  />
+                  <FormHelperText>
+                    {t('taskEditor.copies.applyHelp')}
+                  </FormHelperText>
+                </Box>
+              )}
+              {assignees.length > 1 &&
+                !(perMember && !isEditing && !anyone) && (
+                  <Box className='task-properties'>
+                    <Box mb={2}>
+                      <Typography level='h4'>
+                        {t('taskEditor.assignedNow')}
+                      </Typography>
+                      <Select
+                        placeholder={
+                          assignees.length === 0
+                            ? t('taskEditor.noAssigneesYet')
+                            : t('taskEditor.selectAssignee')
+                        }
+                        disabled={assignees.length === 0}
+                        value={assignedTo > -1 ? assignedTo : null}
+                        onChange={(_, selectedUserId) =>
+                          setAssignedTo(selectedUserId)
+                        }
+                      >
+                        {assignablePerformers
+                          .filter(p =>
+                            assignees.some(a => a.userId == p.userId),
+                          )
+                          .map((item, index) => (
+                            <Option value={item.userId} key={item.displayName}>
+                              {item.displayName}
+                            </Option>
+                          ))}
+                      </Select>
+                    </Box>
+
+                    <Box>
+                      <Typography level='h4'>
+                        {t('taskEditor.nextAssignment')}
+                      </Typography>
+                      <Select
+                        aria-label={t('taskEditor.nextAssignment')}
+                        value={assignStrategy}
+                        onChange={(_, value) => {
+                          if (value) setAssignStrategy(value)
+                        }}
+                      >
+                        {ASSIGN_STRATEGIES.map(value => (
+                          <Option key={value} value={value}>
+                            {t(`taskEditor.strategy.${value}`)}
+                          </Option>
+                        ))}
+                      </Select>
+                    </Box>
+                  </Box>
+                )}
             </EditorSection>
             <EditorSection
               title={t('taskEditor.descriptionAttachments')}
@@ -2714,9 +2819,19 @@ const ChoreEdit = () => {
                   <ButtonGroup variant='outlined' color='neutral'>
                     <Button
                       onClick={() => {
-                        isActive
-                          ? archiveChore.mutate(choreId)
-                          : unarchiveChore.mutate(choreId)
+                        const ids = [
+                          choreId,
+                          ...(syncCopies
+                            ? copies
+                                .filter(copy => copy.isActive === isActive)
+                                .map(copy => copy.id)
+                            : []),
+                        ]
+                        for (const id of ids) {
+                          isActive
+                            ? archiveChore.mutate(id)
+                            : unarchiveChore.mutate(id)
+                        }
                       }}
                     >
                       {isActive

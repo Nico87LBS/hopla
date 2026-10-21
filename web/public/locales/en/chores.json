@@ -1164,7 +1164,22 @@
     "amount": "Amount",
     "value": "Value",
     "steps": "Task creation steps",
-    "title": "Task editor"
+    "title": "Task editor",
+    "copies": {
+      "title": "For several people",
+      "shared": "One shared task",
+      "each": "One copy per person",
+      "eachHelp_one": "{{count}} task will be created, one per person.",
+      "eachHelp_other": "{{count}} tasks will be created, one per person.",
+      "apply_one": "Also apply to the other copy ({{names}})",
+      "apply_other": "Also apply to the {{count}} other copies ({{names}})",
+      "applyHelp": "Name, description, repeat, points, approval, labels and reminders. Archive and delete also apply to the copies. Each copy keeps its person, due date and sub-tasks.",
+      "failedTitle": "Copies not updated",
+      "failed_one": "{{count}} copy could not be updated.",
+      "failed_other": "{{count}} copies could not be updated.",
+      "deleteConfirm_one": "Delete this task and its other copy? This cannot be undone.",
+      "deleteConfirm_other": "Delete this task and its {{count}} other copies? This cannot be undone."
+    }
   },
   "sections": {
     "started": "Started",
