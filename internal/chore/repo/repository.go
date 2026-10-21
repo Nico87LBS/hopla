@@ -776,7 +776,7 @@ func (r *ChoreRepository) ApproveChore(c context.Context, chore *chModel.Chore, 
 			return err
 		}
 		if applyPoints {
-			if _, err := games.AwardStreakBonus(tx, chore.CircleID, history.CompletedBy, performedAt, time.Now().UTC()); err != nil {
+			if err := games.AfterTask(tx, chore.CircleID, history.CompletedBy, performedAt, time.Now().UTC()); err != nil {
 				return err
 			}
 		}
@@ -903,7 +903,7 @@ func (r *ChoreRepository) CompleteChore(c context.Context, chore *chModel.Chore,
 			return err
 		}
 		if applyPoints {
-			if _, err := games.AwardStreakBonus(tx, chore.CircleID, userID, performedAt, time.Now().UTC()); err != nil {
+			if err := games.AfterTask(tx, chore.CircleID, userID, performedAt, time.Now().UTC()); err != nil {
 				return err
 			}
 		}

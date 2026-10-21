@@ -1,5 +1,5 @@
 // Package games holds the family games built on points: streaks, bonus
-// periods and the surprise task of the day.
+// periods, the surprise task of the day, ranks, quests and challenges.
 package games
 
 import "time"
@@ -15,16 +15,18 @@ type Rules struct {
 	StreakBonus int `json:"streakBonus" gorm:"column:streak_bonus;not null;default:0"`
 	// Each day one task due that day becomes the surprise task, worth
 	// SurpriseBonus extra points.
-	SurpriseEnabled bool      `json:"surpriseEnabled" gorm:"column:surprise_enabled;not null;default:false"`
-	SurpriseBonus   int       `json:"surpriseBonus" gorm:"column:surprise_bonus;not null;default:0"`
-	UpdatedAt       time.Time `json:"updatedAt" gorm:"column:updated_at"`
+	SurpriseEnabled bool `json:"surpriseEnabled" gorm:"column:surprise_enabled;not null;default:false"`
+	SurpriseBonus   int  `json:"surpriseBonus" gorm:"column:surprise_bonus;not null;default:0"`
+	// How many weekly quests each member draws on Monday.
+	QuestsPerWeek int       `json:"questsPerWeek" gorm:"column:quests_per_week;not null;default:0"`
+	UpdatedAt     time.Time `json:"updatedAt" gorm:"column:updated_at"`
 }
 
 func (Rules) TableName() string { return "game_rules" }
 
 // DefaultRules are what a circle plays with until a parent changes them.
 func DefaultRules(circleID int) Rules {
-	return Rules{CircleID: circleID, StreakEvery: 7, StreakBonus: 10, SurpriseEnabled: true, SurpriseBonus: 5}
+	return Rules{CircleID: circleID, StreakEvery: 7, StreakBonus: 10, SurpriseEnabled: true, SurpriseBonus: 5, QuestsPerWeek: 3}
 }
 
 // BonusPeriod multiplies the points of every task completed between StartsAt
@@ -62,3 +64,114 @@ type Streak struct {
 	// is yesterday is still alive until the end of today.
 	DoneToday bool `json:"doneToday"`
 }
+
+// Rank is a level reached with the points earned since joining. Spending or
+// a penalty never takes a rank away.
+type Rank struct {
+	ID        int    `json:"-" gorm:"primaryKey"`
+	CircleID  int    `json:"-" gorm:"column:circle_id;index;not null"`
+	Name      string `json:"name" gorm:"column:name;not null"`
+	Icon      string `json:"icon" gorm:"column:icon"`
+	MinPoints int    `json:"minPoints" gorm:"column:min_points;not null"`
+}
+
+func (Rank) TableName() string { return "game_ranks" }
+
+// DefaultRanks are the ranks of a circle whose parents did not set their own.
+func DefaultRanks() []Rank {
+	return []Rank{
+		{Name: "Petit Hop", Icon: "🐣", MinPoints: 0},
+		{Name: "Hop Hop", Icon: "🐸", MinPoints: 100},
+		{Name: "Super Hop", Icon: "🦘", MinPoints: 300},
+		{Name: "Hop Star", Icon: "🚀", MinPoints: 700},
+		{Name: "Grand Hopla", Icon: "👑", MinPoints: 1500},
+	}
+}
+
+// Goal kinds, for quests and challenges.
+const (
+	GoalTasks  = "tasks"  // complete tasks, or one given task, Target times
+	GoalPoints = "points" // earn Target points with tasks
+	GoalStreak = "streak" // reach a streak of Target days (quests only)
+)
+
+// Quest periods.
+const (
+	QuestWeek  = "week"
+	QuestMonth = "month"
+)
+
+// Quest is a goal parents prepare. Every Monday each member draws
+// Rules.QuestsPerWeek of the weekly quests they can do; monthly quests are
+// all given on the first of the month.
+type Quest struct {
+	ID       int    `json:"id" gorm:"primaryKey"`
+	CircleID int    `json:"-" gorm:"column:circle_id;index;not null"`
+	Name     string `json:"name" gorm:"column:name;not null"`
+	Kind     string `json:"kind" gorm:"column:kind;not null"`
+	ChoreID  *int   `json:"choreId" gorm:"column:chore_id"`
+	Target   int    `json:"target" gorm:"column:target;not null"`
+	Reward   int    `json:"reward" gorm:"column:reward;not null"`
+	Period   string `json:"period" gorm:"column:period;not null"`
+	// Members who can draw it, such as the younger child only. Empty means
+	// every member.
+	UserIDs   []int     `json:"userIds" gorm:"column:user_ids;type:text;serializer:json"`
+	CreatedAt time.Time `json:"createdAt" gorm:"column:created_at"`
+}
+
+func (Quest) TableName() string { return "quests" }
+
+// QuestDraw is a quest given to a member for one week or month. It copies the
+// quest, so editing or deleting the quest does not change a running one.
+type QuestDraw struct {
+	ID          int        `json:"id" gorm:"primaryKey"`
+	CircleID    int        `json:"-" gorm:"column:circle_id;not null;uniqueIndex:idx_quest_draw"`
+	UserID      int        `json:"userId" gorm:"column:user_id;not null;uniqueIndex:idx_quest_draw"`
+	PeriodKey   string     `json:"periodKey" gorm:"column:period_key;size:10;not null;uniqueIndex:idx_quest_draw"`
+	QuestID     int        `json:"questId" gorm:"column:quest_id;not null;uniqueIndex:idx_quest_draw"`
+	Period      string     `json:"period" gorm:"column:period;not null"`
+	Name        string     `json:"name" gorm:"column:name;not null"`
+	Kind        string     `json:"kind" gorm:"column:kind;not null"`
+	ChoreID     *int       `json:"choreId" gorm:"column:chore_id"`
+	Target      int        `json:"target" gorm:"column:target;not null"`
+	Reward      int        `json:"reward" gorm:"column:reward;not null"`
+	CompletedAt *time.Time `json:"completedAt" gorm:"column:completed_at"`
+}
+
+func (QuestDraw) TableName() string { return "quest_draws" }
+
+// Challenge is a goal between two dates. A shared challenge adds up what all
+// its members do, such as 200 points together before the holidays for a
+// family outing; otherwise each member plays alone.
+type Challenge struct {
+	ID       int    `json:"id" gorm:"primaryKey"`
+	CircleID int    `json:"-" gorm:"column:circle_id;index;not null"`
+	Name     string `json:"name" gorm:"column:name;not null"`
+	Kind     string `json:"kind" gorm:"column:kind;not null"`
+	ChoreID  *int   `json:"choreId" gorm:"column:chore_id"`
+	Target   int    `json:"target" gorm:"column:target;not null"`
+	// Reward is the points each winner gets; RewardText is a reward outside
+	// the game, such as "Sortie piscine".
+	Reward     int    `json:"reward" gorm:"column:reward;not null;default:0"`
+	RewardText string `json:"rewardText" gorm:"column:reward_text"`
+	Shared     bool   `json:"shared" gorm:"column:shared;not null;default:false"`
+	// Members taking part. Empty means every member.
+	UserIDs     []int      `json:"userIds" gorm:"column:user_ids;type:text;serializer:json"`
+	StartsAt    time.Time  `json:"startsAt" gorm:"column:starts_at;not null"`
+	EndsAt      time.Time  `json:"endsAt" gorm:"column:ends_at;not null"`
+	CompletedAt *time.Time `json:"completedAt" gorm:"column:completed_at"` // shared challenges only
+	CreatedBy   int        `json:"createdBy" gorm:"column:created_by"`
+	CreatedAt   time.Time  `json:"createdAt" gorm:"column:created_at"`
+}
+
+func (Challenge) TableName() string { return "challenges" }
+
+// ChallengeWin records that a member won a challenge, or took part in a
+// shared one that was reached.
+type ChallengeWin struct {
+	ChallengeID int       `json:"challengeId" gorm:"primaryKey;autoIncrement:false"`
+	UserID      int       `json:"userId" gorm:"primaryKey;autoIncrement:false"`
+	WonAt       time.Time `json:"wonAt" gorm:"column:won_at"`
+}
+
+func (ChallengeWin) TableName() string { return "challenge_wins" }
