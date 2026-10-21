@@ -987,11 +987,11 @@ const AdjustPoints = ({ points, presetId, reason, userId }) => {
   })
 }
 
-const ResetPoints = ({ clearHistory, userId }) => {
+const ResetPoints = ({ clearHistory, clearTaskHistory, userId }) => {
   return Fetch(`/points/reset`, {
     method: 'POST',
     headers: HEADERS(),
-    body: JSON.stringify({ userId, clearHistory }),
+    body: JSON.stringify({ userId, clearHistory, clearTaskHistory }),
   })
 }
 

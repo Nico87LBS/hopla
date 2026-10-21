@@ -1125,6 +1125,49 @@ func (r *ChoreRepository) DeleteChoreHistory(c context.Context, historyID int, c
 	})
 }
 
+// ClearHistory deletes the task history of a circle, or only what the given
+// members did, with its timer sessions, and leaves tombstones so synced
+// clients drop it too. It returns how many entries were deleted.
+func (r *ChoreRepository) ClearHistory(c context.Context, circleID int, userIDs []int) (int, error) {
+	deleted := 0
+	err := r.db.WithContext(c).Transaction(func(tx *gorm.DB) error {
+		query := tx.Model(&chModel.ChoreHistory{}).
+			Where("chore_id IN (?)", tx.Model(&chModel.Chore{}).Select("id").Where("circle_id = ?", circleID))
+		if userIDs != nil {
+			query = query.Where("completed_by IN ?", userIDs)
+		}
+		var ids []int
+		if err := query.Order("id asc").Pluck("id", &ids).Error; err != nil {
+			return err
+		}
+		if len(ids) == 0 {
+			return nil
+		}
+		next, err := r.nextSyncVersionRangeWithDB(c, tx, circleID, len(ids))
+		if err != nil {
+			return err
+		}
+		tombstones := make([]syncModel.Tombstone, 0, len(ids))
+		for start := 0; start < len(ids); start += 500 {
+			batch := ids[start:min(start+500, len(ids))]
+			if err := tx.Where("chore_history_id IN ?", batch).Delete(&chModel.TimeSession{}).Error; err != nil {
+				return fmt.Errorf("failed to delete chore time sessions: %w", err)
+			}
+			if err := tx.Where("id IN ?", batch).Delete(&chModel.ChoreHistory{}).Error; err != nil {
+				return fmt.Errorf("failed to delete chore history: %w", err)
+			}
+		}
+		for _, id := range ids {
+			tombstones = append(tombstones, syncModel.Tombstone{CircleID: circleID, EntityType: syncModel.EntityTypeChoreHistory,
+				EntityID: id, SyncVersion: next})
+			next++
+		}
+		deleted = len(ids)
+		return tx.CreateInBatches(&tombstones, 200).Error
+	})
+	return deleted, err
+}
+
 func (r *ChoreRepository) UpdateChoreAssignees(c context.Context, assignees []*chModel.ChoreAssignees) error {
 	return r.db.WithContext(c).Save(&assignees).Error
 }

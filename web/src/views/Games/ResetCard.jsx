@@ -28,6 +28,7 @@ const ResetCard = ({ members }) => {
   const queryClient = useQueryClient()
   const [target, setTarget] = useState(EVERYONE)
   const [clearHistory, setClearHistory] = useState(false)
+  const [clearTaskHistory, setClearTaskHistory] = useState(false)
   const [confirm, setConfirm] = useState({})
 
   const member = members.find(m => m.userId === target)
@@ -37,6 +38,7 @@ const ResetCard = ({ members }) => {
     const resp = await ResetPoints({
       userId: member ? member.userId : null,
       clearHistory,
+      clearTaskHistory,
     })
     if (!resp.ok) {
       showNotification({ type: 'error', message: t('reset.failed') })
@@ -46,17 +48,26 @@ const ResetCard = ({ members }) => {
     queryClient.invalidateQueries({ queryKey: ['allCircleMembers'] })
     queryClient.invalidateQueries({ queryKey: ['circleMembers'] })
     queryClient.invalidateQueries({ queryKey: ['games'] })
+    if (clearTaskHistory) {
+      queryClient.invalidateQueries({ queryKey: ['chores'] })
+      queryClient.invalidateQueries({ queryKey: ['choresHistory'] })
+      queryClient.invalidateQueries({ queryKey: ['choreHistory'] })
+    }
     showNotification({ type: 'success', message: t('reset.done', { who }) })
     setClearHistory(false)
+    setClearTaskHistory(false)
   }
 
   const ask = () =>
     setConfirm({
       isOpen: true,
       title: t('reset.confirmTitle'),
-      message: t(clearHistory ? 'reset.confirmClear' : 'reset.confirmKeep', {
-        who,
-      }),
+      message: [
+        t(clearHistory ? 'reset.confirmClear' : 'reset.confirmKeep', { who }),
+        clearTaskHistory ? t('reset.confirmTasks') : '',
+      ]
+        .filter(Boolean)
+        .join(' '),
       confirmText: t('reset.button'),
       cancelText: t('presets.cancel'),
       color: 'danger',
@@ -93,6 +104,12 @@ const ResetCard = ({ members }) => {
           checked={clearHistory}
           onChange={event => setClearHistory(event.target.checked)}
           label={t('reset.clearHistory')}
+        />
+        <Checkbox
+          size='sm'
+          checked={clearTaskHistory}
+          onChange={event => setClearTaskHistory(event.target.checked)}
+          label={t('reset.clearTaskHistory')}
         />
         <Typography level='body-xs' sx={{ color: 'text.tertiary' }}>
           {t('reset.help')}

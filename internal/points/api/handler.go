@@ -12,6 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/nico87lbs/hopla/config"
 	auth "github.com/nico87lbs/hopla/internal/auth"
+	chRepo "github.com/nico87lbs/hopla/internal/chore/repo"
 	circle "github.com/nico87lbs/hopla/internal/circle/model"
 	cRepo "github.com/nico87lbs/hopla/internal/circle/repo"
 	pModel "github.com/nico87lbs/hopla/internal/points"
@@ -27,10 +28,11 @@ const maxAdjustment = 1000
 type Handler struct {
 	pRepo      *pRepo.PointsRepository
 	circleRepo *cRepo.CircleRepository
+	choreRepo  *chRepo.ChoreRepository
 }
 
-func NewHandler(pRepo *pRepo.PointsRepository, circleRepo *cRepo.CircleRepository) *Handler {
-	return &Handler{pRepo: pRepo, circleRepo: circleRepo}
+func NewHandler(pRepo *pRepo.PointsRepository, circleRepo *cRepo.CircleRepository, choreRepo *chRepo.ChoreRepository) *Handler {
+	return &Handler{pRepo: pRepo, circleRepo: circleRepo, choreRepo: choreRepo}
 }
 
 var actionNames = map[pModel.PointsHistoryAction]string{
@@ -214,6 +216,9 @@ type ResetReq struct {
 	// UserID is the member to reset; empty resets everyone.
 	UserID       *int `json:"userId"`
 	ClearHistory bool `json:"clearHistory"`
+	// ClearTaskHistory also forgets the tasks done: the tasks stay, their
+	// history goes.
+	ClearTaskHistory bool `json:"clearTaskHistory"`
 }
 
 func (h *Handler) reset(c *gin.Context) {
@@ -235,6 +240,17 @@ func (h *Handler) reset(c *gin.Context) {
 		logging.FromContext(c).Error("Failed to reset points", "error", err)
 		c.JSON(500, gin.H{"error": "Error resetting points"})
 		return
+	}
+	if req.ClearTaskHistory {
+		var userIDs []int
+		if req.UserID != nil {
+			userIDs = []int{*req.UserID}
+		}
+		if _, err := h.choreRepo.ClearHistory(c, circleID, userIDs); err != nil {
+			logging.FromContext(c).Error("Failed to clear task history", "error", err)
+			c.JSON(500, gin.H{"error": "Error clearing task history"})
+			return
+		}
 	}
 	entries := make([]Entry, 0, len(rows))
 	for _, row := range rows {
