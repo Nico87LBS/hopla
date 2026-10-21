@@ -1,3 +1,4 @@
+import moment from 'moment'
 import Calendar from 'react-calendar'
 
 import { useLocalization } from '../../contexts/LocalizationContext'
@@ -64,28 +65,11 @@ const CalendarMonthly = ({ chores, onDateChange }) => {
         onChange={d => {
           onDateChange(new Date(d))
         }}
-        // format the days from MON, TUE, WED, THU, FRI, SAT, SUN to first three letters:
+        // one-letter weekdays and short month names, in the app's language
         formatShortWeekday={(locale, date) =>
-          ['S', 'M', 'T', 'W', 'T', 'F', 'S'][date.getDay()]
+          moment(date).format('dd').charAt(0).toUpperCase()
         }
-        // format month names to show only first 3 characters
-        formatMonth={(locale, date) => {
-          const monthNames = [
-            'Jan',
-            'Feb',
-            'Mar',
-            'Apr',
-            'May',
-            'Jun',
-            'Jul',
-            'Aug',
-            'Sep',
-            'Oct',
-            'Nov',
-            'Dec',
-          ]
-          return monthNames[date.getMonth()]
-        }}
+        formatMonth={(locale, date) => moment(date).format('MMM')}
       />
     </div>
   )

@@ -700,12 +700,12 @@ const ChoreToolbar = ({
             sx={{ height: 32, width: 32, borderRadius: '50%' }}
             onClick={onToggleMultiSelect}
             aria-label={
-              isMultiSelectMode ? 'Exit multi-select' : 'Enter multi-select'
+              isMultiSelectMode ? t('multiSelect.exit') : t('multiSelect.enter')
             }
             title={
               isMultiSelectMode
-                ? 'Exit multi-select (Ctrl+S)'
-                : 'Multi-select (Ctrl+S)'
+                ? t('multiSelect.exitHint')
+                : t('multiSelect.enterHint')
             }
           >
             {isMultiSelectMode ? <CheckBox /> : <CheckBoxOutlineBlank />}

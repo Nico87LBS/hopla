@@ -116,16 +116,6 @@ import RepeatSection from './RepeatSection'
 import WizardContainer from './WizardContainer'
 import WizardStepper from './WizardStepper'
 
-const STRATEGY_LABELS = {
-  random: 'Random user',
-  least_assigned: 'Least often assigned',
-  least_completed: 'Fewest completions',
-  keep_last_assigned: 'Keep the same user',
-  random_except_last_assigned: 'Random, excluding the last user',
-  round_robin: 'Rotate in order',
-  no_assignee: 'Leave unassigned',
-}
-
 const ASSIGN_STRATEGIES = [
   'random',
   'least_assigned',
@@ -160,7 +150,12 @@ const ChoreEdit = () => {
   const { choreId } = useParams()
   const [searchParams, setSearchParams] = useSearchParams()
   const [wizardStep, setWizardStep] = useState(0)
-  const wizardSteps = ['Task', 'Schedule', 'Assignment', 'Review']
+  const wizardSteps = [
+    t('taskEditor.task'),
+    t('taskEditor.schedule'),
+    t('taskEditor.assignment'),
+    t('taskEditor.review'),
+  ]
   const wizardBodyRef = useRef(null)
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
@@ -344,10 +339,10 @@ const ChoreEdit = () => {
     if (blocker.state !== 'blocked') return
     setConfirmModelConfig({
       isOpen: true,
-      title: 'Discard unsaved changes?',
-      message: 'Your changes have not been saved.',
-      confirmText: 'Discard changes',
-      cancelText: 'Keep editing',
+      title: t('taskEditor.discardTitle'),
+      message: t('taskEditor.discardMessage'),
+      confirmText: t('taskEditor.discardConfirm'),
+      cancelText: t('taskEditor.keepEditing'),
       color: 'danger',
       onClose: confirmed => {
         setConfirmModelConfig({})
@@ -393,27 +388,39 @@ const ChoreEdit = () => {
   }
   const dueSummary = dueDate
     ? moment(dueDate).format(useCustomTime ? 'D MMM · HH:mm' : 'D MMM')
-    : 'No due date'
+    : t('taskEditor.noDueDate')
   const triggerThing = allUserThings.find(
     item => item.id === (thingTrigger?.thingID ?? thingTrigger?.thingId),
   )
   const frequencySummary = {
-    daily: 'Daily',
-    weekly: 'Weekly',
-    monthly: 'Monthly',
-    yearly: 'Yearly',
-    adaptive: 'Adaptive schedule',
-    interval: `Every ${frequency} ${frequencyMetadata?.unit || 'days'}`,
-    days_of_the_week: frequencyMetadata?.days?.join(', ') || 'Choose weekdays',
-    day_of_the_month: 'Selected days of the month',
+    daily: t('repeat.freqType.daily'),
+    weekly: t('repeat.freqType.weekly'),
+    monthly: t('repeat.freqType.monthly'),
+    yearly: t('repeat.freqType.yearly'),
+    adaptive: t('taskEditor.adaptiveSchedule'),
+    interval: t('taskEditor.everyInterval', {
+      count: frequency,
+      unit: t(`repeat.unit.${frequencyMetadata?.unit || 'days'}`).toLowerCase(),
+    }),
+    days_of_the_week:
+      frequencyMetadata?.days
+        ?.map(day => t(`repeat.daysShort.${day}`))
+        .join(', ') || t('taskEditor.chooseWeekdays'),
+    day_of_the_month: t('taskEditor.selectedDaysOfMonth'),
   }[frequencyType]
   const scheduleSummary =
     frequencyType === 'trigger'
       ? triggerThing
-        ? `When ${triggerThing.name} ${{ eq: 'is', neq: 'is not', gt: 'is greater than', gte: 'is at least', lt: 'is less than', lte: 'is at most' }[thingTrigger?.condition] || 'is'} ${thingTrigger?.triggerState}`
-        : 'Choose a Thing condition'
+        ? t('taskEditor.whenThing', {
+            thing: triggerThing.name,
+            condition: t(
+              `taskEditor.conditions.${['neq', 'gt', 'gte', 'lt', 'lte'].includes(thingTrigger?.condition) ? thingTrigger.condition : 'eq'}`,
+            ),
+            value: thingTrigger?.triggerState,
+          })
+        : t('taskEditor.chooseThingCondition')
       : frequencyType === 'always'
-        ? 'Available without a due date'
+        ? t('taskEditor.availableWithoutDueDate')
         : frequencySummary
           ? `${frequencySummary} · ${dueSummary}`
           : dueSummary
@@ -426,10 +433,10 @@ const ChoreEdit = () => {
     }
     if (assignStrategyValue !== 'no_assignee') {
       if (assignees.length === 0) {
-        errors.assignees = 'Choose at least one eligible user'
+        errors.assignees = t('taskEditor.errChooseEligible')
       }
       if (assignedToValue === null || assignedToValue < 0) {
-        errors.assignedTo = 'Choose who is assigned to this task'
+        errors.assignedTo = t('taskEditor.errChooseAssignee')
       }
     }
     if (frequencyType === 'interval' && !frequency > 0) {
@@ -874,7 +881,7 @@ const ChoreEdit = () => {
           setSubTasks(clonedSubTasks)
         }
         if (data.res.name) {
-          setName(`Copy of ${data.res.name}`)
+          setName(t('taskEditor.copyOf', { name: data.res.name }))
         }
       }
 
@@ -997,12 +1004,12 @@ const ChoreEdit = () => {
   }
   const assignmentSummary = anyone
     ? selectedProjectIsPrivate
-      ? 'Anyone who can see this project'
-      : 'Anyone in your circle'
+      ? t('taskEditor.anyoneInProject')
+      : t('taskEditor.anyoneInCircle')
     : assignablePerformers
         .filter(user => assignableTo.some(a => a.userId === user.userId))
         .map(user => user.displayName)
-        .join(', ') || 'No eligible users selected'
+        .join(', ') || t('taskEditor.noEligibleUsers')
   if (
     (isChoreLoading && choreId) ||
     isUserLabelsLoading ||
@@ -1138,7 +1145,7 @@ const ChoreEdit = () => {
         >
           <Box>
             <Typography level='h4'>
-              {choreId ? 'Edit task' : 'Create task'}
+              {choreId ? t('taskEditor.editTask') : t('taskEditor.createTask')}
             </Typography>
           </Box>
           <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
@@ -1231,7 +1238,9 @@ const ChoreEdit = () => {
           tabIndex={-1}
           role='region'
           aria-label={
-            singlePageEditor ? 'Task settings' : wizardSteps[wizardStep]
+            singlePageEditor
+              ? t('taskEditor.taskSettings')
+              : wizardSteps[wizardStep]
           }
           sx={{
             minHeight: 0,
@@ -1275,12 +1284,15 @@ const ChoreEdit = () => {
                 sx={{ mb: 2 }}
               >
                 {t('taskEditor.checkTheDetailsThen')}{' '}
-                {choreId ? 'save your changes' : 'create your task'}.
+                {choreId
+                  ? t('taskEditor.saveYourChanges')
+                  : t('taskEditor.createYourTask')}
+                .
               </Typography>
               {[
-                { label: 'Task', value: name, step: 0 },
-                { label: 'Schedule', value: scheduleSummary, step: 1 },
-                { label: 'Assignment', value: assignmentSummary, step: 2 },
+                { label: wizardSteps[0], value: name, step: 0 },
+                { label: wizardSteps[1], value: scheduleSummary, step: 1 },
+                { label: wizardSteps[2], value: assignmentSummary, step: 2 },
               ].map(item => (
                 <Sheet
                   key={item.label}
@@ -1307,7 +1319,7 @@ const ChoreEdit = () => {
                     </Typography>
                   </Box>
                   <IconButton
-                    aria-label={'Edit ' + item.label.toLowerCase()}
+                    aria-label={t('taskEditor.editItem', { item: item.label })}
                     onClick={() => changeWizardStep(item.step)}
                   >
                     <EditOutlined sx={{ fontSize: 18 }} />
@@ -1407,7 +1419,9 @@ const ChoreEdit = () => {
                 (frequencyType !== 'trigger' || dueDate) && (
                   <Box mt={3} mb={2}>
                     <Typography level='h4'>
-                      {choreId ? 'Next due date' : 'First due date'}
+                      {choreId
+                        ? t('taskEditor.nextDueDate')
+                        : t('taskEditor.firstDueDate')}
                     </Typography>
                     {frequencyType === 'trigger' && !dueDate && (
                       <Typography level='body-sm'>
@@ -1430,8 +1444,8 @@ const ChoreEdit = () => {
                       <FormControl error={Boolean(errors.dueDate)}>
                         <Typography level='h4'>
                           {REPEAT_ON_TYPE.includes(frequencyType)
-                            ? 'Start date'
-                            : 'Date'}
+                            ? t('taskEditor.startDate')
+                            : t('taskEditor.date')}
                         </Typography>
                         <Input
                           type='date'
@@ -1706,8 +1720,8 @@ const ChoreEdit = () => {
                   sx={{ mt: 1 }}
                 >
                   {!showSaveAssigneeDefault
-                    ? 'This assignment matches your default for new tasks in this browser.'
-                    : 'Use as default applies this assignment to new tasks in this browser.'}
+                    ? t('taskEditor.assignmentIsDefault')
+                    : t('taskEditor.useAsDefaultHelp')}
                 </Typography>
                 {showSaveAssigneeDefault && (
                   <Box sx={{ mt: 1, display: 'flex', justifyContent: 'start' }}>
@@ -1759,8 +1773,8 @@ const ChoreEdit = () => {
                     <Select
                       placeholder={
                         assignees.length === 0
-                          ? 'No Assignees yet can perform this task'
-                          : 'Select an assignee for this task'
+                          ? t('taskEditor.noAssigneesYet')
+                          : t('taskEditor.selectAssignee')
                       }
                       disabled={assignees.length === 0}
                       value={assignedTo > -1 ? assignedTo : null}
@@ -1791,7 +1805,7 @@ const ChoreEdit = () => {
                     >
                       {ASSIGN_STRATEGIES.map(value => (
                         <Option key={value} value={value}>
-                          {STRATEGY_LABELS[value]}
+                          {t(`taskEditor.strategy.${value}`)}
                         </Option>
                       ))}
                     </Select>
@@ -1809,14 +1823,14 @@ const ChoreEdit = () => {
               summary={
                 [
                   description.replace(/<[^>]*>/g, '').trim()
-                    ? 'Instructions added'
+                    ? t('taskEditor.instructionsAdded')
                     : '',
                   attachments.length
-                    ? `${attachments.length} file${attachments.length === 1 ? '' : 's'}`
+                    ? t('taskEditor.files', { count: attachments.length })
                     : '',
                 ]
                   .filter(Boolean)
-                  .join(' · ') || 'Instructions, notes and supporting files'
+                  .join(' · ') || t('taskEditor.descriptionSummary')
               }
             >
               <Box mb={2}>
@@ -1872,8 +1886,8 @@ const ChoreEdit = () => {
                             )
                         if (!response.ok) {
                           showError({
-                            title: 'Upload Failed',
-                            message: 'Failed to upload attachment.',
+                            title: t('taskEditor.uploadFailed'),
+                            message: t('taskEditor.uploadFailedMessage'),
                           })
                           return
                         }
@@ -1889,8 +1903,8 @@ const ChoreEdit = () => {
                         ])
                       } catch {
                         showError({
-                          title: 'Upload Failed',
-                          message: 'Failed to upload attachment.',
+                          title: t('taskEditor.uploadFailed'),
+                          message: t('taskEditor.uploadFailedMessage'),
                         })
                       } finally {
                         setIsUploadingAttachment(false)
@@ -2000,8 +2014,10 @@ const ChoreEdit = () => {
                                     })
                                     .catch(() => {
                                       showError({
-                                        title: 'Delete Failed',
-                                        message: 'Failed to delete attachment.',
+                                        title: t('taskEditor.deleteFailed'),
+                                        message: t(
+                                          'taskEditor.deleteFailedMessage',
+                                        ),
                                       })
                                     })
                                 }}
@@ -2026,8 +2042,10 @@ const ChoreEdit = () => {
                                     })
                                     .catch(() => {
                                       showError({
-                                        title: 'Delete Failed',
-                                        message: 'Failed to delete attachment.',
+                                        title: t('taskEditor.deleteFailed'),
+                                        message: t(
+                                          'taskEditor.deleteFailedMessage',
+                                        ),
                                       })
                                     })
                                 }}
@@ -2054,7 +2072,7 @@ const ChoreEdit = () => {
                   ? Priorities.find(
                       item => item.value === priority,
                     )?.name.trim()
-                  : 'No priority',
+                  : t('taskEditor.noPriority'),
                 projectId !== 'default'
                   ? projects.find(item => item.id === projectId)?.name
                   : '',
@@ -2273,8 +2291,8 @@ const ChoreEdit = () => {
                 defaultOpen={Boolean(subTasks?.length)}
                 summary={
                   subTasks?.length
-                    ? `${subTasks.length} subtask${subTasks.length === 1 ? '' : 's'}`
-                    : 'A checklist of steps to complete this task'
+                    ? t('taskEditor.subtaskCount', { count: subTasks.length })
+                    : t('taskEditor.subtasksSummary')
                 }
               >
                 <Box>
@@ -2321,15 +2339,16 @@ const ChoreEdit = () => {
               error={errors.completionActions}
               summary={
                 [
-                  points >= 0 ? `${points} points` : '',
+                  points >= 0 ? t('taskEditor.points', { count: points }) : '',
                   completionActions.length
-                    ? `${completionActions.length} Thing action${completionActions.length === 1 ? '' : 's'}`
+                    ? t('taskEditor.thingActions', {
+                        count: completionActions.length,
+                      })
                     : '',
-                  requireApproval ? 'Approval required' : '',
+                  requireApproval ? t('taskEditor.approvalRequired') : '',
                 ]
                   .filter(Boolean)
-                  .join(' · ') ||
-                'Award points, require approval, or update Things when completed'
+                  .join(' · ') || t('taskEditor.onCompletionSummary')
               }
             >
               <CompletionActionsSection
@@ -2349,7 +2368,11 @@ const ChoreEdit = () => {
               section='notifications'
               collapsible
               defaultOpen={isNotificable}
-              summary={isNotificable ? 'Reminders enabled' : 'Reminders off'}
+              summary={
+                isNotificable
+                  ? t('taskEditor.remindersOn')
+                  : t('taskEditor.remindersOff')
+              }
             >
               {NOTIFICATION_FORBIDDEN_TYPE.includes(frequencyType) ? (
                 <FormHelperText sx={{ mb: 2 }}>
@@ -2393,7 +2416,9 @@ const ChoreEdit = () => {
                 defaultOpen={completionWindow !== -1}
                 summary={
                   completionWindow !== -1
-                    ? `Completable ${completionWindow}h before due`
+                    ? t('taskEditor.completableBefore', {
+                        hours: completionWindow,
+                      })
                     : t('choreEdit.taskWindowDesc')
                 }
               >
@@ -2498,8 +2523,8 @@ const ChoreEdit = () => {
                       project: choreProject?.name,
                     })
                   : isPrivate
-                    ? 'Visible to assigned users'
-                    : 'Visible to your circle'
+                    ? t('taskEditor.visibleToAssigned')
+                    : t('taskEditor.visibleToCircle')
               }
             >
               <Box>
@@ -2541,7 +2566,7 @@ const ChoreEdit = () => {
                     <FormHelperText>
                       {t('taskEditor.visibleToYouAndThePeopleEligible')}
                       {assignees.length === 0
-                        ? ' (No assignees selected, Limited option is disabled)'
+                        ? ` ${t('taskEditor.limitedDisabled')}`
                         : ''}
                     </FormHelperText>
                   </FormControl>
@@ -2694,7 +2719,9 @@ const ChoreEdit = () => {
                           : unarchiveChore.mutate(choreId)
                       }}
                     >
-                      {isActive ? 'Archive' : 'Unarchive'}
+                      {isActive
+                        ? t('taskEditor.archive')
+                        : t('taskEditor.unarchive')}
                     </Button>
                     <MenuButton
                       aria-label={t('taskEditor.moreTaskActions')}
@@ -2768,20 +2795,22 @@ const ChoreEdit = () => {
                             sx={{ display: { xs: 'none', sm: 'inline' } }}
                           >
                             {choreId > 0
-                              ? 'Save and create another'
-                              : 'Create and add another'}
+                              ? t('taskEditor.saveAndAnother')
+                              : t('taskEditor.createAndAnother')}
                           </Box>
                           <Box
                             component='span'
                             sx={{ display: { xs: 'inline', sm: 'none' } }}
                           >
-                            {choreId > 0 ? 'Save & new' : 'Create & new'}
+                            {choreId > 0
+                              ? t('taskEditor.saveAndNewShort')
+                              : t('taskEditor.createAndNewShort')}
                           </Box>
                         </>
                       ) : choreId > 0 ? (
-                        'Save'
+                        t('taskEditor.save')
                       ) : (
-                        'Create'
+                        t('taskEditor.create')
                       )}
                       {showKeyboardShortcuts && (
                         <KeyboardShortcutHint shortcut='Enter' sx={{ ml: 1 }} />
@@ -2818,7 +2847,9 @@ const ChoreEdit = () => {
                       <Box sx={{ width: 20 }}>
                         {!createAnother && <Check fontSize='small' />}
                       </Box>
-                      {choreId > 0 ? 'Save' : 'Create'}
+                      {choreId > 0
+                        ? t('taskEditor.save')
+                        : t('taskEditor.create')}
                     </MenuItem>
                     <MenuItem
                       selected={createAnother}
@@ -2835,8 +2866,8 @@ const ChoreEdit = () => {
                         {createAnother && <Check fontSize='small' />}
                       </Box>
                       {choreId > 0
-                        ? 'Save and create another task'
-                        : 'Create and add another task'}
+                        ? t('taskEditor.saveAndAnotherTask')
+                        : t('taskEditor.createAndAnotherTask')}
                     </MenuItem>
                   </Menu>
                 </Dropdown>

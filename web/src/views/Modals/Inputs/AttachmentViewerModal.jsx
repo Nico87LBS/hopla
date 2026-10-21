@@ -38,13 +38,13 @@ function AttachmentViewerModal({ config }) {
     <ResponsiveModal
       open={!!isOpen}
       onClose={handleClose}
-      title={fileName || 'Attachment'}
+      title={fileName || t('attachment')}
       maxHeight='92vh'
       footer={
         <ModalActions
           secondary={{ label: t('close'), onClick: handleClose }}
           primary={{
-            label: 'Download',
+            label: t('download'),
             startDecorator: <Download />,
             onClick: () => downloadUrl(url, fileName),
             disabled: !url,

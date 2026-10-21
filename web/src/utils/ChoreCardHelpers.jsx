@@ -1,4 +1,6 @@
+import i18n from 'i18next'
 import moment from 'moment'
+
 const allMonths = [
   'January',
   'February',
@@ -24,16 +26,17 @@ export const getDueDateChipText = (
   chore,
   timeFormat = 'h:mm A',
 ) => {
-  if (chore?.nextDueDate === null || nextDueDate === null) return 'No Due Date'
+  if (chore?.nextDueDate === null || nextDueDate === null)
+    return i18n.t('chores:dueChip.noDueDate')
 
   const dueDate = moment(nextDueDate)
   const diff = moment(nextDueDate).diff(moment(), 'hours')
 
   const calendarFormat = {
-    sameDay: `[Today] ${timeFormat}`,
-    nextDay: `[Tomorrow] ${timeFormat}`,
+    sameDay: `[${i18n.t('chores:dueChip.today')}] ${timeFormat}`,
+    nextDay: `[${i18n.t('chores:dueChip.tomorrow')}] ${timeFormat}`,
     nextWeek: `dddd ${timeFormat}`,
-    lastDay: `[Yesterday] ${timeFormat}`,
+    lastDay: `[${i18n.t('chores:dueChip.yesterday')}] ${timeFormat}`,
     lastWeek: `dddd ${timeFormat}`,
     sameElse: `MMM D ${timeFormat}`,
   }
@@ -56,7 +59,7 @@ export const getDueDateChipText = (
         const daysAgo = moment()
           .startOf('day')
           .diff(dueDate.clone().startOf('day'), 'days')
-        return `${daysAgo} day${daysAgo === 1 ? '' : 's'}`
+        return i18n.t('chores:dueChip.days', { count: daysAgo })
       }
       return dueDate.fromNow()
     }
@@ -103,87 +106,81 @@ export const getRecurrentChipText = chore => {
       ? JSON.parse(chore.frequencyMetadata)
       : chore.frequencyMetadata
 
-  const dayOfMonthSuffix = n => {
-    if (n >= 11 && n <= 13) {
-      return 'th'
-    }
-    switch (n % 10) {
-      case 1:
-        return 'st'
-      case 2:
-        return 'nd'
-      case 3:
-        return 'rd'
-      default:
-        return 'th'
-    }
-  }
-  if (chore.frequencyType === 'once') {
-    return 'Once'
-  } else if (chore.frequencyType === 'always') {
-    return 'Always'
-  } else if (chore.frequencyType === 'trigger') {
-    return 'Trigger'
-  } else if (chore.frequencyType === 'daily') {
-    return 'Daily'
-  } else if (chore.frequencyType === 'adaptive') {
-    return 'Adaptive'
-  } else if (chore.frequencyType === 'weekly') {
-    return 'Weekly'
-  } else if (chore.frequencyType === 'monthly') {
-    return 'Monthly'
-  } else if (chore.frequencyType === 'yearly') {
-    return 'Yearly'
+  // Day and month names are stored in English ('monday', 'january'), so they
+  // are turned into indexes before moment formats them in the current locale.
+  const allDays = [
+    'sunday',
+    'monday',
+    'tuesday',
+    'wednesday',
+    'thursday',
+    'friday',
+    'saturday',
+  ]
+  const dayIndex = d => allDays.indexOf(String(d).toLowerCase())
+  const monthIndex = m =>
+    allMonths.findIndex(
+      month => month.toLowerCase() === String(m).toLowerCase(),
+    )
+  const shortDay = index => moment().day(index).format('ddd')
+  const shortMonth = index => moment().month(index).format('MMM')
+  const ordinal = n =>
+    i18n.t(
+      `chores:recurrence.ordinal.${new Intl.PluralRules(i18n.language, { type: 'ordinal' }).select(n)}`,
+      { n },
+    )
+  const simple = [
+    'once',
+    'always',
+    'trigger',
+    'daily',
+    'adaptive',
+    'weekly',
+    'monthly',
+    'yearly',
+  ]
+  if (simple.includes(chore.frequencyType)) {
+    return i18n.t(`chores:recurrence.${chore.frequencyType}`)
   } else if (chore.frequencyType === 'days_of_the_week') {
-    let days = metadata.days
+    const days = metadata.days.map(dayIndex).filter(index => index >= 0)
     if (days.length > 4) {
-      const allDays = [
-        'Sunday',
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-      ]
-      const selectedDays = days.map(d => moment().day(d).format('dddd'))
-      const notSelectedDay = allDays.filter(day => !selectedDays.includes(day))
-      const notSelectedShortdays = notSelectedDay.map(d =>
-        moment().day(d).format('ddd'),
-      )
-      return `Daily except ${notSelectedShortdays.join(', ')}`
-    } else {
-      days = days.map(d => moment().day(d).format('ddd'))
-      return days.join(', ')
+      const notSelected = allDays
+        .map((_, index) => index)
+        .filter(index => !days.includes(index))
+      return i18n.t('chores:recurrence.dailyExcept', {
+        days: notSelected.map(shortDay).join(', '),
+      })
     }
+    return days.map(shortDay).join(', ')
   } else if (chore.frequencyType === 'day_of_the_month') {
-    let months = metadata?.months ? metadata.months : allMonths
+    const months = (metadata?.months ? metadata.months : allMonths)
+      .map(monthIndex)
+      .filter(index => index >= 0)
     if (months.length > 6) {
-      const selectedMonths = months.map(m => moment().month(m).format('MMMM'))
-      const notSelectedMonth = allMonths.filter(
-        month => !selectedMonths.includes(month),
-      )
-      const notSelectedShortMonths = notSelectedMonth.map(m =>
-        moment().month(m).format('MMM'),
-      )
-      let result = `Monthly ${chore.frequency}${dayOfMonthSuffix(
-        chore.frequency,
-      )}`
-      if (notSelectedShortMonths.length > 0)
-        result += `
-        except ${notSelectedShortMonths.join(', ')}`
-      return result
-    } else {
-      let freqData = metadata
-      const months = [...freqData.months]
-        .sort((a, b) => allMonths.indexOf(a) - allMonths.indexOf(b))
-        .map(m => moment().month(m).format('MMM'))
-      return `${chore.frequency}${dayOfMonthSuffix(
-        chore.frequency,
-      )} of ${months.join(', ')}`
+      const notSelected = allMonths
+        .map((_, index) => index)
+        .filter(index => !months.includes(index))
+      const result = i18n.t('chores:recurrence.monthlyOn', {
+        day: ordinal(chore.frequency),
+      })
+      if (notSelected.length === 0) return result
+      return i18n.t('chores:recurrence.except', {
+        base: result,
+        months: notSelected.map(shortMonth).join(', '),
+      })
     }
+    return i18n.t('chores:recurrence.dayOfMonths', {
+      day: ordinal(chore.frequency),
+      months: [...months]
+        .sort((a, b) => a - b)
+        .map(shortMonth)
+        .join(', '),
+    })
   } else if (chore.frequencyType === 'interval') {
-    return `Every ${chore.frequency} ${metadata.unit}`
+    return i18n.t('chores:recurrence.every', {
+      count: chore.frequency,
+      unit: i18n.t(`chores:repeat.unit.${metadata.unit}`).toLowerCase(),
+    })
   } else {
     return chore.frequencyType
   }

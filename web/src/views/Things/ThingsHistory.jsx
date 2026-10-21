@@ -75,10 +75,10 @@ const ThingsHistory = () => {
       const frequency = totalDuration / (thingsHistory.length - 1)
       avgUpdateFrequency =
         frequency < 1
-          ? `${Math.round(frequency * 60)} minutes`
+          ? t('history.duration.minute', { count: Math.round(frequency * 60) })
           : frequency < 24
-            ? `${Math.round(frequency)} hours`
-            : `${Math.round(frequency / 24)} days`
+            ? t('history.duration.hour', { count: Math.round(frequency) })
+            : t('history.duration.day', { count: Math.round(frequency / 24) })
     }
 
     const lastUpdated = thingsHistory[0]
@@ -97,30 +97,30 @@ const ThingsHistory = () => {
         .filter(d => d !== null)
       const last = diffs[0]
       const prev = diffs[1]
-      if (last > prev) updateTrend = 'Interval increasing'
-      else if (last < prev) updateTrend = 'Interval decreasing'
-      else updateTrend = 'Interval stable'
+      if (last > prev) updateTrend = t('history.trend.increasing')
+      else if (last < prev) updateTrend = t('history.trend.decreasing')
+      else updateTrend = t('history.trend.stable')
     }
 
     return [
       {
         icon: <Speed />,
-        text: 'Update Frequency',
-        subtext: `Every ${avgUpdateFrequency}`,
+        text: t('history.stats.frequency'),
+        subtext: t('history.stats.every', { duration: avgUpdateFrequency }),
       },
       {
         icon: <Update />,
-        text: 'Last Updated',
+        text: t('history.stats.lastUpdated'),
         subtext: lastUpdated,
       },
       {
         icon: <CallReceived />,
-        text: 'Last Value',
+        text: t('history.stats.lastValue'),
         subtext: thingsHistory[0]?.state ?? '--',
       },
       {
         icon: <TrendingUp />,
-        text: 'Update Trend',
+        text: t('history.stats.trend'),
         subtext: updateTrend,
       },
     ]
@@ -149,7 +149,7 @@ const ThingsHistory = () => {
       }
     }
 
-    return `${timeValue} ${unit}${timeValue !== 1 ? 's' : ''}`
+    return t(`history.duration.${unit}`, { count: timeValue })
   }
   // if loading show loading spinner:
   if (isLoading) {
@@ -163,16 +163,14 @@ const ThingsHistory = () => {
           variant={error ? 'error' : 'empty'}
           fullHeight
           icon={error ? <CloudOff /> : <EventBusy />}
-          title={error ? "Couldn't load this history" : 'No history yet'}
+          title={error ? t('history.loadErrorTitle') : t('history.emptyTitle')}
           description={
-            error
-              ? 'We could not reach the server. Check your connection and try again.'
-              : "Each time this thing's value changes, the change is recorded here."
+            error ? t('history.loadErrorBody') : t('history.emptyBody')
           }
           primaryAction={
             error
-              ? { label: 'Try again', onClick: () => refetch() }
-              : { label: 'Back to things', to: '/things' }
+              ? { label: t('history.retry'), onClick: () => refetch() }
+              : { label: t('history.backToThings'), to: '/things' }
           }
         />
       </Container>

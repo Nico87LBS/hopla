@@ -592,7 +592,11 @@ const ChoreActionMenu = ({
           onClick={() => handleChangePriority(priority)}
         >
           <ListItemDecorator>{priority.icon || <Flag />}</ListItemDecorator>
-          <ListItemContent>{priority.name.trim()}</ListItemContent>
+          <ListItemContent>
+            {priority.value === 0
+              ? t('taskEditor.noPriority')
+              : priority.name.trim()}
+          </ListItemContent>
         </ListItemButton>
       </ListItem>
     ))

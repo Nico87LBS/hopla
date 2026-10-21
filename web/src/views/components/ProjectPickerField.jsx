@@ -1,4 +1,5 @@
 import { FolderOpen } from '@mui/icons-material'
+import { useTranslation } from 'react-i18next'
 
 import { ProjectAccessIcon } from '../Projects/ProjectVisibilityField'
 import BaseOptionPicker from './BaseOptionPicker'
@@ -10,8 +11,9 @@ const ProjectPickerField = ({
   projects = [],
   value = 'default',
 }) => {
+  const { t } = useTranslation('chores')
   const options = [
-    { id: 'default', name: 'Default Project', color: '#9CA3AF' },
+    { id: 'default', name: t('toolbar.defaultProject'), color: '#9CA3AF' },
     ...projects.map(project => ({
       id: project.id,
       name: project.name,
@@ -28,7 +30,7 @@ const ProjectPickerField = ({
       onChange={onChange}
       onClear={onClear}
       emptyDisplay={emptyDisplay}
-      emptyLabel='Project'
+      emptyLabel={t('projectPicker.label')}
       getItemValue={item => item.id}
       getItemLabel={item => item.name}
       getItemColor={item => item.color}
@@ -45,7 +47,7 @@ const ProjectPickerField = ({
         <ProjectAccessIcon project={item} sx={{ fontSize: '14px' }} />
       )}
       getTriggerText={({ isEmpty, selectedItems }) =>
-        isEmpty ? 'Project' : selectedItems[0].name
+        isEmpty ? t('projectPicker.label') : selectedItems[0].name
       }
       menuMinWidth={240}
     />

@@ -78,10 +78,6 @@
       "advanced": {
         "title": "Paramètres avancés",
         "description": "Configurez les webhooks, les mises à jour en temps réel et d'autres fonctionnalités avancées."
-      },
-      "sidepanel": {
-        "title": "Personnalisation du panneau latéral",
-        "description": "Personnalisez la disposition et la visibilité des cartes du panneau latéral."
       }
     }
   },
@@ -295,9 +291,7 @@
     "tokenCopied": "Jeton copié dans le presse-papiers",
     "generateNew": "Générer un nouveau jeton",
     "nameModalTitle": "Donnez un nom à votre nouveau jeton, quelque chose qui vous permettra de le reconnaître.",
-    "generateToken": "Générer le jeton",
-    "showToken": "Afficher le jeton",
-    "hideToken": "Masquer le jeton"
+    "generateToken": "Générer le jeton"
   },
   "calendar": {
     "title": "Synchro du calendrier",
@@ -418,9 +412,7 @@
         "name": "Objectifs hebdomadaires",
         "description": "Affiche la progression hebdomadaire et les statistiques de la famille"
       }
-    },
-    "heading": "Paramètres du panneau latéral",
-    "detailedDescription": "Personnalisez la disposition et la visibilité des cartes dans le panneau latéral. Cette section n'est disponible que sur les appareils à grand écran, comme les tablettes et les ordinateurs."
+    }
   },
   "homeSections": {
     "title": "Personnalisation de l'aperçu",
@@ -490,6 +482,11 @@
     },
     "sidepanel": {
       "title": "Panneau latéral"
+    },
+    "taskEditor": {
+      "title": "Éditeur de tâche",
+      "singlePage": "Afficher l'éditeur de tâche sur une seule page",
+      "singlePageHelp": "Tous les réglages de la tâche sur une seule page qui défile, au lieu d'étapes séparées. Enregistré pour cet appareil ou ce navigateur."
     }
   },
   "theme": {
@@ -632,10 +629,24 @@
     "newOwner": "Nouveau propriétaire",
     "logoutNotice": "Une fois la suppression réussie, la déconnexion sera effectuée et la page de connexion s'affichera.",
     "passwordLabel": "Mot de passe",
-    "typeToConfirm": "Tapez « {{word}} » pour confirmer"
+    "typeToConfirm": "Tapez « {{word}} » pour confirmer",
+    "modal": {
+      "title": "Supprimer le compte",
+      "transferTitle": "Transférer le cercle",
+      "finalTitle": "Dernière confirmation",
+      "continue": "Continuer"
+    }
   },
   "realtime": {
     "errorDescription": "Les mises à jour en temps réel (SSE) sont activées, mais ne fonctionnent pas : {{error}}",
-    "statusLabel": "État :"
+    "statusLabel": "État :",
+    "status": {
+      "connected": "Connecté",
+      "connecting": "Connexion…",
+      "disconnected": "Déconnecté",
+      "tooltip": "Mises à jour en temps réel (SSE) : {{status}}",
+      "tooltipError": "Mises à jour en temps réel (SSE) : {{status}} - {{error}}",
+      "tooltipJoin": "Mises à jour en temps réel (SSE) : {{status}} - Rejoins un cercle pour les activer"
+    }
   }
 }

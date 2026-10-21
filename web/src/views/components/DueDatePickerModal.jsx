@@ -487,25 +487,11 @@ const DueDatePickerModal = ({
             }
             calendarType={calendarType}
             onChange={handleCalendarChange}
-            formatShortWeekday={(locale, date) =>
-              ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'][date.getDay()]
-            }
-            formatMonth={(locale, date) =>
-              [
-                'Jan',
-                'Feb',
-                'Mar',
-                'Apr',
-                'May',
-                'Jun',
-                'Jul',
-                'Aug',
-                'Sep',
-                'Oct',
-                'Nov',
-                'Dec',
-              ][date.getMonth()]
-            }
+            formatShortWeekday={(locale, date) => {
+              const day = moment(date).format('dd')
+              return day.charAt(0).toUpperCase() + day.slice(1)
+            }}
+            formatMonth={(locale, date) => moment(date).format('MMM')}
           />
         </Box>
         <Typography

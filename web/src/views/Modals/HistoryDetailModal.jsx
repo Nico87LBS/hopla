@@ -248,12 +248,12 @@ function HistoryDetailModal({ config }) {
             icon={<AccessTime sx={{ fontSize: 16 }} />}
             label={
               isFirstSchedule
-                ? 'Scheduled on'
+                ? t('detail.scheduledOn')
                 : entry.status === 6
-                  ? 'Rescheduled on'
+                  ? t('detail.rescheduledOn')
                   : entry.status === 2
-                    ? 'Skipped on'
-                    : 'Completed on'
+                    ? t('detail.skippedOn')
+                    : t('detail.completedOn')
             }
             value={fmt.dateTime(entry.performedAt)}
           />
@@ -265,10 +265,10 @@ function HistoryDetailModal({ config }) {
             icon={<CalendarMonth sx={{ fontSize: 16 }} />}
             label={
               entry.status === 6
-                ? 'Previous due date'
+                ? t('detail.previousDueDate')
                 : entry.status === 5
-                  ? 'Was due'
-                  : 'Due date'
+                  ? t('detail.wasDue')
+                  : t('detail.dueDate')
             }
             value={fmt.dateTime(entry.dueDate)}
           />

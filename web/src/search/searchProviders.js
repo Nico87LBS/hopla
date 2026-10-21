@@ -32,7 +32,7 @@ const document = (provider, item) => ({ provider, ...item })
 
 registerSearchProvider({
   id: 'tasks',
-  getDocuments: ({ chores, membersById, projectsById }) =>
+  getDocuments: ({ chores, membersById, projectsById, t }) =>
     chores.map(chore => {
       const labels =
         chore.labelsV2?.map(label => label.name).filter(Boolean) || []
@@ -44,9 +44,10 @@ registerSearchProvider({
       return document('tasks', {
         id: `task:${chore.id}`,
         entityId: chore.id,
-        title: chore.name || 'Untitled task',
+        title: chore.name || t('common:search.untitled.task'),
         subtitle:
-          [project?.name, ...labels].filter(Boolean).join(' · ') || 'Task',
+          [project?.name, ...labels].filter(Boolean).join(' · ') ||
+          t('common:search.kinds.task'),
         body: description,
         keywords: [...labels, project?.name, ...assignees]
           .filter(Boolean)
@@ -59,7 +60,7 @@ registerSearchProvider({
 
 registerSearchProvider({
   id: 'history',
-  getDocuments: ({ choresById, history, membersById }) =>
+  getDocuments: ({ choresById, history, membersById, t }) =>
     history.flatMap(entry => {
       const note = stripHtml(entry.notes).trim()
       if (!note) return []
@@ -70,7 +71,8 @@ registerSearchProvider({
         document('history', {
           id: `history:${entry.id}`,
           entityId: entry.id,
-          title: chore?.name || entry.choreName || 'Task note',
+          title:
+            chore?.name || entry.choreName || t('common:search.kinds.note'),
           subtitle: [
             member?.displayName,
             entry.performedAt
@@ -92,13 +94,13 @@ registerSearchProvider({
 
 registerSearchProvider({
   id: 'projects',
-  getDocuments: ({ projects }) =>
+  getDocuments: ({ projects, t }) =>
     projects.map(project =>
       document('projects', {
         id: `project:${project.id}`,
         entityId: project.id,
-        title: project.name || 'Untitled project',
-        subtitle: 'Project',
+        title: project.name || t('common:search.untitled.project'),
+        subtitle: t('common:search.kinds.project'),
         body: stripHtml(project.description),
         keywords: 'folder project',
         route: `/chores?project=${encodeURIComponent(project.id)}`,
@@ -109,13 +111,13 @@ registerSearchProvider({
 
 registerSearchProvider({
   id: 'labels',
-  getDocuments: ({ labels }) =>
+  getDocuments: ({ labels, t }) =>
     labels.map(label =>
       document('labels', {
         id: `label:${label.id}`,
         entityId: label.id,
-        title: label.name || 'Untitled label',
-        subtitle: 'Label',
+        title: label.name || t('common:search.untitled.label'),
+        subtitle: t('common:search.kinds.label'),
         keywords: 'tag label',
         route: `/labels/${label.id}`,
         color: label.color,
@@ -125,13 +127,16 @@ registerSearchProvider({
 
 registerSearchProvider({
   id: 'people',
-  getDocuments: ({ members }) =>
+  getDocuments: ({ members, t }) =>
     members.map(member =>
       document('people', {
         id: `person:${member.userId}`,
         entityId: member.userId,
-        title: member.displayName || member.username || 'Circle member',
-        subtitle: 'Circle member',
+        title:
+          member.displayName ||
+          member.username ||
+          t('common:search.kinds.member'),
+        subtitle: t('common:search.kinds.member'),
         keywords: `${member.username || ''} person member assignee tasks assigned`,
         route: `/chores?filterId=assignedTo:${member.userId}`,
       }),
@@ -147,7 +152,7 @@ registerSearchProvider({
           id: `setting:${id}`,
           entityId: id,
           title: t(`overview.sections.${id}.title`),
-          subtitle: 'Settings',
+          subtitle: t('common:search.kinds.settings'),
           body: t(`overview.sections.${id}.description`),
           keywords: `preferences configuration ${id}`,
           route: `/settings/${id}`,

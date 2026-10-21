@@ -83,7 +83,7 @@ function RedeemPointsModal({ config }) {
             </Avatar>
             <Box sx={{ flex: 1 }}>
               <Typography level='title-sm' sx={{ fontWeight: 600 }}>
-                {config?.user?.displayName || 'User'}
+                {config?.user?.displayName || t('redeemModal.user')}
               </Typography>
               <Chip
                 size='sm'
@@ -146,7 +146,7 @@ function RedeemPointsModal({ config }) {
             {predefinedPoints.map(point => (
               <IconButton
                 key={point}
-                aria-label={`Add ${point} points`}
+                aria-label={t('redeemModal.addPoints', { count: point })}
                 variant='outlined'
                 disabled={points + point > config?.available}
                 onClick={() => addPredefinedPoints(point)}

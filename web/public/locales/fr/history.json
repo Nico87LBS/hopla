@@ -48,7 +48,14 @@
     "points_other": "{{count}} points",
     "note": "Note",
     "reason": "Motif",
-    "notes": "Notes"
+    "notes": "Notes",
+    "scheduledOn": "Planifiée le",
+    "rescheduledOn": "Replanifiée le",
+    "skippedOn": "Passée le",
+    "completedOn": "Faite le",
+    "previousDueDate": "Échéance précédente",
+    "wasDue": "Était due le",
+    "dueDate": "Échéance"
   },
   "charts": {
     "noData": "Aucune donnée disponible",

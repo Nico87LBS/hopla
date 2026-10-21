@@ -106,8 +106,10 @@ const CustomFilterChips = ({
               key={filter.id}
               title={
                 hasWarning
-                  ? `Filter has issues: ${filter.validationIssues?.join(', ')}`
-                  : `${filter.description ? filter.description + ' - ' : ''}${filter.count} tasks${filter.overdueCount > 0 ? ` (${filter.overdueCount} overdue)` : ''}`
+                  ? t('filterChip.issues', {
+                      issues: filter.validationIssues?.join(', '),
+                    })
+                  : `${filter.description ? filter.description + ' - ' : ''}${t('filterChip.taskCount', { count: filter.count })}${filter.overdueCount > 0 ? ` ${t('filterChip.overdueCount', { count: filter.overdueCount })}` : ''}`
               }
               placement='bottom'
             >

@@ -280,7 +280,7 @@ const TimerDetails = () => {
           )
           showSuccess({
             title: t('toast.startQueuedTitle'),
-            message: "You're offline — start will sync when back online",
+            message: t('toast.offlineStart'),
             undoAction: async () => {
               await commandQueue.cancel(cmdId)
             },
@@ -318,7 +318,7 @@ const TimerDetails = () => {
           )
           showSuccess({
             title: t('toast.pauseQueuedTitle'),
-            message: "You're offline — pause will sync when back online",
+            message: t('toast.offlinePause'),
             undoAction: async () => {
               await commandQueue.cancel(cmdId)
             },
@@ -771,7 +771,11 @@ const TimerDetails = () => {
                                   zIndex: 1,
                                 },
                               }}
-                              title={`Session ${index + 1}: ${formatDuration(sessionDuration)} ${isOngoing ? '(ongoing)' : ''}`}
+                              title={t('sessionBar', {
+                                number: index + 1,
+                                duration: formatDuration(sessionDuration),
+                                ongoing: isOngoing ? t('ongoing') : '',
+                              })}
                             />
                           )
                         })
@@ -1174,7 +1178,7 @@ const TimerDetails = () => {
                                           >
                                             {sessionUser?.displayName ||
                                               sessionUser?.name ||
-                                              'Unknown'}
+                                              t('unknownUser')}
                                           </Chip>
                                         ) : null
                                       })()}
@@ -1468,7 +1472,7 @@ const TimerDetails = () => {
               },
             },
           }}
-          title={isTimerRunning() ? 'Pause Timer' : 'Start Timer'}
+          title={isTimerRunning() ? t('pauseTimer') : t('startTimer')}
         >
           {isTimerRunning() ? (
             <PauseCircle sx={{ fontSize: 24 }} />
