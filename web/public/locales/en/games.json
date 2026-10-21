@@ -49,7 +49,8 @@
       "undo": "Task undone",
       "redeem": "Points spent",
       "bonus": "Bonus",
-      "penalty": "Penalty"
+      "penalty": "Penalty",
+      "reset": "Reset"
     }
   },
   "today": {
@@ -164,5 +165,18 @@
     "deleteTitle": "Delete challenge",
     "deleteMessage": "Delete \"{{name}}\"? Points already won stay.",
     "failed": "The challenge could not be saved."
+  },
+  "reset": {
+    "title": "Reset",
+    "subtitle": "Sets a member's points, or everyone's, back to zero, and so to the first rank. For example once a year, or after testing.",
+    "everyone": "Everyone",
+    "clearHistory": "Also erase the points history",
+    "help": "Unchecked, the history is kept and a \"Reset\" row is added. Streaks go on, and quests done and challenges won stay counted so they do not pay twice.",
+    "button": "Reset",
+    "confirmTitle": "Reset?",
+    "confirmKeep": "{{who}}: points and rank back to zero. The history is kept.",
+    "confirmClear": "{{who}}: points and rank back to zero, and points history erased. This cannot be undone.",
+    "done": "{{who}}: reset.",
+    "failed": "The reset failed."
   }
 }

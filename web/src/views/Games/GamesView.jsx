@@ -41,6 +41,7 @@ import ConfirmationModal from '../Modals/Inputs/ConfirmationModal'
 import DailyGames, { RulesCard } from './DailyGames'
 import { MemberAvatar, memberShape, surfaceSx } from './GameParts'
 import { QuestListCard, RankSettingsCard } from './Progression'
+import ResetCard from './ResetCard'
 
 const PAGE_SIZE = 30
 const MAX_POINTS = 1000
@@ -514,6 +515,7 @@ const GamesView = () => {
       {isParent && <QuestListCard members={members} />}
       {isParent && <RankSettingsCard />}
       {isParent && <RulesCard />}
+      {isParent && <ResetCard members={members} />}
     </Stack>
   )
 }
