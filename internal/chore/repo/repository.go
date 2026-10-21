@@ -10,9 +10,10 @@ import (
 	config "github.com/nico87lbs/hopla/config"
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
 	cModel "github.com/nico87lbs/hopla/internal/circle/model"
-	"github.com/nico87lbs/hopla/internal/project/access"
+	"github.com/nico87lbs/hopla/internal/games"
 	ptModel "github.com/nico87lbs/hopla/internal/points"
 	ptRepo "github.com/nico87lbs/hopla/internal/points/repo"
+	"github.com/nico87lbs/hopla/internal/project/access"
 	pModel "github.com/nico87lbs/hopla/internal/project/model"
 	storageModel "github.com/nico87lbs/hopla/internal/storage/model"
 	stModel "github.com/nico87lbs/hopla/internal/subtask/model"
@@ -760,12 +761,12 @@ func (r *ChoreRepository) ApproveChore(c context.Context, chore *chModel.Chore, 
 		history.SyncVersion = nextVersion
 
 		// Update UserCircle Points if applicable
-		if applyPoints && chore.Points != nil && *chore.Points > 0 {
-			history.Points = chore.Points
-			if err := tx.Model(&cModel.UserCircle{}).Where("user_id = ? AND circle_id = ?", history.CompletedBy, chore.CircleID).Update("points", gorm.Expr("points + ?", chore.Points)).Error; err != nil {
-				return err
-			}
-			if err := ptRepo.Record(tx, taskPoints(chore, history.CompletedBy, adminUserID, *chore.Points)); err != nil {
+		performedAt := time.Now().UTC()
+		if history.PerformedAt != nil {
+			performedAt = *history.PerformedAt
+		}
+		if applyPoints {
+			if err := awardTask(tx, chore, &history.Points, history.CompletedBy, adminUserID, performedAt); err != nil {
 				return err
 			}
 		}
@@ -773,6 +774,11 @@ func (r *ChoreRepository) ApproveChore(c context.Context, chore *chModel.Chore, 
 		// Save the updated history
 		if err := tx.Save(&history).Error; err != nil {
 			return err
+		}
+		if applyPoints {
+			if _, err := games.AwardStreakBonus(tx, chore.CircleID, history.CompletedBy, performedAt, time.Now().UTC()); err != nil {
+				return err
+			}
 		}
 
 		// Perform the update operation once, using the prepared updates map.
@@ -878,12 +884,12 @@ func (r *ChoreRepository) CompleteChore(c context.Context, chore *chModel.Chore,
 		}
 
 		// Update UserCirclee Points :
-		if applyPoints && chore.Points != nil && *chore.Points > 0 {
-			ch.Points = chore.Points
-			if err := tx.Model(&cModel.UserCircle{}).Where("user_id = ? AND circle_id = ?", userID, chore.CircleID).Update("points", gorm.Expr("points + ?", chore.Points)).Error; err != nil {
-				return err
-			}
-			if err := ptRepo.Record(tx, taskPoints(chore, userID, userID, *chore.Points)); err != nil {
+		performedAt := time.Now().UTC()
+		if completedDate != nil {
+			performedAt = *completedDate
+		}
+		if applyPoints {
+			if err := awardTask(tx, chore, &ch.Points, userID, userID, performedAt); err != nil {
 				return err
 			}
 		}
@@ -895,6 +901,11 @@ func (r *ChoreRepository) CompleteChore(c context.Context, chore *chModel.Chore,
 
 		if err := tx.Save(ch).Error; err != nil {
 			return err
+		}
+		if applyPoints {
+			if _, err := games.AwardStreakBonus(tx, chore.CircleID, userID, performedAt, time.Now().UTC()); err != nil {
+				return err
+			}
 		}
 		// if there is any time session associated with the chore, mark them as finished:
 		var timeSessions []*chModel.TimeSession

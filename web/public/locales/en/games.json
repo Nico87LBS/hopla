@@ -51,5 +51,49 @@
       "bonus": "Bonus",
       "penalty": "Penalty"
     }
+  },
+  "today": {
+    "title": "Today's games",
+    "period": "Points ×{{multiplier}}: {{name}}, until {{end}}",
+    "surprise": "Surprise task: \"{{name}}\", +{{points}} extra points",
+    "noSurprise": "No surprise task yet today.",
+    "surpriseOff": "Surprise tasks are off.",
+    "streaks": "Streaks",
+    "days_one": "{{count}} day",
+    "days_other": "{{count}} days",
+    "best_one": "best {{count}} d",
+    "best_other": "best {{count}} d",
+    "doneToday": "Already did a task today",
+    "streakRule_one": "Every day in a row with at least one task done: +{{points}} points every {{count}} day.",
+    "streakRule_other": "At least one task done every day for {{count}} days in a row: +{{points}} points, then again every {{count}} days."
+  },
+  "periods": {
+    "title": "Bonus periods",
+    "subtitle": "During a bonus period, task points are multiplied.",
+    "name": "Name, for example \"Double weekend\"",
+    "from": "From",
+    "to": "to",
+    "empty": "No bonus period planned.",
+    "failed": "The bonus period could not be saved.",
+    "deleteTitle": "Delete bonus period",
+    "deleteMessage": "Delete \"{{name}}\"? Points already earned stay.",
+    "state": {
+      "planned": "Planned",
+      "running": "Running",
+      "ended": "Ended"
+    }
+  },
+  "rules": {
+    "title": "Game rules",
+    "subtitle": "The family's streaks and surprise tasks.",
+    "streakEvery": "Streak bonus every",
+    "streakBonus": "Streak bonus",
+    "surpriseEnabled": "A surprise task every day",
+    "surpriseBonus": "Extra points for the surprise task",
+    "days": "days",
+    "points": "points",
+    "help": "0 days or 0 points turns the streak bonus off; streaks are still counted. The surprise task is drawn each day among today's tasks that everyone can see.",
+    "saved": "Rules saved.",
+    "failed": "The rules could not be saved."
   }
 }

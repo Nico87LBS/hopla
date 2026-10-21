@@ -1003,6 +1003,53 @@ const DeletePointsPreset = id => {
   })
 }
 
+const GetGamesToday = async () => {
+  const resp = await Fetch(`/games/today`, {
+    method: 'GET',
+    headers: HEADERS(),
+  })
+  return resp.json()
+}
+
+const GetGameRules = async () => {
+  const resp = await Fetch(`/games/rules`, {
+    method: 'GET',
+    headers: HEADERS(),
+  })
+  return resp.json()
+}
+
+const SaveGameRules = rules => {
+  return Fetch(`/games/rules`, {
+    method: 'PUT',
+    headers: HEADERS(),
+    body: JSON.stringify(rules),
+  })
+}
+
+const GetBonusPeriods = async () => {
+  const resp = await Fetch(`/games/periods`, {
+    method: 'GET',
+    headers: HEADERS(),
+  })
+  return resp.json()
+}
+
+const SaveBonusPeriod = period => {
+  return Fetch(period.id ? `/games/periods/${period.id}` : `/games/periods`, {
+    method: period.id ? 'PUT' : 'POST',
+    headers: HEADERS(),
+    body: JSON.stringify(period),
+  })
+}
+
+const DeleteBonusPeriod = id => {
+  return Fetch(`/games/periods/${id}`, {
+    method: 'DELETE',
+    headers: HEADERS(),
+  })
+}
+
 export {
   AcceptCircleMemberRequest,
   AdjustPoints,
@@ -1026,6 +1073,7 @@ export {
   CreateReward,
   CreateThing,
   DeclineCircleMemberRequest,
+  DeleteBonusPeriod,
   DeleteChildUser,
   DeleteChore,
   DeleteChoreAttachment,
@@ -1045,6 +1093,7 @@ export {
   GetAllCircleMembers,
   GetAllUsers,
   GetArchivedChores,
+  GetBonusPeriods,
   GetCalendarURL,
   GetChildUsers,
   GetChoreAttachments,
@@ -1059,6 +1108,8 @@ export {
   GetFilterById,
   GetFilters,
   GetFiltersByUsage,
+  GetGameRules,
+  GetGamesToday,
   GetLabels,
   GetLongLiveTokens,
   GetMFAStatus,
@@ -1093,7 +1144,9 @@ export {
   RestoreBackup,
   RevokeCalendarURL,
   RotateCalendarURL,
+  SaveBonusPeriod,
   SaveChore,
+  SaveGameRules,
   SavePointsPreset,
   SaveThing,
   SetupMFA,

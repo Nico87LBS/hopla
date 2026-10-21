@@ -105,6 +105,7 @@ export const useSSE = () => {
           case 'chore.status':
           case 'chore.skipped': {
             queryClient.invalidateQueries({ queryKey: ['pointsHistory'] })
+            queryClient.invalidateQueries({ queryKey: ['games', 'today'] })
 
             if (eventData?.data?.user?.id !== userProfile?.id) {
               showNotification({
@@ -223,6 +224,7 @@ export const useSSE = () => {
             queryClient.invalidateQueries({ queryKey: ['userCircle'] })
             queryClient.invalidateQueries({ queryKey: ['pointsHistory'] })
             queryClient.invalidateQueries({ queryKey: ['pointsPresets'] })
+            queryClient.invalidateQueries({ queryKey: ['games'] })
             break
 
           case 'subtask.updated':

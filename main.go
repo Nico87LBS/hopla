@@ -20,12 +20,13 @@ import (
 	cRepo "github.com/nico87lbs/hopla/internal/circle/repo"
 	"github.com/nico87lbs/hopla/internal/database"
 	"github.com/nico87lbs/hopla/internal/email"
+	gamesAPI "github.com/nico87lbs/hopla/internal/games/api"
 	label "github.com/nico87lbs/hopla/internal/label"
 	lRepo "github.com/nico87lbs/hopla/internal/label/repo"
 	"github.com/nico87lbs/hopla/internal/mfa"
+	pointsAPI "github.com/nico87lbs/hopla/internal/points/api"
 	"github.com/nico87lbs/hopla/internal/project"
 	pjRepo "github.com/nico87lbs/hopla/internal/project/repo"
-	pointsAPI "github.com/nico87lbs/hopla/internal/points/api"
 	reward "github.com/nico87lbs/hopla/internal/reward"
 	rwRepo "github.com/nico87lbs/hopla/internal/reward/repo"
 
@@ -121,6 +122,7 @@ func main() {
 		fx.Provide(rwRepo.NewRewardRepository),
 		fx.Provide(reward.NewHandler),
 		fx.Provide(pointsAPI.NewHandler),
+		fx.Provide(gamesAPI.NewHandler),
 
 		// Projects:
 		fx.Provide(pjRepo.NewProjectRepository),
@@ -178,6 +180,8 @@ func main() {
 			reward.APIs,
 			pointsAPI.Routes,
 			pointsAPI.APIs,
+			gamesAPI.Routes,
+			gamesAPI.APIs,
 			project.Routes,
 			filter.Routes,
 

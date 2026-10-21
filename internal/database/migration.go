@@ -13,6 +13,7 @@ import (
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
 	cModel "github.com/nico87lbs/hopla/internal/circle/model"
 	filterModel "github.com/nico87lbs/hopla/internal/filter/model"
+	"github.com/nico87lbs/hopla/internal/games"
 	lModel "github.com/nico87lbs/hopla/internal/label/model"
 	pModel "github.com/nico87lbs/hopla/internal/points"
 	projModel "github.com/nico87lbs/hopla/internal/project/model"
@@ -49,6 +50,9 @@ func Migration(db *gorm.DB) error {
 		migrations.Migration{},
 		pModel.PointsHistory{},
 		pModel.PointsPreset{},
+		games.Rules{},
+		games.BonusPeriod{},
+		games.Surprise{},
 		stModel.SubTask{},
 		storageModel.StorageFile{},
 		storageModel.StorageUsage{},
