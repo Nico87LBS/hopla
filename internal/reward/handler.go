@@ -56,6 +56,9 @@ type RedeemReq struct {
 	// UserID lets an admin or manager redeem for another circle member, such
 	// as a child without a login. That redemption is approved at once.
 	UserID *int `json:"userId"`
+	// Request keeps a redemption for another member pending, for a parent to
+	// approve later, as when a child asks from a shared tablet.
+	Request bool `json:"request"`
 }
 
 type ResolveReq struct {
@@ -263,7 +266,7 @@ func (h *Handler) redeemReward(c *gin.Context) {
 	_ = c.ShouldBindJSON(&req)
 
 	if req.UserID != nil && *req.UserID != currentUser.ID {
-		h.redeemForMember(c, id, *req.UserID, currentUser.ID, currentUser.CircleID, req.Note)
+		h.redeemForMember(c, id, *req.UserID, currentUser.ID, currentUser.CircleID, req.Note, req.Request)
 		return
 	}
 
@@ -282,8 +285,8 @@ func (h *Handler) redeemReward(c *gin.Context) {
 
 // redeemForMember spends a member's points on their behalf. Only an admin or
 // manager may do it, and since they would approve the request anyway, it is
-// recorded and approved in one go.
-func (h *Handler) redeemForMember(c *gin.Context, rewardID int, memberID int, adminID int, circleID int, note *string) {
+// recorded and approved in one go, unless it is only a request.
+func (h *Handler) redeemForMember(c *gin.Context, rewardID int, memberID int, adminID int, circleID int, note *string, requestOnly bool) {
 	isAdmin, err := h.isAdminOrManager(c, adminID, circleID)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Error checking permissions"})
@@ -301,6 +304,10 @@ func (h *Handler) redeemForMember(c *gin.Context, rewardID int, memberID int, ad
 		}
 		logging.FromContext(c).Error("Failed to request redemption for member", "error", err)
 		c.JSON(500, gin.H{"error": "Error requesting redemption"})
+		return
+	}
+	if requestOnly {
+		c.JSON(200, gin.H{"res": redemption})
 		return
 	}
 
