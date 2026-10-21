@@ -62,10 +62,12 @@ func (h *Handler) requireParent(c *gin.Context) (int, int, bool) {
 	return 0, 0, false
 }
 
-// SurpriseInfo is today's surprise task with its name.
+// SurpriseInfo is today's surprise task with its name, and ChoreIDs the tasks
+// with the same name, one per child, that are all worth the surprise.
 type SurpriseInfo struct {
 	games.Surprise
-	Name string `json:"name"`
+	Name     string `json:"name"`
+	ChoreIDs []int  `json:"choreIds"`
 }
 
 // Today is everything the boards need to show the games of the day.
@@ -121,6 +123,10 @@ func (h *Handler) getToday(c *gin.Context) {
 		var chore chModel.Chore
 		if err := db.Select("id", "name").First(&chore, surprise.ChoreID).Error; err == nil {
 			today.Surprise = &SurpriseInfo{Surprise: *surprise, Name: chore.Name}
+			if today.Surprise.ChoreIDs, err = games.SameTaskIDs(db, circleID, surprise.ChoreID); err != nil {
+				fail(err)
+				return
+			}
 		}
 	}
 	members, err := h.circleRepo.GetCircleUsers(c, circleID)

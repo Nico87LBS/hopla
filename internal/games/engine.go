@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"hash/fnv"
+	"slices"
 	"sort"
 	"time"
 
@@ -85,6 +86,20 @@ func TodaySurprise(db *gorm.DB, circleID int, now time.Time) (*Surprise, error) 
 	return &surprise, err
 }
 
+// sameName matches the tasks named like a given one, ignoring case and
+// spaces around the name.
+const sameName = "LOWER(TRIM(name)) = (SELECT LOWER(TRIM(name)) FROM chores WHERE id = ?)"
+
+// SameTaskIDs returns the circle's tasks with the same name as the given one.
+// A task created once per child is one task for the games: it is the
+// surprise, or counts for a quest, whichever child's copy is done.
+func SameTaskIDs(db *gorm.DB, circleID, choreID int) ([]int, error) {
+	var ids []int
+	err := db.Model(&chModel.Chore{}).Where("circle_id = ?", circleID).Where(sameName, choreID).
+		Order("id").Pluck("id", &ids).Error
+	return ids, err
+}
+
 // Earning is what a completed task is worth once the games are counted.
 type Earning struct {
 	Points int
@@ -109,13 +124,20 @@ func TaskEarning(tx *gorm.DB, chore *chModel.Chore, performedAt time.Time) (Earn
 		earning.Reason += fmt.Sprintf(" (×%d %s)", period.Multiplier, period.Name)
 	}
 	var surprise Surprise
-	err = tx.Where("circle_id = ? AND day = ? AND chore_id = ?", chore.CircleID, dayKey(performedAt), chore.ID).
-		First(&surprise).Error
-	if err == nil {
+	err = tx.Where("circle_id = ? AND day = ?", chore.CircleID, dayKey(performedAt)).First(&surprise).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return earning, nil
+	}
+	if err != nil {
+		return earning, err
+	}
+	same, err := SameTaskIDs(tx, chore.CircleID, surprise.ChoreID)
+	if err != nil {
+		return earning, err
+	}
+	if surprise.ChoreID == chore.ID || slices.Contains(same, chore.ID) {
 		earning.Points += surprise.Points
 		earning.Reason += fmt.Sprintf(" (surprise +%d)", surprise.Points)
-	} else if !errors.Is(err, gorm.ErrRecordNotFound) {
-		return earning, err
 	}
 	return earning, nil
 }

@@ -152,7 +152,7 @@ func drawQuests(db *gorm.DB, circleID, userID int, now time.Time) error {
 }
 
 // tasksDone counts, per member, the tasks completed between from and to, or
-// only those of one task.
+// only those of one task and its copies with the same name.
 func tasksDone(db *gorm.DB, circleID int, choreID *int, from, to time.Time) (map[int]int, error) {
 	var rows []struct {
 		CompletedBy int
@@ -163,7 +163,7 @@ func tasksDone(db *gorm.DB, circleID int, choreID *int, from, to time.Time) (map
 		Where("c.circle_id = ? AND h.status = ? AND h.performed_at >= ? AND h.performed_at < ?",
 			circleID, chModel.ChoreHistoryStatusCompleted, from, to)
 	if choreID != nil {
-		query = query.Where("h.chore_id = ?", *choreID)
+		query = query.Where("LOWER(TRIM(c.name)) = (SELECT LOWER(TRIM(name)) FROM chores WHERE id = ?)", *choreID)
 	}
 	if err := query.Group("h.completed_by").Scan(&rows).Error; err != nil {
 		return nil, err
