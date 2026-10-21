@@ -1073,6 +1073,14 @@ const GetRanks = async () => {
   return resp.json()
 }
 
+const GetDefaultRanks = async () => {
+  const resp = await Fetch(`/games/ranks/defaults`, {
+    method: 'GET',
+    headers: HEADERS(),
+  })
+  return resp.json()
+}
+
 const SaveRanks = ranks => {
   return Fetch(`/games/ranks`, {
     method: 'PUT',
@@ -1189,6 +1197,7 @@ export {
   GetChoresWithSubtasks,
   GetChoreTimer,
   GetCircleMemberRequests,
+  GetDefaultRanks,
   GetFilterById,
   GetFilters,
   GetFiltersByUsage,

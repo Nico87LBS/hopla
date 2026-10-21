@@ -352,6 +352,7 @@ func Routes(r *gin.Engine, h *Handler, auth *jwt.GinJWTMiddleware) {
 		routes.DELETE("/periods/:id", h.deletePeriod)
 		routes.GET("/ranks", h.getRanks)
 		routes.PUT("/ranks", h.updateRanks)
+		routes.GET("/ranks/defaults", h.getDefaultRanks)
 		routes.GET("/quests", h.getQuests)
 		routes.POST("/quests", h.createQuest)
 		routes.PUT("/quests/:id", h.updateQuest)
