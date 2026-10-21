@@ -15,6 +15,10 @@
     "remaining": "Points restants : {{count}}"
   },
   "leaderboard": {
+    "titlePoints": "Classement des points",
+    "subtitlePoints": "Qui a gagné le plus de points sur la période.",
+    "titleTasks": "Classement des tâches",
+    "subtitleTasks": "Qui a terminé le plus de tâches sur la période.",
     "modePoints": "Points",
     "modeTasks": "Tâches",
     "you": "Vous",
@@ -28,7 +32,7 @@
     "short6m": "6 mois",
     "shortAll": "Tout",
     "allTime": "Toute la période",
-    "short30d": "30J"
+    "short30d": "30 j"
   },
   "filter": {
     "title": "Filtrer les points",

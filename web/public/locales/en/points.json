@@ -15,6 +15,10 @@
     "remaining": "Remaining: {{count}} points"
   },
   "leaderboard": {
+    "titlePoints": "Points leaderboard",
+    "subtitlePoints": "Who earned the most points over this period.",
+    "titleTasks": "Tasks leaderboard",
+    "subtitleTasks": "Who completed the most tasks over this period.",
     "modePoints": "Points",
     "modeTasks": "Tasks",
     "you": "You",
