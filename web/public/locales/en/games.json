@@ -94,6 +94,75 @@
     "points": "points",
     "help": "0 days or 0 points turns the streak bonus off; streaks are still counted. The surprise task is drawn each day among today's tasks that everyone can see.",
     "saved": "Rules saved.",
-    "failed": "The rules could not be saved."
+    "failed": "The rules could not be saved.",
+    "questsPerWeek": "Quests drawn every Monday",
+    "quests": "quests"
+  },
+  "goals": {
+    "name": "Name, such as \"Table master\"",
+    "kind": {
+      "tasks": "Do tasks",
+      "points": "Earn points",
+      "streak": "Keep a streak"
+    },
+    "anyTask": "Any task",
+    "target": "Target",
+    "rewardLabel": "Reward",
+    "members": "For:",
+    "everyone": "everyone",
+    "tasks_one": "{{count}} task",
+    "tasks_other": "{{count}} tasks",
+    "oneTask_one": "\"{{name}}\" once",
+    "oneTask_other": "\"{{name}}\" {{count}} times",
+    "points_one": "{{count}} task point",
+    "points_other": "{{count}} task points",
+    "streak_one": "{{count}}-day streak",
+    "streak_other": "{{count}}-day streak",
+    "reward_one": "+{{count}} point",
+    "reward_other": "+{{count}} points"
+  },
+  "ranks": {
+    "title": "Ranks",
+    "toNext_one": "{{count}} more point to {{name}}",
+    "toNext_other": "{{count}} more points to {{name}}",
+    "top_one": "Top rank reached, with {{count}} point earned",
+    "top_other": "Top rank reached, with {{count}} points earned",
+    "settingsTitle": "The ranks",
+    "settingsSubtitle": "Steps of points earned since the start, from the first rank to the last.",
+    "name": "Rank name",
+    "help": "Ranks follow the points earned since the start: spending or a penalty never lowers them. The first rank starts at 0 points.",
+    "saved": "Ranks saved.",
+    "failed": "The ranks could not be saved."
+  },
+  "quests": {
+    "title": "Quests",
+    "subtitle": "Drawn every Monday for the week, and on the 1st for the month.",
+    "none": "No quest running. Parents prepare the quest list below.",
+    "until": "until {{end}}",
+    "listTitle": "Quest list",
+    "listSubtitle": "Weekly quests are drawn at random from this list; monthly ones go to everyone who can do them.",
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "empty": "No quests yet.",
+    "deleteTitle": "Delete quest",
+    "deleteMessage": "Delete \"{{name}}\"? If it is running, it goes on until the end of its week or month.",
+    "failed": "The quest could not be saved."
+  },
+  "challenges": {
+    "title": "Challenges",
+    "subtitle": "A goal between two dates, each on their own or as a family.",
+    "empty": "No challenge running.",
+    "shared": "Family",
+    "solo": "Each on their own",
+    "sharedLabel": "Family: everyone's points add up",
+    "rewardText": "Shared reward, such as \"Swimming pool trip\" (optional)",
+    "until": "until {{end}}",
+    "ended": "ended",
+    "planned": "Starts {{start}}",
+    "rewardToWin": "To win: {{reward}}",
+    "rewardWon": "Won: {{reward}}!",
+    "deleteTitle": "Delete challenge",
+    "deleteMessage": "Delete \"{{name}}\"? Points already won stay.",
+    "failed": "The challenge could not be saved."
   }
 }

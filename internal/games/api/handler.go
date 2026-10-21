@@ -1,5 +1,5 @@
 // Package api serves the family games: the game of the day (surprise task,
-// bonus period, streaks), the rules and the bonus periods.
+// bonus period, streaks, ranks, quests, challenges) and their settings.
 package api
 
 import (
@@ -74,6 +74,19 @@ type Today struct {
 	Surprise *SurpriseInfo      `json:"surprise"`
 	Period   *games.BonusPeriod `json:"period"`
 	Streaks  []games.Streak     `json:"streaks"`
+	Ranks    []games.Rank       `json:"ranks"`
+	// Members is each active member's rank and running quests.
+	Members    []MemberProgress      `json:"members"`
+	Challenges []games.ChallengeView `json:"challenges"`
+}
+
+// MemberProgress is a member's rank, from the points earned since joining,
+// and their quests of the week and month.
+type MemberProgress struct {
+	UserID int `json:"userId"`
+	Earned int `json:"earned"`
+	games.RankLevel
+	Quests []games.QuestView `json:"quests"`
 }
 
 func (h *Handler) getToday(c *gin.Context) {
@@ -125,6 +138,34 @@ func (h *Handler) getToday(c *gin.Context) {
 		fail(err)
 		return
 	}
+	if err := games.Settle(db, circleID, userIDs, now); err != nil {
+		fail(err)
+		return
+	}
+	if members, err = h.circleRepo.GetCircleUsers(c, circleID); err != nil { // with the rewards just paid
+		fail(err)
+		return
+	}
+	if today.Ranks, err = games.RanksFor(db, circleID); err != nil {
+		fail(err)
+		return
+	}
+	quests, err := games.Quests(db, circleID, userIDs, now)
+	if err != nil {
+		fail(err)
+		return
+	}
+	today.Members = []MemberProgress{}
+	for _, m := range members {
+		if m.IsActive {
+			today.Members = append(today.Members, MemberProgress{UserID: m.UserID, Earned: m.Points,
+				RankLevel: games.RankOf(today.Ranks, m.Points), Quests: quests[m.UserID]})
+		}
+	}
+	if today.Challenges, err = games.Challenges(db, circleID, userIDs, now.Add(-endedChallengesKept), now); err != nil {
+		fail(err)
+		return
+	}
 	c.JSON(200, gin.H{"res": today})
 }
 
@@ -153,8 +194,8 @@ func (h *Handler) updateRules(c *gin.Context) {
 		return
 	}
 	if rules.StreakEvery < 0 || rules.StreakEvery > maxStreakEvery || rules.StreakBonus < 0 || rules.StreakBonus > maxBonus ||
-		rules.SurpriseBonus < 0 || rules.SurpriseBonus > maxBonus {
-		c.JSON(400, gin.H{"error": "streakEvery must be 0 to 60 days, and bonuses 0 to 1000 points"})
+		rules.SurpriseBonus < 0 || rules.SurpriseBonus > maxBonus || rules.QuestsPerWeek < 0 || rules.QuestsPerWeek > maxQuestsPerWeek {
+		c.JSON(400, gin.H{"error": "streakEvery must be 0 to 60 days, questsPerWeek 0 to 5, and bonuses 0 to 1000 points"})
 		return
 	}
 	rules.CircleID = circleID
@@ -303,11 +344,21 @@ func Routes(r *gin.Engine, h *Handler, auth *jwt.GinJWTMiddleware) {
 		routes.POST("/periods", h.createPeriod)
 		routes.PUT("/periods/:id", h.updatePeriod)
 		routes.DELETE("/periods/:id", h.deletePeriod)
+		routes.GET("/ranks", h.getRanks)
+		routes.PUT("/ranks", h.updateRanks)
+		routes.GET("/quests", h.getQuests)
+		routes.POST("/quests", h.createQuest)
+		routes.PUT("/quests/:id", h.updateQuest)
+		routes.DELETE("/quests/:id", h.deleteQuest)
+		routes.GET("/challenges", h.getChallenges)
+		routes.POST("/challenges", h.createChallenge)
+		routes.PUT("/challenges/:id", h.updateChallenge)
+		routes.DELETE("/challenges/:id", h.deleteChallenge)
 	}
 }
 
-// APIs gives integrations such as Home Assistant the games of the day and the
-// bonus periods, with an API token.
+// APIs gives integrations such as Home Assistant the games of the day and
+// their settings, with an API token.
 func APIs(cfg *config.Config, h *Handler, r *gin.Engine, limiter *limiter.Limiter, userRepo *uRepo.UserRepository) {
 	routes := r.Group("eapi/v1/games")
 	routes.Use(
@@ -318,5 +369,8 @@ func APIs(cfg *config.Config, h *Handler, r *gin.Engine, limiter *limiter.Limite
 	{
 		routes.GET("/today", h.getToday)
 		routes.GET("/periods", h.getPeriods)
+		routes.GET("/ranks", h.getRanks)
+		routes.GET("/quests", h.getQuests)
+		routes.GET("/challenges", h.getChallenges)
 	}
 }

@@ -8,7 +8,6 @@ import (
 	"time"
 
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
 	ptModel "github.com/nico87lbs/hopla/internal/points"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -226,15 +225,5 @@ func AwardStreakBonus(tx *gorm.DB, circleID, userID int, performedAt, now time.T
 	if streak.Current == 0 || streak.Current%rules.StreakEvery != 0 {
 		return nil, nil
 	}
-	reason := fmt.Sprintf("Série de %d jours", streak.Current)
-	entry := ptModel.PointsHistory{Action: ptModel.PointsHistoryActionBonus, Points: rules.StreakBonus, UserID: userID,
-		CircleID: circleID, CreatedBy: userID, Reason: &reason, CreatedAt: time.Now().UTC()}
-	if err := tx.Model(&cModel.UserCircle{}).Where("user_id = ? AND circle_id = ?", userID, circleID).
-		Update("points", gorm.Expr("points + ?", rules.StreakBonus)).Error; err != nil {
-		return nil, err
-	}
-	if err := tx.Create(&entry).Error; err != nil {
-		return nil, err
-	}
-	return &entry, nil
+	return giveBonus(tx, circleID, userID, rules.StreakBonus, fmt.Sprintf("Série de %d jours", streak.Current))
 }
