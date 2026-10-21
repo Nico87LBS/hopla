@@ -103,6 +103,13 @@ const GetChores = () => {
     headers: HEADERS(),
   })
 }
+const GetChoresWithSubtasks = async () => {
+  const resp = await Fetch(`/chores/?includeSubtasks=true`, {
+    method: 'GET',
+    headers: HEADERS(),
+  })
+  return resp.json()
+}
 const GetArchivedChores = () => {
   return Fetch(`/chores/archived`, {
     method: 'GET',
@@ -1179,6 +1186,7 @@ export {
   GetChores,
   GetChoresHistory,
   GetChoresNew,
+  GetChoresWithSubtasks,
   GetChoreTimer,
   GetCircleMemberRequests,
   GetFilterById,

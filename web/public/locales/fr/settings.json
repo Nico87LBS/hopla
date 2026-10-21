@@ -59,6 +59,10 @@
         "title": "Paramètres de stockage",
         "description": "Sauvegardez et restaurez vos données, gérez le stockage local et la synchronisation."
       },
+      "template": {
+        "title": "Modèle d'instance",
+        "description": "Exporte tes tâches, récompenses, préréglages et jeux dans un fichier, ou importe un modèle pour démarrer vite."
+      },
       "layout": {
         "title": "Disposition et navigation",
         "description": "Choisissez l'écran sur lequel l'application s'ouvre, ainsi que les raccourcis et panneaux qui l'entourent."
@@ -339,6 +343,50 @@
     "clearLocalTitle": "Effacer tout le stockage local",
     "clearLocalMessage": "Voulez-vous vraiment effacer votre stockage local et le cache ? Toutes vos données seront supprimées de ce navigateur et vous devrez vous reconnecter.",
     "clearAll": "Tout effacer"
+  },
+  "template": {
+    "title": "Modèle d'instance",
+    "intro": "Un modèle contient les tâches, récompenses, préréglages et jeux, sans personne ni date. Exporte-le ici, puis importe-le dans une autre instance Hopla.",
+    "parentsOnly": "Seuls les parents peuvent exporter ou importer un modèle.",
+    "exportFailed": "L'export du modèle a échoué.",
+    "sections": {
+      "tasks": "Tâches",
+      "rewards": "Récompenses",
+      "presets": "Préréglages",
+      "games": "Jeux"
+    },
+    "export": {
+      "title": "Exporter un modèle",
+      "description": "Télécharge un fichier avec ce que tu coches. Les tâches privées n'y sont pas, et une tâche créée pour chaque enfant n'y est qu'une fois.",
+      "button": "Exporter"
+    },
+    "import": {
+      "title": "Importer un modèle",
+      "description": "Choisis un fichier de modèle. Rien n'est créé avant que tu cliques sur Importer, et ce qui existe déjà sous le même nom est laissé tel quel.",
+      "choose": "Choisir un fichier",
+      "line": "{{label}} : {{added}}",
+      "newCount_one": "{{count}} nouveau",
+      "newCount_other": "{{count}} nouveaux",
+      "skippedCount_one": "{{count}} déjà présent",
+      "skippedCount_other": "{{count}} déjà présents",
+      "quests": "Quêtes",
+      "replacesGames": "Les règles des jeux et les rangs actuels seront remplacés par ceux du modèle.",
+      "assignTitle": "À qui assigner les tâches ?",
+      "assignHelp": "Sans personne choisie, les tâches sont pour n'importe qui.",
+      "shared": "Une tâche partagée entre eux",
+      "perMember": "Une copie de chaque tâche par personne",
+      "button": "Importer"
+    },
+    "report": {
+      "done": "Import terminé : {{tasks}} tâches, {{rewards}} récompenses, {{presets}} préréglages et {{quests}} quêtes créés.",
+      "failed": "Pas importé : {{names}}."
+    },
+    "errors": {
+      "notJson": "Ce fichier n'est pas un fichier JSON lisible.",
+      "notTemplate": "Ce fichier n'est pas un modèle Hopla.",
+      "tooNew": "Ce modèle vient d'une version plus récente de Hopla. Mets Hopla à jour pour l'importer.",
+      "loadFailed": "Impossible de lire les données actuelles. Réessaie."
+    }
   },
   "sidepanel": {
     "title": "Personnalisation du panneau latéral",

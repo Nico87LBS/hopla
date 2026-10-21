@@ -4,6 +4,7 @@ import {
   CalendarMonth,
   Circle,
   FamilyRestroom,
+  ImportExport,
   Language,
   Palette,
   Person,
@@ -25,6 +26,8 @@ export const SETTINGS_SECTIONS = [
   { id: 'apitokens', icon: Api, parentOnly: true },
   { id: 'calendar', icon: CalendarMonth },
   { id: 'storage', icon: Storage },
+  // Tasks, rewards and games as a file, to set up another family quickly.
+  { id: 'template', icon: ImportExport, parentOnly: true },
   // Default landing view, plus whichever chrome this device actually has:
   // the bottom bar on mobile, the sidepanel on desktop.
   { id: 'layout', icon: ViewSidebar },
