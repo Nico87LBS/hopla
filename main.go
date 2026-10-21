@@ -245,6 +245,7 @@ func newServer(lc fx.Lifecycle, cfg *config.Config, db *gorm.DB, mfaCleanup *mfa
 	// Expose headers that the frontend might need
 	corsConfig.AddExposeHeaders("Content-Type")
 	r.Use(cors.New(corsConfig))
+	r.Use(realtime.ChangeNotifier(rts))
 
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {

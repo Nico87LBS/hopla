@@ -65,6 +65,16 @@ func (am *AuthMiddleware) AuthenticateConnection(c *gin.Context) (*uModel.User, 
 		return user, user.CircleID, nil
 	}
 
+	// Integrations such as Home Assistant authenticate with the same long-lived
+	// API token they use for the REST API.
+	if apiToken := c.GetHeader("secretkey"); apiToken != "" {
+		user, err := am.userRepo.GetUserByToken(c.Request.Context(), apiToken)
+		if err != nil || user.Disabled {
+			return nil, 0, ErrInvalidToken
+		}
+		return &user.User, user.CircleID, nil
+	}
+
 	// Extract token from query parameter or header
 	token := am.extractToken(c)
 	if token == "" {

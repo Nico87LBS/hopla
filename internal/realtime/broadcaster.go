@@ -201,3 +201,17 @@ func (b *EventBroadcaster) generateEventID() string {
 	rand.Read(bytes)
 	return hex.EncodeToString(bytes)
 }
+
+// BroadcastChange announces a change event. recipients nil means the whole circle.
+func (b *EventBroadcaster) BroadcastChange(circleID int, recipients []int, eventType EventType, userID int) {
+	if !b.service.config.Enabled {
+		return
+	}
+	event := NewEvent(eventType, circleID, &ChangeEventData{UserID: userID})
+	event.ID = b.generateEventID()
+	if recipients == nil {
+		b.service.BroadcastToCircle(circleID, event)
+		return
+	}
+	b.service.BroadcastToUsers(circleID, recipients, event)
+}

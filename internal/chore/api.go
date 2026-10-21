@@ -484,18 +484,18 @@ func APIs(cfg *config.Config, api *API, r *gin.Engine, auth *jwt.GinJWTMiddlewar
 		tasksAPI.DELETE("/:id", api.DeleteChore)
 	}
 
-	// Plus member only endpoints
-	tasksPlusAPI := r.Group("eapi/v1/chore")
-	tasksPlusAPI.Use(
+	// Task actions
+	taskActionsAPI := r.Group("eapi/v1/chore")
+	taskActionsAPI.Use(
 		utils.TimeoutMiddleware(cfg.Server.WriteTimeout),
 		utils.RateLimitMiddleware(limiter),
 		authMiddleware.APITokenMiddleware(userRepo),
 	)
 	{
-		tasksPlusAPI.POST("/:id/complete", api.CompleteChore)
-		tasksPlusAPI.PUT("/:id", api.UpdateChore)
-		tasksPlusAPI.POST("/:id/approve", api.handler.ApproveChore)
-		tasksPlusAPI.POST("/:id/reject", api.handler.RejectChore)
+		taskActionsAPI.POST("/:id/complete", api.CompleteChore)
+		taskActionsAPI.PUT("/:id", api.UpdateChore)
+		taskActionsAPI.POST("/:id/approve", api.handler.ApproveChore)
+		taskActionsAPI.POST("/:id/reject", api.handler.RejectChore)
 	}
 
 	circleAPI := r.Group("eapi/v1/circle")

@@ -199,6 +199,24 @@ export const useSSE = () => {
             queryClient.invalidateQueries({ queryKey: ['chores'] })
             break
 
+          case 'rewards.updated':
+            // A reward or a redemption changed, which can also move points.
+            queryClient.invalidateQueries({ queryKey: ['rewards'] })
+            queryClient.invalidateQueries({ queryKey: ['redemptions'] })
+            queryClient.invalidateQueries({ queryKey: ['circleMembers'] })
+            break
+
+          case 'things.updated':
+            queryClient.invalidateQueries({ queryKey: ['thingHistory'] })
+            break
+
+          case 'circle.updated':
+            queryClient.invalidateQueries({ queryKey: ['circleMembers'] })
+            queryClient.invalidateQueries({ queryKey: ['allCircleMembers'] })
+            queryClient.invalidateQueries({ queryKey: ['childUsers'] })
+            queryClient.invalidateQueries({ queryKey: ['userCircle'] })
+            break
+
           case 'subtask.updated':
           case 'subtask.completed':
             queryClient.setQueryData(
