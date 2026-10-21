@@ -97,6 +97,13 @@ export default ({ command }) => {
           find: '@',
           replacement: '/src',
         },
+        // One moment for the app and its locales: the CommonJS build and the
+        // locale files do not share an instance once bundled, so French dates
+        // silently fell back to English.
+        {
+          find: /^moment$/,
+          replacement: 'moment/dist/moment.js',
+        },
       ],
     },
   })

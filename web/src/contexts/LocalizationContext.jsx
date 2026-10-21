@@ -42,21 +42,31 @@ export const AVAILABLE_LANGUAGES = [
   { code: 'fr', name: 'French', nativeName: 'Français' },
 ]
 
+// Until someone picks a language, follow the browser's when we have it.
+const browserLanguage = () => {
+  const code = (navigator.language || 'en').split('-')[0]
+  return AVAILABLE_LANGUAGES.some(language => language.code === code)
+    ? code
+    : 'en'
+}
+
 export const LocalizationProvider = ({ children }) => {
-  const { i18n } = useTranslation()
+  const { i18n, t } = useTranslation()
+  const initialLanguage = browserLanguage()
+  const initialDefaults = LANGUAGE_DEFAULTS[initialLanguage]
   const [dateFormat, setDateFormat] = useStickyState(
-    DATE_FORMATS.MDY,
+    initialDefaults.dateFormat,
     'dateFormat',
   )
   const [timeFormat, setTimeFormat] = useStickyState(
-    TIME_FORMATS.HOUR_12,
+    initialDefaults.timeFormat,
     'timeFormat',
   )
   const [firstDayOfWeek, setFirstDayOfWeek] = useStickyState(
-    0,
+    initialDefaults.firstDayOfWeek,
     'firstDayOfWeek',
   ) // 0 = Sunday, 1 = Monday
-  const [language, setLanguageRaw] = useStickyState('en', 'language')
+  const [language, setLanguageRaw] = useStickyState(initialLanguage, 'language')
 
   const setLanguage = code => {
     setLanguageRaw(code)
@@ -107,11 +117,11 @@ export const LocalizationProvider = ({ children }) => {
   const formatCalendar = date => {
     if (!date) return ''
     return moment(date).calendar(null, {
-      sameDay: `[Today] ${timeFormat}`,
-      nextDay: `[Tomorrow] ${timeFormat}`,
+      sameDay: `${t('momentCalendar.today')} ${timeFormat}`,
+      nextDay: `${t('momentCalendar.tomorrow')} ${timeFormat}`,
       nextWeek: `dddd ${timeFormat}`,
-      lastDay: `[Yesterday] ${timeFormat}`,
-      lastWeek: `[Last] dddd ${timeFormat}`,
+      lastDay: `${t('momentCalendar.yesterday')} ${timeFormat}`,
+      lastWeek: `${t('momentCalendar.lastWeek')} ${timeFormat}`,
       sameElse: `${dateFormat} ${timeFormat}`,
     })
   }

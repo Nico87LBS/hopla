@@ -957,8 +957,55 @@ const ToggleFilterPin = id => {
   })
 }
 
+const GetPointsHistory = async ({ before, limit, userId } = {}) => {
+  const params = new URLSearchParams()
+  if (userId) params.set('userId', userId)
+  if (before) params.set('before', before)
+  if (limit) params.set('limit', limit)
+  const query = params.toString() ? `?${params}` : ''
+  const resp = await Fetch(`/points/history${query}`, {
+    method: 'GET',
+    headers: HEADERS(),
+  })
+  return resp.json()
+}
+
+// points > 0 gives a bonus, points < 0 a penalty. With presetId, the preset
+// gives the points and, without a reason, its name.
+const AdjustPoints = ({ points, presetId, reason, userId }) => {
+  return Fetch(`/points/adjust`, {
+    method: 'POST',
+    headers: HEADERS(),
+    body: JSON.stringify({ userId, points, reason, presetId }),
+  })
+}
+
+const GetPointsPresets = async () => {
+  const resp = await Fetch(`/points/presets`, {
+    method: 'GET',
+    headers: HEADERS(),
+  })
+  return resp.json()
+}
+
+const SavePointsPreset = preset => {
+  return Fetch(preset.id ? `/points/presets/${preset.id}` : `/points/presets`, {
+    method: preset.id ? 'PUT' : 'POST',
+    headers: HEADERS(),
+    body: JSON.stringify({ name: preset.name, points: preset.points }),
+  })
+}
+
+const DeletePointsPreset = id => {
+  return Fetch(`/points/presets/${id}`, {
+    method: 'DELETE',
+    headers: HEADERS(),
+  })
+}
+
 export {
   AcceptCircleMemberRequest,
+  AdjustPoints,
   ApproveChore,
   ApproveRedemption,
   ArchiveChore,
@@ -988,6 +1035,7 @@ export {
   DeleteFilter,
   DeleteLabel,
   DeleteLongLiveToken,
+  DeletePointsPreset,
   DeleteProject,
   DeleteReward,
   DeleteThing,
@@ -1015,6 +1063,8 @@ export {
   GetLongLiveTokens,
   GetMFAStatus,
   GetPinnedFilters,
+  GetPointsHistory,
+  GetPointsPresets,
   GetProjectById,
   GetProjects,
   GetRedemptions,
@@ -1044,6 +1094,7 @@ export {
   RevokeCalendarURL,
   RotateCalendarURL,
   SaveChore,
+  SavePointsPreset,
   SaveThing,
   SetupMFA,
   SignAssetURL,

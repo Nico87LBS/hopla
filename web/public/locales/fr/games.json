@@ -1,0 +1,55 @@
+{
+  "tab": "Jeux",
+  "adjust": {
+    "title": "Bonus et pénalités",
+    "subtitle": "Donne des points en plus, ou retire-en. Une pénalité ne fait jamais passer le solde sous zéro, et ne fait jamais perdre de rang.",
+    "pickMember": "Choisis d'abord un membre.",
+    "available_one": "{{name}} a {{count}} point disponible.",
+    "available_other": "{{name}} a {{count}} points disponibles.",
+    "presets": "Préréglages",
+    "custom": "Autre montant",
+    "bonus": "Bonus",
+    "penalty": "Pénalité",
+    "points": "Points",
+    "reason": "Raison (facultatif)",
+    "give": "Valider",
+    "failed": "Les points n'ont pas pu être modifiés.",
+    "done": {
+      "bonus_one": "{{count}} point de bonus pour {{name}}.",
+      "bonus_other": "{{count}} points de bonus pour {{name}}.",
+      "penalty_one": "{{count}} point retiré à {{name}}.",
+      "penalty_other": "{{count}} points retirés à {{name}}."
+    }
+  },
+  "presets": {
+    "title": "Préréglages",
+    "subtitle": "Les bonus et pénalités habituels, à donner d'une touche ici et sur la tablette.",
+    "add": "Ajouter",
+    "name": "Nom, par exemple « Chambre rangée »",
+    "points": "Points",
+    "pointsHelp": "Un nombre positif pour un bonus, négatif pour une pénalité (entre -1000 et 1000).",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "deleteTitle": "Supprimer le préréglage",
+    "deleteMessage": "Supprimer « {{name}} » ? L'historique des points ne change pas.",
+    "empty": "Aucun préréglage pour l'instant.",
+    "failed": "Le préréglage n'a pas pu être enregistré."
+  },
+  "history": {
+    "title": "Historique des points",
+    "everyone": "Tout le monde",
+    "empty": "Aucun mouvement de points pour l'instant.",
+    "unknown": "Membre inconnu",
+    "by": "par {{name}}",
+    "more": "Voir plus",
+    "actions": {
+      "task": "Tâche",
+      "undo": "Tâche annulée",
+      "redeem": "Points utilisés",
+      "bonus": "Bonus",
+      "penalty": "Pénalité"
+    }
+  }
+}
