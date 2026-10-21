@@ -761,7 +761,7 @@ func (r *ChoreRepository) ApproveChore(c context.Context, chore *chModel.Chore, 
 		history.SyncVersion = nextVersion
 
 		// Update UserCircle Points if applicable
-		performedAt := time.Now()
+		performedAt := time.Now().UTC()
 		if history.PerformedAt != nil {
 			performedAt = *history.PerformedAt
 		}
@@ -776,7 +776,7 @@ func (r *ChoreRepository) ApproveChore(c context.Context, chore *chModel.Chore, 
 			return err
 		}
 		if applyPoints {
-			if _, err := games.AwardStreakBonus(tx, chore.CircleID, history.CompletedBy, performedAt, time.Now()); err != nil {
+			if _, err := games.AwardStreakBonus(tx, chore.CircleID, history.CompletedBy, performedAt, time.Now().UTC()); err != nil {
 				return err
 			}
 		}
@@ -884,7 +884,7 @@ func (r *ChoreRepository) CompleteChore(c context.Context, chore *chModel.Chore,
 		}
 
 		// Update UserCirclee Points :
-		performedAt := time.Now()
+		performedAt := time.Now().UTC()
 		if completedDate != nil {
 			performedAt = *completedDate
 		}
@@ -903,7 +903,7 @@ func (r *ChoreRepository) CompleteChore(c context.Context, chore *chModel.Chore,
 			return err
 		}
 		if applyPoints {
-			if _, err := games.AwardStreakBonus(tx, chore.CircleID, userID, performedAt, time.Now()); err != nil {
+			if _, err := games.AwardStreakBonus(tx, chore.CircleID, userID, performedAt, time.Now().UTC()); err != nil {
 				return err
 			}
 		}

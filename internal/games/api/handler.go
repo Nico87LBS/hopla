@@ -83,7 +83,7 @@ func (h *Handler) getToday(c *gin.Context) {
 		return
 	}
 	circleID := currentUser.CircleID
-	now := time.Now()
+	now := time.Now().UTC()
 	db := h.db.WithContext(c)
 	fail := func(err error) {
 		logging.FromContext(c).Error("Failed to get the games of the day", "error", err)
@@ -173,7 +173,7 @@ func (h *Handler) getPeriods(c *gin.Context) {
 		return
 	}
 	periods := []games.BonusPeriod{}
-	if err := h.db.WithContext(c).Where("circle_id = ? AND ends_at > ?", currentUser.CircleID, time.Now().Add(-endedPeriodsKept)).
+	if err := h.db.WithContext(c).Where("circle_id = ? AND ends_at > ?", currentUser.CircleID, time.Now().UTC().Add(-endedPeriodsKept)).
 		Order("starts_at").Find(&periods).Error; err != nil {
 		c.JSON(500, gin.H{"error": "Error getting bonus periods"})
 		return
