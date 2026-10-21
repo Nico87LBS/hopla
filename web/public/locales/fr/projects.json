@@ -117,5 +117,14 @@
       "keepsHistory": "Les tâches, l'historique et les points ne changent pas. Si tu partages de nouveau le projet plus tard, les tâches et l'historique réapparaissent ; les assignations retirées sont à refaire.",
       "previewFailed": "Impossible de vérifier l'effet de ce changement. Réessaie."
     }
+  },
+  "list": {
+    "sortName": "Nom",
+    "sortTasks": "Nombre de tâches",
+    "sortCreated": "Créés récemment",
+    "show": "Afficher",
+    "allProjects": "Tous les projets",
+    "createdByMe": "Créés par moi",
+    "sharedWithMe": "Partagés avec moi"
   }
 }

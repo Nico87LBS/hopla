@@ -482,6 +482,11 @@
     },
     "sidepanel": {
       "title": "Sidepanel"
+    },
+    "taskEditor": {
+      "title": "Task editor",
+      "singlePage": "Show task editor on one page",
+      "singlePageHelp": "Show all task settings in one scrolling page instead of separate steps. Saved for this device/browser."
     }
   },
   "theme": {
@@ -624,10 +629,24 @@
     "newOwner": "New Owner",
     "logoutNotice": "On successful deletion, you will be logged out and redirected to the login page.",
     "passwordLabel": "Password",
-    "typeToConfirm": "Type \"{{word}}\" to confirm"
+    "typeToConfirm": "Type \"{{word}}\" to confirm",
+    "modal": {
+      "title": "Delete account",
+      "transferTitle": "Transfer circle ownership",
+      "finalTitle": "Final confirmation",
+      "continue": "Continue"
+    }
   },
   "realtime": {
     "errorDescription": "Real-time updates (SSE) are enabled but not working: {{error}}",
-    "statusLabel": "Status:"
+    "statusLabel": "Status:",
+    "status": {
+      "connected": "Connected",
+      "connecting": "Connecting…",
+      "disconnected": "Disconnected",
+      "tooltip": "Real-time updates (SSE): {{status}}",
+      "tooltipError": "Real-time updates (SSE): {{status}} - {{error}}",
+      "tooltipJoin": "Real-time updates (SSE): {{status}} - Join a circle to enable real-time updates"
+    }
   }
 }

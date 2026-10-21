@@ -31,8 +31,8 @@ function TextModal({
       title={title}
       footer={
         <ModalActions
-          secondary={{ label: cancelText || 'Cancel', onClick: onClose }}
-          primary={{ label: okText || 'Save', onClick: handleSave }}
+          secondary={{ label: cancelText || t('cancel'), onClick: onClose }}
+          primary={{ label: okText || t('save'), onClick: handleSave }}
         />
       }
     >

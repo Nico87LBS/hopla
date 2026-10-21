@@ -12,7 +12,10 @@
     "quickAdd": "Ajout rapide :",
     "aboutToRedeem": "Vous allez utiliser",
     "amount": "Points : {{count}}",
-    "remaining": "Points restants : {{count}}"
+    "remaining": "Points restants : {{count}}",
+    "user": "Membre",
+    "addPoints_one": "Ajouter {{count}} point",
+    "addPoints_other": "Ajouter {{count}} points"
   },
   "leaderboard": {
     "titlePoints": "Classement des points",

@@ -216,15 +216,22 @@ export const collectUsages = src => {
     }
   }
 
-  if (!namespaces.length && !src.includes('i18nKey')) return usages
+  if (!namespaces.length && !/i18nKey|\bi18n(?:ext)?\.t\(/.test(src)) {
+    return usages
+  }
 
-  for (const m of src.matchAll(/(?<![\w.$])t\(/g)) {
-    let i = m.index + 2
+  // t('…') from useTranslation, and i18n.t('…') outside components, which
+  // has no useTranslation namespace and falls back to the default one
+  for (const m of src.matchAll(/(?<![\w.$])(i18n(?:ext)?\.)?t\(/g)) {
+    const open = m.index + m[0].length - 1
+    let i = open + 1
     while (/\s/.test(src[i])) i++
     const lit = readLiteral(src, i)
     if (!lit) continue
-    const args = src.slice(lit.end, closeParen(src, m.index + 1) - 1)
-    const nsOption = /\bns:\s*['"]([^'"]+)['"]/.exec(args)?.[1]
+    const args = src.slice(lit.end, closeParen(src, open) - 1)
+    const nsOption =
+      /\bns:\s*['"]([^'"]+)['"]/.exec(args)?.[1] ??
+      (m[1] ? DEFAULT_NS : undefined)
     add(m.index, lit.parts, nsOption)
   }
 

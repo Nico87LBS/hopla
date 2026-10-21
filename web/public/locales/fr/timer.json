@@ -18,7 +18,9 @@
     "pausedMessage": "La session de travail a été mise en pause.",
     "pauseQueuedTitle": "Mise en pause en attente",
     "pauseFailTitle": "Échec de la mise en pause du minuteur",
-    "deleteSessionTitle": "Supprimer la session"
+    "deleteSessionTitle": "Supprimer la session",
+    "offlineStart": "Hors ligne : le démarrage sera envoyé au retour de la connexion",
+    "offlinePause": "Hors ligne : la pause sera envoyée au retour de la connexion"
   },
   "loading": "Chargement des données du minuteur...",
   "noData": "Aucune donnée de minuteur trouvée pour cette tâche.",
@@ -60,5 +62,10 @@
   "durationAutoCalculated": "Durée (calculée automatiquement)",
   "pause": "Mettre en pause",
   "resume": "Reprendre",
-  "clearAndReset": "Effacer et réinitialiser"
+  "clearAndReset": "Effacer et réinitialiser",
+  "pauseTimer": "Mettre en pause",
+  "startTimer": "Démarrer le minuteur",
+  "sessionBar": "Session {{number}} : {{duration}} {{ongoing}}",
+  "ongoing": "(en cours)",
+  "unknownUser": "Inconnu"
 }

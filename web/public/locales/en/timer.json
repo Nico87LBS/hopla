@@ -18,7 +18,9 @@
     "pausedMessage": "Work session has been paused.",
     "pauseQueuedTitle": "Pause queued",
     "pauseFailTitle": "Failed to pause timer",
-    "deleteSessionTitle": "Delete Session"
+    "deleteSessionTitle": "Delete Session",
+    "offlineStart": "You're offline — start will sync when back online",
+    "offlinePause": "You're offline — pause will sync when back online"
   },
   "loading": "Loading timer data...",
   "noData": "No timer data found for this chore.",
@@ -60,5 +62,10 @@
   "durationAutoCalculated": "Duration (Auto-calculated)",
   "pause": "Pause",
   "resume": "Resume",
-  "clearAndReset": "Clear & Reset"
+  "clearAndReset": "Clear & Reset",
+  "pauseTimer": "Pause timer",
+  "startTimer": "Start timer",
+  "sessionBar": "Session {{number}}: {{duration}} {{ongoing}}",
+  "ongoing": "(ongoing)",
+  "unknownUser": "Unknown"
 }

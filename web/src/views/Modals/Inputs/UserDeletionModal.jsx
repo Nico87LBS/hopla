@@ -292,10 +292,10 @@ function UserDeletionModal({ isOpen, onClose }) {
       size='lg'
       title={
         step === 1
-          ? 'Delete Account'
+          ? t('deletion.modal.title')
           : step === 2
-            ? 'Transfer Circle Ownership'
-            : 'Final Confirmation'
+            ? t('deletion.modal.transferTitle')
+            : t('deletion.modal.finalTitle')
       }
       role={step === 3 ? 'alertdialog' : 'dialog'}
       closeOnBackdrop={false}
@@ -308,7 +308,10 @@ function UserDeletionModal({ isOpen, onClose }) {
               onClick: () => handleClose(false),
             }}
             primary={{
-              label: step === 3 ? 'Delete Account' : 'Continue',
+              label:
+                step === 3
+                  ? t('deletion.modal.title')
+                  : t('deletion.modal.continue'),
               color: step === 3 ? 'danger' : 'primary',
               onClick:
                 step === 1

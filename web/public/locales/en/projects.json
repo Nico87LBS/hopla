@@ -117,5 +117,14 @@
       "keepsHistory": "Tasks, completion history and points stay as they are. If you share the project again later, tasks and history become visible again; removed assignments have to be set again.",
       "previewFailed": "Could not check the effect of this change. Please try again."
     }
+  },
+  "list": {
+    "sortName": "Name",
+    "sortTasks": "Task count",
+    "sortCreated": "Recently created",
+    "show": "Show",
+    "allProjects": "All projects",
+    "createdByMe": "Created by me",
+    "sharedWithMe": "Shared with me"
   }
 }

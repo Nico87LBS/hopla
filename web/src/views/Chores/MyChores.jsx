@@ -647,7 +647,10 @@ const MyChores = () => {
     ) {
       const def = INSIGHT_FILTER_DEFS[filterId]
       applyingUrlFilterIdRef.current = rawFilterId
-      applyTempFilter(def.filter, { id: filterId, name: def.name })
+      applyTempFilter(def.filter, {
+        id: filterId,
+        name: t(`insights.filters.${filterId}`, def.name),
+      })
       return
     }
 

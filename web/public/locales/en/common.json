@@ -119,6 +119,19 @@
         "label": "Go to",
         "placeholder": "Jump to a view or action"
       }
+    },
+    "untitled": {
+      "task": "Untitled task",
+      "project": "Untitled project",
+      "label": "Untitled label"
+    },
+    "kinds": {
+      "task": "Task",
+      "note": "Task note",
+      "project": "Project",
+      "label": "Label",
+      "member": "Circle member",
+      "settings": "Settings"
     }
   },
   "done": "Done",
@@ -132,7 +145,9 @@
     "deniedMessage": "You do not have permission to upload files.",
     "failedTitle": "Upload Failed",
     "failedMessage": "Failed to upload image.",
-    "processingMessage": "An error occurred while processing the image."
+    "processingMessage": "An error occurred while processing the image.",
+    "failedFileMessage": "Failed to upload file.",
+    "processingFileMessage": "An error occurred while processing the file."
   },
   "imageLoadFailed": "Failed to load image.",
   "typeHere": "Type in here…",
@@ -584,5 +599,12 @@
     "tomorrow": "[Tomorrow]",
     "yesterday": "[Yesterday]",
     "lastWeek": "[Last] dddd"
-  }
+  },
+  "network": {
+    "serverUnreachable": "Server unreachable. Changes will sync when connection is restored.",
+    "noInternet": "No internet connection. Some features may not be available."
+  },
+  "attachment": "Attachment",
+  "download": "Download",
+  "note": "Note"
 }

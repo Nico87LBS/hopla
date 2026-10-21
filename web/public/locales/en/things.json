@@ -23,7 +23,33 @@
     "timeBefore": "{{time}} before",
     "loading": "Loading...",
     "noMoreHistory": "No more history",
-    "loadMore": "Load more"
+    "loadMore": "Load more",
+    "duration": {
+      "minute_one": "{{count}} minute",
+      "minute_other": "{{count}} minutes",
+      "hour_one": "{{count}} hour",
+      "hour_other": "{{count}} hours",
+      "day_one": "{{count}} day",
+      "day_other": "{{count}} days"
+    },
+    "trend": {
+      "increasing": "Interval increasing",
+      "decreasing": "Interval decreasing",
+      "stable": "Interval stable"
+    },
+    "stats": {
+      "frequency": "Update frequency",
+      "every": "Every {{duration}}",
+      "lastUpdated": "Last updated",
+      "lastValue": "Last value",
+      "trend": "Update trend"
+    },
+    "loadErrorTitle": "Couldn't load this history",
+    "loadErrorBody": "We could not reach the server. Check your connection and try again.",
+    "emptyTitle": "No history yet",
+    "emptyBody": "Each time this thing's value changes, the change is recorded here.",
+    "retry": "Try again",
+    "backToThings": "Back to things"
   },
   "view": {
     "title": "Things",

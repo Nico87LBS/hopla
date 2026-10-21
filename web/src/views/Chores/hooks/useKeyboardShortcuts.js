@@ -74,13 +74,17 @@ export const useKeyboardShortcuts = ({
             if (allVisibleSelected) {
               handlers.onShowMessage({
                 title: t('shortcuts.allSelectedTitle'),
-                message: `All ${visibleChores.length} filtered task${visibleChores.length !== 1 ? 's are' : ' is'} already selected.`,
+                message: t('shortcuts.allFilteredSelected', {
+                  count: visibleChores.length,
+                }),
               })
             } else {
               handlers.onSelectAll()
               handlers.onShowMessage({
                 title: t('shortcuts.someSelectedTitle'),
-                message: `Selected ${visibleChores.length} filtered task${visibleChores.length !== 1 ? 's' : ''}.`,
+                message: t('shortcuts.filteredSelected', {
+                  count: visibleChores.length,
+                }),
               })
             }
           } else {
@@ -102,20 +106,27 @@ export const useKeyboardShortcuts = ({
             if (allChoresSelected) {
               handlers.onShowMessage({
                 title: t('shortcuts.allSelectedTitle'),
-                message: `All ${allChores.length} task${allChores.length !== 1 ? 's are' : ' is'} already selected (including collapsed sections).`,
+                message: t('shortcuts.allAlreadySelected', {
+                  count: allChores.length,
+                }),
               })
             } else if (allExpandedSelected) {
               handlers.onSelectAll()
               const collapsedCount = allChores.length - expandedChores.length
               handlers.onShowMessage({
                 title: t('shortcuts.allSelectedAltTitle'),
-                message: `Selected all ${allChores.length} tasks (including ${collapsedCount} from collapsed sections).`,
+                message: t('shortcuts.allSelected', {
+                  count: allChores.length,
+                  collapsed: collapsedCount,
+                }),
               })
             } else {
               handlers.onSelectAll()
               handlers.onShowMessage({
                 title: t('shortcuts.someSelectedTitle'),
-                message: `Selected ${expandedChores.length} task${expandedChores.length !== 1 ? 's' : ''} from expanded sections.`,
+                message: t('shortcuts.expandedSelected', {
+                  count: expandedChores.length,
+                }),
               })
             }
           }

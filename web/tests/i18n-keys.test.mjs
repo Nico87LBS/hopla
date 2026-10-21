@@ -56,3 +56,13 @@ test('the namespace comes from the closest useTranslation above', () => {
     ],
   )
 })
+
+test('i18n.t() outside components uses the default namespace', () => {
+  const src = `
+    import i18n from 'i18next'
+    export const label = () => [i18n.t('chores:sections.today'), i18n.t('save')]`
+  assert.deepEqual(
+    collectUsages(src).map(u => `${u.ns}:${u.pattern.join('*')}`),
+    ['chores:sections.today', 'common:save'],
+  )
+})
