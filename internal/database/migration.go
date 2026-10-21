@@ -48,6 +48,7 @@ func Migration(db *gorm.DB) error {
 		filterModel.Filter{},
 		migrations.Migration{},
 		pModel.PointsHistory{},
+		pModel.PointsPreset{},
 		stModel.SubTask{},
 		storageModel.StorageFile{},
 		storageModel.StorageUsage{},

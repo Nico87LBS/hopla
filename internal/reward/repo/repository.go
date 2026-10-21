@@ -151,6 +151,8 @@ func (r *RewardRepository) ApproveRedemption(ctx context.Context, redemptionID i
 			Points:    redemption.PointsCost,
 			CreatedAt: time.Now().UTC(),
 			CreatedBy: adminUserID,
+			RewardID:  &redemption.RewardID,
+			Reason:    &redemption.RewardName,
 		}).Error; err != nil {
 			return err
 		}
