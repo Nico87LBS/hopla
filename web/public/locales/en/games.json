@@ -133,6 +133,8 @@
     "settingsTitle": "The ranks",
     "settingsSubtitle": "Steps of points earned since the start, from the first rank to the last.",
     "name": "Rank name",
+    "image": "Rank picture",
+    "noImage": "No picture",
     "help": "Ranks follow the points earned since the start: spending or a penalty never lowers them. The first rank starts at 0 points. The last rank lasts as many points as the gap from the rank before, then gives a ⭐ star kept forever and a new round from the first rank.",
     "saved": "Ranks saved.",
     "failed": "The ranks could not be saved."

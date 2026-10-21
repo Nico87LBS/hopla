@@ -72,6 +72,19 @@ const sendOrWarn = async (resp, showNotification, fallback) => {
   return false
 }
 
+// A rank shows its drawn badge when it has one, its emoji otherwise.
+export const RankIcon = ({ rank, size = 22 }) =>
+  rank?.image ? (
+    <Box
+      component='img'
+      src={`/ranks/${rank.image}.svg`}
+      alt=''
+      sx={{ display: 'block', flexShrink: 0, height: size, width: size }}
+    />
+  ) : (
+    rank?.icon || null
+  )
+
 // Prestige stars, earned each time a member goes past the last rank.
 export const starsLabel = stars =>
   !stars ? '' : stars <= 3 ? '⭐'.repeat(stars) : `⭐×${stars}`
@@ -103,8 +116,12 @@ export const RanksCard = ({ members, today }) => {
                 <Typography level='body-md' sx={{ flex: 1 }}>
                   {member.displayName}
                 </Typography>
-                <Chip variant='soft' color='primary'>
-                  {starsLabel(p.stars)} {p.rank.icon} {p.rank.name}
+                <Chip
+                  variant='soft'
+                  color='primary'
+                  startDecorator={<RankIcon rank={p.rank} size={26} />}
+                >
+                  {starsLabel(p.stars)} {p.rank.name}
                 </Chip>
               </Box>
               <LinearProgress
@@ -756,7 +773,11 @@ export const ChallengesCard = ({ isParent, members, today }) => {
   )
 }
 
-// Parents can rename the ranks, change their icons and the points they need.
+// The drawn rank badges, from the little rabbit to the chief of the tribe.
+const RANK_IMAGES = [1, 2, 3, 4, 5, 6, 7].map(n => `hopla-${n}`)
+
+// Parents can rename the ranks, change their pictures, icons and the points
+// they need.
 export const RankSettingsCard = () => {
   const { t } = useTranslation('games')
   const { showNotification } = useNotification()
@@ -779,6 +800,7 @@ export const RankSettingsCard = () => {
       ranks.map(r => ({
         name: r.name.trim(),
         icon: r.icon.trim(),
+        image: r.image || '',
         minPoints: Number(r.minPoints) || 0,
       })),
     )
@@ -801,6 +823,7 @@ export const RankSettingsCard = () => {
                   {
                     name: '',
                     icon: '⭐',
+                    image: '',
                     minPoints:
                       (Number(ranks[ranks.length - 1]?.minPoints) || 0) + 100,
                   },
@@ -811,6 +834,21 @@ export const RankSettingsCard = () => {
       <Stack gap={0.75}>
         {ranks.map((rank, index) => (
           <Stack key={index} direction='row' gap={1}>
+            <Select
+              size='sm'
+              value={rank.image || ''}
+              onChange={(event, value) => set(index, 'image', value || '')}
+              aria-label={t('ranks.image')}
+              renderValue={() => <RankIcon rank={rank} size={24} />}
+              sx={{ minWidth: 0, width: 64 }}
+            >
+              <Option value=''>{t('ranks.noImage')}</Option>
+              {RANK_IMAGES.map(image => (
+                <Option key={image} value={image} label={image}>
+                  <RankIcon rank={{ image }} size={36} />
+                </Option>
+              ))}
+            </Select>
             <Input
               size='sm'
               value={rank.icon}
@@ -868,6 +906,10 @@ const todayShape = PropTypes.shape({
   members: PropTypes.array,
 })
 
+RankIcon.propTypes = {
+  rank: PropTypes.shape({ icon: PropTypes.string, image: PropTypes.string }),
+  size: PropTypes.number,
+}
 RanksCard.propTypes = {
   members: PropTypes.arrayOf(memberShape).isRequired,
   today: todayShape,

@@ -129,6 +129,7 @@ export const buildTemplate = (data, sections = SECTIONS, now = new Date()) => {
       ranks: (data.ranks || []).map(r => ({
         name: r.name,
         icon: r.icon || '',
+        image: r.image || '',
         minPoints: r.minPoints,
       })),
       quests: (data.quests || []).map(q => ({

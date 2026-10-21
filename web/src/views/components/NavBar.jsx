@@ -33,7 +33,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 
 import { version } from '../../../package.json'
-import HoplaLogo from '../../assets/logo.svg'
+import HoplaWordmark from '../../components/HoplaWordmark'
 import UserProfileAvatar from '../../components/UserProfileAvatar'
 import { useNavBarTitleContext } from '../../contexts/NavBarTitleContext'
 import { useScrollDirection } from '../../hooks/useScrollDirection'
@@ -433,38 +433,7 @@ const NavBar = () => {
                     minWidth: 0,
                   }}
                 >
-                  <Box
-                    aria-hidden='true'
-                    component='img'
-                    src={HoplaLogo}
-                    sx={{
-                      display: 'block',
-                      flexShrink: 0,
-                      height: 28,
-                      width: 28,
-                    }}
-                  />
-                  <Typography
-                    component='div'
-                    level='title-md'
-                    dir='ltr'
-                    sx={{
-                      alignItems: 'center',
-                      color: 'text.primary',
-                      display: 'flex',
-                      fontFamily: 'var(--joy-fontFamily-body)',
-                      fontWeight: 700,
-                      letterSpacing: '-0.015em',
-                      lineHeight: 1,
-                      minHeight: 28,
-                      userSelect: 'none',
-                    }}
-                  >
-                    Done
-                    <Box component='span' sx={{ color: '#06b6d4' }}>
-                      tick
-                    </Box>
-                  </Typography>
+                  <HoplaWordmark height={28} />
                 </Box>
               )}
             </Box>

@@ -31,25 +31,26 @@ func TestRanks(t *testing.T) {
 	db := setup(t)
 	ranks, err := RanksFor(db, 1)
 	require.NoError(t, err)
-	require.Equal(t, "Petit Hop", ranks[0].Name)
-	require.Equal(t, "Grand Hopla", ranks[len(ranks)-1].Name)
+	require.Equal(t, "Lapineau", ranks[0].Name)
+	require.Equal(t, "Grand chef de la tribu des Hopla", ranks[len(ranks)-1].Name)
 
 	level := RankOf(ranks, 150)
 	require.Equal(t, 2, level.Level)
-	require.Equal(t, "Hop Hop", level.Rank.Name)
-	require.Equal(t, 300, level.Next.MinPoints)
+	require.Equal(t, "Petit bondisseur", level.Rank.Name)
+	require.Equal(t, "hopla-2", level.Rank.Image)
+	require.Equal(t, 250, level.Next.MinPoints)
 	require.Equal(t, 0, level.Stars)
-	top := RankOf(ranks, 2000)
+	top := RankOf(ranks, 1800)
 	require.Equal(t, len(ranks), top.Level)
 	require.Nil(t, top.Next)
-	require.Equal(t, 2300, top.StarAt, "Grand Hopla lasts 800 points, like Hop Star")
+	require.Equal(t, 2000, top.StarAt, "the last rank lasts 500 points, like the one before")
 
 	// Past the last rank, a star and a new round from the first rank.
-	star := RankOf(ranks, 2300+150)
+	star := RankOf(ranks, 2000+150)
 	require.Equal(t, 1, star.Stars)
 	require.Equal(t, 150, star.Points)
-	require.Equal(t, "Hop Hop", star.Rank.Name)
-	require.Equal(t, 3, RankOf(ranks, 3*2300+5).Stars)
+	require.Equal(t, "Petit bondisseur", star.Rank.Name)
+	require.Equal(t, 3, RankOf(ranks, 3*2000+5).Stars)
 	require.Equal(t, 0, RankOf([]Rank{{Name: "Seul", MinPoints: 0}}, 5000).Stars, "one rank gives no star")
 
 	saved, err := SaveRanks(db, 1, []Rank{{Name: "Héroïne", MinPoints: 50}, {Name: "Apprentie", MinPoints: 10}})
@@ -61,7 +62,7 @@ func TestRanks(t *testing.T) {
 	require.Len(t, ranks, 2)
 	other, err := RanksFor(db, 2)
 	require.NoError(t, err)
-	require.Len(t, other, 5, "another circle keeps the defaults")
+	require.Len(t, other, 7, "another circle keeps the defaults")
 }
 
 func TestWeeklyQuestsAreDrawnOnceAndPaid(t *testing.T) {

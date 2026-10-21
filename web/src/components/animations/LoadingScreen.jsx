@@ -1,6 +1,8 @@
 import { Box, CircularProgress, Typography } from '@mui/joy'
 import { styled } from '@mui/joy/styles'
 
+import HoplaWordmark from '../HoplaWordmark'
+
 // Styled components with keyframe animations
 const LoadingContainer = styled(Box)({
   position: 'fixed',
@@ -72,18 +74,14 @@ const LoadingScreen = ({ message = null, showLogo = true, size = 'lg' }) => {
       <LoadingContent>
         {showLogo && (
           <LogoContainer>
-            <Typography
-              level='h1'
+            {/* The screen stays light in dark mode too. */}
+            <HoplaWordmark
+              height={{ xs: 48, sm: 60 }}
               sx={{
-                fontSize: { xs: '2rem', sm: '2.5rem' },
-                fontWeight: 700,
-                color: 'primary.500',
                 mb: 1,
+                '[data-joy-color-scheme="dark"] &': { color: '#3E2F86' },
               }}
-            >
-              {t('done')}
-              <span style={{ color: '#06b6d4' }}>tick</span>
-            </Typography>
+            />
           </LogoContainer>
         )}
 
