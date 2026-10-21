@@ -37,19 +37,12 @@ import {
   GetPointsPresets,
   SavePointsPreset,
 } from '../../utils/Fetcher'
-import { resolvePhotoURL } from '../../utils/Helpers'
 import ConfirmationModal from '../Modals/Inputs/ConfirmationModal'
+import DailyGames, { RulesCard } from './DailyGames'
+import { MemberAvatar, memberShape, surfaceSx } from './GameParts'
 
 const PAGE_SIZE = 30
 const MAX_POINTS = 1000
-
-const surfaceSx = {
-  bgcolor: 'background.surface',
-  border: '1px solid',
-  borderColor: 'divider',
-  borderRadius: 'xl',
-  p: { xs: 2, sm: 2.5 },
-}
 
 const usePointsPresets = () =>
   useQuery({
@@ -69,15 +62,6 @@ const usePointsHistory = userId =>
   })
 
 const signed = points => (points > 0 ? `+${points}` : `${points}`)
-
-const MemberAvatar = ({ member, size = 28 }) => (
-  <Avatar
-    src={resolvePhotoURL(member?.image)}
-    sx={{ '--Avatar-size': `${size}px` }}
-  >
-    {member?.displayName?.charAt(0)}
-  </Avatar>
-)
 
 // Gives a bonus or a penalty, from a preset or with any number of points.
 const AdjustCard = ({ members, presets }) => {
@@ -494,20 +478,12 @@ const HistoryCard = ({ members }) => {
   )
 }
 
-const memberShape = PropTypes.shape({
-  displayName: PropTypes.string,
-  image: PropTypes.string,
-  points: PropTypes.number,
-  pointsRedeemed: PropTypes.number,
-  userId: PropTypes.number,
-})
 const presetShape = PropTypes.shape({
   id: PropTypes.number,
   name: PropTypes.string,
   points: PropTypes.number,
 })
 
-MemberAvatar.propTypes = { member: memberShape, size: PropTypes.number }
 AdjustCard.propTypes = {
   members: PropTypes.arrayOf(memberShape).isRequired,
   presets: PropTypes.arrayOf(presetShape).isRequired,
@@ -530,9 +506,11 @@ const GamesView = () => {
 
   return (
     <Stack gap={2}>
+      <DailyGames members={members} isParent={isParent} />
       {isParent && <AdjustCard members={members} presets={presets} />}
       <HistoryCard members={members} />
       {isParent && <PresetsCard presets={presets} />}
+      {isParent && <RulesCard />}
     </Stack>
   )
 }

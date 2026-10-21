@@ -51,5 +51,49 @@
       "bonus": "Bonus",
       "penalty": "Pénalité"
     }
+  },
+  "today": {
+    "title": "Les jeux du jour",
+    "period": "Points ×{{multiplier}} : {{name}}, jusqu'à {{end}}",
+    "surprise": "Tâche surprise : « {{name}} », +{{points}} points en plus",
+    "noSurprise": "Pas encore de tâche surprise aujourd'hui.",
+    "surpriseOff": "Les tâches surprise sont désactivées.",
+    "streaks": "Séries",
+    "days_one": "{{count}} jour",
+    "days_other": "{{count}} jours",
+    "best_one": "record {{count}} j",
+    "best_other": "record {{count}} j",
+    "doneToday": "Déjà une tâche faite aujourd'hui",
+    "streakRule_one": "Chaque jour d'affilée avec au moins une tâche faite : +{{points}} points tous les {{count}} jour.",
+    "streakRule_other": "Au moins une tâche faite chaque jour pendant {{count}} jours d'affilée : +{{points}} points, puis de nouveau tous les {{count}} jours."
+  },
+  "periods": {
+    "title": "Périodes bonus",
+    "subtitle": "Pendant une période bonus, les points des tâches sont multipliés.",
+    "name": "Nom, par exemple « Week-end double »",
+    "from": "Du",
+    "to": "au",
+    "empty": "Aucune période bonus prévue.",
+    "failed": "La période bonus n'a pas pu être enregistrée.",
+    "deleteTitle": "Supprimer la période bonus",
+    "deleteMessage": "Supprimer « {{name}} » ? Les points déjà gagnés restent.",
+    "state": {
+      "planned": "Prévue",
+      "running": "En cours",
+      "ended": "Terminée"
+    }
+  },
+  "rules": {
+    "title": "Règles du jeu",
+    "subtitle": "Les séries et les tâches surprise de la famille.",
+    "streakEvery": "Bonus de série tous les",
+    "streakBonus": "Bonus de série",
+    "surpriseEnabled": "Une tâche surprise chaque jour",
+    "surpriseBonus": "Points en plus pour la tâche surprise",
+    "days": "jours",
+    "points": "points",
+    "help": "Mettre 0 jour ou 0 point coupe le bonus de série ; les séries restent comptées. La tâche surprise est tirée chaque jour parmi les tâches du jour visibles par tous.",
+    "saved": "Règles enregistrées.",
+    "failed": "Les règles n'ont pas pu être enregistrées."
   }
 }
