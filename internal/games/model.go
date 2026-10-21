@@ -68,23 +68,31 @@ type Streak struct {
 // Rank is a level reached with the points earned since joining. Spending or
 // a penalty never takes a rank away.
 type Rank struct {
-	ID        int    `json:"-" gorm:"primaryKey"`
-	CircleID  int    `json:"-" gorm:"column:circle_id;index;not null"`
-	Name      string `json:"name" gorm:"column:name;not null"`
-	Icon      string `json:"icon" gorm:"column:icon"`
+	ID       int    `json:"-" gorm:"primaryKey"`
+	CircleID int    `json:"-" gorm:"column:circle_id;index;not null"`
+	Name     string `json:"name" gorm:"column:name;not null"`
+	Icon     string `json:"icon" gorm:"column:icon"`
+	// Image is one of the drawn rank badges, "hopla-1" to "hopla-7", shown
+	// instead of the icon where pictures fit. Empty keeps the icon alone.
+	Image     string `json:"image" gorm:"column:image"`
 	MinPoints int    `json:"minPoints" gorm:"column:min_points;not null"`
 }
 
 func (Rank) TableName() string { return "game_ranks" }
 
+// RankImages are the drawn rank badges a rank can show.
+var RankImages = []string{"hopla-1", "hopla-2", "hopla-3", "hopla-4", "hopla-5", "hopla-6", "hopla-7"}
+
 // DefaultRanks are the ranks of a circle whose parents did not set their own.
 func DefaultRanks() []Rank {
 	return []Rank{
-		{Name: "Petit Hop", Icon: "🐣", MinPoints: 0},
-		{Name: "Hop Hop", Icon: "🐸", MinPoints: 100},
-		{Name: "Super Hop", Icon: "🦘", MinPoints: 300},
-		{Name: "Hop Star", Icon: "🚀", MinPoints: 700},
-		{Name: "Grand Hopla", Icon: "👑", MinPoints: 1500},
+		{Name: "Lapineau", Icon: "🐣", Image: "hopla-1", MinPoints: 0},
+		{Name: "Petit bondisseur", Icon: "🌱", Image: "hopla-2", MinPoints: 100},
+		{Name: "Cueilleur de carottes", Icon: "🥕", Image: "hopla-3", MinPoints: 250},
+		{Name: "Sauteur des prés", Icon: "🌼", Image: "hopla-4", MinPoints: 450},
+		{Name: "Gardien du terrier", Icon: "🛡️", Image: "hopla-5", MinPoints: 700},
+		{Name: "Sage de la clairière", Icon: "🦉", Image: "hopla-6", MinPoints: 1000},
+		{Name: "Grand chef de la tribu des Hopla", Icon: "👑", Image: "hopla-7", MinPoints: 1500},
 	}
 }
 

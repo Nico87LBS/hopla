@@ -86,6 +86,10 @@ func (h *Handler) updateRanks(c *gin.Context) {
 	for i := range ranks {
 		ranks[i].Name = strings.TrimSpace(ranks[i].Name)
 		ranks[i].Icon = strings.TrimSpace(ranks[i].Icon)
+		if ranks[i].Image != "" && !slices.Contains(games.RankImages, ranks[i].Image) {
+			c.JSON(400, gin.H{"error": "Unknown rank image"})
+			return
+		}
 		if ranks[i].Name == "" || len(ranks[i].Name) > 60 || len(ranks[i].Icon) > 32 ||
 			ranks[i].MinPoints < 0 || ranks[i].MinPoints > 1000000 || seen[ranks[i].MinPoints] {
 			c.JSON(400, gin.H{"error": "Each rank needs a name and its own number of points"})
