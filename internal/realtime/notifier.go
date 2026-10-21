@@ -23,6 +23,7 @@ var changeRoutes = []struct {
 	{"/api/v1/circles", EventTypeCircleUpdated, false},
 	{"/api/v1/points", EventTypeCircleUpdated, false},
 	{"/eapi/v1/points", EventTypeCircleUpdated, false},
+	{"/api/v1/games", EventTypeCircleUpdated, false},
 	{"/api/v1/users", EventTypeCircleUpdated, false},
 }
 
