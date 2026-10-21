@@ -176,14 +176,14 @@
     "subtitle": "Remet les points d'un membre, ou de tout le monde, à zéro, et donc au premier rang. Par exemple une fois par an, ou à la fin des essais.",
     "everyone": "Tout le monde",
     "clearHistory": "Effacer aussi l'historique des points",
-    "help": "Sans cocher, l'historique des points est gardé et une ligne « Remise à zéro » y est ajoutée. Les séries repartent de zéro. « Effacer aussi les tâches faites » vide l'historique des tâches (« Déjà fait », activités) sans supprimer les tâches ni changer leurs échéances. Les quêtes réussies et les défis gagnés restent acquis pour ne pas payer deux fois.",
+    "help": "Sans cocher, l'historique des points est gardé et une ligne « Remise à zéro » y est ajoutée. Les séries repartent de zéro. « Remettre aussi les tâches faites à faire » efface l'historique des tâches (« Déjà fait », activités) et remet chaque tâche faite à faire, avec l'échéance qu'elle avait avant d'être faite ; les tâches uniques archivées reviennent. Les quêtes réussies et les défis gagnés restent acquis pour ne pas payer deux fois.",
     "button": "Remettre à zéro",
     "confirmTitle": "Remettre à zéro ?",
     "confirmKeep": "{{who}} : points, rang et série remis à zéro. L'historique est gardé.",
     "confirmClear": "{{who}} : points, rang et série remis à zéro, et historique des points effacé. On ne peut pas revenir en arrière.",
     "done": "{{who}} : remis à zéro.",
     "failed": "La remise à zéro n'a pas pu se faire.",
-    "clearTaskHistory": "Effacer aussi les tâches faites (historique des tâches)",
-    "confirmTasks": "L'historique des tâches faites est effacé aussi ; les tâches elles-mêmes restent."
+    "clearTaskHistory": "Remettre aussi les tâches faites à faire",
+    "confirmTasks": "Les tâches faites redeviennent à faire, avec l'échéance qu'elles avaient avant, et leur historique est effacé."
   }
 }

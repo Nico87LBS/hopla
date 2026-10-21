@@ -216,8 +216,8 @@ type ResetReq struct {
 	// UserID is the member to reset; empty resets everyone.
 	UserID       *int `json:"userId"`
 	ClearHistory bool `json:"clearHistory"`
-	// ClearTaskHistory also forgets the tasks done: the tasks stay, their
-	// history goes.
+	// ClearTaskHistory also puts the tasks done back to do and forgets their
+	// history.
 	ClearTaskHistory bool `json:"clearTaskHistory"`
 }
 

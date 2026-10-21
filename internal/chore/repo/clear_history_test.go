@@ -53,3 +53,46 @@ func TestClearHistoryForgetsTasksDone(t *testing.T) {
 		t.Fatal("the task itself stays")
 	}
 }
+
+// A real reset: a task done goes back to do, with the due date it had before
+// its first cleared completion, unless someone who keeps their history did it
+// again afterwards.
+func TestClearHistoryPutsTasksBackToDo(t *testing.T) {
+	repo, db := newTestChoreRepo(t)
+	once := createChore(t, db, "Ranger", testOwnerID, false, nil)
+	weekly := createChore(t, db, "Poubelles", testOwnerID, false, nil)
+	shared := createChore(t, db, "Vaisselle", testOwnerID, false, nil)
+	before := time.Date(2026, 10, 20, 18, 0, 0, 0, time.UTC)
+	later := before.AddDate(0, 0, 14)
+	db.Model(&chModel.Chore{}).Where("id = ?", once.ID).Updates(map[string]interface{}{"is_active": false, "next_due_date": nil})
+	db.Model(&chModel.Chore{}).Where("id IN ?", []int{weekly.ID, shared.ID}).Update("next_due_date", later)
+	now := time.Now()
+	for _, h := range []chModel.ChoreHistory{
+		{ChoreID: once.ID, CompletedBy: testOtherID, PerformedAt: &now, DueDate: &before, Status: chModel.ChoreHistoryStatusCompleted},
+		{ChoreID: weekly.ID, CompletedBy: testOtherID, PerformedAt: &now, DueDate: &before, Status: chModel.ChoreHistoryStatusCompleted},
+		{ChoreID: weekly.ID, CompletedBy: testOtherID, PerformedAt: &now, DueDate: &later, Status: chModel.ChoreHistoryStatusCompleted},
+		{ChoreID: shared.ID, CompletedBy: testOtherID, PerformedAt: &now, DueDate: &before, Status: chModel.ChoreHistoryStatusCompleted},
+		{ChoreID: shared.ID, CompletedBy: testOwnerID, PerformedAt: &now, DueDate: &later, Status: chModel.ChoreHistoryStatusCompleted},
+	} {
+		if err := db.Create(&h).Error; err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	if _, err := repo.ClearHistory(context.Background(), testCircleID, []int{testOtherID}); err != nil {
+		t.Fatal(err)
+	}
+	load := func(id int) (c chModel.Chore) {
+		db.First(&c, id)
+		return c
+	}
+	if c := load(once.ID); !c.IsActive || c.NextDueDate == nil || !c.NextDueDate.Equal(before) {
+		t.Errorf("one-time task: active %v, due %v, want active and due %v", c.IsActive, c.NextDueDate, before)
+	}
+	if c := load(weekly.ID); c.NextDueDate == nil || !c.NextDueDate.Equal(before) {
+		t.Errorf("recurring task due %v, want %v", c.NextDueDate, before)
+	}
+	if c := load(shared.ID); c.NextDueDate == nil || !c.NextDueDate.Equal(later) {
+		t.Errorf("task done again by someone else: due %v, want it unchanged at %v", c.NextDueDate, later)
+	}
+}
