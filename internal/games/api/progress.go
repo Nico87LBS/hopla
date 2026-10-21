@@ -68,6 +68,12 @@ func (h *Handler) getRanks(c *gin.Context) {
 	c.JSON(200, gin.H{"res": ranks})
 }
 
+// getDefaultRanks gives the drawn ranks of the tribe, for parents who want
+// them back in place of their own.
+func (h *Handler) getDefaultRanks(c *gin.Context) {
+	c.JSON(200, gin.H{"res": games.DefaultRanks()})
+}
+
 func (h *Handler) updateRanks(c *gin.Context) {
 	_, circleID, ok := h.requireParent(c)
 	if !ok {

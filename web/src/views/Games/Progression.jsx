@@ -31,6 +31,7 @@ import {
   DeleteChallenge,
   DeleteQuest,
   GetChallenges,
+  GetDefaultRanks,
   GetQuests,
   GetRanks,
   SaveChallenge,
@@ -810,6 +811,12 @@ export const RankSettingsCard = () => {
     }
   }
 
+  // Fills the form with the drawn ranks of the tribe; saving keeps them.
+  const fillDefaults = async () => {
+    const defaults = (await GetDefaultRanks())?.res
+    if (defaults?.length) setRanks(defaults)
+  }
+
   return (
     <Sheet sx={surfaceSx}>
       <CardHeader
@@ -889,14 +896,18 @@ export const RankSettingsCard = () => {
       <Typography level='body-xs' sx={{ color: 'text.tertiary', mt: 1 }}>
         {t('ranks.help')}
       </Typography>
-      <Button
-        size='sm'
-        disabled={!changed || ranks.some(r => !r.name.trim())}
-        onClick={save}
-        sx={{ mt: 1.5 }}
-      >
-        {t('presets.save')}
-      </Button>
+      <Stack direction='row' gap={1} sx={{ mt: 1.5 }}>
+        <Button
+          size='sm'
+          disabled={!changed || ranks.some(r => !r.name.trim())}
+          onClick={save}
+        >
+          {t('presets.save')}
+        </Button>
+        <Button size='sm' variant='plain' onClick={fillDefaults}>
+          {t('ranks.useDefaults')}
+        </Button>
+      </Stack>
     </Sheet>
   )
 }

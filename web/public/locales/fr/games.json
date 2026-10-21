@@ -135,9 +135,10 @@
     "name": "Nom du rang",
     "image": "Image du rang",
     "noImage": "Sans image",
-    "help": "Le rang suit les points gagnés depuis le début : une dépense ou une pénalité ne le fait jamais baisser. Le premier rang commence à 0 point. Le dernier rang dure autant de points que l'écart avec le rang d'avant, puis il donne une étoile ⭐ gardée pour toujours et on repart du premier rang.",
+    "help": "Le rang suit les points gagnés depuis le début : une dépense ou une pénalité ne le fait jamais baisser. Le premier rang commence à 0 point. Le dernier rang dure autant de points que l'écart avec le rang d'avant, puis il donne une étoile ⭐ gardée pour toujours et on repart du premier rang. « Remettre les rangs Hopla » remplit la liste avec les rangs illustrés de la tribu : enregistrez pour les garder.",
     "saved": "Rangs enregistrés.",
-    "failed": "Les rangs n'ont pas pu être enregistrés."
+    "failed": "Les rangs n'ont pas pu être enregistrés.",
+    "useDefaults": "Remettre les rangs Hopla"
   },
   "quests": {
     "title": "Quêtes",
