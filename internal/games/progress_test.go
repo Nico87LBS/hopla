@@ -80,6 +80,11 @@ func TestWeeklyQuestsAreDrawnOnceAndPaid(t *testing.T) {
 	again, err := Quests(db, 1, []int{2}, now)
 	require.NoError(t, err)
 	require.Equal(t, quests[2], again[2], "the draw stays for the week")
+	require.NoError(t, db.Create(&Quest{CircleID: 1, Name: "Nouvelle du mois", Kind: GoalPoints, Target: 50, Reward: 5, Period: QuestMonth}).Error)
+	again, err = Quests(db, 1, []int{2}, now)
+	require.NoError(t, err)
+	require.Len(t, again[2], 4, "a quest added during the month is given too")
+	require.Len(t, again[3], 0, "only the members asked for are drawn")
 
 	// Make sure Elena has the table quest whatever the draw, then do it twice.
 	require.NoError(t, db.Where("user_id = 2 AND period = ?", QuestWeek).Delete(&QuestDraw{}).Error)

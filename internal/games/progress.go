@@ -81,8 +81,8 @@ func eligible(userIDs []int, userID int) bool {
 	return len(userIDs) == 0 || slices.Contains(userIDs, userID)
 }
 
-// drawQuests gives a member this week's and this month's quests, once per
-// period. The same member, period and quests always give the same draw.
+// drawQuests gives a member this week's and this month's quests. The same
+// member, period and quests always give the same draw.
 func drawQuests(db *gorm.DB, circleID, userID int, now time.Time) error {
 	rules, err := RulesFor(db, circleID)
 	if err != nil {
@@ -94,17 +94,15 @@ func drawQuests(db *gorm.DB, circleID, userID int, now time.Time) error {
 	}
 	for _, period := range []string{QuestWeek, QuestMonth} {
 		_, _, key := periodBounds(period, now)
-		var drawn int64
+		var drawn []int
 		if err := db.Model(&QuestDraw{}).Where("circle_id = ? AND user_id = ? AND period_key = ? AND period = ?",
-			circleID, userID, key, period).Count(&drawn).Error; err != nil {
+			circleID, userID, key, period).Pluck("quest_id", &drawn).Error; err != nil {
 			return err
 		}
-		if drawn > 0 {
-			continue
-		}
+		// Quests added during the period top the draw up.
 		var pool []Quest
 		for _, quest := range quests {
-			if quest.Period == period && eligible(quest.UserIDs, userID) {
+			if quest.Period == period && eligible(quest.UserIDs, userID) && !slices.Contains(drawn, quest.ID) {
 				pool = append(pool, quest)
 			}
 		}
@@ -116,7 +114,7 @@ func drawQuests(db *gorm.DB, circleID, userID int, now time.Time) error {
 				return h.Sum32()
 			}
 			sort.SliceStable(pool, func(i, j int) bool { return score(pool[i]) < score(pool[j]) })
-			pool = pool[:min(len(pool), max(rules.QuestsPerWeek, 0))]
+			pool = pool[:min(len(pool), max(rules.QuestsPerWeek-len(drawn), 0))]
 		}
 		for _, quest := range pool {
 			draw := QuestDraw{CircleID: circleID, UserID: userID, PeriodKey: key, QuestID: quest.ID, Period: period,
