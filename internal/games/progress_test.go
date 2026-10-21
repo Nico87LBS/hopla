@@ -38,9 +38,19 @@ func TestRanks(t *testing.T) {
 	require.Equal(t, 2, level.Level)
 	require.Equal(t, "Hop Hop", level.Rank.Name)
 	require.Equal(t, 300, level.Next.MinPoints)
-	top := RankOf(ranks, 5000)
+	require.Equal(t, 0, level.Stars)
+	top := RankOf(ranks, 2000)
 	require.Equal(t, len(ranks), top.Level)
 	require.Nil(t, top.Next)
+	require.Equal(t, 2300, top.StarAt, "Grand Hopla lasts 800 points, like Hop Star")
+
+	// Past the last rank, a star and a new round from the first rank.
+	star := RankOf(ranks, 2300+150)
+	require.Equal(t, 1, star.Stars)
+	require.Equal(t, 150, star.Points)
+	require.Equal(t, "Hop Hop", star.Rank.Name)
+	require.Equal(t, 3, RankOf(ranks, 3*2300+5).Stars)
+	require.Equal(t, 0, RankOf([]Rank{{Name: "Seul", MinPoints: 0}}, 5000).Stars, "one rank gives no star")
 
 	saved, err := SaveRanks(db, 1, []Rank{{Name: "Héroïne", MinPoints: 50}, {Name: "Apprentie", MinPoints: 10}})
 	require.NoError(t, err)

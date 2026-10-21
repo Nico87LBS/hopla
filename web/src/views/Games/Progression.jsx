@@ -72,6 +72,10 @@ const sendOrWarn = async (resp, showNotification, fallback) => {
   return false
 }
 
+// Prestige stars, earned each time a member goes past the last rank.
+export const starsLabel = stars =>
+  !stars ? '' : stars <= 3 ? '⭐'.repeat(stars) : `⭐×${stars}`
+
 // Each member's rank, from the points earned since joining, and the way to
 // the next one.
 export const RanksCard = ({ members, today }) => {
@@ -90,7 +94,8 @@ export const RanksCard = ({ members, today }) => {
       <Stack gap={1.75}>
         {progress.map(p => {
           const member = byId.get(p.userId)
-          const span = p.next ? p.next.minPoints - p.rank.minPoints : 0
+          // Past the last rank, the gauge leads to the next prestige star.
+          const target = p.next ? p.next.minPoints : p.starAt
           return (
             <Box key={p.userId}>
               <Box sx={{ alignItems: 'center', display: 'flex', gap: 1.25 }}>
@@ -99,13 +104,18 @@ export const RanksCard = ({ members, today }) => {
                   {member.displayName}
                 </Typography>
                 <Chip variant='soft' color='primary'>
-                  {p.rank.icon} {p.rank.name}
+                  {starsLabel(p.stars)} {p.rank.icon} {p.rank.name}
                 </Chip>
               </Box>
               <LinearProgress
                 determinate
                 value={
-                  p.next ? percent(p.earned - p.rank.minPoints, span) : 100
+                  target
+                    ? percent(
+                        p.points - p.rank.minPoints,
+                        target - p.rank.minPoints,
+                      )
+                    : 100
                 }
                 sx={{ mt: 1 }}
               />
@@ -115,10 +125,12 @@ export const RanksCard = ({ members, today }) => {
               >
                 {p.next
                   ? t('ranks.toNext', {
-                      count: p.next.minPoints - p.earned,
+                      count: p.next.minPoints - p.points,
                       name: `${p.next.icon} ${p.next.name}`,
                     })
-                  : t('ranks.top', { count: p.earned })}
+                  : p.starAt
+                    ? t('ranks.toStar', { count: p.starAt - p.points })
+                    : t('ranks.top', { count: p.earned })}
               </Typography>
             </Box>
           )
