@@ -1127,7 +1127,8 @@ func (r *ChoreRepository) DeleteChoreHistory(c context.Context, historyID int, c
 
 // ClearHistory deletes the task history of a circle, or only what the given
 // members did, with its timer sessions, and leaves tombstones so synced
-// clients drop it too. It returns how many entries were deleted.
+// clients drop it too. The tasks done go back to do with the due date they
+// had before. It returns how many entries were deleted.
 func (r *ChoreRepository) ClearHistory(c context.Context, circleID int, userIDs []int) (int, error) {
 	deleted := 0
 	err := r.db.WithContext(c).Transaction(func(tx *gorm.DB) error {
@@ -1136,14 +1137,36 @@ func (r *ChoreRepository) ClearHistory(c context.Context, circleID int, userIDs 
 		if userIDs != nil {
 			query = query.Where("completed_by IN ?", userIDs)
 		}
-		var ids []int
-		if err := query.Order("id asc").Pluck("id", &ids).Error; err != nil {
+		var rows []chModel.ChoreHistory
+		if err := query.Select("id", "chore_id", "due_date").Order("id asc").Find(&rows).Error; err != nil {
 			return err
 		}
-		if len(ids) == 0 {
+		if len(rows) == 0 {
 			return nil
 		}
-		next, err := r.nextSyncVersionRangeWithDB(c, tx, circleID, len(ids))
+		ids := make([]int, 0, len(rows))
+		// The oldest cleared completion of each task holds the due date the
+		// task had before it was done.
+		first := map[int]chModel.ChoreHistory{}
+		for _, row := range rows {
+			ids = append(ids, row.ID)
+			if _, ok := first[row.ChoreID]; !ok {
+				first[row.ChoreID] = row
+			}
+		}
+		// A task done again later by someone who keeps their history stays
+		// as that completion left it.
+		for choreID, row := range first {
+			var later int64
+			if err := tx.Model(&chModel.ChoreHistory{}).Where("chore_id = ? AND id > ?", choreID, row.ID).
+				Where("id NOT IN ?", ids).Count(&later).Error; err != nil {
+				return err
+			}
+			if later > 0 {
+				delete(first, choreID)
+			}
+		}
+		next, err := r.nextSyncVersionRangeWithDB(c, tx, circleID, len(ids)+len(first))
 		if err != nil {
 			return err
 		}
@@ -1160,6 +1183,26 @@ func (r *ChoreRepository) ClearHistory(c context.Context, circleID int, userIDs 
 		for _, id := range ids {
 			tombstones = append(tombstones, syncModel.Tombstone{CircleID: circleID, EntityType: syncModel.EntityTypeChoreHistory,
 				EntityID: id, SyncVersion: next})
+			next++
+		}
+		// Put the tasks back to do, as an undo of their first completion
+		// would: same due date, active again, no pending approval.
+		choreIDs := make([]int, 0, len(first))
+		for choreID := range first {
+			choreIDs = append(choreIDs, choreID)
+		}
+		sort.Ints(choreIDs)
+		for _, choreID := range choreIDs {
+			if err := tx.Model(&chModel.Chore{}).Where("id = ?", choreID).
+				Select("next_due_date", "is_active", "status", "sync_version").
+				Updates(map[string]interface{}{
+					"next_due_date": first[choreID].DueDate,
+					"is_active":     true,
+					"status":        chModel.ChoreStatusNoStatus,
+					"sync_version":  next,
+				}).Error; err != nil {
+				return fmt.Errorf("failed to put the task back to do: %w", err)
+			}
 			next++
 		}
 		deleted = len(ids)
