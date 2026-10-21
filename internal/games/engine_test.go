@@ -68,6 +68,29 @@ func TestBonusPeriodAndSurpriseRaiseTaskPoints(t *testing.T) {
 	require.Equal(t, 3+5, earning.Points, "the period is over")
 }
 
+func TestTheSurpriseIsWorthItForEachChildsCopy(t *testing.T) {
+	db := setup(t)
+	now := time.Now()
+	elena := chore(t, db, "Faire son lit", 3, now, nil)
+	surprise, err := TodaySurprise(db, 1, now)
+	require.NoError(t, err)
+	require.Equal(t, elena.ID, surprise.ChoreID)
+	anna := chore(t, db, "faire son lit ", 3, now, nil)
+	other := chore(t, db, "Mettre la table", 3, now, nil)
+	same, err := SameTaskIDs(db, 1, elena.ID)
+	require.NoError(t, err)
+	require.Equal(t, []int{elena.ID, anna.ID}, same)
+
+	for _, task := range []*chModel.Chore{elena, anna} {
+		earning, err := TaskEarning(db, task, now)
+		require.NoError(t, err)
+		require.Equal(t, 3+5, earning.Points, task.Name)
+	}
+	earning, err := TaskEarning(db, other, now)
+	require.NoError(t, err)
+	require.Equal(t, 3, earning.Points)
+}
+
 func TestSurpriseStaysPutAndSkipsHiddenTasks(t *testing.T) {
 	db := setup(t)
 	now := time.Now()

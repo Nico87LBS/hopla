@@ -103,7 +103,9 @@ func TestWeeklyQuestsAreDrawnOnceAndPaid(t *testing.T) {
 	credit(t, db, task.ID, 2, 2, now)
 	require.NoError(t, AfterTask(db, 1, 2, now, now))
 	require.Equal(t, 2, earned(t, db, 2), "one table out of two")
-	credit(t, db, task.ID, 2, 2, now)
+	// A copy of the task with the same name, made for another child, counts too.
+	copied := chore(t, db, " table ", 2, now, nil)
+	credit(t, db, copied.ID, 2, 2, now)
 	require.NoError(t, AfterTask(db, 1, 2, now, now))
 	require.Equal(t, 4+7, earned(t, db, 2))
 	credit(t, db, task.ID, 2, 2, now)
