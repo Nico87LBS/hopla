@@ -37,6 +37,7 @@ import {
 } from '../../utils/Fetcher'
 import ConfirmationModal from '../Modals/Inputs/ConfirmationModal'
 import { MemberAvatar, memberShape, surfaceSx } from './GameParts'
+import { ChallengesCard, QuestsCard, RanksCard } from './Progression'
 
 const MULTIPLIERS = [2, 3, 4, 5]
 
@@ -393,6 +394,7 @@ export const RulesCard = () => {
       streakBonus: Number(rules.streakBonus) || 0,
       surpriseEnabled: rules.surpriseEnabled,
       surpriseBonus: Number(rules.surpriseBonus) || 0,
+      questsPerWeek: Number(rules.questsPerWeek) || 0,
     })
     if (!resp.ok) {
       showNotification({ type: 'error', message: t('rules.failed') })
@@ -439,6 +441,12 @@ export const RulesCard = () => {
           onChange={value => set('surpriseBonus', value)}
           endDecorator={t('rules.points')}
         />
+        <NumberField
+          label={t('rules.questsPerWeek')}
+          value={rules.questsPerWeek}
+          onChange={value => set('questsPerWeek', value)}
+          endDecorator={t('rules.quests')}
+        />
         <Typography level='body-xs' sx={{ color: 'text.tertiary' }}>
           {t('rules.help')}
         </Typography>
@@ -460,6 +468,9 @@ const DailyGames = ({ isParent, members }) => {
   return (
     <>
       <TodayCard members={members} today={today} />
+      <RanksCard members={members} today={today} />
+      <QuestsCard members={members} today={today} />
+      <ChallengesCard isParent={isParent} members={members} today={today} />
       {isParent && <PeriodsCard />}
     </>
   )

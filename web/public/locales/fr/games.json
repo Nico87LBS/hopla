@@ -94,6 +94,75 @@
     "points": "points",
     "help": "Mettre 0 jour ou 0 point coupe le bonus de série ; les séries restent comptées. La tâche surprise est tirée chaque jour parmi les tâches du jour visibles par tous.",
     "saved": "Règles enregistrées.",
-    "failed": "Les règles n'ont pas pu être enregistrées."
+    "failed": "Les règles n'ont pas pu être enregistrées.",
+    "questsPerWeek": "Quêtes tirées chaque lundi",
+    "quests": "quêtes"
+  },
+  "goals": {
+    "name": "Nom, par exemple « Roi de la table »",
+    "kind": {
+      "tasks": "Faire des tâches",
+      "points": "Gagner des points",
+      "streak": "Tenir une série"
+    },
+    "anyTask": "N'importe quelle tâche",
+    "target": "Objectif",
+    "rewardLabel": "Récompense",
+    "members": "Pour :",
+    "everyone": "tout le monde",
+    "tasks_one": "{{count}} tâche",
+    "tasks_other": "{{count}} tâches",
+    "oneTask_one": "« {{name}} » {{count}} fois",
+    "oneTask_other": "« {{name}} » {{count}} fois",
+    "points_one": "{{count}} point de tâches",
+    "points_other": "{{count}} points de tâches",
+    "streak_one": "Série de {{count}} jour",
+    "streak_other": "Série de {{count}} jours",
+    "reward_one": "+{{count}} point",
+    "reward_other": "+{{count}} points"
+  },
+  "ranks": {
+    "title": "Rangs",
+    "toNext_one": "Encore {{count}} point pour {{name}}",
+    "toNext_other": "Encore {{count}} points pour {{name}}",
+    "top_one": "Rang le plus haut atteint, avec {{count}} point gagné",
+    "top_other": "Rang le plus haut atteint, avec {{count}} points gagnés",
+    "settingsTitle": "Les rangs",
+    "settingsSubtitle": "Les paliers de points gagnés depuis le début, du premier au dernier rang.",
+    "name": "Nom du rang",
+    "help": "Le rang suit les points gagnés depuis le début : une dépense ou une pénalité ne le fait jamais baisser. Le premier rang commence à 0 point.",
+    "saved": "Rangs enregistrés.",
+    "failed": "Les rangs n'ont pas pu être enregistrés."
+  },
+  "quests": {
+    "title": "Quêtes",
+    "subtitle": "Tirées chaque lundi pour la semaine, et le 1er pour le mois.",
+    "none": "Aucune quête en cours. Les parents préparent la liste des quêtes plus bas.",
+    "until": "jusqu'à {{end}}",
+    "listTitle": "Liste des quêtes",
+    "listSubtitle": "Les quêtes de la semaine sont tirées au hasard dans cette liste ; celles du mois sont données à tous ceux qui peuvent les faire.",
+    "weekly": "De la semaine",
+    "monthly": "Du mois",
+    "empty": "Aucune quête pour l'instant.",
+    "deleteTitle": "Supprimer la quête",
+    "deleteMessage": "Supprimer « {{name}} » ? Si elle est en cours, elle continue jusqu'à la fin de sa semaine ou de son mois.",
+    "failed": "La quête n'a pas pu être enregistrée."
+  },
+  "challenges": {
+    "title": "Défis",
+    "subtitle": "Un objectif entre deux dates, chacun pour soi ou en famille.",
+    "empty": "Aucun défi en cours.",
+    "shared": "En famille",
+    "solo": "Chacun pour soi",
+    "sharedLabel": "En famille : les points de chacun s'additionnent",
+    "rewardText": "Récompense commune, par exemple « Sortie piscine » (facultatif)",
+    "until": "jusqu'à {{end}}",
+    "ended": "terminé",
+    "planned": "Commence {{start}}",
+    "rewardToWin": "À gagner : {{reward}}",
+    "rewardWon": "Gagné : {{reward}} !",
+    "deleteTitle": "Supprimer le défi",
+    "deleteMessage": "Supprimer « {{name}} » ? Les points déjà gagnés restent.",
+    "failed": "Le défi n'a pas pu être enregistré."
   }
 }

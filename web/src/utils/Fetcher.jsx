@@ -1050,6 +1050,71 @@ const DeleteBonusPeriod = id => {
   })
 }
 
+const GetRanks = async () => {
+  const resp = await Fetch(`/games/ranks`, {
+    method: 'GET',
+    headers: HEADERS(),
+  })
+  return resp.json()
+}
+
+const SaveRanks = ranks => {
+  return Fetch(`/games/ranks`, {
+    method: 'PUT',
+    headers: HEADERS(),
+    body: JSON.stringify(ranks),
+  })
+}
+
+const GetQuests = async () => {
+  const resp = await Fetch(`/games/quests`, {
+    method: 'GET',
+    headers: HEADERS(),
+  })
+  return resp.json()
+}
+
+const SaveQuest = quest => {
+  return Fetch(quest.id ? `/games/quests/${quest.id}` : `/games/quests`, {
+    method: quest.id ? 'PUT' : 'POST',
+    headers: HEADERS(),
+    body: JSON.stringify(quest),
+  })
+}
+
+const DeleteQuest = id => {
+  return Fetch(`/games/quests/${id}`, {
+    method: 'DELETE',
+    headers: HEADERS(),
+  })
+}
+
+const GetChallenges = async () => {
+  const resp = await Fetch(`/games/challenges`, {
+    method: 'GET',
+    headers: HEADERS(),
+  })
+  return resp.json()
+}
+
+const SaveChallenge = challenge => {
+  return Fetch(
+    challenge.id ? `/games/challenges/${challenge.id}` : `/games/challenges`,
+    {
+      method: challenge.id ? 'PUT' : 'POST',
+      headers: HEADERS(),
+      body: JSON.stringify(challenge),
+    },
+  )
+}
+
+const DeleteChallenge = id => {
+  return Fetch(`/games/challenges/${id}`, {
+    method: 'DELETE',
+    headers: HEADERS(),
+  })
+}
+
 export {
   AcceptCircleMemberRequest,
   AdjustPoints,
@@ -1074,6 +1139,7 @@ export {
   CreateThing,
   DeclineCircleMemberRequest,
   DeleteBonusPeriod,
+  DeleteChallenge,
   DeleteChildUser,
   DeleteChore,
   DeleteChoreAttachment,
@@ -1085,6 +1151,7 @@ export {
   DeleteLongLiveToken,
   DeletePointsPreset,
   DeleteProject,
+  DeleteQuest,
   DeleteReward,
   DeleteThing,
   DeleteTimeSession,
@@ -1095,6 +1162,7 @@ export {
   GetArchivedChores,
   GetBonusPeriods,
   GetCalendarURL,
+  GetChallenges,
   GetChildUsers,
   GetChoreAttachments,
   GetChoreByID,
@@ -1118,6 +1186,8 @@ export {
   GetPointsPresets,
   GetProjectById,
   GetProjects,
+  GetQuests,
+  GetRanks,
   GetRedemptions,
   GetResource,
   GetRewards,
@@ -1145,9 +1215,12 @@ export {
   RevokeCalendarURL,
   RotateCalendarURL,
   SaveBonusPeriod,
+  SaveChallenge,
   SaveChore,
   SaveGameRules,
   SavePointsPreset,
+  SaveQuest,
+  SaveRanks,
   SaveThing,
   SetupMFA,
   SignAssetURL,

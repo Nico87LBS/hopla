@@ -40,6 +40,7 @@ import {
 import ConfirmationModal from '../Modals/Inputs/ConfirmationModal'
 import DailyGames, { RulesCard } from './DailyGames'
 import { MemberAvatar, memberShape, surfaceSx } from './GameParts'
+import { QuestListCard, RankSettingsCard } from './Progression'
 
 const PAGE_SIZE = 30
 const MAX_POINTS = 1000
@@ -510,6 +511,8 @@ const GamesView = () => {
       {isParent && <AdjustCard members={members} presets={presets} />}
       <HistoryCard members={members} />
       {isParent && <PresetsCard presets={presets} />}
+      {isParent && <QuestListCard members={members} />}
+      {isParent && <RankSettingsCard />}
       {isParent && <RulesCard />}
     </Stack>
   )

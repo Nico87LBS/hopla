@@ -16,6 +16,7 @@ export const memberShape = PropTypes.shape({
   image: PropTypes.string,
   points: PropTypes.number,
   pointsRedeemed: PropTypes.number,
+  role: PropTypes.string,
   userId: PropTypes.number,
 })
 
