@@ -9,6 +9,7 @@ import (
 	"time"
 
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
+	cModel "github.com/nico87lbs/hopla/internal/circle/model"
 	ptModel "github.com/nico87lbs/hopla/internal/points"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -143,8 +144,16 @@ func TaskEarning(tx *gorm.DB, chore *chModel.Chore, performedAt time.Time) (Earn
 }
 
 // completionDays returns, per member, the local days on which they completed
-// at least one task since the given time.
+// at least one task since the given time, and since their last points reset.
 func completionDays(db *gorm.DB, circleID int, since time.Time) (map[int]map[string]bool, error) {
+	var resets []cModel.UserCircle
+	if err := db.Where("circle_id = ? AND streak_since IS NOT NULL", circleID).Find(&resets).Error; err != nil {
+		return nil, err
+	}
+	resetAt := map[int]time.Time{}
+	for _, member := range resets {
+		resetAt[member.UserID] = *member.StreakSince
+	}
 	var rows []struct {
 		CompletedBy int
 		PerformedAt time.Time
@@ -159,6 +168,9 @@ func completionDays(db *gorm.DB, circleID int, since time.Time) (map[int]map[str
 	}
 	days := map[int]map[string]bool{}
 	for _, row := range rows {
+		if reset, ok := resetAt[row.CompletedBy]; ok && row.PerformedAt.Before(reset) {
+			continue
+		}
 		if days[row.CompletedBy] == nil {
 			days[row.CompletedBy] = map[string]bool{}
 		}

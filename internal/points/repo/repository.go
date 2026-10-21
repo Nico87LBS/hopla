@@ -135,8 +135,9 @@ func (r *PointsRepository) Reset(c context.Context, circleID int, userID *int, b
 		for _, member := range members {
 			ids = append(ids, member.UserID)
 		}
+		now := time.Now().UTC()
 		if err := tx.Model(&cModel.UserCircle{}).Where("circle_id = ? AND user_id IN ?", circleID, ids).
-			Updates(map[string]any{"points": 0, "points_redeemed": 0}).Error; err != nil {
+			Updates(map[string]any{"points": 0, "points_redeemed": 0, "streak_since": now}).Error; err != nil {
 			return err
 		}
 		if clearHistory {
@@ -144,7 +145,6 @@ func (r *PointsRepository) Reset(c context.Context, circleID int, userID *int, b
 			return tx.Where("circle_id = ? AND user_id IN ?", circleID, ids).Delete(&pModel.PointsHistory{}).Error
 		}
 		reason := "Remise à zéro"
-		now := time.Now().UTC()
 		for _, member := range members {
 			entry := pModel.PointsHistory{Action: pModel.PointsHistoryActionReset, Points: max(0, member.Points-member.PointsRedeemed),
 				UserID: member.UserID, CircleID: circleID, CreatedBy: byUserID, Reason: &reason, CreatedAt: now}
