@@ -124,6 +124,7 @@ func TestResetKeepsTheLedgerWithAResetRow(t *testing.T) {
 	m := member(t, db)
 	require.Equal(t, 0, m.Points)
 	require.Equal(t, 0, m.PointsRedeemed)
+	require.NotNil(t, m.StreakSince, "the streak restarts from the reset")
 	var other cModel.UserCircle
 	require.NoError(t, db.Where("user_id = 3").First(&other).Error)
 	require.Equal(t, 7, other.Points, "only Elena was reset")

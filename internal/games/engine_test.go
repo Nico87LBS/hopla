@@ -144,3 +144,26 @@ func TestStreakBonusOnTheFirstTaskOfTheDay(t *testing.T) {
 	require.NoError(t, err)
 	require.Nil(t, entry, "an approval of an older task does not count")
 }
+
+func TestPointsResetRestartsTheStreak(t *testing.T) {
+	db := setup(t)
+	task := chore(t, db, "Chambre", 3, time.Now(), nil)
+	for _, ago := range []int{0, 1, 2} {
+		done(t, db, task.ID, 2, noon(ago))
+	}
+	streaks, err := Streaks(db, 1, []int{2}, noon(0))
+	require.NoError(t, err)
+	require.Equal(t, 3, streaks[0].Current)
+
+	resetAt := noon(0).Add(time.Hour)
+	require.NoError(t, db.Model(&cModel.UserCircle{}).Where("user_id = 2").Update("streak_since", resetAt).Error)
+	streaks, err = Streaks(db, 1, []int{2}, resetAt)
+	require.NoError(t, err)
+	require.Equal(t, 0, streaks[0].Current, "tasks before the reset no longer count")
+	require.Equal(t, 0, streaks[0].Best)
+
+	done(t, db, task.ID, 2, resetAt.Add(time.Minute))
+	streaks, err = Streaks(db, 1, []int{2}, resetAt.Add(time.Hour))
+	require.NoError(t, err)
+	require.Equal(t, 1, streaks[0].Current, "a new run starts after it")
+}

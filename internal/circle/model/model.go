@@ -31,6 +31,9 @@ type UserCircle struct {
 	UpdatedAt      time.Time `json:"updatedAt" gorm:"column:updated_at"`                              // Updated at
 	Points         int       `json:"points" gorm:"column:points;default:0;not null"`                  // Points
 	PointsRedeemed int       `json:"pointsRedeemed" gorm:"column:points_redeemed;default:0;not null"` // Points Redeemed
+	// StreakSince is the last points reset: tasks done before it no longer
+	// count towards the member's streak.
+	StreakSince *time.Time `json:"-" gorm:"column:streak_since"`
 }
 
 type UserRole string
