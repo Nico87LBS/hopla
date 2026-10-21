@@ -113,6 +113,51 @@ func (r *PointsRepository) Adjust(c context.Context, circleID, userID, points, b
 	return &entry, nil
 }
 
+// Reset sets members back to zero points, so to the first rank, such as for a
+// new year. It keeps the ledger and adds a reset row per member, unless
+// clearHistory, which erases their ledger instead.
+// userID nil resets every member of the circle.
+func (r *PointsRepository) Reset(c context.Context, circleID int, userID *int, byUserID int, clearHistory bool) ([]pModel.PointsHistory, error) {
+	entries := []pModel.PointsHistory{}
+	err := r.db.WithContext(c).Transaction(func(tx *gorm.DB) error {
+		var members []cModel.UserCircle
+		query := tx.Where("circle_id = ?", circleID)
+		if userID != nil {
+			query = query.Where("user_id = ?", *userID)
+		}
+		if err := query.Find(&members).Error; err != nil {
+			return err
+		}
+		if len(members) == 0 {
+			return ErrNotMember
+		}
+		ids := make([]int, 0, len(members))
+		for _, member := range members {
+			ids = append(ids, member.UserID)
+		}
+		if err := tx.Model(&cModel.UserCircle{}).Where("circle_id = ? AND user_id IN ?", circleID, ids).
+			Updates(map[string]any{"points": 0, "points_redeemed": 0}).Error; err != nil {
+			return err
+		}
+		if clearHistory {
+			// Quests done and challenges won stay recorded, so they do not pay again.
+			return tx.Where("circle_id = ? AND user_id IN ?", circleID, ids).Delete(&pModel.PointsHistory{}).Error
+		}
+		reason := "Remise à zéro"
+		now := time.Now().UTC()
+		for _, member := range members {
+			entry := pModel.PointsHistory{Action: pModel.PointsHistoryActionReset, Points: max(0, member.Points-member.PointsRedeemed),
+				UserID: member.UserID, CircleID: circleID, CreatedBy: byUserID, Reason: &reason, CreatedAt: now}
+			if err := tx.Create(&entry).Error; err != nil {
+				return err
+			}
+			entries = append(entries, entry)
+		}
+		return nil
+	})
+	return entries, err
+}
+
 func (r *PointsRepository) Presets(c context.Context, circleID int) ([]pModel.PointsPreset, error) {
 	var presets []pModel.PointsPreset
 	err := r.db.WithContext(c).Where("circle_id = ?", circleID).Order("points desc, name").Find(&presets).Error

@@ -980,6 +980,14 @@ const AdjustPoints = ({ points, presetId, reason, userId }) => {
   })
 }
 
+const ResetPoints = ({ clearHistory, userId }) => {
+  return Fetch(`/points/reset`, {
+    method: 'POST',
+    headers: HEADERS(),
+    body: JSON.stringify({ userId, clearHistory }),
+  })
+}
+
 const GetPointsPresets = async () => {
   const resp = await Fetch(`/points/presets`, {
     method: 'GET',
@@ -1211,6 +1219,7 @@ export {
   RejectRedemption,
   ResetChoreTimer,
   ResetPassword,
+  ResetPoints,
   RestoreBackup,
   RevokeCalendarURL,
   RotateCalendarURL,

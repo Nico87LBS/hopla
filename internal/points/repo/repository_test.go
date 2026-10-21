@@ -11,6 +11,7 @@ import (
 
 	cModel "github.com/nico87lbs/hopla/internal/circle/model"
 	"github.com/nico87lbs/hopla/internal/database"
+	"github.com/nico87lbs/hopla/internal/games"
 	pModel "github.com/nico87lbs/hopla/internal/points"
 )
 
@@ -106,4 +107,61 @@ func TestPresetsBelongToTheirCircle(t *testing.T) {
 	require.Equal(t, "Dishes", presets[0].Name)
 	require.Equal(t, -2, presets[0].Points)
 	require.NoError(t, repo.DeletePreset(ctx, 1, preset.ID))
+}
+
+func TestResetKeepsTheLedgerWithAResetRow(t *testing.T) {
+	repo, db := setup(t)
+	require.NoError(t, db.Create(&cModel.UserCircle{UserID: 3, CircleID: 1, Role: cModel.UserRoleMember, IsActive: true, Points: 7}).Error)
+	_, err := repo.Adjust(context.Background(), 1, 2, 5, 1, nil)
+	require.NoError(t, err)
+
+	two := 2
+	entries, err := repo.Reset(context.Background(), 1, &two, 1, false)
+	require.NoError(t, err)
+	require.Len(t, entries, 1)
+	require.Equal(t, pModel.PointsHistoryActionReset, entries[0].Action)
+	require.Equal(t, -11, entries[0].Delta(), "the balance it took away")
+	m := member(t, db)
+	require.Equal(t, 0, m.Points)
+	require.Equal(t, 0, m.PointsRedeemed)
+	var other cModel.UserCircle
+	require.NoError(t, db.Where("user_id = 3").First(&other).Error)
+	require.Equal(t, 7, other.Points, "only Elena was reset")
+
+	rows, err := repo.History(context.Background(), 1, HistoryFilter{})
+	require.NoError(t, err)
+	require.Len(t, rows, 2, "the bonus stays, with the reset row")
+
+	_, err = repo.Reset(context.Background(), 1, nil, 1, false)
+	require.NoError(t, err)
+	require.NoError(t, db.Where("user_id = 3").First(&other).Error)
+	require.Equal(t, 0, other.Points, "everyone")
+
+	missing := 9
+	_, err = repo.Reset(context.Background(), 1, &missing, 1, false)
+	require.ErrorIs(t, err, ErrNotMember)
+}
+
+func TestResetCanClearTheHistory(t *testing.T) {
+	repo, db := setup(t)
+	_, err := repo.Adjust(context.Background(), 1, 2, 5, 1, nil)
+	require.NoError(t, err)
+	require.NoError(t, db.Create(&games.QuestDraw{CircleID: 1, UserID: 2, PeriodKey: "2026-10-19", QuestID: 1,
+		Period: games.QuestWeek, Name: "Table", Kind: games.GoalTasks, Target: 1}).Error)
+	challenge := games.Challenge{CircleID: 1, Name: "Piscine", Kind: games.GoalPoints, Target: 10}
+	require.NoError(t, db.Create(&challenge).Error)
+	require.NoError(t, db.Create(&games.ChallengeWin{ChallengeID: challenge.ID, UserID: 2}).Error)
+
+	entries, err := repo.Reset(context.Background(), 1, nil, 1, true)
+	require.NoError(t, err)
+	require.Empty(t, entries)
+	rows, err := repo.History(context.Background(), 1, HistoryFilter{})
+	require.NoError(t, err)
+	require.Empty(t, rows)
+	var draws, wins int64
+	require.NoError(t, db.Model(&games.QuestDraw{}).Count(&draws).Error)
+	require.NoError(t, db.Model(&games.ChallengeWin{}).Count(&wins).Error)
+	require.EqualValues(t, 1, draws, "quests done stay, so they do not pay again")
+	require.EqualValues(t, 1, wins)
+	require.Equal(t, 0, member(t, db).Points)
 }

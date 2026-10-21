@@ -49,7 +49,8 @@
       "undo": "Tâche annulée",
       "redeem": "Points utilisés",
       "bonus": "Bonus",
-      "penalty": "Pénalité"
+      "penalty": "Pénalité",
+      "reset": "Remise à zéro"
     }
   },
   "today": {
@@ -164,5 +165,18 @@
     "deleteTitle": "Supprimer le défi",
     "deleteMessage": "Supprimer « {{name}} » ? Les points déjà gagnés restent.",
     "failed": "Le défi n'a pas pu être enregistré."
+  },
+  "reset": {
+    "title": "Remise à zéro",
+    "subtitle": "Remet les points d'un membre, ou de tout le monde, à zéro, et donc au premier rang. Par exemple une fois par an, ou à la fin des essais.",
+    "everyone": "Tout le monde",
+    "clearHistory": "Effacer aussi l'historique des points",
+    "help": "Sans cocher, l'historique est gardé et une ligne « Remise à zéro » y est ajoutée. Les séries continuent, et les quêtes réussies et les défis gagnés restent acquis pour ne pas payer deux fois.",
+    "button": "Remettre à zéro",
+    "confirmTitle": "Remettre à zéro ?",
+    "confirmKeep": "{{who}} : points et rang remis à zéro. L'historique est gardé.",
+    "confirmClear": "{{who}} : points et rang remis à zéro, et historique des points effacé. On ne peut pas revenir en arrière.",
+    "done": "{{who}} : remis à zéro.",
+    "failed": "La remise à zéro n'a pas pu se faire."
   }
 }

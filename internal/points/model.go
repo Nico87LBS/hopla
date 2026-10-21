@@ -28,7 +28,7 @@ func (h PointsHistory) Delta() int {
 		amount = -amount
 	}
 	switch h.Action {
-	case PointsHistoryActionRemove, PointsHistoryActionRedeem, PointsHistoryActionPenalty:
+	case PointsHistoryActionRemove, PointsHistoryActionRedeem, PointsHistoryActionPenalty, PointsHistoryActionReset:
 		return -amount
 	}
 	return amount
@@ -46,6 +46,9 @@ const (
 	// PointsHistoryActionPenalty is points a parent takes from the balance.
 	// Like spending, it leaves the points earned, and so the rank, untouched.
 	PointsHistoryActionPenalty
+	// PointsHistoryActionReset is a parent setting a member back to zero:
+	// balance, points earned and so rank. Points is the balance it took away.
+	PointsHistoryActionReset
 )
 
 // PointsPreset is a ready-made bonus or penalty, such as "+5 Helped without

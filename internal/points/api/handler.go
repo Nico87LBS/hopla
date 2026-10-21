@@ -39,6 +39,7 @@ var actionNames = map[pModel.PointsHistoryAction]string{
 	pModel.PointsHistoryActionRedeem:  "redeem",
 	pModel.PointsHistoryActionBonus:   "bonus",
 	pModel.PointsHistoryActionPenalty: "penalty",
+	pModel.PointsHistoryActionReset:   "reset",
 }
 
 // Entry is one ledger row as clients see it. Delta is the signed change to
@@ -209,6 +210,39 @@ func (h *Handler) adjust(c *gin.Context) {
 	c.JSON(200, gin.H{"res": toEntry(*entry)})
 }
 
+type ResetReq struct {
+	// UserID is the member to reset; empty resets everyone.
+	UserID       *int `json:"userId"`
+	ClearHistory bool `json:"clearHistory"`
+}
+
+func (h *Handler) reset(c *gin.Context) {
+	parentID, circleID, ok := h.requireParent(c)
+	if !ok {
+		return
+	}
+	var req ResetReq
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(400, gin.H{"error": "Invalid request"})
+		return
+	}
+	rows, err := h.pRepo.Reset(c, circleID, req.UserID, parentID, req.ClearHistory)
+	if errors.Is(err, pRepo.ErrNotMember) {
+		c.JSON(400, gin.H{"error": "User is not a member of this circle"})
+		return
+	}
+	if err != nil {
+		logging.FromContext(c).Error("Failed to reset points", "error", err)
+		c.JSON(500, gin.H{"error": "Error resetting points"})
+		return
+	}
+	entries := make([]Entry, 0, len(rows))
+	for _, row := range rows {
+		entries = append(entries, toEntry(row))
+	}
+	c.JSON(200, gin.H{"res": entries})
+}
+
 type PresetReq struct {
 	Name   string `json:"name" binding:"required,max=60"`
 	Points int    `json:"points"`
@@ -312,6 +346,7 @@ func Routes(r *gin.Engine, h *Handler, auth *jwt.GinJWTMiddleware) {
 	{
 		routes.GET("/history", h.getHistory)
 		routes.POST("/adjust", h.adjust)
+		routes.POST("/reset", h.reset)
 		routes.GET("/presets", h.getPresets)
 		routes.POST("/presets", h.createPreset)
 		routes.PUT("/presets/:id", h.updatePreset)
