@@ -38,6 +38,7 @@ import LocalizationSettings from '../views/Settings/LocalizationSettings'
 import MFASettings from '../views/Settings/MFASettings'
 import ProfileSettings from '../views/Settings/ProfileSettings'
 import StorageSettings from '../views/Settings/StorageSettings'
+import TemplateSettings from '../views/Settings/TemplateSettings'
 import ThingsHistory from '../views/Things/ThingsHistory'
 import ThingsView from '../views/Things/ThingsView'
 import TimerDetails from '../views/Timer/TimerDetails'
@@ -96,6 +97,10 @@ const Router = createBrowserRouter([
           {
             path: 'storage',
             element: <StorageSettings />,
+          },
+          {
+            path: 'template',
+            element: <TemplateSettings />,
           },
           {
             path: 'home-sections',

@@ -59,6 +59,10 @@
         "title": "Storage Settings",
         "description": "Backup and restore your data, manage local storage and sync preferences."
       },
+      "template": {
+        "title": "Instance template",
+        "description": "Export your tasks, rewards, presets and games to a file, or import a template to get started quickly."
+      },
       "layout": {
         "title": "Layout & Navigation",
         "description": "Pick the screen the app opens on, and which shortcuts and panels surround it."
@@ -333,6 +337,50 @@
     "clearLocalTitle": "Clear All Local Storage",
     "clearLocalMessage": "Are you sure you want to clear your local storage and cache? This will remove all your data from this browser and require login.",
     "clearAll": "Clear All"
+  },
+  "template": {
+    "title": "Instance template",
+    "intro": "A template holds the tasks, rewards, presets and games, without any people or dates. Export it here, then import it into another Hopla instance.",
+    "parentsOnly": "Only parents can export or import a template.",
+    "exportFailed": "The template export failed.",
+    "sections": {
+      "tasks": "Tasks",
+      "rewards": "Rewards",
+      "presets": "Presets",
+      "games": "Games"
+    },
+    "export": {
+      "title": "Export a template",
+      "description": "Downloads a file with what you tick. Private tasks are left out, and a task created for each child is kept once.",
+      "button": "Export"
+    },
+    "import": {
+      "title": "Import a template",
+      "description": "Pick a template file. Nothing is created until you click Import, and anything that already exists under the same name is left as it is.",
+      "choose": "Choose a file",
+      "line": "{{label}}: {{added}}",
+      "newCount_one": "{{count}} new",
+      "newCount_other": "{{count}} new",
+      "skippedCount_one": "{{count}} already there",
+      "skippedCount_other": "{{count}} already there",
+      "quests": "Quests",
+      "replacesGames": "The current game rules and ranks will be replaced by the template's.",
+      "assignTitle": "Who should the tasks be assigned to?",
+      "assignHelp": "With nobody picked, the tasks are for anyone.",
+      "shared": "One task shared between them",
+      "perMember": "One copy of each task per person",
+      "button": "Import"
+    },
+    "report": {
+      "done": "Import finished: {{tasks}} tasks, {{rewards}} rewards, {{presets}} presets and {{quests}} quests created.",
+      "failed": "Not imported: {{names}}."
+    },
+    "errors": {
+      "notJson": "This file isn't readable JSON.",
+      "notTemplate": "This file isn't a Hopla template.",
+      "tooNew": "This template comes from a newer Hopla. Update Hopla to import it.",
+      "loadFailed": "Couldn't read the current data. Try again."
+    }
   },
   "sidepanel": {
     "title": "Sidepanel Customization",
