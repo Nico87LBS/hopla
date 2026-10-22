@@ -44,9 +44,9 @@ func TestBonusCountsAsEarned(t *testing.T) {
 	require.Equal(t, 4, m.PointsRedeemed)
 }
 
-// A penalty lowers only the balance, never the points earned that ranks are
-// built on, and never below zero.
-func TestPenaltyStopsAtZeroAndKeepsPointsEarned(t *testing.T) {
+// A penalty lowers the points earned that ranks are built on, and so the
+// balance, but never below zero.
+func TestPenaltyLowersPointsEarnedAndStopsAtZero(t *testing.T) {
 	repo, db := setup(t)
 	entry, err := repo.Adjust(context.Background(), 1, 2, -4, 1, nil)
 	require.NoError(t, err)
@@ -55,8 +55,8 @@ func TestPenaltyStopsAtZeroAndKeepsPointsEarned(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, 2, entry.Points, "only the 2 points left are taken")
 	m := member(t, db)
-	require.Equal(t, 10, m.Points)
-	require.Equal(t, 10, m.PointsRedeemed)
+	require.Equal(t, 4, m.Points, "the points earned went down by 6")
+	require.Equal(t, 4, m.PointsRedeemed, "spending is untouched")
 	entry, err = repo.Adjust(context.Background(), 1, 2, -3, 1, nil)
 	require.NoError(t, err)
 	require.Equal(t, 0, entry.Points)

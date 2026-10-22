@@ -2,7 +2,7 @@
   "tab": "Games",
   "adjust": {
     "title": "Bonuses and penalties",
-    "subtitle": "Give extra points, or take some away. A penalty never takes the balance below zero, and never costs a rank.",
+    "subtitle": "Give extra points, or take some away. A penalty lowers the points earned, so it can cost a rank, but it never takes the balance below zero.",
     "pickMember": "Pick a member first.",
     "available_one": "{{name}} has {{count}} point available.",
     "available_other": "{{name}} has {{count}} points available.",
@@ -135,7 +135,7 @@
     "name": "Rank name",
     "image": "Rank picture",
     "noImage": "No picture",
-    "help": "Ranks follow the points earned since the start: spending or a penalty never lowers them. The first rank starts at 0 points. The last rank lasts as many points as the gap from the rank before, then gives a ⭐ star kept forever and a new round from the first rank. “Use the Hopla ranks” fills the list with the drawn ranks of the tribe: save to keep them.",
+    "help": "Ranks follow the points earned since the start: spending never lowers them, a penalty does. The first rank starts at 0 points. The last rank lasts as many points as the gap from the rank before, then gives a ⭐ star and a new round from the first rank. “Use the Hopla ranks” fills the list with the drawn ranks of the tribe: save to keep them.",
     "saved": "Ranks saved.",
     "failed": "The ranks could not be saved.",
     "useDefaults": "Use the Hopla ranks"

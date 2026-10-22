@@ -65,8 +65,8 @@ type Streak struct {
 	DoneToday bool `json:"doneToday"`
 }
 
-// Rank is a level reached with the points earned since joining. Spending or
-// a penalty never takes a rank away.
+// Rank is a level reached with the points earned since joining. Spending
+// never takes a rank away; a penalty can.
 type Rank struct {
 	ID       int    `json:"-" gorm:"primaryKey"`
 	CircleID int    `json:"-" gorm:"column:circle_id;index;not null"`

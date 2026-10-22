@@ -67,9 +67,9 @@ func (r *PointsRepository) History(c context.Context, circleID int, filter Histo
 
 // Adjust gives a bonus (points > 0) or a penalty (points < 0) to a member.
 //
-// A bonus counts as points earned. A penalty only lowers the balance left to
-// spend, like spending does, so the rank built on points earned never drops,
-// and it never takes the balance below zero. It returns the ledger row, whose
+// A bonus adds to the points earned. A penalty takes from them, so the
+// balance left to spend, the rank and the podium all go down, but it never
+// takes the balance below zero. It returns the ledger row, whose
 // points are what was actually applied: a penalty larger than the balance is
 // cut down to it, and can come to zero. Like every ledger row, its points are
 // positive; the action tells which way they went.
@@ -99,7 +99,7 @@ func (r *PointsRepository) Adjust(c context.Context, circleID, userID, points, b
 			entry.Action = pModel.PointsHistoryActionPenalty
 			entry.Points = taken
 			if taken > 0 {
-				if err := tx.Model(&member).Update("points_redeemed", gorm.Expr("points_redeemed + ?", taken)).Error; err != nil {
+				if err := tx.Model(&member).Update("points", gorm.Expr("points - ?", taken)).Error; err != nil {
 					return err
 				}
 			}

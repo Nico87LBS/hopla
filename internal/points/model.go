@@ -43,8 +43,8 @@ const (
 	PointsHistoryActionRedeem
 	// PointsHistoryActionBonus is points a parent gives. They count as earned.
 	PointsHistoryActionBonus
-	// PointsHistoryActionPenalty is points a parent takes from the balance.
-	// Like spending, it leaves the points earned, and so the rank, untouched.
+	// PointsHistoryActionPenalty is points a parent takes away. Unlike
+	// spending, it lowers the points earned too, and so can cost a rank.
 	PointsHistoryActionPenalty
 	// PointsHistoryActionReset is a parent setting a member back to zero:
 	// balance, points earned and so rank. Points is the balance it took away.
