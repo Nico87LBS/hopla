@@ -31,13 +31,6 @@ export const BOTTOM_NAV_ITEM_POOL = [
     translationDefault: 'Archived',
   },
   {
-    id: 'things',
-    to: 'things',
-    iconName: 'Widgets',
-    translationKey: 'navigation.things',
-    translationDefault: 'Things',
-  },
-  {
     id: 'labels',
     to: 'labels',
     iconName: 'ListAlt',

@@ -28,8 +28,6 @@ import (
 	storageRepo "github.com/nico87lbs/hopla/internal/storage/repo"
 	stModel "github.com/nico87lbs/hopla/internal/subtask/model"
 	stRepo "github.com/nico87lbs/hopla/internal/subtask/repo"
-	tModel "github.com/nico87lbs/hopla/internal/thing/model"
-	tRepo "github.com/nico87lbs/hopla/internal/thing/repo"
 	uModel "github.com/nico87lbs/hopla/internal/user/model"
 	uRepo "github.com/nico87lbs/hopla/internal/user/repo"
 	"github.com/nico87lbs/hopla/internal/utils"
@@ -40,7 +38,6 @@ import (
 type Handler struct {
 	choreRepo       *chRepo.ChoreRepository
 	circleRepo      *cRepo.CircleRepository
-	tRepo           *tRepo.ThingRepository
 	lRepo           *lRepo.LabelRepository
 	uRepo           *uRepo.UserRepository
 	stRepo          *stRepo.SubTasksRepository
@@ -52,7 +49,7 @@ type Handler struct {
 }
 
 func NewHandler(cr *chRepo.ChoreRepository, circleRepo *cRepo.CircleRepository,
-	tRepo *tRepo.ThingRepository, lRepo *lRepo.LabelRepository,
+	lRepo *lRepo.LabelRepository,
 	stRepo *stRepo.SubTasksRepository,
 	stor storage.Storage,
 	ur *uRepo.UserRepository,
@@ -65,7 +62,6 @@ func NewHandler(cr *chRepo.ChoreRepository, circleRepo *cRepo.CircleRepository,
 		pjRepo:          projectRepo,
 		uRepo:           ur,
 		circleRepo:      circleRepo,
-		tRepo:           tRepo,
 		lRepo:           lRepo,
 		stRepo:          stRepo,
 		storageRepo:     stoRepo,
@@ -291,7 +287,6 @@ func (h *Handler) signAttachments(c *gin.Context, attachments []storageModel.Sto
 
 // region: request models
 type ChoreReq struct {
-	CompletionActions    *[]chModel.CompletionAction   `json:"completionActions"`
 	ID                   int                           `json:"id"`
 	Name                 string                        `json:"name" binding:"required"`
 	FrequencyType        chModel.FrequencyType         `json:"frequencyType" binding:"required,oneof=once daily weekly monthly yearly adaptive interval days_of_the_week day_of_the_month trigger no_repeat always"`
@@ -315,7 +310,6 @@ type ChoreReq struct {
 	RequireApproval      bool                          `json:"requireApproval" binding:"omitempty"`
 	IsPrivate            *bool                         `json:"isPrivate" binding:"omitempty"`
 	ProjectID            *int                          `json:"projectId" binding:"omitempty"`
-	ThingTrigger         *tModel.ThingTrigger          `json:"thingTrigger"`
 	DraftId              *string                       `json:"draftId,omitempty"`
 }
 
@@ -516,10 +510,6 @@ func (h *Handler) CreateChore(c *gin.Context) {
 		return
 	}
 
-	if err := h.validateCompletionActions(c, choreReq.CompletionActions, currentUser.ID); err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
 	warnings := setCreateChoreDefaults(&choreReq)
 	if !choreReq.Notification && choreReq.NotificationMetadata != nil {
 		warnings = append(warnings, "notificationMetadata provided while notification is false; ignoring metadata")
@@ -553,9 +543,6 @@ func (h *Handler) CreateChore(c *gin.Context) {
 		// SubTasks removed to prevent duplicate creation - handled by UpdateSubtask call below
 		// it's need custom logic to handle subtask creation as we send negative ids sometimes when we creating parent child releationship
 		// when the subtask is not yet created
-	}
-	if choreReq.CompletionActions != nil {
-		createdChore.CompletionActions = *choreReq.CompletionActions
 	}
 	assigneeIDs := make([]int, 0, len(choreReq.Assignees))
 	for _, assignee := range choreReq.Assignees {
@@ -631,10 +618,6 @@ func (h *Handler) CreateChore(c *gin.Context) {
 		broadcaster.BroadcastChoreCreated(eventChore, &currentUser.User)
 	}
 
-	shouldReturn := handleThingAssociation(choreReq, createdChore, h, c, &currentUser.User)
-	if shouldReturn {
-		return
-	}
 	response := gin.H{"res": id}
 	if len(warnings) > 0 {
 		response["warnings"] = warnings
@@ -789,13 +772,6 @@ func (h *Handler) EditChore(c *gin.Context) {
 		return
 	}
 
-	if choreReq.CompletionActions == nil {
-		choreReq.CompletionActions = &oldChore.CompletionActions
-	}
-	if err := h.validateCompletionActions(c, choreReq.CompletionActions, oldChore.CreatedBy); err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
 	// Labels are only touched when the request carries them: an update without
 	// labelsV2 keeps the chore's current labels.
 	if choreReq.LabelsV2 != nil {
@@ -855,7 +831,6 @@ func (h *Handler) EditChore(c *gin.Context) {
 	setEditChoreDefaults(&choreReq, oldChore)
 
 	updatedChore := &chModel.Chore{ // TODO: Assignees are missing
-		CompletionActions:      *choreReq.CompletionActions,
 		ID:                     choreReq.ID,
 		Name:                   choreReq.Name,
 		FrequencyType:          choreReq.FrequencyType,
@@ -974,16 +949,6 @@ func (h *Handler) EditChore(c *gin.Context) {
 			"updatedAt": time.Now().UTC(),
 		}
 		broadcaster.BroadcastChoreUpdated(eventChore, &currentUser.User, changes, nil)
-	}
-
-	if oldChore.ThingChore != nil {
-		// TODO: Add check to see if dissociation is necessary
-		h.tRepo.DissociateThingWithChore(c, oldChore.ThingChore.ThingID, oldChore.ID)
-
-	}
-	shouldReturn := handleThingAssociation(choreReq, updatedChore, h, c, &currentUser.User)
-	if shouldReturn {
-		return
 	}
 
 	c.JSON(200, gin.H{
@@ -1127,32 +1092,6 @@ func (h *Handler) cleanUpUnreferencedFiles(ctx *gin.Context, userID int, entityT
 	return nil
 }
 
-func handleThingAssociation(choreReq ChoreReq, savedChore *chModel.Chore, h *Handler, c *gin.Context, currentUser *uModel.User) bool {
-	if choreReq.ThingTrigger != nil {
-		thing, err := h.tRepo.GetThingByID(c, choreReq.ThingTrigger.ID)
-		if err != nil {
-			c.JSON(500, gin.H{
-				"error": "Error getting thing",
-			})
-			return true
-		}
-		if thing.UserID != currentUser.ID {
-			c.JSON(403, gin.H{
-				"error": "You are not allowed to trigger this thing",
-			})
-			return true
-		}
-		if err := h.tRepo.AssociateThingWithChore(c, choreReq.ThingTrigger.ID, savedChore.ID, choreReq.ThingTrigger.TriggerState, choreReq.ThingTrigger.Condition); err != nil {
-			c.JSON(500, gin.H{
-				"error": "Error associating thing with chore",
-			})
-			return true
-		}
-
-	}
-	return false
-}
-
 // DeleteChore godoc
 //
 //	@Summary		Delete a chore
@@ -1239,7 +1178,6 @@ func (h *Handler) DeleteChore(c *gin.Context) {
 		})
 		return
 	}
-	h.tRepo.DissociateChoreWithThing(c, id)
 	// DB records are already gone; only delete the backing storage objects.
 	if len(choreFilePaths) > 0 {
 		h.storage.Delete(c, choreFilePaths)
@@ -4484,23 +4422,4 @@ func Routes(router *gin.Engine, h *Handler, multiAuthMiddleware *auth.MultiAuthM
 		choresRoutes.DELETE("/:id/timer/:session_id", h.DeleteTimeSession)
 		choresRoutes.POST("/:id/undo", h.UndoChore)
 	}
-}
-
-func (h *Handler) validateCompletionActions(c *gin.Context, actions *[]chModel.CompletionAction, ownerID int) error {
-	if actions == nil {
-		return nil
-	}
-	if len(*actions) > 20 {
-		return fmt.Errorf("A task can have at most 20 completion actions")
-	}
-	for _, action := range *actions {
-		thing, err := h.tRepo.GetThingByID(c, action.ThingID)
-		if err != nil || thing.UserID != ownerID {
-			return fmt.Errorf("Completion action Thing must belong to the task owner")
-		}
-		if _, err := action.NextState(thing); err != nil {
-			return err
-		}
-	}
-	return nil
 }

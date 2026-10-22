@@ -12,7 +12,6 @@ const routeHierarchy = {
   '/chores': 1,
   '/chores/create': 2,
   '/settings': 1,
-  '/things': 1,
   '/activities': 1,
   '/points': 1,
   '/labels': 1,
@@ -45,9 +44,6 @@ const getRouteLevel = pathname => {
     !pathname.includes('/history') &&
     !pathname.includes('/timer')
   ) {
-    return 2
-  }
-  if (pathname.includes('/things/')) {
     return 2
   }
   if (pathname.includes('/settings/')) {

@@ -29,9 +29,8 @@ const (
 	EventTypeProjectUpdated EventType = "project.updated"
 
 	// Change events tell clients to refresh data that has no detailed event:
-	// rewards and redemptions, things, and the circle's members.
+	// rewards and redemptions, and the circle's members.
 	EventTypeRewardsUpdated EventType = "rewards.updated"
-	EventTypeThingsUpdated  EventType = "things.updated"
 	EventTypeCircleUpdated  EventType = "circle.updated"
 
 	// Subtask events

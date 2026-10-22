@@ -13,7 +13,6 @@ import {
   SettingsOutlined,
   SpaceDashboard,
   Toll,
-  Widgets,
 } from '@mui/icons-material'
 import {
   Box,
@@ -55,7 +54,6 @@ const NAVBAR_TITLE_KEYS = {
   '/labels': 'navigation.labels',
   '/points': 'navigation.points',
   '/projects': 'navigation.projects',
-  '/things': 'navigation.things',
 }
 const SHELL_FREE_PAGES = [
   '/signup',
@@ -140,11 +138,6 @@ const NavBar = () => {
       to: '/archived',
       label: t('navigation.archived'),
       icon: <Archive />,
-    },
-    {
-      to: '/things',
-      label: t('navigation.things'),
-      icon: <Widgets />,
     },
     {
       to: '/labels',

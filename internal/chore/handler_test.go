@@ -25,7 +25,6 @@ import (
 	"github.com/nico87lbs/hopla/internal/storage"
 	storageRepo "github.com/nico87lbs/hopla/internal/storage/repo"
 	stRepo "github.com/nico87lbs/hopla/internal/subtask/repo"
-	tRepo "github.com/nico87lbs/hopla/internal/thing/repo"
 	uModel "github.com/nico87lbs/hopla/internal/user/model"
 )
 
@@ -178,7 +177,6 @@ func newEditChoreTestRouter(t *testing.T) (*gin.Engine, *gorm.DB) {
 		circleRepo:  circleRepository,
 		lRepo:       lRepo.NewLabelRepository(db, cfg),
 		stRepo:      stRepo.NewSubTasksRepository(db),
-		tRepo:       tRepo.NewThingRepository(db, cfg),
 		storage:     storage.NewLocalStorage(cfg),
 		storageRepo: storageRepo.NewStorageRepository(db, cfg),
 	}

@@ -21,7 +21,6 @@ import (
 	storageModel "github.com/nico87lbs/hopla/internal/storage/model"
 	stModel "github.com/nico87lbs/hopla/internal/subtask/model"
 	syncModel "github.com/nico87lbs/hopla/internal/sync/model"
-	tModel "github.com/nico87lbs/hopla/internal/thing/model"
 	uModel "github.com/nico87lbs/hopla/internal/user/model" // Pure go SQLite driver, checkout https://github.com/glebarez/sqlite for details
 	"github.com/nico87lbs/hopla/migrations"
 )
@@ -38,9 +37,6 @@ func Migration(db *gorm.DB) error {
 		uModel.UserPasswordReset{},
 		uModel.MFASession{},
 		uModel.UserSession{},
-		tModel.Thing{},
-		tModel.ThingChore{},
-		tModel.ThingHistory{},
 		uModel.APIToken{},
 		lModel.Label{},
 		chModel.ChoreLabels{},

@@ -281,7 +281,7 @@
   "apiTokens": {
     "title": "API Tokens",
     "accessToken": "Access Token",
-    "description": "Create token to use with the API to update things that trigger task or chores",
+    "description": "Create a token for the API, for example for the Home Assistant integration.",
     "tokenCreatedTitle": "Token Created",
     "tokenCreatedWarning": "Copy this token now. For your security, you won't be able to see it again.",
     "removeTitle": "Remove Token",

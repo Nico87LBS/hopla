@@ -10,7 +10,6 @@ import {
   SettingsOutlined,
   SpaceDashboard,
   Toll,
-  Widgets,
 } from '@mui/icons-material'
 import { Box, Sheet, Typography } from '@mui/joy'
 import useMediaQuery from '@mui/material/useMediaQuery'
@@ -31,7 +30,6 @@ const ICONS = {
   Checklist: <Checklist />,
   SearchRounded: <SearchRounded />,
   Archive: <Archive />,
-  Widgets: <Widgets />,
   ListAlt: <ListAlt />,
   FolderOpen: <FolderOpen />,
   FilterAlt: <FilterAlt />,

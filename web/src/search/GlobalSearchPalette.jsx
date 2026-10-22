@@ -12,7 +12,6 @@ import {
   SearchRounded,
   SettingsOutlined,
   TollOutlined,
-  WidgetsOutlined,
 } from '@mui/icons-material'
 import {
   Box,
@@ -107,13 +106,6 @@ const buildQuickActions = t => [
       keywords: 'archive archived tasks completed open',
       route: '/archived',
       icon: <ArchiveOutlined />,
-    },
-    {
-      id: 'action:things',
-      title: t('search.actions.viewThings'),
-      keywords: 'things devices sensors trackers state open',
-      route: '/things',
-      icon: <WidgetsOutlined />,
     },
     {
       id: 'action:labels',

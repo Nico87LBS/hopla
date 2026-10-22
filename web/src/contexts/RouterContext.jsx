@@ -39,8 +39,6 @@ import MFASettings from '../views/Settings/MFASettings'
 import ProfileSettings from '../views/Settings/ProfileSettings'
 import StorageSettings from '../views/Settings/StorageSettings'
 import TemplateSettings from '../views/Settings/TemplateSettings'
-import ThingsHistory from '../views/Things/ThingsHistory'
-import ThingsView from '../views/Things/ThingsView'
 import TimerDetails from '../views/Timer/TimerDetails'
 import UserActivities from '../views/User/UserActivities'
 import UserPoints from '../views/User/UserPoints'
@@ -196,14 +194,6 @@ const Router = createBrowserRouter([
       {
         path: 'circle/join',
         element: <JoinCircleView />,
-      },
-      {
-        path: 'things',
-        element: <ThingsView />,
-      },
-      {
-        path: 'things/:id',
-        element: <ThingsHistory />,
       },
       {
         path: 'labels/',

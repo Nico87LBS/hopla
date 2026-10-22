@@ -281,7 +281,7 @@
   "apiTokens": {
     "title": "Jetons d'API",
     "accessToken": "Jeton d'accès",
-    "description": "Créez un jeton à utiliser avec l'API pour mettre à jour les objets qui déclenchent des tâches",
+    "description": "Crée un jeton pour l'API, par exemple pour l'intégration Home Assistant.",
     "tokenCreatedTitle": "Jeton créé",
     "tokenCreatedWarning": "Copie ce jeton maintenant. Par sécurité, tu ne pourras plus le revoir.",
     "removeTitle": "Retirer le jeton",

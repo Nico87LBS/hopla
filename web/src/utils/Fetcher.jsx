@@ -366,48 +366,6 @@ const UpdateUserDetails = userDetails => {
   })
 }
 
-const GetThings = () => {
-  return Fetch(`/things`, {
-    method: 'GET',
-    headers: HEADERS(),
-  })
-}
-const CreateThing = thing => {
-  return Fetch(`/things`, {
-    method: 'POST',
-    headers: HEADERS(),
-    body: JSON.stringify(thing),
-  })
-}
-
-const SaveThing = thing => {
-  return Fetch(`/things`, {
-    method: 'PUT',
-    headers: HEADERS(),
-    body: JSON.stringify(thing),
-  })
-}
-
-const UpdateThingState = thing => {
-  return Fetch(`/things/${thing.id}/state?value=${thing.state}`, {
-    method: 'PUT',
-    headers: HEADERS(),
-  })
-}
-const DeleteThing = id => {
-  return Fetch(`/things/${id}`, {
-    method: 'DELETE',
-    headers: HEADERS(),
-  })
-}
-
-const GetThingHistory = (id, offset) => {
-  return Fetch(`/things/${id}/history?offset=${offset}`, {
-    method: 'GET',
-    headers: HEADERS(),
-  })
-}
-
 const CreateLongLiveToken = name => {
   return Fetch(`/users/tokens`, {
     method: 'POST',
@@ -1159,7 +1117,6 @@ export {
   CreateLongLiveToken,
   CreateProject,
   CreateReward,
-  CreateThing,
   DeclineCircleMemberRequest,
   DeleteBonusPeriod,
   DeleteChallenge,
@@ -1176,7 +1133,6 @@ export {
   DeleteProject,
   DeleteQuest,
   DeleteReward,
-  DeleteThing,
   DeleteTimeSession,
   DeleteUser,
   DisableMFA,
@@ -1217,8 +1173,6 @@ export {
   GetResource,
   GetRewards,
   GetStorageUsage,
-  GetThingHistory,
-  GetThings,
   GetUserCircle,
   GetUserProfile,
   JoinCircle,
@@ -1247,7 +1201,6 @@ export {
   SavePointsPreset,
   SaveQuest,
   SaveRanks,
-  SaveThing,
   SetupMFA,
   SignAssetURL,
   signUp,
@@ -1267,7 +1220,6 @@ export {
   UpdatePassword,
   UpdateProject,
   UpdateReward,
-  UpdateThingState,
   UpdateTimeSession,
   UpdateUserDetails,
   UploadChoreAttachment,
