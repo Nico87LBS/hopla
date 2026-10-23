@@ -79,6 +79,7 @@ import {
   UpdateDueDate,
 } from '../../utils/Fetcher'
 import { offlineDB } from '../../utils/OfflineDB'
+import { isAnyTime } from '../../utils/repeatTime.js'
 import { getSafeBottomPadding } from '../../utils/SafeAreaUtils.js'
 import ChoreActionMenu from '../components/ChoreActionMenu'
 import DueDatePickerModal, {
@@ -834,7 +835,7 @@ const ChoreView = () => {
         )}
         <Chip startDecorator={<CalendarMonth />} size='md' sx={{ mb: 1 }}>
           {chore.nextDueDate
-            ? `${t('choreView.due')} ${fmt.dateTime(chore.nextDueDate)}`
+            ? `${t('choreView.due')} ${isAnyTime(chore.nextDueDate) ? fmt.date(chore.nextDueDate) : fmt.dateTime(chore.nextDueDate)}`
             : t('choreView.na')}
         </Chip>
         <Box

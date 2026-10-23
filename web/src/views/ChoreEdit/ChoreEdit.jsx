@@ -98,6 +98,7 @@ import {
   PROJECT_VISIBILITY,
 } from '../../utils/ProjectAccess'
 import { getIconComponent } from '../../utils/ProjectIcons'
+import { withRepeatTime } from '../../utils/repeatTime.js'
 import { getSafeBottomPadding } from '../../utils/SafeAreaUtils.js'
 import {
   copiesOf,
@@ -545,6 +546,9 @@ const ChoreEdit = () => {
         .endOf('day')
         .format('YYYY-MM-DDTHH:mm:59')
       setDueDate(endOfDay)
+      setFrequencyMetadata(
+        withRepeatTime(frequencyType, frequencyMetadata, endOfDay),
+      )
     }
   }
 
@@ -600,6 +604,9 @@ const ChoreEdit = () => {
           .endOf('day')
           .format('YYYY-MM-DDTHH:mm:ss')
         setDueDate(endOfDay)
+        setFrequencyMetadata(
+          withRepeatTime(frequencyType, frequencyMetadata, endOfDay),
+        )
       }
     }
   }
@@ -653,7 +660,11 @@ const ChoreEdit = () => {
       nextDueDate: dueDate ? new Date(dueDate).toISOString() : null,
       frequencyType: frequencyType,
       frequency: Number(frequency),
-      frequencyMetadata: frequencyMetadata,
+      frequencyMetadata: withRepeatTime(
+        frequencyType,
+        frequencyMetadata,
+        dueDate,
+      ),
       assignedTo: assignedToValue,
       assignStrategy: assignStrategyValue,
       isRolling: isRolling,

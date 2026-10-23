@@ -30,6 +30,7 @@ import {
   getProjectAudienceIds,
 } from '../../utils/ProjectAccess'
 import { getIconComponent } from '../../utils/ProjectIcons'
+import { withRepeatTime } from '../../utils/repeatTime.js'
 import { generateUUID } from '../../utils/UUID'
 import { useLabels } from '../Labels/LabelQueries'
 import { useProjects } from '../Projects/ProjectQueries'
@@ -881,7 +882,11 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
 
     if (frequency) {
       chore.frequencyType = frequency.frequencyType
-      chore.frequencyMetadata = frequency.frequencyMetadata
+      chore.frequencyMetadata = withRepeatTime(
+        frequency.frequencyType,
+        frequency.frequencyMetadata,
+        isAlwaysAvailable ? null : dueDate,
+      )
       chore.frequency = frequency.frequency
     }
     if (dueDate && !isAlwaysAvailable) {
