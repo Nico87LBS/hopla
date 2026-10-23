@@ -302,7 +302,7 @@ type ChoreReq struct {
 	IsRolling            bool                          `json:"isRolling"`
 	AssignedTo           *int                          `json:"assignedTo" binding:"omitempty"`
 	Assignees            []chModel.ChoreAssignees      `json:"assignees" binding:"dive"`
-	AssignStrategy       chModel.AssignmentStrategy    `json:"assignStrategy" binding:"required,oneof=no_assignee least_assigned least_completed random keep_last_assigned random_except_last_assigned round_robin"`
+	AssignStrategy       chModel.AssignmentStrategy    `json:"assignStrategy" binding:"required,oneof=no_assignee least_assigned least_completed random keep_last_assigned random_except_last_assigned round_robin together"`
 	IsActive             *bool                         `json:"isActive" binding:"omitempty"`
 	Notification         bool                          `json:"notification"`
 	NotificationMetadata *chModel.NotificationMetadata `json:"notificationMetadata"`
