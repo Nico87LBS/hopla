@@ -24,7 +24,7 @@ import {
   SlotAction,
 } from '../../utils/Fetcher'
 import { taskModeOf } from '../../utils/taskMode'
-import { hasSlots, todaySlots } from '../../utils/taskSlots'
+import { doneCopies, hasSlots, todaySlots } from '../../utils/taskSlots'
 import { MemberAvatar } from '../Games/GameParts'
 
 const CELL = 44
@@ -316,6 +316,7 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
       ),
     }))
   })
+  const ahead = slotted ? new Set() : doneCopies(chores, now)
   const columns = lines.find(line => line.slots.length)?.slots || []
   const all = lines.flatMap(line => line.slots)
   const doneCount = all.filter(slot => slot.state === 'done').length
@@ -431,6 +432,21 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
               const color = memberColor(member.userId)
               const pending = chore.status === 3
               const label = member.displayName || ''
+              if (ahead.has(chore.id)) {
+                return (
+                  <Box
+                    key={`${chore.id}-${member.userId}`}
+                    role='img'
+                    aria-label={t('slots.cell.done', { label })}
+                    title={label}
+                    sx={{ ...cellButtonSx, cursor: 'default' }}
+                  >
+                    <Box sx={{ ...ringSx, bgcolor: color, color: '#fff' }}>
+                      <CheckRounded />
+                    </Box>
+                  </Box>
+                )
+              }
               return (
                 <Box
                   key={`${chore.id}-${member.userId}`}

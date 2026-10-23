@@ -81,3 +81,27 @@ export const pullCopiesTogether = sections => {
     return { ...section, content }
   })
 }
+
+const endOfDay = date => {
+  const end = new Date(date)
+  end.setHours(23, 59, 59, 999)
+  return end
+}
+
+// doneCopies returns the ids of the copies already done for now: once a
+// child's copy is done (and approved), the server moves it to its next due
+// date, while the other child's copy is still due today. The row keeps both
+// together, so the one ahead shows as done instead of to do again.
+export const doneCopies = (chores, now = new Date()) => {
+  const dues = chores
+    .filter(chore => chore.nextDueDate)
+    .map(chore => new Date(chore.nextDueDate))
+  if (dues.length < 2) return new Set()
+  const earliest = new Date(Math.min(...dues))
+  const limit = endOfDay(earliest > now ? earliest : now)
+  return new Set(
+    chores
+      .filter(chore => chore.nextDueDate && new Date(chore.nextDueDate) > limit)
+      .map(chore => chore.id),
+  )
+}
