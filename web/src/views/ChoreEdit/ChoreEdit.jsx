@@ -268,6 +268,10 @@ const ChoreEdit = () => {
   const choreProject = projects.find(project => project.id === projectId)
   const assignablePerformers = filterMembersForProject(performers, choreProject)
   const assignees = anyone ? assignablePerformers : assignableTo
+  // A task with slots is due at its next slot: the server sets the date.
+  const hasSlots =
+    ['daily', 'days_of_the_week'].includes(frequencyType) &&
+    frequencyMetadata?.slots?.length > 0
   // A shared task for several people can become one copy per person, when
   // created or later, as long as it has no copies yet.
   const canSplit =
@@ -481,10 +485,6 @@ const ChoreEdit = () => {
     ) {
       errors.frequency = t('choreEdit.errSelectMonth')
     }
-    // A task with slots is due at its next slot: the server sets the date.
-    const hasSlots =
-      ['daily', 'days_of_the_week'].includes(frequencyType) &&
-      frequencyMetadata?.slots?.length > 0
     if (
       dueDate === null &&
       !hasSlots &&
@@ -1484,7 +1484,13 @@ const ChoreEdit = () => {
                 frequencyError={errors?.frequency}
               />
 
+              {hasSlots && (
+                <Typography level='body-sm' sx={{ mt: 2 }}>
+                  {t('slots.editor.dueFromSlots')}
+                </Typography>
+              )}
               {frequencyType !== 'always' &&
+                !hasSlots &&
                 (frequencyType !== 'trigger' || dueDate) && (
                   <Box mt={3} mb={2}>
                     <Typography level='h4'>

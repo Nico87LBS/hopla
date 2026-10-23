@@ -1231,6 +1231,7 @@
       "time": "Heure du créneau",
       "remove": "Retirer le créneau {{name}}",
       "add": "Ajouter un créneau",
+      "dueFromSlots": "Pas d'échéance à choisir : la tâche est due à son prochain créneau.",
       "rule": "Pas besoin d'échéance : la tâche est due à son prochain créneau. Un créneau s'ouvre une heure avant son heure et se ferme quand le suivant s'ouvre, le dernier à minuit. Un parent peut rattraper un créneau oublié jusqu'à minuit.",
       "errTime": "Donne une heure à chaque créneau.",
       "errSameTime": "Deux créneaux ne peuvent pas avoir la même heure."

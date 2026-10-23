@@ -1231,6 +1231,7 @@
       "time": "Slot time",
       "remove": "Remove the slot {{name}}",
       "add": "Add a slot",
+      "dueFromSlots": "No due date to pick: the task is due at its next slot.",
       "rule": "No due date needed: the task is due at its next slot. A slot opens an hour before its time and closes when the next one opens, the last one at midnight. A parent can catch up a missed slot until midnight.",
       "errTime": "Give each slot a time.",
       "errSameTime": "Two slots can't have the same time."
