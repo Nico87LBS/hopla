@@ -11,6 +11,9 @@ des notifications et de l'affichage sur une tablette murale.
 
 - Tâches ponctuelles ou récurrentes (quotidiennes, hebdomadaires, mensuelles,
   jours précis, planification adaptative), avec sous-tâches et étiquettes.
+- Créneaux : une tâche faite plusieurs fois par jour (se laver les dents le
+  matin, à midi et le soir), chaque créneau coché et validé à part ; un parent
+  peut rattraper un créneau oublié jusqu'à minuit.
 - Attribution par rotation, au hasard ou à tour de rôle.
 - Comptes enfants gérés par les parents.
 - Points, récompenses et demandes de récompense validées par un parent.
@@ -46,6 +49,10 @@ services:
       - TZ=Europe/Paris
 ```
 
+L'image est aussi publiée avec son numéro de version
+(`ghcr.io/nico87lbs/hopla:1.0.0`) pour rester sur une version précise. Le
+numéro est affiché en bas du menu de l'application.
+
 Au premier démarrage, Hopla crée `config/selfhosted.yaml` à partir de
 [ce modèle](config/selfhosted.yaml.example), avec un secret JWT aléatoire.
 Modifiez ce fichier puis redémarrez le conteneur.
@@ -79,6 +86,15 @@ npm run dev
 
 Les textes de l'interface sont dans `web/public/locales/<langue>/`. Aucun
 texte ne doit être écrit en dur dans le code.
+
+### Versions
+
+Le numéro de version, `X.Y.Z`, est dans le fichier `VERSION` à la racine,
+partagé par le serveur et l'application web. Chaque pull request l'augmente :
+`Z` pour une correction, `Y` pour une nouveauté, `X` pour un changement qui
+demande une action à la mise à jour. Une fois fusionnée dans `main`, la
+nouvelle version devient une release GitHub `vX.Y.Z` et une image Docker du
+même numéro.
 
 Tests et vérifications :
 
