@@ -791,7 +791,6 @@
       "days_of_the_week": "Days of the week",
       "day_of_the_month": "Day of the month"
     },
-    "timeOfDay": "Time of day: ",
     "every": "Every: ",
     "unitPlaceholder": "Unit",
     "selectAll": "Select All",
@@ -804,7 +803,8 @@
     "repeatOn": "Repeat on:",
     "previewEvery": "Every {{days}} at {{time}}",
     "previewOccurrence": "Every {{occurrences}} {{days}} of the month at {{time}}",
-    "defaultTime": "6:00 PM",
+    "previewEveryAnyTime": "Every {{days}}",
+    "previewOccurrenceAnyTime": "Every {{occurrences}} {{days}} of the month",
     "daysShort": {
       "monday": "Mon",
       "tuesday": "Tue",
@@ -843,7 +843,6 @@
       "apply": "Apply",
       "frequency": "Frequency",
       "scheduleType": "Schedule type",
-      "timeOfDay": "Time of day",
       "repeatEvery": "Repeat every",
       "days": "Days",
       "pattern": "Pattern",

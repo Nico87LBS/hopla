@@ -791,7 +791,6 @@
       "days_of_the_week": "Jours de la semaine",
       "day_of_the_month": "Jour du mois"
     },
-    "timeOfDay": "Heure du jour : ",
     "every": "Tous les : ",
     "unitPlaceholder": "Unité",
     "selectAll": "Tout sélectionner",
@@ -804,7 +803,8 @@
     "repeatOn": "Répéter le :",
     "previewEvery": "Chaque {{days}} à {{time}}",
     "previewOccurrence": "Chaque {{occurrences}} {{days}} du mois à {{time}}",
-    "defaultTime": "18 h",
+    "previewEveryAnyTime": "Chaque {{days}}",
+    "previewOccurrenceAnyTime": "Chaque {{occurrences}} {{days}} du mois",
     "daysShort": {
       "monday": "Lun",
       "tuesday": "Mar",
@@ -843,7 +843,6 @@
       "apply": "Appliquer",
       "frequency": "Fréquence",
       "scheduleType": "Type de récurrence",
-      "timeOfDay": "Heure de la journée",
       "repeatEvery": "Répéter toutes les",
       "days": "Jours",
       "pattern": "Schéma",
