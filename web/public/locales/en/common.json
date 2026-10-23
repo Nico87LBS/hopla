@@ -237,8 +237,8 @@
     "descending": "Descending",
     "filter": "Filter"
   },
-  "versionInfo": "V{{version}} (API: {{apiVersion}})",
-  "apiVersionUnavailable": "unavailable",
+  "versionInfo": "Hopla {{version}}",
+  "versionInfoServer": "Hopla {{version}} (server {{serverVersion}})",
   "sync": {
     "aria": "Open sync and network status",
     "allSynced": "All changes synced",

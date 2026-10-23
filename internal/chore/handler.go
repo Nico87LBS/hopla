@@ -115,6 +115,9 @@ func (h *Handler) GetChores(c *gin.Context) {
 		})
 		return
 	}
+	if err := h.fillSlotsToday(c, chores); err != nil {
+		logger.Error("Failed to read today's slots", "error", err)
+	}
 
 	c.JSON(200, gin.H{
 		"res": chores,
@@ -222,6 +225,9 @@ func (h *Handler) GetChore(c *gin.Context) {
 		chore.Description = &updatedDescription
 	}
 	h.signAttachments(c, chore.Attachments)
+	if err := h.fillSlotsToday(c, []*chModel.Chore{chore}); err != nil {
+		logger.Error("Failed to read today's slots", "error", err, "choreID", chore.ID)
+	}
 	c.JSON(200, gin.H{
 		"res": chore,
 	})
@@ -491,6 +497,13 @@ func (h *Handler) CreateChore(c *gin.Context) {
 	}
 	// Remove the auto-assignment logic - if no assignee then keep no assignee
 
+	if err := normalizeSlots(choreReq.FrequencyType, choreReq.FrequencyMetadata); err != nil {
+		c.JSON(400, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
 	var dueDate *time.Time
 	if choreReq.NextDueDate != nil {
 		utcDate := choreReq.NextDueDate.UTC()
@@ -514,6 +527,13 @@ func (h *Handler) CreateChore(c *gin.Context) {
 	if !choreReq.Notification && choreReq.NotificationMetadata != nil {
 		warnings = append(warnings, "notificationMetadata provided while notification is false; ignoring metadata")
 		choreReq.NotificationMetadata = nil
+	}
+
+	if choreReq.FrequencyMetadata != nil && len(choreReq.FrequencyMetadata.Slots) > 0 {
+		// A task with slots is due at its next slot, whatever date was sent.
+		draft := &chModel.Chore{FrequencyType: choreReq.FrequencyType, FrequencyMetadataV2: choreReq.FrequencyMetadata, IsActive: true}
+		now := time.Now().UTC()
+		dueDate = nextSlotDue(c, draft, slotStatuses(c, draft, nil, now), now)
 	}
 
 	createdChore := &chModel.Chore{
@@ -820,12 +840,24 @@ func (h *Handler) EditChore(c *gin.Context) {
 		})
 		return
 	}
+	if err := normalizeSlots(choreReq.FrequencyType, choreReq.FrequencyMetadata); err != nil {
+		c.JSON(400, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
 	var dueDate *time.Time
 	if choreReq.NextDueDate != nil {
 		utcDate := choreReq.NextDueDate.UTC()
 		dueDate = &utcDate
 	} else if !canHaveNoDueDate(choreReq.FrequencyType) {
 		dueDate = oldChore.NextDueDate
+	}
+	hasSlots := choreReq.FrequencyMetadata != nil && len(choreReq.FrequencyMetadata.Slots) > 0
+	if hasSlots {
+		// A task with slots is due at its next slot still to do today.
+		draft := &chModel.Chore{ID: oldChore.ID, FrequencyType: choreReq.FrequencyType, FrequencyMetadataV2: choreReq.FrequencyMetadata}
+		dueDate = h.nextDueAfter(c, draft, time.Now().UTC())
 	}
 
 	setEditChoreDefaults(&choreReq, oldChore)
@@ -919,7 +951,7 @@ func (h *Handler) EditChore(c *gin.Context) {
 		}
 	}
 
-	if dueDatesDiffer(oldChore.NextDueDate, updatedChore.NextDueDate) {
+	if !hasSlots && dueDatesDiffer(oldChore.NextDueDate, updatedChore.NextDueDate) {
 		historyEntry := &chModel.ChoreHistory{
 			ChoreID:     oldChore.ID,
 			PerformedAt: &now,
@@ -2304,7 +2336,7 @@ func (h *Handler) CompleteChore(c *gin.Context) {
 	}
 
 	// confirm that the chore in completion window:
-	if chore.CompletionWindow != nil {
+	if chore.CompletionWindow != nil && !chore.HasSlots() && chore.NextDueDate != nil {
 		if completedDate.UTC().Before(chore.NextDueDate.UTC().Add(-time.Hour * time.Duration(*chore.CompletionWindow))) {
 			c.JSON(400, gin.H{
 				"error": "Chore is out of completion window",
@@ -2329,6 +2361,20 @@ func (h *Handler) CompleteChore(c *gin.Context) {
 			return
 		}
 		completedBy = *req.CompletedBy
+	}
+	if chore.HasSlots() {
+		// A task done several times a day ticks the slot open now.
+		note := req.Notes
+		if req.Note != nil {
+			note = req.Note
+		}
+		entry, err := h.completeSlot(c, chore, completedBy, note, time.Now().UTC())
+		if err != nil {
+			slotError(c, err)
+			return
+		}
+		h.respondSlot(c, actualUser, chore.ID, entry)
+		return
 	}
 	var nextDueDate *time.Time
 	if chore.FrequencyType == "adaptive" {
@@ -3540,6 +3586,10 @@ func (h *Handler) ApproveChore(c *gin.Context) {
 		})
 		return
 	}
+	if chore.HasSlots() {
+		h.approveAllSlots(c, currentUser, chore)
+		return
+	}
 
 	// Check if chore is pending approval
 	if chore.Status != chModel.ChoreStatusPendingApproval {
@@ -3739,6 +3789,14 @@ func (h *Handler) RejectChore(c *gin.Context) {
 		c.JSON(403, gin.H{
 			"error": "Only admins can reject chores",
 		})
+		return
+	}
+	if chore.HasSlots() {
+		note := req.Notes
+		if req.Note != nil {
+			note = req.Note
+		}
+		h.rejectLatestSlot(c, currentUser, chore, note)
 		return
 	}
 
@@ -4407,6 +4465,7 @@ func Routes(router *gin.Engine, h *Handler, multiAuthMiddleware *auth.MultiAuthM
 		choresRoutes.GET("/", h.GetChores)
 		choresRoutes.GET("/archived", h.GetArchivedChores)
 		choresRoutes.GET("/history", h.GetChoresHistory)
+		choresRoutes.GET("/slots", h.GetSlotsToday)
 		choresRoutes.PUT("/", h.EditChore)
 		choresRoutes.PUT("/:id/priority", h.UpdatePriority)
 		choresRoutes.POST("/", h.CreateChore)
@@ -4428,6 +4487,9 @@ func Routes(router *gin.Engine, h *Handler, multiAuthMiddleware *auth.MultiAuthM
 		choresRoutes.PUT("/:id/unarchive", h.UnarchiveChore)
 		choresRoutes.POST("/:id/approve", h.ApproveChore)
 		choresRoutes.POST("/:id/reject", h.RejectChore)
+		choresRoutes.POST("/:id/slots/:slot/approve", h.ApproveSlot)
+		choresRoutes.POST("/:id/slots/:slot/reject", h.RejectSlot)
+		choresRoutes.POST("/:id/slots/:slot/catchup", h.CatchUpSlot)
 		choresRoutes.DELETE("/:id", h.DeleteChore)
 		choresRoutes.PUT("/:id/timer/:session_id", h.UpdateTimeSession)
 		choresRoutes.DELETE("/:id/timer/:session_id", h.DeleteTimeSession)

@@ -8,6 +8,8 @@ COPY web/package.json web/package-lock.json ./
 RUN npm ci --no-audit --no-fund
 
 COPY web/ ./
+# The web app reads the Hopla version from the VERSION file at the root.
+COPY VERSION /VERSION
 RUN npx vite build --mode selfhosted
 
 # Stage 2: Build the server, with the web app embedded.

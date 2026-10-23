@@ -6,6 +6,23 @@ on:
     branches: [ "main" ]
 
 jobs:
+  version:
+    name: Version
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: The version is X.Y.Z and moves up with each change
+        run: |
+          version=$(tr -d '[:space:]' < VERSION)
+          echo "$version" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$' || { echo "::error file=VERSION::VERSION must be X.Y.Z, not '$version'"; exit 1; }
+          base=$(git show "origin/${{ github.base_ref }}:VERSION" 2>/dev/null | tr -d '[:space:]' || true)
+          if [ -n "$base" ] && [ "$version" = "$base" ]; then
+            echo "::warning file=VERSION::VERSION is still $version: raise it (1.2.3 → 1.2.4 for a fix, 1.3.0 for a feature) so this change gets its own release."
+          fi
+
   server:
     name: Server tests
     runs-on: ubuntu-latest

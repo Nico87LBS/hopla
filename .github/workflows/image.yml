@@ -1,7 +1,8 @@
 name: Image
 
 # Builds the web app and the server into ghcr.io/<owner>/<repository> on every
-# push to main, tagged latest and with the short commit.
+# push to main, tagged latest, with the version in the VERSION file (1.2.0)
+# and with the short commit.
 
 permissions:
   contents: read
@@ -32,8 +33,10 @@ jobs:
         run: |
           IMAGE=ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
           SHA=$(git rev-parse --short HEAD)
+          VERSION=$(tr -d '[:space:]' < VERSION)
           echo "sha=$SHA" >> "$GITHUB_OUTPUT"
-          echo "tags=$IMAGE:latest,$IMAGE:$SHA" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tags=$IMAGE:latest,$IMAGE:$VERSION,$IMAGE:$SHA" >> "$GITHUB_OUTPUT"
 
       - uses: docker/build-push-action@v5
         with:
@@ -44,5 +47,5 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
-            VERSION=${{ steps.meta.outputs.sha }}
+            VERSION=${{ steps.meta.outputs.version }}
             COMMIT=${{ steps.meta.outputs.sha }}

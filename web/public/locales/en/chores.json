@@ -1193,5 +1193,41 @@
     "resume": "Resume",
     "hops_one": "{{count}} hop",
     "hops_other": "{{count}} hops"
+  },
+  "slots": {
+    "cell": {
+      "done": "{{label}}: done",
+      "pending": "{{label}}: waiting for approval",
+      "approve": "Approve {{label}}",
+      "reject": "Reject {{label}}",
+      "catchUp": "Catch up {{label}}",
+      "missed": "{{label}}: missed",
+      "tick": "Tick {{label}}",
+      "upcoming": "{{label}}: upcoming"
+    },
+    "catchUp": "Catch up",
+    "failed": "The slot could not be updated",
+    "summary": "{{done}} of {{total}} done today",
+    "copies": "one per child",
+    "toApprove_one": "{{count}} to approve",
+    "toApprove_other": "{{count}} to approve",
+    "missedCount_one": "{{count}} missed",
+    "missedCount_other": "{{count}} missed",
+    "hopsPerSlot_one": "{{count}} hop per slot",
+    "hopsPerSlot_other": "{{count}} hops per slot",
+    "approveAll_one": "Approve all ({{count}})",
+    "approveAll_other": "Approve all ({{count}})",
+    "editor": {
+      "title": "Slots in the day",
+      "help": "For a task done several times a day, like brushing teeth morning and evening. Each slot is ticked on its own and earns the task's hops.",
+      "name": "Slot name",
+      "namePlaceholder": "Morning, noon, evening…",
+      "time": "Slot time",
+      "remove": "Remove the slot {{name}}",
+      "add": "Add a slot",
+      "rule": "A slot opens an hour before its time and closes when the next one opens, the last one at midnight. A parent can catch up a missed slot until midnight.",
+      "errTime": "Give each slot a time.",
+      "errSameTime": "Two slots can't have the same time."
+    }
   }
 }

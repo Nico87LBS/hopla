@@ -15,6 +15,7 @@ import {
   GetChoreHistory,
   GetChoresHistory,
   GetChoresNew,
+  GetSlotsToday,
   MarkChoreComplete,
   RejectChore,
   SaveChore,
@@ -115,6 +116,22 @@ export const useChores = (includeArchive = false, { enabled = true } = {}) => {
     },
   })
 }
+// Today's slots of the tasks done several times a day, by task id. Refreshed
+// every minute, so a slot opens or is missed on time on a page left open.
+export const useSlotsToday = ({ enabled = true } = {}) =>
+  useQuery({
+    queryKey: ['slots'],
+    enabled,
+    refetchInterval: 60 * 1000,
+    refetchOnWindowFocus: true,
+    queryFn: async () => {
+      const resp = await GetSlotsToday()
+      if (!resp?.ok) return {}
+      const body = await resp.json()
+      return body.res || {}
+    },
+  })
+
 export const useDeleteChores = () => {
   const queryClient = useQueryClient()
 

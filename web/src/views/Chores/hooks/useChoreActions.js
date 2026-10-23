@@ -194,10 +194,13 @@ export const useChoreActions = ({
       switch (action) {
         case 'complete':
           try {
+            // A parent can tick a child's copy from a grouped task.
+            const completedBy =
+              extraData?.completedBy ?? impersonatedUser?.userId
             const response = await MarkChoreComplete(
               chore.id,
-              impersonatedUser
-                ? { completedBy: impersonatedUser.userId }
+              completedBy && completedBy !== userProfile?.id
+                ? { completedBy }
                 : null,
               null,
               null,
@@ -735,6 +738,7 @@ export const useChoreActions = ({
     },
     [
       impersonatedUser,
+      userProfile?.id,
       chores,
       setChores,
       updateChoreInState,

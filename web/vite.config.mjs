@@ -4,15 +4,17 @@ import react from '@vitejs/plugin-react-swc'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
-const pkg = JSON.parse(
-  fs.readFileSync(new URL('./package.json', import.meta.url), 'utf-8'),
-)
+// The Hopla version is the VERSION file at the root of the repository, shared
+// by the server and the web app.
+const version = fs
+  .readFileSync(new URL('../VERSION', import.meta.url), 'utf-8')
+  .trim()
 
 // https://vitejs.dev/config/
 export default ({ command }) => {
   return defineConfig({
     define: {
-      'import.meta.env.VITE_APP_VERSION': JSON.stringify(pkg.version),
+      'import.meta.env.VITE_APP_VERSION': JSON.stringify(version),
     },
     // Strip console.* / debugger from production bundles only, so dev logging
     // is untouched. `command` is 'build' for `vite build`, 'serve' for the dev server.

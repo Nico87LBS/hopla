@@ -106,6 +106,7 @@ export const useSSE = () => {
           case 'chore.skipped': {
             queryClient.invalidateQueries({ queryKey: ['pointsHistory'] })
             queryClient.invalidateQueries({ queryKey: ['games', 'today'] })
+            queryClient.invalidateQueries({ queryKey: ['slots'] })
 
             if (eventData?.data?.user?.id !== userProfile?.id) {
               showNotification({

@@ -6,6 +6,7 @@ import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
+import { groupCopies, hasSlots } from '../../utils/taskSlots'
 import ChoreActionMenu from '../components/ChoreActionMenu'
 import ArchivedChoreCard from './ArchivedChoreCard'
 import ChoreSwipeableItem, {
@@ -17,6 +18,7 @@ import {
   getChoreLeadingActions,
   getChoreTrailingActions,
 } from './components/ChoreSwipeActions'
+import TaskGroupRow from './TaskGroupRow'
 import TaskRow from './TaskRow'
 
 const ChoreListView = ({
@@ -115,35 +117,59 @@ const ChoreListView = ({
           fullSwipe
           threshold={SWIPE_COMMIT_THRESHOLD}
         >
-          {chores.map(chore => (
-            <ChoreSwipeableItem
-              key={chore.id}
-              leadingActions={
-                isArchived
-                  ? getArchivedLeadingActions(swipeActionArgs(chore))
-                  : getChoreLeadingActions(swipeActionArgs(chore))
-              }
-              trailingActions={
-                isArchived
-                  ? getArchivedTrailingActions(swipeActionArgs(chore))
-                  : getChoreTrailingActions({
-                      ...swipeActionArgs(chore),
-                      navigate,
-                    })
-              }
-              onClick={() => {
-                if (isMultiSelectMode) {
-                  toggleChoreSelection(chore.id)
-                } else {
-                  navigate(`/chores/${chore.id}`)
+          {(isArchived || isMultiSelectMode
+            ? chores.map(chore => ({ key: chore.id, chores: [chore] }))
+            : groupCopies(chores)
+          ).map(group => {
+            const chore = group.chores[0]
+            // Each child's copy of a task, or a task done several times a
+            // day, shows as one card with its own buttons: no swipe.
+            if (group.chores.length > 1 || hasSlots(chore)) {
+              return (
+                <ChoreSwipeableItem
+                  key={chore.id}
+                  onClick={() => navigate(`/chores/${chore.id}`)}
+                  longPressEnabled={Boolean(onLongPressChore)}
+                  onLongPress={() => onLongPressChore?.(chore.id)}
+                >
+                  <TaskGroupRow
+                    chores={group.chores}
+                    onAction={handleChoreAction}
+                    performers={membersData?.res}
+                  />
+                </ChoreSwipeableItem>
+              )
+            }
+            return (
+              <ChoreSwipeableItem
+                key={chore.id}
+                leadingActions={
+                  isArchived
+                    ? getArchivedLeadingActions(swipeActionArgs(chore))
+                    : getChoreLeadingActions(swipeActionArgs(chore))
                 }
-              }}
-              longPressEnabled={Boolean(onLongPressChore)}
-              onLongPress={() => onLongPressChore?.(chore.id)}
-            >
-              {renderChoreCard(chore)}
-            </ChoreSwipeableItem>
-          ))}
+                trailingActions={
+                  isArchived
+                    ? getArchivedTrailingActions(swipeActionArgs(chore))
+                    : getChoreTrailingActions({
+                        ...swipeActionArgs(chore),
+                        navigate,
+                      })
+                }
+                onClick={() => {
+                  if (isMultiSelectMode) {
+                    toggleChoreSelection(chore.id)
+                  } else {
+                    navigate(`/chores/${chore.id}`)
+                  }
+                }}
+                longPressEnabled={Boolean(onLongPressChore)}
+                onLongPress={() => onLongPressChore?.(chore.id)}
+              >
+                {renderChoreCard(chore)}
+              </ChoreSwipeableItem>
+            )
+          })}
         </SwipeableList>
       </Sheet>
     )

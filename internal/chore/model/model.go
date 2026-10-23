@@ -77,6 +77,7 @@ type Chore struct {
 	Project                *pModel.Project            `json:"project,omitempty" gorm:"foreignkey:ProjectID;references:ID"`                            // Project relationship
 	SyncVersion            int64                      `json:"syncVersion" gorm:"column:sync_version;not null;default:0;index;index:idx_chores_circle_sync_version,priority:2"`
 	Attachments            []storageModel.StorageFile `json:"attachments,omitempty" gorm:"-"`
+	SlotsToday             []SlotStatus               `json:"slotsToday,omitempty" gorm:"-"` // Today's slots of a task done several times a day
 }
 
 type Status int8
@@ -105,6 +106,7 @@ type ChoreHistory struct {
 	CreatedAt   time.Time          `json:"createdAt" gorm:"column:created_at;autoCreateTime;<-:create"` // When the record was created (immutable after insert)
 	Status      ChoreHistoryStatus `json:"status" gorm:"column:status"`                                 // Status of the chore (1=completed, 2=skipped)
 	Points      *int               `json:"points,omitempty" gorm:"column:points"`                       // Points for completing the chore
+	Slot        *int               `json:"slot,omitempty" gorm:"column:slot"`                           // The slot of the day, for a task done several times a day
 	Duration    *int               `json:"duration,omitempty" gorm:"<-:false;-:migration"`              // Duration in seconds calculated from query (read-only, no DB column)
 	SyncVersion int64              `json:"syncVersion" gorm:"column:sync_version;not null;default:0;index:idx_chore_history_sync_version"`
 }
@@ -130,6 +132,43 @@ type FrequencyMetadata struct {
 	WeekPattern *Weekpattern `json:"weekPattern" binding:"omitempty,oneof=every_week week_of_month week_of_quarter"`
 	WeekNumbers []int        `json:"weekNumbers,omitempty"` // DEPRECATED: use Occurrences instead
 	Occurrences []*int       `json:"occurrences,omitempty"` // e.g. ["1","3","last"] for 1st, 3rd, and last occurrence of the day
+	Slots       []Slot       `json:"slots,omitempty"`       // Times of day a daily task is done at, each one on its own
+}
+
+// Slot is one of the times of day a task is done at, such as brushing teeth
+// in the morning and in the evening.
+type Slot struct {
+	Name string `json:"name"`
+	Time string `json:"time"` // "15:04", in the task's timezone
+}
+
+// SlotState is where a slot of the day stands.
+type SlotState string
+
+const (
+	SlotUpcoming SlotState = "upcoming" // not open yet
+	SlotOpen     SlotState = "open"     // can be ticked now
+	SlotPending  SlotState = "pending"  // ticked, waiting for a parent
+	SlotDone     SlotState = "done"
+	SlotMissed   SlotState = "missed" // closed without being done; a parent can still catch it up today
+)
+
+// SlotStatus is a slot of today with its state.
+type SlotStatus struct {
+	Index       int       `json:"index"`
+	Name        string    `json:"name"`
+	Time        string    `json:"time"`
+	At          time.Time `json:"at"`
+	OpensAt     time.Time `json:"opensAt"`
+	ClosesAt    time.Time `json:"closesAt"`
+	State       SlotState `json:"state"`
+	HistoryID   *int      `json:"historyId,omitempty"`
+	CompletedBy *int      `json:"completedBy,omitempty"`
+}
+
+// HasSlots reports whether the task is done at several times of the day.
+func (c *Chore) HasSlots() bool {
+	return c.FrequencyMetadataV2 != nil && len(c.FrequencyMetadataV2.Slots) > 0
 }
 
 type Weekpattern string

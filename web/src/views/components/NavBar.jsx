@@ -19,7 +19,6 @@ import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import { version } from '../../../package.json'
 import HoplaWordmark from '../../components/HoplaWordmark'
 import UserProfileAvatar from '../../components/UserProfileAvatar'
 import { useNavBarTitleContext } from '../../contexts/NavBarTitleContext'
@@ -34,6 +33,7 @@ import { openQuickAdd } from './navigationEvents'
 import SyncStatusIndicator from './SyncStatusIndicator'
 
 const NAV_WIDTH = 248
+const version = import.meta.env.VITE_APP_VERSION
 const NAVBAR_TITLE_KEYS = {
   '/activities': 'navigation.activities',
   '/archived': 'navigation.archived',
@@ -229,10 +229,12 @@ const NavBar = () => {
               onClick={() => window.location.reload()}
               sx={{ color: 'text.tertiary', cursor: 'pointer', px: 1, pt: 0.5 }}
             >
-              {t('versionInfo', {
-                version,
-                apiVersion: resource?.api_version || t('apiVersionUnavailable'),
-              })}
+              {resource?.api_version && resource.api_version !== version
+                ? t('versionInfoServer', {
+                    version,
+                    serverVersion: resource.api_version,
+                  })
+                : t('versionInfo', { version })}
             </Typography>
           </Box>
         </Sheet>

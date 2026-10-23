@@ -475,6 +475,14 @@ const ChoreEdit = () => {
     }
     if (!completionActionsValid)
       errors.completionActions = t('taskEditor.pointsInvalid')
+    const slotTimes = ['daily', 'days_of_the_week'].includes(frequencyType)
+      ? (frequencyMetadata?.slots || []).map(slot => slot.time)
+      : []
+    if (slotTimes.some(time => !time)) {
+      errors.frequency = t('slots.editor.errTime')
+    } else if (new Set(slotTimes).size !== slotTimes.length) {
+      errors.frequency = t('slots.editor.errSameTime')
+    }
 
     // if there is any error then return false:
     if (step !== null) {
@@ -2391,7 +2399,11 @@ const ChoreEdit = () => {
               error={errors.completionActions}
               summary={
                 [
-                  points >= 0 ? t('taskEditor.points', { count: points }) : '',
+                  points >= 0
+                    ? frequencyMetadata?.slots?.length
+                      ? t('slots.hopsPerSlot', { count: points })
+                      : t('taskEditor.points', { count: points })
+                    : '',
                   requireApproval ? t('taskEditor.approvalRequired') : '',
                 ]
                   .filter(Boolean)
