@@ -67,6 +67,7 @@ import DurationInput from '../../components/common/DurationInput'
 import EmptyState from '../../components/common/EmptyState'
 import KeyboardShortcutHint from '../../components/common/KeyboardShortcutHint'
 import NumberInput from '../../components/common/NumberInput'
+import { TaskModeIcon } from '../../components/common/TaskMode'
 import NotificationTemplate from '../../components/NotificationTemplate.jsx'
 import { usePageShortcutScope } from '../../contexts/KeyboardShortcutScopeContext'
 import {
@@ -1857,29 +1858,76 @@ const ChoreEdit = () => {
                     }}
                     sx={{ mt: 1, gap: 1 }}
                   >
-                    <Radio value='turns' label={t('taskEditor.copies.turns')} />
-                    <Radio
-                      value='together'
-                      label={t('taskEditor.copies.together')}
-                    />
-                    {canSplit && (
-                      <Radio value='each' label={t('taskEditor.copies.each')} />
-                    )}
+                    {[
+                      canSplit && {
+                        value: 'each',
+                        mode: 'each',
+                        help: isEditing
+                          ? t('taskEditor.copies.splitHelp', {
+                              count: assignees.length - 1,
+                              name: splitKeeper ?? '',
+                            })
+                          : t('taskEditor.copies.eachHelp', {
+                              count: assignees.length,
+                            }),
+                      },
+                      {
+                        value: 'together',
+                        mode: 'first',
+                        help: t('taskEditor.copies.togetherHelp'),
+                      },
+                      {
+                        value: 'turns',
+                        mode: 'one',
+                        help: t('taskEditor.copies.turnsHelp'),
+                      },
+                    ]
+                      .filter(Boolean)
+                      .map(({ help, mode, value }) => (
+                        <Sheet
+                          key={value}
+                          variant='outlined'
+                          sx={{
+                            alignItems: 'flex-start',
+                            borderRadius: 'md',
+                            display: 'flex',
+                            gap: 1.5,
+                            p: 1.5,
+                            '&:has(input:checked)': {
+                              borderColor: 'primary.500',
+                              boxShadow: theme =>
+                                `0 0 0 2px ${theme.vars.palette.primary.softBg}`,
+                            },
+                          }}
+                        >
+                          <Radio
+                            value={value}
+                            overlay
+                            sx={{ flex: 1, mt: 0.25 }}
+                            label={
+                              <Box
+                                component='span'
+                                sx={{
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                }}
+                              >
+                                <Typography level='title-sm'>
+                                  {t(`taskMode.${mode}`)}
+                                </Typography>
+                                <Typography
+                                  level='body-xs'
+                                  sx={{ color: 'text.secondary', mt: 0.25 }}
+                                >
+                                  {help}
+                                </Typography>
+                              </Box>
+                            }
+                          />
+                          <TaskModeIcon mode={mode} size={22} />
+                        </Sheet>
+                      ))}
                   </RadioGroup>
-                  <FormHelperText>
-                    {perMember && canSplit
-                      ? isEditing
-                        ? t('taskEditor.copies.splitHelp', {
-                            count: assignees.length - 1,
-                            name: splitKeeper ?? '',
-                          })
-                        : t('taskEditor.copies.eachHelp', {
-                            count: assignees.length,
-                          })
-                      : together
-                        ? t('taskEditor.copies.togetherHelp')
-                        : t('taskEditor.copies.turnsHelp')}
-                  </FormHelperText>
                 </Box>
               )}
               {copies.length > 0 && (

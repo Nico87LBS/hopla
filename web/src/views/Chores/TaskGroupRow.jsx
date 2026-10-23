@@ -11,6 +11,7 @@ import PropTypes from 'prop-types'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import TaskMode from '../../components/common/TaskMode'
 import { HOPLA, memberColor } from '../../constants/theme'
 import { useImpersonateUser } from '../../contexts/ImpersonateUserContext.jsx'
 import { useSlotsToday } from '../../queries/ChoreQueries'
@@ -22,6 +23,7 @@ import {
   MarkChoreComplete,
   SlotAction,
 } from '../../utils/Fetcher'
+import { taskModeOf } from '../../utils/taskMode'
 import { hasSlots, todaySlots } from '../../utils/taskSlots'
 import { MemberAvatar } from '../Games/GameParts'
 
@@ -371,10 +373,10 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
 
   // Several slots to approve get a footer with the count and one button.
   const footer = slotted && canApprove && pendingCount > 1
+  const mode = taskModeOf(first, chores.length)
   const meta = []
   if (slotted)
     meta.push(t('slots.summary', { done: doneCount, total: all.length }))
-  if (chores.length > 1) meta.push(t('slots.copies'))
   if (!footer && canApprove && pendingCount)
     meta.push(t('slots.toApprove', { count: pendingCount }))
   if (!footer && canApprove && missedCount)
@@ -390,11 +392,13 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
           >
             {first.name}
           </Typography>
-          {meta.length > 0 && (
+          {(mode || meta.length > 0) && (
             <Typography
               level='body-xs'
               sx={{ color: 'text.secondary', mt: 0.25 }}
             >
+              <TaskMode mode={mode} />
+              {mode && meta.length > 0 && ' · '}
               {meta.join(' · ')}
             </Typography>
           )}

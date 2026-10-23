@@ -13,6 +13,7 @@ import PropTypes from 'prop-types'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import TaskMode from '../../components/common/TaskMode'
 import { HOPLA } from '../../constants/theme'
 import { useImpersonateUser } from '../../contexts/ImpersonateUserContext.jsx'
 import { useLocalization } from '../../contexts/LocalizationContext'
@@ -30,6 +31,7 @@ import {
   openExternalUrl,
   splitTextAtFirstHttpUrl,
 } from '../../utils/ExternalLinks.js'
+import { taskModeOf } from '../../utils/taskMode'
 import { ChoreActionMenuTrigger } from '../components/ChoreActionMenu'
 import PendingBadge from '../components/PendingBadge'
 import { MemberAvatars } from '../Games/GameParts'
@@ -220,6 +222,7 @@ const TaskRow = ({
   const repeats = !['once', 'no_repeat'].includes(chore.frequencyType)
   const labels = chore.labelsV2 || []
   const visibleLabels = labels.slice(0, 2)
+  const mode = taskModeOf(chore)
   const {
     after: titleAfterUrl,
     before: titleBeforeUrl,
@@ -330,6 +333,11 @@ const TaskRow = ({
             rowGap: 0.25,
           }}
         >
+          <TaskMode mode={mode} />
+          {mode &&
+            (chore.nextDueDate || repeats || visibleLabels.length > 0) && (
+              <MetaDot />
+            )}
           {chore.nextDueDate && (
             <Box
               component='span'
