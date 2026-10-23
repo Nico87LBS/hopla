@@ -99,7 +99,9 @@ func TestNormalizeSlots(t *testing.T) {
 	require.NoError(t, normalizeSlots(chModel.FrequencyTypeDaily, metadata))
 	require.Equal(t, []chModel.Slot{{Name: "Matin", Time: "07:05"}, {Name: "Soir", Time: "19:30"}}, metadata.Slots)
 
-	require.Error(t, normalizeSlots(chModel.FrequencyTypeWeekly, metadata))
+	weekly := &chModel.FrequencyMetadata{Slots: []chModel.Slot{{Time: "08:00"}}}
+	require.NoError(t, normalizeSlots(chModel.FrequencyTypeWeekly, weekly))
+	require.Empty(t, weekly.Slots)
 	require.Error(t, normalizeSlots(chModel.FrequencyTypeDaily, &chModel.FrequencyMetadata{Slots: []chModel.Slot{{Time: "25:00"}}}))
 	require.Error(t, normalizeSlots(chModel.FrequencyTypeDaily, &chModel.FrequencyMetadata{Slots: []chModel.Slot{{Time: "08:00"}, {Time: "8:00"}}}))
 }

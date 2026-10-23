@@ -1193,5 +1193,41 @@
     "resume": "Reprendre",
     "hops_one": "{{count}} hop",
     "hops_other": "{{count}} hops"
+  },
+  "slots": {
+    "cell": {
+      "done": "{{label}} : fait",
+      "pending": "{{label}} : en attente de validation",
+      "approve": "Valider {{label}}",
+      "reject": "Refuser {{label}}",
+      "catchUp": "Rattraper {{label}}",
+      "missed": "{{label}} : oublié",
+      "tick": "Cocher {{label}}",
+      "upcoming": "{{label}} : à venir"
+    },
+    "catchUp": "Rattraper",
+    "failed": "Le créneau n'a pas pu être mis à jour",
+    "summary": "{{done}} sur {{total}} faits aujourd'hui",
+    "copies": "une par enfant",
+    "toApprove_one": "{{count}} à valider",
+    "toApprove_other": "{{count}} à valider",
+    "missedCount_one": "{{count}} oublié",
+    "missedCount_other": "{{count}} oubliés",
+    "hopsPerSlot_one": "{{count}} hop par créneau",
+    "hopsPerSlot_other": "{{count}} hops par créneau",
+    "approveAll_one": "Tout valider ({{count}})",
+    "approveAll_other": "Tout valider ({{count}})",
+    "editor": {
+      "title": "Créneaux dans la journée",
+      "help": "Pour une tâche faite plusieurs fois par jour, comme se brosser les dents matin et soir. Chaque créneau se coche à part et rapporte les hops de la tâche.",
+      "name": "Nom du créneau",
+      "namePlaceholder": "Matin, midi, soir…",
+      "time": "Heure du créneau",
+      "remove": "Retirer le créneau {{name}}",
+      "add": "Ajouter un créneau",
+      "rule": "Un créneau s'ouvre une heure avant son heure et se ferme quand le suivant s'ouvre, le dernier à minuit. Un parent peut rattraper un créneau oublié jusqu'à minuit.",
+      "errTime": "Donne une heure à chaque créneau.",
+      "errSameTime": "Deux créneaux ne peuvent pas avoir la même heure."
+    }
   }
 }

@@ -47,7 +47,10 @@ func normalizeSlots(frequencyType chModel.FrequencyType, metadata *chModel.Frequ
 		return nil
 	}
 	if frequencyType != chModel.FrequencyTypeDaily && frequencyType != chModel.FrequencyTypeDayOfTheWeek {
-		return errors.New("slots need a task repeated every day or on days of the week")
+		// Slots only make sense every day or on days of the week: switching
+		// the repeat to anything else drops them.
+		metadata.Slots = nil
+		return nil
 	}
 	if len(metadata.Slots) > maxSlots {
 		return fmt.Errorf("a task has at most %d slots", maxSlots)

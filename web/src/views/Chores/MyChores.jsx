@@ -45,6 +45,7 @@ import {
 } from '../../utils/Chores'
 import Priorities from '../../utils/Priorities'
 import { getSafeBottom } from '../../utils/SafeAreaUtils.js'
+import { pullCopiesTogether } from '../../utils/taskSlots'
 import TaskInput from '../components/AddTaskModal'
 import CalendarDual from '../components/CalendarDual'
 import CalendarMonthly from '../components/CalendarMonthly.jsx'
@@ -514,12 +515,19 @@ const MyChores = () => {
       choreSortDirection,
     )
 
-    return sections.map(section => ({
+    const sorted = sections.map(section => ({
       ...section,
       content: [...section.content].sort((a, b) =>
         sortChores(a, b, choreSortBy, choreSortDirection),
       ),
     }))
+    // Each child's copy of a task shows once, in the section of the first:
+    // only for groupings where a task sits in one section.
+    if (!['default', 'due_date'].includes(selectedChoreSection)) return sorted
+    return pullCopiesTogether(sorted).filter(
+      (section, index) =>
+        section.content.length > 0 || sorted[index].content.length === 0,
+    )
   }, [
     chores,
     quickFilteredChores,

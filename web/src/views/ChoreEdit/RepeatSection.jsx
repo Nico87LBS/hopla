@@ -1,3 +1,4 @@
+import { AddRounded, DeleteOutlineRounded } from '@mui/icons-material'
 import {
   Box,
   Button,
@@ -6,6 +7,7 @@ import {
   FormControl,
   FormHelperText,
   Grid,
+  IconButton,
   Input,
   List,
   ListItem,
@@ -493,6 +495,98 @@ export const RepeatOnSections = ({
   }
 }
 
+const MAX_SLOTS = 6
+const SLOT_FREQUENCY_TYPES = ['daily', 'days_of_the_week']
+
+// The next slot after the last one: four hours later, or 08:00 for the first.
+const nextSlotTime = slots => {
+  const last = slots[slots.length - 1]?.time
+  if (!last) return '08:00'
+  const [hour, minute] = last.split(':').map(Number)
+  return `${String(Math.min(hour + 4, 23)).padStart(2, '0')}:${String(minute).padStart(2, '0')}`
+}
+
+// Slots: the task is done several times a day (morning, noon, evening), each
+// time on its own.
+export const SlotsEditor = ({
+  frequencyMetadata,
+  onFrequencyMetadataUpdate,
+}) => {
+  const { t } = useTranslation('chores')
+  const slots = frequencyMetadata?.slots || []
+  const update = next =>
+    onFrequencyMetadataUpdate({
+      ...frequencyMetadata,
+      timezone:
+        frequencyMetadata?.timezone ||
+        Intl.DateTimeFormat().resolvedOptions().timeZone,
+      slots: next,
+    })
+  const change = (index, field, value) =>
+    update(
+      slots.map((slot, i) =>
+        i === index ? { ...slot, [field]: value } : slot,
+      ),
+    )
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mt: 1 }}>
+      <Typography level='h5'>{t('slots.editor.title')}</Typography>
+      <Typography level='body-sm' textColor='text.tertiary'>
+        {t('slots.editor.help')}
+      </Typography>
+      {slots.map((slot, index) => (
+        <Box key={index} sx={{ alignItems: 'center', display: 'flex', gap: 1 }}>
+          <Input
+            aria-label={t('slots.editor.name')}
+            placeholder={t('slots.editor.namePlaceholder')}
+            value={slot.name || ''}
+            slotProps={{ input: { maxLength: 20 } }}
+            onChange={e => change(index, 'name', e.target.value)}
+            sx={{ flex: 1, minWidth: 0 }}
+          />
+          <Input
+            type='time'
+            aria-label={t('slots.editor.time')}
+            value={slot.time || ''}
+            onChange={e => change(index, 'time', e.target.value)}
+            sx={{ width: 120 }}
+          />
+          <IconButton
+            variant='plain'
+            color='neutral'
+            aria-label={t('slots.editor.remove', {
+              name: slot.name || slot.time,
+            })}
+            onClick={() => update(slots.filter((_, i) => i !== index))}
+          >
+            <DeleteOutlineRounded />
+          </IconButton>
+        </Box>
+      ))}
+      {slots.length < MAX_SLOTS && (
+        <Button
+          variant='soft'
+          color='neutral'
+          size='sm'
+          startDecorator={<AddRounded />}
+          onClick={() =>
+            update([...slots, { name: '', time: nextSlotTime(slots) }])
+          }
+          sx={{ alignSelf: 'flex-start' }}
+        >
+          {t('slots.editor.add')}
+        </Button>
+      )}
+      {slots.length > 0 && (
+        <Typography level='body-xs' textColor='text.tertiary'>
+          {t('slots.editor.rule')}
+        </Typography>
+      )}
+    </Box>
+  )
+}
+
 const RepeatSection = ({
   frequency,
   frequencyError,
@@ -691,6 +785,12 @@ const RepeatSection = ({
                   </Grid>
                 </>
               ))}
+            {SLOT_FREQUENCY_TYPES.includes(frequencyType) && !viewOnly && (
+              <SlotsEditor
+                frequencyMetadata={frequencyMetadata || {}}
+                onFrequencyMetadataUpdate={onFrequencyMetadataUpdate}
+              />
+            )}
             <FormControl error={Boolean(frequencyError)}>
               <FormHelperText error>{frequencyError}</FormHelperText>
             </FormControl>

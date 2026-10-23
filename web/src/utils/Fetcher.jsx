@@ -216,6 +216,23 @@ const RejectChore = id => {
   })
 }
 
+// Today's slots of the tasks done several times a day, by task.
+const GetSlotsToday = () => {
+  return Fetch(`/chores/slots`, {
+    method: 'GET',
+    headers: HEADERS(),
+  })
+}
+
+// A parent's action on one slot of today: approve, reject or catchup.
+const SlotAction = (id, slot, action, body = {}) => {
+  return Fetch(`/chores/${id}/slots/${slot}/${action}`, {
+    method: 'POST',
+    headers: HEADERS(),
+    body: JSON.stringify(body),
+  })
+}
+
 const UndoChoreAction = id => {
   return Fetch(`/chores/${id}/undo`, {
     method: 'POST',
@@ -1172,6 +1189,7 @@ export {
   GetRedemptions,
   GetResource,
   GetRewards,
+  GetSlotsToday,
   GetStorageUsage,
   GetUserCircle,
   GetUserProfile,
@@ -1205,6 +1223,7 @@ export {
   SignAssetURL,
   signUp,
   SkipChore,
+  SlotAction,
   StartChore,
   ToggleFilterPin,
   UnArchiveChore,
