@@ -1,4 +1,5 @@
 import {
+  AccessTimeRounded,
   CheckRounded,
   CloseRounded,
   HourglassEmptyRounded,
@@ -24,7 +25,7 @@ import {
   SlotAction,
 } from '../../utils/Fetcher'
 import { taskModeOf } from '../../utils/taskMode'
-import { hasSlots, todaySlots } from '../../utils/taskSlots'
+import { doneCopies, hasSlots, todaySlots } from '../../utils/taskSlots'
 import { MemberAvatar } from '../Games/GameParts'
 
 const CELL = 44
@@ -277,6 +278,99 @@ SlotCell.propTypes = {
   slot: PropTypes.object.isRequired,
 }
 
+const FACE = 40
+
+const badgeSx = {
+  alignItems: 'center',
+  border: '2px solid',
+  borderColor: 'background.surface',
+  borderRadius: 10,
+  bottom: -3,
+  boxSizing: 'border-box',
+  color: '#fff',
+  display: 'flex',
+  height: 20,
+  justifyContent: 'center',
+  minWidth: 20,
+  position: 'absolute',
+  right: -3,
+  '& svg': { color: 'inherit', fontSize: 12 },
+}
+
+// One child's copy: their face to tap, the same as on the family board. A
+// copy waiting for a parent is faded with a clock, a done one has a check.
+const CopyFace = ({ disabled, label, member, onClick, state }) => {
+  const ring =
+    state === 'todo' ? HOPLA.violet : state === 'pending' ? '#C9B8A8' : null
+  const face = (
+    <Box
+      sx={{
+        borderRadius: '50%',
+        boxShadow: ring
+          ? `0 0 0 2px var(--joy-palette-background-surface), 0 0 0 4px ${ring}`
+          : 'none',
+        opacity: state === 'pending' ? 0.55 : 1,
+      }}
+    >
+      <MemberAvatar member={member} size={FACE} />
+    </Box>
+  )
+  const badge = state !== 'todo' && (
+    <Box
+      sx={{
+        ...badgeSx,
+        bgcolor: state === 'done' ? HOPLA.green : '#8A6F57',
+      }}
+    >
+      {state === 'done' ? <CheckRounded /> : <AccessTimeRounded />}
+    </Box>
+  )
+  if (!onClick) {
+    return (
+      <Box
+        role='img'
+        aria-label={label}
+        title={member.displayName}
+        sx={{ ...cellButtonSx, cursor: 'default', position: 'relative' }}
+      >
+        <Box sx={{ position: 'relative' }}>
+          {face}
+          {badge}
+        </Box>
+      </Box>
+    )
+  }
+  return (
+    <Box
+      component='button'
+      type='button'
+      disabled={disabled}
+      aria-label={label}
+      title={member.displayName}
+      onClick={onClick}
+      sx={{
+        ...cellButtonSx,
+        touchAction: 'manipulation',
+        '&:disabled': { cursor: 'default', opacity: 0.5 },
+        '&:not(:disabled):active': { transform: 'scale(.92)' },
+      }}
+    >
+      <Box sx={{ position: 'relative' }}>
+        {face}
+        {badge}
+      </Box>
+    </Box>
+  )
+}
+
+CopyFace.propTypes = {
+  disabled: PropTypes.bool,
+  label: PropTypes.string.isRequired,
+  member: PropTypes.object.isRequired,
+  onClick: PropTypes.func,
+  state: PropTypes.oneOf(['todo', 'pending', 'done']).isRequired,
+}
+
 // A task done by several children (one copy each), or several times a day, or
 // both: one card with a line per child and, for slots, a column per slot.
 const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
@@ -316,6 +410,7 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
       ),
     }))
   })
+  const ahead = slotted ? new Set() : doneCopies(chores, now)
   const columns = lines.find(line => line.slots.length)?.slots || []
   const all = lines.flatMap(line => line.slots)
   const doneCount = all.filter(slot => slot.state === 'done').length
@@ -426,28 +521,36 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
           </Box>
         )}
         {!slotted && (
-          <Box sx={{ display: 'flex', flexShrink: 0 }}>
+          <Box sx={{ display: 'flex', flexShrink: 0, gap: 1 }}>
             {lines.map(({ chore, member }) => {
-              const color = memberColor(member.userId)
-              const pending = chore.status === 3
               const label = member.displayName || ''
+              const key = `${chore.id}-${member.userId}`
+              if (ahead.has(chore.id)) {
+                return (
+                  <CopyFace
+                    key={key}
+                    label={t('slots.cell.done', { label })}
+                    member={member}
+                    state='done'
+                  />
+                )
+              }
+              const pending = chore.status === 3
               return (
-                <Box
-                  key={`${chore.id}-${member.userId}`}
-                  component='button'
-                  type='button'
+                <CopyFace
+                  key={key}
                   disabled={
                     busy ||
                     (!canApprove && (pending || member.userId !== actingUserId))
                   }
-                  aria-label={
+                  label={
                     pending
                       ? t('slots.cell.approve', { label })
                       : t('taskRow.complete', {
                           name: `${first.name} · ${label}`,
                         })
                   }
-                  title={label}
+                  member={member}
                   onClick={event => {
                     event.stopPropagation()
                     if (pending) onAction('approve', chore)
@@ -456,22 +559,8 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
                         completedBy: member.userId,
                       })
                   }}
-                  sx={cellButtonSx}
-                >
-                  <Box
-                    sx={{
-                      ...ringSx,
-                      bgcolor: pending ? HOPLA.goldSoft : 'transparent',
-                      border: pending
-                        ? `2.5px dashed ${HOPLA.gold}`
-                        : `2.5px solid ${color}`,
-                      color: pending ? HOPLA.goldText : color,
-                      font: '700 13px/1 var(--joy-fontFamily-body)',
-                    }}
-                  >
-                    {pending ? <HourglassEmptyRounded /> : label.charAt(0)}
-                  </Box>
-                </Box>
+                  state={pending ? 'pending' : 'todo'}
+                />
               )
             })}
           </Box>
