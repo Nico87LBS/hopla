@@ -31,7 +31,6 @@ i18n
       'labels',
       'history',
       'filters',
-      'things',
       'projects',
       'timer',
       'points',

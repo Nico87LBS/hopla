@@ -12,7 +12,6 @@ import {
   SearchRounded,
   SettingsOutlined,
   TollOutlined,
-  WidgetsOutlined,
 } from '@mui/icons-material'
 import {
   Box,
@@ -109,13 +108,6 @@ const buildQuickActions = t => [
       icon: <ArchiveOutlined />,
     },
     {
-      id: 'action:things',
-      title: t('search.actions.viewThings'),
-      keywords: 'things devices sensors trackers state open',
-      route: '/things',
-      icon: <WidgetsOutlined />,
-    },
-    {
       id: 'action:labels',
       title: t('search.actions.viewLabels'),
       keywords: 'labels tags open',
@@ -146,8 +138,8 @@ const buildQuickActions = t => [
     {
       id: 'action:points',
       title: t('search.actions.viewPoints'),
-      keywords: 'points rewards score leaderboard open',
-      route: '/points',
+      keywords: 'points hops family rank streak leaderboard open',
+      route: '/family',
       icon: <TollOutlined />,
     },
     {

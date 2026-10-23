@@ -30,7 +30,6 @@ import {
   Sort,
   Tune,
   ViewAgenda,
-  ViewComfy,
 } from '@mui/icons-material'
 import {
   Badge,
@@ -585,13 +584,8 @@ const ChoreToolbar = ({
   const viewOptions = [
     {
       value: 'default',
-      label: t('toolbar.cards'),
+      label: t('toolbar.list'),
       icon: <ViewAgenda sx={{ fontSize: 16 }} />,
-    },
-    {
-      value: 'compact',
-      label: t('toolbar.compact'),
-      icon: <ViewComfy sx={{ fontSize: 16 }} />,
     },
     {
       value: 'calendar',

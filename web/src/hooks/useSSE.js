@@ -213,10 +213,6 @@ export const useSSE = () => {
             queryClient.invalidateQueries({ queryKey: ['pointsHistory'] })
             break
 
-          case 'things.updated':
-            queryClient.invalidateQueries({ queryKey: ['thingHistory'] })
-            break
-
           case 'circle.updated':
             queryClient.invalidateQueries({ queryKey: ['circleMembers'] })
             queryClient.invalidateQueries({ queryKey: ['allCircleMembers'] })

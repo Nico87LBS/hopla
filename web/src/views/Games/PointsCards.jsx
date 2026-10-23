@@ -28,7 +28,6 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useLocalization } from '../../contexts/LocalizationContext'
-import { useCircleMembers, useUserProfile } from '../../queries/UserQueries'
 import { useNotification } from '../../service/NotificationProvider'
 import {
   AdjustPoints,
@@ -38,15 +37,12 @@ import {
   SavePointsPreset,
 } from '../../utils/Fetcher'
 import ConfirmationModal from '../Modals/Inputs/ConfirmationModal'
-import DailyGames, { RulesCard } from './DailyGames'
 import { MemberAvatar, memberShape, surfaceSx } from './GameParts'
-import { QuestListCard, RankSettingsCard } from './Progression'
-import ResetCard from './ResetCard'
 
 const PAGE_SIZE = 30
 const MAX_POINTS = 1000
 
-const usePointsPresets = () =>
+export const usePointsPresets = () =>
   useQuery({
     queryKey: ['pointsPresets'],
     queryFn: async () => (await GetPointsPresets())?.res || [],
@@ -66,11 +62,17 @@ const usePointsHistory = userId =>
 const signed = points => (points > 0 ? `+${points}` : `${points}`)
 
 // Gives a bonus or a penalty, from a preset or with any number of points.
-const AdjustCard = ({ members, presets }) => {
+// In a sheet (bare), the member is already chosen and the card has no frame.
+export const AdjustCard = ({
+  bare = false,
+  initialUserId = null,
+  members,
+  presets,
+}) => {
   const { t } = useTranslation('games')
   const { showNotification } = useNotification()
   const queryClient = useQueryClient()
-  const [userId, setUserId] = useState(null)
+  const [userId, setUserId] = useState(initialUserId)
   const [kind, setKind] = useState('bonus')
   const [points, setPoints] = useState('')
   const [reason, setReason] = useState('')
@@ -111,15 +113,24 @@ const AdjustCard = ({ members, presets }) => {
     : 0
 
   return (
-    <Sheet sx={surfaceSx}>
-      <Typography level='title-lg' sx={{ mb: 0.5 }}>
-        {t('adjust.title')}
-      </Typography>
-      <Typography level='body-sm' sx={{ color: 'text.secondary', mb: 2 }}>
-        {t('adjust.subtitle')}
-      </Typography>
+    <Sheet sx={bare ? { bgcolor: 'transparent' } : surfaceSx}>
+      {!bare && (
+        <>
+          <Typography level='title-lg' sx={{ mb: 0.5 }}>
+            {t('adjust.title')}
+          </Typography>
+          <Typography level='body-sm' sx={{ color: 'text.secondary', mb: 2 }}>
+            {t('adjust.subtitle')}
+          </Typography>
+        </>
+      )}
 
-      <Stack direction='row' flexWrap='wrap' gap={1} sx={{ mb: 2 }}>
+      <Stack
+        direction='row'
+        flexWrap='wrap'
+        gap={1}
+        sx={{ display: bare ? 'none' : 'flex', mb: 2 }}
+      >
         {members.map(m => (
           <Chip
             key={m.userId}
@@ -222,7 +233,7 @@ const AdjustCard = ({ members, presets }) => {
 }
 
 // Ready-made bonuses and penalties, so a parent gives them in one touch.
-const PresetsCard = ({ presets }) => {
+export const PresetsCard = ({ presets }) => {
   const { t } = useTranslation('games')
   const { showNotification } = useNotification()
   const queryClient = useQueryClient()
@@ -376,7 +387,7 @@ const PresetsCard = ({ presets }) => {
   )
 }
 
-const HistoryCard = ({ members }) => {
+export const HistoryCard = ({ members }) => {
   const { t } = useTranslation('games')
   const { fmt } = useLocalization()
   const [userId, setUserId] = useState(null)
@@ -487,6 +498,8 @@ const presetShape = PropTypes.shape({
 })
 
 AdjustCard.propTypes = {
+  bare: PropTypes.bool,
+  initialUserId: PropTypes.number,
   members: PropTypes.arrayOf(memberShape).isRequired,
   presets: PropTypes.arrayOf(presetShape).isRequired,
 }
@@ -494,30 +507,3 @@ PresetsCard.propTypes = {
   presets: PropTypes.arrayOf(presetShape).isRequired,
 }
 HistoryCard.propTypes = { members: PropTypes.arrayOf(memberShape).isRequired }
-
-const GamesView = () => {
-  const { data: membersData } = useCircleMembers()
-  const { data: userProfile } = useUserProfile()
-  const { data: presets = [] } = usePointsPresets()
-  const members = useMemo(
-    () => (membersData?.res || []).filter(m => m.isActive !== false),
-    [membersData?.res],
-  )
-  const me = members.find(m => m.userId === userProfile?.id)
-  const isParent = me?.role === 'admin' || me?.role === 'manager'
-
-  return (
-    <Stack gap={2}>
-      <DailyGames members={members} isParent={isParent} />
-      {isParent && <AdjustCard members={members} presets={presets} />}
-      <HistoryCard members={members} />
-      {isParent && <PresetsCard presets={presets} />}
-      {isParent && <QuestListCard members={members} />}
-      {isParent && <RankSettingsCard />}
-      {isParent && <RulesCard />}
-      {isParent && <ResetCard members={members} />}
-    </Stack>
-  )
-}
-
-export default GamesView

@@ -9,22 +9,18 @@ import (
 )
 
 // changeRoutes maps write routes without a detailed event to the change event
-// that tells clients what to refresh. Things belong to one user, so only that
-// user hears about them.
+// that tells clients what to refresh.
 var changeRoutes = []struct {
-	prefix    string
-	event     EventType
-	ownerOnly bool
+	prefix string
+	event  EventType
 }{
-	{"/api/v1/rewards", EventTypeRewardsUpdated, false},
-	{"/eapi/v1/rewards", EventTypeRewardsUpdated, false},
-	{"/api/v1/things", EventTypeThingsUpdated, true},
-	{"/eapi/v1/things", EventTypeThingsUpdated, true},
-	{"/api/v1/circles", EventTypeCircleUpdated, false},
-	{"/api/v1/points", EventTypeCircleUpdated, false},
-	{"/eapi/v1/points", EventTypeCircleUpdated, false},
-	{"/api/v1/games", EventTypeCircleUpdated, false},
-	{"/api/v1/users", EventTypeCircleUpdated, false},
+	{"/api/v1/rewards", EventTypeRewardsUpdated},
+	{"/eapi/v1/rewards", EventTypeRewardsUpdated},
+	{"/api/v1/circles", EventTypeCircleUpdated},
+	{"/api/v1/points", EventTypeCircleUpdated},
+	{"/eapi/v1/points", EventTypeCircleUpdated},
+	{"/api/v1/games", EventTypeCircleUpdated},
+	{"/api/v1/users", EventTypeCircleUpdated},
 }
 
 type changeBroadcaster interface {
@@ -62,12 +58,8 @@ func changeNotifier(broadcaster func() changeBroadcaster) gin.HandlerFunc {
 			if path != route.prefix && !strings.HasPrefix(path, route.prefix+"/") {
 				continue
 			}
-			var recipients []int
-			if route.ownerOnly {
-				recipients = []int{user.ID}
-			}
 			if b := broadcaster(); b != nil {
-				b.BroadcastChange(user.CircleID, recipients, route.event, user.ID)
+				b.BroadcastChange(user.CircleID, nil, route.event, user.ID)
 			}
 			return
 		}

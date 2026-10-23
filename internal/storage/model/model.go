@@ -27,7 +27,7 @@ const (
 	EntityTypeUnknown EntityType = iota
 	EntityTypeChoreDescription
 	EntityTypeChoreHistory
-	EntityTypeThing
+	_ // was used by objects (Things), now removed; the values are stored, so the slot stays
 	EntityTypeChoreAttachment
 	EntityTypeChoreAttachmentDraft
 	// EntityTypeChoreDescriptionDraft is a description image uploaded before the

@@ -13,7 +13,6 @@ import {
   Box,
   Button,
   Chip,
-  Container,
   Divider,
   Option,
   Select,
@@ -26,7 +25,6 @@ import {
 import moment from 'moment'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSearchParams } from 'react-router-dom'
 import {
   Bar,
   BarChart,
@@ -42,10 +40,7 @@ import { useCircleMembers, useUserProfile } from '../../queries/UserQueries.jsx'
 import { RedeemPoints } from '../../utils/Fetcher.jsx'
 import { resolvePhotoURL } from '../../utils/Helpers.jsx'
 import LoadingComponent from '../components/Loading.jsx'
-import GamesView from '../Games/GamesView.jsx'
 import RedeemPointsModal from '../Modals/RedeemPointsModal'
-import { useRedemptions } from '../Rewards/RewardQueries.jsx'
-import RewardsView from '../Rewards/RewardsView.jsx'
 
 const PERIODS = [
   { shortKey: 'tabs.short7d', value: 7 },
@@ -135,14 +130,13 @@ const getPeriodLabel = (period, t) => {
   return t('summary.lastDays', { count: period })
 }
 
-const UserPoints = () => {
+// The family's log: points over time and who earned the most.
+const PointsJournal = () => {
   const { t } = useTranslation('points')
   const [period, setPeriod] = useState(7)
   const [selectedUser, setSelectedUser] = useState(null)
   const [leaderboardMode, setLeaderboardMode] = useState('points')
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false)
-  const [searchParams, setSearchParams] = useSearchParams()
-  const requestedSection = searchParams.get('tab')
 
   const {
     data: circleMembersData,
@@ -155,7 +149,6 @@ const UserPoints = () => {
     isLoading: isChoresHistoryLoading,
   } = useChoresHistory(7, true)
   const { data: userProfile } = useUserProfile()
-  const { data: pendingRedemptions = [] } = useRedemptions('pending')
 
   const circleUsers = useMemo(
     () => circleMembersData?.res || [],
@@ -166,17 +159,6 @@ const UserPoints = () => {
   const currentMembership = circleUsers.find(
     user => user.userId === userProfile?.id,
   )
-  const canManageRewards =
-    currentMembership?.role === 'admin' || currentMembership?.role === 'manager'
-  const activeSection =
-    requestedSection === 'requests' && canManageRewards
-      ? 'requests'
-      : requestedSection === 'rewards' || requestedSection === 'requests'
-        ? 'rewards'
-        : requestedSection === 'games'
-          ? 'games'
-          : 'overview'
-
   const handlePeriodChange = nextPeriod => {
     setPeriod(nextPeriod)
     changeHistoryLimit(nextPeriod)
@@ -221,155 +203,6 @@ const UserPoints = () => {
       }))
   }, [circleUsers, history, leaderboardMode])
 
-  const pageTabs = (
-    <Tabs
-      value={activeSection}
-      onChange={(event, value) => {
-        setSearchParams(
-          previous => {
-            const next = new URLSearchParams(previous)
-            if (value === 'overview') next.delete('tab')
-            else next.set('tab', value)
-            return next
-          },
-          { replace: true },
-        )
-      }}
-      sx={{
-        bgcolor: 'background.level1',
-        borderRadius: 'lg',
-        mb: 3,
-        p: 0.5,
-        width: { xs: '100%', sm: canManageRewards ? 600 : 470 },
-      }}
-    >
-      <TabList disableUnderline sx={{ gap: 0.5 }}>
-        <Tab
-          value='overview'
-          disableIndicator
-          sx={{
-            borderRadius: 'md',
-            flex: 1,
-            fontWeight: 600,
-            '&.Mui-selected': {
-              bgcolor: 'background.surface',
-              boxShadow: 'sm',
-            },
-          }}
-        >
-          {t('sections.overview')}
-        </Tab>
-        <Tab
-          value='rewards'
-          disableIndicator
-          sx={{
-            borderRadius: 'md',
-            flex: 1,
-            fontWeight: 600,
-            '&.Mui-selected': {
-              bgcolor: 'background.surface',
-              boxShadow: 'sm',
-            },
-          }}
-        >
-          {t('common:navigation.rewards')}
-        </Tab>
-        <Tab
-          value='games'
-          disableIndicator
-          sx={{
-            borderRadius: 'md',
-            flex: 1,
-            fontWeight: 600,
-            '&.Mui-selected': {
-              bgcolor: 'background.surface',
-              boxShadow: 'sm',
-            },
-          }}
-        >
-          {t('games:tab')}
-        </Tab>
-        {canManageRewards && (
-          <Tab
-            value='requests'
-            disableIndicator
-            sx={{
-              borderRadius: 'md',
-              flex: 1,
-              fontWeight: 600,
-              '&.Mui-selected': {
-                bgcolor: 'background.surface',
-                boxShadow: 'sm',
-              },
-            }}
-          >
-            {t('rewards:tabs.requests')}
-            {pendingRedemptions.length > 0 && (
-              <Chip
-                size='sm'
-                variant='solid'
-                color='warning'
-                sx={{
-                  '--Chip-paddingInline': '0px',
-                  borderRadius: '50%',
-                  height: 20,
-                  ml: 0.75,
-                  minHeight: 20,
-                  minWidth: 20,
-                  width: 20,
-                  '& .MuiChip-label': {
-                    alignItems: 'center',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    lineHeight: 1,
-                    p: 0,
-                    width: '100%',
-                  },
-                }}
-              >
-                {pendingRedemptions.length}
-              </Chip>
-            )}
-          </Tab>
-        )}
-      </TabList>
-    </Tabs>
-  )
-
-  if (
-    requestedSection === 'requests' &&
-    (isCircleMembersLoading || !userProfile)
-  ) {
-    return <LoadingComponent />
-  }
-
-  if (activeSection === 'games') {
-    return (
-      <Container
-        maxWidth='md'
-        sx={{ px: { xs: 2, sm: 3 }, pb: 6, pt: { xs: 1, sm: 2 } }}
-      >
-        {pageTabs}
-        <GamesView />
-      </Container>
-    )
-  }
-
-  if (activeSection === 'rewards' || activeSection === 'requests') {
-    return (
-      <Container
-        maxWidth='md'
-        sx={{ px: { xs: 2, sm: 3 }, pb: 6, pt: { xs: 1, sm: 2 } }}
-      >
-        {pageTabs}
-        <RewardsView
-          embedded
-          view={activeSection === 'requests' ? 'requests' : 'store'}
-        />
-      </Container>
-    )
-  }
-
   if (isChoresHistoryLoading || isCircleMembersLoading || !userProfile) {
     return <LoadingComponent />
   }
@@ -388,12 +221,7 @@ const UserPoints = () => {
   const periodLabel = getPeriodLabel(period, t)
 
   return (
-    <Container
-      maxWidth='md'
-      sx={{ px: { xs: 2, sm: 3 }, pb: 6, pt: { xs: 1, sm: 2 } }}
-    >
-      {pageTabs}
-
+    <Box>
       <Box
         sx={{
           alignItems: { xs: 'flex-start', sm: 'center' },
@@ -845,8 +673,8 @@ const UserPoints = () => {
           },
         }}
       />
-    </Container>
+    </Box>
   )
 }
 
-export default UserPoints
+export default PointsJournal

@@ -12,7 +12,6 @@ import (
 	pModel "github.com/nico87lbs/hopla/internal/project/model"
 	storageModel "github.com/nico87lbs/hopla/internal/storage/model"
 	stModel "github.com/nico87lbs/hopla/internal/subtask/model"
-	tModel "github.com/nico87lbs/hopla/internal/thing/model"
 )
 
 const MAX_TEMPLATES = 5
@@ -47,7 +46,6 @@ const (
 )
 
 type Chore struct {
-	CompletionActions      []CompletionAction         `json:"completionActions" gorm:"serializer:json;type:json"`
 	ID                     int                        `json:"id" gorm:"primary_key"`
 	Name                   string                     `json:"name" gorm:"column:name"`                                                                // Chore description
 	FrequencyType          FrequencyType              `json:"frequencyType" gorm:"column:frequency_type"`                                             // "daily", "weekly", "monthly", "yearly", "adaptive",or "custom"
@@ -67,7 +65,6 @@ type Chore struct {
 	UpdatedAt              time.Time                  `json:"updatedAt" gorm:"column:updated_at"`                                                     // When the chore was last updated
 	CreatedBy              int                        `json:"createdBy" gorm:"column:created_by"`                                                     // Who created the chore
 	UpdatedBy              int                        `json:"updatedBy" gorm:"column:updated_by"`                                                     // Who last updated the chore
-	ThingChore             *tModel.ThingChore         `json:"thingChore" gorm:"foreignkey:chore_id;references:id;<-:false"`                           // ThingChore relationship
 	Status                 Status                     `json:"status" gorm:"column:status"`                                                            //
 	Priority               int                        `json:"priority" gorm:"column:priority"`                                                        //
 	CompletionWindow       *int                       `json:"completionWindow,omitempty" gorm:"column:completion_window"`                             // Number seconds before the chore is due that it can be completed

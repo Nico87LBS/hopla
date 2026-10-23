@@ -31,7 +31,6 @@ func newNotifierRouter(f *fakeChangeBroadcaster, status int) *gin.Engine {
 		c.Status(status)
 	}
 	r.Any("/api/v1/rewards/*rest", withUser)
-	r.Any("/eapi/v1/things/*rest", withUser)
 	r.Any("/api/v1/users/*rest", withUser)
 	r.Any("/api/v1/chores/*rest", withUser)
 	r.POST("/api/v1/rewardsx", withUser)
@@ -44,7 +43,6 @@ func TestChangeNotifierBroadcastsSuccessfulWrites(t *testing.T) {
 		want         *recordedChange
 	}{
 		{http.MethodPost, "/api/v1/rewards/1/redeem", &recordedChange{3, nil, EventTypeRewardsUpdated, 7}},
-		{http.MethodPut, "/eapi/v1/things/5/state", &recordedChange{3, []int{7}, EventTypeThingsUpdated, 7}},
 		{http.MethodPut, "/api/v1/users/profile", &recordedChange{3, nil, EventTypeCircleUpdated, 7}},
 		{http.MethodGet, "/api/v1/rewards/", nil},
 		{http.MethodPost, "/api/v1/chores/1/do", nil},

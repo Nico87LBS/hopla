@@ -63,8 +63,6 @@ export const copyUpdate = (copy, saved) => {
     dueDate: copy.nextDueDate ?? null,
     nextDueDate: copy.nextDueDate ?? null,
     isActive: copy.isActive,
-    thingTrigger: copy.thingChore,
-    completionActions: copy.completionActions || [],
   }
   for (const field of SHARED_FIELDS) update[field] = saved[field]
   return update

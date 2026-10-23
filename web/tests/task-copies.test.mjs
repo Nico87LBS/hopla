@@ -57,8 +57,6 @@ test('copyUpdate carries the shared settings and keeps the copy its own', () => 
     assignStrategy: 'keep_last_assigned',
     nextDueDate: '2026-10-22T06:00:00Z',
     isActive: true,
-    thingChore: null,
-    completionActions: [],
     subTasks: [{ id: 5, name: 'Oreiller' }],
   }
   const saved = {

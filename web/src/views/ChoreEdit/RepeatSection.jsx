@@ -21,7 +21,6 @@ import { useTranslation } from 'react-i18next'
 
 import NumberInput from '../../components/common/NumberInput'
 import { useLocalization } from '../../contexts/LocalizationContext'
-import ThingTriggerSection from './ThingTriggerSection'
 
 const FREQUENCY_TYPES_RADIOS = [
   'daily',
@@ -495,18 +494,13 @@ export const RepeatOnSections = ({
 }
 
 const RepeatSection = ({
-  OnTriggerValidate,
-  allUserThings,
   frequency,
   frequencyError,
   frequencyMetadata,
   frequencyType,
-  isAttemptToSave,
   onFrequencyMetadataUpdate,
   onFrequencyTypeUpdate,
   onFrequencyUpdate,
-  onTriggerUpdate,
-  selectedThing,
   viewOnly = false,
 }) => {
   const { t } = useTranslation('chores')
@@ -529,12 +523,13 @@ const RepeatSection = ({
           onChange={(_, mode) => {
             if (!mode) return
             onFrequencyTypeUpdate(mode === 'repeat' ? 'daily' : mode)
-            if (mode !== 'trigger') onTriggerUpdate(null)
           }}
         >
           <Option value='once'>{t('taskEditor.oneTimeTask')}</Option>
           <Option value='repeat'>{t('taskEditor.repeatingTask')}</Option>
-          <Option value='trigger'>{t('taskEditor.triggeredByAThing')}</Option>
+          <Option value='trigger'>
+            {t('taskEditor.triggeredFromOutside')}
+          </Option>
           {frequencyType === 'always' && (
             <Option value='always'>{t('taskEditor.alwaysAvailable')}</Option>
           )}
@@ -692,7 +687,6 @@ const RepeatSection = ({
                       onFrequencyTypeUpdate={onFrequencyTypeUpdate}
                       frequencyMetadata={frequencyMetadata || {}}
                       onFrequencyMetadataUpdate={onFrequencyMetadataUpdate}
-                      things={allUserThings}
                     />
                   </Grid>
                 </>
@@ -704,13 +698,9 @@ const RepeatSection = ({
         </>
       )}
       {frequencyType === 'trigger' && (
-        <ThingTriggerSection
-          things={allUserThings}
-          onTriggerUpdate={onTriggerUpdate}
-          onValidate={OnTriggerValidate}
-          isAttemptToSave={isAttemptToSave}
-          selected={selectedThing}
-        />
+        <Typography level='body-sm' textColor='text.tertiary' sx={{ mt: 1 }}>
+          {t('taskEditor.triggeredFromOutsideHelp')}
+        </Typography>
       )}
     </Box>
   )

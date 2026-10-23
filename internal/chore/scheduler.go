@@ -494,9 +494,6 @@ func HandOverToProjectOwner(chore *chModel.Chore, leavingUserID int, ownerID int
 			chore.AssignedTo = &owner
 		}
 	}
-	// Completion actions may only change Things of the chore's owner, and the
-	// leaving user's Things don't carry over to the new one.
-	chore.CompletionActions = nil
 	chore.CreatedBy = ownerID
 	chore.UpdatedBy = ownerID
 	chore.UpdatedAt = time.Now().UTC()

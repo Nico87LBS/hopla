@@ -86,7 +86,6 @@ import {
   DeleteDraftAttachment,
   GetAllCircleMembers,
   GetChoreByID,
-  GetThings,
   UploadChoreAttachment,
 } from '../../utils/Fetcher'
 import { resolvePhotoURL } from '../../utils/Helpers'
@@ -186,7 +185,6 @@ const ChoreEdit = () => {
   const [labels, setLabels] = useState([])
   const [labelsV2, setLabelsV2] = useState([])
   const [priority, setPriority] = useState(0)
-  const [completionActions, setCompletionActions] = useState([])
   const [completionActionsValid, setCompletionActionsValid] = useState(true)
   const [points, setPoints] = useState(-1)
   const [requireApproval, setRequireApproval] = useState(false)
@@ -194,9 +192,6 @@ const ChoreEdit = () => {
   const [subTasks, setSubTasks] = useState(null)
   const [completionWindow, setCompletionWindow] = useState(-1)
   const [deadlineOffset, setDeadlineOffset] = useState(-1)
-  const [allUserThings, setAllUserThings] = useState([])
-  const [thingTrigger, setThingTrigger] = useState(null)
-  const [isThingValid, setIsThingValid] = useState(false)
 
   const [notificationMetadata, setNotificationMetadata] = useState({})
 
@@ -299,16 +294,8 @@ const ChoreEdit = () => {
     frequencyType,
     frequency,
     frequencyMetadata,
-    thingTrigger: thingTrigger
-      ? {
-          thingID: thingTrigger.thingID ?? thingTrigger.thingId,
-          triggerState: thingTrigger.triggerState,
-          condition: thingTrigger.condition || '',
-        }
-      : null,
     subTasks,
     attachments,
-    completionActions,
     points,
     requireApproval,
     isPrivate,
@@ -380,7 +367,6 @@ const ChoreEdit = () => {
     assignedTo: 'assignment',
     frequency: 'schedule',
     dueDate: 'schedule',
-    thingTrigger: 'schedule',
     completionActions: 'actions',
   }
   const focusError = key => {
@@ -392,7 +378,6 @@ const ChoreEdit = () => {
         assignedTo: 2,
         frequency: 1,
         dueDate: 1,
-        thingTrigger: 1,
         completionActions: 3,
       }[key] ?? 3
     if (!singlePageEditor) setWizardStep(step)
@@ -409,9 +394,6 @@ const ChoreEdit = () => {
   const dueSummary = dueDate
     ? moment(dueDate).format(useCustomTime ? 'D MMM · HH:mm' : 'D MMM')
     : t('taskEditor.noDueDate')
-  const triggerThing = allUserThings.find(
-    item => item.id === (thingTrigger?.thingID ?? thingTrigger?.thingId),
-  )
   const frequencySummary = {
     daily: t('repeat.freqType.daily'),
     weekly: t('repeat.freqType.weekly'),
@@ -430,15 +412,7 @@ const ChoreEdit = () => {
   }[frequencyType]
   const scheduleSummary =
     frequencyType === 'trigger'
-      ? triggerThing
-        ? t('taskEditor.whenThing', {
-            thing: triggerThing.name,
-            condition: t(
-              `taskEditor.conditions.${['neq', 'gt', 'gte', 'lt', 'lte'].includes(thingTrigger?.condition) ? thingTrigger.condition : 'eq'}`,
-            ),
-            value: thingTrigger?.triggerState,
-          })
-        : t('taskEditor.chooseThingCondition')
+      ? t('taskEditor.triggeredFromOutside')
       : frequencyType === 'always'
         ? t('taskEditor.availableWithoutDueDate')
         : frequencySummary
@@ -499,20 +473,14 @@ const ChoreEdit = () => {
         errors.dueDate = t('choreEdit.errDueDateRequired')
       }
     }
-    if (frequencyType === 'trigger') {
-      if (!isThingValid) {
-        errors.thingTrigger = t('choreEdit.errThingTrigger')
-      }
-    }
-
     if (!completionActionsValid)
-      errors.completionActions = 'Check the completion actions and their values'
+      errors.completionActions = t('taskEditor.pointsInvalid')
 
     // if there is any error then return false:
     if (step !== null) {
       const fields = [
         ['name', 'description'],
-        ['frequency', 'dueDate', 'thingTrigger'],
+        ['frequency', 'dueDate'],
         ['assignees', 'assignedTo'],
       ][step]
       if (fields)
@@ -681,8 +649,6 @@ const ChoreEdit = () => {
         ...notificationMetadata,
         templates: planReminders,
       },
-      thingTrigger: thingTrigger,
-      completionActions,
       points: points < 0 ? null : points,
       requireApproval: requireApproval,
       isPrivate: isPrivate,
@@ -756,11 +722,6 @@ const ChoreEdit = () => {
     //fetch performers:
     GetAllCircleMembers().then(data => {
       setPerformers(data.res)
-    })
-    GetThings().then(response => {
-      response.json().then(data => {
-        setAllUserThings(data.res)
-      })
     })
 
     // Load default privacy setting for new chores
@@ -896,7 +857,6 @@ const ChoreEdit = () => {
       setFrequency(data.res.frequency)
 
       setNotificationMetadata(data.res.notificationMetadata)
-      setCompletionActions(data.res.completionActions || [])
       setPoints(
         data.res.points != null && data.res.points >= 0 ? data.res.points : -1,
       )
@@ -941,8 +901,6 @@ const ChoreEdit = () => {
           setName(t('taskEditor.copyOf', { name: data.res.name }))
         }
       }
-
-      setThingTrigger(data.res.thingChore)
 
       // Parse existing due date into date and time components
       if (data.res.nextDueDate) {
@@ -1403,8 +1361,7 @@ const ChoreEdit = () => {
                 errors.assignees ||
                 errors.assignedTo ||
                 errors.frequency ||
-                errors.dueDate ||
-                errors.thingTrigger
+                errors.dueDate
               }
               summary={name}
             >
@@ -1433,7 +1390,7 @@ const ChoreEdit = () => {
               section='schedule'
               collapsible
               defaultOpen
-              error={errors.frequency || errors.dueDate || errors.thingTrigger}
+              error={errors.frequency || errors.dueDate}
               summary={scheduleSummary}
             >
               <Typography
@@ -1460,21 +1417,6 @@ const ChoreEdit = () => {
                 frequencyMetadata={frequencyMetadata}
                 onFrequencyMetadataUpdate={setFrequencyMetadata}
                 frequencyError={errors?.frequency}
-                allUserThings={allUserThings}
-                onTriggerUpdate={thingUpdate => {
-                  if (thingUpdate === null) {
-                    setThingTrigger(null)
-                    return
-                  }
-                  setThingTrigger({
-                    triggerState: thingUpdate.triggerState,
-                    condition: thingUpdate.condition,
-                    thingID: thingUpdate.thing.id,
-                  })
-                }}
-                OnTriggerValidate={setIsThingValid}
-                isAttemptToSave={attemptToSave}
-                selectedThing={thingTrigger}
               />
 
               {frequencyType !== 'always' &&
@@ -1487,7 +1429,7 @@ const ChoreEdit = () => {
                     </Typography>
                     {frequencyType === 'trigger' && !dueDate && (
                       <Typography level='body-sm'>
-                        {t('taskEditor.theTaskBecomesDueWhenItsThing')}
+                        {t('taskEditor.triggeredFromOutsideHelp')}
                       </Typography>
                     )}
 
@@ -2438,18 +2380,11 @@ const ChoreEdit = () => {
               icon={BoltOutlined}
               section='actions'
               collapsible
-              defaultOpen={
-                points >= 0 || completionActions.length > 0 || requireApproval
-              }
+              defaultOpen={points >= 0 || requireApproval}
               error={errors.completionActions}
               summary={
                 [
                   points >= 0 ? t('taskEditor.points', { count: points }) : '',
-                  completionActions.length
-                    ? t('taskEditor.thingActions', {
-                        count: completionActions.length,
-                      })
-                    : '',
                   requireApproval ? t('taskEditor.approvalRequired') : '',
                 ]
                   .filter(Boolean)
@@ -2457,8 +2392,6 @@ const ChoreEdit = () => {
               }
             >
               <CompletionActionsSection
-                actions={completionActions}
-                onChange={setCompletionActions}
                 showHeading={false}
                 points={points}
                 onPointsChange={setPoints}

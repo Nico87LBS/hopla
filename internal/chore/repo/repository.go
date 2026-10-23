@@ -515,7 +515,6 @@ func (r *ChoreRepository) GetChore(c context.Context, choreID int, userID int, c
 		Preload("SubTasks", "chore_id = ?", choreID).
 		Preload("Assignees").
 		Preload("Project").
-		Preload("ThingChore").
 		Preload("LabelsV2").
 		Where("chores.id = ? AND chores.circle_id = ?", choreID, circleID).
 		Where(privacyPredicate(userID))
@@ -786,7 +785,7 @@ func (r *ChoreRepository) ApproveChore(c context.Context, chore *chModel.Chore, 
 			return err
 		}
 
-		return r.applyCompletionActions(c, tx, chore)
+		return nil
 	})
 	return err
 }
@@ -919,7 +918,7 @@ func (r *ChoreRepository) CompleteChore(c context.Context, chore *chModel.Chore,
 			}
 		}
 
-		return r.applyCompletionActions(c, tx, chore)
+		return nil
 	})
 	return err
 }

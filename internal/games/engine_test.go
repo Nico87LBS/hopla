@@ -45,7 +45,8 @@ func noon(daysAgo int) time.Time {
 
 func TestBonusPeriodAndSurpriseRaiseTaskPoints(t *testing.T) {
 	db := setup(t)
-	now := time.Now()
+	// Noon, so that two hours later is still the same day and the same surprise.
+	now := noon(0)
 	task := chore(t, db, "Chambre", 3, now, nil)
 	earning, err := TaskEarning(db, task, now)
 	require.NoError(t, err)

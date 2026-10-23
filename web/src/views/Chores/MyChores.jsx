@@ -5,7 +5,7 @@ import {
   Check,
   CloudOff,
   EditCalendar,
-  ExpandCircleDown,
+  ExpandMore,
   Person,
   PriorityHigh,
   Remove,
@@ -49,7 +49,7 @@ import TaskInput from '../components/AddTaskModal'
 import CalendarDual from '../components/CalendarDual'
 import CalendarMonthly from '../components/CalendarMonthly.jsx'
 import LoadingComponent from '../components/Loading'
-import ScrollHideFab from '../components/ScrollHideFab'
+import { OPEN_QUICK_ADD_EVENT } from '../components/navigationEvents'
 import { useLabels } from '../Labels/LabelQueries'
 import AdvancedFilterBuilder from '../Modals/Inputs/AdvancedFilterBuilder'
 import ConfirmationModal from '../Modals/Inputs/ConfirmationModal'
@@ -171,8 +171,11 @@ const MyChores = () => {
   const openSectionsInitializedRef = useRef(
     localStorage.getItem('openChoreSections') !== null,
   )
-  const [viewMode, setViewMode] = useState(
-    localStorage.getItem('choreCardViewMode') || 'default',
+  // A list or a calendar; the old 'compact' list is the list now.
+  const [viewMode, setViewMode] = useState(() =>
+    localStorage.getItem('choreCardViewMode') === 'calendar'
+      ? 'calendar'
+      : 'default',
   )
   const [selectedCalendarDate, setSelectedCalendarDate] = useState(new Date())
   const [confirmModelConfig, setConfirmModelConfig] = useState({})
@@ -297,7 +300,7 @@ const MyChores = () => {
         ? selectedProject.name
         : hasCustomProjects
           ? t('toolbar.defaultProject')
-          : t('common:navigation.allTasks')
+          : t('common:navigation.today')
   const projectSelector = useMemo(
     () =>
       hasCustomProjects && !activeFilterId && !tempFilter
@@ -608,6 +611,13 @@ const MyChores = () => {
     selectedProject,
     setSelectedProjectWithCache,
   ])
+
+  // The + of the navigation opens the quick add here.
+  useEffect(() => {
+    const onOpen = () => setAddTaskModalOpen(true)
+    window.addEventListener(OPEN_QUICK_ADD_EVENT, onOpen)
+    return () => window.removeEventListener(OPEN_QUICK_ADD_EVENT, onOpen)
+  }, [])
 
   // /chores?add_task=1 opens the quick-add modal once, and strips the param
   // so back/refresh doesn't re-trigger it.
@@ -1003,7 +1013,7 @@ const MyChores = () => {
     const newMode =
       value ??
       (() => {
-        const modes = ['default', 'compact', 'calendar']
+        const modes = ['default', 'calendar']
         return modes[(modes.indexOf(viewMode) + 1) % modes.length]
       })()
     setViewMode(newMode)
@@ -1453,7 +1463,15 @@ const MyChores = () => {
                   }}
                   expanded={Boolean(openChoreSections[index])}
                 >
-                  <Divider orientation='horizontal'>
+                  <Box
+                    sx={{
+                      alignItems: 'center',
+                      display: 'flex',
+                      mt: index === 0 ? 0.5 : 2,
+                      mb: 1,
+                      px: 0.5,
+                    }}
+                  >
                     {(() => {
                       const sectionSelectedCount = section.content.filter(
                         chore => selectedChores.has(chore.id),
@@ -1463,13 +1481,7 @@ const MyChores = () => {
                       const partiallySelected =
                         sectionSelectedCount > 0 && !allSelected
                       return (
-                        <Box sx={{ display: 'flex', alignItems: 'stretch' }}>
-                          {/* Its own zone rather than nested inside the chip
-                              below — a checkbox inside a clickable chip is two
-                              interactive targets fighting over one tap.
-                              Butted flush against the chip (shared background,
-                              opposite corner radii) so the pair still reads as
-                              a single pill. */}
+                        <>
                           {isMultiSelectMode && (
                             <Box
                               role='checkbox'
@@ -1495,9 +1507,11 @@ const MyChores = () => {
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                width: 30,
+                                width: 24,
                                 cursor: 'pointer',
-                                borderRadius: '999px 0 0 999px',
+                                borderRadius: '50%',
+                                height: 24,
+                                mr: 0.5,
                                 bgcolor:
                                   allSelected || partiallySelected
                                     ? 'primary.solidBg'
@@ -1521,10 +1535,10 @@ const MyChores = () => {
                               )}
                             </Box>
                           )}
-                          <Chip
-                            variant='soft'
-                            color='neutral'
-                            size='md'
+                          <Box
+                            component='button'
+                            type='button'
+                            aria-expanded={Boolean(openChoreSections[index])}
                             onClick={() => {
                               if (openChoreSections[index]) {
                                 const newOpenChoreSections = {
@@ -1542,32 +1556,50 @@ const MyChores = () => {
                               }
                             }}
                             sx={{
-                              borderRadius: isMultiSelectMode
-                                ? '0 999px 999px 0'
-                                : undefined,
+                              alignItems: 'center',
+                              background: 'none',
+                              border: 0,
+                              color:
+                                section.name === t('chores:sections.overdue')
+                                  ? 'danger.plainColor'
+                                  : 'text.tertiary',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              flex: 1,
+                              font: '700 12px/1 var(--joy-fontFamily-body)',
+                              gap: 0.75,
+                              letterSpacing: '.06em',
+                              minHeight: 32,
+                              p: 0,
+                              textAlign: 'start',
+                              textTransform: 'uppercase',
                             }}
-                            endDecorator={
-                              openChoreSections[index] ? (
-                                <ExpandCircleDown
-                                  color='primary'
-                                  sx={{ transform: 'rotate(180deg)' }}
-                                />
-                              ) : (
-                                <ExpandCircleDown color='primary' />
-                              )
-                            }
-                            startDecorator={
-                              <Chip color='primary' size='sm' variant='soft'>
-                                {section?.content?.length}
-                              </Chip>
-                            }
                           >
                             {section.name}
-                          </Chip>
-                        </Box>
+                            <Box
+                              component='span'
+                              sx={{
+                                color: 'text.tertiary',
+                                fontWeight: 600,
+                              }}
+                            >
+                              {section?.content?.length}
+                            </Box>
+                            <ExpandMore
+                              sx={{
+                                fontSize: 18,
+                                ml: 'auto',
+                                transform: openChoreSections[index]
+                                  ? 'rotate(180deg)'
+                                  : 'none',
+                                transition: 'transform 160ms ease',
+                              }}
+                            />
+                          </Box>
+                        </>
                       )
                     })()}
-                  </Divider>
+                  </Box>
                   <AccordionDetails
                     sx={{
                       px: 0,
@@ -1597,74 +1629,6 @@ const MyChores = () => {
             })}
           </AccordionGroup>
         )}
-        <ScrollHideFab
-          sx={{
-            bottom: getSafeBottom(10, 10),
-            '@media (max-width: 768px)': {
-              bottom: getSafeBottom(66, 10),
-            },
-          }}
-        >
-          <IconButton
-            color='primary'
-            variant='solid'
-            sx={{
-              borderRadius: '50%',
-              width: 50,
-              height: 50,
-              zIndex: 101,
-              position: 'relative',
-            }}
-            onClick={() => {
-              Navigate(`/chores/create`)
-            }}
-            title={t('chores:list.createChore')}
-          >
-            <Add />
-            <KeyboardShortcutHint
-              sx={{
-                position: 'absolute',
-                top: -12,
-                // Anchored left so the wider "⌘ + Shift + J" label grows to the
-                // right instead of off the left edge of the viewport.
-                left: 2,
-                whiteSpace: 'nowrap',
-                zIndex: 1000,
-              }}
-              show={showKeyboardShortcuts}
-              shortcut='J'
-              withShift
-            />
-          </IconButton>
-          <IconButton
-            data-testid='open-add-task-modal'
-            color='primary'
-            variant='soft'
-            sx={{
-              borderRadius: '50%',
-              width: 25,
-              height: 25,
-              position: 'relative',
-              left: -25,
-              top: 22,
-            }}
-            onClick={() => {
-              setAddTaskModalOpen(true)
-            }}
-          >
-            <Bolt
-              style={{
-                rotate: '20deg',
-              }}
-            />
-          </IconButton>
-
-          <KeyboardShortcutHint
-            sx={{ position: 'relative', left: -40, top: 30 }}
-            show={showKeyboardShortcuts}
-            shortcut='J'
-          />
-        </ScrollHideFab>
         {addTaskModalOpen && (
           <TaskInput
             onChoreUpdate={updateChores}

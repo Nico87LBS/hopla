@@ -6,8 +6,6 @@ import {
   Search,
   SearchOff,
   Style,
-  ViewAgenda,
-  ViewModule,
 } from '@mui/icons-material'
 import {
   Box,
@@ -58,9 +56,6 @@ const LabelDetailView = () => {
   const [statusFilter, setStatusFilter] = useState('all')
   const [modalOpen, setModalOpen] = useState(false)
   const [confirmationModel, setConfirmationModel] = useState({})
-  const [viewMode, setViewMode] = useState(
-    localStorage.getItem('labelDetailViewMode') || 'default',
-  )
   const searchInputRef = useRef(null)
 
   const label = useMemo(
@@ -147,12 +142,6 @@ const LabelDetailView = () => {
     setSearchTerm('')
     setStatusFilter('all')
     searchInputRef.current?.blur()
-  }
-
-  const toggleViewMode = () => {
-    const newMode = viewMode === 'default' ? 'compact' : 'default'
-    setViewMode(newMode)
-    localStorage.setItem('labelDetailViewMode', newMode)
   }
 
   const handleSaveLabel = () => {
@@ -330,15 +319,6 @@ const LabelDetailView = () => {
               )
             }
           />
-          <IconButton
-            variant='outlined'
-            color='neutral'
-            size='sm'
-            sx={{ height: 32, width: 32, borderRadius: '50%' }}
-            onClick={toggleViewMode}
-          >
-            {viewMode === 'default' ? <ViewAgenda /> : <ViewModule />}
-          </IconButton>
         </Box>
       )}
 
@@ -368,17 +348,13 @@ const LabelDetailView = () => {
           }}
         />
       ) : (
-        <List sx={{ gap: viewMode === 'compact' ? 0 : 1 }}>
-          <ChoreListView
-            chores={visibleChores}
-            viewMode={viewMode}
-            membersData={membersData}
-            userLabels={labels}
-            userProfile={userProfile}
-            showActions={false}
-            selectedChores={EMPTY_SELECTION}
-          />
-        </List>
+        <ChoreListView
+          chores={visibleChores}
+          membersData={membersData}
+          userProfile={userProfile}
+          showActions={false}
+          selectedChores={EMPTY_SELECTION}
+        />
       )}
 
       {modalOpen && (

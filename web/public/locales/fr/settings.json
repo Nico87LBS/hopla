@@ -281,7 +281,7 @@
   "apiTokens": {
     "title": "Jetons d'API",
     "accessToken": "Jeton d'accès",
-    "description": "Créez un jeton à utiliser avec l'API pour mettre à jour les objets qui déclenchent des tâches",
+    "description": "Crée un jeton pour l'API, par exemple pour l'intégration Home Assistant.",
     "tokenCreatedTitle": "Jeton créé",
     "tokenCreatedWarning": "Copie ce jeton maintenant. Par sécurité, tu ne pourras plus le revoir.",
     "removeTitle": "Retirer le jeton",
@@ -456,30 +456,6 @@
   },
   "layout": {
     "title": "Disposition et navigation",
-    "defaultView": {
-      "title": "Vue par défaut",
-      "description": "Choisissez l'écran sur lequel l'application s'ouvre.",
-      "options": {
-        "home": {
-          "name": "Aperçu",
-          "description": "Un résumé de ce qui vous attend aujourd'hui, avec ajout rapide"
-        },
-        "tasks": {
-          "name": "Liste des tâches",
-          "description": "La liste complète des tâches avec filtres, recherche et regroupement"
-        }
-      }
-    },
-    "bottomNav": {
-      "title": "Navigation inférieure",
-      "description": "Choisissez jusqu'à {{max}} raccourcis pour la barre de navigation inférieure sur mobile et faites-les glisser pour les réorganiser. « Plus » reste toujours le dernier élément et ouvre le menu complet.",
-      "resetToDefaults": "Rétablir les valeurs par défaut",
-      "resetHelper": "Les raccourcis et l'ordre par défaut de la navigation inférieure seront rétablis.",
-      "hideLabels": {
-        "title": "Masquer les libellés",
-        "description": "N'affiche que les icônes dans la barre de navigation inférieure pour la rendre plus compacte."
-      }
-    },
     "sidepanel": {
       "title": "Panneau latéral"
     },

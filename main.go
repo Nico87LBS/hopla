@@ -39,8 +39,6 @@ import (
 	storageRepo "github.com/nico87lbs/hopla/internal/storage/repo"
 	spRepo "github.com/nico87lbs/hopla/internal/subtask/repo"
 	dsync "github.com/nico87lbs/hopla/internal/sync"
-	"github.com/nico87lbs/hopla/internal/thing"
-	tRepo "github.com/nico87lbs/hopla/internal/thing/repo"
 	"github.com/nico87lbs/hopla/internal/user"
 	uRepo "github.com/nico87lbs/hopla/internal/user/repo"
 	"github.com/nico87lbs/hopla/internal/utils"
@@ -107,9 +105,6 @@ func main() {
 		// add handlers also
 		fx.Provide(newServer),
 
-		// things
-		fx.Provide(tRepo.NewThingRepository),
-
 		// points
 		fx.Provide(pRepo.NewPointsRepository),
 		fx.Provide(spRepo.NewSubTasksRepository),
@@ -131,9 +126,6 @@ func main() {
 		// Filters:
 		fx.Provide(fRepo.NewFilterRepository),
 		fx.Provide(filter.NewHandler),
-
-		fx.Provide(thing.NewAPI),
-		fx.Provide(thing.NewHandler),
 
 		fx.Provide(chore.NewAPI),
 
@@ -173,8 +165,6 @@ func main() {
 			chore.APIs,
 			user.Routes,
 			circle.Routes,
-			thing.Routes,
-			thing.APIs,
 			label.Routes,
 			reward.Routes,
 			reward.APIs,

@@ -112,8 +112,6 @@
     "mine": "Mine",
     "availableToMe": "Available to me",
     "others": "Others",
-    "cards": "Cards",
-    "compact": "Compact",
     "calendar": "Calendar",
     "filters": "Filters",
     "filterNamePlaceholder": "Filter name…",
@@ -130,7 +128,8 @@
     "moreSaveOptions": "More save options",
     "showCount": "Show {{count}}",
     "done": "Done",
-    "savedFilters": "Saved Filters"
+    "savedFilters": "Saved Filters",
+    "list": "List"
   },
   "sort": {
     "assignedToMe": "Assigned to me",
@@ -145,19 +144,6 @@
     "assignedToOthers": "Assigned to others",
     "createFilter": "Create Filter",
     "createFilterHint": "Build advanced filter rules"
-  },
-  "thing": {
-    "goToThings": "Go to Things",
-    "boolTrue": "True",
-    "boolFalse": "False",
-    "conditions": {
-      "eq": "Equal",
-      "neq": "Not equal",
-      "gt": "Greater than",
-      "gte": "Greater than or equal",
-      "lt": "Less than",
-      "lte": "Less than or equal"
-    }
   },
   "activity": {
     "showMore": "Show more",
@@ -649,7 +635,6 @@
     "errSelectMonth": "Please select at least one month",
     "errStartDateRequired": "Start date is required",
     "errDueDateRequired": "Due date is required",
-    "errThingTrigger": "Thing trigger is invalid",
     "savedOfflineTitle": "Saved Offline",
     "savedOfflineMessage": "Your changes will sync when you are back online.",
     "savedTitle": "Chore Saved",
@@ -1009,7 +994,6 @@
     "whatNeedsToBeDone": "What needs to be done?",
     "schedule": "Schedule",
     "chooseWhenThisTaskIsDueAnd": "Choose when this task is due and whether it repeats.",
-    "theTaskBecomesDueWhenItsThing": "The task becomes due when its Thing condition is met.",
     "dueDate": "Due date",
     "time": "Time",
     "dueTime": "Due time",
@@ -1043,35 +1027,15 @@
     "moreSaveOptions": "More save options",
     "oneTimeTask": "One-time task",
     "repeatingTask": "Repeating task",
-    "triggeredByAThing": "Triggered by a Thing",
     "alwaysAvailable": "Always available",
     "repeats": "Repeats",
-    "createAThingToUseItAs": "Create a Thing to use it as a task trigger.",
-    "thing": "Thing",
-    "triggerThing": "Trigger Thing",
-    "selectAThing": "Select a Thing",
     "becomes": "Becomes",
-    "triggerState": "Trigger state",
-    "matchesText": "Matches text",
     "triggerText": "Trigger text",
     "condition": "Condition",
-    "triggerCondition": "Trigger condition",
-    "triggerValue": "Trigger value",
-    "theTaskBecomesDueWhenThisCondition": "The task becomes due when this condition is met.",
-    "awardPointsOrChangeThingsWhenThis": "Award points or change Things when this task is completed. Skipping or postponing does not run these actions.",
-    "unableToLoadThingsReloadToTry": "Unable to load Things. Reload to try again.",
-    "createAThingOnTheThingsPage": "Create a Thing on the Things page to add Thing actions.",
     "awardPoints": "Award points",
     "removePointsAction": "Remove points action",
-    "removeCompletionAction": "Remove completion action",
     "removeApprovalAction": "Remove approval action",
-    "action": "Action",
-    "setValue": "Set value",
-    "increaseDecrease": "Increase / decrease",
-    "useANegativeAmountToDecreaseThe": "Use a negative amount to decrease the value.",
-    "selectAThingAndEnterAValid": "Select a Thing and enter a valid value.",
     "addAction": "Add action",
-    "changeAThing": "Change a Thing",
     "inheritedFromSharedProject": "Inherited from the project: only its members can see tasks in it",
     "onlyProjectAudienceAssignable": "Only people who can see the project “{{project}}” can be assigned.",
     "followsProjectName": "Follows the project “{{project}}”",
@@ -1094,16 +1058,6 @@
     "adaptiveSchedule": "Adaptive schedule",
     "chooseWeekdays": "Choose weekdays",
     "selectedDaysOfMonth": "Selected days of the month",
-    "whenThing": "When {{thing}} {{condition}} {{value}}",
-    "conditions": {
-      "eq": "is",
-      "neq": "is not",
-      "gt": "is greater than",
-      "gte": "is at least",
-      "lt": "is less than",
-      "lte": "is at most"
-    },
-    "chooseThingCondition": "Choose a Thing condition",
     "availableWithoutDueDate": "Available without a due date",
     "errChooseEligible": "Choose at least one eligible user",
     "errChooseAssignee": "Choose who is assigned to this task",
@@ -1138,10 +1092,8 @@
     "subtasksSummary": "A checklist of steps to complete this task",
     "points_one": "{{count}} point",
     "points_other": "{{count}} points",
-    "thingActions_one": "{{count}} Thing action",
-    "thingActions_other": "{{count}} Thing actions",
     "approvalRequired": "Approval required",
-    "onCompletionSummary": "Award points, require approval, or update Things when completed",
+    "onCompletionSummary": "Award points or ask for approval once the task is done",
     "remindersOn": "Reminders enabled",
     "remindersOff": "Reminders off",
     "completableBefore": "Completable {{hours}}h before due",
@@ -1161,8 +1113,6 @@
     "everyInterval": "Every {{count}} {{unit}}",
     "pointsHelp": "Awarded to the user who completes the task, after approval when required.",
     "pointsInvalid": "Enter a whole number from 0 to 1000.",
-    "amount": "Amount",
-    "value": "Value",
     "steps": "Task creation steps",
     "title": "Task editor",
     "copies": {
@@ -1179,7 +1129,10 @@
       "failed_other": "{{count}} copies could not be updated.",
       "deleteConfirm_one": "Delete this task and its other copy? This cannot be undone.",
       "deleteConfirm_other": "Delete this task and its {{count}} other copies? This cannot be undone."
-    }
+    },
+    "triggeredFromOutside": "Triggered from outside",
+    "triggeredFromOutsideHelp": "The task waits without a due date. A Home Assistant automation (action hopla.update_task) gives it one when needed.",
+    "awardPointsWhenThis": "Award points or ask for approval when this task is completed. Skipping or postponing gives nothing."
   },
   "sections": {
     "started": "Started",
@@ -1232,5 +1185,13 @@
   },
   "projectPicker": {
     "label": "Project"
+  },
+  "taskRow": {
+    "complete": "Mark “{{name}}” as done",
+    "waitingApproval": "Waiting for a parent to approve",
+    "pause": "Pause",
+    "resume": "Resume",
+    "hops_one": "{{count}} hop",
+    "hops_other": "{{count}} hops"
   }
 }

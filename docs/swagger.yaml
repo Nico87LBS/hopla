@@ -38,10 +38,6 @@ definitions:
         items:
           $ref: '#/definitions/model.ChoreAssignees'
         type: array
-      completionActions:
-        items:
-          $ref: '#/definitions/model.CompletionAction'
-        type: array
       completionWindow:
         type: integer
       description:
@@ -102,8 +98,6 @@ definitions:
         items:
           $ref: '#/definitions/model.SubTask'
         type: array
-      thingTrigger:
-        $ref: '#/definitions/model.ThingTrigger'
       updatedAt:
         type: string
     required:
@@ -306,11 +300,23 @@ definitions:
     - 5
     - 6
     type: integer
+    x-enum-comments:
+      _: was used by objects (Things), now removed; the values are stored, so the
+        slot stays
+    x-enum-descriptions:
+    - ""
+    - ""
+    - ""
+    - was used by objects (Things), now removed; the values are stored, so the slot
+      stays
+    - ""
+    - ""
+    - ""
     x-enum-varnames:
     - EntityTypeUnknown
     - EntityTypeChoreDescription
     - EntityTypeChoreHistory
-    - EntityTypeThing
+    - _
     - EntityTypeChoreAttachment
     - EntityTypeChoreAttachmentDraft
     - EntityTypeChoreDescriptionDraft
@@ -353,10 +359,6 @@ definitions:
       circleId:
         description: The circle this chore is in
         type: integer
-      completionActions:
-        items:
-          $ref: '#/definitions/model.CompletionAction'
-        type: array
       completionWindow:
         description: Number seconds before the chore is due that it can be completed
         type: integer
@@ -433,10 +435,6 @@ definitions:
         type: array
       syncVersion:
         type: integer
-      thingChore:
-        allOf:
-        - $ref: '#/definitions/model.ThingChore'
-        description: ThingChore relationship
       updatedAt:
         description: When the chore was last updated
         type: string
@@ -511,15 +509,6 @@ definitions:
     - ChoreHistoryStatusRejected
     - ChoreHistoryStatusMissed
     - ChoreHistoryStatusRescheduled
-  model.CompletionAction:
-    properties:
-      operation:
-        type: string
-      thingId:
-        type: integer
-      value:
-        type: string
-    type: object
   model.Filter:
     properties:
       circleId:
@@ -863,52 +852,6 @@ definitions:
       parentId:
         type: integer
     type: object
-  model.Thing:
-    properties:
-      circleId:
-        type: integer
-      createdAt:
-        type: string
-      id:
-        type: integer
-      name:
-        type: string
-      state:
-        type: string
-      thingChores:
-        items:
-          $ref: '#/definitions/model.ThingChore'
-        type: array
-      type:
-        type: string
-      updatedAt:
-        type: string
-      userID:
-        type: integer
-    type: object
-  model.ThingChore:
-    properties:
-      choreId:
-        type: integer
-      condition:
-        type: string
-      thingId:
-        type: integer
-      triggerState:
-        type: string
-    type: object
-  model.ThingTrigger:
-    properties:
-      condition:
-        type: string
-      thingID:
-        type: integer
-      triggerState:
-        type: string
-    required:
-    - thingID
-    - triggerState
-    type: object
   model.TimeSession:
     properties:
       choreHistoryId:
@@ -978,20 +921,6 @@ definitions:
         type: array
       visibility:
         $ref: '#/definitions/model.ProjectVisibility'
-    type: object
-  thing.ThingRequest:
-    properties:
-      id:
-        type: integer
-      name:
-        type: string
-      state:
-        type: string
-      type:
-        type: string
-    required:
-    - name
-    - type
     type: object
 info:
   contact: {}
@@ -3717,301 +3646,6 @@ paths:
       summary: Get sync changes
       tags:
       - sync
-  /things:
-    get:
-      consumes:
-      - application/json
-      description: Retrieves all things belonging to the current user
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 'res: array of things'
-          schema:
-            additionalProperties:
-              items: {}
-              type: array
-            type: object
-        "401":
-          description: 'error: Unauthorized'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Failed to retrieve things'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      security:
-      - JWTKeyAuth: []
-      - APIKeyAuth: []
-      summary: Get all things
-      tags:
-      - things
-    post:
-      consumes:
-      - application/json
-      description: Creates a new thing for the current user with the given name, type,
-        and optional state
-      parameters:
-      - description: Thing creation request
-        in: body
-        name: thing
-        required: true
-        schema:
-          $ref: '#/definitions/thing.ThingRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: 'res: created thing object'
-          schema:
-            additionalProperties:
-              $ref: '#/definitions/model.Thing'
-            type: object
-        "400":
-          description: 'error: Invalid request | Invalid state'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Unauthorized'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Failed to create thing'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      security:
-      - JWTKeyAuth: []
-      - APIKeyAuth: []
-      summary: Create a new thing
-      tags:
-      - things
-    put:
-      consumes:
-      - application/json
-      description: Updates the name, type, and optionally the state of an existing
-        thing
-      parameters:
-      - description: Thing update request
-        in: body
-        name: thing
-        required: true
-        schema:
-          $ref: '#/definitions/thing.ThingRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 'res: updated thing object'
-          schema:
-            additionalProperties:
-              $ref: '#/definitions/model.Thing'
-            type: object
-        "400":
-          description: 'error: Invalid request | Invalid state'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Unauthorized'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: 'error: Forbidden'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Unable to find thing | Failed to update thing'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      security:
-      - JWTKeyAuth: []
-      - APIKeyAuth: []
-      summary: Update a thing
-      tags:
-      - things
-  /things/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Deletes a thing by ID; fails if there are chores still associated
-        with it
-      parameters:
-      - description: Thing ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: empty response on success
-        "400":
-          description: 'error: Invalid thing id'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Unauthorized'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: 'error: Forbidden'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "405":
-          description: 'error: Unable to delete thing with associated tasks'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Unable to find thing | Unable to find tasks linked
-            to this thing | Failed to delete thing'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      security:
-      - JWTKeyAuth: []
-      - APIKeyAuth: []
-      summary: Delete a thing
-      tags:
-      - things
-  /things/{id}/history:
-    get:
-      consumes:
-      - application/json
-      description: Retrieves the state change history for a specific thing with pagination
-        offset
-      parameters:
-      - description: Thing ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Pagination offset
-        in: query
-        name: offset
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 'res: thing history entries'
-          schema:
-            additionalProperties: true
-            type: object
-        "400":
-          description: 'error: Invalid thing id | Invalid offset'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Unauthorized'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: 'error: Forbidden'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Unable to find thing | Failed to retrieve history'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      security:
-      - JWTKeyAuth: []
-      - APIKeyAuth: []
-      summary: Get thing history
-      tags:
-      - things
-  /things/{id}/state:
-    put:
-      consumes:
-      - application/json
-      description: Updates the state of a thing by ID and triggers any associated
-        chore due dates
-      parameters:
-      - description: Thing ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: New state value
-        in: query
-        name: value
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 'res: updated thing object'
-          schema:
-            additionalProperties:
-              $ref: '#/definitions/model.Thing'
-            type: object
-        "400":
-          description: 'error: Invalid thing id | value query param is required |
-            Invalid state'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Unauthorized'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: 'error: Forbidden'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Unable to find thing | Failed to update state'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      security:
-      - JWTKeyAuth: []
-      - APIKeyAuth: []
-      summary: Update thing state
-      tags:
-      - things
 securityDefinitions:
   APIKeyAuth:
     description: hopla issued apikey

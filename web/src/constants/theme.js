@@ -7,6 +7,42 @@ export const { theme: THEME } = resolveConfig(tailwindConfig)
 export const COLORS = THEME.colors
 
 export const THEME_BACKGROUND = {
-  dark: '#000000',
-  light: '#FFFFFF',
+  dark: '#16132B',
+  light: '#F7F5F1',
 }
+
+// The Hopla palette, drawn from the logo. Each colour has one job: violet for
+// actions and progress, gold only for hops and stars, carrot for the games
+// (bonus periods, surprise, streaks), green for what is done or earned.
+export const HOPLA = {
+  ink: '#241E4E',
+  blueberry: '#3E2F86',
+  violet: '#5B4FE0',
+  violetSoft: '#ECEAFE',
+  gold: '#F5B400',
+  goldText: '#7A5200',
+  goldSoft: '#FFF4CC',
+  carrot: '#FF7A2F',
+  carrotText: '#B4470F',
+  carrotSoft: '#FFF1E6',
+  green: '#23934F',
+  greenText: '#1D6B3B',
+  greenSoft: '#E3F6EA',
+  red: '#B42318',
+  redSoft: '#FDECEC',
+}
+
+// Member colours for avatars without a photo: all keep white initials readable.
+export const MEMBER_COLORS = [
+  '#C93F68',
+  '#1F7F74',
+  '#3E2F86',
+  '#2B63B5',
+  '#B4470F',
+  '#7A3FA8',
+  '#2F7D32',
+  '#8A5A00',
+]
+
+export const memberColor = userId =>
+  MEMBER_COLORS[Math.abs(Number(userId) || 0) % MEMBER_COLORS.length]

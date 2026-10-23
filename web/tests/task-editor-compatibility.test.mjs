@@ -63,49 +63,13 @@ const modeCallback = attribute(modeSelect, 'onChange').value.expression
     onFrequencyTypeUpdate: value => {
       context.frequency = value
     },
-    onTriggerUpdate: value => {
-      context.trigger = value
-    },
   }
   evaluate(repeat, modeCallback, context)(null, 'trigger')
   assert.equal(context.frequency, 'trigger')
   evaluate(repeat, modeCallback, context)(null, 'once')
   assert.equal(context.frequency, 'once')
-  assert.equal(context.trigger, null)
+  evaluate(repeat, modeCallback, context)(null, 'repeat')
+  assert.equal(context.frequency, 'daily')
 }
 
-const trigger = sourceFile('ThingTriggerSection.jsx')
-const effect = find(
-  trigger.ast,
-  node =>
-    node.type === 'CallExpression' &&
-    node.callee.value === 'useEffect' &&
-    trigger.text(node.arguments[0].expression).includes('onTriggerUpdate'),
-)
-const context = {
-  selectedThing: { id: 1, type: 'number' },
-  condition: 'eq',
-  triggerState: 0,
-  hasValue: value => value !== null && value !== undefined && value !== '',
-  onTriggerUpdate: value => {
-    context.updated = value
-  },
-  onValidate: value => {
-    context.valid = value
-  },
-}
-const validator = find(
-  trigger.ast,
-  node =>
-    node.type === 'VariableDeclarator' && node.id.value === 'isValidTrigger',
-)
-context.isValidTrigger = evaluate(trigger, validator.init, context)
-evaluate(trigger, effect.arguments[0].expression, context)()
-assert.equal(context.updated.triggerState, 0)
-assert.equal(context.valid, true)
-context.triggerState = null
-context.updated = undefined
-evaluate(trigger, effect.arguments[0].expression, context)()
-assert.equal(context.updated, undefined)
-assert.equal(context.valid, false)
-console.log('Editor keeps trigger mode and zero-valued Thing triggers')
+console.log('Editor switches between one-time, repeating and triggered tasks')

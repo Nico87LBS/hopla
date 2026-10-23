@@ -15,8 +15,8 @@ des notifications et de l'affichage sur une tablette murale.
 - Comptes enfants gérés par les parents.
 - Points, récompenses et demandes de récompense validées par un parent.
 - Pièces jointes et photos sur les tâches (stockage local ou S3).
-- « Objets » : des valeurs suivies (nombre, oui/non, texte) qui peuvent
-  déclencher une tâche.
+- Tâches « déclenchées de l'extérieur » : sans échéance, elles attendent
+  qu'une automatisation Home Assistant (`hopla.update_task`) les rende à faire.
 - Synchronisation en temps réel (SSE) entre tous les appareils.
 - Abonnement calendrier iCal privé.
 - Connexion par compte local ou OpenID Connect, double authentification TOTP.

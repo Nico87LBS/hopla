@@ -8,6 +8,7 @@ import { useRegisterSW } from 'virtual:pwa-register/react'
 
 import MobileBottomNav from '@/views/components/MobileBottomNav'
 import NavBar from '@/views/components/NavBar'
+import QuickAddTask from '@/views/components/QuickAddTask'
 
 import PageTransition from './components/animations/PageTransition'
 import { ImpersonateUserProvider } from './contexts/ImpersonateUserContext'
@@ -148,6 +149,7 @@ const AppContent = () => {
                 <Outlet />
               </PageTransition>
               <MobileBottomNav />
+              <QuickAddTask />
             </Box>
           </Box>
         </NavBarTitleProvider>

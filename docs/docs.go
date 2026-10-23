@@ -4224,460 +4224,6 @@ const docTemplate = `{
                     }
                 }
             }
-        },
-        "/things": {
-            "get": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Retrieves all things belonging to the current user",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "things"
-                ],
-                "summary": "Get all things",
-                "responses": {
-                    "200": {
-                        "description": "res: array of things",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "array",
-                                "items": {}
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Unauthorized",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to retrieve things",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            },
-            "put": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Updates the name, type, and optionally the state of an existing thing",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "things"
-                ],
-                "summary": "Update a thing",
-                "parameters": [
-                    {
-                        "description": "Thing update request",
-                        "name": "thing",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/thing.ThingRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "res: updated thing object",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "$ref": "#/definitions/model.Thing"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid request | Invalid state",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Unauthorized",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: Forbidden",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Unable to find thing | Failed to update thing",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Creates a new thing for the current user with the given name, type, and optional state",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "things"
-                ],
-                "summary": "Create a new thing",
-                "parameters": [
-                    {
-                        "description": "Thing creation request",
-                        "name": "thing",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/thing.ThingRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "res: created thing object",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "$ref": "#/definitions/model.Thing"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid request | Invalid state",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Unauthorized",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to create thing",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/things/{id}": {
-            "delete": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Deletes a thing by ID; fails if there are chores still associated with it",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "things"
-                ],
-                "summary": "Delete a thing",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Thing ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "empty response on success"
-                    },
-                    "400": {
-                        "description": "error: Invalid thing id",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Unauthorized",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: Forbidden",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "405": {
-                        "description": "error: Unable to delete thing with associated tasks",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Unable to find thing | Unable to find tasks linked to this thing | Failed to delete thing",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/things/{id}/history": {
-            "get": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Retrieves the state change history for a specific thing with pagination offset",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "things"
-                ],
-                "summary": "Get thing history",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Thing ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Pagination offset",
-                        "name": "offset",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "res: thing history entries",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid thing id | Invalid offset",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Unauthorized",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: Forbidden",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Unable to find thing | Failed to retrieve history",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/things/{id}/state": {
-            "put": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Updates the state of a thing by ID and triggers any associated chore due dates",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "things"
-                ],
-                "summary": "Update thing state",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Thing ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "New state value",
-                        "name": "value",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "res: updated thing object",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "$ref": "#/definitions/model.Thing"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid thing id | value query param is required | Invalid state",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Unauthorized",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: Forbidden",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Unable to find thing | Failed to update state",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
         }
     },
     "definitions": {
@@ -4741,12 +4287,6 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/model.ChoreAssignees"
-                    }
-                },
-                "completionActions": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/model.CompletionAction"
                     }
                 },
                 "completionWindow": {
@@ -4834,9 +4374,6 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/model.SubTask"
                     }
-                },
-                "thingTrigger": {
-                    "$ref": "#/definitions/model.ThingTrigger"
                 },
                 "updatedAt": {
                     "type": "string"
@@ -5117,11 +4654,23 @@ const docTemplate = `{
                 5,
                 6
             ],
+            "x-enum-comments": {
+                "_": "was used by objects (Things), now removed; the values are stored, so the slot stays"
+            },
+            "x-enum-descriptions": [
+                "",
+                "",
+                "",
+                "was used by objects (Things), now removed; the values are stored, so the slot stays",
+                "",
+                "",
+                ""
+            ],
             "x-enum-varnames": [
                 "EntityTypeUnknown",
                 "EntityTypeChoreDescription",
                 "EntityTypeChoreHistory",
-                "EntityTypeThing",
+                "_",
                 "EntityTypeChoreAttachment",
                 "EntityTypeChoreAttachmentDraft",
                 "EntityTypeChoreDescriptionDraft"
@@ -5179,12 +4728,6 @@ const docTemplate = `{
                 "circleId": {
                     "description": "The circle this chore is in",
                     "type": "integer"
-                },
-                "completionActions": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/model.CompletionAction"
-                    }
                 },
                 "completionWindow": {
                     "description": "Number seconds before the chore is due that it can be completed",
@@ -5300,14 +4843,6 @@ const docTemplate = `{
                 "syncVersion": {
                     "type": "integer"
                 },
-                "thingChore": {
-                    "description": "ThingChore relationship",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/model.ThingChore"
-                        }
-                    ]
-                },
                 "updatedAt": {
                     "description": "When the chore was last updated",
                     "type": "string"
@@ -5408,20 +4943,6 @@ const docTemplate = `{
                 "ChoreHistoryStatusMissed",
                 "ChoreHistoryStatusRescheduled"
             ]
-        },
-        "model.CompletionAction": {
-            "type": "object",
-            "properties": {
-                "operation": {
-                    "type": "string"
-                },
-                "thingId": {
-                    "type": "integer"
-                },
-                "value": {
-                    "type": "string"
-                }
-            }
         },
         "model.Filter": {
             "type": "object",
@@ -5904,76 +5425,6 @@ const docTemplate = `{
                 }
             }
         },
-        "model.Thing": {
-            "type": "object",
-            "properties": {
-                "circleId": {
-                    "type": "integer"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "state": {
-                    "type": "string"
-                },
-                "thingChores": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/model.ThingChore"
-                    }
-                },
-                "type": {
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "type": "string"
-                },
-                "userID": {
-                    "type": "integer"
-                }
-            }
-        },
-        "model.ThingChore": {
-            "type": "object",
-            "properties": {
-                "choreId": {
-                    "type": "integer"
-                },
-                "condition": {
-                    "type": "string"
-                },
-                "thingId": {
-                    "type": "integer"
-                },
-                "triggerState": {
-                    "type": "string"
-                }
-            }
-        },
-        "model.ThingTrigger": {
-            "type": "object",
-            "required": [
-                "thingID",
-                "triggerState"
-            ],
-            "properties": {
-                "condition": {
-                    "type": "string"
-                },
-                "thingID": {
-                    "type": "integer"
-                },
-                "triggerState": {
-                    "type": "string"
-                }
-            }
-        },
         "model.TimeSession": {
             "type": "object",
             "properties": {
@@ -6066,27 +5517,6 @@ const docTemplate = `{
                 },
                 "visibility": {
                     "$ref": "#/definitions/model.ProjectVisibility"
-                }
-            }
-        },
-        "thing.ThingRequest": {
-            "type": "object",
-            "required": [
-                "name",
-                "type"
-            ],
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "state": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
                 }
             }
         }

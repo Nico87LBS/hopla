@@ -37,8 +37,6 @@ import {
   RedeemReward,
   RejectRedemption,
 } from '../../utils/Fetcher'
-import { getSafeBottom, getSafeBottomStyles } from '../../utils/SafeAreaUtils'
-import ScrollHideFab from '../components/ScrollHideFab'
 import ConfirmationModal from '../Modals/Inputs/ConfirmationModal'
 import RewardModal from '../Modals/Inputs/RewardModal'
 import { useRedemptions, useRewards } from './RewardQueries'
@@ -488,6 +486,20 @@ const RewardsView = ({ embedded = false, view = 'store' }) => {
         </Sheet>
       )}
 
+      {isAdmin && view === 'store' && activeRewards.length > 0 && (
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1.5 }}>
+          <Button
+            data-testid='open-add-reward-modal'
+            size='sm'
+            variant='soft'
+            startDecorator={<AddRounded />}
+            onClick={handleAdd}
+          >
+            {t('view.createReward')}
+          </Button>
+        </Box>
+      )}
+
       {view === 'store' ? (
         activeRewards.length === 0 ? (
           <Sheet sx={{ ...surfaceSx, py: 4 }}>
@@ -562,32 +574,9 @@ const RewardsView = ({ embedded = false, view = 'store' }) => {
           }}
         />
       )}
-      {isAdmin && view === 'store' && (
-        <ScrollHideFab
-          sx={{
-            ...getSafeBottomStyles({ bottom: 0, padding: 16 }),
-            '@media (max-width: 768px)': {
-              bottom: getSafeBottom(56, 16),
-            },
-          }}
-        >
-          <IconButton
-            data-testid='open-add-reward-modal'
-            color='primary'
-            variant='solid'
-            aria-label={t('view.createReward')}
-            onClick={handleAdd}
-            sx={{ borderRadius: '50%', height: 50, width: 50 }}
-          >
-            <AddRounded />
-          </IconButton>
-        </ScrollHideFab>
-      )}
-
       {confirmationModel?.isOpen && (
         <ConfirmationModal config={confirmationModel} />
       )}
-      <Box sx={getSafeBottomStyles({ bottom: 0, padding: 16 })} />
     </Container>
   )
 }
