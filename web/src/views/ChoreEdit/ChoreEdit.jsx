@@ -460,8 +460,13 @@ const ChoreEdit = () => {
     ) {
       errors.frequency = t('choreEdit.errSelectMonth')
     }
+    // A task with slots is due at its next slot: the server sets the date.
+    const hasSlots =
+      ['daily', 'days_of_the_week'].includes(frequencyType) &&
+      frequencyMetadata?.slots?.length > 0
     if (
       dueDate === null &&
+      !hasSlots &&
       !NO_DUE_DATE_REQUIRED_TYPE.includes(frequencyType) &&
       !NO_DUE_DATE_ALLOWED_TYPE.includes(frequencyType)
     ) {
