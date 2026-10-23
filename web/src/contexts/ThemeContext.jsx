@@ -7,23 +7,77 @@ import { useMemo } from 'react'
 import { prefixer } from 'stylis'
 import rtlPlugin from 'stylis-plugin-rtl'
 
-import { COLORS, THEME_BACKGROUND } from '@/constants/theme'
+import { THEME_BACKGROUND } from '@/constants/theme'
 
 import { useLocalization } from './LocalizationContext'
 
-const primaryColor = 'cyan'
-const shades = [
-  '50',
-  ...Array.from({ length: 9 }, (_, i) => String((i + 1) * 100)),
-]
+// Violet scale around the action colour #5B4FE0.
+const violet = {
+  50: '#F3F2FE',
+  100: '#ECEAFE',
+  200: '#D9D5FC',
+  300: '#BDB6F8',
+  400: '#8F84F0',
+  500: '#5B4FE0',
+  600: '#4E42CC',
+  700: '#4136AE',
+  800: '#352C8C',
+  900: '#2A2370',
+}
 
-const getPalette = (key = primaryColor) =>
-  shades.reduce((palette, shade) => {
-    palette[shade] = COLORS[key][shade]
-    return palette
-  }, {})
+// Warm greys that lean towards the blueberry ink of the logo.
+const neutral = {
+  50: '#FAF9F6',
+  100: '#F1EFEA',
+  200: '#E8E4DC',
+  300: '#D9D4CA',
+  400: '#B9B3CC',
+  500: '#6B6680',
+  600: '#5A5470',
+  700: '#433E5C',
+  800: '#2E2950',
+  900: '#241E4E',
+}
 
-const primaryPalette = getPalette(primaryColor)
+const success = {
+  50: '#EEF9F2',
+  100: '#E3F6EA',
+  200: '#C3EBD1',
+  300: '#8FD9AA',
+  400: '#4CC77A',
+  500: '#23934F',
+  600: '#1F8246',
+  700: '#1D6B3B',
+  800: '#175530',
+  900: '#114024',
+}
+
+// Gold is kept for hops and stars.
+const warning = {
+  50: '#FFFBEB',
+  100: '#FFF4CC',
+  200: '#FFE69A',
+  300: '#FFD24D',
+  400: '#FFC21A',
+  500: '#F5B400',
+  600: '#D99A00',
+  700: '#8A5A00',
+  800: '#7A5200',
+  900: '#5C3D00',
+}
+
+const danger = {
+  50: '#FEF3F2',
+  100: '#FDECEC',
+  200: '#FAD1CF',
+  300: '#F4A8A3',
+  400: '#E5675F',
+  500: '#C93A3A',
+  600: '#B42318',
+  700: '#9B1C14',
+  800: '#7A1610',
+  900: '#5C100B',
+}
 
 // Fallbacks only. A parent that owns the radius (ButtonGroup, Input/Select
 // decorator slots, CardActions) sets --Button-radius / --IconButton-radius and
@@ -58,6 +112,11 @@ const POPUP_LISTBOX = {
 }
 
 const themeConfig = {
+  fontFamily: {
+    body: "'Inter Variable', Inter, system-ui, -apple-system, 'Segoe UI', sans-serif",
+    display:
+      "Fredoka, 'Inter Variable', Inter, system-ui, -apple-system, sans-serif",
+  },
   radius: {
     xs: '6px',
     sm: '8px',
@@ -65,57 +124,64 @@ const themeConfig = {
     lg: '12px',
     xl: '16px',
   },
+  shadow: {
+    xs: 'none',
+    sm: '0 1px 2px rgba(36, 30, 78, 0.06)',
+    md: '0 6px 16px rgba(36, 30, 78, 0.10)',
+    lg: '0 12px 28px rgba(36, 30, 78, 0.14)',
+    xl: '0 20px 40px rgba(36, 30, 78, 0.18)',
+  },
+  typography: {
+    h1: { fontWeight: 600, letterSpacing: 0 },
+    h2: { fontWeight: 600, letterSpacing: 0 },
+    h3: { fontWeight: 600, letterSpacing: 0 },
+    h4: { fontWeight: 600, letterSpacing: 0 },
+  },
   colorSchemes: {
     light: {
       palette: {
         background: {
           body: THEME_BACKGROUND.light,
+          surface: '#FFFFFF',
+          popup: '#FFFFFF',
+          level1: neutral[100],
+          level2: neutral[200],
+          level3: neutral[300],
         },
-        primary: primaryPalette,
-        success: {
-          50: '#f3faf7',
-          100: '#def5eb',
-          200: '#b7e7d5',
-          300: '#8ed9be',
-          400: '#6ecdb0',
-          500: '#4ec1a2',
-          600: '#46b89a',
-          700: '#3cae91',
-          800: '#32a487',
-          900: '#229d76',
+        divider: neutral[200],
+        text: {
+          primary: neutral[900],
+          secondary: neutral[600],
+          tertiary: neutral[500],
         },
-        danger: {
-          50: '#fef2f2',
-          100: '#fde8e8',
-          200: '#fbd5d5',
-          300: '#f9c1c1',
-          400: '#f6a8a8',
-          500: '#ef4444',
-          600: '#dc2626',
-          700: '#b91c1c',
-          800: '#991b1b',
-          900: '#7f1d1d',
-        },
-        warning: {
-          50: '#fffdf7',
-          100: '#fef8e1',
-          200: '#fdecb2',
-          300: '#fcd982',
-          400: '#fbcf52',
-          500: '#f9c222',
-          600: '#f6b81e',
-          700: '#f3ae1a',
-          800: '#f0a416',
-          900: '#e99b0e',
-        },
+        primary: violet,
+        neutral,
+        success,
+        warning,
+        danger,
       },
     },
     dark: {
       palette: {
         background: {
           body: THEME_BACKGROUND.dark,
+          surface: '#211D3D',
+          popup: '#2A2550',
+          level1: '#2A2550',
+          level2: '#332E57',
+          level3: '#3D3765',
         },
-        primary: primaryPalette,
+        divider: 'rgba(255, 255, 255, 0.10)',
+        text: {
+          primary: '#F3F1FA',
+          secondary: '#C9C4E0',
+          tertiary: '#A8A2C4',
+        },
+        primary: violet,
+        neutral,
+        success,
+        warning,
+        danger,
       },
     },
   },
