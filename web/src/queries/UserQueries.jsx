@@ -1,10 +1,11 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 import {
   GetAllCircleMembers,
   GetAllUsers,
   GetChildUsers,
   GetUserProfile,
+  SetMemberAway,
 } from '../utils/Fetcher'
 import { offlineDB } from '../utils/OfflineDB'
 
@@ -57,6 +58,20 @@ export const useCircleMembers = () => {
   }
 
   return { data, error, isLoading, handleRefetch }
+}
+
+// Marks a child away (at the other parent's home) or back home. Her tasks,
+// streak and quests wait while she is away.
+export const useSetMemberAway = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ away, memberId }) => SetMemberAway(memberId, away),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['allCircleMembers'] })
+      queryClient.invalidateQueries({ queryKey: ['chores'] })
+      queryClient.invalidateQueries({ queryKey: ['games'] })
+    },
+  })
 }
 
 export const useUserProfile = ({ enabled = true } = {}) => {

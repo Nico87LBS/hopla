@@ -1,6 +1,8 @@
 import {
   ChevronRightRounded,
+  HomeRounded,
   LocalFireDepartmentRounded,
+  LuggageRounded,
 } from '@mui/icons-material'
 import {
   Box,
@@ -25,7 +27,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 
 import { HOPLA } from '../../constants/theme'
 import { useIsParent } from '../../hooks/useIsParent'
-import { useCircleMembers } from '../../queries/UserQueries'
+import { useCircleMembers, useSetMemberAway } from '../../queries/UserQueries'
 import { TodayCard, useGamesToday } from '../Games/DailyGames'
 import { MemberAvatar, memberShape } from '../Games/GameParts'
 import { AdjustCard, HistoryCard, usePointsPresets } from '../Games/PointsCards'
@@ -37,12 +39,70 @@ import {
 } from '../Games/Progression'
 import PointsJournal from './PointsJournal'
 
+// The grey of a child who is away, on the web and on the family card alike.
+const AWAY_GREY = '#8E8A99'
+
+// Home or away: parents switch it, everyone sees it. Away, the child's tasks,
+// streak and quests wait for her.
+const PresenceButton = ({ away, onToggle }) => {
+  const { t } = useTranslation('common')
+  if (!onToggle && !away) return null
+  const label = away ? t('family.away') : t('family.home')
+  return (
+    <Button
+      size='sm'
+      variant={away ? 'solid' : 'soft'}
+      color='neutral'
+      disabled={!onToggle}
+      onClick={onToggle}
+      startDecorator={
+        away ? (
+          <LuggageRounded sx={{ fontSize: 16 }} />
+        ) : (
+          <HomeRounded sx={{ fontSize: 16 }} />
+        )
+      }
+      title={
+        onToggle
+          ? away
+            ? t('family.markHome')
+            : t('family.markAway')
+          : undefined
+      }
+      sx={{
+        borderRadius: 999,
+        minHeight: 30,
+        mt: 1,
+        ...(away && {
+          bgcolor: AWAY_GREY,
+          '&:hover': { bgcolor: '#76727F' },
+          '&.Mui-disabled': { bgcolor: AWAY_GREY, color: '#fff' },
+        }),
+      }}
+    >
+      {label}
+    </Button>
+  )
+}
+
+PresenceButton.propTypes = {
+  away: PropTypes.bool,
+  onToggle: PropTypes.func,
+}
+
 const percent = (value, target) =>
   target > 0 ? Math.max(0, Math.min(100, (value / target) * 100)) : 100
 
 // One child at a glance: hops to spend, rank and the way to the next one,
 // streak. The leader of the family gets a gold frame.
-const MemberCard = ({ leader, member, onAdjust, progress, streak }) => {
+const MemberCard = ({
+  leader,
+  member,
+  onAdjust,
+  onToggleAway,
+  progress,
+  streak,
+}) => {
   const { t } = useTranslation('common')
   const available = (member.points || 0) - (member.pointsRedeemed || 0)
   const target = progress?.next ? progress.next.minPoints : progress?.starAt
@@ -105,10 +165,33 @@ const MemberCard = ({ leader, member, onAdjust, progress, streak }) => {
             display: 'flex',
             height: 64,
             width: 64,
+            ...(member.away && { filter: 'grayscale(1)', opacity: 0.45 }),
           }}
         >
           <MemberAvatar member={member} size={64} />
         </Box>
+        {member.away && (
+          <Box
+            component='span'
+            sx={{
+              alignItems: 'center',
+              bgcolor: AWAY_GREY,
+              border: '2px solid',
+              borderColor: 'background.surface',
+              borderRadius: '50%',
+              color: '#fff',
+              display: 'flex',
+              height: 24,
+              justifyContent: 'center',
+              left: -6,
+              position: 'absolute',
+              top: -4,
+              width: 24,
+            }}
+          >
+            <LuggageRounded sx={{ fontSize: 14 }} />
+          </Box>
+        )}
         <Box
           component='span'
           sx={{
@@ -148,6 +231,7 @@ const MemberCard = ({ leader, member, onAdjust, progress, streak }) => {
           </Typography>
         )}
       </Typography>
+      <PresenceButton away={Boolean(member.away)} onToggle={onToggleAway} />
       {progress && (
         <>
           <Box
@@ -206,6 +290,7 @@ MemberCard.propTypes = {
   leader: PropTypes.bool,
   member: memberShape.isRequired,
   onAdjust: PropTypes.func,
+  onToggleAway: PropTypes.func,
   progress: PropTypes.object,
   streak: PropTypes.object,
 }
@@ -258,6 +343,7 @@ const FamilyView = () => {
   const [adjusting, setAdjusting] = useState(null)
   const { data: membersData } = useCircleMembers()
   const { data: today } = useGamesToday()
+  const setAway = useSetMemberAway()
 
   const members = useMemo(
     () => (membersData?.res || []).filter(m => m.isActive !== false),
@@ -369,6 +455,15 @@ const FamilyView = () => {
                 progress={progressById.get(member.userId)}
                 streak={streakById.get(member.userId)}
                 onAdjust={isParent ? () => setAdjusting(member) : undefined}
+                onToggleAway={
+                  isParent
+                    ? () =>
+                        setAway.mutate({
+                          memberId: member.userId,
+                          away: !member.away,
+                        })
+                    : undefined
+                }
               />
             ))}
           </Box>

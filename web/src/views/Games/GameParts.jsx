@@ -13,6 +13,7 @@ export const surfaceSx = {
 }
 
 export const memberShape = PropTypes.shape({
+  away: PropTypes.bool,
   displayName: PropTypes.string,
   image: PropTypes.string,
   points: PropTypes.number,

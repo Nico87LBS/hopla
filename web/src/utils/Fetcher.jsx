@@ -319,6 +319,16 @@ const UpdateMemberRole = async (memberId, role) => {
   })
 }
 
+const SetMemberAway = async (memberId, away) => {
+  const resp = await Fetch(`/circles/members/away`, {
+    method: 'PUT',
+    headers: HEADERS(),
+    body: JSON.stringify({ memberId, away }),
+  })
+  if (!resp.ok) throw new Error('Unable to change who is home')
+  return resp.json()
+}
+
 const GetUserProfile = () => {
   return Fetch(`/users/profile`, {
     method: 'GET',
@@ -1219,6 +1229,7 @@ export {
   SavePointsPreset,
   SaveQuest,
   SaveRanks,
+  SetMemberAway,
   SetupMFA,
   SignAssetURL,
   signUp,

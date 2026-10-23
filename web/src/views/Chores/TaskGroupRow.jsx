@@ -399,8 +399,11 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
       return [{ chore, member: performerOf(chore, performers), slots }]
     }
     // A task for everyone together has a line per member; a slot one of them
-    // did is done for the others too.
-    return taskMemberIds(chore).map(id => ({
+    // did is done for the others too. A child who is away has no line.
+    const here = taskMemberIds(chore).filter(
+      id => !performers.find(p => p.userId === id)?.away,
+    )
+    return here.map(id => ({
       chore,
       member: performers.find(p => p.userId === id) || { userId: id },
       slots: slots.map(slot =>

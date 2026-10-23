@@ -44,6 +44,7 @@ import {
   filterByProject,
   isTaskFor,
 } from '../../utils/Chores'
+import { awayMemberIds, waitsForAbsent } from '../../utils/presence.js'
 import Priorities from '../../utils/Priorities'
 import { getSafeBottom } from '../../utils/SafeAreaUtils.js'
 import { pullCopiesTogether } from '../../utils/taskSlots'
@@ -472,7 +473,11 @@ const MyChores = () => {
       return []
     }
 
-    let sortedChores = [...choresData.res].sort(ChoreSorter)
+    // The tasks of a child who is away wait until she is back.
+    const awayIds = awayMemberIds(membersData?.res)
+    let sortedChores = [...choresData.res]
+      .filter(chore => !waitsForAbsent(chore, awayIds))
+      .sort(ChoreSorter)
 
     if (impersonatedUser) {
       sortedChores = sortedChores.filter(
@@ -484,7 +489,7 @@ const MyChores = () => {
     }
 
     return sortedChores
-  }, [choresData?.res, impersonatedUser])
+  }, [choresData?.res, membersData?.res, impersonatedUser])
 
   const choreSections = useMemo(() => {
     if (!chores.length || !userProfile?.id) {
