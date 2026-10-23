@@ -550,7 +550,7 @@ export const SlotsEditor = ({
             aria-label={t('slots.editor.time')}
             value={slot.time || ''}
             onChange={e => change(index, 'time', e.target.value)}
-            sx={{ width: 120 }}
+            sx={{ width: 136 }}
           />
           <IconButton
             variant='plain'

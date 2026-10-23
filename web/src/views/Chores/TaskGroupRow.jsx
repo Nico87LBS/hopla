@@ -35,7 +35,7 @@ const ringSx = {
   height: RING,
   justifyContent: 'center',
   width: RING,
-  '& svg': { fontSize: 16 },
+  '& svg': { color: 'inherit', fontSize: 16 },
 }
 
 const cellButtonSx = {
@@ -66,6 +66,7 @@ const capsuleButtonSx = {
   justifyContent: 'center',
   p: 0,
   width: 40,
+  '& svg': { color: 'inherit' },
   '&:disabled': { cursor: 'default', opacity: 0.5 },
   '&:focus-visible': { outline: '2px solid', outlineColor: 'primary.500' },
 }
@@ -183,7 +184,7 @@ const SlotCell = ({
             justifySelf: 'center',
             minHeight: CELL,
             px: 1.25,
-            '& svg': { fontSize: 15 },
+            '& svg': { color: 'inherit', fontSize: 15 },
             '&:disabled': { cursor: 'default', opacity: 0.5 },
           }}
         >
@@ -342,13 +343,15 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
       ).then(responses => responses.find(r => !r.ok) || responses[0]),
     )
 
+  // Several slots to approve get a footer with the count and one button.
+  const footer = slotted && canApprove && pendingCount > 1
   const meta = []
   if (slotted)
     meta.push(t('slots.summary', { done: doneCount, total: all.length }))
   if (chores.length > 1) meta.push(t('slots.copies'))
-  if (canApprove && pendingCount)
+  if (!footer && canApprove && pendingCount)
     meta.push(t('slots.toApprove', { count: pendingCount }))
-  if (canApprove && missedCount)
+  if (!footer && canApprove && missedCount)
     meta.push(t('slots.missedCount', { count: missedCount }))
 
   return (
@@ -511,13 +514,13 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
         </Box>
       )}
 
-      {slotted && canApprove && pendingCount > 1 && (
+      {footer && (
         <Box
           onClick={event => event.stopPropagation()}
           sx={{
             alignItems: 'center',
-            borderColor: 'divider',
             borderTop: '1px solid',
+            borderColor: 'divider',
             display: 'flex',
             gap: 1,
             mt: 1.25,
