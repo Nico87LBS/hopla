@@ -233,6 +233,8 @@ const ChoreEdit = () => {
   const { data: allChores } = useChores(true, { enabled: isEditing })
   const copies = isEditing ? copiesOf(chore, allChores?.res) : []
   const syncCopies = applyToCopies && copies.length > 0
+  // The due date as loaded, to tell whether the edit changed it.
+  const loadedDueDate = isEditing ? (chore?.nextDueDate ?? null) : undefined
   const copyOwners = copies
     .flatMap(copy => copy.assignees || [])
     .map(a => performers.find(p => p.userId === a.userId)?.displayName)
@@ -613,7 +615,9 @@ const ChoreEdit = () => {
         const resp = await GetChoreByID(copy.id)
         if (!resp?.ok) throw new Error(`HTTP ${resp?.status}`)
         const data = await resp.json()
-        await updateChoreMutation.mutateAsync(copyUpdate(data.res, saved))
+        await updateChoreMutation.mutateAsync(
+          copyUpdate(data.res, saved, loadedDueDate),
+        )
       } catch (error) {
         console.error('Failed to update task copy:', error)
         failed += 1

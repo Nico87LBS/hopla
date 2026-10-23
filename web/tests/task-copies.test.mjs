@@ -82,3 +82,23 @@ test('copyUpdate carries the shared settings and keeps the copy its own', () => 
   assert.equal(update.nextDueDate, '2026-10-22T06:00:00Z')
   assert.equal('subTasks' in update, false, 'sub-tasks are left as they are')
 })
+
+test('copyUpdate gives the copies a due date the edit changed', () => {
+  const copy = { id: 9, nextDueDate: '2026-10-22T06:00:00Z', assignees: [] }
+  const saved = { id: 8, dueDate: '2026-10-25T06:00:00.000Z' }
+  assert.equal(
+    copyUpdate(copy, saved, '2026-10-23T06:00:00Z').dueDate,
+    '2026-10-25T06:00:00.000Z',
+  )
+  assert.equal(
+    copyUpdate(copy, saved, '2026-10-25T06:00:00Z').nextDueDate,
+    '2026-10-22T06:00:00Z',
+    'same date, written another way: each copy keeps its own',
+  )
+  assert.equal(
+    copyUpdate(copy, { id: 8, dueDate: null }, '2026-10-23T06:00:00Z').dueDate,
+    null,
+    'a removed due date is removed on the copies too',
+  )
+  assert.equal(copyUpdate(copy, saved).dueDate, '2026-10-22T06:00:00Z')
+})
