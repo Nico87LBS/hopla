@@ -17,6 +17,7 @@ var changeRoutes = []struct {
 	{"/api/v1/rewards", EventTypeRewardsUpdated},
 	{"/eapi/v1/rewards", EventTypeRewardsUpdated},
 	{"/api/v1/circles", EventTypeCircleUpdated},
+	{"/eapi/v1/circle", EventTypeCircleUpdated},
 	{"/api/v1/points", EventTypeCircleUpdated},
 	{"/eapi/v1/points", EventTypeCircleUpdated},
 	{"/api/v1/games", EventTypeCircleUpdated},

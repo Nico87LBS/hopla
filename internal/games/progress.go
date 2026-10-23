@@ -206,17 +206,36 @@ func goalProgress(db *gorm.DB, circleID int, kind string, choreID *int, from, to
 	case GoalPoints:
 		return taskPointsEarned(db, circleID, from, to)
 	case GoalStreak:
-		days, err := completionDays(db, circleID, now.Add(-streakWindow))
+		days, away, err := streakDays(db, circleID, now)
 		if err != nil {
 			return nil, err
 		}
 		streaks := map[int]int{}
 		for userID, userDays := range days {
-			streaks[userID] = streakOf(userID, userDays, now).Current
+			streaks[userID] = streakOf(userID, userDays, away[userID], now).Current
 		}
 		return streaks, nil
 	}
 	return map[int]int{}, nil
+}
+
+// scaledTarget lowers a quest's target in proportion to the days of the
+// period the member was away, rounded up and never below 1.
+func scaledTarget(target int, from, to time.Time, away map[string]bool) int {
+	if len(away) == 0 || target <= 1 {
+		return target
+	}
+	total, here := 0, 0
+	for day := middayOf(from); day.Before(to); day = day.AddDate(0, 0, 1) {
+		total++
+		if !away[dayKey(day)] {
+			here++
+		}
+	}
+	if here == total || total == 0 {
+		return target
+	}
+	return max(1, (target*here+total-1)/total)
 }
 
 // QuestView is a member's quest with how far they are.
@@ -229,12 +248,29 @@ type QuestView struct {
 // Quests returns the running quests of the given members, drawing them first
 // when the week or month just started.
 func Quests(db *gorm.DB, circleID int, userIDs []int, now time.Time) (map[int][]QuestView, error) {
+	awayNow, err := AwayMembers(db, circleID)
+	if err != nil {
+		return nil, err
+	}
 	views := map[int][]QuestView{}
 	for _, userID := range userIDs {
-		if err := drawQuests(db, circleID, userID, now); err != nil {
-			return nil, err
+		// A member away gets their quests when they come back.
+		if !awayNow[userID] {
+			if err := drawQuests(db, circleID, userID, now); err != nil {
+				return nil, err
+			}
 		}
 		views[userID] = []QuestView{}
+	}
+	monthFrom, _, _ := periodBounds(QuestMonth, now)
+	weekFrom, _, _ := periodBounds(QuestWeek, now)
+	since := monthFrom
+	if weekFrom.Before(since) {
+		since = weekFrom
+	}
+	away, err := absenceDays(db, circleID, since, now)
+	if err != nil {
+		return nil, err
 	}
 	_, _, weekKey := periodBounds(QuestWeek, now)
 	_, _, monthKey := periodBounds(QuestMonth, now)
@@ -258,9 +294,11 @@ func Quests(db *gorm.DB, circleID int, userIDs []int, now time.Time) (map[int][]
 			}
 			cache[key] = progress
 		}
-		view := QuestView{QuestDraw: draw, Progress: min(progress[draw.UserID], draw.Target), EndsAt: to}
+		view := QuestView{QuestDraw: draw, EndsAt: to}
+		view.Target = scaledTarget(draw.Target, from, to, away[draw.UserID])
+		view.Progress = min(progress[draw.UserID], view.Target)
 		if draw.CompletedAt != nil {
-			view.Progress = draw.Target
+			view.Progress = view.Target
 		}
 		views[draw.UserID] = append(views[draw.UserID], view)
 	}

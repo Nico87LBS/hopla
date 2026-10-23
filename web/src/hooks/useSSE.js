@@ -215,6 +215,8 @@ export const useSSE = () => {
             break
 
           case 'circle.updated':
+            // A child coming back home brings her tasks back, due today.
+            queryClient.invalidateQueries({ queryKey: ['chores'] })
             queryClient.invalidateQueries({ queryKey: ['circleMembers'] })
             queryClient.invalidateQueries({ queryKey: ['allCircleMembers'] })
             queryClient.invalidateQueries({ queryKey: ['childUsers'] })

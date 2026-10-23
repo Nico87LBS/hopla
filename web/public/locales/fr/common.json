@@ -516,7 +516,11 @@
     "earned": "hops gagnés",
     "toNextRank": "Vers le rang suivant",
     "adjustFor": "Bonus ou pénalité pour {{name}}",
-    "manageHint": "Régler les quêtes, défis et périodes bonus"
+    "manageHint": "Régler les quêtes, défis et périodes bonus",
+    "home": "À la maison",
+    "away": "Pas là",
+    "markAway": "Mettre en pause ses tâches : pas là",
+    "markHome": "De retour à la maison"
   },
   "shop": {
     "pending": "Demandes à valider",

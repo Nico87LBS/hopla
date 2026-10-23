@@ -34,6 +34,9 @@ type UserCircle struct {
 	// StreakSince is the last points reset: tasks done before it no longer
 	// count towards the member's streak.
 	StreakSince *time.Time `json:"-" gorm:"column:streak_since"`
+	// Away pauses the member's tasks and games, such as a child staying at
+	// the other parent's home.
+	Away bool `json:"away" gorm:"column:away;default:false;not null"`
 }
 
 type UserRole string

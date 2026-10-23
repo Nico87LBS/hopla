@@ -188,3 +188,40 @@ func TestPointsResetRestartsTheStreak(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, 1, streaks[0].Current, "a new run starts after it")
 }
+
+func TestTheSurpriseSkipsTheTasksOfAChildAway(t *testing.T) {
+	db := setup(t)
+	require.NoError(t, db.Create(&cModel.UserCircle{UserID: 3, CircleID: 1, Role: cModel.UserRoleMember, IsActive: true}).Error)
+	now := noon(0)
+	elena, anna := 2, 3
+	chore(t, db, "Faire son lit", 3, now, func(c *chModel.Chore) { c.AssignedTo = &elena })
+	annas := chore(t, db, "Mettre la table", 3, now, func(c *chModel.Chore) { c.AssignedTo = &anna })
+	_, err := SetAway(db, 1, elena, true, now.Add(-time.Hour))
+	require.NoError(t, err)
+	surprise, err := TodaySurprise(db, 1, now)
+	require.NoError(t, err)
+	require.Equal(t, annas.ID, surprise.ChoreID)
+
+	_, err = SetAway(db, 1, anna, true, now)
+	require.NoError(t, err)
+	require.NoError(t, ForgetSurprise(db, 1, now))
+	surprise, err = TodaySurprise(db, 1, now)
+	require.NoError(t, err)
+	require.Nil(t, surprise, "nobody is here")
+}
+
+func TestDaysAwayKeepTheStreak(t *testing.T) {
+	db := setup(t)
+	task := chore(t, db, "Faire son lit", 3, noon(0), nil)
+	done(t, db, task.ID, 2, noon(5))
+	done(t, db, task.ID, 2, noon(4))
+	streaks, err := Streaks(db, 1, []int{2}, noon(0))
+	require.NoError(t, err)
+	require.Equal(t, 0, streaks[0].Current)
+
+	end := noon(1)
+	require.NoError(t, db.Create(&Absence{CircleID: 1, UserID: 2, StartAt: noon(3), EndAt: &end}).Error)
+	streaks, err = Streaks(db, 1, []int{2}, noon(0))
+	require.NoError(t, err)
+	require.Equal(t, 2, streaks[0].Current, "three days away, then home today")
+}

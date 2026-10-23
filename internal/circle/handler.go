@@ -970,6 +970,33 @@ func (h *Handler) ChangeMemberRole(c *gin.Context) {
 
 }
 
+// SetMemberAway godoc
+//
+//	@Summary		Mark a member away or back home
+//	@Description	Pauses a member's tasks, streak and quests while they are away, such as a child at the other parent's home (admin/manager only). Coming back makes the tasks that fell due meanwhile due today.
+//	@Tags			circles
+//	@Accept			json
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			away	body		object{memberId=int,away=bool}	true	"Who and where"
+//	@Success		200		{object}	map[string]bool					"res: whether anything changed"
+//	@Failure		400		{object}	map[string]string				"error: Invalid request / User is not a member of this circle"
+//	@Failure		403		{object}	map[string]string				"error: Only parents can do this"
+//	@Failure		500		{object}	map[string]string				"error: Error changing the member's presence"
+//	@Router			/circles/members/away [put]
+func (h *Handler) SetMemberAway(c *gin.Context) {
+	var req struct {
+		MemberID int   `json:"memberId"`
+		Away     *bool `json:"away"`
+	}
+	if err := c.ShouldBindJSON(&req); err != nil || req.Away == nil {
+		c.JSON(400, gin.H{"error": "Invalid request"})
+		return
+	}
+	chore.SetMemberAway(c, h.circleRepo, h.choreRepo, req.MemberID, *req.Away)
+}
+
 func Routes(router *gin.Engine, h *Handler, multiAuthMiddleware *auth.MultiAuthMiddleware) {
 	log.Println("Registering circle routes")
 
@@ -979,6 +1006,7 @@ func Routes(router *gin.Engine, h *Handler, multiAuthMiddleware *auth.MultiAuthM
 		circleRoutes.GET("/members", h.GetCircleMembers)
 		circleRoutes.GET("/members/requests", h.GetPendingCircleMembers)
 		circleRoutes.PUT("/members/role", h.ChangeMemberRole)
+		circleRoutes.PUT("/members/away", h.SetMemberAway)
 		circleRoutes.GET("/", h.GetUserCircles)
 		circleRoutes.POST("/:id/members/points/redeem", h.RedeemPoints)
 

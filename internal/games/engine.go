@@ -66,15 +66,29 @@ func TodaySurprise(db *gorm.DB, circleID int, now time.Time) (*Surprise, error) 
 	if !errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, err
 	}
-	var ids []int
-	err = db.Model(&chModel.Chore{}).
+	var candidates []*chModel.Chore
+	err = db.Select("id", "assigned_to", "assign_strategy").Preload("Assignees").
 		Where("circle_id = ? AND is_active = ? AND points > 0 AND next_due_date IS NOT NULL AND next_due_date <= ?",
 			circleID, true, endOfDay(now)).
 		Where("is_private = ?", false).
 		Where("project_id IS NULL OR project_id IN (SELECT id FROM projects WHERE is_private = ?)", false).
-		Order("id").Pluck("id", &ids).Error
-	if err != nil || len(ids) == 0 {
+		Order("id").Find(&candidates).Error
+	if err != nil {
 		return nil, err
+	}
+	away, err := AwayMembers(db, circleID)
+	if err != nil {
+		return nil, err
+	}
+	// The tasks of a member who is away wait for them.
+	var ids []int
+	for _, chore := range candidates {
+		if !Paused(chore, away) {
+			ids = append(ids, chore.ID)
+		}
+	}
+	if len(ids) == 0 {
+		return nil, nil
 	}
 	// The same day always picks the same task, whichever request comes first.
 	h := fnv.New32a()
@@ -193,16 +207,21 @@ func completionDays(db *gorm.DB, circleID int, since time.Time) (map[int]map[str
 	return days, nil
 }
 
-// streakOf counts a member's current and best runs of days.
-func streakOf(userID int, days map[string]bool, now time.Time) Streak {
+// streakOf counts a member's current and best runs of days. A day away
+// neither breaks a run nor extends it.
+func streakOf(userID int, days, away map[string]bool, now time.Time) Streak {
 	streak := Streak{UserID: userID, DoneToday: days[dayKey(now)]}
-	local := now.In(time.Local)
-	day := time.Date(local.Year(), local.Month(), local.Day(), 12, 0, 0, 0, time.Local)
+	day := middayOf(now)
 	if !streak.DoneToday {
 		day = day.AddDate(0, 0, -1)
 	}
-	for days[dayKey(day)] {
-		streak.Current++
+	for {
+		key := dayKey(day)
+		if days[key] {
+			streak.Current++
+		} else if !away[key] {
+			break
+		}
 		day = day.AddDate(0, 0, -1)
 	}
 	keys := make([]string, 0, len(days))
@@ -214,7 +233,8 @@ func streakOf(userID int, days map[string]bool, now time.Time) Streak {
 	var previous time.Time
 	for _, key := range keys {
 		current, _ := time.ParseInLocation("2006-01-02", key, time.Local)
-		if run > 0 && dayKey(previous.Add(36*time.Hour)) == key {
+		current = middayOf(current)
+		if run > 0 && awayBetween(previous, key, away) {
 			run++
 		} else {
 			run = 1
@@ -225,19 +245,41 @@ func streakOf(userID int, days map[string]bool, now time.Time) Streak {
 	return streak
 }
 
+// awayBetween reports whether the member was away every day after from and
+// before the day with the given key.
+func awayBetween(from time.Time, key string, away map[string]bool) bool {
+	for day := from.AddDate(0, 0, 1); dayKey(day) < key; day = day.AddDate(0, 0, 1) {
+		if !away[dayKey(day)] {
+			return false
+		}
+	}
+	return true
+}
+
 // streakWindow is how far back streaks are counted.
 const streakWindow = 400 * 24 * time.Hour
+
+// streakDays returns, per member, the days they did a task and the days they
+// were away, within the streak window.
+func streakDays(db *gorm.DB, circleID int, now time.Time) (map[int]map[string]bool, map[int]map[string]bool, error) {
+	days, err := completionDays(db, circleID, now.Add(-streakWindow))
+	if err != nil {
+		return nil, nil, err
+	}
+	away, err := absenceDays(db, circleID, now.Add(-streakWindow), now)
+	return days, away, err
+}
 
 // Streaks returns the streak of every member of the circle who completed a
 // task lately, and a zero streak for the other given members.
 func Streaks(db *gorm.DB, circleID int, userIDs []int, now time.Time) ([]Streak, error) {
-	days, err := completionDays(db, circleID, now.Add(-streakWindow))
+	days, away, err := streakDays(db, circleID, now)
 	if err != nil {
 		return nil, err
 	}
 	streaks := make([]Streak, 0, len(userIDs))
 	for _, userID := range userIDs {
-		streaks = append(streaks, streakOf(userID, days[userID], now))
+		streaks = append(streaks, streakOf(userID, days[userID], away[userID], now))
 	}
 	return streaks, nil
 }
@@ -254,7 +296,7 @@ func AwardStreakBonus(tx *gorm.DB, circleID, userID int, performedAt, now time.T
 	if err != nil || rules.StreakEvery <= 0 || rules.StreakBonus <= 0 {
 		return nil, err
 	}
-	days, err := completionDays(tx, circleID, now.Add(-streakWindow))
+	days, away, err := streakDays(tx, circleID, now)
 	if err != nil {
 		return nil, err
 	}
@@ -269,7 +311,7 @@ func AwardStreakBonus(tx *gorm.DB, circleID, userID int, performedAt, now time.T
 	if today != 1 {
 		return nil, nil
 	}
-	streak := streakOf(userID, days[userID], now)
+	streak := streakOf(userID, days[userID], away[userID], now)
 	if streak.Current == 0 || streak.Current%rules.StreakEvery != 0 {
 		return nil, nil
 	}
