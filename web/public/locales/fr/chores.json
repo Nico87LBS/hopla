@@ -1132,7 +1132,7 @@
       "deleteConfirm_other": "Supprimer cette tâche et ses {{count}} autres copies ? C'est définitif."
     },
     "triggeredFromOutside": "Déclenchée de l'extérieur",
-    "triggeredFromOutsideHelp": "La tâche attend sans échéance. Une automatisation Home Assistant (action hopla.update_task) lui donne une échéance au bon moment.",
+    "triggeredFromOutsideHelp": "Elle reste en attente et apparaît quand un signal extérieur lui donne une échéance.",
     "awardPointsWhenThis": "Donner des points ou demander une validation quand la tâche est faite. Passer ou décaler la tâche ne donne rien."
   },
   "sections": {
@@ -1236,5 +1236,140 @@
     "each": "Chacun la sienne",
     "first": "Premier arrivé",
     "one": "Un seul à la fois"
+  },
+  "editor": {
+    "who": {
+      "title": "Pour qui ?",
+      "anyone": "Personne de choisi : tout le monde peut la faire.",
+      "remember": "Retenir pour les nouvelles tâches",
+      "copyOf": "Tu modifies la copie de {{name}}.",
+      "how": "À plusieurs, comment ?",
+      "eachHelp_one": "{{count}} tâche par personne : chacun coche la sienne.",
+      "eachHelp_other": "{{count}} tâches, une par personne : chacun coche la sienne.",
+      "firstHelp": "Une seule à faire pour tous : la première personne qui la fait gagne les hops.",
+      "oneHelp": "Une seule personne a la tâche à la fois.",
+      "holder": "L'a maintenant",
+      "next": "Ensuite"
+    },
+    "when": {
+      "title": "Quand ?",
+      "kind": "Type de tâche",
+      "kinds": {
+        "once": "Une fois",
+        "repeat": "Répétée",
+        "always": "Toujours",
+        "trigger": "Sur signal"
+      },
+      "rhythm": "Rythme",
+      "rhythms": {
+        "daily": "Tous les jours",
+        "days_of_the_week": "Certains jours",
+        "weekly": "Toutes les semaines",
+        "monthly": "Tous les mois",
+        "yearly": "Tous les ans",
+        "interval": "Tous les…",
+        "day_of_the_month": "Certains mois",
+        "adaptive": "À son rythme"
+      },
+      "every": "Tous les",
+      "weeks": "Semaines",
+      "everyWeek": "Chaque semaine",
+      "someWeeks": "Seulement certaines semaines du mois",
+      "slots": "Créneaux",
+      "slotName": "Nom",
+      "addSlot": "Créneau",
+      "slotsHelp": "Plusieurs fois par jour ? Ajoute un créneau pour chaque fois (matin, soir…).",
+      "slotsRule": "Chaque créneau se coche à part et rapporte les hops. Il s'ouvre une heure avant son heure ; un parent peut rattraper un créneau oublié jusqu'à minuit.",
+      "today": "Aujourd'hui",
+      "tomorrow": "Demain",
+      "otherDate": "Autre date",
+      "noDate": "Sans date",
+      "at": "À",
+      "addTime": "Heure",
+      "anyTime": "ou dans la journée",
+      "nextOn": "Prochaine fois le",
+      "from": "À partir du",
+      "rolling": "Compter depuis le jour où elle est faite",
+      "rollingHelp": "Faite en retard, elle revient d'autant plus tard.",
+      "alwaysHelp": "Elle reste toujours dans la liste, sans échéance.",
+      "triggerHelp": "Elle reste en attente et apparaît quand un signal extérieur lui donne une échéance.",
+      "triggerDue": "Échéance reçue",
+      "next": "Prochaine fois : {{when}} ({{slot}})"
+    },
+    "reward": {
+      "title": "Récompense",
+      "hops": "Hops",
+      "perSlot": "à chaque créneau",
+      "perTime": "à chaque fois",
+      "less": "Un hop de moins",
+      "more": "Un hop de plus",
+      "preset_one": "{{count}} hop",
+      "preset_other": "{{count}} hops",
+      "approval": "Un parent valide",
+      "approvalHelp": "Les hops arrivent après validation."
+    },
+    "more": {
+      "title": "Plus d'options",
+      "hint": "Consignes, étapes, rappels, projet, visibilité…",
+      "instructions": "Consignes et fichiers",
+      "instructionsSet": "Consignes",
+      "none": "Aucune",
+      "noneM": "Aucun",
+      "steps": "Étapes",
+      "reminders": "Rappels",
+      "reminderCount_one": "{{count}} rappel",
+      "reminderCount_other": "{{count}} rappels",
+      "remindersUnavailable": "Pas de rappel pour une tâche toujours disponible ou sur signal.",
+      "early": "Faisable en avance",
+      "earlyValue": "{{hours}} h avant",
+      "no": "Non",
+      "earlyHelp": "Peut être cochée avant l'échéance",
+      "earlyHours": "heures avant l'échéance",
+      "project": "Projet et étiquettes",
+      "labelCount_one": "{{count}} étiquette",
+      "labelCount_other": "{{count}} étiquettes",
+      "visibility": "Visible par",
+      "visibleAll": "Toute la famille",
+      "visibleLimited": "Les personnes concernées",
+      "created": "Créée par {{name}} {{when}}",
+      "updated": "modifiée par {{name}} {{when}}",
+      "addFile": "Fichier ou photo",
+      "removeFile": "Retirer {{name}}"
+    },
+    "footer": {
+      "applyCopies_one": "Aussi pour la copie de {{names}}",
+      "applyCopies_other": "Aussi pour les {{count}} copies ({{names}})",
+      "saveAll_one": "Enregistrer les {{count}}",
+      "saveAll_other": "Enregistrer les {{count}}"
+    },
+    "menu": {
+      "more": "Autres actions",
+      "duplicate": "Dupliquer"
+    },
+    "preview": {
+      "title": "Aperçu dans Aujourd'hui"
+    },
+    "summary": {
+      "once": "Le {{date}}",
+      "onceNoDate": "Une fois, sans date",
+      "rhythm": {
+        "daily": "Chaque jour",
+        "days_of_the_week": "Le {{days}}",
+        "weekly": "Chaque semaine",
+        "monthly": "Chaque mois",
+        "yearly": "Chaque année",
+        "interval_one": "Tous les {{count}} {{unit}}",
+        "interval_other": "Tous les {{count}} {{unit}}",
+        "day_of_the_month": "Certains mois",
+        "adaptive": "À son rythme"
+      },
+      "withSlots": "{{when}}, {{slots}}",
+      "atTime": "{{when}} à {{time}}",
+      "always": "Toujours disponible",
+      "trigger": "Sur signal",
+      "anyone": "Tout le monde",
+      "hops_one": "{{count}} hop",
+      "hops_other": "{{count}} hops"
+    }
   }
 }
