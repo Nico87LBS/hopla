@@ -245,7 +245,7 @@ func narrowToOwner(change *ChoreAccessChange, chore projectChoreRow, prevAssigne
 	}
 	change.assigneesAfter = kept
 	if chore.AssignedTo != nil && *chore.AssignedTo != ownerID {
-		if chore.AssignStrategy == chModel.AssignmentStrategyNoAssignee {
+		if chore.AssignStrategy.HasNoCurrentAssignee() {
 			change.AssignedToAfter = nil
 		} else {
 			owner := ownerID
@@ -273,7 +273,7 @@ func narrowToViewers(change *ChoreAccessChange, chore projectChoreRow, prevAssig
 	if _, ok := viewers[*chore.AssignedTo]; ok {
 		return
 	}
-	if chore.AssignStrategy == chModel.AssignmentStrategyNoAssignee {
+	if chore.AssignStrategy.HasNoCurrentAssignee() {
 		change.AssignedToAfter = nil
 		return
 	}

@@ -83,7 +83,8 @@ func validateAssignments(sl validator.StructLevel, req ChoreReq) {
 			req.AssignStrategy == "random" ||
 			req.AssignStrategy == "least_assigned" ||
 			req.AssignStrategy == "least_completed" ||
-			req.AssignStrategy == "random_except_last_assigned"
+			req.AssignStrategy == "random_except_last_assigned" ||
+			req.AssignStrategy == "together"
 
 		if requiresList && !hasAssigneesList {
 			sl.ReportError(req.Assignees, "Assignees", "assignees", "required_with_assign_strategy", "")

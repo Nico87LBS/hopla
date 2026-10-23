@@ -5,6 +5,7 @@ import {
   copiesOf,
   copyUpdate,
   perMemberChores,
+  splitIntoCopies,
 } from '../src/utils/taskCopies.js'
 
 test('copiesOf finds the other tasks with the same name', () => {
@@ -101,4 +102,23 @@ test('copyUpdate gives the copies a due date the edit changed', () => {
     'a removed due date is removed on the copies too',
   )
   assert.equal(copyUpdate(copy, saved).dueDate, '2026-10-22T06:00:00Z')
+})
+
+test('splitIntoCopies keeps the task with the current assignee', () => {
+  const chore = { id: 7, name: 'Dents', assignees: [], draftId: 'd' }
+  const { update, creates } = splitIntoCopies(
+    chore,
+    [{ userId: 1 }, { userId: 2 }, { userId: 3 }],
+    2,
+  )
+  assert.equal(update.id, 7)
+  assert.equal(update.assignedTo, 2)
+  assert.deepEqual(update.assignees, [{ userId: 2 }])
+  assert.deepEqual(
+    creates.map(copy => [copy.id, copy.assignedTo, copy.draftId]),
+    [
+      [undefined, 1, undefined],
+      [undefined, 3, undefined],
+    ],
+  )
 })

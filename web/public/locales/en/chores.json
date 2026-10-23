@@ -1045,7 +1045,11 @@
       "keep_last_assigned": "Keep the same user",
       "random_except_last_assigned": "Random, excluding the last user",
       "round_robin": "Rotate in order",
-      "no_assignee": "Leave unassigned"
+      "no_assignee": "Leave unassigned",
+      "together": "Everyone together"
+    },
+    "strategyHelp": {
+      "together": "Everyone has the task. The first one to do it completes it for all and gets the points, then it comes back to everyone."
     },
     "assignment": "Assignment",
     "review": "Review",
@@ -1120,6 +1124,8 @@
       "each": "One copy per person",
       "eachHelp_one": "{{count}} task will be created, one per person.",
       "eachHelp_other": "{{count}} tasks will be created, one per person.",
+      "splitHelp_one": "The task stays with {{name}} with its history, and a copy is created for the other person.",
+      "splitHelp_other": "The task stays with {{name}} with its history, and a copy is created for each of the {{count}} other people.",
       "apply_one": "Also apply to the other copy ({{names}})",
       "apply_other": "Also apply to the {{count}} other copies ({{names}})",
       "applyHelp": "Name, description, repeat, points, approval, labels and reminders. Archive and delete also apply to the copies. Each copy keeps its person, due date and sub-tasks.",
@@ -1195,6 +1201,7 @@
   },
   "slots": {
     "cell": {
+      "doneByOther": "{{label}}: done by someone else",
       "done": "{{label}}: done",
       "pending": "{{label}}: waiting for approval",
       "approve": "Approve {{label}}",

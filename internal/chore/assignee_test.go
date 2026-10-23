@@ -221,6 +221,26 @@ func TestCheckNextAssigneeNoAssigneeStrategyStaysUnassigned(t *testing.T) {
 	}
 }
 
+func TestCheckNextAssigneeTogetherStaysUnassigned(t *testing.T) {
+	// A task for everyone together comes back to all of them: never one person.
+	chore := &chModel.Chore{
+		ID:             7,
+		AssignStrategy: chModel.AssignmentStrategyTogether,
+		Assignees:      []chModel.ChoreAssignees{{ChoreID: 7, UserID: 2}, {ChoreID: 7, UserID: 3}},
+	}
+
+	nextAssignee, err := checkNextAssignee(chore, nil, 2, circleOf(1, 2, 3))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if nextAssignee != nil {
+		t.Errorf("expected together to stay unassigned, got %d", *nextAssignee)
+	}
+	if !chore.CanComplete(3, circleOf(1, 2, 3)) {
+		t.Error("expected any assignee to be able to complete a together task")
+	}
+}
+
 func TestCheckNextAssigneeRandomExceptLastKeepsSoleCandidate(t *testing.T) {
 	// When the last assignee is the only candidate there is nobody else to rotate to,
 	// so the assignment must be kept rather than dropped. Covers both a single-member

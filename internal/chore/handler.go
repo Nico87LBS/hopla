@@ -524,6 +524,9 @@ func (h *Handler) CreateChore(c *gin.Context) {
 	}
 
 	warnings := setCreateChoreDefaults(&choreReq)
+	if choreReq.AssignStrategy == chModel.AssignmentStrategyTogether {
+		choreReq.AssignedTo = nil
+	}
 	if !choreReq.Notification && choreReq.NotificationMetadata != nil {
 		warnings = append(warnings, "notificationMetadata provided while notification is false; ignoring metadata")
 		choreReq.NotificationMetadata = nil
@@ -861,6 +864,9 @@ func (h *Handler) EditChore(c *gin.Context) {
 	}
 
 	setEditChoreDefaults(&choreReq, oldChore)
+	if choreReq.AssignStrategy == chModel.AssignmentStrategyTogether {
+		choreReq.AssignedTo = nil
+	}
 
 	updatedChore := &chModel.Chore{ // TODO: Assignees are missing
 		ID:                     choreReq.ID,
@@ -4200,7 +4206,7 @@ func checkNextAssignee(chore *chModel.Chore, choresHistory []*chModel.ChoreHisto
 			assigneeID := assignees[rand.Intn(len(assignees))].UserID
 			nextAssignee = &assigneeID
 		}
-	case chModel.AssignmentStrategyNoAssignee:
+	case chModel.AssignmentStrategyNoAssignee, chModel.AssignmentStrategyTogether:
 		nextAssignee = nil
 	case chModel.AssignmentStrategyKeepLastAssigned:
 		// keep the last assignee

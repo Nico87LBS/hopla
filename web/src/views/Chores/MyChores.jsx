@@ -42,6 +42,7 @@ import {
   ChoresGrouper,
   ChoreSorter,
   filterByProject,
+  isTaskFor,
 } from '../../utils/Chores'
 import Priorities from '../../utils/Priorities'
 import { getSafeBottom } from '../../utils/SafeAreaUtils.js'
@@ -1094,8 +1095,8 @@ const MyChores = () => {
     let newChores = [...prev, newChore]
 
     if (impersonatedUser) {
-      newChores = newChores.filter(
-        chore => chore.assignedTo === impersonatedUser.userId,
+      newChores = newChores.filter(chore =>
+        isTaskFor(chore, impersonatedUser.userId),
       )
     }
 

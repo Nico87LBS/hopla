@@ -416,16 +416,35 @@ export const notInCompletionWindow = chore => {
     moment() < moment(chore.nextDueDate).add(-chore.completionWindow, 'hours')
   )
 }
+// A task for everyone together has no current assignee: it is for each of its
+// assignees at once.
+export const isTogether = chore => chore?.assignStrategy === 'together'
+
+// The members a task is for now: its assignee, or all of them together.
+export const taskMemberIds = chore =>
+  isTogether(chore)
+    ? (chore.assignees || []).map(a => a.userId)
+    : chore?.assignedTo
+      ? [chore.assignedTo]
+      : []
+
+export const isTaskFor = (chore, userId) =>
+  taskMemberIds(chore).includes(userId)
+
 export const ChoreFilters = userId => ({
   anyone: () => true,
   assigned_to_me: chore => {
-    return chore.assignedTo && chore.assignedTo === userId
+    return isTaskFor(chore, userId)
   },
   available_for_me: chore => {
-    return chore.assignedTo === null || chore.assignedTo === userId
+    return isTogether(chore)
+      ? isTaskFor(chore, userId)
+      : chore.assignedTo === null || chore.assignedTo === userId
   },
   assigned_to_others: chore => {
-    return chore.assignedTo && chore.assignedTo !== userId
+    return isTogether(chore)
+      ? !isTaskFor(chore, userId)
+      : chore.assignedTo && chore.assignedTo !== userId
   },
   assigned_to_me_tasks: chore => {
     return (

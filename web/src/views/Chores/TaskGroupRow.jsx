@@ -16,6 +16,7 @@ import { useImpersonateUser } from '../../contexts/ImpersonateUserContext.jsx'
 import { useSlotsToday } from '../../queries/ChoreQueries'
 import { useCircleMembers, useUserProfile } from '../../queries/UserQueries'
 import { useNotification } from '../../service/NotificationProvider'
+import { isTogether, taskMemberIds } from '../../utils/Chores.jsx'
 import {
   ApproveChore,
   MarkChoreComplete,
@@ -98,6 +99,19 @@ const SlotCell = ({
         sx={{ ...cellButtonSx, cursor: 'default' }}
       >
         <Box sx={{ ...ringSx, bgcolor: color, color: '#fff' }}>
+          <CheckRounded />
+        </Box>
+      </Box>
+    )
+  }
+  if (slot.state === 'other') {
+    return (
+      <Box
+        role='img'
+        aria-label={t('slots.cell.doneByOther', { label })}
+        sx={{ ...cellButtonSx, cursor: 'default', opacity: 0.35 }}
+      >
+        <Box sx={{ ...ringSx, bgcolor: 'neutral.400', color: '#fff' }}>
           <CheckRounded />
         </Box>
       </Box>
@@ -283,11 +297,23 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
     actingMember?.role === 'manager' ||
     chores.some(chore => chore.createdBy === actingUserId)
   const now = new Date()
-  const lines = chores.map(chore => ({
-    chore,
-    member: performerOf(chore, performers),
-    slots: slotted ? todaySlots(chore, slotsByTask, now) : [],
-  }))
+  const lines = chores.flatMap(chore => {
+    const slots = slotted ? todaySlots(chore, slotsByTask, now) : []
+    if (!isTogether(chore)) {
+      return [{ chore, member: performerOf(chore, performers), slots }]
+    }
+    // A task for everyone together has a line per member; a slot one of them
+    // did is done for the others too.
+    return taskMemberIds(chore).map(id => ({
+      chore,
+      member: performers.find(p => p.userId === id) || { userId: id },
+      slots: slots.map(slot =>
+        slot.completedBy && slot.completedBy !== id
+          ? { ...slot, state: 'other' }
+          : slot,
+      ),
+    }))
+  })
   const columns = lines.find(line => line.slots.length)?.slots || []
   const all = lines.flatMap(line => line.slots)
   const doneCount = all.filter(slot => slot.state === 'done').length
@@ -489,7 +515,10 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
             )
           })}
           {lines.map(({ chore, member, slots }) => (
-            <Box key={chore.id} sx={{ display: 'contents' }}>
+            <Box
+              key={`${chore.id}-${member.userId}`}
+              sx={{ display: 'contents' }}
+            >
               <Box title={member.displayName} sx={{ display: 'flex' }}>
                 <MemberAvatar member={member} size={30} />
               </Box>

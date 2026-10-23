@@ -345,6 +345,10 @@ func constrainAssigneesToProject(chore *chModel.Chore, project *pModel.Project, 
 			return nil, nil
 		}
 		ownerID := project.CreatedBy
+		if chore.AssignStrategy == chModel.AssignmentStrategyTogether {
+			chore.AssignedTo = nil
+			return []int{ownerID}, nil
+		}
 		chore.AssignedTo = &ownerID
 		return []int{ownerID}, nil
 	}
@@ -363,6 +367,9 @@ func constrainAssigneesToProject(chore *chModel.Chore, project *pModel.Project, 
 	if chore.AssignStrategy == chModel.AssignmentStrategyNoAssignee {
 		chore.AssignedTo = nil
 		return nil, nil
+	}
+	if chore.AssignStrategy == chModel.AssignmentStrategyTogether {
+		chore.AssignedTo = nil
 	}
 	return assigneeIDs, nil
 }
