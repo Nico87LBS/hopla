@@ -104,6 +104,7 @@ import {
   copiesOf,
   copyUpdate,
   perMemberChores,
+  splitIntoCopies,
 } from '../../utils/taskCopies.js'
 import { useSinglePageTaskEditor } from '../../utils/TaskEditorPreferences'
 import { generateUUID } from '../../utils/UUID'
@@ -266,6 +267,16 @@ const ChoreEdit = () => {
   const choreProject = projects.find(project => project.id === projectId)
   const assignablePerformers = filterMembersForProject(performers, choreProject)
   const assignees = anyone ? assignablePerformers : assignableTo
+  // A shared task for several people can become one copy per person, when
+  // created or later, as long as it has no copies yet.
+  const canSplit =
+    !anyone && assignees.length > 1 && (!isEditing || copies.length === 0)
+  // Who keeps the task, and its history, when it is split.
+  const splitKeeper = performers.find(
+    p =>
+      p.userId ===
+      (assignees.find(a => a.userId === assignedTo) ?? assignees[0])?.userId,
+  )?.displayName
   const hasSpecificAssignees = !anyone && assignableTo.length > 0
   const canPickStrategy = hasSpecificAssignees && assignableTo.length > 1
   const assignStrategyValue = !hasSpecificAssignees
@@ -290,6 +301,7 @@ const ChoreEdit = () => {
     assignableTo,
     assignedTo,
     assignStrategy,
+    perMember,
     dueDate,
     dueDateOnly,
     dueTime,
@@ -698,9 +710,21 @@ const ChoreEdit = () => {
         searchParams.get('clone') === 'true' ? 'clone' : 'full_page'
     }
 
-    const createCopies =
-      !(newChoreId > 0) && perMember && !anyone && assignees.length > 1
+    const createCopies = !(newChoreId > 0) && perMember && canSplit
+    const splitCopies = newChoreId > 0 && perMember && canSplit
     const save = async () => {
+      if (splitCopies) {
+        const { creates, update } = splitIntoCopies(
+          chore,
+          assignees,
+          assignedToValue,
+        )
+        const result = await updateChoreMutation.mutateAsync(update)
+        for (const copy of creates) {
+          await createChoreMutation.mutateAsync(copy)
+        }
+        return result
+      }
       if (createCopies) {
         let result
         for (const copy of perMemberChores(chore, assignees)) {
@@ -1803,7 +1827,7 @@ const ChoreEdit = () => {
                 )}
               </Box>
 
-              {!isEditing && !anyone && assignees.length > 1 && (
+              {canSplit && (
                 <Box mb={2}>
                   <Typography level='h4'>
                     {t('taskEditor.copies.title')}
@@ -1821,9 +1845,14 @@ const ChoreEdit = () => {
                   </RadioGroup>
                   {perMember && (
                     <FormHelperText>
-                      {t('taskEditor.copies.eachHelp', {
-                        count: assignees.length,
-                      })}
+                      {isEditing
+                        ? t('taskEditor.copies.splitHelp', {
+                            count: assignees.length - 1,
+                            name: splitKeeper ?? '',
+                          })
+                        : t('taskEditor.copies.eachHelp', {
+                            count: assignees.length,
+                          })}
                     </FormHelperText>
                   )}
                 </Box>
@@ -1843,57 +1872,54 @@ const ChoreEdit = () => {
                   </FormHelperText>
                 </Box>
               )}
-              {assignees.length > 1 &&
-                !(perMember && !isEditing && !anyone) && (
-                  <Box className='task-properties'>
-                    <Box mb={2}>
-                      <Typography level='h4'>
-                        {t('taskEditor.assignedNow')}
-                      </Typography>
-                      <Select
-                        placeholder={
-                          assignees.length === 0
-                            ? t('taskEditor.noAssigneesYet')
-                            : t('taskEditor.selectAssignee')
-                        }
-                        disabled={assignees.length === 0}
-                        value={assignedTo > -1 ? assignedTo : null}
-                        onChange={(_, selectedUserId) =>
-                          setAssignedTo(selectedUserId)
-                        }
-                      >
-                        {assignablePerformers
-                          .filter(p =>
-                            assignees.some(a => a.userId == p.userId),
-                          )
-                          .map((item, index) => (
-                            <Option value={item.userId} key={item.displayName}>
-                              {item.displayName}
-                            </Option>
-                          ))}
-                      </Select>
-                    </Box>
-
-                    <Box>
-                      <Typography level='h4'>
-                        {t('taskEditor.nextAssignment')}
-                      </Typography>
-                      <Select
-                        aria-label={t('taskEditor.nextAssignment')}
-                        value={assignStrategy}
-                        onChange={(_, value) => {
-                          if (value) setAssignStrategy(value)
-                        }}
-                      >
-                        {ASSIGN_STRATEGIES.map(value => (
-                          <Option key={value} value={value}>
-                            {t(`taskEditor.strategy.${value}`)}
+              {assignees.length > 1 && !(perMember && canSplit) && (
+                <Box className='task-properties'>
+                  <Box mb={2}>
+                    <Typography level='h4'>
+                      {t('taskEditor.assignedNow')}
+                    </Typography>
+                    <Select
+                      placeholder={
+                        assignees.length === 0
+                          ? t('taskEditor.noAssigneesYet')
+                          : t('taskEditor.selectAssignee')
+                      }
+                      disabled={assignees.length === 0}
+                      value={assignedTo > -1 ? assignedTo : null}
+                      onChange={(_, selectedUserId) =>
+                        setAssignedTo(selectedUserId)
+                      }
+                    >
+                      {assignablePerformers
+                        .filter(p => assignees.some(a => a.userId == p.userId))
+                        .map((item, index) => (
+                          <Option value={item.userId} key={item.displayName}>
+                            {item.displayName}
                           </Option>
                         ))}
-                      </Select>
-                    </Box>
+                    </Select>
                   </Box>
-                )}
+
+                  <Box>
+                    <Typography level='h4'>
+                      {t('taskEditor.nextAssignment')}
+                    </Typography>
+                    <Select
+                      aria-label={t('taskEditor.nextAssignment')}
+                      value={assignStrategy}
+                      onChange={(_, value) => {
+                        if (value) setAssignStrategy(value)
+                      }}
+                    >
+                      {ASSIGN_STRATEGIES.map(value => (
+                        <Option key={value} value={value}>
+                          {t(`taskEditor.strategy.${value}`)}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Box>
+                </Box>
+              )}
             </EditorSection>
             <EditorSection
               title={t('taskEditor.descriptionAttachments')}

@@ -30,6 +30,22 @@ export const perMemberChores = (chore, assignees) =>
     draftId: index === 0 ? chore.draftId : undefined,
   }))
 
+// splitIntoCopies turns a shared task being edited into one copy per
+// assignee: the task itself stays with keepUserId (or the first assignee) and
+// keeps its history, a new task is created for each of the others.
+export const splitIntoCopies = (chore, assignees, keepUserId) => {
+  const keep =
+    assignees.find(({ userId }) => userId === keepUserId) ?? assignees[0]
+  const ordered = [keep, ...assignees.filter(member => member !== keep)]
+  const [update, ...others] = perMemberChores(chore, ordered)
+  const creates = others.map(copy => {
+    const created = { ...copy, source: 'full_page' }
+    delete created.id
+    return created
+  })
+  return { update, creates }
+}
+
 // What an edit carries over to the other copies. Who the task is for, its
 // sub-tasks, triggers and actions stay each copy's own; so does when it is
 // next due, unless the edit changed it.

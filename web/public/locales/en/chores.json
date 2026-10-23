@@ -1120,6 +1120,8 @@
       "each": "One copy per person",
       "eachHelp_one": "{{count}} task will be created, one per person.",
       "eachHelp_other": "{{count}} tasks will be created, one per person.",
+      "splitHelp_one": "The task stays with {{name}} with its history, and a copy is created for the other person.",
+      "splitHelp_other": "The task stays with {{name}} with its history, and a copy is created for each of the {{count}} other people.",
       "apply_one": "Also apply to the other copy ({{names}})",
       "apply_other": "Also apply to the {{count}} other copies ({{names}})",
       "applyHelp": "Name, description, repeat, points, approval, labels and reminders. Archive and delete also apply to the copies. Each copy keeps its person, due date and sub-tasks.",

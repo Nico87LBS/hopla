@@ -1120,6 +1120,8 @@
       "each": "Une copie par personne",
       "eachHelp_one": "{{count}} tâche sera créée, une par personne.",
       "eachHelp_other": "{{count}} tâches seront créées, une par personne.",
+      "splitHelp_one": "La tâche reste à {{name}} avec son historique, et une copie est créée pour l'autre personne.",
+      "splitHelp_other": "La tâche reste à {{name}} avec son historique, et une copie est créée pour chacune des {{count}} autres personnes.",
       "apply_one": "Appliquer aussi à l'autre copie ({{names}})",
       "apply_other": "Appliquer aussi aux {{count}} autres copies ({{names}})",
       "applyHelp": "Nom, description, récurrence, points, approbation, étiquettes et rappels. Archiver et supprimer s'appliquent aussi aux copies. La personne, l'échéance et les sous-tâches de chaque copie ne changent pas.",
