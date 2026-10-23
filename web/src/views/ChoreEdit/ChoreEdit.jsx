@@ -943,7 +943,11 @@ const ChoreEdit = () => {
 
   useEffect(() => {
     // if frequency type change to something need a due date then set it to the current date:
-    if (!NO_DUE_DATE_REQUIRED_TYPE.includes(frequencyType) && !dueDate) {
+    if (
+      !NO_DUE_DATE_REQUIRED_TYPE.includes(frequencyType) &&
+      !NO_DUE_DATE_ALLOWED_TYPE.includes(frequencyType) &&
+      !dueDate
+    ) {
       const today = moment(new Date()).format('YYYY-MM-DD')
       setDueDateOnly(today)
       // Default to end of day
@@ -951,7 +955,10 @@ const ChoreEdit = () => {
       setUseCustomTime(false)
       setDueTime(null)
     }
-    if (NO_DUE_DATE_ALLOWED_TYPE.includes(frequencyType)) {
+    // "always" never has a due date. A "trigger" task loaded with a date was
+    // set off by Home Assistant and keeps it; switching to it clears the date
+    // in onFrequencyTypeUpdate instead.
+    if (frequencyType === 'always') {
       setDueDate(null)
       setDueDateOnly(null)
       setUseCustomTime(false)
@@ -1407,7 +1414,7 @@ const ChoreEdit = () => {
                 frequencyType={frequencyType}
                 onFrequencyTypeUpdate={value => {
                   setFrequencyType(value)
-                  if (value === 'always') {
+                  if (NO_DUE_DATE_ALLOWED_TYPE.includes(value)) {
                     setDueDate(null)
                     setDueDateOnly(null)
                     setDueTime(null)

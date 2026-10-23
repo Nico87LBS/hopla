@@ -824,7 +824,7 @@ func (h *Handler) EditChore(c *gin.Context) {
 	if choreReq.NextDueDate != nil {
 		utcDate := choreReq.NextDueDate.UTC()
 		dueDate = &utcDate
-	} else {
+	} else if !canHaveNoDueDate(choreReq.FrequencyType) {
 		dueDate = oldChore.NextDueDate
 	}
 
@@ -954,6 +954,17 @@ func (h *Handler) EditChore(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "Chore updated successfully",
 	})
+}
+
+// canHaveNoDueDate reports whether a chore of this frequency type may be saved
+// without a due date. For these types an edit without nextDueDate clears it, so
+// a chore switched to "trigger" or "always" stops showing its old date.
+func canHaveNoDueDate(frequencyType chModel.FrequencyType) bool {
+	switch frequencyType {
+	case chModel.FrequencyTypeOnce, chModel.FrequencyTypeNoRepeat, chModel.FrequencyTypeTrigger, chModel.FrequencyTypeAlways:
+		return true
+	}
+	return false
 }
 
 func setEditChoreDefaults(choreReq *ChoreReq, oldChore *chModel.Chore) {

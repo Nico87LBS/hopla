@@ -235,3 +235,49 @@ func TestEditChoreWithoutLabelsV2KeepsLabels(t *testing.T) {
 	require.Equal(t, http.StatusOK, recorder.Code, recorder.Body.String())
 	require.Zero(t, labelCount(), "an empty labelsV2 still removes the labels")
 }
+
+// A dated chore switched to a type that may have no due date, such as one set
+// off from Home Assistant, must lose its old date when the editor sends none.
+func TestEditChoreWithoutDueDate(t *testing.T) {
+	tests := []struct {
+		name          string
+		frequencyType chModel.FrequencyType
+		keepsDate     bool
+	}{
+		{name: "trigger clears the date", frequencyType: chModel.FrequencyTypeTrigger},
+		{name: "always clears the date", frequencyType: chModel.FrequencyTypeAlways},
+		{name: "once clears the date", frequencyType: chModel.FrequencyTypeOnce},
+		{name: "daily keeps the date", frequencyType: chModel.FrequencyTypeDaily, keepsDate: true},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			router, db := newEditChoreTestRouter(t)
+			due := time.Date(2026, 10, 24, 21, 59, 0, 0, time.UTC)
+			chore := chModel.Chore{Name: "trash", FrequencyType: chModel.FrequencyTypeDaily, Frequency: 1,
+				NextDueDate: &due, AssignStrategy: chModel.AssignmentStrategyRandom, CircleID: 1, CreatedBy: 1, IsActive: true}
+			require.NoError(t, db.Create(&chore).Error)
+
+			raw, err := json.Marshal(map[string]any{
+				"id":             chore.ID,
+				"name":           "trash",
+				"frequencyType":  test.frequencyType,
+				"nextDueDate":    nil,
+				"assignStrategy": chModel.AssignmentStrategyRandom,
+			})
+			require.NoError(t, err)
+			recorder := httptest.NewRecorder()
+			router.ServeHTTP(recorder, httptest.NewRequest(http.MethodPut, "/chores", bytes.NewReader(raw)))
+			require.Equal(t, http.StatusOK, recorder.Code, recorder.Body.String())
+
+			var updated chModel.Chore
+			require.NoError(t, db.First(&updated, chore.ID).Error)
+			if test.keepsDate {
+				require.NotNil(t, updated.NextDueDate)
+				require.True(t, updated.NextDueDate.Equal(due))
+			} else {
+				require.Nil(t, updated.NextDueDate)
+			}
+		})
+	}
+}
