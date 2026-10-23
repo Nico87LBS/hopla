@@ -6,6 +6,7 @@ import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
+import { isTogether } from '../../utils/Chores.jsx'
 import { groupCopies, hasSlots } from '../../utils/taskSlots'
 import ChoreActionMenu from '../components/ChoreActionMenu'
 import ArchivedChoreCard from './ArchivedChoreCard'
@@ -122,9 +123,14 @@ const ChoreListView = ({
             : groupCopies(chores)
           ).map(group => {
             const chore = group.chores[0]
-            // Each child's copy of a task, or a task done several times a
-            // day, shows as one card with its own buttons: no swipe.
-            if (group.chores.length > 1 || hasSlots(chore)) {
+            // Each child's copy of a task, a task for everyone together, or
+            // a task done several times a day, shows as one card with a
+            // button per child: no swipe.
+            if (
+              group.chores.length > 1 ||
+              hasSlots(chore) ||
+              isTogether(chore)
+            ) {
               return (
                 <ChoreSwipeableItem
                   key={chore.id}

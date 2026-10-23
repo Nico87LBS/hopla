@@ -429,7 +429,7 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
               const label = member.displayName || ''
               return (
                 <Box
-                  key={chore.id}
+                  key={`${chore.id}-${member.userId}`}
                   component='button'
                   type='button'
                   disabled={
