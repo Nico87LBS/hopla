@@ -7,13 +7,14 @@ import { useLocation } from 'react-router-dom'
 // Route hierarchy for determining navigation direction
 const routeHierarchy = {
   '/': 0,
-  '/home': 0,
   '/my/chores': 0,
-  '/chores': 1,
+  '/chores': 0,
+  '/family': 0,
+  '/shop': 0,
+  '/manage': 0,
   '/chores/create': 2,
   '/settings': 1,
   '/activities': 1,
-  '/points': 1,
   '/labels': 1,
   '/projects': 1,
   '/login': 0,

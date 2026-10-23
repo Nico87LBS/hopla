@@ -50,7 +50,6 @@
     "home": "Overview",
     "tasks": "Tasks",
     "more": "More",
-    "mobileNavigation": "Primary navigation",
     "archived": "Archived",
     "labels": "Labels",
     "projects": "Projects",
@@ -59,11 +58,13 @@
     "points": "Points",
     "rewards": "Rewards",
     "settings": "Settings",
-    "openMenu": "Open menu",
-    "collapseMenu": "Collapse menu",
-    "expandMenu": "Expand menu",
     "primaryNavigation": "Primary navigation",
-    "profile": "Profile"
+    "profile": "Profile",
+    "today": "Today",
+    "family": "Family",
+    "shop": "Shop",
+    "manage": "Manage",
+    "newTask": "New task"
   },
   "search": {
     "title": "Search",
@@ -153,7 +154,6 @@
   "loadingOfflineSub": "This not available while offline. Please check your internet connection and try again.",
   "loadingSlow": "This is taking longer than usual. There might be an issue.",
   "navigateBack": "Navigate Back",
-  "bottomNav": "Bottom Navigation",
   "profile": "Profile",
   "autocompletePlaceholder": "Type here...",
   "errorScreen": {
@@ -482,107 +482,6 @@
     "presetLast30Days": "Last 30 Days",
     "presetLast3Months": "Last 3 Months"
   },
-  "home": {
-    "customize": {
-      "action": "Customize Home"
-    },
-    "verdict": {
-      "late": {
-        "title_one": "{{count}} task needs attention.",
-        "title_other": "{{count}} tasks need attention."
-      },
-      "review": {
-        "title": "Something needs reviewing.",
-        "body_one": "{{count}} finished task is waiting to be signed off.",
-        "body_other": "{{count}} finished tasks are waiting to be signed off."
-      },
-      "today": {
-        "title_one": "{{count}} task due today.",
-        "title_other": "{{count}} tasks due today."
-      },
-      "clear": {
-        "title": "You’re all caught up.",
-        "body": "Nothing scheduled today, nothing late."
-      },
-      "firstRun": {
-        "title": "Let’s get the first one down.",
-        "body": "Home fills in as you add tasks."
-      }
-    },
-    "triage": {
-      "overdue": "Overdue",
-      "dueToday": "Due today",
-      "needsReview": "Needs review",
-      "comingUp": "Coming up",
-      "unplanned": "Unplanned",
-      "allClear": "Nothing overdue, nothing waiting"
-    },
-    "nextUp": {
-      "title": "Coming up",
-      "action": "View all"
-    },
-    "nextUpFallback": {
-      "title": "Next up",
-      "action": "View all"
-    },
-    "overdue": {
-      "title": "Overdue",
-      "action": "View all"
-    },
-    "clear": {
-      "title": "Plan ahead",
-      "body": "Browse upcoming chores, reschedule plans, or add the next thing.",
-      "action": "Browse all tasks"
-    },
-    "firstTask": {
-      "title": "Add your first task",
-      "description": "Type it, say it, or scan it. Anything you add shows up here when it needs you.",
-      "action": "Add a task"
-    },
-    "review": {
-      "title": "Needs your review",
-      "pendingTitle": "Pending review",
-      "action": "Review all"
-    },
-    "circle": {
-      "title": "Your circle",
-      "action": "Manage Circle",
-      "open_one": "{{count}} open",
-      "open_other": "{{count}} open",
-      "late_one": "{{count}} overdue",
-      "late_other": "{{count}} overdue",
-      "done_one": "{{count}} done",
-      "done_other": "{{count}} done",
-      "caughtUp": "All clear",
-      "emptyTitle": "Nobody else is here yet",
-      "emptyBody": "Invite the people you share chores with, and this screen will show who’s carrying what.",
-      "emptyAction": "Invite to your circle"
-    },
-    "projects": {
-      "title": "Projects",
-      "action": "All projects",
-      "tasks_one": "{{count}} task",
-      "tasks_other": "{{count}} tasks",
-      "tasksOverdue_one": "{{count}} task, {{overdue}} overdue",
-      "tasksOverdue_other": "{{count}} tasks, {{overdue}} overdue",
-      "tasksUnplanned_one": "{{count}} task, {{unplanned}} unplanned",
-      "tasksUnplanned_other": "{{count}} tasks, {{unplanned}} unplanned",
-      "clear": "All clear"
-    },
-    "filters": {
-      "title": "Filters",
-      "action": "All filters",
-      "tasks_one": "{{count}} match",
-      "tasks_other": "{{count}} matches",
-      "clear": "No matches"
-    },
-    "capture": {
-      "placeholder": "Add a task…",
-      "add": "Add a task",
-      "voice": "Capture by voice",
-      "scan": "Scan to task"
-    }
-  },
   "liveTask": {
     "title": {
       "completed": "Task completed",
@@ -604,5 +503,80 @@
   },
   "attachment": "Attachment",
   "download": "Download",
-  "note": "Note"
+  "note": "Note",
+  "family": {
+    "tabs": {
+      "progress": "Progress",
+      "journal": "Journal"
+    },
+    "hops_one": "{{count}} hop",
+    "hops_other": "{{count}} hops",
+    "days_one": "{{count}} d",
+    "days_other": "{{count}} d",
+    "earned": "hops earned",
+    "toNextRank": "To the next rank",
+    "adjustFor": "Bonus or penalty for {{name}}",
+    "manageHint": "Set up quests, challenges and bonus periods"
+  },
+  "shop": {
+    "pending": "Requests to approve",
+    "rewards": "Rewards"
+  },
+  "manage": {
+    "groups": {
+      "organize": "Organize",
+      "parent": "Parent space",
+      "account": "Account"
+    },
+    "items": {
+      "projects": {
+        "title": "Projects",
+        "description": "Group tasks by room or topic"
+      },
+      "labels": {
+        "title": "Labels",
+        "description": "Spot tasks at a glance"
+      },
+      "filters": {
+        "title": "Filters",
+        "description": "Your saved views"
+      },
+      "archived": {
+        "title": "Archive",
+        "description": "Tasks put aside"
+      },
+      "activities": {
+        "title": "Activities",
+        "description": "Everything done, day by day"
+      },
+      "points": {
+        "title": "Bonuses and presets",
+        "description": "Give or take hops, prepare bonuses"
+      },
+      "rewards": {
+        "title": "Rewards and requests",
+        "description": "What hops can buy"
+      },
+      "games": {
+        "title": "Quests, challenges and bonus periods",
+        "description": "The week’s games and multiplied points"
+      },
+      "ranks": {
+        "title": "Ranks and rules",
+        "description": "Ranks, streaks and the surprise task"
+      },
+      "reset": {
+        "title": "Reset",
+        "description": "Start over for one member or the whole family"
+      },
+      "circle": {
+        "title": "Family and members",
+        "description": "Invite, manage the children’s accounts"
+      },
+      "settings": {
+        "title": "Settings",
+        "description": "Profile, appearance, language and more"
+      }
+    }
+  }
 }

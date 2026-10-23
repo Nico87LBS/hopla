@@ -49,7 +49,7 @@ import TaskInput from '../components/AddTaskModal'
 import CalendarDual from '../components/CalendarDual'
 import CalendarMonthly from '../components/CalendarMonthly.jsx'
 import LoadingComponent from '../components/Loading'
-import ScrollHideFab from '../components/ScrollHideFab'
+import { OPEN_QUICK_ADD_EVENT } from '../components/navigationEvents'
 import { useLabels } from '../Labels/LabelQueries'
 import AdvancedFilterBuilder from '../Modals/Inputs/AdvancedFilterBuilder'
 import ConfirmationModal from '../Modals/Inputs/ConfirmationModal'
@@ -608,6 +608,13 @@ const MyChores = () => {
     selectedProject,
     setSelectedProjectWithCache,
   ])
+
+  // The + of the navigation opens the quick add here.
+  useEffect(() => {
+    const onOpen = () => setAddTaskModalOpen(true)
+    window.addEventListener(OPEN_QUICK_ADD_EVENT, onOpen)
+    return () => window.removeEventListener(OPEN_QUICK_ADD_EVENT, onOpen)
+  }, [])
 
   // /chores?add_task=1 opens the quick-add modal once, and strips the param
   // so back/refresh doesn't re-trigger it.
@@ -1597,74 +1604,6 @@ const MyChores = () => {
             })}
           </AccordionGroup>
         )}
-        <ScrollHideFab
-          sx={{
-            bottom: getSafeBottom(10, 10),
-            '@media (max-width: 768px)': {
-              bottom: getSafeBottom(66, 10),
-            },
-          }}
-        >
-          <IconButton
-            color='primary'
-            variant='solid'
-            sx={{
-              borderRadius: '50%',
-              width: 50,
-              height: 50,
-              zIndex: 101,
-              position: 'relative',
-            }}
-            onClick={() => {
-              Navigate(`/chores/create`)
-            }}
-            title={t('chores:list.createChore')}
-          >
-            <Add />
-            <KeyboardShortcutHint
-              sx={{
-                position: 'absolute',
-                top: -12,
-                // Anchored left so the wider "⌘ + Shift + J" label grows to the
-                // right instead of off the left edge of the viewport.
-                left: 2,
-                whiteSpace: 'nowrap',
-                zIndex: 1000,
-              }}
-              show={showKeyboardShortcuts}
-              shortcut='J'
-              withShift
-            />
-          </IconButton>
-          <IconButton
-            data-testid='open-add-task-modal'
-            color='primary'
-            variant='soft'
-            sx={{
-              borderRadius: '50%',
-              width: 25,
-              height: 25,
-              position: 'relative',
-              left: -25,
-              top: 22,
-            }}
-            onClick={() => {
-              setAddTaskModalOpen(true)
-            }}
-          >
-            <Bolt
-              style={{
-                rotate: '20deg',
-              }}
-            />
-          </IconButton>
-
-          <KeyboardShortcutHint
-            sx={{ position: 'relative', left: -40, top: 30 }}
-            show={showKeyboardShortcuts}
-            shortcut='J'
-          />
-        </ScrollHideFab>
         {addTaskModalOpen && (
           <TaskInput
             onChoreUpdate={updateChores}

@@ -456,30 +456,6 @@
   },
   "layout": {
     "title": "Layout & Navigation",
-    "defaultView": {
-      "title": "Default View",
-      "description": "Choose which screen the app opens on.",
-      "options": {
-        "home": {
-          "name": "Overview",
-          "description": "A summary of what needs you today, with quick capture"
-        },
-        "tasks": {
-          "name": "Task List",
-          "description": "The full task list with filters, search and grouping"
-        }
-      }
-    },
-    "bottomNav": {
-      "title": "Bottom Navigation",
-      "description": "Choose up to {{max}} shortcuts for the mobile bottom navigation bar and drag to reorder them. \"More\" always stays as the last item and opens the full menu.",
-      "resetToDefaults": "Reset to Defaults",
-      "resetHelper": "This will restore the bottom navigation to its default shortcuts and order.",
-      "hideLabels": {
-        "title": "Hide Labels",
-        "description": "Show icons only in the bottom navigation bar to make it smaller."
-      }
-    },
     "sidepanel": {
       "title": "Sidepanel"
     },

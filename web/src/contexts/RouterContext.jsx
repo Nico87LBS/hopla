@@ -22,26 +22,42 @@ import ArchivedTasks from '../views/Chores/ArchivedTasks'
 import MyChores from '../views/Chores/MyChores'
 import JoinCircleView from '../views/Circles/JoinCircle'
 import NotFound from '../views/components/NotFound'
+import FamilyView from '../views/Family/FamilyView'
 import FilterView from '../views/Filters/FilterView'
 import ChoreHistory from '../views/History/ChoreHistory'
-import DefaultViewRoute from '../views/Home/DefaultViewRoute'
-import HomeView from '../views/Home/HomeView'
 import LabelDetailView from '../views/Labels/LabelDetailView'
 import LabelView from '../views/Labels/LabelView'
+import ManageView from '../views/Manage/ManageView'
+import {
+  ManageGames,
+  ManagePoints,
+  ManageRanks,
+  ManageReset,
+} from '../views/Manage/ParentPages'
 import CircleSetupView from '../views/Onboarding/CircleSetupView'
 import ProjectView from '../views/Projects/ProjectView'
 import APITokenSettings from '../views/Settings/APITokenSettings'
 import CalendarSettings from '../views/Settings/CalendarSettings'
-import HomeSectionsSettings from '../views/Settings/HomeSectionsSettings'
 import LayoutSettings from '../views/Settings/LayoutSettings'
 import LocalizationSettings from '../views/Settings/LocalizationSettings'
 import MFASettings from '../views/Settings/MFASettings'
 import ProfileSettings from '../views/Settings/ProfileSettings'
 import StorageSettings from '../views/Settings/StorageSettings'
 import TemplateSettings from '../views/Settings/TemplateSettings'
+import ShopView from '../views/Shop/ShopView'
 import TimerDetails from '../views/Timer/TimerDetails'
 import UserActivities from '../views/User/UserActivities'
-import UserPoints from '../views/User/UserPoints'
+const PointsRedirect = () => {
+  const tab = new URLSearchParams(window.location.search).get('tab')
+  const to =
+    tab === 'rewards' || tab === 'requests'
+      ? '/shop'
+      : tab === 'games'
+        ? '/family'
+        : '/family?tab=journal'
+  return <Navigate to={to} replace />
+}
+
 const Router = createBrowserRouter([
   {
     path: '/',
@@ -50,11 +66,11 @@ const Router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <DefaultViewRoute />,
+        element: <Navigate to='/chores' replace />,
       },
       {
         path: '/home',
-        element: <HomeView />,
+        element: <Navigate to='/chores' replace />,
       },
       {
         path: '/settings',
@@ -99,10 +115,6 @@ const Router = createBrowserRouter([
           {
             path: 'template',
             element: <TemplateSettings />,
-          },
-          {
-            path: 'home-sections',
-            element: <HomeSectionsSettings />,
           },
           {
             path: 'layout',
@@ -163,8 +175,37 @@ const Router = createBrowserRouter([
         element: <UserActivities />,
       },
       {
+        path: '/family',
+        element: <FamilyView />,
+      },
+      {
+        path: '/shop',
+        element: <ShopView />,
+      },
+      {
+        path: '/manage',
+        element: <ManageView />,
+      },
+      {
+        path: '/manage/points',
+        element: <ManagePoints />,
+      },
+      {
+        path: '/manage/games',
+        element: <ManageGames />,
+      },
+      {
+        path: '/manage/ranks',
+        element: <ManageRanks />,
+      },
+      {
+        path: '/manage/reset',
+        element: <ManageReset />,
+      },
+      {
+        // Old links: the points page was split into Famille and Boutique.
         path: '/points',
-        element: <UserPoints />,
+        element: <PointsRedirect />,
       },
       {
         path: '/login',
@@ -205,7 +246,7 @@ const Router = createBrowserRouter([
       },
       {
         path: 'rewards/',
-        element: <Navigate to='/points?tab=rewards' replace />,
+        element: <Navigate to='/shop' replace />,
       },
       {
         path: 'projects/',

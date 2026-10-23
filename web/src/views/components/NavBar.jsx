@@ -1,35 +1,23 @@
 import {
-  Archive,
+  AddRounded,
   ArrowBack,
-  Checklist,
-  FilterAlt,
-  FolderOpen,
-  History,
-  ListAlt,
   Logout,
-  MenuOpenRounded,
-  MenuRounded,
   SearchRounded,
-  SettingsOutlined,
-  SpaceDashboard,
-  Toll,
 } from '@mui/icons-material'
 import {
   Box,
-  Divider,
-  Drawer,
+  Button,
   IconButton,
   List,
   ListItemButton,
   ListItemDecorator,
   Sheet,
-  Tooltip,
   Typography,
 } from '@mui/joy'
 import useMediaQuery from '@mui/material/useMediaQuery'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import { version } from '../../../package.json'
 import HoplaWordmark from '../../components/HoplaWordmark'
@@ -39,22 +27,31 @@ import { useScrollDirection } from '../../hooks/useScrollDirection'
 import { useResource } from '../../queries/ResourceQueries'
 import { useGlobalSearch } from '../../search/GlobalSearchContext'
 import { apiClient } from '../../utils/ApiClient'
+import { MAIN_DESTINATIONS, useNavigationBadges } from './mainNavigation'
 import NavBarLink from './NavBarLink'
 import NavBarResourceSwitcher from './NavBarResourceSwitcher'
-import { OPEN_NAVIGATION_DRAWER_EVENT } from './navigationEvents'
+import { openQuickAdd } from './navigationEvents'
 import SyncStatusIndicator from './SyncStatusIndicator'
 
-const COMPACT_NAV_WIDTH = 60
-const EXPANDED_NAV_WIDTH = 232
+const NAV_WIDTH = 248
 const NAVBAR_TITLE_KEYS = {
   '/activities': 'navigation.activities',
   '/archived': 'navigation.archived',
-  '/chores': 'navigation.allTasks',
+  '/chores': 'navigation.today',
+  '/family': 'navigation.family',
   '/filters': 'navigation.filters',
   '/labels': 'navigation.labels',
-  '/points': 'navigation.points',
+  '/manage': 'navigation.manage',
+  '/manage/points': 'manage.items.points.title',
+  '/manage/games': 'manage.items.games.title',
+  '/manage/ranks': 'manage.items.ranks.title',
+  '/manage/reset': 'manage.items.reset.title',
   '/projects': 'navigation.projects',
+  '/settings': 'navigation.settings',
+  '/shop': 'navigation.shop',
 }
+// The four destinations have no back button: the bottom bar takes you there.
+const ROOT_PAGES = ['/', '/chores', '/my/chores', '/family', '/shop', '/manage']
 const SHELL_FREE_PAGES = [
   '/signup',
   '/login',
@@ -74,13 +71,9 @@ const NavBar = () => {
   const { data: resource } = useResource()
   const { navBarConfig } = useNavBarTitleContext()
   const { openSearch } = useGlobalSearch()
+  const badges = useNavigationBadges()
   const navigate = useNavigate()
   const location = useLocation()
-  const [searchParams] = useSearchParams()
-  const [drawerOpen, setDrawerOpen] = useState(false)
-  const [desktopExpanded, setDesktopExpanded] = useState(
-    () => window.localStorage.getItem('desktopNavExpanded') === 'true',
-  )
   const isMobile = useMediaQuery('(max-width:768px)')
   const isDesktop = useMediaQuery('(min-width:1024px)')
   const headerHidden = useScrollDirection({ enabled: !isDesktop })
@@ -94,233 +87,29 @@ const NavBar = () => {
   const dynamicNavBarConfig = supportsDynamicNavBar ? navBarConfig : null
   const navbarTitle =
     dynamicNavBarConfig?.title || (navbarTitleKey ? t(navbarTitleKey) : null)
+  const showBack = !ROOT_PAGES.includes(normalizedPath)
 
-  useEffect(() => {
-    const handleOpenDrawer = () => setDrawerOpen(true)
-    window.addEventListener(OPEN_NAVIGATION_DRAWER_EVENT, handleOpenDrawer)
-    return () =>
-      window.removeEventListener(OPEN_NAVIGATION_DRAWER_EVENT, handleOpenDrawer)
-  }, [])
-
-  // Keep page content and overlays clear of the navigation's current width.
+  // Keep page content and overlays clear of the sidebar.
   useEffect(() => {
     const style = document.documentElement.style
-    const live = desktopExpanded ? EXPANDED_NAV_WIDTH : COMPACT_NAV_WIDTH
-    style.setProperty('--app-navigation-width', isDesktop ? `${live}px` : '0px')
+    style.setProperty(
+      '--app-navigation-width',
+      isDesktop ? `${NAV_WIDTH}px` : '0px',
+    )
     style.setProperty(
       '--app-navigation-offset',
-      isDesktop ? `${live}px` : '0px',
+      isDesktop ? `${NAV_WIDTH}px` : '0px',
     )
     return () => {
       style.removeProperty('--app-navigation-width')
       style.removeProperty('--app-navigation-offset')
     }
-  }, [isDesktop, desktopExpanded])
+  }, [isDesktop])
 
-  const links = [
-    {
-      label: t('navigation.search'),
-      icon: <SearchRounded />,
-      onClick: () => openSearch(),
-    },
-    {
-      to: '/home',
-      label: t('navigation.home'),
-      icon: <SpaceDashboard />,
-      exact: true,
-    },
-    {
-      to: '/chores',
-      label: t('navigation.allTasks'),
-      icon: <Checklist />,
-    },
-    {
-      to: '/archived',
-      label: t('navigation.archived'),
-      icon: <Archive />,
-    },
-    {
-      to: '/labels',
-      label: t('navigation.labels'),
-      icon: <ListAlt />,
-    },
-    {
-      to: '/projects',
-      label: t('navigation.projects'),
-      icon: <FolderOpen />,
-    },
-    {
-      to: '/filters',
-      label: t('navigation.filters'),
-      icon: <FilterAlt />,
-    },
-    {
-      to: '/activities',
-      label: t('navigation.activities'),
-      icon: <History />,
-    },
-    {
-      to: '/points',
-      label: t('navigation.points'),
-      icon: <Toll />,
-    },
-    {
-      to: '/settings',
-      label: t('navigation.settings'),
-      icon: <SettingsOutlined />,
-    },
-  ]
-
-  const getMenuIcon = () => {
-    const menuButton = (
-      <IconButton
-        aria-label={t('navigation.openMenu', { defaultValue: 'Open menu' })}
-        size='md'
-        variant='plain'
-        onClick={() => setDrawerOpen(true)}
-        sx={{ borderRadius: 'md', minHeight: 44, minWidth: 44 }}
-      >
-        <MenuRounded />
-      </IconButton>
-    )
-
-    if (location.pathname === '/search') {
-      return (
-        <IconButton
-          size='md'
-          variant='plain'
-          onClick={() => {
-            if (window.history.state?.idx > 0) navigate(-1)
-            else navigate('/chores', { replace: true })
-          }}
-          aria-label={t('backFromSearch')}
-          title={t('back')}
-          sx={{ borderRadius: 'md', minHeight: 44, minWidth: 44 }}
-        >
-          <ArrowBack className='rtl-flip' />
-        </IconButton>
-      )
-    }
-
-    return menuButton
+  const goBack = () => {
+    if (window.history.state?.idx > 0) navigate(-1)
+    else navigate(normalizedPath === '/search' ? '/chores' : '/manage')
   }
-
-  const navigation = (closeOnSelect, compact = false) => (
-    <List
-      aria-label={t('navigation.primaryNavigation', {
-        defaultValue: 'Primary navigation',
-      })}
-      size='md'
-      sx={{ gap: 0.25, p: compact ? 0.5 : 1 }}
-      onClick={closeOnSelect ? () => setDrawerOpen(false) : undefined}
-    >
-      {links.map((link, index) => (
-        <Box key={link.to || link.label} sx={{ width: '100%' }}>
-          {index === 3 && <Divider sx={{ my: 1 }} />}
-          <NavBarLink compact={compact} link={link} />
-        </Box>
-      ))}
-    </List>
-  )
-
-  const footer = (compact = false, showAccountRow = true) => (
-    <Box
-      sx={{
-        borderTop: '1px solid',
-        borderColor: 'divider',
-        p: compact ? 0.5 : 1,
-      }}
-    >
-      {showAccountRow && (
-        <Box
-          sx={{
-            alignItems: 'center',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: compact ? 0.5 : 0.25,
-            px: compact ? 0 : 0.5,
-            py: compact ? 0.5 : 0,
-          }}
-        >
-          <Tooltip
-            title={
-              compact
-                ? t('navigation.profile', { defaultValue: 'Profile' })
-                : ''
-            }
-            placement='right'
-          >
-            <Box
-              sx={{
-                alignItems: 'center',
-                display: 'flex',
-                height: compact ? 48 : 'auto',
-                justifyContent: 'center',
-                width: compact ? 48 : '100%',
-              }}
-            >
-              <UserProfileAvatar showDetails={!compact} />
-            </Box>
-          </Tooltip>
-          <Box
-            sx={{
-              alignItems: 'center',
-              display: 'flex',
-              height: compact ? 48 : 'auto',
-              justifyContent: 'center',
-              width: compact ? 48 : '100%',
-            }}
-          >
-            <SyncStatusIndicator showLabel={!compact} />
-          </Box>
-        </Box>
-      )}
-      <List size='sm' sx={{ gap: 0.25, p: 0 }}>
-        <Tooltip title={compact ? t('logout') : ''} placement='right'>
-          <ListItemButton
-            aria-label={t('logout')}
-            onClick={() => apiClient.handleLogout()}
-            sx={{
-              borderRadius: 'md',
-              gap: compact ? 0 : undefined,
-              justifyContent: compact ? 'center' : 'flex-start',
-              minHeight: 48,
-              mx: compact ? 'auto' : 0,
-              px: compact ? 0 : 1.5,
-              width: compact ? 48 : '100%',
-            }}
-          >
-            <ListItemDecorator
-              sx={
-                compact
-                  ? { marginInlineEnd: '0 !important', minInlineSize: 0 }
-                  : undefined
-              }
-            >
-              <Logout />
-            </ListItemDecorator>
-            {!compact && (
-              <Typography level='body-sm' sx={{ fontWeight: 400 }}>
-                {t('logout')}
-              </Typography>
-            )}
-          </ListItemButton>
-        </Tooltip>
-      </List>
-      {!compact && (
-        <Typography
-          level='body-xs'
-          onClick={() => window.location.reload()}
-          sx={{ color: 'text.tertiary', cursor: 'pointer', px: 1, py: 0.75 }}
-        >
-          {t('versionInfo', {
-            version,
-            apiVersion: resource?.api_version || t('apiVersionUnavailable'),
-          })}
-        </Typography>
-      )}
-    </Box>
-  )
 
   if (SHELL_FREE_PAGES.includes(location.pathname)) {
     return (
@@ -329,212 +118,193 @@ const NavBar = () => {
   }
   if (isMobile && location.pathname === '/search') return null
 
-  return (
-    <>
-      {isDesktop ? (
-        <>
-          <Box
-            aria-hidden='true'
-            sx={{
-              flexShrink: 0,
-              transition: 'width 200ms ease',
-              width: desktopExpanded ? EXPANDED_NAV_WIDTH : COMPACT_NAV_WIDTH,
-              '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
-            }}
-          />
-          <Sheet
-            component='aside'
-            variant='plain'
-            sx={{
-              bgcolor: 'background.surface',
-              borderInlineEnd: '1px solid',
-              borderColor: 'divider',
-              boxShadow: desktopExpanded ? 'lg' : 'none',
-              display: 'flex',
-              flexDirection: 'column',
-              flexShrink: 0,
-              fontFamily: 'var(--joy-fontFamily-body)',
-              height: '100dvh',
-              insetInlineStart: 0,
-              overflow: 'hidden',
-              position: 'fixed',
-              top: 0,
-              transition: 'width 200ms ease',
-              width: desktopExpanded ? EXPANDED_NAV_WIDTH : COMPACT_NAV_WIDTH,
-              zIndex: 'var(--joy-zIndex-popup)',
-              '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
-            }}
-          >
-            <Box
-              sx={{
-                alignItems: 'center',
-                display: 'flex',
-                gap: 1,
-                justifyContent: desktopExpanded ? 'flex-start' : 'center',
-                minHeight: 56,
-                overflow: 'hidden',
-                px: desktopExpanded ? 1.5 : 0,
-                pt: 'var(--safe-area-inset-top, 0px)',
-                whiteSpace: 'nowrap',
-              }}
+  if (isDesktop) {
+    return (
+      <>
+        <Box aria-hidden='true' sx={{ flexShrink: 0, width: NAV_WIDTH }} />
+        <Sheet
+          component='aside'
+          variant='plain'
+          sx={{
+            bgcolor: 'background.body',
+            borderInlineEnd: '1px solid',
+            borderColor: 'divider',
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100dvh',
+            insetInlineStart: 0,
+            overflow: 'hidden',
+            position: 'fixed',
+            pt: 'var(--safe-area-inset-top, 0px)',
+            top: 0,
+            width: NAV_WIDTH,
+            zIndex: 'var(--joy-zIndex-popup)',
+          }}
+        >
+          <Box sx={{ px: 2.5, pt: 2.75, pb: 2 }}>
+            <HoplaWordmark height={30} />
+          </Box>
+          <Box sx={{ display: 'grid', gap: 1, px: 1.5 }}>
+            <Button
+              startDecorator={<AddRounded />}
+              onClick={openQuickAdd}
+              sx={{ justifyContent: 'flex-start' }}
             >
-              <Tooltip
-                title={
-                  desktopExpanded
-                    ? t('navigation.collapseMenu', {
-                        defaultValue: 'Collapse menu',
-                      })
-                    : t('navigation.expandMenu', {
-                        defaultValue: 'Expand menu',
-                      })
-                }
-                placement='right'
-              >
-                <IconButton
-                  aria-label={
-                    desktopExpanded
-                      ? t('navigation.collapseMenu', {
-                          defaultValue: 'Collapse menu',
-                        })
-                      : t('navigation.expandMenu', {
-                          defaultValue: 'Expand menu',
-                        })
-                  }
-                  onClick={() => {
-                    const expanded = !desktopExpanded
-                    setDesktopExpanded(expanded)
-                    window.localStorage.setItem(
-                      'desktopNavExpanded',
-                      String(expanded),
-                    )
-                  }}
-                  sx={{ flexShrink: 0 }}
-                >
-                  {desktopExpanded ? (
-                    <MenuOpenRounded className='rtl-flip' />
-                  ) : (
-                    <MenuRounded />
-                  )}
-                </IconButton>
-              </Tooltip>
-              {desktopExpanded && (
-                <Box
+              {t('navigation.newTask')}
+            </Button>
+            <Button
+              variant='outlined'
+              color='neutral'
+              startDecorator={<SearchRounded />}
+              endDecorator={
+                <Typography
+                  level='body-xs'
                   sx={{
-                    alignItems: 'center',
-                    display: 'flex',
-                    gap: 1,
-                    minWidth: 0,
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    borderRadius: 'sm',
+                    px: 0.75,
                   }}
                 >
-                  <HoplaWordmark height={28} />
-                </Box>
-              )}
-            </Box>
-            <Box
+                  /
+                </Typography>
+              }
+              onClick={() => openSearch()}
               sx={{
-                flex: 1,
-                minHeight: 0,
-                overflowY: 'auto',
-                overflowX: 'hidden',
+                bgcolor: 'background.surface',
+                color: 'text.tertiary',
+                fontWeight: 500,
+                justifyContent: 'flex-start',
+                '& .MuiButton-endDecorator': { ml: 'auto' },
               }}
             >
-              {navigation(false, !desktopExpanded)}
-            </Box>
-            <Box sx={{ pb: 'var(--safe-area-inset-bottom, 0px)' }}>
-              {footer(!desktopExpanded)}
-            </Box>
-          </Sheet>
-        </>
-      ) : (
-        <>
-          <Sheet
-            component='header'
-            variant='plain'
-            sx={{
-              alignItems: 'center',
-              backdropFilter: 'blur(16px)',
-              bgcolor:
-                'rgba(var(--joy-palette-background-surfaceChannel) / 0.88)',
-              borderBottom: 'none',
-              borderColor: 'divider',
-              '@media (min-width: 769px)': { borderBottom: '1px solid' },
-              display: 'flex',
-              gap: 1,
-              minHeight: 56,
-              px: { xs: 1, sm: 2 },
-              pb: 0.375,
-              pt: 0.375,
-              position: 'sticky',
-              top: 0,
-              transform: headerHidden ? 'translateY(-100%)' : 'translateY(0)',
-              transition: 'transform 220ms ease',
-              zIndex: 'var(--joy-zIndex-popup)',
-              '@media (min-width: 1024px)': { display: 'none' },
-              '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
-            }}
+              {t('navigation.search')}
+            </Button>
+          </Box>
+          <List
+            aria-label={t('navigation.primaryNavigation')}
+            size='md'
+            sx={{ flex: 1, gap: 0.5, minHeight: 0, px: 1.5, py: 2 }}
           >
-            {getMenuIcon()}
-            {dynamicNavBarConfig?.selector ? (
-              <NavBarResourceSwitcher
-                selector={dynamicNavBarConfig.selector}
-                title={navbarTitle}
-              />
-            ) : navbarTitle ? (
-              <Typography
-                component='h1'
-                level='title-md'
-                sx={{
-                  flex: 1,
-                  fontWeight: 'lg',
-                  minWidth: 0,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
+            {MAIN_DESTINATIONS.map(item => (
+              <NavBarLink
+                key={item.id}
+                link={{
+                  active: item.isActive(normalizedPath),
+                  badge: badges[item.id],
+                  icon: item.icon,
+                  label: t(item.labelKey),
+                  to: item.to,
                 }}
-              >
-                {navbarTitle}
-              </Typography>
-            ) : (
-              <Box sx={{ flex: 1 }} />
-            )}
-            <SyncStatusIndicator />
-            <UserProfileAvatar />
-          </Sheet>
-
-          <Drawer
-            open={drawerOpen}
-            onClose={() => setDrawerOpen(false)}
-            anchor='left'
-            size='sm'
+              />
+            ))}
+          </List>
+          <Box
             sx={{
-              '--Drawer-horizontalSize': 'min(72vw, 248px)',
-              '@media (min-width: 1024px)': { display: 'none' },
-              '& .MuiDrawer-content': {
-                display: 'flex',
-                flexDirection: 'column',
-                fontFamily: 'var(--joy-fontFamily-body)',
-                overflow: 'hidden',
-              },
+              borderTop: '1px solid',
+              borderColor: 'divider',
+              p: 1.5,
+              pb: 'calc(var(--safe-area-inset-bottom, 0px) + 12px)',
             }}
           >
-            <Box
-              className='safe-area-x'
-              sx={{
-                flex: 1,
-                minHeight: 0,
-                overflowY: 'auto',
-                pt: 'calc(var(--safe-area-inset-top, 0px) + 4px)',
-              }}
+            <Box sx={{ alignItems: 'center', display: 'flex', gap: 1 }}>
+              <Box sx={{ flex: 1, minWidth: 0 }}>
+                <UserProfileAvatar showDetails />
+              </Box>
+              <SyncStatusIndicator />
+            </Box>
+            <List size='sm' sx={{ p: 0, mt: 0.5 }}>
+              <ListItemButton
+                onClick={() => apiClient.handleLogout()}
+                sx={{ borderRadius: 'md', minHeight: 40 }}
+              >
+                <ListItemDecorator>
+                  <Logout />
+                </ListItemDecorator>
+                <Typography level='body-sm'>{t('logout')}</Typography>
+              </ListItemButton>
+            </List>
+            <Typography
+              level='body-xs'
+              onClick={() => window.location.reload()}
+              sx={{ color: 'text.tertiary', cursor: 'pointer', px: 1, pt: 0.5 }}
             >
-              {navigation(true)}
-            </Box>
-            <Box className='safe-area-x safe-area-bottom'>
-              {footer(false, false)}
-            </Box>
-          </Drawer>
-        </>
+              {t('versionInfo', {
+                version,
+                apiVersion: resource?.api_version || t('apiVersionUnavailable'),
+              })}
+            </Typography>
+          </Box>
+        </Sheet>
+      </>
+    )
+  }
+
+  return (
+    <Sheet
+      component='header'
+      variant='plain'
+      sx={{
+        alignItems: 'center',
+        backdropFilter: 'blur(16px)',
+        bgcolor:
+          'rgba(var(--joy-palette-background-bodyChannel, 247 245 241) / 0.9)',
+        display: 'flex',
+        gap: 0.5,
+        minHeight: 60,
+        position: 'sticky',
+        pt: 'var(--safe-area-inset-top, 0px)',
+        px: { xs: 1, sm: 2 },
+        top: 0,
+        transform: headerHidden ? 'translateY(-100%)' : 'translateY(0)',
+        transition: 'transform 220ms ease',
+        zIndex: 'var(--joy-zIndex-popup)',
+        '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
+      }}
+    >
+      {showBack ? (
+        <IconButton
+          variant='plain'
+          onClick={goBack}
+          aria-label={t('back')}
+          sx={{ borderRadius: 'md' }}
+        >
+          <ArrowBack className='rtl-flip' />
+        </IconButton>
+      ) : (
+        <Box sx={{ width: 4 }} />
       )}
-    </>
+      {dynamicNavBarConfig?.selector ? (
+        <NavBarResourceSwitcher
+          selector={dynamicNavBarConfig.selector}
+          title={navbarTitle}
+        />
+      ) : (
+        <Typography
+          component='h1'
+          level={showBack ? 'title-lg' : 'h3'}
+          sx={{
+            flex: 1,
+            minWidth: 0,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {navbarTitle}
+        </Typography>
+      )}
+      <IconButton
+        variant='plain'
+        aria-label={t('navigation.search')}
+        onClick={() => openSearch()}
+        sx={{ borderRadius: '50%' }}
+      >
+        <SearchRounded />
+      </IconButton>
+      <SyncStatusIndicator />
+      <UserProfileAvatar />
+    </Sheet>
   )
 }
 

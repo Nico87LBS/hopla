@@ -138,8 +138,8 @@ const buildQuickActions = t => [
     {
       id: 'action:points',
       title: t('search.actions.viewPoints'),
-      keywords: 'points rewards score leaderboard open',
-      route: '/points',
+      keywords: 'points hops family rank streak leaderboard open',
+      route: '/family',
       icon: <TollOutlined />,
     },
     {

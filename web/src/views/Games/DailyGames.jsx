@@ -37,11 +37,10 @@ import {
 } from '../../utils/Fetcher'
 import ConfirmationModal from '../Modals/Inputs/ConfirmationModal'
 import { MemberAvatar, memberShape, surfaceSx } from './GameParts'
-import { ChallengesCard, QuestsCard, RanksCard } from './Progression'
 
 const MULTIPLIERS = [2, 3, 4, 5]
 
-const useGamesToday = () =>
+export const useGamesToday = () =>
   useQuery({
     queryKey: ['games', 'today'],
     queryFn: async () => (await GetGamesToday())?.res || null,
@@ -60,7 +59,7 @@ const refreshGames = queryClient =>
 
 // The games of the day: a bonus period running now, the surprise task and
 // everyone's streak.
-const TodayCard = ({ members, today }) => {
+export const TodayCard = ({ members, today }) => {
   const { t } = useTranslation('games')
   const { fmt } = useLocalization()
   const byId = new Map(members.map(m => [m.userId, m]))
@@ -158,7 +157,7 @@ const TodayCard = ({ members, today }) => {
 const toInput = date => moment(date).format('YYYY-MM-DDTHH:mm')
 
 // Double points for a weekend, triple for the holidays: parents plan them.
-const PeriodsCard = () => {
+export const PeriodsCard = () => {
   const { t } = useTranslation('games')
   const { fmt } = useLocalization()
   const { showNotification } = useNotification()
@@ -463,19 +462,6 @@ export const RulesCard = () => {
   )
 }
 
-const DailyGames = ({ isParent, members }) => {
-  const { data: today } = useGamesToday()
-  return (
-    <>
-      <TodayCard members={members} today={today} />
-      <RanksCard members={members} today={today} />
-      <QuestsCard members={members} today={today} />
-      <ChallengesCard isParent={isParent} members={members} today={today} />
-      {isParent && <PeriodsCard />}
-    </>
-  )
-}
-
 const todayShape = PropTypes.shape({
   period: PropTypes.object,
   rules: PropTypes.object,
@@ -494,9 +480,3 @@ NumberField.propTypes = {
   onChange: PropTypes.func.isRequired,
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 }
-DailyGames.propTypes = {
-  isParent: PropTypes.bool,
-  members: PropTypes.arrayOf(memberShape).isRequired,
-}
-
-export default DailyGames
