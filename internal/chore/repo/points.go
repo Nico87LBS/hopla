@@ -30,7 +30,7 @@ func taskPoints(chore *chModel.Chore, userID, byUserID, points int) ptModel.Poin
 // worth (bonus period, surprise), records it on the history row so an undo
 // takes back the same amount, and writes the ledger row.
 func awardTask(tx *gorm.DB, chore *chModel.Chore, historyPoints **int, userID, byUserID int, performedAt time.Time) error {
-	earning, err := games.TaskEarning(tx, chore, performedAt)
+	earning, err := games.TaskEarning(tx, chore, userID, performedAt)
 	if err != nil || earning.Points <= 0 {
 		return err
 	}

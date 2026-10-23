@@ -16,6 +16,10 @@ func scheduleNextDueDate(ctx context.Context, chore *chModel.Chore, completedDat
 	if chore.FrequencyType == "once" || chore.FrequencyType == "no_repeat" || chore.FrequencyType == "trigger" || chore.FrequencyType == "always" {
 		return nil, nil
 	}
+	if chore.HasSlots() {
+		// Skipping a task done several times a day skips the rest of its day.
+		return firstSlotAfterDay(ctx, chore, completedDate), nil
+	}
 
 	// Evaluate the whole schedule in the chore's own timezone. Doing the
 	// arithmetic in UTC pins every recurrence to a fixed UTC hour, so the
@@ -36,8 +40,12 @@ func scheduleNextDueDate(ctx context.Context, chore *chModel.Chore, completedDat
 		baseDate = completedDate.In(loc)
 	}
 
-	// Handle time-based frequencies, ensure time is in the future
-	if chore.FrequencyType == "day_of_the_month" || chore.FrequencyType == "days_of_the_week" || chore.FrequencyType == "interval" {
+	// Handle time-based frequencies, ensure time is in the future. An interval
+	// in hours keeps the time it reached: pinning it back to the time of day
+	// would bring "every 12 hours" back to the same evening forever.
+	hourly := chore.FrequencyType == "interval" && chore.FrequencyMetadataV2 != nil &&
+		chore.FrequencyMetadataV2.Unit != nil && *chore.FrequencyMetadataV2.Unit == "hours"
+	if !hourly && (chore.FrequencyType == "day_of_the_month" || chore.FrequencyType == "days_of_the_week" || chore.FrequencyType == "interval") {
 		t, err := time.Parse(time.RFC3339, chore.FrequencyMetadataV2.Time)
 		if err != nil {
 			log := logging.FromContext(ctx)

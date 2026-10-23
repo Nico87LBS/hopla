@@ -48,7 +48,7 @@ func TestBonusPeriodAndSurpriseRaiseTaskPoints(t *testing.T) {
 	// Noon, so that two hours later is still the same day and the same surprise.
 	now := noon(0)
 	task := chore(t, db, "Chambre", 3, now, nil)
-	earning, err := TaskEarning(db, task, now)
+	earning, err := TaskEarning(db, task, 7, now)
 	require.NoError(t, err)
 	require.Equal(t, 3, earning.Points)
 
@@ -59,12 +59,12 @@ func TestBonusPeriodAndSurpriseRaiseTaskPoints(t *testing.T) {
 	surprise, err := TodaySurprise(db, 1, now)
 	require.NoError(t, err)
 	require.Equal(t, task.ID, surprise.ChoreID)
-	earning, err = TaskEarning(db, task, now)
+	earning, err = TaskEarning(db, task, 7, now)
 	require.NoError(t, err)
 	require.Equal(t, 3*2+5, earning.Points)
 	require.Equal(t, "Chambre (×2 Vacances) (surprise +5)", earning.Reason)
 
-	earning, err = TaskEarning(db, task, now.Add(2*time.Hour))
+	earning, err = TaskEarning(db, task, 7, now.Add(2*time.Hour))
 	require.NoError(t, err)
 	require.Equal(t, 3+5, earning.Points, "the period is over")
 }
@@ -83,13 +83,33 @@ func TestTheSurpriseIsWorthItForEachChildsCopy(t *testing.T) {
 	require.Equal(t, []int{elena.ID, anna.ID}, same)
 
 	for _, task := range []*chModel.Chore{elena, anna} {
-		earning, err := TaskEarning(db, task, now)
+		earning, err := TaskEarning(db, task, 7, now)
 		require.NoError(t, err)
 		require.Equal(t, 3+5, earning.Points, task.Name)
 	}
-	earning, err := TaskEarning(db, other, now)
+	earning, err := TaskEarning(db, other, 7, now)
 	require.NoError(t, err)
 	require.Equal(t, 3, earning.Points)
+}
+
+func TestTheSurpriseIsEarnedOnceADayPerChild(t *testing.T) {
+	db := setup(t)
+	now := noon(0)
+	teeth := chore(t, db, "Dents", 3, now, nil)
+	_, err := TodaySurprise(db, 1, now)
+	require.NoError(t, err)
+
+	earning, err := TaskEarning(db, teeth, 7, now)
+	require.NoError(t, err)
+	require.Equal(t, 3+5, earning.Points)
+	done(t, db, teeth.ID, 7, now)
+
+	earning, err = TaskEarning(db, teeth, 7, now.Add(time.Hour))
+	require.NoError(t, err)
+	require.Equal(t, 3, earning.Points, "the second slot of the day earns no second surprise")
+	earning, err = TaskEarning(db, teeth, 8, now.Add(time.Hour))
+	require.NoError(t, err)
+	require.Equal(t, 3+5, earning.Points, "another child still gets it")
 }
 
 func TestSurpriseStaysPutAndSkipsHiddenTasks(t *testing.T) {

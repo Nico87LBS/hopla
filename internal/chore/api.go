@@ -61,6 +61,9 @@ func (h *API) GetAllChores(c *gin.Context) {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
+	if err := h.handler.fillSlotsToday(c, chores); err != nil {
+		logging.FromContext(c).Errorw("Failed to read today's slots", "error", err)
+	}
 	c.JSON(200, chores)
 }
 
@@ -331,6 +334,26 @@ func (h *API) CompleteChore(c *gin.Context) {
 		return
 	}
 
+	if chore.HasSlots() {
+		// A task done several times a day ticks the slot open now.
+		entry, err := h.handler.completeSlot(c, chore, performer, nil, completedDate)
+		if err != nil {
+			slotError(c, err)
+			return
+		}
+		updatedChore, err := h.choreRepo.GetChore(c, choreID, currentUser.ID, currentUser.CircleID)
+		if err != nil {
+			c.JSON(500, gin.H{"error": "Error getting chore"})
+			return
+		}
+		if err := h.handler.fillSlotsToday(c, []*chModel.Chore{updatedChore}); err != nil {
+			log.Errorw("Failed to read today's slots", "error", err, "choreID", choreID)
+		}
+		h.handler.broadcastSlot(c, updatedChore, &currentUser.User, entry)
+		c.JSON(200, updatedChore)
+		return
+	}
+
 	// confirm that the chore in completion window:
 	if chore.CompletionWindow != nil {
 		if completedDate.Before(chore.NextDueDate.Add(time.Hour * time.Duration(-*chore.CompletionWindow))) {
@@ -496,6 +519,9 @@ func APIs(cfg *config.Config, api *API, r *gin.Engine, auth *jwt.GinJWTMiddlewar
 		taskActionsAPI.PUT("/:id", api.UpdateChore)
 		taskActionsAPI.POST("/:id/approve", api.handler.ApproveChore)
 		taskActionsAPI.POST("/:id/reject", api.handler.RejectChore)
+		taskActionsAPI.POST("/:id/slots/:slot/approve", api.handler.ApproveSlot)
+		taskActionsAPI.POST("/:id/slots/:slot/reject", api.handler.RejectSlot)
+		taskActionsAPI.POST("/:id/slots/:slot/catchup", api.handler.CatchUpSlot)
 	}
 
 	circleAPI := r.Group("eapi/v1/circle")

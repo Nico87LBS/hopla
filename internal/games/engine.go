@@ -107,10 +107,11 @@ type Earning struct {
 	Reason string
 }
 
-// TaskEarning returns the points a task earns when done at performedAt: its
-// points, multiplied during a bonus period, plus the surprise bonus when it is
-// that day's surprise task.
-func TaskEarning(tx *gorm.DB, chore *chModel.Chore, performedAt time.Time) (Earning, error) {
+// TaskEarning returns the points a task earns when userID does it at
+// performedAt: its points, multiplied during a bonus period, plus the surprise
+// bonus when it is that day's surprise task and they have not had the bonus
+// yet that day (a task done several times a day earns it once).
+func TaskEarning(tx *gorm.DB, chore *chModel.Chore, userID int, performedAt time.Time) (Earning, error) {
 	earning := Earning{Reason: chore.Name}
 	if chore.Points == nil || *chore.Points <= 0 {
 		return earning, nil
@@ -137,6 +138,19 @@ func TaskEarning(tx *gorm.DB, chore *chModel.Chore, performedAt time.Time) (Earn
 		return earning, err
 	}
 	if surprise.ChoreID == chore.ID || slices.Contains(same, chore.ID) {
+		local := performedAt.In(time.Local)
+		dayStart := time.Date(local.Year(), local.Month(), local.Day(), 0, 0, 0, 0, time.Local)
+		var already int64
+		err := tx.Model(&chModel.ChoreHistory{}).
+			Where("chore_id IN ? AND completed_by = ? AND status = ? AND performed_at >= ? AND performed_at < ?",
+				append(same, surprise.ChoreID), userID, chModel.ChoreHistoryStatusCompleted, dayStart.UTC(), dayStart.AddDate(0, 0, 1).UTC()).
+			Count(&already).Error
+		if err != nil {
+			return earning, err
+		}
+		if already > 0 {
+			return earning, nil
+		}
 		earning.Points += surprise.Points
 		earning.Reason += fmt.Sprintf(" (surprise +%d)", surprise.Points)
 	}
