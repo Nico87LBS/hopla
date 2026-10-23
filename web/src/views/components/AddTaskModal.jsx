@@ -839,7 +839,7 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
     }
 
     // "always" chores never have a due date — backend keeps nextDueDate null
-    // and never archives them on completion (see RepeatSection.jsx for the
+    // and never archives them on completion (see WhenCard.jsx for the
     // full-edit-form equivalent).
     const isAlwaysAvailable = frequency?.frequencyType === 'always'
 

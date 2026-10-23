@@ -2,7 +2,7 @@ import { Container, Modal } from '@mui/joy'
 import { useMediaQuery } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 
-export default function WizardContainer({ children, onClose, sx, ...props }) {
+export default function EditorContainer({ children, onClose, sx, ...props }) {
   const { t } = useTranslation('chores')
   const mobile = useMediaQuery('(max-width:599px)')
   const content = (
@@ -48,7 +48,7 @@ export default function WizardContainer({ children, onClose, sx, ...props }) {
         '--Modal-backdropBackground': 'rgba(0, 0, 0, 0.6)',
         // Joy raises portaled listboxes above modals, but its selector misses
         // Menu because Menu renders with role="menu". Mirrors the workaround
-        // in AppModal so menus opened inside this wizard modal stay visible.
+        // in AppModal so menus opened inside this editor modal stay visible.
         '& ~ [role="menu"]': {
           '--unstable_popup-zIndex': 'calc(var(--joy-zIndex-modal) + 1)',
         },

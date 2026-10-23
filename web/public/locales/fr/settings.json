@@ -281,7 +281,7 @@
   "apiTokens": {
     "title": "Jetons d'API",
     "accessToken": "Jeton d'accès",
-    "description": "Crée un jeton pour l'API, par exemple pour l'intégration Home Assistant.",
+    "description": "Crée un jeton pour l'API, par exemple pour la domotique.",
     "tokenCreatedTitle": "Jeton créé",
     "tokenCreatedWarning": "Copie ce jeton maintenant. Par sécurité, tu ne pourras plus le revoir.",
     "removeTitle": "Retirer le jeton",
@@ -458,11 +458,6 @@
     "title": "Disposition et navigation",
     "sidepanel": {
       "title": "Panneau latéral"
-    },
-    "taskEditor": {
-      "title": "Éditeur de tâche",
-      "singlePage": "Afficher l'éditeur de tâche sur une seule page",
-      "singlePageHelp": "Tous les réglages de la tâche sur une seule page qui défile, au lieu d'étapes séparées. Enregistré pour cet appareil ou ce navigateur."
     }
   },
   "theme": {

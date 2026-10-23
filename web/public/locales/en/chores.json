@@ -1132,7 +1132,7 @@
       "deleteConfirm_other": "Delete this task and its {{count}} other copies? This cannot be undone."
     },
     "triggeredFromOutside": "Triggered from outside",
-    "triggeredFromOutsideHelp": "The task waits without a due date. A Home Assistant automation (action hopla.update_task) gives it one when needed.",
+    "triggeredFromOutsideHelp": "It waits and shows up when an outside signal gives it a due date.",
     "awardPointsWhenThis": "Award points or ask for approval when this task is completed. Skipping or postponing gives nothing."
   },
   "sections": {
@@ -1236,5 +1236,140 @@
     "each": "Each their own",
     "first": "First come",
     "one": "One at a time"
+  },
+  "editor": {
+    "who": {
+      "title": "For whom?",
+      "anyone": "Nobody picked: anyone can do it.",
+      "remember": "Remember for new tasks",
+      "copyOf": "You are editing {{name}}'s copy.",
+      "how": "Several people: how?",
+      "eachHelp_one": "{{count}} task per person: everyone ticks their own.",
+      "eachHelp_other": "{{count}} tasks, one per person: everyone ticks their own.",
+      "firstHelp": "One to do for everyone: the first person to do it earns the hops.",
+      "oneHelp": "One person has the task at a time.",
+      "holder": "Has it now",
+      "next": "Then"
+    },
+    "when": {
+      "title": "When?",
+      "kind": "Kind of task",
+      "kinds": {
+        "once": "Once",
+        "repeat": "Repeats",
+        "always": "Always",
+        "trigger": "On signal"
+      },
+      "rhythm": "Rhythm",
+      "rhythms": {
+        "daily": "Every day",
+        "days_of_the_week": "Some days",
+        "weekly": "Every week",
+        "monthly": "Every month",
+        "yearly": "Every year",
+        "interval": "Every…",
+        "day_of_the_month": "Some months",
+        "adaptive": "At its own pace"
+      },
+      "every": "Every",
+      "weeks": "Weeks",
+      "everyWeek": "Every week",
+      "someWeeks": "Only some weeks of the month",
+      "slots": "Slots",
+      "slotName": "Name",
+      "addSlot": "Slot",
+      "slotsHelp": "Several times a day? Add a slot for each time (morning, evening…).",
+      "slotsRule": "Each slot is ticked on its own and earns the hops. It opens an hour before its time; a parent can catch up a missed slot until midnight.",
+      "today": "Today",
+      "tomorrow": "Tomorrow",
+      "otherDate": "Other date",
+      "noDate": "No date",
+      "at": "At",
+      "addTime": "Time",
+      "anyTime": "or any time that day",
+      "nextOn": "Next time on",
+      "from": "Starting",
+      "rolling": "Count from the day it is done",
+      "rollingHelp": "Done late, it comes back that much later.",
+      "alwaysHelp": "It always stays in the list, with no due date.",
+      "triggerHelp": "It waits and shows up when an outside signal gives it a due date.",
+      "triggerDue": "Due date received",
+      "next": "Next time: {{when}} ({{slot}})"
+    },
+    "reward": {
+      "title": "Reward",
+      "hops": "Hops",
+      "perSlot": "for each slot",
+      "perTime": "each time",
+      "less": "One hop less",
+      "more": "One hop more",
+      "preset_one": "{{count}} hop",
+      "preset_other": "{{count}} hops",
+      "approval": "A parent approves",
+      "approvalHelp": "The hops come after approval."
+    },
+    "more": {
+      "title": "More options",
+      "hint": "Instructions, steps, reminders, project, visibility…",
+      "instructions": "Instructions and files",
+      "instructionsSet": "Instructions",
+      "none": "None",
+      "noneM": "None",
+      "steps": "Steps",
+      "reminders": "Reminders",
+      "reminderCount_one": "{{count}} reminder",
+      "reminderCount_other": "{{count}} reminders",
+      "remindersUnavailable": "No reminders for a task that is always available or set off by a signal.",
+      "early": "Can be done early",
+      "earlyValue": "{{hours}} h before",
+      "no": "No",
+      "earlyHelp": "Can be ticked before the due date",
+      "earlyHours": "hours before the due date",
+      "project": "Project and labels",
+      "labelCount_one": "{{count}} label",
+      "labelCount_other": "{{count}} labels",
+      "visibility": "Visible to",
+      "visibleAll": "The whole family",
+      "visibleLimited": "The people it is for",
+      "created": "Created by {{name}} {{when}}",
+      "updated": "edited by {{name}} {{when}}",
+      "addFile": "File or photo",
+      "removeFile": "Remove {{name}}"
+    },
+    "footer": {
+      "applyCopies_one": "Also for {{names}}'s copy",
+      "applyCopies_other": "Also for the {{count}} copies ({{names}})",
+      "saveAll_one": "Save all {{count}}",
+      "saveAll_other": "Save all {{count}}"
+    },
+    "menu": {
+      "more": "More actions",
+      "duplicate": "Duplicate"
+    },
+    "preview": {
+      "title": "Preview in Today"
+    },
+    "summary": {
+      "once": "On {{date}}",
+      "onceNoDate": "Once, no date",
+      "rhythm": {
+        "daily": "Every day",
+        "days_of_the_week": "On {{days}}",
+        "weekly": "Every week",
+        "monthly": "Every month",
+        "yearly": "Every year",
+        "interval_one": "Every {{count}} {{unit}}",
+        "interval_other": "Every {{count}} {{unit}}",
+        "day_of_the_month": "Some months",
+        "adaptive": "At its own pace"
+      },
+      "withSlots": "{{when}}, {{slots}}",
+      "atTime": "{{when}} at {{time}}",
+      "always": "Always available",
+      "trigger": "On signal",
+      "anyone": "Anyone",
+      "hops_one": "{{count}} hop",
+      "hops_other": "{{count}} hops"
+    }
   }
 }

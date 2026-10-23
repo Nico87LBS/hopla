@@ -281,7 +281,7 @@
   "apiTokens": {
     "title": "API Tokens",
     "accessToken": "Access Token",
-    "description": "Create a token for the API, for example for the Home Assistant integration.",
+    "description": "Create a token for the API, for example for home automation.",
     "tokenCreatedTitle": "Token Created",
     "tokenCreatedWarning": "Copy this token now. For your security, you won't be able to see it again.",
     "removeTitle": "Remove Token",
@@ -458,11 +458,6 @@
     "title": "Layout & Navigation",
     "sidepanel": {
       "title": "Sidepanel"
-    },
-    "taskEditor": {
-      "title": "Task editor",
-      "singlePage": "Show task editor on one page",
-      "singlePageHelp": "Show all task settings in one scrolling page instead of separate steps. Saved for this device/browser."
     }
   },
   "theme": {
