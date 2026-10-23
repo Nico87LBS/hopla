@@ -60,6 +60,7 @@ import {
   ChoreHistoryStatus,
   ChoreStatus,
   notInCompletionWindow,
+  taskMemberIds,
 } from '../../utils/Chores.jsx'
 import { getTextColorFromBackgroundColor } from '../../utils/Colors.jsx'
 import { commandQueue, CommandType } from '../../utils/CommandQueue'
@@ -192,8 +193,10 @@ const ChoreView = () => {
           icon: <PeopleAlt />,
           title: t('choreView.assignment'),
           text: `${t('choreView.assigned')}: ${
-            performers.find(p => p.userId === chore.assignedTo)?.displayName ||
-            t('choreView.na')
+            taskMemberIds(chore)
+              .map(id => performers.find(p => p.userId === id)?.displayName)
+              .filter(Boolean)
+              .join(', ') || t('choreView.na')
           }`,
           subtext: ` ${t('choreView.last')}: ${
             chore.lastCompletedDate

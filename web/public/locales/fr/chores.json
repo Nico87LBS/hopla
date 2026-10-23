@@ -1045,7 +1045,11 @@
       "keep_last_assigned": "Toujours la même personne",
       "random_except_last_assigned": "Au hasard, sauf la dernière personne",
       "round_robin": "Chacun son tour",
-      "no_assignee": "Personne"
+      "no_assignee": "Personne",
+      "together": "Tous ensemble"
+    },
+    "strategyHelp": {
+      "together": "Chaque personne a la tâche. La première qui la fait la termine pour tout le monde et gagne les points, puis elle revient à tous."
     },
     "assignment": "Attribution",
     "review": "Vérification",
@@ -1197,6 +1201,7 @@
   },
   "slots": {
     "cell": {
+      "doneByOther": "{{label}} : fait par un autre",
       "done": "{{label}} : fait",
       "pending": "{{label}} : en attente de validation",
       "approve": "Valider {{label}}",

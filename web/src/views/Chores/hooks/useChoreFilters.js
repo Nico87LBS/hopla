@@ -1,7 +1,7 @@
 import Fuse from 'fuse.js'
 import { useCallback, useMemo, useState } from 'react'
 
-import { ChoreFilters, filterByProject } from '../../../utils/Chores'
+import { ChoreFilters, filterByProject, isTaskFor } from '../../../utils/Chores'
 import { stripHtml } from '../../../utils/Helpers'
 
 export const useChoreFilters = ({
@@ -62,8 +62,8 @@ export const useChoreFilters = ({
     }
 
     if (impersonatedUser) {
-      baseChores = baseChores.filter(
-        chore => chore.assignedTo === impersonatedUser.userId,
+      baseChores = baseChores.filter(chore =>
+        isTaskFor(chore, impersonatedUser.userId),
       )
     }
 
@@ -93,8 +93,8 @@ export const useChoreFilters = ({
     }
 
     if (impersonatedUser) {
-      baseChores = baseChores.filter(
-        chore => chore.assignedTo === impersonatedUser.userId,
+      baseChores = baseChores.filter(chore =>
+        isTaskFor(chore, impersonatedUser.userId),
       )
     }
 

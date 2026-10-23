@@ -1,4 +1,4 @@
-import { Avatar } from '@mui/joy'
+import { Avatar, Box } from '@mui/joy'
 import PropTypes from 'prop-types'
 
 import { memberColor } from '../../constants/theme'
@@ -37,3 +37,31 @@ export const MemberAvatar = ({ member, size = 28 }) => (
 )
 
 MemberAvatar.propTypes = { member: memberShape, size: PropTypes.number }
+
+// The heads of everyone a task is for, overlapping a little.
+export const MemberAvatars = ({ members, size = 28 }) => (
+  <Box
+    sx={{ display: 'flex', flexShrink: 0 }}
+    title={members.map(member => member.displayName).join(', ')}
+  >
+    {members.map((member, index) => (
+      <Box
+        key={member.userId}
+        sx={{
+          ml: index ? `${-size / 3}px` : 0,
+          borderRadius: '50%',
+          boxShadow: index
+            ? '0 0 0 2px var(--joy-palette-background-surface)'
+            : 'none',
+        }}
+      >
+        <MemberAvatar member={member} size={size} />
+      </Box>
+    ))}
+  </Box>
+)
+
+MemberAvatars.propTypes = {
+  members: PropTypes.arrayOf(memberShape).isRequired,
+  size: PropTypes.number,
+}

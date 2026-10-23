@@ -444,7 +444,7 @@ func RemoveAssigneeAndReassign(chore *chModel.Chore, userID int) {
 
 	// Handle no assignee strategy
 	switch {
-	case chore.AssignStrategy == chModel.AssignmentStrategyNoAssignee:
+	case chore.AssignStrategy.HasNoCurrentAssignee():
 		chore.AssignedTo = nil // Set to nil to indicate no assignee
 	case len(chore.Assignees) == 0:
 		createdBy := chore.CreatedBy
@@ -491,7 +491,7 @@ func HandOverToProjectOwner(chore *chModel.Chore, leavingUserID int, ownerID int
 		}
 	}
 	chore.Assignees = kept
-	if chore.AssignStrategy == chModel.AssignmentStrategyNoAssignee {
+	if chore.AssignStrategy.HasNoCurrentAssignee() {
 		chore.AssignedTo = nil
 	} else {
 		if len(chore.Assignees) == 0 {

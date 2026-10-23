@@ -43,7 +43,17 @@ const (
 	AssignmentStrategyRandomExceptLastAssigned AssignmentStrategy = "random_except_last_assigned"
 	AssignmentStrategyRoundRobin               AssignmentStrategy = "round_robin"
 	AssignmentStrategyNoAssignee               AssignmentStrategy = "no_assignee"
+	// Everyone in the assignees list has the task at once: whoever does it
+	// first completes it for all and gets the points, and it comes back to
+	// all of them. It never has a current assignee.
+	AssignmentStrategyTogether AssignmentStrategy = "together"
 )
+
+// HasNoCurrentAssignee reports whether chores of this strategy are never
+// assigned to one person at a time.
+func (s AssignmentStrategy) HasNoCurrentAssignee() bool {
+	return s == AssignmentStrategyNoAssignee || s == AssignmentStrategyTogether
+}
 
 type Chore struct {
 	ID                     int                        `json:"id" gorm:"primary_key"`

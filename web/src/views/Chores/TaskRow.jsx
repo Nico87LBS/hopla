@@ -23,7 +23,7 @@ import {
   getDueDateChipText,
   getRecurrentChipText,
 } from '../../utils/ChoreCardHelpers.jsx'
-import { notInCompletionWindow } from '../../utils/Chores.jsx'
+import { notInCompletionWindow, taskMemberIds } from '../../utils/Chores.jsx'
 import { getPriorityColor } from '../../utils/Colors.jsx'
 import {
   getUrlHostname,
@@ -32,7 +32,7 @@ import {
 } from '../../utils/ExternalLinks.js'
 import { ChoreActionMenuTrigger } from '../components/ChoreActionMenu'
 import PendingBadge from '../components/PendingBadge'
-import { MemberAvatar } from '../Games/GameParts'
+import { MemberAvatars } from '../Games/GameParts'
 
 const RING = 26
 // How long the ticked ring shows before the task leaves the list.
@@ -211,9 +211,9 @@ const TaskRow = ({
     actingMember?.role === 'manager' ||
     chore.createdBy === actingUserId
 
-  const assignee = chore.assignedTo
-    ? performers.find(p => p.userId === chore.assignedTo)
-    : null
+  const members = taskMemberIds(chore)
+    .map(id => performers.find(p => p.userId === id))
+    .filter(Boolean)
   const dueColor = chore.nextDueDate
     ? getDueDateChipColor(chore.nextDueDate, chore)
     : null
@@ -433,14 +433,7 @@ const TaskRow = ({
           {chore.points}
         </Box>
       )}
-      {assignee && (
-        <Box
-          sx={{ display: 'flex', flexShrink: 0 }}
-          title={assignee.displayName}
-        >
-          <MemberAvatar member={assignee} size={26} />
-        </Box>
-      )}
+      {members.length > 0 && <MemberAvatars members={members} size={26} />}
       {showActions && !isMultiSelectMode && onOpenActionMenu && (
         <ChoreActionMenuTrigger
           variant='plain'

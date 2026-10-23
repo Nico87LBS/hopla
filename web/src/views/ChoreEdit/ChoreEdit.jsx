@@ -132,6 +132,7 @@ const ASSIGN_STRATEGIES = [
   'random_except_last_assigned',
   'round_robin',
   'no_assignee',
+  'together',
 ]
 const DEFAULT_ASSIGN_STRATEGY = ASSIGN_STRATEGIES[3] // keep_last_assigned
 const REPEAT_ON_TYPE = ['interval', 'days_of_the_week', 'day_of_the_month']
@@ -270,7 +271,10 @@ const ChoreEdit = () => {
   // A shared task for several people can become one copy per person, when
   // created or later, as long as it has no copies yet.
   const canSplit =
-    !anyone && assignees.length > 1 && (!isEditing || copies.length === 0)
+    !anyone &&
+    assignees.length > 1 &&
+    assignStrategy !== 'together' &&
+    (!isEditing || copies.length === 0)
   // Who keeps the task, and its history, when it is split.
   const splitKeeper = performers.find(
     p =>
@@ -284,8 +288,10 @@ const ChoreEdit = () => {
     : canPickStrategy
       ? assignStrategy
       : DEFAULT_ASSIGN_STRATEGY
+  // "Together": everyone has the task at once, nobody in particular.
+  const together = assignStrategyValue === 'together'
   const assignedToValue =
-    !hasSpecificAssignees || assignStrategyValue === 'no_assignee'
+    !hasSpecificAssignees || assignStrategyValue === 'no_assignee' || together
       ? null
       : assignableTo.some(a => a.userId === assignedTo)
         ? assignedTo
@@ -444,7 +450,7 @@ const ChoreEdit = () => {
       if (assignees.length === 0) {
         errors.assignees = t('taskEditor.errChooseEligible')
       }
-      if (assignedToValue === null || assignedToValue < 0) {
+      if (!together && (assignedToValue === null || assignedToValue < 0)) {
         errors.assignedTo = t('taskEditor.errChooseAssignee')
       }
     }
@@ -1874,7 +1880,7 @@ const ChoreEdit = () => {
               )}
               {assignees.length > 1 && !(perMember && canSplit) && (
                 <Box className='task-properties'>
-                  <Box mb={2}>
+                  <Box mb={2} sx={{ display: together ? 'none' : undefined }}>
                     <Typography level='h4'>
                       {t('taskEditor.assignedNow')}
                     </Typography>
@@ -1917,6 +1923,11 @@ const ChoreEdit = () => {
                         </Option>
                       ))}
                     </Select>
+                    {together && (
+                      <FormHelperText>
+                        {t('taskEditor.strategyHelp.together')}
+                      </FormHelperText>
+                    )}
                   </Box>
                 </Box>
               )}
