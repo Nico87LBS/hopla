@@ -1045,11 +1045,7 @@
       "keep_last_assigned": "Keep the same user",
       "random_except_last_assigned": "Random, excluding the last user",
       "round_robin": "Rotate in order",
-      "no_assignee": "Leave unassigned",
-      "together": "Everyone together"
-    },
-    "strategyHelp": {
-      "together": "Everyone has the task. The first one to do it completes it for all and gets the points, then it comes back to everyone."
+      "no_assignee": "Leave unassigned"
     },
     "assignment": "Assignment",
     "review": "Review",
@@ -1120,7 +1116,10 @@
     "title": "Task editor",
     "copies": {
       "title": "For several people",
-      "shared": "One shared task",
+      "turns": "Taking turns",
+      "turnsHelp": "One person has the task at a time; the rule below picks the next one.",
+      "together": "Everyone together",
+      "togetherHelp": "Everyone has the task. The first one to do it completes it for all and gets the points, then it comes back to everyone.",
       "each": "One copy per person",
       "eachHelp_one": "{{count}} task will be created, one per person.",
       "eachHelp_other": "{{count}} tasks will be created, one per person.",
@@ -1231,6 +1230,7 @@
       "time": "Slot time",
       "remove": "Remove the slot {{name}}",
       "add": "Add a slot",
+      "dueFromSlots": "No due date to pick: the task is due at its next slot.",
       "rule": "No due date needed: the task is due at its next slot. A slot opens an hour before its time and closes when the next one opens, the last one at midnight. A parent can catch up a missed slot until midnight.",
       "errTime": "Give each slot a time.",
       "errSameTime": "Two slots can't have the same time."

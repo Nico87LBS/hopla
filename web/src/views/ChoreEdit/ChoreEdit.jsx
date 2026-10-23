@@ -132,7 +132,6 @@ const ASSIGN_STRATEGIES = [
   'random_except_last_assigned',
   'round_robin',
   'no_assignee',
-  'together',
 ]
 const DEFAULT_ASSIGN_STRATEGY = ASSIGN_STRATEGIES[3] // keep_last_assigned
 const REPEAT_ON_TYPE = ['interval', 'days_of_the_week', 'day_of_the_month']
@@ -268,13 +267,14 @@ const ChoreEdit = () => {
   const choreProject = projects.find(project => project.id === projectId)
   const assignablePerformers = filterMembersForProject(performers, choreProject)
   const assignees = anyone ? assignablePerformers : assignableTo
+  // A task with slots is due at its next slot: the server sets the date.
+  const hasSlots =
+    ['daily', 'days_of_the_week'].includes(frequencyType) &&
+    frequencyMetadata?.slots?.length > 0
   // A shared task for several people can become one copy per person, when
   // created or later, as long as it has no copies yet.
   const canSplit =
-    !anyone &&
-    assignees.length > 1 &&
-    assignStrategy !== 'together' &&
-    (!isEditing || copies.length === 0)
+    !anyone && assignees.length > 1 && (!isEditing || copies.length === 0)
   // Who keeps the task, and its history, when it is split.
   const splitKeeper = performers.find(
     p =>
@@ -481,10 +481,6 @@ const ChoreEdit = () => {
     ) {
       errors.frequency = t('choreEdit.errSelectMonth')
     }
-    // A task with slots is due at its next slot: the server sets the date.
-    const hasSlots =
-      ['daily', 'days_of_the_week'].includes(frequencyType) &&
-      frequencyMetadata?.slots?.length > 0
     if (
       dueDate === null &&
       !hasSlots &&
@@ -1484,7 +1480,13 @@ const ChoreEdit = () => {
                 frequencyError={errors?.frequency}
               />
 
+              {hasSlots && (
+                <Typography level='body-sm' sx={{ mt: 2 }}>
+                  {t('slots.editor.dueFromSlots')}
+                </Typography>
+              )}
               {frequencyType !== 'always' &&
+                !hasSlots &&
                 (frequencyType !== 'trigger' || dueDate) && (
                   <Box mt={3} mb={2}>
                     <Typography level='h4'>
@@ -1833,34 +1835,51 @@ const ChoreEdit = () => {
                 )}
               </Box>
 
-              {canSplit && (
+              {!anyone && assignees.length > 1 && (
                 <Box mb={2}>
                   <Typography level='h4'>
                     {t('taskEditor.copies.title')}
                   </Typography>
                   <RadioGroup
-                    value={perMember ? 'each' : 'shared'}
-                    onChange={e => setPerMember(e.target.value === 'each')}
+                    value={
+                      perMember && canSplit
+                        ? 'each'
+                        : together
+                          ? 'together'
+                          : 'turns'
+                    }
+                    onChange={e => {
+                      const mode = e.target.value
+                      setPerMember(mode === 'each')
+                      if (mode === 'together') setAssignStrategy('together')
+                      else if (assignStrategy === 'together')
+                        setAssignStrategy(DEFAULT_ASSIGN_STRATEGY)
+                    }}
                     sx={{ mt: 1, gap: 1 }}
                   >
+                    <Radio value='turns' label={t('taskEditor.copies.turns')} />
                     <Radio
-                      value='shared'
-                      label={t('taskEditor.copies.shared')}
+                      value='together'
+                      label={t('taskEditor.copies.together')}
                     />
-                    <Radio value='each' label={t('taskEditor.copies.each')} />
+                    {canSplit && (
+                      <Radio value='each' label={t('taskEditor.copies.each')} />
+                    )}
                   </RadioGroup>
-                  {perMember && (
-                    <FormHelperText>
-                      {isEditing
+                  <FormHelperText>
+                    {perMember && canSplit
+                      ? isEditing
                         ? t('taskEditor.copies.splitHelp', {
                             count: assignees.length - 1,
                             name: splitKeeper ?? '',
                           })
                         : t('taskEditor.copies.eachHelp', {
                             count: assignees.length,
-                          })}
-                    </FormHelperText>
-                  )}
+                          })
+                      : together
+                        ? t('taskEditor.copies.togetherHelp')
+                        : t('taskEditor.copies.turnsHelp')}
+                  </FormHelperText>
                 </Box>
               )}
               {copies.length > 0 && (
@@ -1878,59 +1897,58 @@ const ChoreEdit = () => {
                   </FormHelperText>
                 </Box>
               )}
-              {assignees.length > 1 && !(perMember && canSplit) && (
-                <Box className='task-properties'>
-                  <Box mb={2} sx={{ display: together ? 'none' : undefined }}>
-                    <Typography level='h4'>
-                      {t('taskEditor.assignedNow')}
-                    </Typography>
-                    <Select
-                      placeholder={
-                        assignees.length === 0
-                          ? t('taskEditor.noAssigneesYet')
-                          : t('taskEditor.selectAssignee')
-                      }
-                      disabled={assignees.length === 0}
-                      value={assignedTo > -1 ? assignedTo : null}
-                      onChange={(_, selectedUserId) =>
-                        setAssignedTo(selectedUserId)
-                      }
-                    >
-                      {assignablePerformers
-                        .filter(p => assignees.some(a => a.userId == p.userId))
-                        .map((item, index) => (
-                          <Option value={item.userId} key={item.displayName}>
-                            {item.displayName}
+              {assignees.length > 1 &&
+                !(perMember && canSplit) &&
+                !together && (
+                  <Box className='task-properties'>
+                    <Box mb={2}>
+                      <Typography level='h4'>
+                        {t('taskEditor.assignedNow')}
+                      </Typography>
+                      <Select
+                        placeholder={
+                          assignees.length === 0
+                            ? t('taskEditor.noAssigneesYet')
+                            : t('taskEditor.selectAssignee')
+                        }
+                        disabled={assignees.length === 0}
+                        value={assignedTo > -1 ? assignedTo : null}
+                        onChange={(_, selectedUserId) =>
+                          setAssignedTo(selectedUserId)
+                        }
+                      >
+                        {assignablePerformers
+                          .filter(p =>
+                            assignees.some(a => a.userId == p.userId),
+                          )
+                          .map((item, index) => (
+                            <Option value={item.userId} key={item.displayName}>
+                              {item.displayName}
+                            </Option>
+                          ))}
+                      </Select>
+                    </Box>
+
+                    <Box>
+                      <Typography level='h4'>
+                        {t('taskEditor.nextAssignment')}
+                      </Typography>
+                      <Select
+                        aria-label={t('taskEditor.nextAssignment')}
+                        value={assignStrategy}
+                        onChange={(_, value) => {
+                          if (value) setAssignStrategy(value)
+                        }}
+                      >
+                        {ASSIGN_STRATEGIES.map(value => (
+                          <Option key={value} value={value}>
+                            {t(`taskEditor.strategy.${value}`)}
                           </Option>
                         ))}
-                    </Select>
+                      </Select>
+                    </Box>
                   </Box>
-
-                  <Box>
-                    <Typography level='h4'>
-                      {t('taskEditor.nextAssignment')}
-                    </Typography>
-                    <Select
-                      aria-label={t('taskEditor.nextAssignment')}
-                      value={assignStrategy}
-                      onChange={(_, value) => {
-                        if (value) setAssignStrategy(value)
-                      }}
-                    >
-                      {ASSIGN_STRATEGIES.map(value => (
-                        <Option key={value} value={value}>
-                          {t(`taskEditor.strategy.${value}`)}
-                        </Option>
-                      ))}
-                    </Select>
-                    {together && (
-                      <FormHelperText>
-                        {t('taskEditor.strategyHelp.together')}
-                      </FormHelperText>
-                    )}
-                  </Box>
-                </Box>
-              )}
+                )}
             </EditorSection>
             <EditorSection
               title={t('taskEditor.descriptionAttachments')}

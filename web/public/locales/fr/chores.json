@@ -1045,11 +1045,7 @@
       "keep_last_assigned": "Toujours la même personne",
       "random_except_last_assigned": "Au hasard, sauf la dernière personne",
       "round_robin": "Chacun son tour",
-      "no_assignee": "Personne",
-      "together": "Tous ensemble"
-    },
-    "strategyHelp": {
-      "together": "Chaque personne a la tâche. La première qui la fait la termine pour tout le monde et gagne les points, puis elle revient à tous."
+      "no_assignee": "Personne"
     },
     "assignment": "Attribution",
     "review": "Vérification",
@@ -1120,7 +1116,10 @@
     "title": "Éditeur de tâche",
     "copies": {
       "title": "Pour plusieurs personnes",
-      "shared": "Une seule tâche partagée",
+      "turns": "Chacun son tour",
+      "turnsHelp": "Une seule personne a la tâche à la fois ; la règle ci-dessous choisit la suivante.",
+      "together": "Tous ensemble",
+      "togetherHelp": "Chaque personne a la tâche. La première qui la fait la termine pour tout le monde et gagne les points, puis elle revient à tous.",
       "each": "Une copie par personne",
       "eachHelp_one": "{{count}} tâche sera créée, une par personne.",
       "eachHelp_other": "{{count}} tâches seront créées, une par personne.",
@@ -1231,6 +1230,7 @@
       "time": "Heure du créneau",
       "remove": "Retirer le créneau {{name}}",
       "add": "Ajouter un créneau",
+      "dueFromSlots": "Pas d'échéance à choisir : la tâche est due à son prochain créneau.",
       "rule": "Pas besoin d'échéance : la tâche est due à son prochain créneau. Un créneau s'ouvre une heure avant son heure et se ferme quand le suivant s'ouvre, le dernier à minuit. Un parent peut rattraper un créneau oublié jusqu'à minuit.",
       "errTime": "Donne une heure à chaque créneau.",
       "errSameTime": "Deux créneaux ne peuvent pas avoir la même heure."
