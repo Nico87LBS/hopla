@@ -1116,11 +1116,8 @@
     "title": "Éditeur de tâche",
     "copies": {
       "title": "Pour plusieurs personnes",
-      "turns": "Chacun son tour",
-      "turnsHelp": "Une seule personne a la tâche à la fois ; la règle ci-dessous choisit la suivante.",
-      "together": "Tous ensemble",
-      "togetherHelp": "Chaque personne a la tâche. La première qui la fait la termine pour tout le monde et gagne les points, puis elle revient à tous.",
-      "each": "Une copie par personne",
+      "turnsHelp": "Une seule personne a la tâche à la fois ; la règle ci-dessous choisit laquelle.",
+      "togetherHelp": "Une seule à faire pour tous : la première personne qui la fait gagne les points, puis elle revient à tout le monde.",
       "eachHelp_one": "{{count}} tâche sera créée, une par personne.",
       "eachHelp_other": "{{count}} tâches seront créées, une par personne.",
       "splitHelp_one": "La tâche reste à {{name}} avec son historique, et une copie est créée pour l'autre personne.",
@@ -1213,7 +1210,6 @@
     "catchUp": "Rattraper",
     "failed": "Le créneau n'a pas pu être mis à jour",
     "summary": "{{done}} sur {{total}} faits aujourd'hui",
-    "copies": "une par enfant",
     "toApprove_one": "{{count}} à valider",
     "toApprove_other": "{{count}} à valider",
     "missedCount_one": "{{count}} oublié",
@@ -1235,5 +1231,10 @@
       "errTime": "Donne une heure à chaque créneau.",
       "errSameTime": "Deux créneaux ne peuvent pas avoir la même heure."
     }
+  },
+  "taskMode": {
+    "each": "Chacun la sienne",
+    "first": "Premier arrivé",
+    "one": "Un seul à la fois"
   }
 }

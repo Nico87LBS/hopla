@@ -1116,11 +1116,8 @@
     "title": "Task editor",
     "copies": {
       "title": "For several people",
-      "turns": "Taking turns",
-      "turnsHelp": "One person has the task at a time; the rule below picks the next one.",
-      "together": "Everyone together",
-      "togetherHelp": "Everyone has the task. The first one to do it completes it for all and gets the points, then it comes back to everyone.",
-      "each": "One copy per person",
+      "turnsHelp": "One person has the task at a time; the rule below picks who.",
+      "togetherHelp": "One task for everyone: the first person to do it gets the points, then it comes back to everyone.",
       "eachHelp_one": "{{count}} task will be created, one per person.",
       "eachHelp_other": "{{count}} tasks will be created, one per person.",
       "splitHelp_one": "The task stays with {{name}} with its history, and a copy is created for the other person.",
@@ -1213,7 +1210,6 @@
     "catchUp": "Catch up",
     "failed": "The slot could not be updated",
     "summary": "{{done}} of {{total}} done today",
-    "copies": "one per child",
     "toApprove_one": "{{count}} to approve",
     "toApprove_other": "{{count}} to approve",
     "missedCount_one": "{{count}} missed",
@@ -1235,5 +1231,10 @@
       "errTime": "Give each slot a time.",
       "errSameTime": "Two slots can't have the same time."
     }
+  },
+  "taskMode": {
+    "each": "Each their own",
+    "first": "First come",
+    "one": "One at a time"
   }
 }
