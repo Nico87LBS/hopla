@@ -112,8 +112,6 @@
     "mine": "Mine",
     "availableToMe": "Available to me",
     "others": "Others",
-    "cards": "Cards",
-    "compact": "Compact",
     "calendar": "Calendar",
     "filters": "Filters",
     "filterNamePlaceholder": "Filter name…",
@@ -130,7 +128,8 @@
     "moreSaveOptions": "More save options",
     "showCount": "Show {{count}}",
     "done": "Done",
-    "savedFilters": "Saved Filters"
+    "savedFilters": "Saved Filters",
+    "list": "List"
   },
   "sort": {
     "assignedToMe": "Assigned to me",
@@ -1186,5 +1185,13 @@
   },
   "projectPicker": {
     "label": "Project"
+  },
+  "taskRow": {
+    "complete": "Mark “{{name}}” as done",
+    "waitingApproval": "Waiting for a parent to approve",
+    "pause": "Pause",
+    "resume": "Resume",
+    "hops_one": "{{count}} hop",
+    "hops_other": "{{count}} hops"
   }
 }

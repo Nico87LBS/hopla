@@ -181,6 +181,9 @@ const MemberCard = ({ leader, member, onAdjust, progress, streak }) => {
             <Typography
               sx={{
                 color: leader ? HOPLA.goldText : 'primary.plainColor',
+                '[data-joy-color-scheme="dark"] &': {
+                  color: leader ? HOPLA.gold : 'primary.plainColor',
+                },
                 font: '700 20px/24px var(--joy-fontFamily-display)',
               }}
             >

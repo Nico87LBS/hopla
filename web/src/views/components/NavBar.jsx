@@ -248,7 +248,7 @@ const NavBar = () => {
         alignItems: 'center',
         backdropFilter: 'blur(16px)',
         bgcolor:
-          'rgba(var(--joy-palette-background-bodyChannel, 247 245 241) / 0.9)',
+          'color-mix(in srgb, var(--joy-palette-background-body) 90%, transparent)',
         display: 'flex',
         gap: 0.5,
         minHeight: 60,

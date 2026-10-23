@@ -1,14 +1,13 @@
 import '@meauxt/react-swipeable-list/dist/styles.css'
 
 import { SwipeableList, Type as ListType } from '@meauxt/react-swipeable-list'
+import { Sheet } from '@mui/joy'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import ChoreActionMenu from '../components/ChoreActionMenu'
 import ArchivedChoreCard from './ArchivedChoreCard'
-import ChoreCard from './ChoreCard'
-import CompactChoreCard from './CompactChoreCard'
 import ChoreSwipeableItem, {
   SWIPE_COMMIT_THRESHOLD,
 } from './components/ChoreSwipeableItem'
@@ -18,6 +17,7 @@ import {
   getChoreLeadingActions,
   getChoreTrailingActions,
 } from './components/ChoreSwipeActions'
+import TaskRow from './TaskRow'
 
 const ChoreListView = ({
   chores,
@@ -31,9 +31,7 @@ const ChoreListView = ({
   showActions = true,
   toggleChoreSelection,
   toggleMultiSelectMode,
-  userLabels,
   userProfile,
-  viewMode,
 }) => {
   const navigate = useNavigate()
   const { t } = useTranslation('chores')
@@ -48,9 +46,8 @@ const ChoreListView = ({
   }, [])
   const closeActionMenu = useCallback(() => setActionMenuAnchor(null), [])
 
-  // The swipe-action offset below has to follow the card component, not the
-  // raw view mode.
-  const usesCompactCard = viewMode === 'compact'
+  // Every task is a flat row now, so the swipe tiles line up with its top.
+  const usesCompactCard = true
 
   const renderChoreCard = (chore, key) => {
     if (isArchived) {
@@ -65,13 +62,11 @@ const ChoreListView = ({
         />
       )
     }
-    const CardComponent = usesCompactCard ? CompactChoreCard : ChoreCard
     return (
-      <CardComponent
+      <TaskRow
         key={key || chore.id}
         chore={chore}
         performers={membersData?.res}
-        userLabels={userLabels}
         onChipClick={handleLabelFiltering}
         onAction={handleChoreAction}
         isMultiSelectMode={isMultiSelectMode}
@@ -103,41 +98,54 @@ const ChoreListView = ({
   // and keeps the full-swipe commit a deliberately long drag.
   const renderChores = chores => {
     return (
-      <SwipeableList
-        type={ListType.IOS}
-        fullSwipe
-        threshold={SWIPE_COMMIT_THRESHOLD}
+      <Sheet
+        variant='outlined'
+        sx={{
+          bgcolor: 'background.surface',
+          borderRadius: 'lg',
+          overflow: 'hidden',
+          '& .swipeable-list-item + .swipeable-list-item': {
+            borderTop: '1px solid',
+            borderColor: 'divider',
+          },
+        }}
       >
-        {chores.map(chore => (
-          <ChoreSwipeableItem
-            key={chore.id}
-            leadingActions={
-              isArchived
-                ? getArchivedLeadingActions(swipeActionArgs(chore))
-                : getChoreLeadingActions(swipeActionArgs(chore))
-            }
-            trailingActions={
-              isArchived
-                ? getArchivedTrailingActions(swipeActionArgs(chore))
-                : getChoreTrailingActions({
-                    ...swipeActionArgs(chore),
-                    navigate,
-                  })
-            }
-            onClick={() => {
-              if (isMultiSelectMode) {
-                toggleChoreSelection(chore.id)
-              } else {
-                navigate(`/chores/${chore.id}`)
+        <SwipeableList
+          type={ListType.IOS}
+          fullSwipe
+          threshold={SWIPE_COMMIT_THRESHOLD}
+        >
+          {chores.map(chore => (
+            <ChoreSwipeableItem
+              key={chore.id}
+              leadingActions={
+                isArchived
+                  ? getArchivedLeadingActions(swipeActionArgs(chore))
+                  : getChoreLeadingActions(swipeActionArgs(chore))
               }
-            }}
-            longPressEnabled={Boolean(onLongPressChore)}
-            onLongPress={() => onLongPressChore?.(chore.id)}
-          >
-            {renderChoreCard(chore)}
-          </ChoreSwipeableItem>
-        ))}
-      </SwipeableList>
+              trailingActions={
+                isArchived
+                  ? getArchivedTrailingActions(swipeActionArgs(chore))
+                  : getChoreTrailingActions({
+                      ...swipeActionArgs(chore),
+                      navigate,
+                    })
+              }
+              onClick={() => {
+                if (isMultiSelectMode) {
+                  toggleChoreSelection(chore.id)
+                } else {
+                  navigate(`/chores/${chore.id}`)
+                }
+              }}
+              longPressEnabled={Boolean(onLongPressChore)}
+              onLongPress={() => onLongPressChore?.(chore.id)}
+            >
+              {renderChoreCard(chore)}
+            </ChoreSwipeableItem>
+          ))}
+        </SwipeableList>
+      </Sheet>
     )
   }
 

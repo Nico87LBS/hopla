@@ -112,8 +112,6 @@
     "mine": "À moi",
     "availableToMe": "Disponible pour moi",
     "others": "Autres",
-    "cards": "Cartes",
-    "compact": "Compacte",
     "calendar": "Calendrier",
     "filters": "Filtres",
     "filterNamePlaceholder": "Nom du filtre...",
@@ -130,7 +128,8 @@
     "moreSaveOptions": "Plus d'options d'enregistrement",
     "showCount": "Afficher {{count}}",
     "done": "Terminé",
-    "savedFilters": "Filtres enregistrés"
+    "savedFilters": "Filtres enregistrés",
+    "list": "Liste"
   },
   "sort": {
     "assignedToMe": "Assigné à moi",
@@ -1186,5 +1185,13 @@
   },
   "projectPicker": {
     "label": "Projet"
+  },
+  "taskRow": {
+    "complete": "Marquer « {{name}} » comme faite",
+    "waitingApproval": "En attente de validation par un parent",
+    "pause": "Mettre en pause",
+    "resume": "Reprendre",
+    "hops_one": "{{count}} hop",
+    "hops_other": "{{count}} hops"
   }
 }
