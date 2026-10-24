@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 import { apiClient } from './ApiClient'
 
 // Migration helpers to maintain compatibility with existing code
@@ -146,9 +148,8 @@ const MarkChoreComplete = (id, body, completedDate, performer) => {
 
   let completedDateFormated = ''
   if (completedDate) {
-    completedDateFormated = `?completedDate=${new Date(
-      completedDate,
-    ).toISOString()}`
+    // A date typed in the app is the family's time.
+    completedDateFormated = `?completedDate=${moment(completedDate).toISOString()}`
     markChoreURL += completedDateFormated
   }
   if (performer) {
@@ -326,6 +327,25 @@ const SetMemberAway = async (memberId, away) => {
     body: JSON.stringify({ memberId, away }),
   })
   if (!resp.ok) throw new Error('Unable to change who is home')
+  return resp.json()
+}
+
+const GetFamilyTimezone = async () => {
+  const resp = await Fetch(`/circles/timezone`, {
+    method: 'GET',
+    headers: HEADERS(),
+  })
+  if (!resp.ok) throw new Error('Unable to get the family time zone')
+  return resp.json()
+}
+
+const SetFamilyTimezone = async timezone => {
+  const resp = await Fetch(`/circles/timezone`, {
+    method: 'PUT',
+    headers: HEADERS(),
+    body: JSON.stringify({ timezone }),
+  })
+  if (!resp.ok) throw new Error('Unable to change the family time zone')
   return resp.json()
 }
 
@@ -540,7 +560,7 @@ const UpdateDueDate = (id, dueDate) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      dueDate: dueDate ? new Date(dueDate).toISOString() : null,
+      dueDate: dueDate ? moment(dueDate).toISOString() : null,
       updatedAt: new Date().toISOString(),
     }),
   })
@@ -1181,6 +1201,7 @@ export {
   GetChoreTimer,
   GetCircleMemberRequests,
   GetDefaultRanks,
+  GetFamilyTimezone,
   GetFilterById,
   GetFilters,
   GetFiltersByUsage,
@@ -1229,6 +1250,7 @@ export {
   SavePointsPreset,
   SaveQuest,
   SaveRanks,
+  SetFamilyTimezone,
   SetMemberAway,
   SetupMFA,
   SignAssetURL,

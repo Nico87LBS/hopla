@@ -12,6 +12,7 @@ import (
 	cModel "github.com/nico87lbs/hopla/internal/circle/model"
 	"github.com/nico87lbs/hopla/internal/database"
 	rModel "github.com/nico87lbs/hopla/internal/reward/model"
+	"github.com/nico87lbs/hopla/internal/zone"
 )
 
 func setupTestDB(t *testing.T) *gorm.DB {
@@ -184,7 +185,7 @@ func TestRequestRedemption_QuotaPerMemberAndPeriod(t *testing.T) {
 	seedMember(t, db, 1, 1, 100, 0)
 	seedMember(t, db, 2, 1, 100, 0)
 	reward := seedReward(t, db, 1, 3)
-	reward.QuotaCount, reward.QuotaPeriod, reward.QuotaTimezone = 1, rModel.QuotaPeriodDay, "Europe/Brussels"
+	reward.QuotaCount, reward.QuotaPeriod = 1, rModel.QuotaPeriodDay
 	if err := db.Save(reward).Error; err != nil {
 		t.Fatal(err)
 	}
@@ -220,7 +221,10 @@ func TestRequestRedemption_QuotaPerMemberAndPeriod(t *testing.T) {
 }
 
 func TestQuotaWindow(t *testing.T) {
-	brussels := &rModel.Reward{QuotaCount: 1, QuotaTimezone: "Europe/Brussels"}
+	loc, _ := time.LoadLocation("Europe/Brussels")
+	zone.Set(7, loc)
+	defer zone.Forget(7)
+	brussels := &rModel.Reward{CircleID: 7, QuotaCount: 1}
 	now := time.Date(2026, 10, 21, 22, 30, 0, 0, time.UTC) // Thursday 00:30 in Brussels
 	for _, tc := range []struct{ period, start, end string }{
 		{rModel.QuotaPeriodDay, "2026-10-21T22:00:00Z", "2026-10-22T22:00:00Z"},

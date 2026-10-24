@@ -325,7 +325,7 @@ const ChoreView = () => {
           id: -Date.now(),
           choreId: Number(choreId),
           completedBy: impersonatedUser?.userId || userProfile?.id || 0,
-          performedAt: completedDate || new Date().toISOString(),
+          performedAt: moment(completedDate || undefined).toISOString(),
           dueDate: chore.nextDueDate || null,
           notes: note || null,
           status: 1,

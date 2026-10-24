@@ -115,7 +115,7 @@ func TestCreateChoreFirstDueDate(t *testing.T) {
 			want:          time.Date(2026, 9, 23, 9, 0, 0, 0, time.UTC),
 		},
 		{
-			name:          "weekday is checked in the chore timezone",
+			name:          "weekday is checked in the family timezone",
 			frequencyType: chModel.FrequencyTypeDayOfTheWeek,
 			metadata:      &chModel.FrequencyMetadata{Days: []*string{jsonPtr("saturday")}, Timezone: "Asia/Tokyo"},
 			nextDueDate:   time.Date(2026, 9, 17, 15, 0, 0, 0, time.UTC), // Fri 00:00 in Tokyo
@@ -132,6 +132,10 @@ func TestCreateChoreFirstDueDate(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			router, db := newCreateChoreTestRouter(t)
+			familyIn(t, "UTC")
+			if test.metadata != nil && test.metadata.Timezone != "" {
+				familyIn(t, test.metadata.Timezone)
+			}
 			body, err := json.Marshal(map[string]any{
 				"name":              test.name,
 				"frequencyType":     test.frequencyType,

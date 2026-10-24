@@ -1,5 +1,9 @@
 // What the task editor says about a task's schedule, kept free of React so the
-// tests can check it.
+// tests can check it. Days and times are the family's.
+
+import moment from 'moment'
+
+import { familyTimezone } from '../../../utils/familyTime.js'
 
 export const SLOT_FREQUENCY_TYPES = ['daily', 'days_of_the_week']
 
@@ -55,17 +59,18 @@ export const nextSlot = (
   if (!slots.length) return null
   const days = frequencyMetadata.days || []
   for (let offset = 0; offset < 8; offset++) {
-    const day = new Date(now)
-    day.setDate(now.getDate() + offset)
+    const day = moment(now).add(offset, 'days')
     if (
       frequencyType === 'days_of_the_week' &&
-      !days.includes(WEEK_DAYS[day.getDay()])
+      !days.includes(WEEK_DAYS[day.day()])
     )
       continue
     for (const slot of slots) {
       const [hour, minute] = slot.time.split(':').map(Number)
-      const at = new Date(day)
-      at.setHours(hour, minute, 0, 0)
+      const at = day
+        .clone()
+        .set({ hour, minute, second: 0, millisecond: 0 })
+        .toDate()
       if (at > now) return { at, slot }
     }
   }
@@ -102,10 +107,7 @@ export const describeTask = ({
 }) => {
   const metadata = frequencyMetadata || {}
   const kind = scheduleKind(frequencyType)
-  const time = date => {
-    const at = new Date(date)
-    return `${String(at.getHours()).padStart(2, '0')}:${String(at.getMinutes()).padStart(2, '0')}`
-  }
+  const time = date => moment(date).format('HH:mm')
   let when
   if (kind === 'once') {
     when = dueDate
@@ -113,6 +115,7 @@ export const describeTask = ({
           date: new Date(dueDate).toLocaleDateString(language, {
             day: 'numeric',
             month: 'long',
+            timeZone: familyTimezone(),
           }),
         })
       : t('editor.summary.onceNoDate')

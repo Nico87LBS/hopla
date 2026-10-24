@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@mui/joy'
 import { useQueryClient } from '@tanstack/react-query'
+import moment from 'moment'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -184,7 +185,7 @@ function PendingBadge({ commands, size = 'sm', sx = {} }) {
                   {formatCommandLabel(cmd.commandType, t)}
                 </Typography>
                 <Typography level='body-xs' sx={{ color: 'text.tertiary' }}>
-                  {new Date(cmd.createdAt).toLocaleString()}
+                  {moment(cmd.createdAt).format('L LT')}
                 </Typography>
               </ListItemContent>
 

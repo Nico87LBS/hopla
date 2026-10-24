@@ -6,6 +6,7 @@ import (
 
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
 	"github.com/nico87lbs/hopla/internal/games"
+	"github.com/nico87lbs/hopla/internal/zone"
 	"gorm.io/gorm"
 )
 
@@ -41,8 +42,8 @@ func (r *ChoreRepository) bringBackTasks(ctx context.Context, tx *gorm.DB, circl
 	if err != nil {
 		return err
 	}
-	local := now.In(time.Local)
-	today := time.Date(local.Year(), local.Month(), local.Day(), 0, 0, 0, 0, time.Local)
+	loc := zone.Of(circleID)
+	today := zone.StartOfDay(now, loc)
 	var chores []*chModel.Chore
 	if err := tx.Preload("Assignees").
 		Where("circle_id = ? AND is_active = ? AND next_due_date IS NOT NULL AND next_due_date < ? AND status <> ?",
@@ -65,8 +66,8 @@ func (r *ChoreRepository) bringBackTasks(ctx context.Context, tx *gorm.DB, circl
 		return err
 	}
 	for i, chore := range back {
-		due := chore.NextDueDate.In(time.Local)
-		due = time.Date(today.Year(), today.Month(), today.Day(), due.Hour(), due.Minute(), due.Second(), 0, time.Local)
+		due := chore.NextDueDate.In(loc)
+		due = time.Date(today.Year(), today.Month(), today.Day(), due.Hour(), due.Minute(), due.Second(), 0, loc)
 		if err := tx.Model(&chModel.Chore{}).Where("id = ?", chore.ID).Updates(map[string]interface{}{
 			"next_due_date": due.UTC(),
 			"sync_version":  version + int64(i),

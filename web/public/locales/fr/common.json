@@ -582,5 +582,13 @@
         "description": "Profil, apparence, langue et le reste"
       }
     }
+  },
+  "familyTimezone": {
+    "differs": "Cet appareil est à l'heure de {{device}}, la famille à celle de {{family}}. Hopla affiche l'heure de la famille.",
+    "move": "Passer la famille à cette heure",
+    "ignore": "Ignorer sur cet appareil",
+    "moved": "La famille passe à l'heure de {{city}}",
+    "movedMessage": "Les tâches gardent leur heure de la journée.",
+    "moveFailed": "Le fuseau n'a pas pu être changé"
   }
 }

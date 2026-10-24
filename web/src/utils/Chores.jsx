@@ -175,14 +175,10 @@ export const ChoresGrouper = (groupBy, chores, filter, direction = 'asc') => {
           groupRaw['Anytime'].push(chore)
         } else if (new Date(chore.nextDueDate) < new Date()) {
           groupRaw['Overdue'].push(chore)
-        } else if (
-          new Date(chore.nextDueDate).toDateString() ===
-          new Date().toDateString()
-        ) {
+        } else if (moment(chore.nextDueDate).isSame(moment(), 'day')) {
           groupRaw['Today'].push(chore)
         } else if (
-          new Date(chore.nextDueDate).toDateString() ===
-          new Date(Date.now() + 24 * 60 * 60 * 1000).toDateString()
+          moment(chore.nextDueDate).isSame(moment().add(1, 'day'), 'day')
         ) {
           groupRaw['Tomorrow'].push(chore)
         } else if (
@@ -192,10 +188,7 @@ export const ChoresGrouper = (groupBy, chores, filter, direction = 'asc') => {
             new Date(Date.now() + 24 * 60 * 60 * 1000)
         ) {
           groupRaw['Next 7 Days'].push(chore)
-        } else if (
-          new Date(chore.nextDueDate).getMonth() === new Date().getMonth() &&
-          new Date(chore.nextDueDate).getFullYear() === new Date().getFullYear()
-        ) {
+        } else if (moment(chore.nextDueDate).isSame(moment(), 'month')) {
           groupRaw['Later This Month'].push(chore)
         } else {
           groupRaw['Future'].push(chore)

@@ -224,6 +224,7 @@ export const useSSE = () => {
             queryClient.invalidateQueries({ queryKey: ['pointsHistory'] })
             queryClient.invalidateQueries({ queryKey: ['pointsPresets'] })
             queryClient.invalidateQueries({ queryKey: ['games'] })
+            queryClient.invalidateQueries({ queryKey: ['familyTimezone'] })
             break
 
           case 'subtask.updated':

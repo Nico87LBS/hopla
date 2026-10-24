@@ -19,6 +19,7 @@ import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
 import NumberInput from '../../../components/common/NumberInput'
+import { familyTimezone } from '../../../utils/familyTime'
 import EditorCard, { FieldLabel, Pill, Segmented } from './EditorCard'
 import {
   frequencyTypeForKind,
@@ -95,9 +96,7 @@ const Slots = ({ frequencyMetadata, onFrequencyMetadataUpdate }) => {
   const update = next =>
     onFrequencyMetadataUpdate({
       ...frequencyMetadata,
-      timezone:
-        frequencyMetadata?.timezone ||
-        Intl.DateTimeFormat().resolvedOptions().timeZone,
+      timezone: familyTimezone(),
       slots: next,
     })
   const change = (index, field, value) =>

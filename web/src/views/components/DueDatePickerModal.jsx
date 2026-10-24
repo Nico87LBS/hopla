@@ -26,6 +26,7 @@ import { useTranslation } from 'react-i18next'
 import ModalActions from '../../components/common/ModalActions'
 import { useLocalization } from '../../contexts/LocalizationContext'
 import { useResponsiveModal } from '../../hooks/useResponsiveModal'
+import { pickedDay } from '../../utils/familyTime'
 
 // 23:59(:59) is the app-wide "no specific time" stamp — the same one
 // ChoreEdit, AddTaskModal, and the bulk reschedule handler write. Keep this in
@@ -59,37 +60,21 @@ export const combineDueDate = ({ dueDateOnly, dueTime, useCustomTime }) => {
   return moment(`${dueDateOnly} 23:59:59`, 'YYYY-MM-DD HH:mm:ss').toDate()
 }
 
+// The quick dates, at the family's midnight.
 export const getQuickScheduleDate = option => {
-  const now = new Date()
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  const today = moment().startOf('day')
 
   switch (option) {
-    case 'today':
-      return today
-    case 'tomorrow': {
-      const tomorrow = new Date(today)
-      tomorrow.setDate(today.getDate() + 1)
-      return tomorrow
-    }
-    case 'weekend': {
-      const weekend = new Date(today)
-      const daysUntilSaturday = (6 - today.getDay() + 7) % 7 || 7
-      weekend.setDate(today.getDate() + daysUntilSaturday)
-      return weekend
-    }
-    case 'next-week': {
-      const nextWeek = new Date(today)
-      const daysUntilMonday = (1 - today.getDay() + 7) % 7 || 7
-      nextWeek.setDate(today.getDate() + daysUntilMonday)
-      return nextWeek
-    }
-    case 'next-month': {
-      const nextMonth = new Date(today)
-      nextMonth.setMonth(today.getMonth() + 1)
-      return nextMonth
-    }
+    case 'tomorrow':
+      return today.add(1, 'day').toDate()
+    case 'weekend':
+      return today.add((6 - today.day() + 7) % 7 || 7, 'days').toDate()
+    case 'next-week':
+      return today.add((1 - today.day() + 7) % 7 || 7, 'days').toDate()
+    case 'next-month':
+      return today.add(1, 'month').toDate()
     default:
-      return today
+      return today.toDate()
   }
 }
 
@@ -161,7 +146,7 @@ const DueDatePickerModal = ({
 
   const handleCalendarChange = selected => {
     if (!selected || Array.isArray(selected)) return
-    setLocalDueDateOnly(moment(selected).format('YYYY-MM-DD'))
+    setLocalDueDateOnly(pickedDay(selected))
   }
 
   const handleLocalTimeInputChange = e => {
@@ -488,10 +473,10 @@ const DueDatePickerModal = ({
             calendarType={calendarType}
             onChange={handleCalendarChange}
             formatShortWeekday={(locale, date) => {
-              const day = moment(date).format('dd')
+              const day = moment.weekdaysMin(date.getDay())
               return day.charAt(0).toUpperCase() + day.slice(1)
             }}
-            formatMonth={(locale, date) => moment(date).format('MMM')}
+            formatMonth={(locale, date) => moment.monthsShort(date.getMonth())}
           />
         </Box>
         <Typography

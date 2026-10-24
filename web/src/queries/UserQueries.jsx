@@ -1,10 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
+import { setFamilyTimezone } from '../utils/familyTime'
 import {
   GetAllCircleMembers,
   GetAllUsers,
   GetChildUsers,
+  GetFamilyTimezone,
   GetUserProfile,
+  SetFamilyTimezone,
   SetMemberAway,
 } from '../utils/Fetcher'
 import { offlineDB } from '../utils/OfflineDB'
@@ -68,6 +71,35 @@ export const useSetMemberAway = () => {
     mutationFn: ({ away, memberId }) => SetMemberAway(memberId, away),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['allCircleMembers'] })
+      queryClient.invalidateQueries({ queryKey: ['chores'] })
+      queryClient.invalidateQueries({ queryKey: ['games'] })
+    },
+  })
+}
+
+// The family's time zone, which every date shown follows. Setting it here
+// makes moment use it everywhere.
+export const useFamilyTimezone = ({ enabled = true } = {}) =>
+  useQuery({
+    queryKey: ['familyTimezone'],
+    queryFn: async () => {
+      const result = await GetFamilyTimezone()
+      setFamilyTimezone(result.res?.timezone)
+      return result.res
+    },
+    staleTime: 10 * 60 * 1000,
+    enabled: enabled && !!localStorage.getItem('token'),
+  })
+
+// Moves the family to another time zone, such as on holiday; tasks keep
+// their time of day.
+export const useSetFamilyTimezone = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: timezone => SetFamilyTimezone(timezone),
+    onSuccess: result => {
+      setFamilyTimezone(result.res?.timezone)
+      queryClient.setQueryData(['familyTimezone'], result.res)
       queryClient.invalidateQueries({ queryKey: ['chores'] })
       queryClient.invalidateQueries({ queryKey: ['games'] })
     },

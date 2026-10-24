@@ -1,5 +1,7 @@
 import moment from 'moment'
 
+import { familyTimezone } from './familyTime.js'
+
 // A repeating task comes back at the time of day of its due date. A due date
 // at 23:59 has no time: the task is due any time that day, and so are the
 // next ones.
@@ -19,7 +21,7 @@ export const withRepeatTime = (frequencyType, metadata, dueDate) => {
   return {
     ...metadata,
     time: time.format(),
-    timezone:
-      metadata.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone,
+    // The zone the time above is written in, the family's.
+    timezone: familyTimezone(),
   }
 }

@@ -1,6 +1,10 @@
 package model
 
-import "time"
+import (
+	"time"
+
+	"github.com/nico87lbs/hopla/internal/zone"
+)
 
 const (
 	QuotaPeriodDay   = "day"
@@ -17,15 +21,10 @@ func (r *Reward) HasQuota() bool {
 }
 
 // QuotaWindow returns the calendar period containing now: today, the week
-// starting on Monday, or the month, in the reward's timezone. Both bounds are
-// returned in UTC. Without a timezone it uses the server's (TZ).
+// starting on Monday, or the month, in the family's time zone. Both bounds
+// are returned in UTC.
 func (r *Reward) QuotaWindow(now time.Time) (start, end time.Time) {
-	loc := time.Local
-	if r.QuotaTimezone != "" {
-		if l, err := time.LoadLocation(r.QuotaTimezone); err == nil {
-			loc = l
-		}
-	}
+	loc := zone.Of(r.CircleID)
 	local := now.In(loc)
 	day := time.Date(local.Year(), local.Month(), local.Day(), 0, 0, 0, 0, loc)
 	switch r.QuotaPeriod {

@@ -18,7 +18,10 @@ import SSEProvider from './contexts/SSEContext'
 import { AuthProvider } from './hooks/useAuth.jsx'
 import { useSyncOnReconnect } from './hooks/useSyncOnReconnect'
 import { useResource } from './queries/ResourceQueries'
+import { useFamilyTimezone } from './queries/UserQueries'
 import { GlobalSearchProvider } from './search/GlobalSearchContext'
+import { familyTimezone as currentFamilyTimezone } from './utils/familyTime'
+import FamilyTimezoneBanner from './views/components/FamilyTimezoneBanner'
 import NetworkBanner from './views/components/NetworkBanner'
 
 const add = className => {
@@ -121,6 +124,9 @@ const WebServiceWorkerManager = () => {
 
 const AppContent = () => {
   useSyncOnReconnect()
+  // Every date follows the family's time zone: the pages are drawn again
+  // when it changes.
+  const { data: familyTimezone } = useFamilyTimezone()
 
   return (
     <div>
@@ -144,7 +150,11 @@ const AppContent = () => {
             }}
           >
             <NavBar />
-            <Box sx={{ flex: 1, minWidth: 0, width: '100%' }}>
+            <Box
+              key={familyTimezone?.timezone ?? currentFamilyTimezone()}
+              sx={{ flex: 1, minWidth: 0, width: '100%' }}
+            >
+              <FamilyTimezoneBanner />
               <PageTransition>
                 <Outlet />
               </PageTransition>

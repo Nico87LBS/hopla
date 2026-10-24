@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 import { SETTINGS_SECTIONS } from '../constants/settingsSections'
 import { stripHtml } from '../utils/Helpers'
 
@@ -75,9 +77,7 @@ registerSearchProvider({
             chore?.name || entry.choreName || t('common:search.kinds.note'),
           subtitle: [
             member?.displayName,
-            entry.performedAt
-              ? new Date(entry.performedAt).toLocaleDateString()
-              : null,
+            entry.performedAt ? moment(entry.performedAt).format('L') : null,
           ]
             .filter(Boolean)
             .join(' · '),

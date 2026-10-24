@@ -533,6 +533,8 @@ func APIs(cfg *config.Config, api *API, r *gin.Engine, auth *jwt.GinJWTMiddlewar
 	{
 		circleAPI.GET("/members", api.GetCircleMembers)
 		circleAPI.PUT("/members/:id/away", api.SetMemberAway)
+		circleAPI.GET("/timezone", api.GetFamilyTimezone)
+		circleAPI.PUT("/timezone", api.SetFamilyTimezone)
 	}
 
 }

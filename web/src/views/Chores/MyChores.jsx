@@ -44,6 +44,7 @@ import {
   filterByProject,
   isTaskFor,
 } from '../../utils/Chores'
+import { familyDay, fromPickedDay, pickedDay } from '../../utils/familyTime'
 import { awayMemberIds, waitsForAbsent } from '../../utils/presence.js'
 import Priorities from '../../utils/Priorities'
 import { getSafeBottom } from '../../utils/SafeAreaUtils.js'
@@ -395,7 +396,7 @@ const MyChores = () => {
             case 'Overdue':
               return d !== null && d < now
             case 'Due today':
-              return d !== null && d.toDateString() === now.toDateString()
+              return d !== null && moment(d).isSame(now, 'day')
             case 'Due in week':
               return (
                 d !== null &&
@@ -1040,10 +1041,10 @@ const MyChores = () => {
   const selectedDateChores = useMemo(() => {
     if (!selectedCalendarDate) return []
 
-    const selectedDate = selectedCalendarDate.toLocaleDateString()
+    const selectedDate = pickedDay(selectedCalendarDate)
     return getFilteredChores.filter(chore => {
       if (!chore.nextDueDate) return false
-      return new Date(chore.nextDueDate).toLocaleDateString() === selectedDate
+      return familyDay(chore.nextDueDate) === selectedDate
     })
   }, [getFilteredChores, selectedCalendarDate])
 
@@ -1421,7 +1422,7 @@ const MyChores = () => {
               <Box sx={{ mt: 2 }}>
                 <Typography level='title-md' gutterBottom>
                   {t('tasksForDate', {
-                    date: selectedCalendarDate.toLocaleDateString(),
+                    date: fromPickedDay(selectedCalendarDate).format('L'),
                   })}
                 </Typography>
                 <Box

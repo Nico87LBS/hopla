@@ -31,6 +31,7 @@ import (
 	uModel "github.com/nico87lbs/hopla/internal/user/model"
 	uRepo "github.com/nico87lbs/hopla/internal/user/repo"
 	"github.com/nico87lbs/hopla/internal/utils"
+	"github.com/nico87lbs/hopla/internal/zone"
 	"github.com/nico87lbs/hopla/logging"
 	"gorm.io/gorm"
 )
@@ -509,7 +510,7 @@ func (h *Handler) CreateChore(c *gin.Context) {
 		utcDate := choreReq.NextDueDate.UTC()
 		if fm := choreReq.FrequencyMetadata; choreReq.FrequencyType == chModel.FrequencyTypeDayOfTheWeek && fm != nil && len(fm.Days) > 0 &&
 			(fm.WeekPattern == nil || *fm.WeekPattern == "" || *fm.WeekPattern == chModel.WeekpatternEveryWeek) {
-			utcDate = firstDueDateOnSelectedWeekday(utcDate, fm.Days, fm.Timezone)
+			utcDate = firstDueDateOnSelectedWeekday(utcDate, fm.Days, zone.Of(currentUser.CircleID))
 		}
 		dueDate = &utcDate
 	}

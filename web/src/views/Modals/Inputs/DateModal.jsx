@@ -1,4 +1,5 @@
 import { Input } from '@mui/joy'
+import moment from 'moment'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -9,7 +10,7 @@ function DateModal({ current, isOpen, onClose, onSave, title }) {
   const { t } = useTranslation('common')
   const { ResponsiveModal } = useResponsiveModal()
   const [date, setDate] = useState(
-    current ? new Date(current).toISOString().split('T')[0] : '',
+    current ? moment(current).format('YYYY-MM-DD') : '',
   )
 
   const handleSave = () => {

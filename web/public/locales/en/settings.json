@@ -166,7 +166,21 @@
     "joinedPending": "Joined circle successfully, wait for the circle owner to accept your request.",
     "alreadyMember": "You are already a member of this circle",
     "joinFailed": "Failed to join circle",
-    "copyLink": "Copy Link"
+    "copyLink": "Copy Link",
+    "timezone": {
+      "title": "Family time zone",
+      "home": "Every date follows {{city}} time, whatever the device.",
+      "away": "The family is on {{city}} time. At home: {{home}}.",
+      "label": "Time zone",
+      "serverOption": "{{zone}} · home",
+      "help": "On holiday, pick the time of the place you are at. Tasks keep their time: 07:00 stays 07:00.",
+      "parentsOnly": "Only a parent can change it.",
+      "save": "Save",
+      "backHome": "Back to {{city}} time",
+      "saved": "The family is now on {{city}} time",
+      "savedMessage": "Tasks keep their time of day.",
+      "failed": "The time zone could not be changed"
+    }
   },
   "accountSettings": {
     "title": "Account Settings",

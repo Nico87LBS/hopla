@@ -8,6 +8,12 @@ import { useNavigate } from 'react-router-dom'
 import { useLocalization } from '../../contexts/LocalizationContext'
 import { useCircleMembers, useUserProfile } from '../../queries/UserQueries'
 import { getPriorityColor, TASK_COLOR } from '../../utils/Colors'
+import {
+  familyDay,
+  fromPickedDay,
+  pickedDay,
+  toPickedDay,
+} from '../../utils/familyTime'
 import CalendarMonthly from './CalendarMonthly'
 
 const getAssigneeColor = (assignee, userProfile) => {
@@ -33,21 +39,13 @@ const CalendarCard = ({ chores }) => {
       return
     }
 
-    const now = new Date()
-    const tomorrow = new Date(now)
-    tomorrow.setDate(tomorrow.getDate() + 1)
-    tomorrow.setHours(0, 0, 0, 0) // Set to start of tomorrow
-
-    const msUntilTomorrow = tomorrow.getTime() - now.getTime()
+    // The family's next midnight.
+    const msUntilTomorrow = moment().add(1, 'day').startOf('day').diff(moment())
 
     const timeout = setTimeout(() => {
-      const today = new Date()
-      const yesterday = new Date(today)
-      yesterday.setDate(yesterday.getDate() - 1)
-
       // Check if selected date is now yesterday and update to today
-      if (selectedDate.toDateString() === yesterday.toDateString()) {
-        setSeletedDate(today)
+      if (pickedDay(selectedDate) === familyDay(moment().subtract(1, 'day'))) {
+        setSeletedDate(toPickedDay(moment()))
       }
     }, msUntilTomorrow)
 
@@ -202,16 +200,16 @@ const CalendarCard = ({ chores }) => {
               width: '100%',
             }}
           >
-            <Typography level='title-md'>{fmt.date(selectedDate)}</Typography>
+            <Typography level='title-md'>
+              {fmt.date(fromPickedDay(selectedDate))}
+            </Typography>
             <Chip variant='soft' color='primary' size='md'>
               {(() => {
-                const count = chores.filter(chore => {
-                  const choreDate = new Date(
-                    chore.nextDueDate,
-                  ).toLocaleDateString()
-                  const selectedLocalDate = selectedDate.toLocaleDateString()
-                  return choreDate === selectedLocalDate
-                }).length
+                const count = chores.filter(
+                  chore =>
+                    chore.nextDueDate &&
+                    familyDay(chore.nextDueDate) === pickedDay(selectedDate),
+                ).length
                 return t('calendarCard.tasksCount', { count })
               })()}
             </Chip>
@@ -230,13 +228,11 @@ const CalendarCard = ({ chores }) => {
             }}
           >
             {chores
-              .filter(chore => {
-                const choreDate = new Date(
-                  chore.nextDueDate,
-                ).toLocaleDateString()
-                const selectedLocalDate = selectedDate.toLocaleDateString()
-                return choreDate === selectedLocalDate
-              })
+              .filter(
+                chore =>
+                  chore.nextDueDate &&
+                  familyDay(chore.nextDueDate) === pickedDay(selectedDate),
+              )
               .sort((a, b) => moment(a.nextDueDate).diff(moment(b.nextDueDate)))
               .map((chore, idx) => (
                 <Box

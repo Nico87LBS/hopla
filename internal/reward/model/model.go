@@ -15,7 +15,8 @@ type Reward struct {
 	UpdatedAt   time.Time `json:"updatedAt" gorm:"column:updated_at"`
 	// QuotaCount caps how many times each member may redeem the reward per
 	// QuotaPeriod (day, week or month); 0 means no limit. Periods follow the
-	// calendar in QuotaTimezone, captured from the admin who saved the reward.
+	// family's calendar (package zone). QuotaTimezone, captured from the admin
+	// who saved the reward, is no longer read.
 	QuotaCount    int    `json:"quotaCount" gorm:"column:quota_count;default:0"`
 	QuotaPeriod   string `json:"quotaPeriod" gorm:"column:quota_period"`
 	QuotaTimezone string `json:"quotaTimezone" gorm:"column:quota_timezone"`

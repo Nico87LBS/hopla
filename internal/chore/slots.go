@@ -18,9 +18,7 @@ import (
 // the previous slot when they are closer, and stays open until the next one
 // opens; the last one stays open until midnight. A slot closed without being
 // done is missed, and a parent can still catch it up until midnight. Slot
-// times are read in the server's timezone (TZ), like the games' days: the
-// timezone saved with the task is the one of the device it was edited on,
-// which can be wrong (an iPad set to UTC).
+// times are read in the family's time zone, like the games' days.
 
 const (
 	maxSlots     = 6
@@ -95,25 +93,6 @@ func slotRunsOn(chore *chModel.Chore, day time.Time) bool {
 	return false
 }
 
-// slotLocation returns the timezone a task's slot times are read in: the
-// server's, else, on a server left in UTC, the one saved with the task.
-func slotLocation(ctx context.Context, chore *chModel.Chore) *time.Location {
-	if !isUTC(time.Local) {
-		return time.Local
-	}
-	return choreLocation(ctx, chore)
-}
-
-// isUTC reports whether a timezone is UTC all year round.
-func isUTC(loc *time.Location) bool {
-	for _, month := range []time.Month{time.January, time.July} {
-		if _, offset := time.Date(2026, month, 1, 12, 0, 0, 0, loc).Zone(); offset != 0 {
-			return false
-		}
-	}
-	return true
-}
-
 // startOfDay returns local midnight of the day t falls on.
 func startOfDay(t time.Time) time.Time {
 	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, t.Location())
@@ -152,7 +131,7 @@ func slotWindows(chore *chModel.Chore, day time.Time) []chModel.SlotStatus {
 // slotStatuses returns today's slots of the task with their state, from its
 // slot history of the last days.
 func slotStatuses(ctx context.Context, chore *chModel.Chore, history []*chModel.ChoreHistory, now time.Time) []chModel.SlotStatus {
-	loc := slotLocation(ctx, chore)
+	loc := choreLocation(chore)
 	day := startOfDay(now.In(loc))
 	statuses := slotWindows(chore, day)
 	for i := range statuses {
@@ -211,7 +190,7 @@ func nextSlotDue(ctx context.Context, chore *chModel.Chore, statuses []chModel.S
 			return &at
 		}
 	}
-	day := startOfDay(now.In(slotLocation(ctx, chore)))
+	day := startOfDay(now.In(choreLocation(chore)))
 	for i := 1; i <= 8; i++ {
 		if windows := slotWindows(chore, day.AddDate(0, 0, i)); len(windows) > 0 {
 			at := windows[0].At.UTC()
@@ -224,7 +203,7 @@ func nextSlotDue(ctx context.Context, chore *chModel.Chore, statuses []chModel.S
 // firstSlotAfterDay returns the first slot on the days after the one t falls
 // on: skipping a task with slots skips the rest of its day.
 func firstSlotAfterDay(ctx context.Context, chore *chModel.Chore, t time.Time) *time.Time {
-	day := startOfDay(t.In(slotLocation(ctx, chore)))
+	day := startOfDay(t.In(choreLocation(chore)))
 	for i := 1; i <= 8; i++ {
 		if windows := slotWindows(chore, day.AddDate(0, 0, i)); len(windows) > 0 {
 			at := windows[0].At.UTC()

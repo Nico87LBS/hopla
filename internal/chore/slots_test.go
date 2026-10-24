@@ -23,6 +23,7 @@ import (
 	cRepo "github.com/nico87lbs/hopla/internal/circle/repo"
 	"github.com/nico87lbs/hopla/internal/database"
 	uModel "github.com/nico87lbs/hopla/internal/user/model"
+	"github.com/nico87lbs/hopla/internal/zone"
 )
 
 func teethChore(slots ...string) *chModel.Chore {
@@ -33,13 +34,15 @@ func teethChore(slots ...string) *chModel.Chore {
 	return &chModel.Chore{ID: 1, FrequencyType: chModel.FrequencyTypeDaily, FrequencyMetadataV2: metadata, IsActive: true}
 }
 
-// serverInUTC runs a test on a server left in UTC, where the slots follow
-// the task's own timezone.
-func serverInUTC(t *testing.T) {
+// familyIn runs a test with the family (circles 0 and 1) in the given zone.
+func familyIn(t *testing.T, name string) {
 	t.Helper()
-	saved := time.Local
-	time.Local = time.UTC
-	t.Cleanup(func() { time.Local = saved })
+	loc, err := time.LoadLocation(name)
+	require.NoError(t, err)
+	for _, circleID := range []int{0, 1} {
+		zone.Set(circleID, loc)
+		t.Cleanup(func() { zone.Forget(circleID) })
+	}
 }
 
 func brussels(t *testing.T, day, hour, minute int) time.Time {
@@ -50,7 +53,7 @@ func brussels(t *testing.T, day, hour, minute int) time.Time {
 }
 
 func TestSlotWindows(t *testing.T) {
-	serverInUTC(t)
+	familyIn(t, "Europe/Brussels")
 	chore := teethChore("07:30", "08:00", "19:30")
 	windows := slotWindows(chore, brussels(t, 23, 0, 0))
 	require.Len(t, windows, 3)
@@ -74,7 +77,7 @@ func TestSlotWindows(t *testing.T) {
 }
 
 func TestSlotStatuses(t *testing.T) {
-	serverInUTC(t)
+	familyIn(t, "Europe/Brussels")
 	ctx := context.Background()
 	chore := teethChore("07:30", "12:30", "19:30")
 	now := brussels(t, 23, 20, 10)
@@ -118,7 +121,7 @@ func TestNormalizeSlots(t *testing.T) {
 }
 
 func TestSkippingATaskWithSlotsSkipsTheRestOfTheDay(t *testing.T) {
-	serverInUTC(t)
+	familyIn(t, "Europe/Brussels")
 	chore := teethChore("07:30", "19:30")
 	next, err := scheduleNextDueDate(context.Background(), chore, brussels(t, 23, 7, 30))
 	require.NoError(t, err)
@@ -151,7 +154,6 @@ func middayZone(now time.Time) string {
 
 func newSlotTestRouter(t *testing.T) (*gin.Engine, *gorm.DB, *chModel.Chore) {
 	t.Helper()
-	serverInUTC(t)
 	gin.SetMode(gin.TestMode)
 	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
 	require.NoError(t, err)
@@ -163,15 +165,16 @@ func newSlotTestRouter(t *testing.T) (*gin.Engine, *gorm.DB, *chModel.Chore) {
 	require.NoError(t, db.Create(&cModel.UserCircle{UserID: 2, CircleID: 1, Role: cModel.UserRoleMember, IsActive: true}).Error)
 
 	now := time.Now().UTC()
-	zone := middayZone(now)
-	loc, err := time.LoadLocation(zone)
+	tz := middayZone(now)
+	familyIn(t, tz)
+	loc, err := time.LoadLocation(tz)
 	require.NoError(t, err)
 	local := now.In(loc)
 	points, child := 3, 2
 	chore := &chModel.Chore{
 		Name: "Dents", FrequencyType: chModel.FrequencyTypeDaily, Frequency: 1, IsActive: true, CircleID: 1, CreatedBy: 1,
 		Points: &points, RequireApproval: true, AssignedTo: &child,
-		FrequencyMetadataV2: &chModel.FrequencyMetadata{Timezone: zone, Slots: []chModel.Slot{
+		FrequencyMetadataV2: &chModel.FrequencyMetadata{Timezone: tz, Slots: []chModel.Slot{
 			{Name: "Matin", Time: local.Add(-5 * time.Hour).Format("15:04")},
 			{Name: "Midi", Time: local.Format("15:04")},
 			{Name: "Soir", Time: local.Add(5 * time.Hour).Format("15:04")},
@@ -282,14 +285,12 @@ func TestApproveOnATaskWithSlotsApprovesTheDay(t *testing.T) {
 	require.Equal(t, http.StatusBadRequest, slotCall(t, router, 1, base+"/approve", nil).Code, "nothing left to approve")
 }
 
-// A task edited on a device set to UTC keeps the server's timezone for its
+// A task edited on a device set to UTC follows the family's zone for its
 // slots: at 19:57 in Paris the morning is missed and the evening open.
-func TestSlotsFollowTheServerTimezone(t *testing.T) {
+func TestSlotsFollowTheFamilyTimezone(t *testing.T) {
+	familyIn(t, "Europe/Paris")
 	paris, err := time.LoadLocation("Europe/Paris")
 	require.NoError(t, err)
-	saved := time.Local
-	time.Local = paris
-	t.Cleanup(func() { time.Local = saved })
 
 	chore := teethChore("07:00", "19:00")
 	chore.FrequencyMetadataV2.Timezone = "UTC"
@@ -298,9 +299,12 @@ func TestSlotsFollowTheServerTimezone(t *testing.T) {
 	require.Equal(t, []chModel.SlotState{chModel.SlotMissed, chModel.SlotOpen}, []chModel.SlotState{statuses[0].State, statuses[1].State})
 	require.Equal(t, time.Date(2026, 10, 23, 19, 0, 0, 0, paris).UTC(), *nextSlotDue(context.Background(), chore, statuses, now))
 
-	// On a server left in UTC, the task's own timezone still counts.
-	time.Local = time.UTC
-	require.Equal(t, time.UTC, slotLocation(context.Background(), chore))
-	chore.FrequencyMetadataV2.Timezone = "Europe/Paris"
-	require.Equal(t, "Europe/Paris", slotLocation(context.Background(), chore).String())
+	// On holiday in Lisbon, 07:00 is 07:00 there.
+	familyIn(t, "Europe/Lisbon")
+	lisbon, err := time.LoadLocation("Europe/Lisbon")
+	require.NoError(t, err)
+	now = time.Date(2026, 10, 23, 6, 30, 0, 0, lisbon)
+	statuses = slotStatuses(context.Background(), chore, nil, now)
+	require.Equal(t, chModel.SlotOpen, statuses[0].State)
+	require.Equal(t, time.Date(2026, 10, 23, 7, 0, 0, 0, lisbon), statuses[0].At.In(lisbon))
 }

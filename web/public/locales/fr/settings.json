@@ -166,7 +166,21 @@
     "joinedPending": "Cercle rejoint avec succès, attendez que la personne propriétaire accepte votre demande.",
     "alreadyMember": "Vous êtes déjà membre de ce cercle",
     "joinFailed": "Impossible de rejoindre le cercle",
-    "copyLink": "Copier le lien"
+    "copyLink": "Copier le lien",
+    "timezone": {
+      "title": "Fuseau horaire de la famille",
+      "home": "Toutes les dates suivent l'heure de {{city}}, quel que soit l'appareil.",
+      "away": "La famille est à l'heure de {{city}}. À la maison : {{home}}.",
+      "label": "Fuseau",
+      "serverOption": "{{zone}} · maison",
+      "help": "En vacances, choisis l'heure de l'endroit où vous êtes. Les tâches gardent leur heure : 07:00 reste 07:00.",
+      "parentsOnly": "Seul un parent peut le changer.",
+      "save": "Enregistrer",
+      "backHome": "Revenir à l'heure de {{city}}",
+      "saved": "La famille passe à l'heure de {{city}}",
+      "savedMessage": "Les tâches gardent leur heure de la journée.",
+      "failed": "Le fuseau n'a pas pu être changé"
+    }
   },
   "accountSettings": {
     "title": "Paramètres du compte",
