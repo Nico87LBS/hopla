@@ -45,6 +45,7 @@ import {
 import { resolvePhotoURL } from '../../utils/Helpers'
 import LoadingComponent from '../components/Loading'
 import ConfirmationModal from '../Modals/Inputs/ConfirmationModal'
+import FamilyTimezoneCard from './FamilyTimezoneCard'
 import SettingsLayout from './SettingsLayout'
 
 const sectionTitleSx = {
@@ -428,6 +429,8 @@ const CircleSettings = () => {
             </Box>
           )}
         </Sheet>
+
+        <FamilyTimezoneCard sx={{ mt: 2 }} />
 
         {isAdmin && (
           <Box component='section' sx={{ mt: 3.5 }}>

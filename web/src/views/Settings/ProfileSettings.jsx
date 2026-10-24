@@ -1,10 +1,5 @@
+import { AddAPhotoRounded, PersonOutlineRounded } from '@mui/icons-material'
 import {
-  AccessTimeRounded,
-  AddAPhotoRounded,
-  PersonOutlineRounded,
-} from '@mui/icons-material'
-import {
-  Autocomplete,
   Avatar,
   Box,
   Button,
@@ -35,26 +30,14 @@ const surfaceSx = {
   borderRadius: 'xl',
 }
 
-const getTimezones = () => {
-  if (typeof Intl.supportedValuesOf === 'function') {
-    return Intl.supportedValuesOf('timeZone')
-  }
-  return [Intl.DateTimeFormat().resolvedOptions().timeZone]
-}
-
 const ProfileContent = ({ refetchUserProfile, userProfile }) => {
   const { t } = useTranslation('settings')
   const queryClient = useQueryClient()
   const { showError, showSuccess } = useNotification()
   const [displayName, setDisplayName] = useState(userProfile.displayName || '')
-  const [timezone, setTimezone] = useState(
-    userProfile.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone,
-  )
   const [isSaving, setIsSaving] = useState(false)
   const fileInputRef = useRef()
   const [selectedFile, setSelectedFile] = useState(null)
-
-  const timezones = getTimezones()
 
   const closeCropper = () => {
     if (selectedFile) URL.revokeObjectURL(selectedFile)
@@ -77,12 +60,11 @@ const ProfileContent = ({ refetchUserProfile, userProfile }) => {
   }
 
   const handleSave = async () => {
-    if (!displayName.trim() || !timezone) return
+    if (!displayName.trim()) return
     setIsSaving(true)
     try {
       const response = await UpdateUserDetails({
         displayName: displayName.trim(),
-        timezone,
       })
       if (!response.ok) throw new Error('Failed to update profile')
 
@@ -101,10 +83,7 @@ const ProfileContent = ({ refetchUserProfile, userProfile }) => {
     }
   }
 
-  const hasChanges =
-    displayName.trim() !== (userProfile.displayName || '') ||
-    timezone !==
-      (userProfile.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone)
+  const hasChanges = displayName.trim() !== (userProfile.displayName || '')
   const initials = (displayName || userProfile.displayName || '?')
     .charAt(0)
     .toUpperCase()
@@ -206,41 +185,6 @@ const ProfileContent = ({ refetchUserProfile, userProfile }) => {
               />
             </FormControl>
 
-            <FormControl required sx={{ minWidth: 0 }}>
-              <FormLabel>{t('profile.timezone')}</FormLabel>
-              <Autocomplete
-                size='lg'
-                sx={{ width: '100%' }}
-                value={timezone}
-                onChange={(event, newValue) => setTimezone(newValue)}
-                options={timezones}
-                getOptionLabel={tz => {
-                  if (!tz) return ''
-                  const formattedTimezone = tz.replace(/_/g, ' ')
-                  const currentTime = new Date().toLocaleString(undefined, {
-                    timeZone: tz,
-                    timeStyle: 'short',
-                  })
-                  return `${formattedTimezone} (${currentTime})`
-                }}
-                filterOptions={(options, { inputValue }) => {
-                  if (!inputValue) return options
-                  const searchTerms = inputValue.toLowerCase().split(/\s+/)
-                  return options.filter(tz => {
-                    const timezoneLower = tz.toLowerCase()
-                    const timezoneParts = timezoneLower.split(/[/_]/)
-                    return searchTerms.every(
-                      term =>
-                        timezoneLower.includes(term) ||
-                        timezoneParts.some(part => part.includes(term)),
-                    )
-                  })
-                }}
-                placeholder={t('profile.timezonePlaceholder')}
-                startDecorator={<AccessTimeRounded />}
-              />
-            </FormControl>
-
             <Box
               sx={{
                 display: 'flex',
@@ -251,7 +195,7 @@ const ProfileContent = ({ refetchUserProfile, userProfile }) => {
               <Button
                 size='lg'
                 loading={isSaving}
-                disabled={!hasChanges || !displayName.trim() || !timezone}
+                disabled={!hasChanges || !displayName.trim()}
                 onClick={handleSave}
                 sx={{ minWidth: 120, width: { xs: '100%', sm: 'auto' } }}
               >

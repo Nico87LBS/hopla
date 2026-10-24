@@ -3,6 +3,7 @@ import Calendar from 'react-calendar'
 
 import { useLocalization } from '../../contexts/LocalizationContext'
 import { getPriorityColor } from '../../utils/Colors'
+import { familyDay, pickedDay } from '../../utils/familyTime'
 import styles from './Calendar.module.css'
 const CalendarMonthly = ({ chores, onDateChange }) => {
   const { firstDayOfWeek } = useLocalization()
@@ -15,9 +16,10 @@ const CalendarMonthly = ({ chores, onDateChange }) => {
   const tileContent = ({ date, view }) => {
     if (view === 'month') {
       const dayChores = chores.filter(chore => {
-        const choreDate = new Date(chore.nextDueDate).toLocaleDateString()
-        const tileDate = date.toLocaleDateString()
-        return choreDate === tileDate
+        // The tile is a day of the calendar, the task's day the family's.
+        return (
+          chore.nextDueDate && familyDay(chore.nextDueDate) === pickedDay(date)
+        )
       })
       if (dayChores.length === 0) {
         return (
@@ -67,9 +69,9 @@ const CalendarMonthly = ({ chores, onDateChange }) => {
         }}
         // one-letter weekdays and short month names, in the app's language
         formatShortWeekday={(locale, date) =>
-          moment(date).format('dd').charAt(0).toUpperCase()
+          moment.weekdaysMin(date.getDay()).charAt(0).toUpperCase()
         }
-        formatMonth={(locale, date) => moment(date).format('MMM')}
+        formatMonth={(locale, date) => moment.monthsShort(date.getMonth())}
       />
     </div>
   )

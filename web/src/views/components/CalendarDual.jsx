@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { useLocalization } from '../../contexts/LocalizationContext'
 import { useCircleMembers, useUserProfile } from '../../queries/UserQueries'
 import { getPriorityColor, TASK_COLOR } from '../../utils/Colors'
+import { familyDay, fromPickedDay, pickedDay } from '../../utils/familyTime'
 import styles from './CalendarDual.module.css'
 
 const getAssigneeColor = (assignee, userProfile) => {
@@ -59,9 +60,10 @@ const CalendarDual = ({ chores, onDateChange }) => {
   const tileContent = ({ date, view }) => {
     if (view === 'month') {
       const dayChores = chores.filter(chore => {
-        const choreDate = new Date(chore.nextDueDate).toLocaleDateString()
-        const tileDate = date.toLocaleDateString()
-        return choreDate === tileDate
+        // The tile is a day of the calendar, the task's day the family's.
+        return (
+          chore.nextDueDate && familyDay(chore.nextDueDate) === pickedDay(date)
+        )
       })
       if (dayChores.length === 0) {
         return (
@@ -109,7 +111,7 @@ const CalendarDual = ({ chores, onDateChange }) => {
       {isSecondary && (
         <div className={styles.secondaryCalendarHeader}>
           <Typography level='title-md' sx={{ textAlign: 'center', mb: 1 }}>
-            {fmt.date(date, 'MMMM YYYY')}
+            {fmt.date(fromPickedDay(date), 'MMMM YYYY')}
           </Typography>
         </div>
       )}

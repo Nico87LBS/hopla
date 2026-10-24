@@ -19,6 +19,7 @@ import ModalActions from '../../components/common/ModalActions'
 import NumberInput from '../../components/common/NumberInput'
 import { useResponsiveModal } from '../../hooks/useResponsiveModal'
 import { getRecurrentChipText } from '../../utils/ChoreCardHelpers'
+import { familyTimezone } from '../../utils/familyTime'
 
 const FREQUENCY_TYPES = [
   'daily',
@@ -65,7 +66,7 @@ const defaultMetadata = () => ({
   unit: 'days',
   // No time of day: it comes from the due date when the task is saved.
   time: moment().endOf('day').format(),
-  timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+  timezone: familyTimezone(),
 })
 
 const initLocalState = value => {

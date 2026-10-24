@@ -11,17 +11,18 @@ import (
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
 	cModel "github.com/nico87lbs/hopla/internal/circle/model"
 	ptModel "github.com/nico87lbs/hopla/internal/points"
+	"github.com/nico87lbs/hopla/internal/zone"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
 
-// Days follow the server's local time zone (TZ), like due dates shown to the
-// family.
-func dayKey(t time.Time) string { return t.In(time.Local).Format("2006-01-02") }
+// Days follow the family's time zone (package zone), like due dates shown to
+// the family.
+func dayKey(t time.Time, loc *time.Location) string { return t.In(loc).Format("2006-01-02") }
 
-func endOfDay(t time.Time) time.Time {
-	local := t.In(time.Local)
-	return time.Date(local.Year(), local.Month(), local.Day(), 23, 59, 59, 0, time.Local)
+func endOfDay(t time.Time, loc *time.Location) time.Time {
+	local := t.In(loc)
+	return time.Date(local.Year(), local.Month(), local.Day(), 23, 59, 59, 0, loc)
 }
 
 // RulesFor returns a circle's rules, or the defaults when none were saved.
@@ -53,11 +54,12 @@ func ActivePeriod(db *gorm.DB, circleID int, at time.Time) (*BonusPeriod, error)
 // the day among the tasks due today or late that everyone can see. It returns
 // nil when surprises are off or no task qualifies yet.
 func TodaySurprise(db *gorm.DB, circleID int, now time.Time) (*Surprise, error) {
+	loc := zone.Of(circleID)
 	rules, err := RulesFor(db, circleID)
 	if err != nil || !rules.SurpriseEnabled || rules.SurpriseBonus <= 0 {
 		return nil, err
 	}
-	day := dayKey(now)
+	day := dayKey(now, loc)
 	var surprise Surprise
 	err = db.Where("circle_id = ? AND day = ?", circleID, day).First(&surprise).Error
 	if err == nil {
@@ -69,7 +71,7 @@ func TodaySurprise(db *gorm.DB, circleID int, now time.Time) (*Surprise, error) 
 	var candidates []*chModel.Chore
 	err = db.Select("id", "assigned_to", "assign_strategy").Preload("Assignees").
 		Where("circle_id = ? AND is_active = ? AND points > 0 AND next_due_date IS NOT NULL AND next_due_date <= ?",
-			circleID, true, endOfDay(now)).
+			circleID, true, endOfDay(now, loc)).
 		Where("is_private = ?", false).
 		Where("project_id IS NULL OR project_id IN (SELECT id FROM projects WHERE is_private = ?)", false).
 		Order("id").Find(&candidates).Error
@@ -126,6 +128,7 @@ type Earning struct {
 // bonus when it is that day's surprise task and they have not had the bonus
 // yet that day (a task done several times a day earns it once).
 func TaskEarning(tx *gorm.DB, chore *chModel.Chore, userID int, performedAt time.Time) (Earning, error) {
+	loc := zone.Of(chore.CircleID)
 	earning := Earning{Reason: chore.Name}
 	if chore.Points == nil || *chore.Points <= 0 {
 		return earning, nil
@@ -140,7 +143,7 @@ func TaskEarning(tx *gorm.DB, chore *chModel.Chore, userID int, performedAt time
 		earning.Reason += fmt.Sprintf(" (×%d %s)", period.Multiplier, period.Name)
 	}
 	var surprise Surprise
-	err = tx.Where("circle_id = ? AND day = ?", chore.CircleID, dayKey(performedAt)).First(&surprise).Error
+	err = tx.Where("circle_id = ? AND day = ?", chore.CircleID, dayKey(performedAt, loc)).First(&surprise).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return earning, nil
 	}
@@ -152,8 +155,8 @@ func TaskEarning(tx *gorm.DB, chore *chModel.Chore, userID int, performedAt time
 		return earning, err
 	}
 	if surprise.ChoreID == chore.ID || slices.Contains(same, chore.ID) {
-		local := performedAt.In(time.Local)
-		dayStart := time.Date(local.Year(), local.Month(), local.Day(), 0, 0, 0, 0, time.Local)
+		local := performedAt.In(loc)
+		dayStart := time.Date(local.Year(), local.Month(), local.Day(), 0, 0, 0, 0, loc)
 		var already int64
 		err := tx.Model(&chModel.ChoreHistory{}).
 			Where("chore_id IN ? AND completed_by = ? AND status = ? AND performed_at >= ? AND performed_at < ?",
@@ -174,6 +177,7 @@ func TaskEarning(tx *gorm.DB, chore *chModel.Chore, userID int, performedAt time
 // completionDays returns, per member, the local days on which they completed
 // at least one task since the given time, and since their last points reset.
 func completionDays(db *gorm.DB, circleID int, since time.Time) (map[int]map[string]bool, error) {
+	loc := zone.Of(circleID)
 	var resets []cModel.UserCircle
 	if err := db.Where("circle_id = ? AND streak_since IS NOT NULL", circleID).Find(&resets).Error; err != nil {
 		return nil, err
@@ -202,21 +206,21 @@ func completionDays(db *gorm.DB, circleID int, since time.Time) (map[int]map[str
 		if days[row.CompletedBy] == nil {
 			days[row.CompletedBy] = map[string]bool{}
 		}
-		days[row.CompletedBy][dayKey(row.PerformedAt)] = true
+		days[row.CompletedBy][dayKey(row.PerformedAt, loc)] = true
 	}
 	return days, nil
 }
 
 // streakOf counts a member's current and best runs of days. A day away
 // neither breaks a run nor extends it.
-func streakOf(userID int, days, away map[string]bool, now time.Time) Streak {
-	streak := Streak{UserID: userID, DoneToday: days[dayKey(now)]}
-	day := middayOf(now)
+func streakOf(userID int, days, away map[string]bool, now time.Time, loc *time.Location) Streak {
+	streak := Streak{UserID: userID, DoneToday: days[dayKey(now, loc)]}
+	day := middayOf(now, loc)
 	if !streak.DoneToday {
 		day = day.AddDate(0, 0, -1)
 	}
 	for {
-		key := dayKey(day)
+		key := dayKey(day, loc)
 		if days[key] {
 			streak.Current++
 		} else if !away[key] {
@@ -232,9 +236,9 @@ func streakOf(userID int, days, away map[string]bool, now time.Time) Streak {
 	run := 0
 	var previous time.Time
 	for _, key := range keys {
-		current, _ := time.ParseInLocation("2006-01-02", key, time.Local)
-		current = middayOf(current)
-		if run > 0 && awayBetween(previous, key, away) {
+		current, _ := time.ParseInLocation("2006-01-02", key, loc)
+		current = middayOf(current, loc)
+		if run > 0 && awayBetween(previous, key, away, loc) {
 			run++
 		} else {
 			run = 1
@@ -247,9 +251,9 @@ func streakOf(userID int, days, away map[string]bool, now time.Time) Streak {
 
 // awayBetween reports whether the member was away every day after from and
 // before the day with the given key.
-func awayBetween(from time.Time, key string, away map[string]bool) bool {
-	for day := from.AddDate(0, 0, 1); dayKey(day) < key; day = day.AddDate(0, 0, 1) {
-		if !away[dayKey(day)] {
+func awayBetween(from time.Time, key string, away map[string]bool, loc *time.Location) bool {
+	for day := from.AddDate(0, 0, 1); dayKey(day, loc) < key; day = day.AddDate(0, 0, 1) {
+		if !away[dayKey(day, loc)] {
 			return false
 		}
 	}
@@ -273,13 +277,14 @@ func streakDays(db *gorm.DB, circleID int, now time.Time) (map[int]map[string]bo
 // Streaks returns the streak of every member of the circle who completed a
 // task lately, and a zero streak for the other given members.
 func Streaks(db *gorm.DB, circleID int, userIDs []int, now time.Time) ([]Streak, error) {
+	loc := zone.Of(circleID)
 	days, away, err := streakDays(db, circleID, now)
 	if err != nil {
 		return nil, err
 	}
 	streaks := make([]Streak, 0, len(userIDs))
 	for _, userID := range userIDs {
-		streaks = append(streaks, streakOf(userID, days[userID], away[userID], now))
+		streaks = append(streaks, streakOf(userID, days[userID], away[userID], now, loc))
 	}
 	return streaks, nil
 }
@@ -289,7 +294,8 @@ func Streaks(db *gorm.DB, circleID int, userIDs []int, now time.Time) ([]Streak,
 // completion is saved, in the same transaction. It returns the ledger row, or
 // nil when no bonus is due.
 func AwardStreakBonus(tx *gorm.DB, circleID, userID int, performedAt, now time.Time) (*ptModel.PointsHistory, error) {
-	if dayKey(performedAt) != dayKey(now) {
+	loc := zone.Of(circleID)
+	if dayKey(performedAt, loc) != dayKey(now, loc) {
 		return nil, nil // an approval of yesterday's task does not move today's streak
 	}
 	rules, err := RulesFor(tx, circleID)
@@ -301,7 +307,7 @@ func AwardStreakBonus(tx *gorm.DB, circleID, userID int, performedAt, now time.T
 		return nil, err
 	}
 	var today int64
-	start := endOfDay(now).Add(-24*time.Hour + time.Second)
+	start := endOfDay(now, loc).Add(-24*time.Hour + time.Second)
 	if err := tx.Table("chore_histories AS h").Joins("JOIN chores AS c ON c.id = h.chore_id").
 		Where("c.circle_id = ? AND h.completed_by = ? AND h.status = ? AND h.performed_at >= ?",
 			circleID, userID, chModel.ChoreHistoryStatusCompleted, start).
@@ -311,7 +317,7 @@ func AwardStreakBonus(tx *gorm.DB, circleID, userID int, performedAt, now time.T
 	if today != 1 {
 		return nil, nil
 	}
-	streak := streakOf(userID, days[userID], away[userID], now)
+	streak := streakOf(userID, days[userID], away[userID], now, loc)
 	if streak.Current == 0 || streak.Current%rules.StreakEvery != 0 {
 		return nil, nil
 	}

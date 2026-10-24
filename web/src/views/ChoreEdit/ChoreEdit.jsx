@@ -58,6 +58,7 @@ import {
 } from '../../queries/ChoreQueries.jsx'
 import { useCircleMembers, useUserProfile } from '../../queries/UserQueries.jsx'
 import { useNotification } from '../../service/NotificationProvider'
+import { familyTimezone } from '../../utils/familyTime'
 import { GetAllCircleMembers, GetChoreByID } from '../../utils/Fetcher'
 import {
   filterMembersForProject,
@@ -469,7 +470,7 @@ const ChoreEdit = () => {
         setFrequencyMetadata({
           ...frequencyMetadata,
           time: moment(`${dateValue}T${dueTime}`).format(),
-          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          timezone: familyTimezone(),
         })
       }
     } else {
@@ -500,7 +501,7 @@ const ChoreEdit = () => {
         setFrequencyMetadata({
           ...frequencyMetadata,
           time: moment(`${dueDateOnly}T${timeValue}`).format(),
-          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          timezone: familyTimezone(),
         })
       }
     }
@@ -525,7 +526,7 @@ const ChoreEdit = () => {
           setFrequencyMetadata({
             ...frequencyMetadata,
             time: moment(`${dueDateOnly}T${defaultTime}`).format(),
-            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            timezone: familyTimezone(),
           })
         }
       }

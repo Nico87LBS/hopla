@@ -5,6 +5,8 @@
  * It supports various operators and combines conditions with AND/OR logic.
  */
 
+import moment from 'moment'
+
 /**
  * Evaluate a single condition against a chore
  * @param {Object} chore - The chore to evaluate
@@ -177,48 +179,46 @@ const evaluateDueDate = (chore, operator, value) => {
 
   if (!nextDueDate) return false
 
+  // Days are the family's.
   const dueDate = new Date(nextDueDate)
   const now = new Date()
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-  const tomorrow = new Date(today)
-  tomorrow.setDate(tomorrow.getDate() + 1)
+  const today = moment().startOf('day').toDate()
+  const tomorrow = moment().startOf('day').add(1, 'day').toDate()
 
   switch (operator) {
     case 'isOverdue':
       return dueDate < now
 
     case 'isDueToday':
-      return dueDate.toDateString() === today.toDateString()
+      return moment(dueDate).isSame(today, 'day')
 
     case 'isDueTomorrow':
-      return dueDate.toDateString() === tomorrow.toDateString()
+      return moment(dueDate).isSame(tomorrow, 'day')
 
     case 'isDueThisWeek': {
-      const nextWeek = new Date(today)
-      nextWeek.setDate(nextWeek.getDate() + 7)
+      const nextWeek = moment(today).add(7, 'days').toDate()
       return dueDate >= today && dueDate < nextWeek
     }
 
     case 'isDueThisMonth': {
-      return (
-        dueDate.getMonth() === today.getMonth() &&
-        dueDate.getFullYear() === today.getFullYear()
-      )
+      return moment(dueDate).isSame(today, 'month')
     }
 
     case 'before': {
-      const targetDate = value === 'today' ? today : new Date(value)
+      const targetDate = value === 'today' ? today : moment(value).toDate()
       return dueDate < targetDate
     }
 
     case 'after': {
-      const targetDate = value === 'today' ? today : new Date(value)
+      const targetDate = value === 'today' ? today : moment(value).toDate()
       return dueDate > targetDate
     }
 
     case 'between': {
       const [start, end] = value
-      return dueDate >= new Date(start) && dueDate <= new Date(end)
+      return (
+        dueDate >= moment(start).toDate() && dueDate <= moment(end).toDate()
+      )
     }
 
     default:

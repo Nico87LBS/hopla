@@ -582,5 +582,13 @@
         "description": "Profile, appearance, language and more"
       }
     }
+  },
+  "familyTimezone": {
+    "differs": "This device is on {{device}} time, the family on {{family}} time. Hopla shows the family's time.",
+    "move": "Move the family to this time",
+    "ignore": "Ignore on this device",
+    "moved": "The family is now on {{city}} time",
+    "movedMessage": "Tasks keep their time of day.",
+    "moveFailed": "The time zone could not be changed"
   }
 }

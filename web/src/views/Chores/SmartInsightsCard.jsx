@@ -7,6 +7,7 @@ import {
   WatchLater,
 } from '@mui/icons-material'
 import { Box, Button, Chip, Sheet, Typography } from '@mui/joy'
+import moment from 'moment'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -131,12 +132,11 @@ const SmartInsightsCard = ({
   const insights = useMemo(() => {
     if (!chores || chores.length === 0) return []
 
+    // The family's days.
     const now = new Date()
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-    const tomorrow = new Date(today)
-    tomorrow.setDate(tomorrow.getDate() + 1)
-    const nextWeek = new Date(today)
-    nextWeek.setDate(nextWeek.getDate() + 7)
+    const today = moment().startOf('day').toDate()
+    const tomorrow = moment().startOf('day').add(1, 'day').toDate()
+    const nextWeek = moment().startOf('day').add(7, 'days').toDate()
 
     const detectedInsights = []
 
@@ -170,8 +170,7 @@ const SmartInsightsCard = ({
     // 2. Due today (High Priority)
     const dueTodayTasks = chores.filter(
       chore =>
-        chore.nextDueDate &&
-        new Date(chore.nextDueDate).toDateString() === today.toDateString(),
+        chore.nextDueDate && moment(chore.nextDueDate).isSame(today, 'day'),
     )
     if (dueTodayTasks.length > 0) {
       detectedInsights.push({

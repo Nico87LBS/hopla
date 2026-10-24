@@ -2,6 +2,10 @@
 // family, without anyone in it and without dates, to start another instance
 // quickly. Everything refers to everything else by name, never by id.
 
+import moment from 'moment'
+
+import { familyTimezone } from './familyTime.js'
+
 export const TEMPLATE_FORMAT = 'hopla-template'
 export const TEMPLATE_VERSION = 1
 export const SECTIONS = ['tasks', 'rewards', 'presets', 'games']
@@ -13,25 +17,28 @@ const sameName = name =>
     .trim()
     .toLowerCase()
 
-const pad = n => String(n).padStart(2, '0')
-
-// The local time of day a task is due, as HH:mm, or null without a due date.
+// The family's time of day a task is due, as HH:mm, or null without a due
+// date.
 export const dueTimeOf = nextDueDate => {
   if (!nextDueDate) return null
-  const date = new Date(nextDueDate)
-  if (Number.isNaN(date.getTime())) return null
-  return `${pad(date.getHours())}:${pad(date.getMinutes())}`
+  const date = moment(nextDueDate)
+  if (!date.isValid()) return null
+  return date.format('HH:mm')
 }
 
 // The first due date of an imported task: today at its time of day, or
-// tomorrow when that time has passed.
+// tomorrow when that time has passed, for the family.
 export const firstDueDate = (dueTime, now = new Date()) => {
   if (!dueTime) return null
   const [hours, minutes] = dueTime.split(':').map(Number)
-  const due = new Date(now)
-  due.setHours(hours || 0, minutes || 0, 0, 0)
-  if (due <= now) due.setDate(due.getDate() + 1)
-  return due
+  const due = moment(now).set({
+    hour: hours || 0,
+    minute: minutes || 0,
+    second: 0,
+    millisecond: 0,
+  })
+  if (!due.isAfter(now)) due.add(1, 'day')
+  return due.toDate()
 }
 
 // Subtasks keep their order and nesting through a reference local to the
@@ -215,8 +222,8 @@ export const taskRequests = (task, { labelIds, members, now, perMember }) => {
   if (due && REPEAT_ON_TYPE.includes(task.frequencyType)) {
     frequencyMetadata = {
       ...frequencyMetadata,
-      time: due.toISOString(),
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      time: moment(due).format(),
+      timezone: familyTimezone(),
     }
   }
   const subTasks = (task.subTasks || []).map((s, i) => ({

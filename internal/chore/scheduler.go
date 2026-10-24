@@ -9,6 +9,7 @@ import (
 	"time"
 
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
+	"github.com/nico87lbs/hopla/internal/zone"
 	"github.com/nico87lbs/hopla/logging"
 )
 
@@ -21,14 +22,11 @@ func scheduleNextDueDate(ctx context.Context, chore *chModel.Chore, completedDat
 		return firstSlotAfterDay(ctx, chore, completedDate), nil
 	}
 
-	// Evaluate the whole schedule in the chore's own timezone. Doing the
+	// Evaluate the whole schedule in the family's time zone. Doing the
 	// arithmetic in UTC pins every recurrence to a fixed UTC hour, so the
 	// local time of a chore shifts by an hour on daylight saving transitions
 	// and stays wrong afterwards.
-	// choreLocation falls back to time.UTC when no timezone is configured,
-	// which keeps the behaviour unchanged for chores created before
-	// timezones were stored.
-	loc := choreLocation(ctx, chore)
+	loc := choreLocation(chore)
 
 	var baseDate time.Time
 	if chore.NextDueDate != nil {
@@ -46,7 +44,15 @@ func scheduleNextDueDate(ctx context.Context, chore *chModel.Chore, completedDat
 	hourly := chore.FrequencyType == "interval" && chore.FrequencyMetadataV2 != nil &&
 		chore.FrequencyMetadataV2.Unit != nil && *chore.FrequencyMetadataV2.Unit == "hours"
 	if !hourly && (chore.FrequencyType == "day_of_the_month" || chore.FrequencyType == "days_of_the_week" || chore.FrequencyType == "interval") {
+		// The time of day is the one the person saw when saving the task, in
+		// the zone saved with it: 07:00 stays 07:00 for the family, even when
+		// it was saved on a tablet left in UTC.
 		t, err := time.Parse(time.RFC3339, chore.FrequencyMetadataV2.Time)
+		if err == nil {
+			if saved, loadErr := time.LoadLocation(chore.FrequencyMetadataV2.Timezone); loadErr == nil && chore.FrequencyMetadataV2.Timezone != "" {
+				t = t.In(saved)
+			}
+		}
 		if err != nil {
 			log := logging.FromContext(ctx)
 			log.Error("error parsing time in frequency metadata", "error", err, "chore_id", chore.ID)
@@ -58,9 +64,8 @@ func scheduleNextDueDate(ctx context.Context, chore *chModel.Chore, completedDat
 			} else {
 				t = time.Now().UTC()
 			}
-
+			t = t.In(loc)
 		}
-		t = t.In(loc)
 		// Note: for the one hour that a DST transition skips or repeats,
 		// time.Date normalises to a neighbouring instant. Go does not
 		// guarantee which one, but it does not error either, so a chore
@@ -203,24 +208,11 @@ func scheduleNextDueDate(ctx context.Context, chore *chModel.Chore, completedDat
 	return &baseDateUTC, nil
 }
 
-// choreLocation returns the time.Location a chore's schedule should be
-// evaluated in. It falls back to UTC when no timezone is configured or when
-// the configured timezone cannot be loaded, which preserves the previous
-// behaviour for chores created before timezones were stored.
-func choreLocation(ctx context.Context, chore *chModel.Chore) *time.Location {
-	if chore.FrequencyMetadataV2 == nil || chore.FrequencyMetadataV2.Timezone == "" {
-		return time.UTC
-	}
-	loc, err := time.LoadLocation(chore.FrequencyMetadataV2.Timezone)
-	if err != nil {
-		log := logging.FromContext(ctx)
-		log.Error("error loading timezone from frequency metadata",
-			"error", err,
-			"timezone", chore.FrequencyMetadataV2.Timezone,
-			"chore_id", chore.ID)
-		return time.UTC
-	}
-	return loc
+// choreLocation returns the time zone a chore's schedule is evaluated in:
+// its family's. The zone saved with the chore only tells how to read the time
+// of day saved with it.
+func choreLocation(chore *chModel.Chore) *time.Location {
+	return zone.Of(chore.CircleID)
 }
 
 // toUTC normalises a computed due date to UTC for storage, passing through
@@ -457,14 +449,8 @@ func RemoveAssigneeAndReassign(chore *chModel.Chore, userID int) {
 }
 
 // firstDueDateOnSelectedWeekday returns due if it falls on one of days in the
-// chore timezone, otherwise the first later selected day at the same wall-clock time.
-func firstDueDateOnSelectedWeekday(due time.Time, days []*string, tz string) time.Time {
-	loc := time.UTC
-	if tz != "" {
-		if l, err := time.LoadLocation(tz); err == nil {
-			loc = l
-		}
-	}
+// given zone, otherwise the first later selected day at the same wall-clock time.
+func firstDueDateOnSelectedWeekday(due time.Time, days []*string, loc *time.Location) time.Time {
 	dueInTimezone := due.In(loc)
 	for i := 0; i < 7; i++ {
 		candidate := dueInTimezone.AddDate(0, 0, i)

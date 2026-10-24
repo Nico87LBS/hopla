@@ -42,6 +42,7 @@ import (
 	"github.com/nico87lbs/hopla/internal/user"
 	uRepo "github.com/nico87lbs/hopla/internal/user/repo"
 	"github.com/nico87lbs/hopla/internal/utils"
+	"github.com/nico87lbs/hopla/internal/zone"
 	"github.com/nico87lbs/hopla/logging"
 	"github.com/nico87lbs/hopla/migrations"
 	"go.uber.org/fx"
@@ -160,6 +161,7 @@ func main() {
 
 		// fx.Invoke(RunApp),
 		fx.Invoke(
+			zone.Init,
 			chore.Routes,
 			calendar.Routes,
 			chore.APIs,

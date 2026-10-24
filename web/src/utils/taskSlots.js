@@ -3,16 +3,16 @@
 // state that only depends on the time (upcoming, open, missed) is worked out
 // again here, so a slot opens on time without a reload.
 
+import moment from 'moment'
+
 import { sameName } from './taskCopies.js'
 
 export const hasSlots = chore => chore?.frequencyMetadata?.slots?.length > 0
 
 const TIMED = ['upcoming', 'open', 'missed']
 
-const sameDay = (a, b) =>
-  a.getFullYear() === b.getFullYear() &&
-  a.getMonth() === b.getMonth() &&
-  a.getDate() === b.getDate()
+// Days are the family's.
+const sameDay = (a, b) => moment(a).isSame(b, 'day')
 
 export const liveSlotState = (slot, now = new Date()) => {
   if (!TIMED.includes(slot.state)) return slot.state
@@ -82,11 +82,7 @@ export const pullCopiesTogether = sections => {
   })
 }
 
-const endOfDay = date => {
-  const end = new Date(date)
-  end.setHours(23, 59, 59, 999)
-  return end
-}
+const endOfDay = date => moment(date).endOf('day').toDate()
 
 // doneCopies returns the ids of the copies already done for now: once a
 // child's copy is done (and approved), the server moves it to its next due

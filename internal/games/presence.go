@@ -5,6 +5,7 @@ import (
 
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
 	cModel "github.com/nico87lbs/hopla/internal/circle/model"
+	"github.com/nico87lbs/hopla/internal/zone"
 	"gorm.io/gorm"
 )
 
@@ -57,15 +58,16 @@ func Paused(chore *chModel.Chore, away map[int]bool) bool {
 
 // middayOf is the middle of t's local day, safe to step day by day across a
 // daylight saving change.
-func middayOf(t time.Time) time.Time {
-	local := t.In(time.Local)
-	return time.Date(local.Year(), local.Month(), local.Day(), 12, 0, 0, 0, time.Local)
+func middayOf(t time.Time, loc *time.Location) time.Time {
+	local := t.In(loc)
+	return time.Date(local.Year(), local.Month(), local.Day(), 12, 0, 0, 0, loc)
 }
 
 // absenceDays returns, per member, the local days they were away at some
 // point since the given time. A day away neither breaks nor extends a streak,
 // and is left out of the quests.
 func absenceDays(db *gorm.DB, circleID int, since, now time.Time) (map[int]map[string]bool, error) {
+	loc := zone.Of(circleID)
 	var absences []Absence
 	if err := db.Where("circle_id = ? AND (end_at IS NULL OR end_at >= ?)", circleID, since).
 		Find(&absences).Error; err != nil {
@@ -83,9 +85,9 @@ func absenceDays(db *gorm.DB, circleID int, since, now time.Time) (map[int]map[s
 		if days[absence.UserID] == nil {
 			days[absence.UserID] = map[string]bool{}
 		}
-		last := dayKey(end)
-		for day := middayOf(start); ; day = day.AddDate(0, 0, 1) {
-			key := dayKey(day)
+		last := dayKey(end, loc)
+		for day := middayOf(start, loc); ; day = day.AddDate(0, 0, 1) {
+			key := dayKey(day, loc)
 			if key > last {
 				break
 			}
@@ -113,8 +115,9 @@ func SetAway(tx *gorm.DB, circleID, userID int, away bool, now time.Time) (bool,
 // ForgetSurprise drops today's surprise task when nobody has done it yet, so
 // it is drawn again among the tasks of the members who are here.
 func ForgetSurprise(tx *gorm.DB, circleID int, now time.Time) error {
+	loc := zone.Of(circleID)
 	var surprise Surprise
-	err := tx.Where("circle_id = ? AND day = ?", circleID, dayKey(now)).Limit(1).Find(&surprise).Error
+	err := tx.Where("circle_id = ? AND day = ?", circleID, dayKey(now, loc)).Limit(1).Find(&surprise).Error
 	if err != nil || surprise.ChoreID == 0 {
 		return err
 	}
@@ -122,8 +125,8 @@ func ForgetSurprise(tx *gorm.DB, circleID int, now time.Time) error {
 	if err != nil {
 		return err
 	}
-	local := now.In(time.Local)
-	dayStart := time.Date(local.Year(), local.Month(), local.Day(), 0, 0, 0, 0, time.Local)
+	local := now.In(loc)
+	dayStart := time.Date(local.Year(), local.Month(), local.Day(), 0, 0, 0, 0, loc)
 	var done int64
 	if err := tx.Model(&chModel.ChoreHistory{}).
 		Where("chore_id IN ? AND status IN ? AND performed_at >= ?", append(same, surprise.ChoreID),

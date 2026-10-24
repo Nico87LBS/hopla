@@ -37,6 +37,7 @@ import {
   Typography,
 } from '@mui/joy'
 import Fuse from 'fuse.js'
+import moment from 'moment'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Cell, Pie, PieChart, Tooltip } from 'recharts'
@@ -68,12 +69,8 @@ const groupByDate = history => {
     // Key by a stable local ISO day (YYYY-MM-DD) so the render-time
     // formatter (fmt.date) receives a parseable date instead of a
     // locale-formatted string, which produced "Invalid date".
-    const d = new Date(item.performedAt || item.updatedAt || item.createdAt)
-    const date = isNaN(d.getTime())
-      ? 'unknown'
-      : `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(
-          d.getDate(),
-        ).padStart(2, '0')}`
+    const d = moment(item.performedAt || item.updatedAt || item.createdAt)
+    const date = d.isValid() ? d.format('YYYY-MM-DD') : 'unknown'
     if (!aggregated[date]) {
       aggregated[date] = []
     }

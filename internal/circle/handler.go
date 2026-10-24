@@ -997,6 +997,38 @@ func (h *Handler) SetMemberAway(c *gin.Context) {
 	chore.SetMemberAway(c, h.circleRepo, h.choreRepo, req.MemberID, *req.Away)
 }
 
+// GetFamilyTimezone godoc
+//
+//	@Summary		Get the family's time zone
+//	@Description	Every date of the family follows this zone, whatever the device's. It is the server's unless the family moved, such as on holiday.
+//	@Tags			circles
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]chore.FamilyTimezone	"res: the family's zone"
+//	@Router			/circles/timezone [get]
+func (h *Handler) GetFamilyTimezone(c *gin.Context) {
+	chore.GetFamilyTimezone(c)
+}
+
+// SetFamilyTimezone godoc
+//
+//	@Summary		Move the family to another time zone
+//	@Description	Sets the zone every date of the family follows, such as on holiday (admin/manager only). Tasks keep their time of day. An empty zone, or the server's, brings the family back home.
+//	@Tags			circles
+//	@Accept			json
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			timezone	body		object{timezone=string}			true	"IANA zone, such as Europe/Lisbon"
+//	@Success		200			{object}	map[string]chore.FamilyTimezone	"res: the family's zone"
+//	@Failure		400			{object}	map[string]string				"error: Invalid request / Invalid timezone"
+//	@Failure		403			{object}	map[string]string				"error: Only parents can do this"
+//	@Router			/circles/timezone [put]
+func (h *Handler) SetFamilyTimezone(c *gin.Context) {
+	chore.SetFamilyTimezone(c, h.circleRepo, h.choreRepo)
+}
+
 func Routes(router *gin.Engine, h *Handler, multiAuthMiddleware *auth.MultiAuthMiddleware) {
 	log.Println("Registering circle routes")
 
@@ -1007,6 +1039,8 @@ func Routes(router *gin.Engine, h *Handler, multiAuthMiddleware *auth.MultiAuthM
 		circleRoutes.GET("/members/requests", h.GetPendingCircleMembers)
 		circleRoutes.PUT("/members/role", h.ChangeMemberRole)
 		circleRoutes.PUT("/members/away", h.SetMemberAway)
+		circleRoutes.GET("/timezone", h.GetFamilyTimezone)
+		circleRoutes.PUT("/timezone", h.SetFamilyTimezone)
 		circleRoutes.GET("/", h.GetUserCircles)
 		circleRoutes.POST("/:id/members/points/redeem", h.RedeemPoints)
 

@@ -33,7 +33,7 @@ func TestScheduleNextDueDateBasicTests(t *testing.T) {
 			chore: chModel.Chore{
 				FrequencyType: chModel.FrequencyTypeDaily,
 				FrequencyMetadataV2: &chModel.FrequencyMetadata{
-					Time: "2024-07-07T14:30:00-04:00",
+					Time: "2024-07-07T18:30:00Z",
 				},
 			},
 			completedDate: now,
@@ -44,7 +44,7 @@ func TestScheduleNextDueDateBasicTests(t *testing.T) {
 			chore: chModel.Chore{
 				FrequencyType: chModel.FrequencyTypeDaily,
 				FrequencyMetadataV2: &chModel.FrequencyMetadata{
-					Time: "2024-07-07T14:30:00-04:00",
+					Time: "2024-07-07T18:30:00Z",
 				},
 				IsRolling: true,
 			},
@@ -56,7 +56,7 @@ func TestScheduleNextDueDateBasicTests(t *testing.T) {
 			chore: chModel.Chore{
 				FrequencyType: chModel.FrequencyTypeWeekly,
 				FrequencyMetadataV2: &chModel.FrequencyMetadata{
-					Time: "2024-07-07T14:30:00-04:00",
+					Time: "2024-07-07T18:30:00Z",
 				},
 			},
 			completedDate: now,
@@ -67,7 +67,7 @@ func TestScheduleNextDueDateBasicTests(t *testing.T) {
 			chore: chModel.Chore{
 				FrequencyType: chModel.FrequencyTypeWeekly,
 				FrequencyMetadataV2: &chModel.FrequencyMetadata{
-					Time: "2024-07-07T14:30:00-04:00",
+					Time: "2024-07-07T18:30:00Z",
 				},
 				IsRolling: true,
 			},
@@ -79,7 +79,7 @@ func TestScheduleNextDueDateBasicTests(t *testing.T) {
 			chore: chModel.Chore{
 				FrequencyType: chModel.FrequencyTypeMonthly,
 				FrequencyMetadataV2: &chModel.FrequencyMetadata{
-					Time: "2024-07-07T14:30:00-04:00",
+					Time: "2024-07-07T18:30:00Z",
 				},
 			},
 			completedDate: now,
@@ -90,7 +90,7 @@ func TestScheduleNextDueDateBasicTests(t *testing.T) {
 			chore: chModel.Chore{
 				FrequencyType: chModel.FrequencyTypeMonthly,
 				FrequencyMetadataV2: &chModel.FrequencyMetadata{
-					Time: "2024-07-07T14:30:00-04:00",
+					Time: "2024-07-07T18:30:00Z",
 				},
 				IsRolling: true,
 			},
@@ -102,7 +102,7 @@ func TestScheduleNextDueDateBasicTests(t *testing.T) {
 			chore: chModel.Chore{
 				FrequencyType: chModel.FrequencyTypeYearly,
 				FrequencyMetadataV2: &chModel.FrequencyMetadata{
-					Time: "2024-07-07T14:30:00-04:00",
+					Time: "2024-07-07T18:30:00Z",
 				},
 			},
 			completedDate: now,
@@ -113,7 +113,7 @@ func TestScheduleNextDueDateBasicTests(t *testing.T) {
 			chore: chModel.Chore{
 				FrequencyType: chModel.FrequencyTypeYearly,
 				FrequencyMetadataV2: &chModel.FrequencyMetadata{
-					Time: "2024-07-07T14:30:00-04:00",
+					Time: "2024-07-07T18:30:00Z",
 				},
 				IsRolling: true,
 			},
@@ -139,7 +139,7 @@ func TestScheduleNextDueDateInterval(t *testing.T) {
 				FrequencyType: chModel.FrequencyTypeInterval,
 				Frequency:     2,
 				FrequencyMetadataV2: &chModel.FrequencyMetadata{ // for backward compatibility
-					Time: "2024-07-07T14:30:00-04:00",
+					Time: "2024-07-07T18:30:00Z",
 					Unit: jsonPtr("days"),
 				},
 			},
@@ -152,7 +152,7 @@ func TestScheduleNextDueDateInterval(t *testing.T) {
 				FrequencyType: chModel.FrequencyTypeInterval,
 				Frequency:     4,
 				FrequencyMetadataV2: &chModel.FrequencyMetadata{ // for backward compatibility
-					Time: "2024-07-07T14:30:00-04:00",
+					Time: "2024-07-07T18:30:00Z",
 					Unit: jsonPtr("weeks"), // this is needed for interval calculations
 				},
 			},
@@ -165,7 +165,7 @@ func TestScheduleNextDueDateInterval(t *testing.T) {
 				FrequencyType: chModel.FrequencyTypeInterval,
 				Frequency:     3,
 				FrequencyMetadataV2: &chModel.FrequencyMetadata{ // for backward compatibility
-					Time: "2024-07-07T14:30:00-04:00", // this is needed for interval calculations
+					Time: "2024-07-07T18:30:00Z", // this is needed for interval calculations
 					Unit: jsonPtr("months"),
 				},
 			},
@@ -178,7 +178,7 @@ func TestScheduleNextDueDateInterval(t *testing.T) {
 				FrequencyType: chModel.FrequencyTypeInterval,
 				Frequency:     2,
 				FrequencyMetadataV2: &chModel.FrequencyMetadata{ // for backward compatibility
-					Time: "2024-07-07T14:30:00-04:00", // this is needed for interval calculations
+					Time: "2024-07-07T18:30:00Z", // this is needed for interval calculations
 					Unit: jsonPtr("years"),
 				},
 			},
@@ -205,7 +205,7 @@ func TestScheduleNextDueDateDayOfWeek(t *testing.T) {
 				NextDueDate:   timePtr(time.Date(2025, 1, 2, 0, 12, 0, 0, location)),
 				FrequencyMetadataV2: &chModel.FrequencyMetadata{
 					Days: []*string{jsonPtr("monday")},
-					Time: "2025-01-20T01:00:00-05:00",
+					Time: "2025-01-20T06:00:00Z",
 				},
 			},
 			completedDate: now,
@@ -223,7 +223,7 @@ func TestScheduleNextDueDateDayOfWeek(t *testing.T) {
 		// 	chore: chModel.Chore{
 		// 		FrequencyType:     chModel.FrequencyTypeDayOfTheWeek,
 		// 		IsRolling:         true,
-		// 		FrequencyMetadata: jsonPtr(`{"days": ["monday"], "time": "2025-01-20T01:00:00-05:00"}`),
+		// 		FrequencyMetadata: jsonPtr(`{"days": ["monday"], "time": "2025-01-20T06:00:00Z"}`),
 		// 	},
 
 		// 	completedDate: now.AddDate(0, 1, 0),
@@ -254,7 +254,7 @@ func TestScheduleNextDueDateDayOfMonth(t *testing.T) {
 				FrequencyType: chModel.FrequencyTypeDayOfTheMonth,
 				Frequency:     15,
 				FrequencyMetadataV2: &chModel.FrequencyMetadata{
-					Time: "2025-01-20T14:00:00-05:00",
+					Time: "2025-01-20T19:00:00Z",
 					Unit: jsonPtr("days"),
 					Months: []*string{
 						jsonPtr("january"),
@@ -271,7 +271,7 @@ func TestScheduleNextDueDateDayOfMonth(t *testing.T) {
 				Frequency:     15,
 				IsRolling:     true,
 				FrequencyMetadataV2: &chModel.FrequencyMetadata{
-					Time: "2025-01-20T02:00:00-05:00", // this is needed for interval calculations
+					Time: "2025-01-20T07:00:00Z", // this is needed for interval calculations
 					Unit: jsonPtr("days"),
 					Months: []*string{
 						jsonPtr("january"),
@@ -290,8 +290,8 @@ func TestScheduleNextDueDateDayOfMonth(t *testing.T) {
 				Frequency:     15,
 				IsRolling:     true,
 				FrequencyMetadataV2: &chModel.FrequencyMetadata{
-					Time: "2025-01-20T18:00:00-05:00", // this is needed for interval calculations
-					Unit: jsonPtr("days"),             // this is needed for interval calculations
+					Time: "2025-01-20T23:00:00Z", // this is needed for interval calculations
+					Unit: jsonPtr("days"),        // this is needed for interval calculations
 					Months: []*string{
 						jsonPtr("january"),
 					},
@@ -332,6 +332,7 @@ func TestScheduleNextDueDate(t *testing.T) {
 }
 
 func executeTestTable(t *testing.T, tests []scheduleTest) {
+	familyIn(t, "UTC")
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -788,10 +789,10 @@ func TestScheduleNextDueDateRollingDayOfMonthKeepsLocalTime(t *testing.T) {
 	assertLocalTime(t, got, berlin, 2026, 2, 15, 6, 45)
 }
 
-// TestScheduleNextDueDateWithoutTimezoneUnchanged guards the backwards
-// compatible path: without a configured timezone the scheduler must behave
-// exactly as before, i.e. purely in UTC.
+// TestScheduleNextDueDateWithoutTimezoneUnchanged: a family in UTC schedules
+// purely in UTC.
 func TestScheduleNextDueDateWithoutTimezoneUnchanged(t *testing.T) {
+	familyIn(t, "UTC")
 	lastDue := time.Date(2026, 10, 19, 8, 30, 0, 0, time.UTC)
 	monday := "monday"
 
@@ -817,8 +818,10 @@ func TestScheduleNextDueDateWithoutTimezoneUnchanged(t *testing.T) {
 }
 
 // TestScheduleNextDueDateInvalidTimezoneFallsBackToUTC ensures a bad
-// timezone string does not break scheduling.
+// timezone string saved with the task does not break scheduling: only the
+// family's zone counts.
 func TestScheduleNextDueDateInvalidTimezoneFallsBackToUTC(t *testing.T) {
+	familyIn(t, "UTC")
 	lastDue := time.Date(2026, 10, 19, 8, 30, 0, 0, time.UTC)
 	monday := "monday"
 
@@ -843,8 +846,40 @@ func TestScheduleNextDueDateInvalidTimezoneFallsBackToUTC(t *testing.T) {
 	}
 }
 
+// TestScheduleNextDueDateKeepsTheWrittenTime: a task saved at 07:00 on a
+// device left in UTC is due at 07:00 for the family, not at 09:00, as is one
+// saved at 07:00 at home, whatever the format of the time.
+func TestScheduleNextDueDateKeepsTheWrittenTime(t *testing.T) {
+	familyIn(t, "Europe/Paris")
+	paris, _ := time.LoadLocation("Europe/Paris")
+	for written, savedIn := range map[string]string{
+		"2026-10-20T07:00:00Z":      "UTC",
+		"2026-10-20T07:00:00+02:00": "Europe/Paris",
+		"2026-10-20T05:00:00Z":      "Europe/Paris",
+		"2026-10-20T07:00:00+00:00": "",
+	} {
+		lastDue := time.Date(2026, 10, 20, 7, 0, 0, 0, paris)
+		chore := chModel.Chore{
+			FrequencyType: chModel.FrequencyTypeInterval,
+			Frequency:     1,
+			NextDueDate:   timePtr(lastDue),
+			FrequencyMetadataV2: &chModel.FrequencyMetadata{
+				Unit:     jsonPtr("days"),
+				Time:     written,
+				Timezone: savedIn,
+			},
+		}
+		got, err := scheduleNextDueDate(context.Background(), &chore, lastDue)
+		if err != nil {
+			t.Fatal(err)
+		}
+		assertLocalTime(t, got, paris, 2026, 10, 21, 7, 0)
+	}
+}
+
 func mustLoadBerlin(t *testing.T) *time.Location {
 	t.Helper()
+	familyIn(t, "Europe/Berlin")
 	loc, err := time.LoadLocation("Europe/Berlin")
 	if err != nil {
 		t.Fatalf("loading Europe/Berlin failed despite embedded tzdata: %v", err)

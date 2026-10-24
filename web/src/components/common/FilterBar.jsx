@@ -9,6 +9,7 @@ import {
   Input,
   Typography,
 } from '@mui/joy'
+import moment from 'moment'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -33,111 +34,60 @@ import ModalActions from './ModalActions'
  *   totalCount   - optional total for "N of M" label
  */
 
-// ── Date range presets (no moment dependency — pure Date) ────────────────────
+// ── Date range presets, on the family's calendar ────────────────────────────
 
-const d = (date, h = 0, m = 0, s = 0, ms = 0) =>
-  new Date(date.getFullYear(), date.getMonth(), date.getDate(), h, m, s, ms)
+const range = (from, to) => ({
+  from: from.clone().startOf('day').toISOString(),
+  to: to.clone().endOf('day').toISOString(),
+})
 
 const DATE_RANGE_PRESETS = [
   {
     value: 'today',
     labelKey: 'filterBar.presetToday',
-    getRange: () => {
-      const t = d(new Date())
-      return {
-        from: t.toISOString(),
-        to: d(new Date(), 23, 59, 59, 999).toISOString(),
-      }
-    },
+    getRange: () => range(moment(), moment()),
   },
   {
     value: 'yesterday',
     labelKey: 'filterBar.presetYesterday',
-    getRange: () => {
-      const t = d(new Date())
-      const y = new Date(t)
-      y.setDate(t.getDate() - 1)
-      return {
-        from: d(y).toISOString(),
-        to: d(y, 23, 59, 59, 999).toISOString(),
-      }
-    },
+    getRange: () =>
+      range(moment().subtract(1, 'day'), moment().subtract(1, 'day')),
   },
   {
     value: 'this-week',
     labelKey: 'filterBar.presetThisWeek',
     getRange: () => {
-      const t = d(new Date())
-      const start = new Date(t)
-      start.setDate(t.getDate() - t.getDay())
-      const end = new Date(start)
-      end.setDate(start.getDate() + 6)
-      return {
-        from: d(start).toISOString(),
-        to: d(end, 23, 59, 59, 999).toISOString(),
-      }
+      const start = moment().subtract(moment().day(), 'days')
+      return range(start, start.clone().add(6, 'days'))
     },
   },
   {
     value: 'last-7-days',
     labelKey: 'filterBar.presetLast7Days',
-    getRange: () => {
-      const t = d(new Date())
-      const start = new Date(t)
-      start.setDate(t.getDate() - 6)
-      return {
-        from: d(start).toISOString(),
-        to: d(new Date(), 23, 59, 59, 999).toISOString(),
-      }
-    },
+    getRange: () => range(moment().subtract(6, 'days'), moment()),
   },
   {
     value: 'this-month',
     labelKey: 'filterBar.presetThisMonth',
-    getRange: () => {
-      const n = new Date()
-      const start = new Date(n.getFullYear(), n.getMonth(), 1)
-      const end = new Date(n.getFullYear(), n.getMonth() + 1, 0)
-      return {
-        from: start.toISOString(),
-        to: d(end, 23, 59, 59, 999).toISOString(),
-      }
-    },
+    getRange: () => range(moment().startOf('month'), moment().endOf('month')),
   },
   {
     value: 'last-30-days',
     labelKey: 'filterBar.presetLast30Days',
-    getRange: () => {
-      const t = d(new Date())
-      const start = new Date(t)
-      start.setDate(t.getDate() - 29)
-      return {
-        from: d(start).toISOString(),
-        to: d(new Date(), 23, 59, 59, 999).toISOString(),
-      }
-    },
+    getRange: () => range(moment().subtract(29, 'days'), moment()),
   },
   {
     value: 'last-3-months',
     labelKey: 'filterBar.presetLast3Months',
-    getRange: () => {
-      const t = d(new Date())
-      const start = new Date(t)
-      start.setMonth(t.getMonth() - 3)
-      return {
-        from: d(start).toISOString(),
-        to: d(new Date(), 23, 59, 59, 999).toISOString(),
-      }
-    },
+    getRange: () => range(moment().subtract(3, 'months'), moment()),
   },
 ]
 
-const toInputDate = iso => (iso ? iso.split('T')[0] : '')
+const toInputDate = iso => (iso ? moment(iso).format('YYYY-MM-DD') : '')
 
 const fmtDisplayDate = iso => {
   if (!iso) return null
-  const dt = new Date(iso)
-  return dt.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+  return moment(iso).format('D MMM')
 }
 
 // ── Component ────────────────────────────────────────────────────────────────
@@ -301,8 +251,8 @@ const FilterBar = ({
     } else {
       const iso =
         field === 'to'
-          ? new Date(dateStr + 'T23:59:59').toISOString()
-          : new Date(dateStr + 'T00:00:00').toISOString()
+          ? moment(dateStr).endOf('day').toISOString()
+          : moment(dateStr).startOf('day').toISOString()
       onSetFilter(defId, { ...current, preset: null, [field]: iso })
     }
   }

@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 const VALID_DAYS = {
   monday: 'Monday',
   mon: 'Monday',
@@ -424,25 +426,17 @@ export const parseRepeatV2 = inputSentence => {
         result.frequencyMetadata.unit = 'months'
 
         // Calculate the next occurrence of this day of the month
-        const todayEvery = new Date()
-        let suggestedDueDate = new Date(
-          todayEvery.getFullYear(),
-          todayEvery.getMonth(),
-          dayOfMonth,
-          23,
-          59,
-          0,
-        )
-        if (suggestedDueDate <= todayEvery) {
+        const todayEvery = moment()
+        let suggestedDueDate = moment(todayEvery).set({
+          date: dayOfMonth,
+          hour: 23,
+          minute: 59,
+          second: 0,
+          millisecond: 0,
+        })
+        if (!suggestedDueDate.isAfter(todayEvery)) {
           // Day has already passed this month, move to next month
-          suggestedDueDate = new Date(
-            todayEvery.getFullYear(),
-            todayEvery.getMonth() + 1,
-            dayOfMonth,
-            23,
-            59,
-            0,
-          )
+          suggestedDueDate = suggestedDueDate.add(1, 'month')
         }
 
         return {
@@ -731,9 +725,12 @@ export const parsePoints = inputSentence => {
 
 export const parseDueDate = (inputSentence, chrono) => {
   // Parse the due date using chrono
-  const parsedDueDate = chrono.parse(inputSentence, new Date(), {
-    forwardDate: true,
-  })
+  // Read in the family's time zone, not the device's.
+  const parsedDueDate = chrono.parse(
+    inputSentence,
+    { instant: new Date(), timezone: moment().utcOffset() },
+    { forwardDate: true },
+  )
 
   if (!parsedDueDate.length) {
     return {
@@ -811,8 +808,9 @@ export const parseDueDate = (inputSentence, chrono) => {
   // to indicate the date has no specific time tied to it (same convention as ChoreEdit)
   let resultDate = dueDateMatch.start.date()
   if (!dueDateMatch.start.isCertain('hour')) {
-    resultDate = new Date(resultDate)
-    resultDate.setHours(23, 59, 59, 0)
+    resultDate = moment(resultDate)
+      .set({ hour: 23, minute: 59, second: 59, millisecond: 0 })
+      .toDate()
   }
 
   return {

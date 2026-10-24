@@ -38,6 +38,7 @@ import {
   Typography,
 } from '@mui/joy'
 import { useMediaQuery } from '@mui/material'
+import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -259,32 +260,18 @@ const ChoreActionMenu = ({
   // END_OF_DAY in useChoreActions.js and DueDatePickerModal's splitDueDate),
   // so every option below lands there rather than an arbitrary hour.
   const getQuickScheduleDate = option => {
-    const now = new Date()
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-    today.setHours(23, 59, 59, 0)
+    // The family's today, at its no-specific-time stamp.
+    const today = moment().set({ hour: 23, minute: 59, second: 59, ms: 0 })
 
     switch (option) {
-      case 'today':
-        return today
-      case 'tomorrow': {
-        const tomorrow = new Date(today)
-        tomorrow.setDate(today.getDate() + 1)
-        return tomorrow
-      }
-      case 'weekend': {
-        const weekend = new Date(today)
-        const daysUntilSaturday = (6 - today.getDay() + 7) % 7 || 7
-        weekend.setDate(today.getDate() + daysUntilSaturday)
-        return weekend
-      }
-      case 'next-week': {
-        const nextWeek = new Date(today)
-        const daysUntilMonday = (1 - today.getDay() + 7) % 7 || 7
-        nextWeek.setDate(today.getDate() + daysUntilMonday)
-        return nextWeek
-      }
+      case 'tomorrow':
+        return today.add(1, 'day').toDate()
+      case 'weekend':
+        return today.add((6 - today.day() + 7) % 7 || 7, 'days').toDate()
+      case 'next-week':
+        return today.add((1 - today.day() + 7) % 7 || 7, 'days').toDate()
       default:
-        return today
+        return today.toDate()
     }
   }
 
