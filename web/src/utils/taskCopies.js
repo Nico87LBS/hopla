@@ -61,6 +61,8 @@ export const SHARED_FIELDS = [
   'labels',
   'labelsV2',
   'points',
+  'flashPoints',
+  'flashMinutes',
   'requireApproval',
   'isPrivate',
   'completionWindow',

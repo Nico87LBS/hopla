@@ -312,6 +312,8 @@ type ChoreReq struct {
 	Priority             *int                          `json:"priority" binding:"omitempty"`
 	CompletionWindow     *int                          `json:"completionWindow" binding:"omitempty"`
 	Points               *int                          `json:"points" binding:"omitempty"`
+	FlashPoints          *int                          `json:"flashPoints" binding:"omitempty,min=0,max=1000"`
+	FlashMinutes         *int                          `json:"flashMinutes" binding:"omitempty,min=1,max=720"`
 	Description          *string                       `json:"description" binding:"omitempty"`
 	SubTasks             *[]stModel.SubTask            `json:"subTasks" binding:"omitempty,dive"`
 	RequireApproval      bool                          `json:"requireApproval" binding:"omitempty"`
@@ -558,6 +560,8 @@ func (h *Handler) CreateChore(c *gin.Context) {
 		CreatedAt:              time.Now().UTC(),
 		CircleID:               currentUser.CircleID,
 		Points:                 choreReq.Points,
+		FlashPoints:            choreReq.FlashPoints,
+		FlashMinutes:           choreReq.FlashMinutes,
 		CompletionWindow:       choreReq.CompletionWindow,
 		Description:            choreReq.Description,
 		Priority:               *choreReq.Priority,
@@ -887,6 +891,8 @@ func (h *Handler) EditChore(c *gin.Context) {
 		CreatedBy:              oldChore.CreatedBy,
 		CreatedAt:              oldChore.CreatedAt,
 		Points:                 choreReq.Points,
+		FlashPoints:            choreReq.FlashPoints,
+		FlashMinutes:           choreReq.FlashMinutes,
 		CompletionWindow:       choreReq.CompletionWindow,
 		Description:            choreReq.Description,
 		Priority:               *choreReq.Priority,
@@ -4473,6 +4479,7 @@ func Routes(router *gin.Engine, h *Handler, multiAuthMiddleware *auth.MultiAuthM
 		choresRoutes.GET("/archived", h.GetArchivedChores)
 		choresRoutes.GET("/history", h.GetChoresHistory)
 		choresRoutes.GET("/slots", h.GetSlotsToday)
+		choresRoutes.GET("/flashes", h.GetFlashes)
 		choresRoutes.PUT("/", h.EditChore)
 		choresRoutes.PUT("/:id/priority", h.UpdatePriority)
 		choresRoutes.POST("/", h.CreateChore)

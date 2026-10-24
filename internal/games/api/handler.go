@@ -28,6 +28,7 @@ const (
 	maxStreakEvery  = 60
 	maxMultiplier   = 5
 	maxPeriodLength = 31 * 24 * time.Hour
+	maxFlashMinutes = 720
 	// Ended periods stay listed this long, so parents see what just ran.
 	endedPeriodsKept = 30 * 24 * time.Hour
 )
@@ -339,6 +340,88 @@ func (h *Handler) deletePeriod(c *gin.Context) {
 	c.JSON(200, gin.H{"res": "Bonus period deleted"})
 }
 
+func (h *Handler) getFlashes(c *gin.Context) {
+	currentUser, ok := auth.CurrentUser(c)
+	if !ok {
+		c.JSON(401, gin.H{"error": "Authentication failed"})
+		return
+	}
+	flashes := []games.Flash{}
+	now := time.Now().UTC()
+	if err := h.db.WithContext(c).Where("circle_id = ? AND starts_at <= ? AND ends_at > ?", currentUser.CircleID, now, now).
+		Order("ends_at").Find(&flashes).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Error getting the flash bonuses"})
+		return
+	}
+	c.JSON(200, gin.H{"res": flashes})
+}
+
+type FlashReq struct {
+	ChoreID int `json:"choreId" binding:"required"`
+	Points  int `json:"points"`
+	Minutes int `json:"minutes"`
+}
+
+// launchFlash starts a flash bonus on a task now, for its copies too.
+func (h *Handler) launchFlash(c *gin.Context) {
+	parentID, circleID, ok := h.requireParent(c)
+	if !ok {
+		return
+	}
+	var req FlashReq
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(400, gin.H{"error": "Invalid request"})
+		return
+	}
+	if req.Points < 1 || req.Points > maxBonus || req.Minutes < 1 || req.Minutes > maxFlashMinutes {
+		c.JSON(400, gin.H{"error": "A flash bonus is worth 1 to 1000 points and lasts 1 to 720 minutes"})
+		return
+	}
+	var flash *games.Flash
+	err := h.db.WithContext(c).Transaction(func(tx *gorm.DB) error {
+		var err error
+		flash, err = games.LaunchFlash(tx, circleID, req.ChoreID, req.Points, req.Minutes, parentID, time.Now().UTC())
+		return err
+	})
+	if errors.Is(err, games.ErrNoTask) {
+		c.JSON(404, gin.H{"error": "Task not found"})
+		return
+	}
+	if err != nil {
+		c.JSON(500, gin.H{"error": "Error launching the flash bonus"})
+		return
+	}
+	c.JSON(200, gin.H{"res": flash})
+}
+
+// stopFlash ends a flash bonus before its time.
+func (h *Handler) stopFlash(c *gin.Context) {
+	_, circleID, ok := h.requireParent(c)
+	if !ok {
+		return
+	}
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(404, gin.H{"error": "Flash bonus not found"})
+		return
+	}
+	var flash games.Flash
+	db := h.db.WithContext(c)
+	if err := db.Where("id = ? AND circle_id = ?", id, circleID).First(&flash).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			c.JSON(404, gin.H{"error": "Flash bonus not found"})
+			return
+		}
+		c.JSON(500, gin.H{"error": "Error getting the flash bonus"})
+		return
+	}
+	if err := games.StopFlash(db, &flash, time.Now().UTC()); err != nil {
+		c.JSON(500, gin.H{"error": "Error stopping the flash bonus"})
+		return
+	}
+	c.JSON(200, gin.H{"res": flash})
+}
+
 func Routes(r *gin.Engine, h *Handler, auth *jwt.GinJWTMiddleware) {
 	routes := r.Group("api/v1/games")
 	routes.Use(auth.MiddlewareFunc())
@@ -350,6 +433,9 @@ func Routes(r *gin.Engine, h *Handler, auth *jwt.GinJWTMiddleware) {
 		routes.POST("/periods", h.createPeriod)
 		routes.PUT("/periods/:id", h.updatePeriod)
 		routes.DELETE("/periods/:id", h.deletePeriod)
+		routes.GET("/flashes", h.getFlashes)
+		routes.POST("/flashes", h.launchFlash)
+		routes.DELETE("/flashes/:id", h.stopFlash)
 		routes.GET("/ranks", h.getRanks)
 		routes.PUT("/ranks", h.updateRanks)
 		routes.GET("/ranks/defaults", h.getDefaultRanks)
@@ -376,6 +462,9 @@ func APIs(cfg *config.Config, h *Handler, r *gin.Engine, limiter *limiter.Limite
 	{
 		routes.GET("/today", h.getToday)
 		routes.GET("/periods", h.getPeriods)
+		routes.GET("/flashes", h.getFlashes)
+		routes.POST("/flashes", h.launchFlash)
+		routes.DELETE("/flashes/:id", h.stopFlash)
 		routes.GET("/ranks", h.getRanks)
 		routes.GET("/quests", h.getQuests)
 		routes.GET("/challenges", h.getChallenges)

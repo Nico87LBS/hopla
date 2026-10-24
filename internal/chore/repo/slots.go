@@ -44,7 +44,7 @@ func (r *ChoreRepository) RecordSlot(ctx context.Context, chore *chModel.Chore, 
 	return r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		done := entry.Status == chModel.ChoreHistoryStatusCompleted
 		if done {
-			if err := awardTask(tx, chore, &entry.Points, entry.CompletedBy, byUserID, *entry.PerformedAt); err != nil {
+			if err := awardTask(tx, chore, entry, entry.CompletedBy, byUserID, *entry.PerformedAt); err != nil {
 				return err
 			}
 		}
@@ -81,7 +81,7 @@ func (r *ChoreRepository) ApproveSlot(ctx context.Context, chore *chModel.Chore,
 		if entry.PerformedAt != nil {
 			performedAt = *entry.PerformedAt
 		}
-		if err := awardTask(tx, chore, &entry.Points, entry.CompletedBy, adminUserID, performedAt); err != nil {
+		if err := awardTask(tx, chore, &entry, entry.CompletedBy, adminUserID, performedAt); err != nil {
 			return err
 		}
 		entry.Status = chModel.ChoreHistoryStatusCompleted
@@ -141,4 +141,12 @@ func (r *ChoreRepository) updateSlotChore(tx *gorm.DB, choreID int, nextDueDate 
 		"status":        chModel.ChoreStatusNoStatus,
 		"sync_version":  version,
 	}).Error
+}
+
+// FillFlashes sets on the tasks the flash bonus open now.
+func (r *ChoreRepository) FillFlashes(ctx context.Context, chores []*chModel.Chore, now time.Time) error {
+	if len(chores) == 0 {
+		return nil
+	}
+	return games.FillFlashes(r.db.WithContext(ctx), chores[0].CircleID, chores, now)
 }

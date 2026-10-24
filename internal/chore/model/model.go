@@ -79,6 +79,8 @@ type Chore struct {
 	Priority               int                        `json:"priority" gorm:"column:priority"`                                                        //
 	CompletionWindow       *int                       `json:"completionWindow,omitempty" gorm:"column:completion_window"`                             // Number seconds before the chore is due that it can be completed
 	Points                 *int                       `json:"points,omitempty" gorm:"column:points"`                                                  // Points for completing the chore
+	FlashPoints            *int                       `json:"flashPoints,omitempty" gorm:"column:flash_points"`                                       // Flash bonus: extra points when done in time
+	FlashMinutes           *int                       `json:"flashMinutes,omitempty" gorm:"column:flash_minutes"`                                     // Flash bonus: minutes after the due time it stays open
 	Description            *string                    `json:"description,omitempty" gorm:"type:text;column:description"`                              // Description of the chore
 	SubTasks               *[]stModel.SubTask         `json:"subTasks,omitempty" gorm:"foreignkey:ChoreID;references:ID"`                             // Subtasks for the chore
 	RequireApproval        bool                       `json:"requireApproval" gorm:"column:require_approval"`                                         // Whether chore completion requires admin approval
@@ -88,6 +90,16 @@ type Chore struct {
 	SyncVersion            int64                      `json:"syncVersion" gorm:"column:sync_version;not null;default:0;index;index:idx_chores_circle_sync_version,priority:2"`
 	Attachments            []storageModel.StorageFile `json:"attachments,omitempty" gorm:"-"`
 	SlotsToday             []SlotStatus               `json:"slotsToday,omitempty" gorm:"-"` // Today's slots of a task done several times a day
+	Flash                  *FlashWindow               `json:"flash,omitempty" gorm:"-"`      // The flash bonus open now, if any
+}
+
+// FlashWindow is a flash bonus open on a task: Points more for doing it
+// before EndsAt. LiveID is set for a flash a parent launched on the spot,
+// and is 0 for the task's own flash bonus after its due time.
+type FlashWindow struct {
+	Points int       `json:"points"`
+	EndsAt time.Time `json:"endsAt"`
+	LiveID int       `json:"liveId,omitempty"`
 }
 
 type Status int8
@@ -117,6 +129,7 @@ type ChoreHistory struct {
 	Status      ChoreHistoryStatus `json:"status" gorm:"column:status"`                                 // Status of the chore (1=completed, 2=skipped)
 	Points      *int               `json:"points,omitempty" gorm:"column:points"`                       // Points for completing the chore
 	Slot        *int               `json:"slot,omitempty" gorm:"column:slot"`                           // The slot of the day, for a task done several times a day
+	FlashID     *int               `json:"flashId,omitempty" gorm:"column:flash_id"`                    // The flash launched by a parent this completion won
 	Duration    *int               `json:"duration,omitempty" gorm:"<-:false;-:migration"`              // Duration in seconds calculated from query (read-only, no DB column)
 	SyncVersion int64              `json:"syncVersion" gorm:"column:sync_version;not null;default:0;index:idx_chore_history_sync_version"`
 }

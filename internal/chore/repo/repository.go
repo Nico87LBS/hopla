@@ -772,7 +772,7 @@ func (r *ChoreRepository) ApproveChore(c context.Context, chore *chModel.Chore, 
 			performedAt = *history.PerformedAt
 		}
 		if applyPoints {
-			if err := awardTask(tx, chore, &history.Points, history.CompletedBy, adminUserID, performedAt); err != nil {
+			if err := awardTask(tx, chore, &history, history.CompletedBy, adminUserID, performedAt); err != nil {
 				return err
 			}
 		}
@@ -895,7 +895,7 @@ func (r *ChoreRepository) CompleteChore(c context.Context, chore *chModel.Chore,
 			performedAt = *completedDate
 		}
 		if applyPoints {
-			if err := awardTask(tx, chore, &ch.Points, userID, userID, performedAt); err != nil {
+			if err := awardTask(tx, chore, ch, userID, userID, performedAt); err != nil {
 				return err
 			}
 		}

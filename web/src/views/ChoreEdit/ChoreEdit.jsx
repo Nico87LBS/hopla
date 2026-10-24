@@ -159,6 +159,8 @@ const ChoreEdit = () => {
   const [completionActionsValid, setCompletionActionsValid] = useState(true)
   const [points, setPoints] = useState(-1)
   const [requireApproval, setRequireApproval] = useState(false)
+  const [flashPoints, setFlashPoints] = useState(0)
+  const [flashMinutes, setFlashMinutes] = useState(15)
   const [isPrivate, setIsPrivate] = useState(false)
   const [subTasks, setSubTasks] = useState(null)
   const [completionWindow, setCompletionWindow] = useState(-1)
@@ -289,6 +291,8 @@ const ChoreEdit = () => {
     subTasks,
     attachments,
     points,
+    flashPoints,
+    flashMinutes,
     requireApproval,
     isPrivate,
     isNotificable,
@@ -607,6 +611,11 @@ const ChoreEdit = () => {
         templates: planReminders,
       },
       points: points < 0 ? null : points,
+      // The speed bonus counts from the due time: an "always" task has none.
+      flashPoints:
+        flashPoints > 0 && frequencyType !== 'always' ? flashPoints : null,
+      flashMinutes:
+        flashPoints > 0 && frequencyType !== 'always' ? flashMinutes : null,
       requireApproval: requireApproval,
       isPrivate: isPrivate,
       completionWindow:
@@ -830,6 +839,8 @@ const ChoreEdit = () => {
         data.res.points != null && data.res.points >= 0 ? data.res.points : -1,
       )
       setRequireApproval(data.res.requireApproval || false)
+      setFlashPoints(data.res.flashPoints > 0 ? data.res.flashPoints : 0)
+      setFlashMinutes(data.res.flashMinutes > 0 ? data.res.flashMinutes : 15)
       setIsPrivate(data.res.isPrivate || false)
       setCompletionWindow(
         data.res.completionWindow && data.res.completionWindow > -1
@@ -1224,6 +1235,21 @@ const ChoreEdit = () => {
     <RewardCard
       points={points}
       onPointsChange={setPoints}
+      flashPoints={flashPoints}
+      flashMinutes={flashMinutes}
+      onFlashChange={({ minutes, points: extra }) => {
+        setFlashPoints(extra)
+        setFlashMinutes(minutes)
+      }}
+      chronoAfter={
+        frequencyType === 'always'
+          ? undefined
+          : frequencyType === 'trigger'
+            ? 'Signal'
+            : hasSlots
+              ? 'Slot'
+              : 'Due'
+      }
       requireApproval={requireApproval}
       onRequireApprovalChange={setRequireApproval}
       onValidate={setCompletionActionsValid}

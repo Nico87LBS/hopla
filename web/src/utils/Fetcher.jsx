@@ -218,6 +218,13 @@ const RejectChore = id => {
 }
 
 // Today's slots of the tasks done several times a day, by task.
+const GetFlashes = () => {
+  return Fetch(`/chores/flashes`, {
+    method: 'GET',
+    headers: HEADERS(),
+  })
+}
+
 const GetSlotsToday = () => {
   return Fetch(`/chores/slots`, {
     method: 'GET',
@@ -1031,6 +1038,21 @@ const GetGamesToday = async () => {
   return resp.json()
 }
 
+const LaunchFlash = (choreId, points, minutes) => {
+  return Fetch(`/games/flashes`, {
+    method: 'POST',
+    headers: HEADERS(),
+    body: JSON.stringify({ choreId, points, minutes }),
+  })
+}
+
+const StopFlash = id => {
+  return Fetch(`/games/flashes/${id}`, {
+    method: 'DELETE',
+    headers: HEADERS(),
+  })
+}
+
 const GetGameRules = async () => {
   const resp = await Fetch(`/games/rules`, {
     method: 'GET',
@@ -1205,6 +1227,7 @@ export {
   GetFilterById,
   GetFilters,
   GetFiltersByUsage,
+  GetFlashes,
   GetGameRules,
   GetGamesToday,
   GetLabels,
@@ -1225,6 +1248,7 @@ export {
   GetUserCircle,
   GetUserProfile,
   JoinCircle,
+  LaunchFlash,
   LeaveCircle,
   login,
   logout,
@@ -1258,6 +1282,7 @@ export {
   SkipChore,
   SlotAction,
   StartChore,
+  StopFlash,
   ToggleFilterPin,
   UnArchiveChore,
   UndoChoreAction,
