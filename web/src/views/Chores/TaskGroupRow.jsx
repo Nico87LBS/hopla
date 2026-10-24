@@ -12,10 +12,11 @@ import PropTypes from 'prop-types'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import ChronoChip from '../../components/common/ChronoChip'
 import TaskMode from '../../components/common/TaskMode'
 import { HOPLA, memberColor } from '../../constants/theme'
 import { useImpersonateUser } from '../../contexts/ImpersonateUserContext.jsx'
-import { useSlotsToday } from '../../queries/ChoreQueries'
+import { useFlashes, useSlotsToday } from '../../queries/ChoreQueries'
 import { useCircleMembers, useUserProfile } from '../../queries/UserQueries'
 import { useNotification } from '../../service/NotificationProvider'
 import { isTogether, taskMemberIds } from '../../utils/Chores.jsx'
@@ -28,6 +29,7 @@ import { taskModeOf } from '../../utils/taskMode'
 import { doneCopies, hasSlots, todaySlots } from '../../utils/taskSlots'
 import { MemberAvatar } from '../Games/GameParts'
 
+const PENDING_APPROVAL = 3
 const CELL = 44
 const RING = 30
 
@@ -414,6 +416,17 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
     }))
   })
   const ahead = slotted ? new Set() : doneCopies(chores, now)
+  // The speed bonus still to win on one of the copies.
+  const { data: flashes } = useFlashes()
+  const flash =
+    flashes?.[
+      chores.find(
+        chore =>
+          flashes?.[chore.id] &&
+          !ahead.has(chore.id) &&
+          chore.status !== PENDING_APPROVAL,
+      )?.id
+    ]
   const columns = lines.find(line => line.slots.length)?.slots || []
   const all = lines.flatMap(line => line.slots)
   const doneCount = all.filter(slot => slot.state === 'done').length
@@ -490,11 +503,12 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
           >
             {first.name}
           </Typography>
-          {(mode || meta.length > 0) && (
+          {(mode || meta.length > 0 || flash) && (
             <Typography
               level='body-xs'
               sx={{ color: 'text.secondary', mt: 0.25 }}
             >
+              <ChronoChip flash={flash} sx={{ mr: 0.75 }} />
               <TaskMode mode={mode} />
               {mode && meta.length > 0 && ' · '}
               {meta.join(' · ')}

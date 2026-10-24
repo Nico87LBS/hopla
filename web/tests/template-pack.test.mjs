@@ -26,6 +26,8 @@ const instance = {
       assignees: [{ userId: 7 }],
       assignedTo: 7,
       points: 5,
+      flashPoints: 3,
+      flashMinutes: 15,
       isActive: true,
       labelsV2: [{ id: 3 }],
       subTasks: [
@@ -70,6 +72,8 @@ test('a template keeps no people, ids or dates', () => {
   assert.equal(task.name, 'Ranger la chambre')
   assert.deepEqual(task.frequencyMetadata, { days: ['monday'] })
   assert.match(task.dueTime, /^\d\d:\d\d$/)
+  assert.equal(task.flashPoints, 3, 'the speed bonus goes with the task')
+  assert.equal(task.flashMinutes, 15)
   assert.deepEqual(task.labels, [{ name: 'Chambre', color: '#f00' }])
   assert.deepEqual(task.subTasks, [
     { ref: 1, name: 'Jouets', parent: null },

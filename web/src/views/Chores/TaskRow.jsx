@@ -13,11 +13,13 @@ import PropTypes from 'prop-types'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import ChronoChip from '../../components/common/ChronoChip'
 import TaskMode from '../../components/common/TaskMode'
 import { HOPLA } from '../../constants/theme'
 import { useImpersonateUser } from '../../contexts/ImpersonateUserContext.jsx'
 import { useLocalization } from '../../contexts/LocalizationContext'
 import { usePendingCommands } from '../../hooks/usePendingCommands'
+import { useFlashes } from '../../queries/ChoreQueries'
 import { useCircleMembers, useUserProfile } from '../../queries/UserQueries.jsx'
 import {
   getDueDateChipColor,
@@ -185,6 +187,8 @@ const MetaDot = () => (
   </Box>
 )
 
+const PENDING_APPROVAL = 3
+
 // One task in a list: ring, title, a line of details, hops and who does it.
 const TaskRow = ({
   chore,
@@ -202,6 +206,7 @@ const TaskRow = ({
   const { data: userProfile } = useUserProfile()
   const { data: circleMembersData } = useCircleMembers()
   const { data: pendingCmds } = usePendingCommands(chore.id)
+  const { data: flashes } = useFlashes()
   const { impersonatedUser } = useImpersonateUser()
 
   const actingUserId = impersonatedUser?.userId || userProfile?.id
@@ -333,6 +338,9 @@ const TaskRow = ({
             rowGap: 0.25,
           }}
         >
+          {chore.status !== PENDING_APPROVAL && (
+            <ChronoChip flash={flashes?.[chore.id]} sx={{ mr: 0.75 }} />
+          )}
           <TaskMode mode={mode} />
           {mode &&
             (chore.nextDueDate || repeats || visibleLabels.length > 0) && (

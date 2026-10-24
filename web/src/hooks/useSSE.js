@@ -107,6 +107,7 @@ export const useSSE = () => {
             queryClient.invalidateQueries({ queryKey: ['pointsHistory'] })
             queryClient.invalidateQueries({ queryKey: ['games', 'today'] })
             queryClient.invalidateQueries({ queryKey: ['slots'] })
+            queryClient.invalidateQueries({ queryKey: ['flashes'] })
 
             if (eventData?.data?.user?.id !== userProfile?.id) {
               showNotification({
@@ -224,6 +225,7 @@ export const useSSE = () => {
             queryClient.invalidateQueries({ queryKey: ['pointsHistory'] })
             queryClient.invalidateQueries({ queryKey: ['pointsPresets'] })
             queryClient.invalidateQueries({ queryKey: ['games'] })
+            queryClient.invalidateQueries({ queryKey: ['flashes'] })
             queryClient.invalidateQueries({ queryKey: ['familyTimezone'] })
             break
 

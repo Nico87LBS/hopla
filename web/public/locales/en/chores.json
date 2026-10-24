@@ -1306,7 +1306,16 @@
       "preset_one": "{{count}} hop",
       "preset_other": "{{count}} hops",
       "approval": "A parent approves",
-      "approvalHelp": "The hops come after approval."
+      "approvalHelp": "The hops come after approval.",
+      "chrono": "Speed bonus",
+      "chronoHelp": "Extra hops when it is done quickly.",
+      "chronoPoints": "Extra hops",
+      "chronoMinutes": "Minutes",
+      "chronoRuleStart": "extra hops if done at most",
+      "chronoRuleEnd": "min {{after}}",
+      "chronoAfterDue": "after the due time",
+      "chronoAfterSlot": "after each slot",
+      "chronoAfterSignal": "after the signal"
     },
     "more": {
       "title": "More options",
@@ -1371,5 +1380,22 @@
       "hops_one": "{{count}} hop",
       "hops_other": "{{count}} hops"
     }
+  },
+  "chrono": {
+    "name": "Speed bonus",
+    "minutesLeft": "+{{points}} · {{count}} min",
+    "until": "+{{points}} · before {{time}}",
+    "title": "Speed bonus: {{points}} extra hops if done before {{time}}",
+    "launch": "Start a speed bonus",
+    "launchHelp": "Extra hops for whoever does “{{name}}” in time, once per child.",
+    "points": "Extra hops",
+    "minutes": "For",
+    "minutesValue": "{{count}} min",
+    "start": "Start",
+    "stop": "Stop the speed bonus",
+    "running": "Running: +{{points}} hops, {{count}} min left.",
+    "replace": "Starting again replaces the running one.",
+    "failed": "The speed bonus could not be started",
+    "stopFailed": "The speed bonus could not be stopped"
   }
 }

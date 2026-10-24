@@ -1306,7 +1306,16 @@
       "preset_one": "{{count}} hop",
       "preset_other": "{{count}} hops",
       "approval": "Un parent valide",
-      "approvalHelp": "Les hops arrivent après validation."
+      "approvalHelp": "Les hops arrivent après validation.",
+      "chrono": "Bonus chrono",
+      "chronoHelp": "Des hops en plus si elle est faite vite.",
+      "chronoPoints": "Hops en plus",
+      "chronoMinutes": "Minutes",
+      "chronoRuleStart": "hops en plus si faite au plus tard",
+      "chronoRuleEnd": "min {{after}}",
+      "chronoAfterDue": "après l'heure prévue",
+      "chronoAfterSlot": "après chaque créneau",
+      "chronoAfterSignal": "après le signal"
     },
     "more": {
       "title": "Plus d'options",
@@ -1371,5 +1380,22 @@
       "hops_one": "{{count}} hop",
       "hops_other": "{{count}} hops"
     }
+  },
+  "chrono": {
+    "name": "Bonus chrono",
+    "minutesLeft": "+{{points}} · {{count}} min",
+    "until": "+{{points}} · avant {{time}}",
+    "title": "Bonus chrono : {{points}} hops en plus si faite avant {{time}}",
+    "launch": "Lancer un bonus chrono",
+    "launchHelp": "Des hops en plus pour qui fait « {{name}} » à temps, une fois par enfant.",
+    "points": "Hops en plus",
+    "minutes": "Pendant",
+    "minutesValue": "{{count}} min",
+    "start": "Lancer",
+    "stop": "Arrêter le chrono",
+    "running": "En cours : +{{points}} hops, encore {{count}} min.",
+    "replace": "Lancer à nouveau remplace celui en cours.",
+    "failed": "Le bonus chrono n'a pas pu être lancé",
+    "stopFailed": "Le bonus chrono n'a pas pu être arrêté"
   }
 }

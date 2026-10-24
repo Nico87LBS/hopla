@@ -55,6 +55,7 @@ func Migration(db *gorm.DB) error {
 		games.Challenge{},
 		games.ChallengeWin{},
 		games.Absence{},
+		games.Flash{},
 		stModel.SubTask{},
 		storageModel.StorageFile{},
 		storageModel.StorageUsage{},

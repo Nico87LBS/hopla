@@ -27,20 +27,29 @@ func taskPoints(chore *chModel.Chore, userID, byUserID, points int) ptModel.Poin
 }
 
 // awardTask credits a completed task to userID with what the games make it
-// worth (bonus period, surprise), records it on the history row so an undo
-// takes back the same amount, and writes the ledger row.
-func awardTask(tx *gorm.DB, chore *chModel.Chore, historyPoints **int, userID, byUserID int, performedAt time.Time) error {
+// worth (bonus period, surprise, flash bonus), records it on the history row
+// so an undo takes back the same amount, and writes the ledger row.
+func awardTask(tx *gorm.DB, chore *chModel.Chore, entry *chModel.ChoreHistory, userID, byUserID int, performedAt time.Time) error {
 	earning, err := games.TaskEarning(tx, chore, userID, performedAt)
-	if err != nil || earning.Points <= 0 {
+	if err != nil {
 		return err
 	}
-	points := earning.Points
-	*historyPoints = &points
+	flash, err := games.FlashBonus(tx, chore, userID, entry.DueDate, performedAt)
+	if err != nil {
+		return err
+	}
+	points := earning.Points + flash.Points
+	if points <= 0 {
+		return nil
+	}
+	entry.Points = &points
+	entry.FlashID = flash.FlashID
 	if err := tx.Model(&cModel.UserCircle{}).Where("user_id = ? AND circle_id = ?", userID, chore.CircleID).
 		Update("points", gorm.Expr("points + ?", points)).Error; err != nil {
 		return err
 	}
 	row := taskPoints(chore, userID, byUserID, points)
-	row.Reason = &earning.Reason
+	reason := earning.Reason + flash.Reason
+	row.Reason = &reason
 	return ptRepo.Record(tx, row)
 }

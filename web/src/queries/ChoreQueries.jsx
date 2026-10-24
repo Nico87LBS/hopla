@@ -15,6 +15,7 @@ import {
   GetChoreHistory,
   GetChoresHistory,
   GetChoresNew,
+  GetFlashes,
   GetSlotsToday,
   MarkChoreComplete,
   RejectChore,
@@ -126,6 +127,21 @@ export const useSlotsToday = ({ enabled = true } = {}) =>
     refetchOnWindowFocus: true,
     queryFn: async () => {
       const resp = await GetSlotsToday()
+      if (!resp?.ok) return {}
+      const body = await resp.json()
+      return body.res || {}
+    },
+  })
+
+// The speed bonus open now on each task, by task id. Refreshed every minute,
+// so a task's own speed bonus shows once its day comes.
+export const useFlashes = () =>
+  useQuery({
+    queryKey: ['flashes'],
+    refetchInterval: 60 * 1000,
+    refetchOnWindowFocus: true,
+    queryFn: async () => {
+      const resp = await GetFlashes()
       if (!resp?.ok) return {}
       const body = await resp.json()
       return body.res || {}

@@ -28,7 +28,8 @@ func (h *Handler) slotHistoryFor(ctx context.Context, chores []*chModel.Chore, n
 
 // fillSlotsToday sets today's slots on the tasks done several times a day. A
 // task whose due slot has closed meanwhile moves on to its next slot, so Home
-// Assistant and the calendar show the right time.
+// Assistant and the calendar show the right time. It also sets the flash
+// bonus open now on each task.
 func (h *Handler) fillSlotsToday(ctx context.Context, chores []*chModel.Chore) error {
 	now := time.Now().UTC()
 	history, err := h.slotHistoryFor(ctx, chores, now)
@@ -49,7 +50,7 @@ func (h *Handler) fillSlotsToday(ctx context.Context, chores []*chModel.Chore) e
 			chore.NextDueDate = next
 		}
 	}
-	return nil
+	return h.choreRepo.FillFlashes(ctx, chores, now)
 }
 
 // todaySlots returns today's slots of one task.
@@ -367,6 +368,37 @@ func (h *Handler) GetSlotsToday(c *gin.Context) {
 		}
 	}
 	c.JSON(200, gin.H{"res": slots})
+}
+
+// GetFlashes godoc
+//
+//	@Summary		Speed bonuses open now
+//	@Description	The speed bonus open now on each task that has one, by task
+//	@Tags			chores
+//	@Produce		json
+//	@Router			/chores/flashes [get]
+func (h *Handler) GetFlashes(c *gin.Context) {
+	user, ok := auth.CurrentUser(c)
+	if !ok {
+		c.JSON(401, gin.H{"error": "Authentication failed"})
+		return
+	}
+	chores, err := h.choreRepo.GetChores(c, user.CircleID, user.ID, false, nil, false)
+	if err != nil {
+		c.JSON(500, gin.H{"error": "Failed to retrieve chores"})
+		return
+	}
+	if err := h.fillSlotsToday(c, chores); err != nil {
+		c.JSON(500, gin.H{"error": "Failed to read the speed bonuses"})
+		return
+	}
+	flashes := map[int]*chModel.FlashWindow{}
+	for _, chore := range chores {
+		if chore.Flash != nil {
+			flashes[chore.ID] = chore.Flash
+		}
+	}
+	c.JSON(200, gin.H{"res": flashes})
 }
 
 // approveAllSlots approves every slot of today waiting for a parent, for the

@@ -1,4 +1,9 @@
-import { AddRounded, RemoveRounded, StarRounded } from '@mui/icons-material'
+import {
+  AddRounded,
+  RemoveRounded,
+  StarRounded,
+  TimerRounded,
+} from '@mui/icons-material'
 import { Box, IconButton, Switch, Typography } from '@mui/joy'
 import PropTypes from 'prop-types'
 import { useEffect } from 'react'
@@ -10,6 +15,7 @@ import EditorCard from './EditorCard'
 
 const PRESETS = [0, 2, 5, 10, 20]
 const MAX_HOPS = 1000
+const MAX_CHRONO_MINUTES = 720
 
 // Gold is for hops only; a softer gold reads on the dark background.
 const goldText = theme => ({
@@ -23,10 +29,21 @@ const goldSoft = theme => ({
   },
 })
 
-// "Reward": the hops the task gives and whether a parent approves it first.
-// No hops is stored as -1, as before.
+const chronoInputSx = {
+  width: 64,
+  minHeight: 36,
+  '& input': { textAlign: 'center', fontWeight: 600 },
+}
+
+// "Reward": the hops the task gives, its speed bonus (extra hops when done at
+// most some minutes after the due time) and whether a parent approves it
+// first. No hops is stored as -1, as before; no speed bonus as 0.
 export default function RewardCard({
+  chronoAfter,
   error,
+  flashMinutes,
+  flashPoints,
+  onFlashChange,
   onPointsChange,
   onRequireApprovalChange,
   onValidate,
@@ -36,9 +53,15 @@ export default function RewardCard({
 }) {
   const { t } = useTranslation('chores')
   const hops = points > 0 ? points : 0
+  const chrono = Boolean(chronoAfter) && flashPoints > 0
   const valid =
-    points === -1 ||
-    (Number.isInteger(points) && points >= 0 && points <= MAX_HOPS)
+    (points === -1 ||
+      (Number.isInteger(points) && points >= 0 && points <= MAX_HOPS)) &&
+    (!chrono ||
+      (flashPoints <= MAX_HOPS &&
+        Number.isInteger(flashMinutes) &&
+        flashMinutes >= 1 &&
+        flashMinutes <= MAX_CHRONO_MINUTES))
   useEffect(() => {
     onValidate(valid)
   }, [valid])
@@ -167,6 +190,98 @@ export default function RewardCard({
           )
         })}
       </Box>
+      {chronoAfter && (
+        <>
+          <Box sx={{ height: '1px', bgcolor: 'divider' }} />
+          <Box
+            component='label'
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: 1.5,
+              minHeight: 44,
+              cursor: 'pointer',
+            }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25 }}>
+              <TimerRounded sx={{ color: HOPLA.violet, fontSize: 22 }} />
+              <Box>
+                <Typography level='title-sm'>
+                  {t('editor.reward.chrono')}
+                </Typography>
+                <Typography level='body-xs' sx={{ color: 'text.secondary' }}>
+                  {t('editor.reward.chronoHelp')}
+                </Typography>
+              </Box>
+            </Box>
+            <Switch
+              checked={chrono}
+              onChange={e =>
+                onFlashChange({
+                  points: e.target.checked ? 5 : 0,
+                  minutes: flashMinutes || 15,
+                })
+              }
+            />
+          </Box>
+          {chrono && (
+            <Box
+              sx={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                alignItems: 'center',
+                columnGap: 1,
+                rowGap: 0.75,
+              }}
+            >
+              <NumberInput
+                size='sm'
+                aria-label={t('editor.reward.chronoPoints')}
+                min={1}
+                max={MAX_HOPS}
+                value={flashPoints}
+                selectOnFocus
+                onValueChange={value =>
+                  onFlashChange({
+                    points: Math.max(1, Number(value) || 1),
+                    minutes: flashMinutes,
+                  })
+                }
+                sx={chronoInputSx}
+              />
+              <Typography level='body-sm'>
+                {t('editor.reward.chronoRuleStart')}
+              </Typography>
+              <NumberInput
+                size='sm'
+                aria-label={t('editor.reward.chronoMinutes')}
+                min={1}
+                max={MAX_CHRONO_MINUTES}
+                value={flashMinutes}
+                selectOnFocus
+                onValueChange={value =>
+                  onFlashChange({
+                    points: flashPoints,
+                    minutes: Math.max(1, Number(value) || 1),
+                  })
+                }
+                sx={chronoInputSx}
+              />
+              <Typography level='body-sm'>
+                {t('editor.reward.chronoRuleEnd', {
+                  after:
+                    chronoAfter === 'Slot'
+                      ? t('editor.reward.chronoAfterSlot')
+                      : chronoAfter === 'Signal'
+                        ? t('editor.reward.chronoAfterSignal')
+                        : t('editor.reward.chronoAfterDue'),
+                })}
+              </Typography>
+            </Box>
+          )}
+        </>
+      )}
       <Box sx={{ height: '1px', bgcolor: 'divider' }} />
       <Box
         component='label'
@@ -197,7 +312,11 @@ export default function RewardCard({
 }
 
 RewardCard.propTypes = {
+  chronoAfter: PropTypes.oneOf(['Due', 'Slot', 'Signal']),
   error: PropTypes.node,
+  flashMinutes: PropTypes.number,
+  flashPoints: PropTypes.number,
+  onFlashChange: PropTypes.func.isRequired,
   onPointsChange: PropTypes.func.isRequired,
   onRequireApprovalChange: PropTypes.func.isRequired,
   onValidate: PropTypes.func.isRequired,

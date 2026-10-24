@@ -15,6 +15,7 @@ import {
   NoteAdd,
   RecordVoiceOver,
   SwitchAccessShortcut,
+  TimerRounded,
   Today,
   Unarchive,
   Update,
@@ -44,6 +45,8 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import AppModal from '../../components/common/AppModal'
+import { useImpersonateUser } from '../../contexts/ImpersonateUserContext.jsx'
+import { useCircleMembers, useUserProfile } from '../../queries/UserQueries.jsx'
 import LABEL_COLORS, {
   getTextColorFromBackgroundColor,
 } from '../../utils/Colors'
@@ -51,6 +54,7 @@ import Priorities from '../../utils/Priorities'
 import { getIconComponent } from '../../utils/ProjectIcons'
 import { useProjects } from '../Projects/ProjectQueries'
 import { ProjectAccessIcon } from '../Projects/ProjectVisibilityField'
+import ChronoModal from './ChronoModal'
 
 const NO_PRIORITY = { name: 'No priority', value: 0, color: 'neutral' }
 
@@ -128,6 +132,15 @@ const ChoreActionMenu = ({
   const [showPriorityPicker, setShowPriorityPicker] = useState(false)
   const [showSchedulePicker, setShowSchedulePicker] = useState(false)
   const [submenuAnchorEl, setSubmenuAnchorEl] = useState(null)
+  const [showChrono, setShowChrono] = useState(false)
+  const { data: userProfile } = useUserProfile()
+  const { data: circleMembersData } = useCircleMembers()
+  const { impersonatedUser } = useImpersonateUser()
+  const actingUserId = impersonatedUser?.userId || userProfile?.id
+  const actingRole = circleMembersData?.res?.find(
+    member => member.userId === actingUserId,
+  )?.role
+  const isParent = actingRole === 'admin' || actingRole === 'manager'
   const menuRef = React.useRef(null)
   const submenuRef = React.useRef(null)
   const navigate = useNavigate()
@@ -382,6 +395,16 @@ const ChoreActionMenu = ({
       label: t('actionMenu.skipToNext'),
       onClick: handleSkip,
     },
+    isParent &&
+      chore.isActive && {
+        key: 'chrono',
+        icon: <TimerRounded />,
+        label: t('chrono.launch'),
+        onClick: () => {
+          handleMenuClose()
+          setShowChrono(true)
+        },
+      },
     { key: 'divider-task-actions', type: 'divider' },
     {
       key: 'schedule',
@@ -717,6 +740,11 @@ const ChoreActionMenu = ({
 
   return (
     <>
+      <ChronoModal
+        chore={chore}
+        open={showChrono}
+        onClose={() => setShowChrono(false)}
+      />
       {isControlled ? null : trigger ? (
         React.cloneElement(trigger, {
           'aria-expanded': Boolean(anchorEl),
