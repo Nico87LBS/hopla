@@ -117,6 +117,7 @@ func (s *DeletionService) deleteUserAccount(ctx context.Context, userID int, tra
 			{"subtasks", s.countUserSubtasks},
 			{"chores", s.countUserChores},
 			{"points_history", s.countPointsHistory},
+			{"learning", s.countLearning},
 			{"storage_files", s.countStorageFiles},
 			{"storage_usage", s.countStorageUsage},
 			{"user_circles", s.countUserCircles},
@@ -196,6 +197,7 @@ func (s *DeletionService) deleteUserAccount(ctx context.Context, userID int, tra
 		{"subtasks", s.deleteUserSubtasks},
 		{"chores", s.deleteUserChores},
 		{"points_history", s.deletePointsHistory},
+		{"learning", s.deleteLearning},
 		{"storage_files", s.deleteStorageFiles},
 		{"storage_usage", s.deleteStorageUsage},
 		{"user_circles", s.deleteUserCircles},
@@ -408,6 +410,19 @@ func (s *DeletionService) deletePointsHistory(tx *gorm.DB, userID int) (int, err
 	return s.safeDelete(tx, "DELETE FROM points_histories WHERE user_id = ?", userID)
 }
 
+// deleteLearning drops what a person played and knows in the learning games.
+func (s *DeletionService) deleteLearning(tx *gorm.DB, userID int) (int, error) {
+	total := 0
+	for _, table := range []string{"learn_sessions", "learn_cards", "learn_activations"} {
+		count, err := s.safeDelete(tx, "DELETE FROM "+table+" WHERE user_id = ?", userID)
+		if err != nil {
+			return total, err
+		}
+		total += count
+	}
+	return total, nil
+}
+
 func (s *DeletionService) deleteStorageFiles(tx *gorm.DB, userID int) (int, error) {
 	return s.safeDelete(tx, "DELETE FROM storage_files WHERE user_id = ?", userID)
 }
@@ -511,6 +526,18 @@ func (s *DeletionService) countUserChores(tx *gorm.DB, userID int) (int, error) 
 
 func (s *DeletionService) countPointsHistory(tx *gorm.DB, userID int) (int, error) {
 	return s.safeCount(tx, "SELECT COUNT(*) FROM points_histories WHERE user_id = ?", userID)
+}
+
+func (s *DeletionService) countLearning(tx *gorm.DB, userID int) (int, error) {
+	total := 0
+	for _, table := range []string{"learn_sessions", "learn_cards", "learn_activations"} {
+		count, err := s.safeCount(tx, "SELECT COUNT(*) FROM "+table+" WHERE user_id = ?", userID)
+		if err != nil {
+			return total, err
+		}
+		total += count
+	}
+	return total, nil
 }
 
 func (s *DeletionService) countStorageFiles(tx *gorm.DB, userID int) (int, error) {

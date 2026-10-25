@@ -64,7 +64,8 @@
     "family": "Famille",
     "shop": "Boutique",
     "manage": "Gérer",
-    "newTask": "Nouvelle tâche"
+    "newTask": "Nouvelle tâche",
+    "learn": "Apprendre"
   },
   "search": {
     "title": "Recherche",
@@ -528,6 +529,7 @@
   },
   "manage": {
     "groups": {
+      "learn": "Apprendre",
       "organize": "Organiser",
       "parent": "Espace parent",
       "account": "Compte"
@@ -580,6 +582,14 @@
       "settings": {
         "title": "Réglages",
         "description": "Profil, apparence, langue et le reste"
+      },
+      "play": {
+        "title": "Jeux pour apprendre",
+        "description": "Maths, mots… et des hops à gagner"
+      },
+      "learn": {
+        "title": "Modules d’apprentissage",
+        "description": "Choisir les jeux de chacun et leurs hops"
       }
     }
   },

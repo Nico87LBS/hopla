@@ -64,7 +64,8 @@
     "family": "Family",
     "shop": "Shop",
     "manage": "Manage",
-    "newTask": "New task"
+    "newTask": "New task",
+    "learn": "Learn"
   },
   "search": {
     "title": "Search",
@@ -528,6 +529,7 @@
   },
   "manage": {
     "groups": {
+      "learn": "Learn",
       "organize": "Organize",
       "parent": "Parent space",
       "account": "Account"
@@ -580,6 +582,14 @@
       "settings": {
         "title": "Settings",
         "description": "Profile, appearance, language and more"
+      },
+      "play": {
+        "title": "Learning games",
+        "description": "Maths, words… and hops to earn"
+      },
+      "learn": {
+        "title": "Learning modules",
+        "description": "Choose everyone’s games and their hops"
       }
     }
   },

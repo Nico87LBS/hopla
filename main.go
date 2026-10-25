@@ -23,6 +23,7 @@ import (
 	gamesAPI "github.com/nico87lbs/hopla/internal/games/api"
 	label "github.com/nico87lbs/hopla/internal/label"
 	lRepo "github.com/nico87lbs/hopla/internal/label/repo"
+	learnAPI "github.com/nico87lbs/hopla/internal/learn/api"
 	"github.com/nico87lbs/hopla/internal/mfa"
 	pointsAPI "github.com/nico87lbs/hopla/internal/points/api"
 	"github.com/nico87lbs/hopla/internal/project"
@@ -119,6 +120,7 @@ func main() {
 		fx.Provide(reward.NewHandler),
 		fx.Provide(pointsAPI.NewHandler),
 		fx.Provide(gamesAPI.NewHandler),
+		fx.Provide(learnAPI.NewHandler),
 
 		// Projects:
 		fx.Provide(pjRepo.NewProjectRepository),
@@ -174,6 +176,7 @@ func main() {
 			pointsAPI.APIs,
 			gamesAPI.Routes,
 			gamesAPI.APIs,
+			learnAPI.Routes,
 			project.Routes,
 			filter.Routes,
 

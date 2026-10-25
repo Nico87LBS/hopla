@@ -1,0 +1,30 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-ce2-addition-soustraction",
+  "version": "1.0.0",
+  "nom": "Addition et soustraction",
+  "description": "Additions et soustractions de nombres à 3 et 4 chiffres, sans puis avec retenue. On peut poser l'opération sur une feuille.",
+  "matiere": "maths",
+  "niveaux": ["CE2"],
+  "public": "enfant",
+  "langue": "fr",
+  "icone": "plus",
+  "couleur": "#1F7F74",
+  "auteur": "Hopla",
+  "chapitres": [
+    { "id": "add-sans", "nom": "Additions sans retenue" },
+    { "id": "add-avec", "nom": "Additions avec retenue", "ouvert_apres": 70 },
+    { "id": "sub-sans", "nom": "Soustractions sans retenue" },
+    { "id": "sub-avec", "nom": "Soustractions avec retenue", "ouvert_apres": 70 },
+    { "id": "grands", "nom": "Avec des milliers", "ouvert_apres": 70 }
+  ],
+  "generateurs": [
+    { "id": "add-sans", "chapitre": "add-sans", "operation": "addition", "a": [100, 899], "b": [100, 899], "retenue": "sans", "resultat_max": 999 },
+    { "id": "add-avec", "chapitre": "add-avec", "operation": "addition", "a": [100, 899], "b": [100, 899], "retenue": "avec", "resultat_max": 1999 },
+    { "id": "sub-sans", "chapitre": "sub-sans", "operation": "soustraction", "a": [200, 999], "b": [100, 899], "retenue": "sans", "resultat_min": 1 },
+    { "id": "sub-avec", "chapitre": "sub-avec", "operation": "soustraction", "a": [200, 999], "b": [100, 899], "retenue": "avec", "resultat_min": 1 },
+    { "id": "add-milliers", "chapitre": "grands", "operation": "addition", "a": [1000, 7999], "b": [100, 1999], "resultat_max": 9999 },
+    { "id": "sub-milliers", "chapitre": "grands", "operation": "soustraction", "a": [1000, 9999], "b": [100, 999], "resultat_min": 1 }
+  ],
+  "reglages": { "questions_par_partie": 8, "nouvelles_par_partie": 4 }
+}

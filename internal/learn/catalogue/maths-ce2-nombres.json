@@ -1,0 +1,32 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-ce2-nombres",
+  "version": "1.0.0",
+  "nom": "Nombres jusqu'à 10 000",
+  "description": "Lire et écrire les nombres, unités, dizaines, centaines et milliers, comparer, avant et après.",
+  "matiere": "maths",
+  "niveaux": ["CE2"],
+  "public": "enfant",
+  "langue": "fr",
+  "icone": "nombres",
+  "couleur": "#2B63B5",
+  "auteur": "Hopla",
+  "chapitres": [
+    { "id": "lire-1000", "nom": "Lire et écrire jusqu'à 1 000" },
+    { "id": "lire-10000", "nom": "Lire et écrire jusqu'à 10 000", "ouvert_apres": 70 },
+    { "id": "rangs", "nom": "Unités, dizaines, centaines, milliers" },
+    { "id": "comparer", "nom": "Comparer les nombres" },
+    { "id": "avant-apres", "nom": "Avant, après, 10 et 100 de plus" }
+  ],
+  "generateurs": [
+    { "id": "lettres-1000", "chapitre": "lire-1000", "operation": "lettres", "a": [100, 999], "formes": ["chiffres", "mots"] },
+    { "id": "lettres-10000", "chapitre": "lire-10000", "operation": "lettres", "a": [1000, 9999], "formes": ["chiffres", "mots"] },
+    { "id": "rangs", "chapitre": "rangs", "operation": "position", "a": [1000, 9999], "rangs": ["unites", "dizaines", "centaines", "milliers"], "formes": ["chiffre", "nombre"] },
+    { "id": "comparer", "chapitre": "comparer", "operation": "comparaison", "a": [100, 9999] },
+    { "id": "apres", "chapitre": "avant-apres", "operation": "modele", "texte": "Quel nombre vient juste après {n} ?", "variables": { "n": [99, 9998] }, "reponse": "n+1" },
+    { "id": "avant", "chapitre": "avant-apres", "operation": "modele", "texte": "Quel nombre vient juste avant {n} ?", "variables": { "n": [100, 9999] }, "reponse": "n-1" },
+    { "id": "plus-10", "chapitre": "avant-apres", "operation": "modele", "texte": "Quel nombre a 10 de plus que {n} ?", "variables": { "n": [100, 9989] }, "reponse": "n+10" },
+    { "id": "plus-100", "chapitre": "avant-apres", "operation": "modele", "texte": "Quel nombre a 100 de plus que {n} ?", "variables": { "n": [100, 9899] }, "reponse": "n+100" },
+    { "id": "moins-100", "chapitre": "avant-apres", "operation": "modele", "texte": "Quel nombre a 100 de moins que {n} ?", "variables": { "n": [200, 9999] }, "reponse": "n-100" }
+  ]
+}

@@ -80,6 +80,9 @@ export default ({ command }) => {
         workbox: {
           sourcemap: false,
           maximumFileSizeToCacheInBytes: 6000000, // 6MB
+          // The translations are cached too, so the learning games open
+          // offline.
+          globPatterns: ['**/*.{js,css,html,png,svg,ico,woff2,json}'],
           //Exclude API and Swagger routes from service worker navigation fallback
           navigateFallback: '/index.html',
           navigateFallbackDenylist: [

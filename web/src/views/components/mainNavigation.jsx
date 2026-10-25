@@ -18,6 +18,7 @@ const MANAGE_PATHS = [
   '/filters',
   '/archived',
   '/activities',
+  '/learn',
 ]
 
 const startsWithPath = (pathname, path) =>

@@ -1,0 +1,30 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-ce2-multiplication",
+  "version": "1.0.0",
+  "nom": "Multiplication CE2",
+  "description": "Les tables de 2 à 9, puis multiplier par des dizaines et un nombre par un chiffre. Chaque table s'ouvre quand la précédente est bien connue.",
+  "matiere": "maths",
+  "niveaux": ["CE2"],
+  "public": "enfant",
+  "langue": "fr",
+  "icone": "fois",
+  "couleur": "#5B4FE0",
+  "auteur": "Hopla",
+  "chapitres": [
+    { "id": "tables-2-5", "nom": "Tables de 2 à 5 (révision)" },
+    { "id": "tables-6-7", "nom": "Tables de 6 et 7", "ouvert_apres": 80 },
+    { "id": "tables-8-9", "nom": "Tables de 8 et 9", "ouvert_apres": 80 },
+    { "id": "dizaines", "nom": "Multiplier par 20, 30, 40…", "ouvert_apres": 70 },
+    { "id": "deux-chiffres", "nom": "Un nombre à 2 chiffres par 1 chiffre", "ouvert_apres": 70 },
+    { "id": "trois-chiffres", "nom": "Un nombre à 3 chiffres par 1 chiffre", "ouvert_apres": 70 }
+  ],
+  "generateurs": [
+    { "id": "tables-2-5", "chapitre": "tables-2-5", "operation": "multiplication", "tables": { "valeurs": [2, 3, 4, 5] }, "b": [1, 10], "formes": ["normal", "trou"] },
+    { "id": "tables-6-7", "chapitre": "tables-6-7", "operation": "multiplication", "tables": { "valeurs": [6, 7] }, "b": [1, 10], "formes": ["normal", "trou"] },
+    { "id": "tables-8-9", "chapitre": "tables-8-9", "operation": "multiplication", "tables": { "valeurs": [8, 9] }, "b": [1, 10], "formes": ["normal", "trou"] },
+    { "id": "dizaines", "chapitre": "dizaines", "operation": "multiplication", "a": [2, 9], "b": [20, 90, 10] },
+    { "id": "deux-chiffres", "chapitre": "deux-chiffres", "operation": "multiplication", "a": [11, 49], "b": [2, 9] },
+    { "id": "trois-chiffres", "chapitre": "trois-chiffres", "operation": "multiplication", "a": [101, 999], "b": [2, 9], "resultat_max": 9999 }
+  ]
+}

@@ -1165,6 +1165,83 @@ const DeleteChallenge = id => {
   })
 }
 
+// ── learning games ──
+
+// learnAnswer reads a learning answer, and throws its message when the server
+// refused the request. err.status tells a refusal from a server down.
+const learnAnswer = async resp => {
+  if (!resp) throw new Error('No answer')
+  const body = await resp.json().catch(() => ({}))
+  if (!resp.ok) {
+    const err = new Error(body.error || `Error ${resp.status}`)
+    err.status = resp.status
+    throw err
+  }
+  return body.res
+}
+
+const GetLearnCatalogue = async () =>
+  learnAnswer(
+    await Fetch(`/learn/catalogue`, { method: 'GET', headers: HEADERS() }),
+  )
+
+const GetLearnModules = async () =>
+  learnAnswer(
+    await Fetch(`/learn/modules`, { method: 'GET', headers: HEADERS() }),
+  )
+
+const InstallLearnModule = async id =>
+  learnAnswer(
+    await Fetch(`/learn/modules/install`, {
+      method: 'POST',
+      headers: HEADERS(),
+      body: JSON.stringify({ id }),
+    }),
+  )
+
+const ImportLearnModule = async text =>
+  learnAnswer(
+    await Fetch(`/learn/modules/import`, {
+      method: 'POST',
+      headers: HEADERS(),
+      body: text,
+    }),
+  )
+
+const RemoveLearnModule = async key =>
+  learnAnswer(
+    await Fetch(`/learn/modules/${encodeURIComponent(key)}`, {
+      method: 'DELETE',
+      headers: HEADERS(),
+    }),
+  )
+
+const SetLearnActivation = async change =>
+  learnAnswer(
+    await Fetch(`/learn/activations`, {
+      method: 'PUT',
+      headers: HEADERS(),
+      body: JSON.stringify(change),
+    }),
+  )
+
+const GetLearnPlayer = async userId =>
+  learnAnswer(
+    await Fetch(`/learn/players/${userId}`, {
+      method: 'GET',
+      headers: HEADERS(),
+    }),
+  )
+
+const SendLearnGame = async game =>
+  learnAnswer(
+    await Fetch(`/learn/games`, {
+      method: 'POST',
+      headers: HEADERS(),
+      body: JSON.stringify(game),
+    }),
+  )
+
 export {
   AcceptCircleMemberRequest,
   AdjustPoints,
@@ -1231,6 +1308,9 @@ export {
   GetGameRules,
   GetGamesToday,
   GetLabels,
+  GetLearnCatalogue,
+  GetLearnModules,
+  GetLearnPlayer,
   GetLongLiveTokens,
   GetMFAStatus,
   GetPinnedFilters,
@@ -1247,6 +1327,8 @@ export {
   GetStorageUsage,
   GetUserCircle,
   GetUserProfile,
+  ImportLearnModule,
+  InstallLearnModule,
   JoinCircle,
   LaunchFlash,
   LeaveCircle,
@@ -1261,6 +1343,7 @@ export {
   RegenerateBackupCodes,
   RejectChore,
   RejectRedemption,
+  RemoveLearnModule,
   ResetChoreTimer,
   ResetPassword,
   ResetPoints,
@@ -1274,7 +1357,9 @@ export {
   SavePointsPreset,
   SaveQuest,
   SaveRanks,
+  SendLearnGame,
   SetFamilyTimezone,
+  SetLearnActivation,
   SetMemberAway,
   SetupMFA,
   SignAssetURL,
