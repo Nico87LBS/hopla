@@ -233,6 +233,11 @@ const ModuleGroup = ({
           <Typography level='title-lg'>
             {group.pack ? group.pack.name : t('manage.others')}
           </Typography>
+          {group.pack?.author && (
+            <Typography level='body-xs' sx={{ color: 'text.tertiary' }}>
+              {t('manage.by', { author: group.pack.author })}
+            </Typography>
+          )}
           {group.pack?.levels?.length > 0 && (
             <Stack direction='row' gap={0.5} sx={{ mt: 0.25 }}>
               {group.pack.levels.map(level => (
@@ -489,6 +494,11 @@ const CatalogueCard = ({ installed }) => {
                 <Typography level='body-sm' sx={{ color: 'text.secondary' }}>
                   {entry.description}
                 </Typography>
+                {entry.author && (
+                  <Typography level='body-xs' sx={{ color: 'text.tertiary' }}>
+                    {t('manage.by', { author: entry.author })}
+                  </Typography>
+                )}
                 {entry.children?.length > 0 && (
                   <Typography
                     level='body-xs'

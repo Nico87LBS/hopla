@@ -540,11 +540,17 @@ export const cardItems = (card, moduleId, siblings) => {
         const others = siblings
           .filter(s => s.id !== card.id)
           .map(s => (inverse ? s.question : s.reponse))
-        const traps = !inverse && card.pieges?.length ? card.pieges : others
+        const own = !inverse && card.pieges?.length
+        const traps = [
+          ...new Set((own ? card.pieges : others).filter(t => t !== answer)),
+        ]
         return {
           ...base,
           mode: 'choice',
-          choices: [answer, ...traps.filter(t => t !== answer).slice(0, 3)],
+          choices: [answer, ...traps.slice(0, 3)],
+          // Without traps of its own, a game draws three of the chapter's
+          // other answers, so they change from one game to the next.
+          trapPool: own ? undefined : traps,
         }
       }
       if (card.type === 'saisie') {

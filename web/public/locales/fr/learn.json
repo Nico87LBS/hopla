@@ -96,7 +96,8 @@
     "questions": "Questions par partie",
     "threshold": "1re étoile à (%)",
     "hopsByStar": "Hops par étoile",
-    "fromModule": "{{value}} (module)"
+    "fromModule": "{{value}} (module)",
+    "by": "par {{author}}"
   },
   "stats": {
     "chapters": "Chapitres",

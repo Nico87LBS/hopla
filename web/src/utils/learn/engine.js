@@ -213,10 +213,13 @@ const drawFrom = (chapter, rng) => {
   return sources[Math.floor(rng() * sources.length)].draw(rng)
 }
 
-const prepare = (item, rng) =>
-  item.mode === 'choice' && !item.keepOrder
-    ? { ...item, choices: shuffle(item.choices, rng) }
-    : item
+const prepare = (item, rng) => {
+  if (item.mode !== 'choice' || item.keepOrder) return item
+  const choices = item.trapPool?.length
+    ? [item.answer, ...shuffle(item.trapPool, rng).slice(0, 3)]
+    : item.choices
+  return { ...item, choices: shuffle(choices, rng) }
+}
 
 // pickQuestions makes a game: the cards due first, then a few new questions
 // from the latest open chapter, then any questions of the open chapters.

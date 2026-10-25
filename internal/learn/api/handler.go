@@ -92,6 +92,7 @@ type CatalogueEntry struct {
 	ID          string   `json:"id"`
 	Version     string   `json:"version"`
 	Name        string   `json:"name"`
+	Author      string   `json:"author"`
 	Description string   `json:"description"`
 	Subject     string   `json:"subject"`
 	Levels      []string `json:"levels"`
@@ -109,7 +110,7 @@ func (h *Handler) getCatalogue(c *gin.Context) {
 	out := make([]CatalogueEntry, 0, len(ids))
 	for _, id := range ids {
 		doc := entries[id].Doc
-		out = append(out, CatalogueEntry{ID: doc.ID, Version: doc.Version, Name: doc.Name, Description: doc.Description,
+		out = append(out, CatalogueEntry{ID: doc.ID, Version: doc.Version, Name: doc.Name, Author: doc.Author, Description: doc.Description,
 			Subject: doc.Subject, Levels: doc.Levels, Audience: doc.Audience, Children: doc.Modules})
 	}
 	c.JSON(200, gin.H{"res": out})

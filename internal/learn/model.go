@@ -17,6 +17,7 @@ type Module struct {
 	Key      string   `json:"id" gorm:"column:module_key;size:80;not null;uniqueIndex:idx_learn_module"`
 	Version  string   `json:"version" gorm:"column:version;not null"`
 	Name     string   `json:"name" gorm:"column:name;not null"`
+	Author   string   `json:"author" gorm:"column:author"`
 	Subject  string   `json:"subject" gorm:"column:subject"`
 	Levels   []string `json:"levels" gorm:"column:levels;type:text;serializer:json"`
 	Audience string   `json:"audience" gorm:"column:audience"`

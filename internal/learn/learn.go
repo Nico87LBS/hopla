@@ -32,7 +32,7 @@ func invalid(format string, args ...any) error {
 
 func moduleFrom(circleID int, doc Document, raw []byte, builtin bool, now time.Time) Module {
 	return Module{
-		CircleID: circleID, Key: doc.ID, Version: doc.Version, Name: doc.Name, Subject: doc.Subject,
+		CircleID: circleID, Key: doc.ID, Version: doc.Version, Name: doc.Name, Author: doc.Author, Subject: doc.Subject,
 		Levels: doc.Levels, Audience: doc.Audience, Children: doc.Modules, Builtin: builtin,
 		Content: string(raw), InstalledAt: now, UpdatedAt: now,
 	}
@@ -43,7 +43,7 @@ func moduleFrom(circleID int, doc Document, raw []byte, builtin bool, now time.T
 func save(tx *gorm.DB, module Module) error {
 	return tx.Clauses(clause.OnConflict{
 		Columns: []clause.Column{{Name: "circle_id"}, {Name: "module_key"}},
-		DoUpdates: clause.AssignmentColumns([]string{"version", "name", "subject", "levels", "audience",
+		DoUpdates: clause.AssignmentColumns([]string{"version", "name", "author", "subject", "levels", "audience",
 			"children", "builtin", "content", "updated_at"}),
 	}).Create(&module).Error
 }
@@ -93,6 +93,9 @@ func Import(db *gorm.DB, circleID int, raw []byte, now time.Time) (Module, error
 	}
 	module := moduleFrom(circleID, doc, raw, false, now)
 	err = db.Transaction(func(tx *gorm.DB) error {
+		if err := checkKeys(tx, circleID, doc, entries); err != nil {
+			return err
+		}
 		for _, child := range doc.Modules {
 			if _, ok := entries[child]; ok {
 				if err := install(tx, entries, circleID, child, now, map[string]bool{}); err != nil {
@@ -112,6 +115,31 @@ func Import(db *gorm.DB, circleID int, raw []byte, now time.Time) (Module, error
 		return save(tx, module)
 	})
 	return module, err
+}
+
+// checkKeys refuses a module whose shared keys clash with the catalogue's or
+// with a module already in the circle.
+func checkKeys(tx *gorm.DB, circleID int, doc Document, entries map[string]Entry) error {
+	if len(doc.SharedKeys()) == 0 {
+		return nil
+	}
+	others := make([]Document, 0, len(entries))
+	for _, entry := range entries {
+		others = append(others, entry.Doc)
+	}
+	var installed []Module
+	if err := tx.Where("circle_id = ? AND builtin = ?", circleID, false).Find(&installed).Error; err != nil {
+		return err
+	}
+	for _, module := range installed {
+		if other, err := Parse([]byte(module.Content)); err == nil {
+			others = append(others, other)
+		}
+	}
+	if err := KeyConflict(doc, others); err != nil {
+		return invalid("module %s : %v", doc.ID, err)
+	}
+	return nil
 }
 
 // Modules lists the modules of a circle. Catalogue modules are brought up to

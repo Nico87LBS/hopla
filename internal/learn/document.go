@@ -35,9 +35,19 @@ var (
 	GeneratorKinds = []string{"addition", "soustraction", "multiplication", "division", "double", "moitie",
 		"complement", "comparaison", "position", "lettres", "modele"}
 	Audiences = []string{"enfant", "adulte", "tous"}
+	// ReservedDomains begin the keys the generators make, such as "mul:7x8":
+	// a written card may not take them, nor a module its id.
+	ReservedDomains = []string{"add", "sub", "mul", "div", "cmp", "pos", "num", "pb", "dbl", "half", "cpl"}
 )
 
-var idPattern = regexp.MustCompile(`^[a-z0-9][a-z0-9-]{1,79}$`)
+var (
+	idPattern = regexp.MustCompile(`^[a-z0-9][a-z0-9-]{1,79}$`)
+	// A shared key is domaine:compétence:sujet, from two to six parts.
+	keyPattern = regexp.MustCompile(`^[a-z0-9-]+(:[a-z0-9-]+){1,5}$`)
+)
+
+// maxSharedKey leaves room for the ":inverse" of the other direction.
+const maxSharedKey = 150
 
 // Document is the part of a module document the server reads. The web app
 // reads the rest, such as how each generator draws its numbers.
@@ -46,6 +56,7 @@ type Document struct {
 	ID            string      `json:"id"`
 	Version       string      `json:"version"`
 	Name          string      `json:"nom"`
+	Author        string      `json:"auteur"`
 	Description   string      `json:"description"`
 	Subject       string      `json:"matiere"`
 	Levels        []string    `json:"niveaux"`
@@ -81,6 +92,10 @@ type CardDef struct {
 	Type     string `json:"type"`
 	Question string `json:"question"`
 	Answer   string `json:"reponse"`
+	// Key, when set, shares what a person knows of this card with the cards
+	// of other modules that have it: they must expect the same answer.
+	// Without it the card is the module's own, as id-du-module:id-de-fiche.
+	Key string `json:"cle"`
 }
 
 type Generator struct {
@@ -141,6 +156,9 @@ func (d Document) Check() error {
 	if !idPattern.MatchString(d.ID) {
 		return fmt.Errorf("identifiant %q invalide : lettres minuscules, chiffres et tirets", d.ID)
 	}
+	if contains(ReservedDomains, d.ID) {
+		return fmt.Errorf("identifiant %q réservé aux calculs", d.ID)
+	}
 	if strings.TrimSpace(d.Name) == "" {
 		return fmt.Errorf("module %s : nom manquant", d.ID)
 	}
@@ -185,8 +203,15 @@ func (d Document) Check() error {
 		}
 		chapters[chapter.ID] = true
 	}
-	ids := map[string]bool{}
+	ids, keys := map[string]bool{}, map[string]bool{}
 	for _, card := range d.Cards {
+		if err := checkKey(card.Key); err != nil {
+			return fmt.Errorf("fiche %s : %v", card.ID, err)
+		}
+		if card.Key != "" && keys[card.Key] {
+			return fmt.Errorf("fiche %s : la clé %s sert déjà à une autre fiche du module", card.ID, card.Key)
+		}
+		keys[card.Key] = true
 		switch {
 		case card.ID == "" || ids[card.ID]:
 			return fmt.Errorf("module %s : fiche %q sans id ou en double", d.ID, card.ID)
@@ -225,6 +250,56 @@ func (d Document) Check() error {
 		return fmt.Errorf("module %s : seuil entre 0 et 100", d.ID)
 	case s.HopsByStar < 0 || s.HopsByStar > 20 || s.DailyCap < 0 || s.DailyCap > 200:
 		return fmt.Errorf("module %s : hops par étoile ou plafond hors limites", d.ID)
+	}
+	return nil
+}
+
+func checkKey(key string) error {
+	if key == "" {
+		return nil
+	}
+	parts := strings.Split(key, ":")
+	switch {
+	case len(key) > maxSharedKey || !keyPattern.MatchString(key):
+		return fmt.Errorf("clé %q invalide : domaine:compétence:sujet, en minuscules, chiffres et tirets", key)
+	case contains(ReservedDomains, parts[0]):
+		return fmt.Errorf("clé %q : le domaine %s est réservé aux calculs", key, parts[0])
+	case parts[len(parts)-1] == "inverse":
+		return fmt.Errorf("clé %q : « inverse » est réservé à l'autre sens de la fiche", key)
+	}
+	return nil
+}
+
+// SharedKeys lists the answer each shared key of the module expects.
+func (d Document) SharedKeys() map[string]string {
+	out := map[string]string{}
+	for _, card := range d.Cards {
+		if card.Key != "" {
+			out[card.Key] = card.Answer
+		}
+	}
+	return out
+}
+
+// sameAnswer compares two answers as a person would read them.
+func sameAnswer(a, b string) bool {
+	return strings.EqualFold(strings.Join(strings.Fields(a), " "), strings.Join(strings.Fields(b), " "))
+}
+
+// KeyConflict tells the first shared key of doc that another module already
+// uses for another answer, or nil. Learning one would move the other.
+func KeyConflict(doc Document, others []Document) error {
+	mine := doc.SharedKeys()
+	for _, other := range others {
+		if other.ID == doc.ID {
+			continue
+		}
+		for key, answer := range other.SharedKeys() {
+			if own, ok := mine[key]; ok && !sameAnswer(own, answer) {
+				return fmt.Errorf("la clé %s attend « %s » dans le module %s, et « %s » ici : change la clé ou la réponse",
+					key, answer, other.ID, own)
+			}
+		}
 	}
 	return nil
 }
