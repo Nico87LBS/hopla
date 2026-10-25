@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 import {
+  EditLearnCard,
   GetLearnCatalogue,
   GetLearnDetail,
   GetLearnModules,
@@ -9,11 +10,19 @@ import {
   ImportLearnModule,
   InstallLearnModule,
   RemoveLearnModule,
+  ResolveLearnReport,
   SendLearnGame,
+  SendLearnReport,
   SetLearnActivation,
   SetLearnSetting,
 } from '../utils/Fetcher'
-import { flushQueue, loadPlayer, savePlayer } from '../utils/learn/store'
+import {
+  flushQueue,
+  flushReports,
+  loadPlayer,
+  queueReport,
+  savePlayer,
+} from '../utils/learn/store'
 
 export const learnKeys = {
   catalogue: ['learn', 'catalogue'],
@@ -23,8 +32,25 @@ export const learnKeys = {
   stats: key => ['learn', 'stats', key],
 }
 
-// sendWaitingGames sends the games played offline; it never throws.
-export const sendWaitingGames = () => flushQueue(SendLearnGame).catch(() => [])
+// sendWaitingGames sends the games and reports kept offline; it never
+// throws.
+export const sendWaitingGames = async () => {
+  await flushReports(SendLearnReport).catch(() => {})
+  return flushQueue(SendLearnGame).catch(() => [])
+}
+
+// sendReport sends a report on a question, or keeps it for later when the
+// server is out of reach. A report refused throws.
+export const sendReport = async report => {
+  try {
+    await SendLearnReport(report)
+  } catch (err) {
+    if (err?.status >= 400 && err.status < 500 && err.status !== 401) {
+      throw err
+    }
+    queueReport(report)
+  }
+}
 
 // usePlayer is what a person plays, from the server when it answers, else as
 // this device last kept it, so games go on offline.
@@ -84,3 +110,5 @@ export const useImportModule = () => useLearnChange(ImportLearnModule)
 export const useRemoveModule = () => useLearnChange(RemoveLearnModule)
 export const useSetActivation = () => useLearnChange(SetLearnActivation)
 export const useSetSetting = () => useLearnChange(SetLearnSetting)
+export const useEditCard = () => useLearnChange(EditLearnCard)
+export const useResolveReport = () => useLearnChange(ResolveLearnReport)

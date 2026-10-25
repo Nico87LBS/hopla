@@ -3,6 +3,7 @@ import {
   DeleteOutlineRounded,
   DownloadDoneRounded,
   InsightsRounded,
+  OutlinedFlagRounded,
   SchoolRounded,
   TuneRounded,
   UploadFileRounded,
@@ -467,6 +468,7 @@ const ModuleGroup = ({
   onRemove,
   onSettings,
   person,
+  reports,
   settings,
 }) => {
   const { t } = useTranslation('learn')
@@ -488,6 +490,7 @@ const ModuleGroup = ({
 
   const ids = group.modules.map(m => m.id)
   const on = ids.filter(isOn).length
+  const reported = ids.reduce((n, id) => n + (reports?.[id] || 0), 0)
   const rowSx = { borderTop: '1px solid', borderColor: 'divider', pt: 1.25 }
   return (
     <Sheet sx={surfaceSx}>
@@ -511,13 +514,25 @@ const ModuleGroup = ({
               {t('manage.by', { author: group.pack.author })}
             </Typography>
           )}
-          {group.pack?.levels?.length > 0 && (
-            <Stack direction='row' gap={0.5} sx={{ mt: 0.25 }}>
-              {group.pack.levels.map(level => (
+          {(group.pack?.levels?.length > 0 || reported > 0) && (
+            <Stack direction='row' gap={0.5} sx={{ mt: 0.25 }} flexWrap='wrap'>
+              {(group.pack?.levels || []).map(level => (
                 <Chip key={level} size='sm' variant='soft'>
                   {level}
                 </Chip>
               ))}
+              {reported > 0 && (
+                <Chip
+                  size='sm'
+                  variant='soft'
+                  color='warning'
+                  component={Link}
+                  to={`/manage/learn/detail/${group.pack?.id || group.modules[0].id}`}
+                  startDecorator={<OutlinedFlagRounded />}
+                >
+                  {t('detail.reports', { count: reported })}
+                </Chip>
+              )}
             </Stack>
           )}
         </Box>
@@ -656,6 +671,7 @@ ModuleGroup.propTypes = {
   onRemove: PropTypes.func.isRequired,
   onSettings: PropTypes.func.isRequired,
   person: PropTypes.object.isRequired,
+  reports: PropTypes.object,
   settings: PropTypes.instanceOf(Map).isRequired,
 }
 
@@ -1086,6 +1102,7 @@ export const ManageLearn = () => {
               person={person}
               activations={activations}
               applied={data?.applied?.[person.userId]}
+              reports={data?.reports}
               settings={settings}
               onRemove={askRemove}
               onSettings={module => setSettingsFor({ scope: 'module', module })}

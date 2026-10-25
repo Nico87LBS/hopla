@@ -169,6 +169,39 @@
     "examples": "Par exemple :",
     "bothWays": "Posée dans les deux sens",
     "familySettings": "Réglages de la famille",
-    "familySettingsHelp": "Pour tout le monde, sauf qui a ses propres réglages"
+    "familySettingsHelp": "Pour tout le monde, sauf qui a ses propres réglages",
+    "reports_one": "{{count}} signalement",
+    "reports_other": "{{count}} signalements",
+    "edited": "Modifiée par la famille"
+  },
+  "report": {
+    "title": "Signaler cette question",
+    "send": "Envoyer",
+    "thanks": "Merci, c'est noté !",
+    "comment": "Ce qui ne va pas (facultatif)",
+    "help": "Les parents le verront dans le détail du module.",
+    "reasons": {
+      "pas-claire": "Question pas claire",
+      "reponse-fausse": "Réponse fausse",
+      "faute": "Faute d'orthographe",
+      "autre": "Autre"
+    },
+    "by": "{{name}}, le {{date}} :",
+    "given": "(réponse donnée : {{given}})",
+    "resolve": "Marquer comme traité"
+  },
+  "edit": {
+    "title": "Fiche « {{name}} »",
+    "question": "Question",
+    "answer": "Réponse",
+    "example": "Exemple montré après la réponse",
+    "traps": "Mauvaises réponses proposées, une par ligne",
+    "trapsHelp": "Vide : tirées au hasard dans le chapitre",
+    "others": "Autres réponses acceptées, une par ligne",
+    "othersHelp": "Par exemple avec ou sans article",
+    "both": "Poser aussi dans l'autre sens",
+    "keyHelp": "Clé : {{key}}. Ce qui est déjà appris sur cette fiche est gardé.",
+    "original": "Original du module",
+    "revert": "Revenir à l'original"
   }
 }

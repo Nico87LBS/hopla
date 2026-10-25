@@ -126,6 +126,8 @@ type Installed struct {
 	// Applied are the settings that apply to each module, for each person
 	// and for the family (user 0), with where they come from.
 	Applied map[int]map[string]learn.Applied `json:"applied"`
+	// Reports counts the questions reported and not looked at, by module.
+	Reports map[string]int `json:"reports"`
 }
 
 func (h *Handler) getModules(c *gin.Context) {
@@ -165,8 +167,17 @@ func (h *Handler) getModules(c *gin.Context) {
 		answerError(c, err, "read the settings")
 		return
 	}
+	reports, err := learn.OpenReports(db, who.circleID, nil)
+	if err != nil {
+		answerError(c, err, "list the reports")
+		return
+	}
+	counts := map[string]int{}
+	for _, report := range reports {
+		counts[report.ModuleKey]++
+	}
 	c.JSON(200, gin.H{"res": Installed{Modules: modules, Activations: activations, Settings: settings,
-		Defaults: defaults, Applied: applied}})
+		Defaults: defaults, Applied: applied, Reports: counts}})
 }
 
 func (h *Handler) install(c *gin.Context) {
@@ -279,6 +290,67 @@ func (h *Handler) getDetail(c *gin.Context) {
 	c.JSON(200, gin.H{"res": detail})
 }
 
+func (h *Handler) editCard(c *gin.Context) {
+	who, ok := h.requireParent(c)
+	if !ok {
+		return
+	}
+	var change learn.CardChange
+	if err := c.ShouldBindJSON(&change); err != nil {
+		c.JSON(400, gin.H{"error": "Invalid request"})
+		return
+	}
+	db := h.db.WithContext(c)
+	if err := learn.SetCardEdit(db, who.circleID, who.userID, change, time.Now().UTC()); err != nil {
+		answerError(c, err, "change the card")
+		return
+	}
+	detail, err := learn.ModuleDetail(db, who.circleID, change.Module, time.Now().UTC())
+	if err != nil {
+		answerError(c, err, "read the module")
+		return
+	}
+	c.JSON(200, gin.H{"res": detail})
+}
+
+func (h *Handler) addReport(c *gin.Context) {
+	who, ok := h.caller(c)
+	if !ok {
+		return
+	}
+	var report learn.Report
+	if err := c.ShouldBindJSON(&report); err != nil {
+		c.JSON(400, gin.H{"error": "Invalid request"})
+		return
+	}
+	if !mayPlayFor(who, report.UserID) {
+		c.JSON(403, gin.H{"error": "You can only play as yourself"})
+		return
+	}
+	if err := learn.AddReport(h.db.WithContext(c), who.circleID, who.userID, report, time.Now().UTC()); err != nil {
+		answerError(c, err, "keep the report")
+		return
+	}
+	c.JSON(200, gin.H{"res": "ok"})
+}
+
+func (h *Handler) resolveReport(c *gin.Context) {
+	who, ok := h.requireParent(c)
+	if !ok {
+		return
+	}
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(400, gin.H{"error": "Invalid report"})
+		return
+	}
+	if err := learn.ResolveReport(h.db.WithContext(c), who.circleID, who.userID, id, time.Now().UTC()); err != nil {
+		answerError(c, err, "resolve the report")
+		return
+	}
+	c.JSON(200, gin.H{"res": "ok"})
+}
+
 func (h *Handler) getPlayer(c *gin.Context) {
 	who, ok := h.caller(c)
 	if !ok {
@@ -334,5 +406,8 @@ func Routes(r *gin.Engine, h *Handler, auth *jwt.GinJWTMiddleware) {
 		routes.GET("/stats/:key", h.getStats)
 		routes.GET("/players/:userId", h.getPlayer)
 		routes.POST("/games", h.recordGame)
+		routes.PUT("/cards", h.editCard)
+		routes.POST("/reports", h.addReport)
+		routes.PUT("/reports/:id/resolve", h.resolveReport)
 	}
 }

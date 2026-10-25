@@ -148,3 +148,30 @@ const sendQueue = async send => {
   }
   return results
 }
+
+// ── reports ──
+
+const REPORTS_KEY = 'hopla.learn.reports'
+
+export const queuedReports = () => read(REPORTS_KEY) || []
+
+export const queueReport = report =>
+  write(REPORTS_KEY, [...queuedReports(), report])
+
+// flushReports sends the reports kept while offline, like the games: one the
+// server refuses is dropped, the rest wait when it cannot be reached.
+export const flushReports = async send => {
+  for (const report of queuedReports()) {
+    try {
+      await send(report)
+    } catch (err) {
+      const refused =
+        err?.status >= 400 && err.status < 500 && err.status !== 401
+      if (!refused) return
+    }
+    write(
+      REPORTS_KEY,
+      queuedReports().filter(r => r.clientId !== report.clientId),
+    )
+  }
+}
