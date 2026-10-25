@@ -110,8 +110,10 @@
     "seeModules_one": "Voir son module",
     "seeModules_other": "Voir ses {{count}} modules",
     "seeDetail": "Voir le détail",
-    "openCatalogue": "Catalogue et import",
-    "openCatalogueHelp": "Installer un paquet, voir son détail ou importer un module"
+    "tabs": {
+      "people": "Par personne",
+      "catalogue": "Catalogue"
+    }
   },
   "stats": {
     "chapters": "Chapitres",
