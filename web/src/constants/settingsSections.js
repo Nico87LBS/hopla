@@ -2,8 +2,8 @@ import {
   AccountCircle,
   Api,
   CalendarMonth,
-  Circle,
   FamilyRestroom,
+  Groups,
   ImportExport,
   Language,
   Palette,
@@ -19,7 +19,7 @@ import {
 // `overview.sections.<id>`, keyed off the same ids.
 export const SETTINGS_SECTIONS = [
   { id: 'profile', icon: Person },
-  { id: 'circle', icon: Circle, parentOnly: true },
+  { id: 'circle', icon: Groups, parentOnly: true },
   { id: 'account', icon: AccountCircle, parentOnly: true },
   { id: 'subaccounts', icon: FamilyRestroom },
   { id: 'mfa', icon: Security, parentOnly: true },

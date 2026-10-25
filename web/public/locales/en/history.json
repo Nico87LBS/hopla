@@ -123,7 +123,7 @@
     "title": "Activities",
     "subtitle": "See what's been completed, skipped, or missed",
     "emptyTitle": "No activity in this range",
-    "emptyDescriptionEveryone": "Nothing was completed by anyone in your circle {{period}}. Try a wider time range or a different member.",
+    "emptyDescriptionEveryone": "Nothing was completed by anyone in your family {{period}}. Try a wider time range or a different member.",
     "emptyDescriptionMember": "Nothing was completed by {{name}} {{period}}. Try a wider time range or a different member.",
     "periodSoFar": "so far",
     "periodLastDays": "in the last {{count}} days",

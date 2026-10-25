@@ -76,8 +76,8 @@
     "recent": "Récents",
     "empty": {
       "title": "Aucune correspondance directe",
-      "subtitle": "Vous pouvez tout de même filtrer la liste des tâches avec cette recherche.",
-      "actionsSubtitle": "Aucune vue ni action ne correspond. Appuyez sur Retour arrière pour tout rechercher."
+      "subtitle": "Tu peux tout de même filtrer la liste des tâches avec cette recherche.",
+      "actionsSubtitle": "Aucune vue ni action ne correspond. Appuie sur Retour arrière pour tout rechercher."
     },
     "groups": {
       "tasks": "Tâches",
@@ -111,7 +111,7 @@
       "open": "Ouvrir",
       "results_one": "{{count}} résultat",
       "results_other": "{{count}} résultats",
-      "typeToSearch": "Saisissez du texte pour rechercher",
+      "typeToSearch": "Tape du texte pour rechercher",
       "slashHint": "/ pour aller à une vue"
     },
     "modes": {
@@ -130,7 +130,7 @@
       "note": "Note de tâche",
       "project": "Projet",
       "label": "Étiquette",
-      "member": "Membre du cercle",
+      "member": "Membre de la famille",
       "settings": "Réglages"
     }
   },
@@ -138,11 +138,11 @@
   "clearAll": "Tout effacer",
   "upload": {
     "quotaTitle": "Quota de stockage dépassé",
-    "quotaMessage": "Vous avez dépassé votre quota d'envoi de fichiers.",
+    "quotaMessage": "Tu as dépassé ton quota d'envoi de fichiers.",
     "tooLargeTitle": "Fichier trop volumineux",
-    "tooLargeMessage": "Le fichier que vous essayez d'envoyer est trop volumineux.",
+    "tooLargeMessage": "Le fichier que tu essaies d'envoyer est trop volumineux.",
     "deniedTitle": "Autorisation refusée",
-    "deniedMessage": "Vous n'avez pas l'autorisation d'envoyer des fichiers.",
+    "deniedMessage": "Tu n'as pas l'autorisation d'envoyer des fichiers.",
     "failedTitle": "Échec de l'envoi",
     "failedMessage": "Échec de l'envoi de l'image.",
     "processingMessage": "Une erreur s'est produite pendant le traitement de l'image.",
@@ -150,16 +150,16 @@
     "processingFileMessage": "Une erreur est survenue pendant le traitement du fichier."
   },
   "imageLoadFailed": "Échec du chargement de l'image.",
-  "typeHere": "Saisissez du texte ici...",
-  "loadingOffline": "Vous êtes hors ligne",
-  "loadingOfflineSub": "Ce contenu n'est pas disponible hors ligne. Vérifiez votre connexion Internet et réessayez.",
+  "typeHere": "Tape du texte ici...",
+  "loadingOffline": "Tu es hors ligne",
+  "loadingOfflineSub": "Ce contenu n'est pas disponible hors ligne. Vérifie ta connexion Internet et réessaie.",
   "loadingSlow": "Cela prend plus de temps que d'habitude. Il y a peut-être un problème.",
   "navigateBack": "Revenir en arrière",
   "profile": "Profil",
-  "autocompletePlaceholder": "Saisissez du texte ici...",
+  "autocompletePlaceholder": "Tape du texte ici...",
   "errorScreen": {
     "title": "Une erreur est survenue",
-    "fallback": "Une erreur inattendue s'est produite. Essayez de recharger la page — cela suffit généralement.",
+    "fallback": "Une erreur inattendue s'est produite. Essaie de recharger la page — cela suffit généralement.",
     "tryAgain": "Réessayer",
     "home": "Accueil",
     "login": "Connexion",
@@ -167,16 +167,16 @@
     "showDetails": "Afficher les détails de l'erreur",
     "copyToClipboard": "Copier dans le presse-papiers",
     "copied": "Détails de l'erreur copiés dans le presse-papiers",
-    "reportHint": "Si cela se reproduit, envoyez-nous un rapport pour que nous puissions examiner le problème.",
+    "reportHint": "Si cela se reproduit, note ce que tu faisais pour qu'on puisse examiner le problème.",
     "collectingDetails": "Collecte des détails de l'erreur..."
   },
   "userMenu": {
     "actAsAnother": "Agir en tant qu'un autre utilisateur",
     "stopImpersonating": "Quitter l'identité empruntée",
-    "returnToAccount": "Revenir à votre compte",
+    "returnToAccount": "Revenir à ton compte",
     "accountPrefs": "Compte et préférences",
     "invitePeople": "Inviter des personnes",
-    "addMembers": "Ajouter des membres à votre cercle",
+    "addMembers": "Ajouter des membres à ta famille",
     "sidePanelSettings": "Paramètres du panneau latéral",
     "sidePanelSettingsDescription": "Personnaliser la mise en page et les cartes",
     "switchUser": "Changer d'utilisateur",
@@ -188,7 +188,7 @@
   },
   "realtime": {
     "newTaskTitle": "Nouvelle tâche créée",
-    "connected": "Vous recevez désormais les mises à jour en temps réel.",
+    "connected": "Tu reçois désormais les mises à jour en temps réel.",
     "errorTitle": "Erreur en temps réel",
     "parseTitle": "Erreur de message",
     "parseMessage": "Échec de l'analyse du message du serveur",
@@ -198,18 +198,18 @@
     "stateAuthExpired": "Authentification expirée — actualisation du jeton...",
     "stateTokenRefreshed": "Jeton actualisé — reconnexion...",
     "stateRefreshInProgress": "Actualisation du jeton en cours — reconnexion imminente...",
-    "stateSessionExpired": "Session expirée — veuillez vous reconnecter",
-    "stateAuthFailed": "Échec de l'authentification — veuillez vous reconnecter",
-    "stateAuthError": "Erreur d'authentification — veuillez vous reconnecter",
+    "stateSessionExpired": "Session expirée — reconnecte-toi",
+    "stateAuthFailed": "Échec de l'authentification — reconnecte-toi",
+    "stateAuthError": "Erreur d'authentification — reconnecte-toi",
     "stateTimeout": "Délai de connexion dépassé — reconnexion...",
     "connectErrorTitle": "Erreur de connexion",
-    "connectErrorMessage": "Impossible d'établir la connexion en temps réel. Veuillez réessayer."
+    "connectErrorMessage": "Impossible d'établir la connexion en temps réel. Réessaie."
   },
   "removeAll": "Tout retirer",
   "apply": "Appliquer",
   "cancelAll": "Tout annuler",
   "backFromSearch": "Quitter la recherche",
-  "newVersionAvailable": "Une nouvelle version est disponible. Cliquez sur le bouton Actualiser pour mettre à jour.",
+  "newVersionAvailable": "Une nouvelle version est disponible. Touche Actualiser pour mettre à jour.",
   "notFound": {
     "title": "Page introuvable",
     "description": "Ce lien ne mène nulle part. Il a peut-être changé, ou l'adresse contient une faute de frappe.",
@@ -312,8 +312,8 @@
       "listening": "Écoute en cours…"
     },
     "capture": {
-      "voiceCaption": "Dates, étiquettes et points extraits de vos paroles",
-      "deviceCaption": "Lecture sur votre appareil",
+      "voiceCaption": "Dates, étiquettes et points tirés de tes paroles",
+      "deviceCaption": "Lecture sur ton appareil",
       "typeCaption": "#étiquettes @personnes *points à la saisie",
       "trashTitle": "♻️ Sortir les poubelles",
       "trashDue": "Échéance demain",
@@ -334,12 +334,12 @@
     },
     "nfc": {
       "tagOnWasher": "Tag sur le lave-linge",
-      "tapToOpen": "Approchez pour ouvrir",
+      "tapToOpen": "Approche pour ouvrir",
       "swapFilter": "Changer le filtre du lave-linge",
       "done": "Terminé",
       "skip": "Passer",
       "startTimer": "Démarrer le minuteur",
-      "waitingApproval": "{{name}} l'a marquée terminée · en attente de votre validation",
+      "waitingApproval": "{{name}} l'a marquée terminée · elle attend ta validation",
       "approve": "Approuver",
       "reject": "Refuser",
       "completed": "Terminée",
@@ -371,7 +371,7 @@
       "trashTitle": "Sortir les poubelles",
       "trashBody": "Échéance dans 30 minutes · Soir des poubelles",
       "finishedTitle": "Amalie a terminé le grand ménage de la cuisine",
-      "finishedBody": "C'est votre tour samedi prochain"
+      "finishedBody": "C'est ton tour samedi prochain"
     },
     "things": {
       "waterBill": "Facture d'eau",
@@ -394,7 +394,7 @@
     },
     "carousel": {
       "skip": "Ignorer",
-      "ariaLabel": "Ce que vous pouvez faire avec Hopla",
+      "ariaLabel": "Ce que tu peux faire avec Hopla",
       "next": "Suivant"
     },
     "getStarted": {
@@ -403,7 +403,7 @@
       "signIn": "Se connecter"
     },
     "heardAbout": {
-      "title": "Comment avez-vous connu Hopla ?",
+      "title": "Comment as-tu connu Hopla ?",
       "subtitle": "Cela nous aide à savoir ce qui fonctionne. C'est entièrement facultatif.",
       "continue": "Continuer",
       "skip": "Ignorer",
@@ -414,49 +414,49 @@
       }
     },
     "privacy": {
-      "title": "Aidez-nous à améliorer Hopla",
-      "subtitle": "Votre serveur, vos données. Ces deux options restent désactivées tant que vous ne les activez pas."
+      "title": "Aide-nous à améliorer Hopla",
+      "subtitle": "Ton serveur, tes données. Ces deux options restent désactivées tant que tu ne les actives pas."
     }
   },
   "circleSetup": {
-    "inviteTitle": "Invitez votre entourage",
-    "inviteSubtitle": "Toutes les personnes qui rejoignent votre cercle voient les mêmes tâches, prennent leur tour et restent synchronisées automatiquement.",
-    "joinTitle": "Rejoindre un cercle",
-    "joinSubtitle": "Saisissez le code qui vous a été communiqué et nous enverrons une demande d'adhésion — le propriétaire du cercle n'aura plus qu'à l'approuver.",
+    "inviteTitle": "Invite ta famille",
+    "inviteSubtitle": "Toutes les personnes qui rejoignent ta famille voient les mêmes tâches, prennent leur tour et restent synchronisées automatiquement.",
+    "joinTitle": "Rejoindre une famille",
+    "joinSubtitle": "Saisis le code qu'on t'a donné et nous enverrons une demande — un parent de la famille n'aura plus qu'à l'accepter.",
     "loadingCode": "Chargement...",
-    "copyCodeAria": "Copier le code de cercle",
+    "copyCodeAria": "Copier le code d'invitation",
     "copyLinkInstead": "Copier le lien d'invitation à la place",
     "continue": "Continuer",
-    "joinInstead": "Rejoindre plutôt un cercle existant",
-    "codePlaceholder": "Saisissez le code",
-    "joinButton": "Rejoindre le cercle",
+    "joinInstead": "Rejoindre plutôt une famille existante",
+    "codePlaceholder": "Saisis le code",
+    "joinButton": "Rejoindre la famille",
     "back": "Retour",
     "codeCopied": "Code copié dans le presse-papiers",
     "linkCopied": "Lien copié dans le presse-papiers",
     "requestSentTitle": "Demande envoyée",
-    "requestSentBody": "Votre demande d'adhésion a été envoyée ! Le propriétaire du cercle devra l'approuver avant que vous puissiez voir ses tâches. Vous recevrez une notification dès que vous serez membre.",
-    "alreadyMember": "Vous êtes déjà membre de ce cercle",
-    "joinFailed": "Impossible de rejoindre le cercle"
+    "requestSentBody": "Ta demande a été envoyée ! Un parent de la famille devra l'accepter avant que tu puisses voir ses tâches. Tu recevras une notification dès que tu seras membre.",
+    "alreadyMember": "Tu fais déjà partie de cette famille",
+    "joinFailed": "Impossible de rejoindre la famille"
   },
   "joinCircle": {
-    "title": "Invitation à rejoindre un cercle",
+    "title": "Invitation à rejoindre une famille",
     "incompleteTitle": "Lien d'invitation incomplet",
-    "incompleteSubtitle": "Il manque un code à ce lien d'invitation. Demandez un nouveau lien à la personne qui vous l'a transmis.",
+    "incompleteSubtitle": "Il manque un code à ce lien d'invitation. Demande un nouveau lien à la personne qui te l'a transmis.",
     "goToHopla": "Aller à Hopla",
-    "signedOutSubtitle": "Connectez-vous ou créez un compte Hopla pour continuer. Nous enverrons votre demande d'adhésion une fois la connexion effectuée.",
+    "signedOutSubtitle": "Connecte-toi ou crée un compte Hopla pour continuer. Nous enverrons ta demande une fois la connexion effectuée.",
     "signIn": "Se connecter",
     "createAccount": "Créer un compte",
-    "sendingTitle": "Envoi de votre demande",
-    "sendingSubtitle": "Envoi de votre demande...",
-    "greetingSubtitle": "Bonjour {{name}}. Envoyez une demande pour partager les tâches de ce cercle avec ses membres.",
-    "adminReviewNote": "Un administrateur du cercle examinera votre demande avant de vous donner accès.",
+    "sendingTitle": "Envoi de ta demande",
+    "sendingSubtitle": "Envoi de ta demande...",
+    "greetingSubtitle": "Bonjour {{name}}. Envoie une demande pour partager les tâches de cette famille.",
+    "adminReviewNote": "Un parent de la famille examinera ta demande avant de te donner accès.",
     "sendRequest": "Envoyer la demande d'adhésion",
     "requestSentTitle": "Demande envoyée",
-    "requestSentBody": "Votre demande a été envoyée. Un administrateur du cercle devra l'approuver avant que vous puissiez accéder au cercle et à ses tâches. Nous vous préviendrons dès qu'elle sera approuvée.",
+    "requestSentBody": "Ta demande a été envoyée. Un parent de la famille devra l'accepter avant que tu puisses voir ses tâches. Nous te préviendrons dès qu'elle sera acceptée.",
     "gotIt": "J'ai compris",
-    "alreadyMember": "Vous êtes déjà membre de ce cercle",
-    "joinFailed": "Impossible de rejoindre le cercle",
-    "requestError": "Impossible d'envoyer votre demande d'adhésion. Veuillez réessayer."
+    "alreadyMember": "Tu fais déjà partie de cette famille",
+    "joinFailed": "Impossible de rejoindre la famille",
+    "requestError": "Impossible d'envoyer ta demande. Réessaie."
   },
   "selectUser": "Sélectionner un utilisateur",
   "closeDialog": "Fermer la boîte de dialogue",

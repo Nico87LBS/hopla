@@ -500,7 +500,7 @@
     "scheduled": "Scheduled",
     "pendingReview": "Pending Review",
     "emptyTitle": "No one has tasks yet",
-    "emptyDescription": "Assign a task to someone in your circle and their workload shows up here."
+    "emptyDescription": "Assign a task to someone in your family and their workload shows up here."
   },
   "filter": {
     "status": {
@@ -1013,7 +1013,7 @@
     "addLabels": "Add labels",
     "subtasks": "Subtasks",
     "onCompletion": "On completion",
-    "visibleToEveryoneInYourCircle": "Visible to everyone in your circle.",
+    "visibleToEveryoneInYourCircle": "Visible to everyone in your family.",
     "visibleToYouAndThePeopleEligible": "Visible to you and the people eligible for assignment.",
     "inheritedFromTheProjectTasksInA": "Inherited from the project: tasks in a private project are always private",
     "taskLog": "Task log",
@@ -1062,7 +1062,7 @@
     "errChooseAssignee": "Choose who is assigned to this task",
     "copyOf": "Copy of {{name}}",
     "anyoneInProject": "Anyone who can see this project",
-    "anyoneInCircle": "Anyone in your circle",
+    "anyoneInCircle": "Anyone in your family",
     "noEligibleUsers": "No eligible users selected",
     "editTask": "Edit task",
     "createTask": "Create task",
@@ -1097,7 +1097,7 @@
     "remindersOff": "Reminders off",
     "completableBefore": "Completable {{hours}}h before due",
     "visibleToAssigned": "Visible to assigned users",
-    "visibleToCircle": "Visible to your circle",
+    "visibleToCircle": "Visible to your family",
     "limitedDisabled": "(No assignees selected, Limited option is disabled)",
     "archive": "Archive",
     "unarchive": "Unarchive",

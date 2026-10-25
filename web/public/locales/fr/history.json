@@ -5,7 +5,7 @@
     "note": "Note",
     "additionalNotes": "Notes complémentaires",
     "deleteTitle": "Supprimer l'entrée",
-    "deleteMessage": "Voulez-vous vraiment supprimer cette entrée d'historique ?"
+    "deleteMessage": "Veux-tu vraiment supprimer cette entrée d'historique ?"
   },
   "status": {
     "inProgress": "En cours",
@@ -121,10 +121,10 @@
   },
   "activities": {
     "title": "Activités",
-    "subtitle": "Consultez les tâches terminées, passées ou manquées",
+    "subtitle": "Les tâches terminées, passées ou manquées",
     "emptyTitle": "Aucune activité sur cette période",
-    "emptyDescriptionEveryone": "Personne n'a terminé de tâche dans votre cercle {{period}}. Essayez une période plus longue ou un autre membre.",
-    "emptyDescriptionMember": "Aucune tâche terminée par {{name}} {{period}}. Essayez une période plus longue ou un autre membre.",
+    "emptyDescriptionEveryone": "Personne n'a terminé de tâche dans ta famille {{period}}. Essaie une période plus longue ou un autre membre.",
+    "emptyDescriptionMember": "Aucune tâche terminée par {{name}} {{period}}. Essaie une période plus longue ou un autre membre.",
     "periodSoFar": "jusqu'à présent",
     "periodLastDays": "au cours des {{count}} derniers jours",
     "unknownMember": "ce membre",
@@ -146,7 +146,7 @@
   "toast": {
     "updateQueued": {
       "title": "Mise à jour de l'historique en attente",
-      "message": "Vous êtes hors ligne. La mise à jour de l'historique sera synchronisée une fois la connexion rétablie."
+      "message": "Tu es hors ligne. La mise à jour de l'historique sera synchronisée une fois la connexion rétablie."
     },
     "updated": {
       "title": "Historique mis à jour",
@@ -154,7 +154,7 @@
     },
     "deleteQueued": {
       "title": "Suppression de l'historique en attente",
-      "message": "Vous êtes hors ligne. La suppression de l'historique sera synchronisée une fois la connexion rétablie."
+      "message": "Tu es hors ligne. La suppression de l'historique sera synchronisée une fois la connexion rétablie."
     },
     "deleted": {
       "title": "Entrée d'historique supprimée",
@@ -163,7 +163,7 @@
   },
   "delete": {
     "title": "Supprimer l'entrée d'historique",
-    "message": "Voulez-vous vraiment supprimer cette entrée d'historique ?"
+    "message": "Veux-tu vraiment supprimer cette entrée d'historique ?"
   },
   "empty": {
     "title": "Aucun historique pour le moment",

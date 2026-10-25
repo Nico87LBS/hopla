@@ -34,9 +34,9 @@
   "tasks_other": "{{count}} tâches",
   "delete": {
     "title": "Supprimer le projet",
-    "message": "Voulez-vous vraiment supprimer « {{name}} » ? Le projet sera supprimé, mais les tâches seront conservées (elles seront déplacées vers le projet par défaut)."
+    "message": "Veux-tu vraiment supprimer « {{name}} » ? Le projet sera supprimé, mais ses tâches seront gardées (elles iront dans le projet par défaut)."
   },
-  "loadError": "Impossible de charger les projets. Veuillez réessayer.",
+  "loadError": "Impossible de charger les projets. Réessaie.",
   "search": {
     "placeholder": "Rechercher des projets",
     "noResultsTitle": "Aucun projet correspondant",
@@ -59,7 +59,7 @@
     "errorNameRequired": "Le nom du projet est obligatoire",
     "errorUpdate": "Échec de la mise à jour du projet",
     "errorCreate": "Échec de la création du projet",
-    "namePlaceholder": "Saisissez le nom du projet...",
+    "namePlaceholder": "Saisis le nom du projet...",
     "descriptionPlaceholder": "Description facultative du projet...",
     "nameLabel": "Nom du projet",
     "descriptionLabel": "Description",
@@ -77,20 +77,20 @@
     "changeHint": "Changer qui voit ce projet change aussi qui voit ses tâches. Tu verras exactement ce qui change avant d'enregistrer.",
     "private": {
       "title": "Moi seulement",
-      "description": "Caché à tout le reste du cercle, administrateurs compris. Ses tâches sont privées aussi."
+      "description": "Caché au reste de la famille, parents compris. Ses tâches sont privées aussi."
     },
     "members": {
       "title": "Membres choisis",
       "description": "Seuls toi et les personnes choisies ci-dessous voient le projet et toutes ses tâches.",
       "pickerTitle": "Partager avec",
-      "noCandidates": "Il n'y a encore personne d'autre dans ton cercle. Invite d'abord des membres.",
+      "noCandidates": "Il n'y a encore personne d'autre dans ta famille. Invite d'abord des membres.",
       "emptyHint": "Personne n'est choisi : pour l'instant, toi seul vois le projet. Tu peux ajouter des personnes quand tu veux.",
       "hint_one": "Partagé avec {{count}} personne. Retirer quelqu'un plus tard garde toutes les tâches et l'historique.",
       "hint_other": "Partagé avec {{count}} personnes. Retirer quelqu'un plus tard garde toutes les tâches et l'historique."
     },
     "circle": {
-      "title": "Tout le cercle",
-      "description": "Tout le cercle voit le projet : {{names}}"
+      "title": "Toute la famille",
+      "description": "Toute la famille voit le projet : {{names}}"
     },
     "chip": {
       "private": "Toi seul",
@@ -107,7 +107,7 @@
       "loseAccessHint_one": "Ils ne verront plus le projet ni sa tâche. Les appareils déjà synchronisés la retirent à la prochaine synchro.",
       "loseAccessHint_other": "Ils ne verront plus le projet ni ses {{count}} tâches. Les appareils déjà synchronisés les retirent à la prochaine synchro.",
       "gainAccess": "Gagneront l'accès",
-      "opensToCircle": "Tout le cercle, y compris les personnes qui le rejoindront plus tard, verra ce projet et toutes ses tâches.",
+      "opensToCircle": "Toute la famille, y compris les personnes qui la rejoindront plus tard, verra ce projet et toutes ses tâches.",
       "assignmentChanges_one": "L'assignation change dans {{count}} tâche",
       "assignmentChanges_other": "L'assignation change dans {{count}} tâches",
       "removedAssignees": "Plus assignés : {{names}}.",
