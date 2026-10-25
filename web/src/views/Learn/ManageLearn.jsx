@@ -3,7 +3,6 @@ import {
   DeleteOutlineRounded,
   DownloadDoneRounded,
   InsightsRounded,
-  LibraryBooksRounded,
   OutlinedFlagRounded,
   SchoolRounded,
   TuneRounded,
@@ -18,6 +17,9 @@ import {
   Input,
   Sheet,
   Stack,
+  Tab,
+  TabList,
+  Tabs,
   Textarea,
   Typography,
 } from '@mui/joy'
@@ -992,6 +994,50 @@ const ImportCard = () => {
 
 // /manage/learn: the modules of the family, who plays them and the settings
 // of each person.
+// LearnTabs switches between the settings of each person and the
+// catalogue, shared by the whole family.
+const TABS = [
+  { value: 'people', to: '/manage/learn' },
+  { value: 'catalogue', to: '/manage/learn/catalogue' },
+]
+
+const LearnTabs = ({ current }) => {
+  const { t } = useTranslation('learn')
+  return (
+    <Tabs
+      value={current}
+      size='sm'
+      sx={{ bgcolor: 'background.level1', borderRadius: 'lg', p: 0.5 }}
+    >
+      <TabList disableUnderline sx={{ gap: 0.25 }}>
+        {TABS.map(tab => (
+          <Tab
+            key={tab.value}
+            value={tab.value}
+            component={Link}
+            to={tab.to}
+            replace
+            disableIndicator
+            sx={{
+              flex: 1,
+              borderRadius: 'md',
+              minHeight: 40,
+              '&.Mui-selected': {
+                bgcolor: 'background.surface',
+                boxShadow: 'sm',
+              },
+            }}
+          >
+            {t(`manage.tabs.${tab.value}`)}
+          </Tab>
+        ))}
+      </TabList>
+    </Tabs>
+  )
+}
+
+LearnTabs.propTypes = { current: PropTypes.oneOf(['people', 'catalogue']) }
+
 export const ManageLearn = () => {
   const { t } = useTranslation('learn')
   const members = useMembers()
@@ -1150,6 +1196,7 @@ export const ManageLearn = () => {
 
   return (
     <ParentPage page='learn'>
+      <LearnTabs current='people' />
       {isLoading && <LoadingComponent />}
       {!isLoading && groups.length === 0 && (
         <Sheet sx={surfaceSx}>
@@ -1191,25 +1238,6 @@ export const ManageLearn = () => {
           ))}
         </Fragment>
       )}
-      <Button
-        component={Link}
-        to='/manage/learn/catalogue'
-        variant='outlined'
-        color='primary'
-        size='lg'
-        startDecorator={<LibraryBooksRounded />}
-        endDecorator={<ChevronRightRounded />}
-        sx={{ borderRadius: 'lg', justifyContent: 'flex-start' }}
-      >
-        <Box sx={{ flex: 1, textAlign: 'left' }}>
-          <Typography level='title-md' sx={{ color: 'inherit' }}>
-            {t('manage.openCatalogue')}
-          </Typography>
-          <Typography level='body-xs' sx={{ color: 'text.secondary' }}>
-            {t('manage.openCatalogueHelp')}
-          </Typography>
-        </Box>
-      </Button>
       {modal()}
       {confirm.isOpen && <ConfirmationModal config={confirm} />}
     </ParentPage>
@@ -1227,7 +1255,8 @@ export const LearnCatalogue = () => {
     [data?.settings],
   )
   return (
-    <ParentPage page='learnCatalogue'>
+    <ParentPage page='learn'>
+      <LearnTabs current='catalogue' />
       <CatalogueCard
         installed={new Set(modules.map(m => m.id))}
         defaults={data?.defaults || {}}
