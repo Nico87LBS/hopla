@@ -55,7 +55,20 @@ const FIELDS = {
   cap: { name: 'dailyCap', label: 'manage.cap' },
   capEach: { name: 'dailyCap', label: 'manage.capEach' },
   unlock: { name: 'unlockPercent', label: 'manage.unlock' },
+  questions: {
+    name: 'questions',
+    label: 'manage.questions',
+    own: 'questions_par_partie',
+  },
+  threshold: { name: 'threshold', label: 'manage.threshold', own: 'seuil' },
+  hopsByStar: {
+    name: 'hopsByStar',
+    label: 'manage.hopsByStar',
+    own: 'hops_par_etoile',
+  },
 }
+
+const GAME_FIELDS = ['questions', 'threshold', 'hopsByStar']
 
 // SettingsModal sets, person by person, the hops of a day and how well a
 // chapter must be known to open the next: for one module, a pack or all of
@@ -136,42 +149,40 @@ const SettingsModal = ({
           <Typography level='body-sm' sx={{ color: 'text.secondary' }}>
             {help}
           </Typography>
-          <Box
-            sx={{
-              alignItems: 'end',
-              columnGap: 1,
-              display: 'grid',
-              gridTemplateColumns: `56px repeat(${fields.length}, minmax(0, 1fr))`,
-              rowGap: 1.25,
-            }}
-          >
-            <Box />
-            {fields.map(field => (
-              <Typography key={field} level='body-xs'>
-                {t(FIELDS[field].label)}
-              </Typography>
-            ))}
-            {people.map(member => (
-              <Fragment key={member.userId}>
-                <Stack alignItems='center' title={member.displayName}>
-                  <MemberAvatar member={member} size={HEAD - 4} />
-                  <Typography level='body-xs' noWrap sx={{ maxWidth: 56 }}>
-                    {member.displayName}
-                  </Typography>
-                </Stack>
+          {people.map(member => (
+            <Sheet
+              key={member.userId}
+              variant='outlined'
+              sx={{ borderRadius: 'lg', p: 1.25 }}
+            >
+              <Stack direction='row' gap={1} alignItems='center' sx={{ mb: 1 }}>
+                <MemberAvatar member={member} size={HEAD - 12} />
+                <Typography level='title-sm'>{member.displayName}</Typography>
+              </Stack>
+              <Box
+                sx={{
+                  alignItems: 'end',
+                  display: 'grid',
+                  gap: 1,
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(128px, 1fr))',
+                }}
+              >
                 {fields.map(field => (
-                  <Input
-                    key={field}
-                    value={values[member.userId][field]}
-                    onChange={e => set(member.userId, field, e.target.value)}
-                    placeholder={placeholder(member.userId, field)}
-                    slotProps={{ input: { inputMode: 'numeric' } }}
-                    sx={{ minWidth: 0 }}
-                  />
+                  <Box key={field} sx={{ minWidth: 0 }}>
+                    <Typography level='body-xs'>
+                      {t(FIELDS[field].label)}
+                    </Typography>
+                    <Input
+                      value={values[member.userId][field]}
+                      onChange={e => set(member.userId, field, e.target.value)}
+                      placeholder={placeholder(member.userId, field)}
+                      slotProps={{ input: { inputMode: 'numeric' } }}
+                    />
+                  </Box>
                 ))}
-              </Fragment>
-            ))}
-          </Box>
+              </Box>
+            </Sheet>
+          ))}
         </Stack>
       )}
     </ResponsiveModal>
@@ -607,6 +618,7 @@ export const ManageLearn = () => {
       ),
     [data?.activations],
   )
+  const defaults = data?.defaults || {}
   const settings = useMemo(
     () =>
       new Map((data?.settings || []).map(s => [`${s.userId}:${s.scope}`, s])),
@@ -640,7 +652,12 @@ export const ManageLearn = () => {
       const value = settings.get(`${userId}:*`)?.[name]
       if (isSet(value)) return t('manage.fromAll', { value })
     }
-    return field === 'total' ? t('manage.noTotalShort') : t('manage.moduleOwn')
+    if (field === 'total') return t('manage.noTotalShort')
+    const own = moduleId && FIELDS[field].own
+    if (own && isSet(defaults[moduleId]?.[own])) {
+      return t('manage.fromModule', { value: defaults[moduleId][own] })
+    }
+    return t('manage.moduleOwn')
   }
 
   const modal = () => {
@@ -652,7 +669,7 @@ export const ManageLearn = () => {
         <SettingsModal
           title={module.name}
           help={t('manage.settingsHelp')}
-          fields={['cap', 'unlock']}
+          fields={['cap', 'unlock', ...GAME_FIELDS]}
           people={members.filter(m =>
             activations.has(`${m.userId}:${module.id}`),
           )}
@@ -676,7 +693,11 @@ export const ManageLearn = () => {
       <SettingsModal
         title={all ? t('manage.allTitle') : module.name}
         help={all ? t('manage.allSettingsHelp') : t('manage.packSettingsHelp')}
-        fields={all ? ['total', 'capEach', 'unlock'] : ['capEach', 'unlock']}
+        fields={
+          all
+            ? ['total', 'capEach', 'unlock', ...GAME_FIELDS]
+            : ['capEach', 'unlock', ...GAME_FIELDS]
+        }
         people={
           all
             ? members
