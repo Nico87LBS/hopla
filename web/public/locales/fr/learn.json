@@ -53,7 +53,6 @@
   },
   "manage": {
     "others": "Autres modules",
-    "wholePack": "Tout le paquet",
     "remove": "Retirer",
     "removeTitle": "Retirer « {{name}} » ?",
     "removeMessage": "Le module disparaît pour toute la famille. Ce que chacun a appris est gardé si tu le réinstalles.",
@@ -108,7 +107,6 @@
     "totalOf": "Plafond total de {{name}}",
     "totalSettings": "Régler le plafond total de {{name}}",
     "moduleSettings": "Réglages de {{name}}",
-    "notPlayed": "Pas joué",
     "seeModules_one": "Voir son module",
     "seeModules_other": "Voir ses {{count}} modules",
     "seeDetail": "Voir le détail"

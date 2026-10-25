@@ -53,7 +53,6 @@
   },
   "manage": {
     "others": "Other modules",
-    "wholePack": "Whole pack",
     "remove": "Remove",
     "removeTitle": "Remove “{{name}}”?",
     "removeMessage": "The module goes away for the whole family. What everyone learned is kept if you install it again.",
@@ -108,7 +107,6 @@
     "totalOf": "Total cap of {{name}}",
     "totalSettings": "Set the total cap of {{name}}",
     "moduleSettings": "{{name}} settings",
-    "notPlayed": "Not played",
     "seeModules_one": "See its module",
     "seeModules_other": "See its {{count}} modules",
     "seeDetail": "See the detail"
