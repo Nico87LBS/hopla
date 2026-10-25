@@ -73,7 +73,7 @@
     }
   },
   "profile": {
-    "title": "Profile Settings",
+    "title": "Profile",
     "description": "Update your display name and profile photo.",
     "photoUpdated": "Photo Updated",
     "photoUpdatedMessage": "Your profile photo has been updated successfully!",
@@ -93,7 +93,7 @@
     "cancel": "Cancel"
   },
   "circleSettings": {
-    "title": "Family Settings",
+    "title": "Family",
     "description": "Your account is automatically connected to a Family when you create or join one. You can easily invite friends by sharing the unique Family code or link below. You'll receive a notification below when someone requests to join your Family.",
     "memberOf": "You are part of {{name}}",
     "yourCircleCode": "Your family code is:",
@@ -174,7 +174,7 @@
     }
   },
   "accountSettings": {
-    "title": "Account Settings",
+    "title": "Password and account",
     "description": "Change your account settings, type or update your password",
     "cancel": "Cancel",
     "password": "Password :",
@@ -187,7 +187,7 @@
     "accountDeleted": "Account deleted successfully"
   },
   "subaccounts": {
-    "title": "Managed Accounts",
+    "title": "Children's accounts",
     "description": "Manage sub accounts. Sub account users can log in and complete assigned tasks.",
     "notParentTitle": "Sub Account Management",
     "notParentMessage": "Only primary users can manage sub accounts.",
@@ -221,7 +221,7 @@
     "howItWorks4": "Sub accounts are automatically added to your family"
   },
   "mfa": {
-    "title": "Multi-Factor Authentication",
+    "title": "Two-factor authentication",
     "description": "Add an extra layer of security to your account with multi-factor authentication (MFA). When enabled, you'll need to provide a verification code from your authenticator app in addition to your password when signing in.",
     "twoFactor": "Two-Factor Authentication",
     "enabledSubtitle": "Your account is protected with 2FA",
@@ -273,7 +273,7 @@
     "generateCodes": "Generate New Codes"
   },
   "apiTokens": {
-    "title": "API Tokens",
+    "title": "Access tokens",
     "accessToken": "Access Token",
     "description": "Create a token for the API, for example for home automation.",
     "tokenCreatedTitle": "Token Created",
@@ -321,11 +321,7 @@
     "loadFailed": "Could not load your calendar subscription. This server may not support calendar sync yet."
   },
   "storage": {
-    "title": "Storage Settings",
-    "serverTitle": "Server Storage Usage",
-    "serverDescription": "This is the storage used by your account on our servers (e.g. files, images, and data you have uploaded).",
-    "usage": "{{used}} MB used / {{total}} MB total ({{percent}}%)",
-    "localTitleBrowser": "Browser Local Storage & Cache",
+    "title": "Browser cache",
     "localDescription": "This is data stored locally in your browser for faster access. Clearing this will not affect your server data, but may log you out.",
     "clearLocal": "Clear All Local Storage and Cache",
     "clearLocalTitle": "Clear All Local Storage",
@@ -455,7 +451,7 @@
     }
   },
   "theme": {
-    "title": "Theme Preferences",
+    "title": "Theme",
     "description": "Choose how the site looks to you. Select a single theme, or sync with your system and automatically switch between day and night themes.",
     "themeMode": "Theme mode",
     "light": "Light",
@@ -463,7 +459,7 @@
     "system": "System"
   },
   "localization": {
-    "title": "Localization",
+    "title": "Language and formats",
     "description": "Customize language, date format, and regional preferences for your account.",
     "language": "Language",
     "languageDescription": "Select your preferred language",
@@ -489,7 +485,7 @@
     }
   },
   "advanced": {
-    "title": "Advanced Settings",
+    "title": "Offline and real time",
     "description": "Configure advanced features like webhooks and real-time updates for enhanced productivity.",
     "offlineTitle": "Offline Support",
     "offlineDescription": "Keep using Hopla when you're offline on this device/browser. Your changes are saved locally and synced when you're back online.",

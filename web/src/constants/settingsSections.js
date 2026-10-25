@@ -1,37 +1,19 @@
-import {
-  AccountCircle,
-  Api,
-  CalendarMonth,
-  FamilyRestroom,
-  Groups,
-  ImportExport,
-  Language,
-  Palette,
-  Person,
-  Security,
-  Settings,
-  Storage,
-  ViewSidebar,
-} from '@mui/icons-material'
-
-// Single source of truth for the settings sections: id, icon, and access
-// gating. Titles/descriptions live in locales/settings.json under
-// `overview.sections.<id>`, keyed off the same ids.
+// Every setting of the app and the Gérer page that holds it, for search and
+// for the old /settings/<id> links. Titles/descriptions live in
+// locales/settings.json under `overview.sections.<id>`, keyed off the same ids.
 export const SETTINGS_SECTIONS = [
-  { id: 'profile', icon: Person },
-  { id: 'circle', icon: Groups, parentOnly: true },
-  { id: 'account', icon: AccountCircle, parentOnly: true },
-  { id: 'subaccounts', icon: FamilyRestroom },
-  { id: 'mfa', icon: Security, parentOnly: true },
-  { id: 'apitokens', icon: Api, parentOnly: true },
-  { id: 'calendar', icon: CalendarMonth },
-  { id: 'storage', icon: Storage },
+  { id: 'profile', to: '/manage/account' },
+  { id: 'circle', to: '/manage/family', parentOnly: true },
+  { id: 'account', to: '/manage/account/security', parentOnly: true },
+  { id: 'subaccounts', to: '/manage/family/children', parentOnly: true },
+  { id: 'mfa', to: '/manage/account/security', parentOnly: true },
+  { id: 'apitokens', to: '/manage/advanced', parentOnly: true },
+  { id: 'calendar', to: '/manage/advanced' },
+  { id: 'storage', to: '/manage/advanced' },
   // Tasks, rewards and games as a file, to set up another family quickly.
-  { id: 'template', icon: ImportExport, parentOnly: true },
-  // Default landing view, plus whichever chrome this device actually has:
-  // the bottom bar on mobile, the sidepanel on desktop.
-  { id: 'layout', icon: ViewSidebar },
-  { id: 'theme', icon: Palette },
-  { id: 'localization', icon: Language, isBeta: true },
-  { id: 'advanced', icon: Settings },
+  { id: 'template', to: '/manage/advanced', parentOnly: true },
+  { id: 'layout', to: '/manage/account/appearance' },
+  { id: 'theme', to: '/manage/account/appearance' },
+  { id: 'localization', to: '/manage/account/appearance' },
+  { id: 'advanced', to: '/manage/advanced' },
 ]

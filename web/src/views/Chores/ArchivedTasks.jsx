@@ -45,6 +45,7 @@ import { offlineDB } from '../../utils/OfflineDB'
 import { isOfflineFeatureEnabled } from '../../utils/OfflineFeatureToggle'
 import Priorities from '../../utils/Priorities'
 import LoadingComponent from '../components/Loading'
+import { TasksTabs } from '../Manage/ManageTabs'
 import ConfirmationModal from '../Modals/Inputs/ConfirmationModal'
 import ChoreListView from './ChoreListView.jsx'
 import MultiSelectHelp from './MultiSelectHelp'
@@ -743,6 +744,9 @@ const ArchivedTasks = () => {
         pt: { xs: 0, md: 3 },
       }}
     >
+      <Box sx={{ mx: -2, mb: 0 }}>
+        <TasksTabs current='archived' />
+      </Box>
       {/* Header */}
       {/* <Box
         sx={{

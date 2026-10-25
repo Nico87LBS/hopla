@@ -535,21 +535,13 @@
       "account": "Compte"
     },
     "items": {
-      "projects": {
-        "title": "Projets",
-        "description": "Ranger les tâches par pièce ou par thème"
+      "play": {
+        "title": "Jeux pour apprendre",
+        "description": "Maths, mots… et des hops à gagner"
       },
-      "labels": {
-        "title": "Étiquettes",
-        "description": "Repérer les tâches d’un coup d’œil"
-      },
-      "filters": {
-        "title": "Filtres",
-        "description": "Tes vues enregistrées"
-      },
-      "archived": {
-        "title": "Archives",
-        "description": "Les tâches mises de côté"
+      "tasks": {
+        "title": "Tâches",
+        "description": "Étiquettes, projets, filtres et archives"
       },
       "activities": {
         "title": "Activités",
@@ -563,33 +555,56 @@
         "title": "Récompenses et demandes",
         "description": "Ce qu’on peut s’offrir avec ses hops"
       },
-      "games": {
-        "title": "Quêtes, défis et périodes bonus",
-        "description": "Les jeux de la semaine et les points multipliés"
+      "missions": {
+        "title": "Missions",
+        "description": "Quêtes, défis et périodes bonus"
       },
       "ranks": {
         "title": "Rangs et règles",
         "description": "Les rangs, les séries et la tâche surprise"
       },
-      "reset": {
-        "title": "Remise à zéro",
-        "description": "Repartir de zéro pour un membre ou toute la famille"
-      },
-      "circle": {
-        "title": "Famille et membres",
-        "description": "Inviter, gérer les comptes des enfants"
-      },
-      "settings": {
-        "title": "Réglages",
-        "description": "Profil, apparence, langue et le reste"
-      },
-      "play": {
-        "title": "Jeux pour apprendre",
-        "description": "Maths, mots… et des hops à gagner"
-      },
       "learn": {
         "title": "Modules d’apprentissage",
         "description": "Choisir les jeux de chacun et leurs hops"
+      },
+      "family": {
+        "title": "Famille",
+        "description": "Membres, comptes des enfants et fuseau horaire"
+      },
+      "account": {
+        "title": "Mon compte",
+        "description": "Profil, sécurité, thème et langue"
+      },
+      "advanced": {
+        "title": "Avancé",
+        "description": "Calendrier, connexions, modèle, hors ligne et remise à zéro"
+      }
+    },
+    "tabs": {
+      "tasks": {
+        "labels": "Étiquettes",
+        "projects": "Projets",
+        "filters": "Filtres",
+        "archived": "Archives"
+      },
+      "missions": {
+        "quests": "Quêtes",
+        "challenges": "Défis",
+        "periods": "Périodes bonus"
+      },
+      "ranks": {
+        "ranks": "Rangs",
+        "rules": "Règles"
+      },
+      "family": {
+        "members": "Membres",
+        "children": "Enfants",
+        "settings": "Réglages"
+      },
+      "account": {
+        "profile": "Profil",
+        "security": "Sécurité",
+        "appearance": "Apparence"
       }
     }
   },

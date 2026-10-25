@@ -73,7 +73,7 @@
     }
   },
   "profile": {
-    "title": "Paramètres du profil",
+    "title": "Profil",
     "description": "Mets à jour ton nom affiché et ta photo de profil.",
     "photoUpdated": "Photo mise à jour",
     "photoUpdatedMessage": "Ta photo de profil a bien été mise à jour !",
@@ -174,7 +174,7 @@
     }
   },
   "accountSettings": {
-    "title": "Paramètres du compte",
+    "title": "Mot de passe et compte",
     "description": "Change ton mot de passe ou supprime ton compte",
     "cancel": "Annuler",
     "password": "Mot de passe :",
@@ -187,7 +187,7 @@
     "accountDeleted": "Compte supprimé avec succès"
   },
   "subaccounts": {
-    "title": "Comptes gérés",
+    "title": "Comptes des enfants",
     "description": "Gère les comptes des enfants. Ils peuvent se connecter et faire les tâches qui leur sont assignées.",
     "notParentTitle": "Gestion des sous-comptes",
     "notParentMessage": "Seuls les comptes principaux peuvent gérer des sous-comptes.",
@@ -221,7 +221,7 @@
     "howItWorks4": "Les comptes gérés sont automatiquement ajoutés à ta famille"
   },
   "mfa": {
-    "title": "Authentification multifacteur",
+    "title": "Double authentification",
     "description": "Renforce la sécurité de ton compte avec la double authentification. Une fois activée, tu devras saisir un code de ton application d'authentification en plus de ton mot de passe à la connexion.",
     "twoFactor": "Authentification à deux facteurs",
     "enabledSubtitle": "Ton compte est protégé par la double authentification",
@@ -273,7 +273,7 @@
     "generateCodes": "Générer de nouveaux codes"
   },
   "apiTokens": {
-    "title": "Jetons d'API",
+    "title": "Jetons d'accès",
     "accessToken": "Jeton d'accès",
     "description": "Crée un jeton pour l'API, par exemple pour la domotique.",
     "tokenCreatedTitle": "Jeton créé",
@@ -321,11 +321,7 @@
     "loadFailed": "L'abonnement n'a pas pu être chargé. Ce serveur ne gère peut-être pas encore la synchro du calendrier."
   },
   "storage": {
-    "title": "Paramètres de stockage",
-    "serverTitle": "Utilisation du stockage serveur",
-    "serverDescription": "Espace occupé par ton compte sur ce serveur (fichiers et images envoyés).",
-    "usage": "{{used}} Mo utilisés / {{total}} Mo au total ({{percent}} %)",
-    "localTitleBrowser": "Stockage local et cache du navigateur",
+    "title": "Cache de ce navigateur",
     "localDescription": "Ce sont les données enregistrées dans ce navigateur pour aller plus vite. Les effacer ne touche pas aux données du serveur, mais peut te déconnecter.",
     "clearLocal": "Effacer tout le stockage local et le cache",
     "clearLocalTitle": "Effacer tout le stockage local",
@@ -455,7 +451,7 @@
     }
   },
   "theme": {
-    "title": "Préférences de thème",
+    "title": "Thème",
     "description": "Choisis l'apparence du site : un thème fixe, ou celui de ton appareil pour passer seul du clair au sombre.",
     "themeMode": "Mode de thème",
     "light": "Clair",
@@ -463,7 +459,7 @@
     "system": "Système"
   },
   "localization": {
-    "title": "Localisation",
+    "title": "Langue et formats",
     "description": "Règle la langue, le format de date et les préférences régionales de ton compte.",
     "language": "Langue",
     "languageDescription": "Choisis ta langue",
@@ -489,7 +485,7 @@
     }
   },
   "advanced": {
-    "title": "Paramètres avancés",
+    "title": "Hors ligne et temps réel",
     "description": "Mode hors ligne et mises à jour en temps réel sur cet appareil.",
     "offlineTitle": "Mode hors ligne",
     "offlineDescription": "Continue à utiliser Hopla hors ligne sur cet appareil ou navigateur. Tes modifications sont enregistrées ici et synchronisées dès ton retour en ligne.",

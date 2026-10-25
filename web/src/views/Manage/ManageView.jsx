@@ -1,19 +1,16 @@
 import {
-  ArchiveOutlined,
-  AutoAwesomeRounded,
   ChevronRightRounded,
-  FilterAltOutlined,
-  FolderOpenOutlined,
+  FlagRounded,
   GroupsRounded,
   HistoryRounded,
   LabelOutlined,
   MilitaryTechRounded,
+  PersonRounded,
   RedeemRounded,
-  RestartAltRounded,
   SchoolOutlined,
   SchoolRounded,
-  SettingsOutlined,
   TollRounded,
+  TuneRounded,
 } from '@mui/icons-material'
 import {
   Box,
@@ -42,10 +39,7 @@ const GROUPS = [
   {
     id: 'organize',
     items: [
-      { id: 'projects', to: '/projects', icon: <FolderOpenOutlined /> },
-      { id: 'labels', to: '/labels', icon: <LabelOutlined /> },
-      { id: 'filters', to: '/filters', icon: <FilterAltOutlined /> },
-      { id: 'archived', to: '/archived', icon: <ArchiveOutlined /> },
+      { id: 'tasks', to: '/labels', icon: <LabelOutlined /> },
       { id: 'activities', to: '/activities', icon: <HistoryRounded /> },
     ],
   },
@@ -55,17 +49,17 @@ const GROUPS = [
     items: [
       { id: 'points', to: '/manage/points', icon: <TollRounded /> },
       { id: 'rewards', to: '/shop', icon: <RedeemRounded /> },
-      { id: 'games', to: '/manage/games', icon: <AutoAwesomeRounded /> },
+      { id: 'missions', to: '/manage/missions', icon: <FlagRounded /> },
       { id: 'ranks', to: '/manage/ranks', icon: <MilitaryTechRounded /> },
       { id: 'learn', to: '/manage/learn', icon: <SchoolOutlined /> },
-      { id: 'reset', to: '/manage/reset', icon: <RestartAltRounded /> },
+      { id: 'family', to: '/manage/family', icon: <GroupsRounded /> },
     ],
   },
   {
     id: 'account',
     items: [
-      { id: 'circle', to: '/settings/circle', icon: <GroupsRounded /> },
-      { id: 'settings', to: '/settings', icon: <SettingsOutlined /> },
+      { id: 'account', to: '/manage/account', icon: <PersonRounded /> },
+      { id: 'advanced', to: '/manage/advanced', icon: <TuneRounded /> },
     ],
   },
 ]
@@ -109,7 +103,8 @@ ManageRow.propTypes = {
   to: PropTypes.string.isRequired,
 }
 
-// Everything that is set up rather than looked at, in four groups.
+// Everything that is set up rather than looked at, in four groups. Each
+// entry is one page, its parts in tabs at the top.
 const ManageView = () => {
   const { t } = useTranslation('common')
   const isParent = useIsParent()

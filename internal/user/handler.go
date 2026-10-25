@@ -173,7 +173,7 @@ func (h *Handler) signUp(c *gin.Context) {
 		}
 	} else {
 		userCircle, err = h.circleRepo.CreateCircle(c, &cModel.Circle{
-			Name:       signupReq.DisplayName + "'s circle",
+			Name:       "Famille " + signupReq.DisplayName,
 			CreatedAt:  time.Now().UTC(),
 			UpdatedAt:  time.Now().UTC(),
 			InviteCode: utils.GenerateInviteCode(c),
