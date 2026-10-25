@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { readFileSync, readdirSync } from 'node:fs'
+import { readdirSync, readFileSync } from 'node:fs'
 import { test } from 'node:test'
 
 import {
@@ -18,6 +18,7 @@ import {
 import { evaluate } from '../src/utils/learn/expression.js'
 import { generatorSource } from '../src/utils/learn/generators.js'
 import { formatNumber, frenchWords } from '../src/utils/learn/numbers.js'
+import { learnParent } from '../src/utils/learn/routes.js'
 
 const dir = new URL('../../internal/learn/catalogue/', import.meta.url)
 const catalogue = Object.fromEntries(
@@ -255,4 +256,13 @@ test('a card without traps of its own draws them from its chapter, game after ga
     }
   }
   assert.ok(drawn.size > 3, `${drawn.size} different traps`)
+})
+
+test('the back arrow of the games goes one page up, never into a game', () => {
+  assert.equal(learnParent('/learn/1/play/anglais-aero-meteo'), '/learn/1')
+  assert.equal(learnParent('/learn/1'), '/manage')
+  assert.equal(learnParent('/learn'), '/manage')
+  assert.equal(learnParent('/manage/learn/maths-ce2-division'), '/manage/learn')
+  assert.equal(learnParent('/manage/learn'), '/manage')
+  assert.equal(learnParent('/chores'), null)
 })

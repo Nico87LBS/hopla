@@ -31,7 +31,8 @@
     "right": "Bravo !",
     "wrong": "Pas tout à fait",
     "answerWas": "La réponse : {{answer}}",
-    "next": "Continuer"
+    "next": "Continuer",
+    "progress": "{{current}} / {{total}}"
   },
   "end": {
     "title0": "Continue, ça va venir !",
