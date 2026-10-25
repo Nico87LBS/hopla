@@ -120,6 +120,8 @@ type Installed struct {
 	Modules     []learn.Module        `json:"modules"`
 	Activations []learn.Activation    `json:"activations"`
 	Settings    []learn.PersonSetting `json:"settings"`
+	// Defaults are each module's own settings, shown when a person has none.
+	Defaults map[string]learn.Settings `json:"defaults"`
 }
 
 func (h *Handler) getModules(c *gin.Context) {
@@ -143,7 +145,13 @@ func (h *Handler) getModules(c *gin.Context) {
 		answerError(c, err, "list the settings")
 		return
 	}
-	c.JSON(200, gin.H{"res": Installed{Modules: modules, Activations: activations, Settings: settings}})
+	defaults := map[string]learn.Settings{}
+	for _, module := range modules {
+		if doc, err := learn.Parse([]byte(module.Content)); err == nil && !module.IsPack() {
+			defaults[module.Key] = doc.Settings.WithDefaults()
+		}
+	}
+	c.JSON(200, gin.H{"res": Installed{Modules: modules, Activations: activations, Settings: settings, Defaults: defaults}})
 }
 
 func (h *Handler) install(c *gin.Context) {

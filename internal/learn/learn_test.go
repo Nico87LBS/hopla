@@ -335,3 +335,56 @@ func TestStatsShowWhoPlaysAModuleAndTheirGames(t *testing.T) {
 	_, err = Stats(db, 1, "maths-ce2", now)
 	require.ErrorIs(t, err, ErrNotFound, "a pack has no statistics of its own")
 }
+
+func TestGameSettingsComeFromAboveAndShapeTheStarsAndHops(t *testing.T) {
+	db := setup(t)
+	now := time.Now().UTC()
+	require.NoError(t, Install(db, 1, "maths-ce2", now))
+	require.NoError(t, SetActivation(db, 1, ActivationChange{UserID: anna, Modules: []string{"maths-ce2"}, Active: true}, now))
+
+	settingsOf := func(key string) Settings {
+		player, err := PlayerFor(db, 1, anna, now)
+		require.NoError(t, err)
+		for _, module := range player.Modules {
+			if module.Key == key {
+				return module.Settings
+			}
+		}
+		t.Fatalf("%s not played", key)
+		return Settings{}
+	}
+	require.Equal(t, 10, settingsOf("maths-ce2-multiplication").Questions)
+	require.Equal(t, 8, settingsOf("maths-ce2-geometrie").Questions, "the module's own")
+
+	twelve, eighty, two, five := 12, 80, 2, 5
+	require.NoError(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: AllPacks,
+		GameSettings: GameSettings{Questions: &twelve, HopsByStar: &two}}, now))
+	require.NoError(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: "maths-ce2",
+		GameSettings: GameSettings{Threshold: &eighty}}, now))
+	require.NoError(t, SetActivation(db, 1, ActivationChange{UserID: anna, Modules: []string{"maths-ce2-geometrie"},
+		Active: true, GameSettings: GameSettings{Questions: &five}}, now))
+
+	s := settingsOf("maths-ce2-multiplication")
+	require.Equal(t, 12, s.Questions, "all packs")
+	require.Equal(t, 80, s.Threshold, "the pack")
+	require.Equal(t, 2, s.HopsByStar)
+	require.Equal(t, 5, settingsOf("maths-ce2-geometrie").Questions, "the module before all packs")
+
+	// 7/10 is under the pack's 80 %: no star; 8/10 is one star, two hops.
+	result, err := Record(db, 1, anna, Game{ClientID: "settings-01", UserID: anna, Module: "maths-ce2-multiplication",
+		Answers: answers(7, 3)}, now)
+	require.NoError(t, err)
+	require.Zero(t, result.Session.Stars)
+	result, err = Record(db, 1, anna, Game{ClientID: "settings-02", UserID: anna, Module: "maths-ce2-multiplication",
+		Answers: answers(8, 2)}, now)
+	require.NoError(t, err)
+	require.Equal(t, 1, result.Session.Stars)
+	require.Equal(t, 2, result.Session.Points)
+
+	back, tooMany := -1, 50
+	require.NoError(t, SetActivation(db, 1, ActivationChange{UserID: anna, Modules: []string{"maths-ce2-geometrie"},
+		Active: true, GameSettings: GameSettings{Questions: &back}}, now))
+	require.Equal(t, 12, settingsOf("maths-ce2-geometrie").Questions)
+	require.Error(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: AllPacks,
+		GameSettings: GameSettings{Questions: &tooMany}}, now))
+}

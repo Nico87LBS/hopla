@@ -174,6 +174,7 @@ type ActivationChange struct {
 	Active        bool     `json:"active"`
 	DailyCap      *int     `json:"dailyCap"`
 	UnlockPercent *int     `json:"unlockPercent"`
+	GameSettings
 }
 
 // SetActivation applies a change. A pack is not played itself: turning it on
@@ -185,7 +186,12 @@ func SetActivation(db *gorm.DB, circleID int, change ActivationChange, now time.
 	if change.UnlockPercent != nil && (*change.UnlockPercent < -1 || *change.UnlockPercent > 100) {
 		return invalid("seuil d'ouverture entre 0 et 100 %%")
 	}
+	if err := change.GameSettings.check(); err != nil {
+		return err
+	}
 	dailyCap, unlockPercent := ownSetting(change.DailyCap), ownSetting(change.UnlockPercent)
+	var game GameSettings
+	game.apply(change.GameSettings)
 	return db.Transaction(func(tx *gorm.DB) error {
 		var member cModel.UserCircle
 		if err := tx.Where("user_id = ? AND circle_id = ?", change.UserID, circleID).First(&member).Error; err != nil {
@@ -207,7 +213,7 @@ func SetActivation(db *gorm.DB, circleID int, change ActivationChange, now time.
 				continue
 			}
 			row := Activation{CircleID: circleID, UserID: change.UserID, ModuleKey: key,
-				DailyCap: dailyCap, UnlockPercent: unlockPercent, CreatedAt: now}
+				DailyCap: dailyCap, UnlockPercent: unlockPercent, GameSettings: game, CreatedAt: now}
 			// Turning a module on again keeps the settings it had; only the
 			// settings sent change.
 			conflict := clause.OnConflict{
@@ -220,6 +226,15 @@ func SetActivation(db *gorm.DB, circleID int, change ActivationChange, now time.
 			if change.UnlockPercent != nil {
 				columns = append(columns, "unlock_percent")
 			}
+			if change.Questions != nil {
+				columns = append(columns, "questions")
+			}
+			if change.Threshold != nil {
+				columns = append(columns, "threshold")
+			}
+			if change.HopsByStar != nil {
+				columns = append(columns, "hops_by_star")
+			}
 			if len(columns) == 0 {
 				conflict.DoNothing = true
 			} else {
@@ -231,6 +246,37 @@ func SetActivation(db *gorm.DB, circleID int, change ActivationChange, now time.
 		}
 		return nil
 	})
+}
+
+// check refuses game settings out of range; -1 clears one.
+func (g GameSettings) check() error {
+	if g.Questions != nil && *g.Questions != -1 && (*g.Questions < MinAnswersForHops || *g.Questions > MaxQuestions) {
+		return invalid("questions par partie entre %d et %d", MinAnswersForHops, MaxQuestions)
+	}
+	if g.Threshold != nil && (*g.Threshold < -1 || *g.Threshold > 100) {
+		return invalid("seuil de la première étoile entre 0 et 100 %%")
+	}
+	if g.HopsByStar != nil && (*g.HopsByStar < -1 || *g.HopsByStar > 20) {
+		return invalid("hops par étoile entre 0 et 20")
+	}
+	return nil
+}
+
+// apply puts the settings sent over the kept ones.
+func (g *GameSettings) apply(change GameSettings) {
+	if change.Questions != nil {
+		g.Questions = ownSetting(change.Questions)
+	}
+	if change.Threshold != nil {
+		g.Threshold = ownSetting(change.Threshold)
+	}
+	if change.HopsByStar != nil {
+		g.HopsByStar = ownSetting(change.HopsByStar)
+	}
+}
+
+func (g GameSettings) empty() bool {
+	return g.Questions == nil && g.Threshold == nil && g.HopsByStar == nil
 }
 
 // ownSetting is a person's setting as kept: nil for -1, the module's own.
@@ -257,6 +303,7 @@ type SettingChange struct {
 	DailyCap      *int   `json:"dailyCap"`
 	UnlockPercent *int   `json:"unlockPercent"`
 	TotalCap      *int   `json:"totalCap"`
+	GameSettings
 }
 
 // SetPersonSetting applies a change of a person's settings.
@@ -269,6 +316,9 @@ func SetPersonSetting(db *gorm.DB, circleID int, change SettingChange, now time.
 	}
 	if change.UnlockPercent != nil && (*change.UnlockPercent < -1 || *change.UnlockPercent > 100) {
 		return invalid("seuil d'ouverture entre 0 et 100 %%")
+	}
+	if err := change.GameSettings.check(); err != nil {
+		return err
 	}
 	if change.TotalCap != nil && change.Scope != AllPacks {
 		return invalid("le plafond total se règle pour tous les paquets")
@@ -307,8 +357,9 @@ func SetPersonSetting(db *gorm.DB, circleID int, change SettingChange, now time.
 		if change.TotalCap != nil {
 			row.TotalCap = ownSetting(change.TotalCap)
 		}
+		row.GameSettings.apply(change.GameSettings)
 		row.UpdatedAt = now
-		if row.DailyCap == nil && row.UnlockPercent == nil && row.TotalCap == nil {
+		if row.DailyCap == nil && row.UnlockPercent == nil && row.TotalCap == nil && row.GameSettings.empty() {
 			return tx.Where("circle_id = ? AND user_id = ? AND scope = ?", circleID, change.UserID, change.Scope).
 				Delete(&PersonSetting{}).Error
 		}
@@ -363,6 +414,20 @@ func (l limits) dailyCap(module string, activation Activation, settings Settings
 
 func (l limits) unlockPercent(module string, activation Activation) *int {
 	return l.pick(module, activation.UnlockPercent, func(s PersonSetting) *int { return s.UnlockPercent })
+}
+
+// settings are a module's game settings for the person, what they set
+// over the module's own.
+func (l limits) settings(module string, activation Activation, own Settings) Settings {
+	pick := func(mine *int, field func(PersonSetting) *int, value *int) {
+		if v := l.pick(module, mine, field); v != nil {
+			*value = *v
+		}
+	}
+	pick(activation.Questions, func(s PersonSetting) *int { return s.Questions }, &own.Questions)
+	pick(activation.Threshold, func(s PersonSetting) *int { return s.Threshold }, &own.Threshold)
+	pick(activation.HopsByStar, func(s PersonSetting) *int { return s.HopsByStar }, &own.HopsByStar)
+	return own
 }
 
 func (l limits) totalCap() *int { return l.byScope[AllPacks].TotalCap }
@@ -508,8 +573,9 @@ func PlayerFor(db *gorm.DB, circleID, userID int, now time.Time) (Player, error)
 			continue
 		}
 		pm := PlayerModule{Module: module, Document: json.RawMessage(module.Content),
-			Settings: doc.Settings.WithDefaults(), UnlockPercent: limits.unlockPercent(module.Key, activation),
-			EarnedToday: earned[module.Key].Points, PlayedToday: earned[module.Key].Games}
+			Settings:      limits.settings(module.Key, activation, doc.Settings.WithDefaults()),
+			UnlockPercent: limits.unlockPercent(module.Key, activation),
+			EarnedToday:   earned[module.Key].Points, PlayedToday: earned[module.Key].Games}
 		pm.DailyCap = limits.dailyCap(module.Key, activation, pm.Settings)
 		player.Modules = append(player.Modules, pm)
 	}
@@ -635,8 +701,10 @@ type Result struct {
 const (
 	MinAnswersForHops = 5
 	maxAnswers        = 60
-	maxKey            = 160
-	maxGiven          = 120
+	// MaxQuestions is the most questions a parent can ask for in a game.
+	MaxQuestions = 40
+	maxKey       = 160
+	maxGiven     = 120
 	// Games played offline are sent later, but not weeks later.
 	maxGameAge = 14 * 24 * time.Hour
 )
@@ -724,6 +792,7 @@ func Record(db *gorm.DB, circleID, playedBy int, game Game, now time.Time) (Resu
 		}
 		result.DailyCap = limits.dailyCap(game.Module, activation, settings)
 		result.TotalCap = limits.totalCap()
+		settings = limits.settings(game.Module, activation, settings)
 
 		day := Day(circleID, game.PlayedAt)
 		session := Session{CircleID: circleID, ClientID: game.ClientID, UserID: game.UserID, ModuleKey: game.Module,

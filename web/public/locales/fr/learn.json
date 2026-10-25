@@ -61,7 +61,7 @@
     "saved": "Réglages enregistrés",
     "settings": "Réglages",
     "settingsNobody": "Personne ne joue encore à ce module.",
-    "settingsHelp": "Laisse vide pour garder le réglage en gris, celui du paquet, de tous les paquets ou du module.",
+    "settingsHelp": "Laisse vide pour garder le réglage en gris : celui du paquet, de tous les paquets ou du module. Étoiles : ★ dès le seuil, ★★ dès 90 %, ★★★ sans faute.",
     "cap": "Hops par jour",
     "unlock": "Ouverture (%)",
     "moduleOwn": "Module",
@@ -83,8 +83,8 @@
     "packSettings": "Réglages du paquet",
     "stats": "Statistiques de {{name}}",
     "allTitle": "Réglages pour tous les paquets",
-    "allHelp": "Le plafond total des jeux par jour, et les réglages de chaque module par défaut.",
-    "allSettingsHelp": "Le plafond total compte tous les modules ensemble. Les deux autres réglages valent pour chaque module, sauf si son paquet ou le module lui-même en a un. Laisse vide pour garder celui du module.",
+    "allHelp": "Le plafond total des jeux par jour, et les réglages par défaut de chaque module : hops, ouverture des chapitres, questions et étoiles.",
+    "allSettingsHelp": "Le plafond total compte tous les modules ensemble. Les autres réglages valent pour chaque module, sauf si son paquet ou le module lui-même en a un. Laisse vide pour garder celui du module. Étoiles : ★ dès le seuil, ★★ dès 90 %, ★★★ sans faute.",
     "packSettingsHelp": "Ces réglages valent pour chaque module du paquet, sauf si le module a le sien. Laisse vide pour garder le réglage pour tous les paquets ou celui du module.",
     "fromPack": "{{value}} (paquet)",
     "fromAll": "{{value}} (tous)",
@@ -92,7 +92,11 @@
     "totalShort_one": "{{count}} hop par jour au total",
     "totalShort_other": "{{count}} hops par jour au total",
     "capEach": "Hops/jour par module",
-    "noTotalShort": "Aucun"
+    "noTotalShort": "Aucun",
+    "questions": "Questions par partie",
+    "threshold": "1re étoile à (%)",
+    "hopsByStar": "Hops par étoile",
+    "fromModule": "{{value}} (module)"
   },
   "stats": {
     "chapters": "Chapitres",

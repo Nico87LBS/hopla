@@ -43,8 +43,18 @@ type Activation struct {
 	// DailyCap is the most hops the person earns with this module in a day.
 	DailyCap *int `json:"dailyCap" gorm:"column:daily_cap"`
 	// UnlockPercent is how well a chapter must be known to open the next.
-	UnlockPercent *int      `json:"unlockPercent" gorm:"column:unlock_percent"`
-	CreatedAt     time.Time `json:"createdAt" gorm:"column:created_at"`
+	UnlockPercent *int `json:"unlockPercent" gorm:"column:unlock_percent"`
+	GameSettings
+	CreatedAt time.Time `json:"createdAt" gorm:"column:created_at"`
+}
+
+// GameSettings shape a game for a person: how many questions, from what
+// share of right answers the first star comes, and the hops of a star.
+// Empty, they come from above, then from the module.
+type GameSettings struct {
+	Questions  *int `json:"questions" gorm:"column:questions"`
+	Threshold  *int `json:"threshold" gorm:"column:threshold"`
+	HopsByStar *int `json:"hopsByStar" gorm:"column:hops_by_star"`
 }
 
 func (Activation) TableName() string { return "learn_activations" }
@@ -64,7 +74,8 @@ type PersonSetting struct {
 	UnlockPercent *int `json:"unlockPercent" gorm:"column:unlock_percent"`
 	// TotalCap, for all modules only, is the most hops earned with the
 	// learning games in a day, all modules together.
-	TotalCap  *int      `json:"totalCap" gorm:"column:total_cap"`
+	TotalCap *int `json:"totalCap" gorm:"column:total_cap"`
+	GameSettings
 	UpdatedAt time.Time `json:"updatedAt" gorm:"column:updated_at"`
 }
 
