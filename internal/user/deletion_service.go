@@ -413,7 +413,7 @@ func (s *DeletionService) deletePointsHistory(tx *gorm.DB, userID int) (int, err
 // deleteLearning drops what a person played and knows in the learning games.
 func (s *DeletionService) deleteLearning(tx *gorm.DB, userID int) (int, error) {
 	total := 0
-	for _, table := range []string{"learn_sessions", "learn_cards", "learn_activations"} {
+	for _, table := range []string{"learn_sessions", "learn_cards", "learn_activations", "learn_person_settings"} {
 		count, err := s.safeDelete(tx, "DELETE FROM "+table+" WHERE user_id = ?", userID)
 		if err != nil {
 			return total, err
@@ -530,7 +530,7 @@ func (s *DeletionService) countPointsHistory(tx *gorm.DB, userID int) (int, erro
 
 func (s *DeletionService) countLearning(tx *gorm.DB, userID int) (int, error) {
 	total := 0
-	for _, table := range []string{"learn_sessions", "learn_cards", "learn_activations"} {
+	for _, table := range []string{"learn_sessions", "learn_cards", "learn_activations", "learn_person_settings"} {
 		count, err := s.safeCount(tx, "SELECT COUNT(*) FROM "+table+" WHERE user_id = ?", userID)
 		if err != nil {
 			return total, err

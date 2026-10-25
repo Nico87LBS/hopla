@@ -36,6 +36,7 @@ export const loadPlayer = userId => {
   if (!player) return null
   if (player.day !== today()) {
     player.day = today()
+    player.earnedToday = 0
     player.modules = player.modules.map(m => ({
       ...m,
       earnedToday: 0,
@@ -78,6 +79,7 @@ export const playLocally = (player, game, hops) => {
   )
   const next = {
     ...player,
+    earnedToday: (player.earnedToday || 0) + hops,
     cards: mergeCards(player.cards, moved),
     modules: player.modules.map(m =>
       m.id === game.module
@@ -97,11 +99,13 @@ export const playLocally = (player, game, hops) => {
 export const applyResult = (userId, game, result) => {
   const player = read(PLAYER_KEY(userId))
   if (!player) return
+  const sameDay = player.day === result.session?.day
   savePlayer({
     ...player,
+    ...(sameDay && { earnedToday: result.totalEarned }),
     cards: mergeCards(player.cards, result.cards || []),
     modules: player.modules.map(m =>
-      m.id === game.module && player.day === result.session?.day
+      m.id === game.module && sameDay
         ? { ...m, earnedToday: result.earnedToday }
         : m,
     ),

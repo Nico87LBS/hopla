@@ -13,6 +13,7 @@ import {
   review,
   seededRandom,
   stars,
+  totalLeft,
 } from '../src/utils/learn/engine.js'
 import { evaluate } from '../src/utils/learn/expression.js'
 import { generatorSource } from '../src/utils/learn/generators.js'
@@ -225,4 +226,12 @@ test('the progress moves from the first game, a known question counting whole', 
   }))
   assert.equal(openChapters(compiled, cardMap(drawn))[5].chapter, big)
   assert.equal(openChapters(compiled, cardMap(drawn))[5].progress.percent, 100)
+})
+
+test('the total cap of the day holds back what a game earns', () => {
+  assert.equal(totalLeft({ totalCap: null, earnedToday: 9 }), Infinity)
+  assert.equal(totalLeft({ totalCap: 10, earnedToday: 9 }), 1)
+  assert.equal(totalLeft({ totalCap: 10, earnedToday: 12 }), 0)
+  assert.equal(expectedHops(10, 10, {}, 0, 10, 1), 1)
+  assert.equal(expectedHops(10, 10, {}, 0, 10, Infinity), 3)
 })

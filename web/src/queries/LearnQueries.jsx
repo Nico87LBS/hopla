@@ -4,11 +4,13 @@ import {
   GetLearnCatalogue,
   GetLearnModules,
   GetLearnPlayer,
+  GetLearnStats,
   ImportLearnModule,
   InstallLearnModule,
   RemoveLearnModule,
   SendLearnGame,
   SetLearnActivation,
+  SetLearnSetting,
 } from '../utils/Fetcher'
 import { flushQueue, loadPlayer, savePlayer } from '../utils/learn/store'
 
@@ -16,6 +18,7 @@ export const learnKeys = {
   catalogue: ['learn', 'catalogue'],
   modules: ['learn', 'modules'],
   player: userId => ['learn', 'player', userId],
+  stats: key => ['learn', 'stats', key],
 }
 
 // sendWaitingGames sends the games played offline; it never throws.
@@ -47,6 +50,12 @@ export const usePlayer = userId =>
 export const useLearnCatalogue = () =>
   useQuery({ queryKey: learnKeys.catalogue, queryFn: GetLearnCatalogue })
 
+export const useLearnStats = key =>
+  useQuery({
+    queryKey: learnKeys.stats(key),
+    queryFn: () => GetLearnStats(key),
+  })
+
 export const useLearnModules = () =>
   useQuery({ queryKey: learnKeys.modules, queryFn: GetLearnModules })
 
@@ -66,3 +75,4 @@ export const useInstallModule = () => useLearnChange(InstallLearnModule)
 export const useImportModule = () => useLearnChange(ImportLearnModule)
 export const useRemoveModule = () => useLearnChange(RemoveLearnModule)
 export const useSetActivation = () => useLearnChange(SetLearnActivation)
+export const useSetSetting = () => useLearnChange(SetLearnSetting)

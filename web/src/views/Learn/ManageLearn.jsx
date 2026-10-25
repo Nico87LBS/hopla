@@ -1,6 +1,7 @@
 import {
   DeleteOutlineRounded,
   DownloadDoneRounded,
+  InsightsRounded,
   SchoolRounded,
   TuneRounded,
   UploadFileRounded,
@@ -20,6 +21,7 @@ import {
 import PropTypes from 'prop-types'
 import { Fragment, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 
 import ModalActions from '../../components/common/ModalActions'
 import { HOPLA } from '../../constants/theme'
@@ -31,6 +33,7 @@ import {
   useLearnModules,
   useRemoveModule,
   useSetActivation,
+  useSetSetting,
 } from '../../queries/LearnQueries'
 import { useNotification } from '../../service/NotificationProvider'
 import LoadingComponent from '../components/Loading'
@@ -40,55 +43,71 @@ import ConfirmationModal from '../Modals/Inputs/ConfirmationModal'
 
 const HEAD = 40
 
+const isSet = value => value !== null && value !== undefined
+
 const useNotify = () => {
   const { showNotification } = useNotification()
   return (type, message) => showNotification({ type, message })
 }
 
-// The settings of one module, person by person: the day's cap in hops and
-// how well a chapter must be known to open the next. Left empty, the
-// module's own apply.
-const SettingsModal = ({ activations, members, module, onClose }) => {
+const FIELDS = {
+  total: { name: 'totalCap', label: 'manage.total' },
+  cap: { name: 'dailyCap', label: 'manage.cap' },
+  capEach: { name: 'dailyCap', label: 'manage.capEach' },
+  unlock: { name: 'unlockPercent', label: 'manage.unlock' },
+}
+
+// SettingsModal sets, person by person, the hops of a day and how well a
+// chapter must be known to open the next: for one module, a pack or all of
+// them. An empty field takes the setting from above, shown in grey.
+const SettingsModal = ({
+  fields,
+  help,
+  initial,
+  onClose,
+  people,
+  placeholder,
+  save,
+  title,
+}) => {
   const { t } = useTranslation('learn')
   const { ResponsiveModal } = useResponsiveModal()
-  const setActivation = useSetActivation()
   const notify = useNotify()
-  const players = members.filter(m =>
-    activations.has(`${m.userId}:${module.id}`),
-  )
+  const [saving, setSaving] = useState(false)
   const [values, setValues] = useState(() =>
     Object.fromEntries(
-      players.map(m => {
-        const a = activations.get(`${m.userId}:${module.id}`)
+      people.map(m => {
+        const start = initial(m.userId)
         return [
           m.userId,
-          { cap: a.dailyCap ?? '', unlock: a.unlockPercent ?? '' },
+          Object.fromEntries(fields.map(f => [f, start[FIELDS[f].name] ?? ''])),
         ]
       }),
     ),
   )
-  const set = (userId, name, value) =>
+  const set = (userId, field, value) =>
     setValues(v => ({
       ...v,
-      [userId]: { ...v[userId], [name]: value.replace(/\D/g, '') },
+      [userId]: { ...v[userId], [field]: value.replace(/\D/g, '') },
     }))
 
-  const save = async () => {
+  const send = async () => {
+    setSaving(true)
     try {
-      for (const member of players) {
-        const { cap, unlock } = values[member.userId]
-        await setActivation.mutateAsync({
-          userId: member.userId,
-          modules: [module.id],
-          active: true,
-          dailyCap: cap === '' ? -1 : Number(cap),
-          unlockPercent: unlock === '' ? -1 : Number(unlock),
-        })
+      for (const member of people) {
+        const change = {}
+        for (const field of fields) {
+          const value = values[member.userId][field]
+          change[FIELDS[field].name] = value === '' ? -1 : Number(value)
+        }
+        await save(member.userId, change)
       }
       notify('success', t('manage.saved'))
       onClose()
     } catch (err) {
       notify('error', err.message)
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -97,61 +116,62 @@ const SettingsModal = ({ activations, members, module, onClose }) => {
       open
       onClose={onClose}
       size='md'
-      title={module.name}
+      title={title}
       footer={
         <ModalActions
           secondary={{ label: t('manage.cancel'), onClick: onClose }}
           primary={{
             label: t('manage.save'),
-            onClick: save,
-            loading: setActivation.isPending,
-            disabled: players.length === 0,
+            onClick: send,
+            loading: saving,
+            disabled: people.length === 0,
           }}
         />
       }
     >
-      {players.length === 0 ? (
+      {people.length === 0 ? (
         <Typography level='body-sm'>{t('manage.settingsNobody')}</Typography>
       ) : (
         <Stack gap={1.5}>
           <Typography level='body-sm' sx={{ color: 'text.secondary' }}>
-            {t('manage.settingsHelp')}
+            {help}
           </Typography>
-          {players.map(member => (
-            <Stack
-              key={member.userId}
-              direction='row'
-              gap={1.5}
-              alignItems='flex-end'
-            >
-              <Stack alignItems='center' sx={{ width: 64 }}>
-                <MemberAvatar member={member} size={HEAD} />
-                <Typography level='body-xs' noWrap sx={{ maxWidth: 64 }}>
-                  {member.displayName}
-                </Typography>
-              </Stack>
-              <Box sx={{ flex: 1 }}>
-                <Typography level='body-xs'>{t('manage.cap')}</Typography>
-                <Input
-                  value={values[member.userId].cap}
-                  onChange={e => set(member.userId, 'cap', e.target.value)}
-                  placeholder={t('manage.moduleOwn')}
-                  endDecorator={t('manage.hopsUnit')}
-                  slotProps={{ input: { inputMode: 'numeric' } }}
-                />
-              </Box>
-              <Box sx={{ flex: 1 }}>
-                <Typography level='body-xs'>{t('manage.unlock')}</Typography>
-                <Input
-                  value={values[member.userId].unlock}
-                  onChange={e => set(member.userId, 'unlock', e.target.value)}
-                  placeholder={t('manage.moduleOwn')}
-                  endDecorator='%'
-                  slotProps={{ input: { inputMode: 'numeric' } }}
-                />
-              </Box>
-            </Stack>
-          ))}
+          <Box
+            sx={{
+              alignItems: 'end',
+              columnGap: 1,
+              display: 'grid',
+              gridTemplateColumns: `56px repeat(${fields.length}, minmax(0, 1fr))`,
+              rowGap: 1.25,
+            }}
+          >
+            <Box />
+            {fields.map(field => (
+              <Typography key={field} level='body-xs'>
+                {t(FIELDS[field].label)}
+              </Typography>
+            ))}
+            {people.map(member => (
+              <Fragment key={member.userId}>
+                <Stack alignItems='center' title={member.displayName}>
+                  <MemberAvatar member={member} size={HEAD - 4} />
+                  <Typography level='body-xs' noWrap sx={{ maxWidth: 56 }}>
+                    {member.displayName}
+                  </Typography>
+                </Stack>
+                {fields.map(field => (
+                  <Input
+                    key={field}
+                    value={values[member.userId][field]}
+                    onChange={e => set(member.userId, field, e.target.value)}
+                    placeholder={placeholder(member.userId, field)}
+                    slotProps={{ input: { inputMode: 'numeric' } }}
+                    sx={{ minWidth: 0 }}
+                  />
+                ))}
+              </Fragment>
+            ))}
+          </Box>
         </Stack>
       )}
     </ResponsiveModal>
@@ -159,20 +179,31 @@ const SettingsModal = ({ activations, members, module, onClose }) => {
 }
 
 SettingsModal.propTypes = {
-  activations: PropTypes.instanceOf(Map).isRequired,
-  members: PropTypes.array.isRequired,
-  module: PropTypes.object.isRequired,
+  fields: PropTypes.arrayOf(PropTypes.oneOf(Object.keys(FIELDS))).isRequired,
+  help: PropTypes.string.isRequired,
+  initial: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
+  people: PropTypes.array.isRequired,
+  placeholder: PropTypes.func.isRequired,
+  save: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
 }
 
 // One installed pack, or the modules outside any pack: who plays which
 // sub-module, with a head per person.
-const ModuleGroup = ({ activations, group, members, onRemove, onSettings }) => {
+const ModuleGroup = ({
+  activations,
+  group,
+  members,
+  onPackSettings,
+  onRemove,
+  onSettings,
+}) => {
   const { t } = useTranslation('learn')
   const setActivation = useSetActivation()
   const notify = useNotify()
   const isOn = (userId, id) => activations.has(`${userId}:${id}`)
-  const columns = `minmax(0, 1fr) repeat(${members.length}, ${HEAD + 8}px) 36px`
+  const columns = `minmax(0, 1fr) repeat(${members.length}, ${HEAD + 8}px) 72px`
 
   const toggle = async (userId, ids, active) => {
     try {
@@ -202,14 +233,23 @@ const ModuleGroup = ({ activations, group, members, onRemove, onSettings }) => {
           )}
         </Box>
         {group.pack && (
-          <IconButton
-            variant='plain'
-            color='danger'
-            aria-label={t('manage.remove')}
-            onClick={() => onRemove(group.pack)}
-          >
-            <DeleteOutlineRounded />
-          </IconButton>
+          <>
+            <IconButton
+              variant='plain'
+              aria-label={t('manage.packSettings')}
+              onClick={() => onPackSettings(group.pack)}
+            >
+              <TuneRounded />
+            </IconButton>
+            <IconButton
+              variant='plain'
+              color='danger'
+              aria-label={t('manage.remove')}
+              onClick={() => onRemove(group.pack)}
+            >
+              <DeleteOutlineRounded />
+            </IconButton>
+          </>
         )}
       </Stack>
 
@@ -287,14 +327,25 @@ const ModuleGroup = ({ activations, group, members, onRemove, onSettings }) => {
                 />
               </Box>
             ))}
-            <IconButton
-              size='sm'
-              variant='plain'
-              aria-label={t('manage.settings')}
-              onClick={() => onSettings(module)}
-            >
-              <TuneRounded />
-            </IconButton>
+            <Stack direction='row'>
+              <IconButton
+                size='sm'
+                variant='plain'
+                component={Link}
+                to={`/manage/learn/${module.id}`}
+                aria-label={t('manage.stats', { name: module.name })}
+              >
+                <InsightsRounded />
+              </IconButton>
+              <IconButton
+                size='sm'
+                variant='plain'
+                aria-label={t('manage.settings')}
+                onClick={() => onSettings(module)}
+              >
+                <TuneRounded />
+              </IconButton>
+            </Stack>
           </Fragment>
         ))}
       </Box>
@@ -322,8 +373,60 @@ ModuleGroup.propTypes = {
   activations: PropTypes.instanceOf(Map).isRequired,
   group: PropTypes.object.isRequired,
   members: PropTypes.array.isRequired,
+  onPackSettings: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
   onSettings: PropTypes.func.isRequired,
+}
+
+// AllPacksCard opens the settings that apply to every module, with the
+// cap of a whole day of learning games.
+const AllPacksCard = ({ members, onOpen, settings }) => {
+  const { t } = useTranslation('learn')
+  return (
+    <Sheet sx={surfaceSx}>
+      <Stack direction='row' alignItems='center' gap={1}>
+        <Box sx={{ flex: 1 }}>
+          <Typography level='title-lg'>{t('manage.allTitle')}</Typography>
+          <Typography level='body-sm' sx={{ color: 'text.secondary' }}>
+            {t('manage.allHelp')}
+          </Typography>
+        </Box>
+        <Button
+          variant='soft'
+          startDecorator={<TuneRounded />}
+          onClick={onOpen}
+        >
+          {t('manage.settings')}
+        </Button>
+      </Stack>
+      <Stack direction='row' gap={2} flexWrap='wrap' sx={{ mt: 1.5 }}>
+        {members.map(member => {
+          const total = settings.get(`${member.userId}:*`)?.totalCap
+          return (
+            <Stack
+              key={member.userId}
+              direction='row'
+              gap={0.75}
+              alignItems='center'
+            >
+              <MemberAvatar member={member} size={HEAD - 12} />
+              <Typography level='body-sm'>
+                {!isSet(total)
+                  ? t('manage.noTotal')
+                  : t('manage.totalShort', { count: total })}
+              </Typography>
+            </Stack>
+          )
+        })}
+      </Stack>
+    </Sheet>
+  )
+}
+
+AllPacksCard.propTypes = {
+  members: PropTypes.array.isRequired,
+  onOpen: PropTypes.func.isRequired,
+  settings: PropTypes.instanceOf(Map).isRequired,
 }
 
 const CatalogueCard = ({ installed }) => {
@@ -488,7 +591,11 @@ export const ManageLearn = () => {
   const members = useMembers()
   const { data, isLoading } = useLearnModules()
   const remove = useRemoveModule()
+  const setActivation = useSetActivation()
+  const setSetting = useSetSetting()
   const notify = useNotify()
+  // What the settings window is open for: { scope: 'module' | 'pack' |
+  // 'all', module }.
   const [settingsFor, setSettingsFor] = useState(null)
   const [confirm, setConfirm] = useState({})
 
@@ -499,6 +606,11 @@ export const ManageLearn = () => {
         (data?.activations || []).map(a => [`${a.userId}:${a.module}`, a]),
       ),
     [data?.activations],
+  )
+  const settings = useMemo(
+    () =>
+      new Map((data?.settings || []).map(s => [`${s.userId}:${s.scope}`, s])),
+    [data?.settings],
   )
   const groups = useMemo(() => {
     const byId = new Map(modules.map(m => [m.id, m]))
@@ -513,6 +625,76 @@ export const ManageLearn = () => {
     if (others.length) out.push({ pack: null, modules: others })
     return out
   }, [modules])
+
+  // inherited is the setting a person gets from above: a module's packs,
+  // then all packs.
+  const inherited = (userId, field, moduleId) => {
+    const name = FIELDS[field].name
+    if (moduleId) {
+      for (const pack of modules.filter(m => m.children?.includes(moduleId))) {
+        const value = settings.get(`${userId}:${pack.id}`)?.[name]
+        if (isSet(value)) return t('manage.fromPack', { value })
+      }
+    }
+    if (settingsFor?.scope !== 'all') {
+      const value = settings.get(`${userId}:*`)?.[name]
+      if (isSet(value)) return t('manage.fromAll', { value })
+    }
+    return field === 'total' ? t('manage.noTotalShort') : t('manage.moduleOwn')
+  }
+
+  const modal = () => {
+    if (!settingsFor) return null
+    const { module, scope } = settingsFor
+    const close = () => setSettingsFor(null)
+    if (scope === 'module') {
+      return (
+        <SettingsModal
+          title={module.name}
+          help={t('manage.settingsHelp')}
+          fields={['cap', 'unlock']}
+          people={members.filter(m =>
+            activations.has(`${m.userId}:${module.id}`),
+          )}
+          initial={userId => activations.get(`${userId}:${module.id}`)}
+          placeholder={(userId, field) => inherited(userId, field, module.id)}
+          save={(userId, change) =>
+            setActivation.mutateAsync({
+              userId,
+              modules: [module.id],
+              active: true,
+              ...change,
+            })
+          }
+          onClose={close}
+        />
+      )
+    }
+    const all = scope === 'all'
+    const key = all ? '*' : module.id
+    return (
+      <SettingsModal
+        title={all ? t('manage.allTitle') : module.name}
+        help={all ? t('manage.allSettingsHelp') : t('manage.packSettingsHelp')}
+        fields={all ? ['total', 'capEach', 'unlock'] : ['capEach', 'unlock']}
+        people={
+          all
+            ? members
+            : members.filter(m =>
+                module.children.some(id =>
+                  activations.has(`${m.userId}:${id}`),
+                ),
+              )
+        }
+        initial={userId => settings.get(`${userId}:${key}`) || {}}
+        placeholder={(userId, field) => inherited(userId, field)}
+        save={(userId, change) =>
+          setSetting.mutateAsync({ userId, scope: key, ...change })
+        }
+        onClose={close}
+      />
+    )
+  }
 
   const askRemove = module =>
     setConfirm({
@@ -544,6 +726,13 @@ export const ManageLearn = () => {
           </Typography>
         </Sheet>
       )}
+      {!isLoading && groups.length > 0 && (
+        <AllPacksCard
+          members={members}
+          settings={settings}
+          onOpen={() => setSettingsFor({ scope: 'all' })}
+        />
+      )}
       {groups.map(group => (
         <ModuleGroup
           key={group.pack?.id || 'others'}
@@ -551,19 +740,13 @@ export const ManageLearn = () => {
           members={members}
           activations={activations}
           onRemove={askRemove}
-          onSettings={setSettingsFor}
+          onSettings={module => setSettingsFor({ scope: 'module', module })}
+          onPackSettings={module => setSettingsFor({ scope: 'pack', module })}
         />
       ))}
       <CatalogueCard installed={new Set(modules.map(m => m.id))} />
       <ImportCard />
-      {settingsFor && (
-        <SettingsModal
-          module={settingsFor}
-          members={members}
-          activations={activations}
-          onClose={() => setSettingsFor(null)}
-        />
-      )}
+      {modal()}
       {confirm.isOpen && <ConfirmationModal config={confirm} />}
     </ParentPage>
   )

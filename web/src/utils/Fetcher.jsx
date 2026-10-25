@@ -1225,6 +1225,23 @@ const SetLearnActivation = async change =>
     }),
   )
 
+const SetLearnSetting = async change =>
+  learnAnswer(
+    await Fetch(`/learn/settings`, {
+      method: 'PUT',
+      headers: HEADERS(),
+      body: JSON.stringify(change),
+    }),
+  )
+
+const GetLearnStats = async key =>
+  learnAnswer(
+    await Fetch(`/learn/stats/${encodeURIComponent(key)}`, {
+      method: 'GET',
+      headers: HEADERS(),
+    }),
+  )
+
 const GetLearnPlayer = async userId =>
   learnAnswer(
     await Fetch(`/learn/players/${userId}`, {
@@ -1311,6 +1328,7 @@ export {
   GetLearnCatalogue,
   GetLearnModules,
   GetLearnPlayer,
+  GetLearnStats,
   GetLongLiveTokens,
   GetMFAStatus,
   GetPinnedFilters,
@@ -1360,6 +1378,7 @@ export {
   SendLearnGame,
   SetFamilyTimezone,
   SetLearnActivation,
+  SetLearnSetting,
   SetMemberAway,
   SetupMFA,
   SignAssetURL,

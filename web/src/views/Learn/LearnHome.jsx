@@ -19,7 +19,7 @@ import {
   usePlayer,
 } from '../../queries/LearnQueries'
 import { useCircleMembers, useUserProfile } from '../../queries/UserQueries'
-import { moduleLocked, openChapters } from '../../utils/learn/engine'
+import { moduleLocked, openChapters, totalLeft } from '../../utils/learn/engine'
 import { queuedFor } from '../../utils/learn/store'
 import LoadingComponent from '../components/Loading'
 import { MemberAvatar } from '../Games/GameParts'
@@ -93,7 +93,14 @@ export const LearnChooser = () => {
   )
 }
 
-const ModuleCard = ({ cards, compiled, compiledById, module, userId }) => {
+const ModuleCard = ({
+  cards,
+  compiled,
+  compiledById,
+  dayFull,
+  module,
+  userId,
+}) => {
   const { t } = useTranslation('learn')
   const color = subjectColor(module.subject, module.document?.couleur)
   const locked = moduleLocked(compiled, compiledById, cards)
@@ -105,7 +112,7 @@ const ModuleCard = ({ cards, compiled, compiledById, module, userId }) => {
   const current = [...chapters].reverse().find(c => c.open)
   // The bar is the chapter being learnt, the one that opens the next.
   const percent = current?.progress.percent ?? 0
-  const capped = module.dailyCap > 0 && module.earnedToday >= module.dailyCap
+  const capped = dayFull || module.earnedToday >= module.dailyCap
 
   const body = (
     <Stack direction='row' gap={1.5} alignItems='center'>
@@ -202,6 +209,7 @@ const ModuleCard = ({ cards, compiled, compiledById, module, userId }) => {
 
 ModuleCard.propTypes = {
   cards: PropTypes.instanceOf(Map).isRequired,
+  dayFull: PropTypes.bool,
   compiled: PropTypes.object.isRequired,
   compiledById: PropTypes.object.isRequired,
   module: PropTypes.object.isRequired,
@@ -253,6 +261,7 @@ export const LearnHome = () => {
   const member = members.find(m => m.userId === userId)
   const waiting = queuedFor(userId)
   const groups = player ? groupByPack(player) : []
+  const left = totalLeft(player)
 
   return (
     <Container maxWidth='sm' sx={pageSx}>
@@ -267,6 +276,42 @@ export const LearnHome = () => {
           </Typography>
         </Box>
       </Stack>
+
+      {Number.isFinite(left) && (
+        <Sheet
+          variant='outlined'
+          sx={{
+            alignItems: 'center',
+            borderRadius: 'lg',
+            display: 'flex',
+            gap: 1.5,
+            mb: 2,
+            p: 1.25,
+          }}
+        >
+          <Typography level='title-sm' sx={{ flexShrink: 0 }}>
+            {t('home.totalToday', {
+              earned: player.earnedToday,
+              cap: player.totalCap,
+            })}
+          </Typography>
+          <Box sx={{ flex: 1 }}>
+            <Progress
+              value={
+                player.totalCap
+                  ? (player.earnedToday * 100) / player.totalCap
+                  : 100
+              }
+              color={HOPLA.gold}
+            />
+          </Box>
+          {left === 0 && (
+            <Typography level='body-xs' sx={{ color: 'text.tertiary' }}>
+              {t('home.dayFull')}
+            </Typography>
+          )}
+        </Sheet>
+      )}
 
       {(player?.offline || waiting > 0) && (
         <Sheet
@@ -340,6 +385,7 @@ export const LearnHome = () => {
                     compiled={byId[module.id]}
                     compiledById={byId}
                     cards={cards}
+                    dayFull={left === 0}
                     userId={userId}
                   />
                 ))}

@@ -31,6 +31,7 @@ import {
   moduleLocked,
   pickQuestions,
   stars,
+  totalLeft,
 } from '../../utils/learn/engine'
 import { applyResult, playLocally, queueGame } from '../../utils/learn/store'
 import { generateUUID } from '../../utils/UUID'
@@ -517,6 +518,7 @@ const LearnPlay = () => {
       settings,
       module.earnedToday,
       module.dailyCap,
+      totalLeft(player),
     )
     const wouldEarn =
       stars(correct, total, settings.seuil) * settings.hops_par_etoile

@@ -49,6 +49,27 @@ type Activation struct {
 
 func (Activation) TableName() string { return "learn_activations" }
 
+// AllPacks is the scope of a person's settings that applies to every module.
+const AllPacks = "*"
+
+// PersonSetting is a person's setting for every module of a pack, or of all
+// of them (AllPacks). A module's own activation setting comes first, then
+// its pack's, then the one for all; empty settings leave the next one.
+type PersonSetting struct {
+	CircleID int    `json:"-" gorm:"primaryKey;autoIncrement:false"`
+	UserID   int    `json:"userId" gorm:"primaryKey;autoIncrement:false"`
+	Scope    string `json:"scope" gorm:"column:scope;primaryKey;size:80"`
+	// DailyCap is the most hops earned with each module in a day.
+	DailyCap      *int `json:"dailyCap" gorm:"column:daily_cap"`
+	UnlockPercent *int `json:"unlockPercent" gorm:"column:unlock_percent"`
+	// TotalCap, for all modules only, is the most hops earned with the
+	// learning games in a day, all modules together.
+	TotalCap  *int      `json:"totalCap" gorm:"column:total_cap"`
+	UpdatedAt time.Time `json:"updatedAt" gorm:"column:updated_at"`
+}
+
+func (PersonSetting) TableName() string { return "learn_person_settings" }
+
 // Session is one game played. ClientID is drawn by the device, so a game
 // sent twice, such as after being offline, counts once.
 type Session struct {
