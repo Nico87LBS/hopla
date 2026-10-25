@@ -2,9 +2,9 @@
   "shared": "Partagée",
   "delete": {
     "title": "Supprimer l'étiquette",
-    "message": "Voulez-vous vraiment supprimer cette étiquette ? Elle sera retirée de toutes les tâches."
+    "message": "Veux-tu vraiment supprimer cette étiquette ? Elle sera retirée de toutes les tâches."
   },
-  "loadError": "Impossible de charger les étiquettes. Veuillez réessayer.",
+  "loadError": "Impossible de charger les étiquettes. Réessaie.",
   "search": {
     "placeholder": "Rechercher des étiquettes",
     "noResultsTitle": "Aucune étiquette correspondante",
@@ -27,20 +27,20 @@
     "clearFilters": "Afficher toutes les tâches",
     "searchPlaceholder": "Rechercher des tâches portant cette étiquette",
     "emptyTitle": "Aucune tâche portant cette étiquette",
-    "emptyDescription": "Aucune tâche ne porte encore l'étiquette « {{label}} ». Ajoutez-la à une tâche pour que celle-ci apparaisse ici.",
+    "emptyDescription": "Aucune tâche ne porte encore l'étiquette « {{label}} ». Ajoute-la à une tâche pour qu'elle apparaisse ici.",
     "browseTasks": "Parcourir les tâches",
     "noResultsTitle": "Aucune tâche correspondante",
     "noResultsDescription": "Aucune tâche portant cette étiquette ne correspond à « {{searchTerm}} ».",
     "notFoundTitle": "Étiquette introuvable",
-    "notFoundDescription": "Cette étiquette a peut-être été supprimée ou n'est plus partagée avec vous.",
+    "notFoundDescription": "Cette étiquette a peut-être été supprimée ou n'est plus partagée avec toi.",
     "backToLabels": "Retour aux étiquettes"
   },
   "modal": {
     "errorEmptyName": "Le nom ne peut pas être vide",
     "errorDuplicate": "Une étiquette portant ce nom existe déjà",
-    "errorNoColor": "Sélectionnez une couleur",
+    "errorNoColor": "Choisis une couleur",
     "saveFailedTitle": "Échec de l'enregistrement de l'étiquette",
-    "saveFailedMessage": "Impossible d'enregistrer l'étiquette. Veuillez réessayer.",
+    "saveFailedMessage": "Impossible d'enregistrer l'étiquette. Réessaie.",
     "name": "Nom",
     "editTitle": "Modifier l'étiquette",
     "addTitle": "Ajouter une étiquette",
@@ -57,7 +57,7 @@
   },
   "view": {
     "emptyTitle": "Aucune étiquette pour le moment",
-    "emptyDescription": "Les étiquettes regroupent les tâches de votre cercle, comme « cuisine » ou « factures », afin de les filtrer en un geste.",
+    "emptyDescription": "Les étiquettes regroupent les tâches de ta famille, comme « cuisine » ou « factures », pour les filtrer en un geste.",
     "createLabel": "Créer une étiquette",
     "filterTitle": "Afficher",
     "sortName": "Nom",

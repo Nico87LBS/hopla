@@ -77,20 +77,20 @@
     "changeHint": "Changing who can see this project also affects its tasks. You will see exactly what changes before anything is saved.",
     "private": {
       "title": "Only me",
-      "description": "Hidden from everyone else in the circle, including admins. Tasks in it are private too."
+      "description": "Hidden from everyone else in the family, including admins. Tasks in it are private too."
     },
     "members": {
       "title": "Selected members",
       "description": "Only you and the people you pick below see the project and all of its tasks.",
       "pickerTitle": "Share with",
-      "noCandidates": "There is nobody else in your circle yet. Invite people to the circle first.",
+      "noCandidates": "There is nobody else in your family yet. Invite people to the family first.",
       "emptyHint": "Nobody is selected: for now only you can see the project. You can add people any time.",
       "hint_one": "Shared with {{count}} person. Removing someone later keeps all tasks and history.",
       "hint_other": "Shared with {{count}} people. Removing someone later keeps all tasks and history."
     },
     "circle": {
-      "title": "Whole circle",
-      "description": "Everyone in the circle sees the project: {{names}}"
+      "title": "Whole family",
+      "description": "Everyone in the family sees the project: {{names}}"
     },
     "chip": {
       "private": "Only you",
@@ -107,7 +107,7 @@
       "loseAccessHint_one": "They will no longer see the project or its {{count}} task. Devices that already synced remove it at their next sync.",
       "loseAccessHint_other": "They will no longer see the project or its {{count}} tasks. Devices that already synced remove them at their next sync.",
       "gainAccess": "Will gain access",
-      "opensToCircle": "Everyone in the circle, including people who join later, will see this project and all of its tasks.",
+      "opensToCircle": "Everyone in the family, including people who join later, will see this project and all of its tasks.",
       "assignmentChanges_one": "Assignment changes in {{count}} task",
       "assignmentChanges_other": "Assignment changes in {{count}} tasks",
       "removedAssignees": "No longer assigned: {{names}}.",

@@ -17,23 +17,14 @@
   "overview": {
     "title": "Settings",
     "subtitle": "Customize your experience and manage your account preferences",
-    "upgrade": {
-      "title": "Upgrade to Plus",
-      "description": "Unlock powerful features to enhance your productivity",
-      "button": "Upgrade Now",
-      "features": {
-        "richText": "Rich text descriptions",
-        "notifications": "Task notifications"
-      }
-    },
     "sections": {
       "profile": {
         "title": "Profile Settings",
         "description": "Update your profile information, photo, display name, and timezone preferences."
       },
       "circle": {
-        "title": "Circle Settings",
-        "description": "Manage your circle, invite members, and handle join requests."
+        "title": "Family Settings",
+        "description": "Manage your family, invite members, and handle join requests."
       },
       "account": {
         "title": "Account Settings",
@@ -102,14 +93,14 @@
     "cancel": "Cancel"
   },
   "circleSettings": {
-    "title": "Circle Settings",
-    "description": "Your account is automatically connected to a Circle when you create or join one. You can easily invite friends by sharing the unique Circle code or link below. You'll receive a notification below when someone requests to join your Circle.",
+    "title": "Family Settings",
+    "description": "Your account is automatically connected to a Family when you create or join one. You can easily invite friends by sharing the unique Family code or link below. You'll receive a notification below when someone requests to join your Family.",
     "memberOf": "You are part of {{name}}",
-    "yourCircleCode": "Your circle code is:",
-    "pendingApprovalMessage": "Your request to join {{name}} is pending approval from a circle admin.",
+    "yourCircleCode": "Your family code is:",
+    "pendingApprovalMessage": "Your request to join {{name}} is pending approval from a family admin.",
     "cancelRequest": "Cancel Request",
     "cancelRequestTitle": "Cancel Join Request",
-    "cancelRequestMessage": "Are you sure you want to cancel your request to join this circle?",
+    "cancelRequestMessage": "Are you sure you want to cancel your request to join this family?",
     "cancelRequestButton": "Cancel Request",
     "requestCancelled": "Request cancelled successfully",
     "cancelRequestFailed": "Failed to cancel request",
@@ -117,55 +108,55 @@
     "shareInvite": "Share Invite",
     "codeCopied": "Code copied to clipboard",
     "linkCopied": "Invite link copied to clipboard",
-    "myCircle": "my Circle",
+    "myCircle": "my Family",
     "shareTitle": "Join {{name}} on Hopla",
     "shareText": "I'd like to invite you to join {{name}} on Hopla.",
-    "leave": "Leave Circle",
-    "leaveConfirmTitle": "Leave Circle",
-    "leaveConfirmMessage": "Are you sure you want to leave your circle?",
+    "leave": "Leave Family",
+    "leaveConfirmTitle": "Leave Family",
+    "leaveConfirmMessage": "Are you sure you want to leave your family?",
     "leaveConfirmButton": "Leave",
-    "leftCircle": "Left circle successfully",
-    "leaveFailed": "Failed to leave circle",
-    "circleMembers": "Circle Members",
+    "leftCircle": "Left family successfully",
+    "leaveFailed": "Failed to leave family",
+    "circleMembers": "Family Members",
     "you": "(You)",
     "pendingApproval": "Pending Approval",
     "joinedOn": "Joined on {{date}}",
     "requestedToJoin": "Request to join {{date}}",
     "roles": {
       "member": "Member",
-      "memberDescription": "Just a regular member of the circle",
+      "memberDescription": "Just a regular member of the family",
       "manager": "Manager",
       "managerDescription": "Can impersonate users and perform actions on their behalf",
       "admin": "Admin",
-      "adminDescription": "Full access to the circle"
+      "adminDescription": "Full access to the family"
     },
     "roleUpdateFailed": "Failed to update role",
     "removeMemberTitle": "Remove Member",
-    "removeMemberMessage": "Are you sure you want to remove {{name}} from your circle?",
+    "removeMemberMessage": "Are you sure you want to remove {{name}} from your family?",
     "memberRemoved": "Removed member successfully",
-    "circleMemberRequests": "Circle Member Requests",
+    "circleMemberRequests": "Family Member Requests",
     "lastUpdated": "Last updated: {{time}}",
     "refreshing": "Refreshing...",
     "refreshFailed": "Failed to refresh member requests",
-    "wantsToJoin": "{{name}} wants to join your circle.",
+    "wantsToJoin": "{{name}} wants to join your family.",
     "accept": "Accept",
     "acceptRequestTitle": "Accept Member Request",
-    "acceptRequestMessage": "Are you sure you want to accept {{name}} (username: {{username}}) to join your circle?",
+    "acceptRequestMessage": "Are you sure you want to accept {{name}} (username: {{username}}) to join your family?",
     "requestAccepted": "Accepted request successfully",
     "decline": "Decline",
     "declineRequestTitle": "Decline Member Request",
-    "declineRequestMessage": "Are you sure you want to decline {{name}}'s (username: {{username}}) request to join your circle?",
+    "declineRequestMessage": "Are you sure you want to decline {{name}}'s (username: {{username}}) request to join your family?",
     "declineRequestButton": "Decline",
     "requestDeclined": "Declined request successfully",
     "declineRequestFailed": "Failed to decline request",
     "or": "or",
-    "joinOtherDescription": "Want to join someone else's Circle? Ask them for their unique Circle code or join link. Enter the code below to join their Circle.",
-    "enterCircleCode": "Enter Circle code:",
+    "joinOtherDescription": "Want to join someone else's Family? Ask them for their unique Family code or join link. Enter the code below to join their Family.",
+    "enterCircleCode": "Enter Family code:",
     "enterCodePlaceholder": "Enter code",
-    "joinCircle": "Join Circle",
-    "joinedPending": "Joined circle successfully, wait for the circle owner to accept your request.",
-    "alreadyMember": "You are already a member of this circle",
-    "joinFailed": "Failed to join circle",
+    "joinCircle": "Join Family",
+    "joinedPending": "Joined family successfully, wait for the family owner to accept your request.",
+    "alreadyMember": "You are already a member of this family",
+    "joinFailed": "Failed to join family",
     "copyLink": "Copy Link",
     "timezone": {
       "title": "Family time zone",
@@ -185,10 +176,6 @@
   "accountSettings": {
     "title": "Account Settings",
     "description": "Change your account settings, type or update your password",
-    "free": "Free",
-    "plus": "Plus",
-    "activeDescription": "You are currently subscribed to the Plus plan. Your subscription will renew on {{date}}.",
-    "upgrade": "Upgrade",
     "cancel": "Cancel",
     "password": "Password :",
     "changePassword": "Change Password",
@@ -197,14 +184,7 @@
     "dangerZone": "Danger Zone",
     "dangerZoneDescription": "Once you delete your account, there is no going back. Please be certain.",
     "deleteAccount": "Delete Account",
-    "accountDeleted": "Account deleted successfully",
-    "purchase": {
-      "success": "Purchase successful! Please restart the app to access Plus features.",
-      "unavailable": "This subscription is not available. Please try again later.",
-      "networkError": "Network error. Please check your connection and try again.",
-      "pending": "Payment is pending approval. You will receive access once approved.",
-      "failed": "Purchase failed: {{error}}. Please try again or contact support."
-    }
+    "accountDeleted": "Account deleted successfully"
   },
   "subaccounts": {
     "title": "Managed Accounts",
@@ -238,7 +218,7 @@
     "howItWorks1": "Sub accounts created by the primary user are specifically for users you want to give the ability to delete and reset their password.",
     "howItWorks2": "Sub accounts can log in with their own username and password.",
     "howItWorks3": "Sub accounts can complete tasks but have limited administrative permissions",
-    "howItWorks4": "Sub accounts are automatically added to your circle"
+    "howItWorks4": "Sub accounts are automatically added to your family"
   },
   "mfa": {
     "title": "Multi-Factor Authentication",
@@ -443,8 +423,8 @@
         "description": "Overdue / due today / needs review / unplanned counts"
       },
       "circle": {
-        "name": "Your Circle",
-        "description": "Shows what everyone in your circle is carrying this week"
+        "name": "Your Family",
+        "description": "Shows what everyone in your family is carrying this week"
       },
       "review": {
         "name": "Needs Review",
@@ -522,14 +502,14 @@
     "offlineDisableMessage": "Turning off offline mode will remove unsynced offline changes and saved offline data on this device/browser. Do you want to continue?",
     "offlineDisableConfirm": "Turn Off & Clear Data",
     "realtimeTitle": "Real-time Updates",
-    "realtimeDescription": "Configure how you receive live updates when tasks and activities change in your circle.",
+    "realtimeDescription": "Configure how you receive live updates when tasks and activities change in your family.",
     "realtime": {
       "toggleLabel": "Enable Real-time Updates",
       "title": "Real-time Updates",
       "subtitle": "Get instant notifications when tasks are updated",
       "statusLabel": "Status:",
-      "disabled": "Real-time updates are disabled. Enable them to see live changes when you or other circle members complete, skip, or modify tasks.",
-      "connected": "Real-time updates are working. You'll see live changes when you or other circle members complete, skip, or modify tasks.",
+      "disabled": "Real-time updates are disabled. Enable them to see live changes when you or other family members complete, skip, or modify tasks.",
+      "connected": "Real-time updates are working. You'll see live changes when you or other family members complete, skip, or modify tasks.",
       "connecting": "Connecting to real-time updates...",
       "errored": "Real-time updates are enabled but not working: {{error}}",
       "notConnected": "Real-time updates are enabled but not currently connected."
@@ -597,7 +577,7 @@
     "passwordAndDelete": "Please enter your password and type DELETE to confirm",
     "failed": "Failed to delete account",
     "passwordPlaceholder": "Enter your password",
-    "transferIntro": "You own circles that require ownership transfer before deletion. Please select new owners:",
+    "transferIntro": "You own families that require ownership transfer before deletion. Please select new owners:",
     "selectOwner": "Select new owner",
     "confirmPrompt": "Please enter your password and type DELETE to confirm",
     "typeDelete": "DELETE",
@@ -608,16 +588,16 @@
     "removesTokens": "API tokens, MFA sessions, and password reset tokens",
     "removesStorage": "Storage files and usage data",
     "removesPoints": "Points history and notifications",
-    "removesCircles": "Circle memberships and relationships",
+    "removesCircles": "Family memberships and relationships",
     "passwordToContinue": "Enter your password to continue",
-    "circleLabel": "Circle: {{name}}",
+    "circleLabel": "Family: {{name}}",
     "newOwner": "New Owner",
     "logoutNotice": "On successful deletion, you will be logged out and redirected to the login page.",
     "passwordLabel": "Password",
     "typeToConfirm": "Type \"{{word}}\" to confirm",
     "modal": {
       "title": "Delete account",
-      "transferTitle": "Transfer circle ownership",
+      "transferTitle": "Transfer family ownership",
       "finalTitle": "Final confirmation",
       "continue": "Continue"
     }
@@ -631,7 +611,7 @@
       "disconnected": "Disconnected",
       "tooltip": "Real-time updates (SSE): {{status}}",
       "tooltipError": "Real-time updates (SSE): {{status}} - {{error}}",
-      "tooltipJoin": "Real-time updates (SSE): {{status}} - Join a circle to enable real-time updates"
+      "tooltipJoin": "Real-time updates (SSE): {{status}} - Join a family to enable real-time updates"
     }
   }
 }

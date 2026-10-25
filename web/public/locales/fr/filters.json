@@ -1,10 +1,10 @@
 {
   "builder": {
-    "errorName": "Veuillez saisir un nom de filtre",
-    "errorConditions": "Configurez au moins une condition de filtre",
+    "errorName": "Saisis un nom de filtre",
+    "errorConditions": "Ajoute au moins une condition de filtre",
     "editTitle": "Modifier le filtre",
     "newTitle": "Nouveau filtre",
-    "addConditions": "Ajoutez des conditions pour afficher un aperçu",
+    "addConditions": "Ajoute des conditions pour afficher un aperçu",
     "save": "Enregistrer le filtre",
     "name": "Nom du filtre",
     "namePlaceholder": "p. ex. Tâches en retard assignées à Alice",
@@ -20,11 +20,11 @@
   "usedCount": "Utilisé {{count}} fois",
   "delete": {
     "title": "Supprimer le filtre",
-    "message": "Voulez-vous vraiment supprimer « {{name}} » ? Cette action est irréversible."
+    "message": "Veux-tu vraiment supprimer « {{name}} » ? Cette action est irréversible."
   },
   "empty": {
     "title": "Aucun filtre enregistré pour le moment",
-    "description": "Enregistrez un ensemble de conditions, comme « en retard et assignées à moi », pour y accéder directement depuis n'importe où.",
+    "description": "Enregistre un ensemble de conditions, comme « en retard et assignées à moi », pour y accéder directement depuis n'importe où.",
     "createFilter": "Créer un filtre",
     "noResultsTitle": "Aucun filtre correspondant",
     "noResultsWithSearch": "Aucun filtre enregistré ne correspond à « {{search}} ».",
@@ -34,7 +34,7 @@
   },
   "header": {
     "title": "Filtres",
-    "subtitle": "Enregistrez vos combinaisons de filtres favorites pour y accéder rapidement. Créez des vues personnalisées afin d'organiser et de trouver vos tâches plus vite."
+    "subtitle": "Enregistre tes combinaisons de filtres favorites pour y accéder rapidement et retrouver tes tâches plus vite."
   },
   "searchPlaceholder": "Rechercher des filtres",
   "sort": {

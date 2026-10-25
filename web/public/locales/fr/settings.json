@@ -16,40 +16,31 @@
   },
   "overview": {
     "title": "Paramètres",
-    "subtitle": "Personnalisez votre expérience et gérez les préférences de votre compte",
-    "upgrade": {
-      "title": "Passer à Plus",
-      "description": "Débloquez des fonctionnalités puissantes pour gagner en productivité",
-      "button": "Passer à Plus",
-      "features": {
-        "richText": "Descriptions en texte enrichi",
-        "notifications": "Notifications de tâches"
-      }
-    },
+    "subtitle": "Règle ton expérience et les préférences de ton compte",
     "sections": {
       "profile": {
         "title": "Paramètres du profil",
-        "description": "Mettez à jour vos informations de profil, votre photo, votre nom affiché et votre fuseau horaire."
+        "description": "Mets à jour ton profil, ta photo et ton nom affiché."
       },
       "circle": {
-        "title": "Paramètres du cercle",
-        "description": "Gérez votre cercle, invitez des membres et traitez les demandes d'adhésion."
+        "title": "Famille",
+        "description": "Invite des membres, accepte les demandes et règle le fuseau de la famille."
       },
       "account": {
         "title": "Paramètres du compte",
-        "description": "Gérez votre abonnement, changez votre mot de passe et supprimez votre compte."
+        "description": "Change ton mot de passe ou supprime ton compte."
       },
       "subaccounts": {
         "title": "Comptes gérés",
-        "description": "Créez et gérez des sous-comptes pouvant se connecter et terminer les tâches assignées."
+        "description": "Crée et gère les comptes des enfants, qui peuvent se connecter et faire leurs tâches."
       },
       "mfa": {
         "title": "Authentification multifacteur",
-        "description": "Ajoutez une couche de sécurité supplémentaire avec la MFA via une application d'authentification."
+        "description": "Ajoute une sécurité en plus avec une application d'authentification."
       },
       "apitokens": {
         "title": "Jetons d'API",
-        "description": "Générez et gérez des jetons d'accès pour les intégrations tierces et l'accès à l'API."
+        "description": "Crée et gère des jetons d'accès pour connecter d'autres appareils et applications."
       },
       "calendar": {
         "title": "Synchro du calendrier",
@@ -57,7 +48,7 @@
       },
       "storage": {
         "title": "Paramètres de stockage",
-        "description": "Sauvegardez et restaurez vos données, gérez le stockage local et la synchronisation."
+        "description": "Vide le stockage local et le cache de ce navigateur."
       },
       "template": {
         "title": "Modèle d'instance",
@@ -65,51 +56,51 @@
       },
       "layout": {
         "title": "Disposition et navigation",
-        "description": "Choisissez l'écran sur lequel l'application s'ouvre, ainsi que les raccourcis et panneaux qui l'entourent."
+        "description": "Choisis les cartes du panneau latéral sur ordinateur."
       },
       "theme": {
         "title": "Préférences de thème",
-        "description": "Choisissez votre thème préféré et configurez le mode clair/sombre."
+        "description": "Choisis ton thème et règle le mode clair ou sombre."
       },
       "localization": {
         "title": "Localisation",
-        "description": "Personnalisez la langue, le format de date et d'heure et les préférences régionales."
+        "description": "Règle la langue, le format de date et d'heure et le premier jour de la semaine."
       },
       "advanced": {
         "title": "Paramètres avancés",
-        "description": "Configurez les webhooks, les mises à jour en temps réel et d'autres fonctionnalités avancées."
+        "description": "Mode hors ligne et mises à jour en temps réel."
       }
     }
   },
   "profile": {
     "title": "Paramètres du profil",
-    "description": "Mettez à jour votre nom affiché et votre photo de profil.",
+    "description": "Mets à jour ton nom affiché et ta photo de profil.",
     "photoUpdated": "Photo mise à jour",
-    "photoUpdatedMessage": "Votre photo de profil a été mise à jour avec succès !",
+    "photoUpdatedMessage": "Ta photo de profil a bien été mise à jour !",
     "uploadFailed": "Échec de l'envoi",
-    "uploadFailedMessage": "Impossible d'envoyer votre photo. Veuillez réessayer.",
+    "uploadFailedMessage": "Impossible d'envoyer ta photo. Réessaie.",
     "profileUpdated": "Profil mis à jour",
-    "profileUpdatedMessage": "Les informations de votre profil ont été enregistrées avec succès !",
+    "profileUpdatedMessage": "Ton profil a bien été enregistré !",
     "updateFailed": "Échec de la mise à jour",
-    "updateFailedMessage": "Impossible de mettre à jour votre profil. Vérifiez votre connexion et réessayez.",
+    "updateFailedMessage": "Impossible de mettre à jour ton profil. Vérifie ta connexion et réessaie.",
     "changePhoto": "Changer de photo",
     "editPhoto": "Modifier la photo de profil",
     "displayName": "Nom affiché",
-    "displayNamePlaceholder": "Saisissez votre nom affiché",
+    "displayNamePlaceholder": "Saisis ton nom affiché",
     "timezone": "Fuseau horaire",
-    "timezonePlaceholder": "Sélectionnez votre fuseau horaire",
+    "timezonePlaceholder": "Choisis ton fuseau horaire",
     "save": "Enregistrer",
     "cancel": "Annuler"
   },
   "circleSettings": {
-    "title": "Paramètres du cercle",
-    "description": "Votre compte est automatiquement rattaché à un cercle lorsque vous en créez un ou que vous en rejoignez un. Invitez facilement vos proches en partageant le code ou le lien du cercle ci-dessous. Vous recevrez une notification ici lorsque quelqu'un demandera à rejoindre votre cercle.",
-    "memberOf": "Vous faites partie de {{name}}",
-    "yourCircleCode": "Votre code de cercle est :",
-    "pendingApprovalMessage": "Ta demande pour rejoindre {{name}} attend la validation d'un administrateur du cercle.",
+    "title": "Famille",
+    "description": "Ton compte fait partie d'une famille, celle que tu as créée ou rejointe. Invite tes proches en partageant le code ou le lien ci-dessous. Les demandes pour rejoindre la famille apparaissent ici.",
+    "memberOf": "Tu fais partie de {{name}}",
+    "yourCircleCode": "Ton code d'invitation :",
+    "pendingApprovalMessage": "Ta demande pour rejoindre {{name}} attend la validation d'un parent.",
     "cancelRequest": "Annuler la demande",
     "cancelRequestTitle": "Annuler la demande",
-    "cancelRequestMessage": "Annuler ta demande pour rejoindre ce cercle ?",
+    "cancelRequestMessage": "Annuler ta demande pour rejoindre cette famille ?",
     "cancelRequestButton": "Annuler la demande",
     "requestCancelled": "Demande annulée",
     "cancelRequestFailed": "La demande n'a pas pu être annulée",
@@ -117,55 +108,55 @@
     "shareInvite": "Partager l'invitation",
     "codeCopied": "Code copié dans le presse-papiers",
     "linkCopied": "Lien d'invitation copié dans le presse-papiers",
-    "myCircle": "mon cercle",
-    "shareTitle": "Rejoignez {{name}} sur Hopla",
-    "shareText": "J'aimerais vous inviter à rejoindre {{name}} sur Hopla.",
-    "leave": "Quitter le cercle",
-    "leaveConfirmTitle": "Quitter le cercle",
-    "leaveConfirmMessage": "Voulez-vous vraiment quitter votre cercle ?",
+    "myCircle": "ma famille",
+    "shareTitle": "Rejoins {{name}} sur Hopla",
+    "shareText": "Je t'invite à rejoindre {{name}} sur Hopla.",
+    "leave": "Quitter la famille",
+    "leaveConfirmTitle": "Quitter la famille",
+    "leaveConfirmMessage": "Veux-tu vraiment quitter ta famille ?",
     "leaveConfirmButton": "Quitter",
-    "leftCircle": "Vous avez quitté le cercle",
-    "leaveFailed": "Impossible de quitter le cercle",
-    "circleMembers": "Membres du cercle",
-    "you": "(Vous)",
+    "leftCircle": "Tu as quitté la famille",
+    "leaveFailed": "Impossible de quitter la famille",
+    "circleMembers": "Membres de la famille",
+    "you": "(toi)",
     "pendingApproval": "En attente d'approbation",
     "joinedOn": "A rejoint le {{date}}",
     "requestedToJoin": "Demande d'adhésion {{date}}",
     "roles": {
       "member": "Membre",
-      "memberDescription": "Un membre ordinaire du cercle",
+      "memberDescription": "Un membre de la famille",
       "manager": "Gestionnaire",
       "managerDescription": "Peut se faire passer pour d'autres personnes et agir en leur nom",
       "admin": "Administrateur",
-      "adminDescription": "Accès complet au cercle"
+      "adminDescription": "Accès complet à la famille"
     },
     "roleUpdateFailed": "Impossible de mettre à jour le rôle",
     "removeMemberTitle": "Retirer le membre",
-    "removeMemberMessage": "Voulez-vous vraiment retirer {{name}} de votre cercle ?",
+    "removeMemberMessage": "Veux-tu vraiment retirer {{name}} de ta famille ?",
     "memberRemoved": "Membre retiré avec succès",
-    "circleMemberRequests": "Demandes d'adhésion au cercle",
+    "circleMemberRequests": "Demandes pour rejoindre la famille",
     "lastUpdated": "Dernière mise à jour : {{time}}",
     "refreshing": "Actualisation...",
     "refreshFailed": "Impossible d'actualiser les demandes d'adhésion",
-    "wantsToJoin": "{{name}} souhaite rejoindre votre cercle.",
+    "wantsToJoin": "{{name}} souhaite rejoindre ta famille.",
     "accept": "Accepter",
     "acceptRequestTitle": "Accepter la demande d'adhésion",
-    "acceptRequestMessage": "Voulez-vous vraiment accepter {{name}} (identifiant : {{username}}) dans votre cercle ?",
+    "acceptRequestMessage": "Veux-tu vraiment accepter {{name}} (identifiant : {{username}}) dans ta famille ?",
     "requestAccepted": "Demande acceptée avec succès",
     "decline": "Refuser",
     "declineRequestTitle": "Refuser la demande",
-    "declineRequestMessage": "Refuser la demande de {{name}} (identifiant : {{username}}) pour rejoindre ton cercle ?",
+    "declineRequestMessage": "Refuser la demande de {{name}} (identifiant : {{username}}) pour rejoindre ta famille ?",
     "declineRequestButton": "Refuser",
     "requestDeclined": "Demande refusée",
     "declineRequestFailed": "La demande n'a pas pu être refusée",
     "or": "ou",
-    "joinOtherDescription": "Vous souhaitez rejoindre le cercle de quelqu'un d'autre ? Demandez-lui son code de cercle ou son lien d'invitation. Saisissez le code ci-dessous pour le rejoindre.",
-    "enterCircleCode": "Saisissez le code du cercle :",
+    "joinOtherDescription": "Tu veux rejoindre la famille de quelqu'un d'autre ? Demande-lui son code ou son lien d'invitation, puis saisis le code ci-dessous.",
+    "enterCircleCode": "Saisis le code d'invitation :",
     "enterCodePlaceholder": "Saisir le code",
-    "joinCircle": "Rejoindre le cercle",
-    "joinedPending": "Cercle rejoint avec succès, attendez que la personne propriétaire accepte votre demande.",
-    "alreadyMember": "Vous êtes déjà membre de ce cercle",
-    "joinFailed": "Impossible de rejoindre le cercle",
+    "joinCircle": "Rejoindre la famille",
+    "joinedPending": "Demande envoyée, attends qu'un parent de cette famille l'accepte.",
+    "alreadyMember": "Tu fais déjà partie de cette famille",
+    "joinFailed": "Impossible de rejoindre la famille",
     "copyLink": "Copier le lien",
     "timezone": {
       "title": "Fuseau horaire de la famille",
@@ -184,39 +175,28 @@
   },
   "accountSettings": {
     "title": "Paramètres du compte",
-    "description": "Modifiez les paramètres de votre compte, votre formule ou votre mot de passe",
-    "free": "Basic",
-    "plus": "Plus",
-    "activeDescription": "Vous êtes actuellement abonné à la formule Plus. Votre abonnement sera renouvelé le {{date}}.",
-    "upgrade": "Passer à Plus",
-    "cancel": "Résilier",
+    "description": "Change ton mot de passe ou supprime ton compte",
+    "cancel": "Annuler",
     "password": "Mot de passe :",
     "changePassword": "Changer le mot de passe",
     "passwordChanged": "Mot de passe modifié avec succès",
     "passwordChangeFailed": "Échec du changement de mot de passe",
     "dangerZone": "Zone sensible",
-    "dangerZoneDescription": "Une fois votre compte supprimé, il n'y a pas de retour en arrière. Soyez-en bien sûr.",
+    "dangerZoneDescription": "Une fois ton compte supprimé, il n'y a pas de retour en arrière. Sois-en bien sûr.",
     "deleteAccount": "Supprimer le compte",
-    "accountDeleted": "Compte supprimé avec succès",
-    "purchase": {
-      "success": "Achat réussi ! Redémarrez l'application pour accéder aux fonctionnalités Plus.",
-      "unavailable": "Cet abonnement n'est pas disponible. Veuillez réessayer plus tard.",
-      "networkError": "Erreur réseau. Vérifiez votre connexion et réessayez.",
-      "pending": "Le paiement est en attente d'approbation. Vous aurez accès dès qu'il sera approuvé.",
-      "failed": "Échec de l'achat : {{error}}. Réessayez ou contactez le support."
-    }
+    "accountDeleted": "Compte supprimé avec succès"
   },
   "subaccounts": {
     "title": "Comptes gérés",
-    "description": "Gérez les sous-comptes. Leurs utilisateurs peuvent se connecter et terminer les tâches qui leur sont assignées.",
+    "description": "Gère les comptes des enfants. Ils peuvent se connecter et faire les tâches qui leur sont assignées.",
     "notParentTitle": "Gestion des sous-comptes",
     "notParentMessage": "Seuls les comptes principaux peuvent gérer des sous-comptes.",
     "count": "Sous-comptes ({{count}})",
     "add": "Ajouter un sous-compte",
     "loading": "Chargement des sous-comptes...",
     "emptyTitle": "Aucun sous-compte",
-    "emptyDescription": "Créez des sous-comptes pour que les membres de l'équipe puissent se connecter et terminer les tâches qui leur sont assignées.",
-    "addFirst": "Ajouter votre premier sous-compte",
+    "emptyDescription": "Crée des comptes pour les enfants : ils pourront se connecter et faire les tâches qui leur sont assignées.",
+    "addFirst": "Ajouter le premier compte",
     "username": "Identifiant : {{username}}",
     "created": "Créé le : {{date}}",
     "changePassword": "Changer le mot de passe",
@@ -230,22 +210,22 @@
     "passwordUpdateFailed": "Impossible de mettre à jour le mot de passe : {{error}}",
     "passwordUpdateFailedGeneric": "Impossible de mettre à jour le mot de passe",
     "deleteConfirmTitle": "Supprimer le sous-compte",
-    "deleteConfirmMessage": "Voulez-vous vraiment supprimer le sous-compte « {{name}} » ? Cette action est irréversible.",
+    "deleteConfirmMessage": "Veux-tu vraiment supprimer le compte « {{name}} » ? Cette action est irréversible.",
     "deleted": "Sous-compte « {{name}} » supprimé avec succès",
     "deleteFailed": "Impossible de supprimer le sous-compte : {{error}}",
     "deleteFailedGeneric": "Impossible de supprimer le sous-compte",
     "howItWorksTitle": "Comment fonctionnent les comptes gérés",
-    "howItWorks1": "Les comptes gérés sont créés par le compte principal ; ils sont destinés aux personnes dont vous voulez pouvoir supprimer le compte et réinitialiser le mot de passe.",
+    "howItWorks1": "Les comptes gérés sont créés par le compte principal ; ils sont faits pour les personnes dont tu veux pouvoir supprimer le compte et changer le mot de passe.",
     "howItWorks2": "Les sous-comptes peuvent se connecter avec leur propre identifiant et mot de passe.",
     "howItWorks3": "Les comptes gérés peuvent terminer des tâches mais disposent de permissions administratives limitées",
-    "howItWorks4": "Les comptes gérés sont automatiquement ajoutés à votre cercle"
+    "howItWorks4": "Les comptes gérés sont automatiquement ajoutés à ta famille"
   },
   "mfa": {
     "title": "Authentification multifacteur",
-    "description": "Renforcez la sécurité de votre compte avec l'authentification multifacteur (MFA). Une fois activée, vous devrez saisir un code de vérification de votre application d'authentification en plus de votre mot de passe lors de la connexion.",
+    "description": "Renforce la sécurité de ton compte avec la double authentification. Une fois activée, tu devras saisir un code de ton application d'authentification en plus de ton mot de passe à la connexion.",
     "twoFactor": "Authentification à deux facteurs",
-    "enabledSubtitle": "Votre compte est protégé par la 2FA",
-    "disabledSubtitle": "Sécurisez votre compte avec une application d'authentification",
+    "enabledSubtitle": "Ton compte est protégé par la double authentification",
+    "disabledSubtitle": "Protège ton compte avec une application d'authentification",
     "enable": "Activer",
     "disable": "Désactiver",
     "enabledSuccess": "La MFA a été activée avec succès !",
@@ -254,13 +234,13 @@
       "qrGenerationFailed": "Impossible de générer le code QR",
       "invalidResponse": "Réponse invalide du serveur. Code QR ou clé secrète manquante.",
       "notFound": "Point de terminaison de configuration MFA introuvable. Cette fonctionnalité n'est peut-être pas encore disponible.",
-      "unauthorized": "Non autorisé. Veuillez vous reconnecter.",
-      "serverError": "Erreur serveur. Veuillez réessayer plus tard.",
-      "setupFailed": "Échec de la configuration de la MFA ({{status}}). Veuillez réessayer.",
-      "networkError": "Erreur réseau. Vérifiez votre connexion et réessayez.",
-      "invalidCode": "Code de vérification invalide. Veuillez réessayer.",
-      "confirmFailed": "Impossible de confirmer la MFA. Veuillez réessayer.",
-      "disableFailed": "Impossible de désactiver la MFA. Veuillez réessayer."
+      "unauthorized": "Non autorisé. Reconnecte-toi.",
+      "serverError": "Erreur serveur. Réessaie plus tard.",
+      "setupFailed": "Échec de la configuration de la MFA ({{status}}). Réessaie.",
+      "networkError": "Erreur réseau. Vérifie ta connexion et réessaie.",
+      "invalidCode": "Code de vérification invalide. Réessaie.",
+      "confirmFailed": "Impossible de confirmer la MFA. Réessaie.",
+      "disableFailed": "Impossible de désactiver la MFA. Réessaie."
     },
     "setup": {
       "title": "Configurer l'authentification multifacteur",
@@ -269,26 +249,26 @@
       "verifyAndEnable": "Vérifier et activer",
       "savedBackupCodes": "J'ai enregistré mes codes de secours",
       "step1Label": "Étape 1 :",
-      "step1": "Scannez le code QR ci-dessous avec votre application d'authentification (Google Authenticator, Authy, etc.)",
+      "step1": "Scanne le code QR ci-dessous avec ton application d'authentification (Google Authenticator, Authy, etc.)",
       "qrAlt": "Code QR MFA",
-      "qrFailed": "Le code QR n'a pas pu être généré. Réessayez ou utilisez la clé de saisie manuelle ci-dessous.",
+      "qrFailed": "Le code QR n'a pas pu être généré. Réessaie ou utilise la clé de saisie manuelle ci-dessous.",
       "manualKey": "Clé de saisie manuelle :",
       "step2Label": "Étape 2 :",
-      "step2": "Saisissez le code de vérification à 6 chiffres de votre application d'authentification",
+      "step2": "Saisis le code à 6 chiffres de ton application d'authentification",
       "codePlaceholder": "Saisir le code à 6 chiffres",
       "successTitle": "MFA activée avec succès !",
-      "backupCodesTitle": "Conservez ces codes de secours en lieu sûr",
-      "backupCodesDescription": "Ces codes vous permettent d'accéder à votre compte si vous perdez votre appareil d'authentification. Chaque code ne peut être utilisé qu'une seule fois."
+      "backupCodesTitle": "Garde ces codes de secours en lieu sûr",
+      "backupCodesDescription": "Ces codes te permettent d'accéder à ton compte si tu perds ton appareil d'authentification. Chaque code ne sert qu'une fois."
     },
     "disableModal": {
       "title": "Désactiver l'authentification multifacteur",
-      "warning": "Désactiver la MFA rendra votre compte moins sûr. Voulez-vous vraiment continuer ?",
-      "prompt": "Saisissez un code de vérification de votre application d'authentification pour confirmer :",
+      "warning": "Désactiver la MFA rendra ton compte moins sûr. Veux-tu vraiment continuer ?",
+      "prompt": "Saisis un code de ton application d'authentification pour confirmer :",
       "confirm": "Désactiver la MFA"
     },
     "backupCodesModal": {
       "title": "Nouveaux codes de secours",
-      "warning": "Vos anciens codes de secours ne sont plus valides. Conservez ces nouveaux codes en lieu sûr. Chaque code ne peut être utilisé qu'une seule fois."
+      "warning": "Tes anciens codes de secours ne sont plus valides. Garde ces nouveaux codes en lieu sûr. Chaque code ne sert qu'une fois."
     },
     "generateCodes": "Générer de nouveaux codes"
   },
@@ -299,12 +279,12 @@
     "tokenCreatedTitle": "Jeton créé",
     "tokenCreatedWarning": "Copie ce jeton maintenant. Par sécurité, tu ne pourras plus le revoir.",
     "removeTitle": "Retirer le jeton",
-    "removeMessage": "Voulez-vous vraiment retirer {{name}} ?",
+    "removeMessage": "Veux-tu vraiment retirer {{name}} ?",
     "removedTitle": "Retiré",
     "removedMessage": "Le jeton d'API a été retiré",
     "tokenCopied": "Jeton copié dans le presse-papiers",
     "generateNew": "Générer un nouveau jeton",
-    "nameModalTitle": "Donnez un nom à votre nouveau jeton, quelque chose qui vous permettra de le reconnaître.",
+    "nameModalTitle": "Donne un nom à ton nouveau jeton, pour le reconnaître facilement.",
     "generateToken": "Générer le jeton"
   },
   "calendar": {
@@ -343,13 +323,13 @@
   "storage": {
     "title": "Paramètres de stockage",
     "serverTitle": "Utilisation du stockage serveur",
-    "serverDescription": "Il s'agit de l'espace occupé par votre compte sur nos serveurs (fichiers, images et données que vous avez envoyés).",
+    "serverDescription": "Espace occupé par ton compte sur ce serveur (fichiers et images envoyés).",
     "usage": "{{used}} Mo utilisés / {{total}} Mo au total ({{percent}} %)",
     "localTitleBrowser": "Stockage local et cache du navigateur",
-    "localDescription": "Ce sont les données enregistrées localement dans votre navigateur pour un accès plus rapide. Les effacer n'affectera pas vos données serveur, mais pourra vous déconnecter.",
+    "localDescription": "Ce sont les données enregistrées dans ce navigateur pour aller plus vite. Les effacer ne touche pas aux données du serveur, mais peut te déconnecter.",
     "clearLocal": "Effacer tout le stockage local et le cache",
     "clearLocalTitle": "Effacer tout le stockage local",
-    "clearLocalMessage": "Voulez-vous vraiment effacer votre stockage local et le cache ? Toutes vos données seront supprimées de ce navigateur et vous devrez vous reconnecter.",
+    "clearLocalMessage": "Veux-tu vraiment effacer le stockage local et le cache ? Les données de ce navigateur seront supprimées et tu devras te reconnecter.",
     "clearAll": "Tout effacer"
   },
   "template": {
@@ -398,7 +378,7 @@
   },
   "sidepanel": {
     "title": "Personnalisation du panneau latéral",
-    "description": "Choisissez les cartes qui apparaissent dans le panneau latéral et leur ordre. Faites-les glisser pour les réorganiser ou modifiez leur visibilité.",
+    "description": "Choisis les cartes du panneau latéral et leur ordre. Fais-les glisser pour les réorganiser ou affiche-les et masque-les.",
     "resetToDefaults": "Rétablir les valeurs par défaut",
     "resetHelper": "La visibilité et l'ordre par défaut de toutes les cartes seront rétablis.",
     "cards": {
@@ -408,7 +388,7 @@
       },
       "smartInsights": {
         "name": "Aperçus intelligents",
-        "description": "Actions rapides basées sur vos tâches"
+        "description": "Actions rapides selon tes tâches"
       },
       "assignees": {
         "name": "Tâches par personne assignée",
@@ -430,21 +410,21 @@
   },
   "homeSections": {
     "title": "Personnalisation de l'aperçu",
-    "description": "Choisissez les sections affichées sur l'écran Aperçu et leur ordre. Faites-les glisser pour les réorganiser, ou affichez et masquez chacune d'elles.",
+    "description": "Choisis les sections de l'écran Aperçu et leur ordre. Fais-les glisser pour les réorganiser, ou affiche-les et masque-les.",
     "resetToDefaults": "Rétablir les valeurs par défaut",
     "resetHelper": "Toutes les sections retrouveront leur visibilité et leur ordre par défaut.",
     "sections": {
       "greeting": {
         "name": "Message d'accueil",
-        "description": "Le titre en haut de l'écran, qui résume votre journée"
+        "description": "Le titre en haut de l'écran, qui résume ta journée"
       },
       "glance": {
         "name": "En un coup d'œil",
         "description": "Nombre de tâches en retard, à échéance aujourd'hui, à approuver et sans échéance"
       },
       "circle": {
-        "name": "Votre cercle",
-        "description": "Montre ce dont chaque membre de votre cercle s'occupe cette semaine"
+        "name": "Ta famille",
+        "description": "Montre ce dont chaque membre de ta famille s'occupe cette semaine"
       },
       "review": {
         "name": "À approuver",
@@ -460,7 +440,7 @@
       },
       "filters": {
         "name": "Filtres",
-        "description": "Accès rapide à vos filtres épinglés et les plus utiles"
+        "description": "Accès rapide à tes filtres épinglés et les plus utiles"
       },
       "projects": {
         "name": "Projets",
@@ -476,7 +456,7 @@
   },
   "theme": {
     "title": "Préférences de thème",
-    "description": "Choisissez l'apparence du site. Sélectionnez un thème fixe ou synchronisez-le avec votre système pour basculer automatiquement entre thème clair et sombre.",
+    "description": "Choisis l'apparence du site : un thème fixe, ou celui de ton appareil pour passer seul du clair au sombre.",
     "themeMode": "Mode de thème",
     "light": "Clair",
     "dark": "Sombre",
@@ -484,19 +464,19 @@
   },
   "localization": {
     "title": "Localisation",
-    "description": "Personnalisez la langue, le format de date et les préférences régionales de votre compte.",
+    "description": "Règle la langue, le format de date et les préférences régionales de ton compte.",
     "language": "Langue",
-    "languageDescription": "Sélectionnez votre langue préférée",
+    "languageDescription": "Choisis ta langue",
     "rtlNotice": "Cette langue s'écrit de droite à gauche (RTL)",
     "dateFormat": "Format de date",
-    "dateFormatDescription": "Choisissez comment les dates s'affichent dans toute l'application",
+    "dateFormatDescription": "Choisis comment les dates s'affichent dans toute l'application",
     "timeFormat": "Format d'heure",
-    "timeFormatDescription": "Sélectionnez le format 12 ou 24 heures",
+    "timeFormatDescription": "Choisis le format 12 ou 24 heures",
     "preview": "Aperçu : {{value}}",
     "12hour": "12 heures (AM/PM)",
     "24hour": "24 heures",
     "firstDayOfWeek": "Premier jour de la semaine",
-    "firstDayOfWeekDescription": "Choisissez le jour qui commence votre semaine",
+    "firstDayOfWeekDescription": "Choisis le jour qui commence ta semaine",
     "sunday": "Dimanche",
     "monday": "Lundi",
     "saturday": "Samedi",
@@ -510,26 +490,26 @@
   },
   "advanced": {
     "title": "Paramètres avancés",
-    "description": "Configurez des fonctionnalités avancées comme les webhooks et les mises à jour en temps réel pour gagner en productivité.",
+    "description": "Mode hors ligne et mises à jour en temps réel sur cet appareil.",
     "offlineTitle": "Mode hors ligne",
-    "offlineDescription": "Continuez à utiliser Hopla hors ligne sur cet appareil ou navigateur. Vos modifications sont enregistrées localement et synchronisées dès votre retour en ligne.",
+    "offlineDescription": "Continue à utiliser Hopla hors ligne sur cet appareil ou navigateur. Tes modifications sont enregistrées ici et synchronisées dès ton retour en ligne.",
     "offlineToggle": "Activer le mode hors ligne",
     "offlineHelper": "Le désactiver supprime les modifications hors ligne non synchronisées et les données enregistrées sur cet appareil ou navigateur.",
     "offlineEnabled": "Mode hors ligne activé pour cet appareil/navigateur",
     "offlineDisabled": "Mode hors ligne désactivé et données locales effacées",
     "offlineDisabledPartial": "Le mode hors ligne a été désactivé, mais certaines données locales peuvent subsister",
     "offlineDisableTitle": "Désactiver le mode hors ligne",
-    "offlineDisableMessage": "Désactiver le mode hors ligne supprimera les modifications non synchronisées et les données hors ligne enregistrées sur cet appareil ou navigateur. Voulez-vous continuer ?",
+    "offlineDisableMessage": "Désactiver le mode hors ligne supprimera les modifications non synchronisées et les données hors ligne de cet appareil ou navigateur. Veux-tu continuer ?",
     "offlineDisableConfirm": "Désactiver et effacer les données",
     "realtimeTitle": "Mises à jour en temps réel",
-    "realtimeDescription": "Configurez la façon dont vous recevez les mises à jour en direct lorsque les tâches et activités changent dans votre cercle.",
+    "realtimeDescription": "Choisis comment tu reçois les changements en direct quand les tâches de la famille bougent.",
     "realtime": {
       "toggleLabel": "Activer les mises à jour en temps réel",
       "title": "Mises à jour en temps réel",
-      "subtitle": "Recevez des notifications instantanées lorsque les tâches sont mises à jour",
+      "subtitle": "Les changements apparaissent tout de suite quand une tâche est mise à jour",
       "statusLabel": "Statut :",
-      "disabled": "Les mises à jour en temps réel sont désactivées. Activez-les pour voir les changements en direct lorsque vous ou d'autres membres du cercle terminez, passez ou modifiez des tâches.",
-      "connected": "Les mises à jour en temps réel fonctionnent. Vous verrez les changements en direct lorsque vous ou d'autres membres du cercle terminez, passez ou modifiez des tâches.",
+      "disabled": "Les mises à jour en temps réel sont désactivées. Active-les pour voir en direct quand quelqu'un de la famille termine, passe ou modifie une tâche.",
+      "connected": "Les mises à jour en temps réel fonctionnent. Tu vois en direct quand quelqu'un de la famille termine, passe ou modifie une tâche.",
       "connecting": "Connexion aux mises à jour en temps réel...",
       "errored": "Les mises à jour en temps réel sont activées mais ne fonctionnent pas : {{error}}",
       "notConnected": "Les mises à jour en temps réel sont activées mais non connectées actuellement."
@@ -545,7 +525,7 @@
     "errPasswordMatch": "Les mots de passe ne correspondent pas",
     "errDisplayNameMax": "Le nom affiché doit comporter moins de 50 caractères",
     "createTitle": "Créer un sous-compte",
-    "createDescription": "Créez un accès permettant de terminer les tâches assignées à ce compte.",
+    "createDescription": "Crée un accès pour que ce compte puisse faire les tâches qui lui sont assignées.",
     "createButton": "Créer le compte",
     "nameLabel": "Nom du sous-compte *",
     "namePlaceholder": "Saisir le nom du sous-compte (p. ex. sarah)",
@@ -559,7 +539,7 @@
   "passwordChange": {
     "minLength": "Le mot de passe doit comporter au moins 8 caractères",
     "maxLength": "Le mot de passe doit comporter moins de 64 caractères",
-    "description": "Choisissez un mot de passe comportant entre 8 et 64 caractères.",
+    "description": "Choisis un mot de passe de 8 à 64 caractères.",
     "mismatch": "Les mots de passe ne correspondent pas",
     "newPassword": "Nouveau mot de passe",
     "newPasswordPlaceholder": "Saisir le mot de passe",
@@ -570,15 +550,15 @@
     "keyRequired": "La clé de chiffrement est obligatoire",
     "created": "Sauvegarde créée et téléchargée avec succès",
     "createFailed": "Impossible de créer la sauvegarde",
-    "selectFile": "Veuillez sélectionner un fichier de sauvegarde",
-    "restored": "Sauvegarde restaurée avec succès. Veuillez actualiser la page.",
+    "selectFile": "Choisis un fichier de sauvegarde",
+    "restored": "Sauvegarde restaurée. Actualise la page.",
     "restoreFailed": "Impossible de restaurer la sauvegarde",
     "readFailed": "Impossible de lire le fichier de sauvegarde",
-    "createIntro": "Créez une sauvegarde chiffrée de vos données. Elle comprendra toutes vos tâches, votre historique, vos paramètres et, si vous le souhaitez, vos fichiers envoyés.",
+    "createIntro": "Crée une sauvegarde chiffrée de tes données : toutes tes tâches, ton historique, tes paramètres et, si tu veux, tes fichiers envoyés.",
     "keyPlaceholder": "Saisir une clé de chiffrement robuste",
     "includeAssets": "Inclure les fichiers envoyés et les ressources",
     "warningLabel": "Attention :",
-    "restoreWarning": "La restauration d'une sauvegarde remplacera toutes vos données actuelles. Cette action est irréversible.",
+    "restoreWarning": "La restauration d'une sauvegarde remplacera toutes tes données actuelles. Cette action est irréversible.",
     "restoreKeyPlaceholder": "Saisir la clé de chiffrement utilisée pour cette sauvegarde",
     "title": "Sauvegarde et restauration",
     "createTab": "Créer une sauvegarde",
@@ -586,38 +566,38 @@
     "creating": "Création de la sauvegarde...",
     "restoring": "Restauration de la sauvegarde...",
     "encryptionKeyRequired": "Clé de chiffrement *",
-    "keySafetyNotice": "Conservez cette clé en lieu sûr — vous en aurez besoin pour restaurer votre sauvegarde",
+    "keySafetyNotice": "Garde cette clé en lieu sûr — tu en auras besoin pour restaurer ta sauvegarde",
     "nameOptional": "Nom de la sauvegarde (facultatif)",
     "namePlaceholder": "ex. : sauvegarde-hebdomadaire",
     "fileRequired": "Fichier de sauvegarde *",
     "selectedFile": "Sélectionné : {{name}}"
   },
   "deletion": {
-    "passwordRequired": "Veuillez saisir votre mot de passe pour continuer",
-    "passwordAndDelete": "Saisissez votre mot de passe et tapez DELETE pour confirmer",
+    "passwordRequired": "Saisis ton mot de passe pour continuer",
+    "passwordAndDelete": "Saisis ton mot de passe et tape DELETE pour confirmer",
     "failed": "Impossible de supprimer le compte",
-    "passwordPlaceholder": "Saisir votre mot de passe",
-    "transferIntro": "Vous possédez des cercles dont la propriété doit être transférée avant la suppression de votre compte. Sélectionnez de nouveaux propriétaires :",
+    "passwordPlaceholder": "Saisis ton mot de passe",
+    "transferIntro": "Tu es propriétaire de familles à confier à quelqu'un d'autre avant de supprimer ton compte. Choisis les nouveaux propriétaires :",
     "selectOwner": "Sélectionner le nouveau propriétaire",
-    "confirmPrompt": "Saisissez votre mot de passe et tapez DELETE pour confirmer",
+    "confirmPrompt": "Saisis ton mot de passe et tape DELETE pour confirmer",
     "typeDelete": "DELETE",
     "warningLead": "Cette action est irréversible.",
-    "warningIntro": "La suppression de votre compte entraînera la suppression définitive des éléments suivants :",
-    "removesProfile": "Votre profil utilisateur et vos données d'authentification",
-    "removesChores": "Toutes vos tâches, leur historique et les sessions de suivi du temps",
+    "warningIntro": "La suppression de ton compte effacera définitivement :",
+    "removesProfile": "Ton profil et tes données de connexion",
+    "removesChores": "Toutes tes tâches, leur historique et les sessions de minuteur",
     "removesTokens": "Les jetons d'API, les sessions MFA et les jetons de réinitialisation du mot de passe",
     "removesStorage": "Les fichiers stockés et les données d'utilisation",
     "removesPoints": "L'historique des points et les notifications",
-    "removesCircles": "Vos appartenances à des cercles et les relations associées",
-    "passwordToContinue": "Saisir votre mot de passe pour continuer",
-    "circleLabel": "Cercle : {{name}}",
+    "removesCircles": "Ta place dans la famille et ce qui s'y rattache",
+    "passwordToContinue": "Saisis ton mot de passe pour continuer",
+    "circleLabel": "Famille : {{name}}",
     "newOwner": "Nouveau propriétaire",
     "logoutNotice": "Une fois la suppression réussie, la déconnexion sera effectuée et la page de connexion s'affichera.",
     "passwordLabel": "Mot de passe",
-    "typeToConfirm": "Tapez « {{word}} » pour confirmer",
+    "typeToConfirm": "Tape « {{word}} » pour confirmer",
     "modal": {
       "title": "Supprimer le compte",
-      "transferTitle": "Transférer le cercle",
+      "transferTitle": "Confier la famille",
       "finalTitle": "Dernière confirmation",
       "continue": "Continuer"
     }
@@ -631,7 +611,7 @@
       "disconnected": "Déconnecté",
       "tooltip": "Mises à jour en temps réel (SSE) : {{status}}",
       "tooltipError": "Mises à jour en temps réel (SSE) : {{status}} - {{error}}",
-      "tooltipJoin": "Mises à jour en temps réel (SSE) : {{status}} - Rejoins un cercle pour les activer"
+      "tooltipJoin": "Mises à jour en temps réel (SSE) : {{status}} - Rejoins une famille pour les activer"
     }
   }
 }
