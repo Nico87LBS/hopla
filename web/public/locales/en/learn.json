@@ -108,7 +108,10 @@
     "totalOf": "Total cap of {{name}}",
     "totalSettings": "Set the total cap of {{name}}",
     "moduleSettings": "{{name}} settings",
-    "notPlayed": "Not played"
+    "notPlayed": "Not played",
+    "seeModules_one": "See its module",
+    "seeModules_other": "See its {{count}} modules",
+    "seeDetail": "See the detail"
   },
   "stats": {
     "chapters": "Chapters",
@@ -153,5 +156,19 @@
     "module": "Module",
     "family": "Family",
     "person": "{{name}}"
+  },
+  "detail": {
+    "version": "version {{version}}",
+    "chapters_one": "{{count}} chapter",
+    "chapters_other": "{{count}} chapters",
+    "cards_one": "{{count}} card",
+    "cards_other": "{{count}} cards",
+    "generated_one": "{{count}} kind of exercise drawn at random",
+    "generated_other": "{{count}} kinds of exercises drawn at random",
+    "opensAt": "opens at {{value}}%",
+    "examples": "For example:",
+    "bothWays": "Asked both ways",
+    "familySettings": "Family settings",
+    "familySettingsHelp": "For everyone, except whoever has their own settings"
   }
 }

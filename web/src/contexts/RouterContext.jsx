@@ -27,6 +27,7 @@ import FilterView from '../views/Filters/FilterView'
 import ChoreHistory from '../views/History/ChoreHistory'
 import LabelDetailView from '../views/Labels/LabelDetailView'
 import LabelView from '../views/Labels/LabelView'
+import LearnDetail from '../views/Learn/LearnDetail'
 import { LearnChooser, LearnHome } from '../views/Learn/LearnHome'
 import LearnPlay from '../views/Learn/LearnPlay'
 import LearnStats from '../views/Learn/LearnStats'
@@ -209,6 +210,10 @@ const Router = createBrowserRouter([
       {
         path: '/manage/learn',
         element: <ManageLearn />,
+      },
+      {
+        path: '/manage/learn/detail/:moduleId',
+        element: <LearnDetail />,
       },
       {
         path: '/manage/learn/:moduleId',

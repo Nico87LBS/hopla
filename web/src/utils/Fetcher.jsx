@@ -1234,6 +1234,14 @@ const SetLearnSetting = async change =>
     }),
   )
 
+const GetLearnDetail = async key =>
+  learnAnswer(
+    await Fetch(`/learn/modules/${encodeURIComponent(key)}`, {
+      method: 'GET',
+      headers: HEADERS(),
+    }),
+  )
+
 const GetLearnStats = async key =>
   learnAnswer(
     await Fetch(`/learn/stats/${encodeURIComponent(key)}`, {
@@ -1326,6 +1334,7 @@ export {
   GetGamesToday,
   GetLabels,
   GetLearnCatalogue,
+  GetLearnDetail,
   GetLearnModules,
   GetLearnPlayer,
   GetLearnStats,

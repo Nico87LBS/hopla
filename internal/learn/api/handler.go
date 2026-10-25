@@ -266,6 +266,19 @@ func (h *Handler) getStats(c *gin.Context) {
 	c.JSON(200, gin.H{"res": stats})
 }
 
+func (h *Handler) getDetail(c *gin.Context) {
+	who, ok := h.requireParent(c)
+	if !ok {
+		return
+	}
+	detail, err := learn.ModuleDetail(h.db.WithContext(c), who.circleID, c.Param("key"), time.Now().UTC())
+	if err != nil {
+		answerError(c, err, "read the module")
+		return
+	}
+	c.JSON(200, gin.H{"res": detail})
+}
+
 func (h *Handler) getPlayer(c *gin.Context) {
 	who, ok := h.caller(c)
 	if !ok {
@@ -312,6 +325,7 @@ func Routes(r *gin.Engine, h *Handler, auth *jwt.GinJWTMiddleware) {
 	{
 		routes.GET("/catalogue", h.getCatalogue)
 		routes.GET("/modules", h.getModules)
+		routes.GET("/modules/:key", h.getDetail)
 		routes.POST("/modules/install", h.install)
 		routes.POST("/modules/import", h.importModule)
 		routes.DELETE("/modules/:key", h.remove)

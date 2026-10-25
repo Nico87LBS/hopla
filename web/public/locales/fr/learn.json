@@ -108,7 +108,10 @@
     "totalOf": "Plafond total de {{name}}",
     "totalSettings": "Régler le plafond total de {{name}}",
     "moduleSettings": "Réglages de {{name}}",
-    "notPlayed": "Pas joué"
+    "notPlayed": "Pas joué",
+    "seeModules_one": "Voir son module",
+    "seeModules_other": "Voir ses {{count}} modules",
+    "seeDetail": "Voir le détail"
   },
   "stats": {
     "chapters": "Chapitres",
@@ -153,5 +156,19 @@
     "module": "Module",
     "family": "Famille",
     "person": "{{name}}"
+  },
+  "detail": {
+    "version": "version {{version}}",
+    "chapters_one": "{{count}} chapitre",
+    "chapters_other": "{{count}} chapitres",
+    "cards_one": "{{count}} fiche",
+    "cards_other": "{{count}} fiches",
+    "generated_one": "{{count}} sorte d'exercice tiré au hasard",
+    "generated_other": "{{count}} sortes d'exercices tirés au hasard",
+    "opensAt": "ouvre à {{value}} %",
+    "examples": "Par exemple :",
+    "bothWays": "Posée dans les deux sens",
+    "familySettings": "Réglages de la famille",
+    "familySettingsHelp": "Pour tout le monde, sauf qui a ses propres réglages"
   }
 }

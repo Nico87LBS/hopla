@@ -1,4 +1,5 @@
 import {
+  ChevronRightRounded,
   DeleteOutlineRounded,
   DownloadDoneRounded,
   InsightsRounded,
@@ -44,16 +45,16 @@ import ConfirmationModal from '../Modals/Inputs/ConfirmationModal'
 const HEAD = 40
 
 // FAMILY is whom the family's settings are saved for.
-const FAMILY = 0
+export const FAMILY = 0
 
-const isSet = value => value !== null && value !== undefined
+export const isSet = value => value !== null && value !== undefined
 
-const useNotify = () => {
+export const useNotify = () => {
   const { showNotification } = useNotification()
   return (type, message) => showNotification({ type, message })
 }
 
-const FIELDS = {
+export const FIELDS = {
   total: { name: 'totalCap', label: 'manage.total' },
   cap: { name: 'dailyCap', label: 'manage.cap', own: 'plafond_jour' },
   capEach: { name: 'dailyCap', label: 'manage.capEach', own: 'plafond_jour' },
@@ -72,8 +73,8 @@ const FIELDS = {
 }
 
 const GAME_FIELDS = ['questions', 'threshold', 'hopsByStar']
-const PACK_FIELDS = [...GAME_FIELDS, 'capEach', 'unlock']
-const MODULE_FIELDS = [...GAME_FIELDS, 'cap', 'unlock']
+export const PACK_FIELDS = [...GAME_FIELDS, 'capEach', 'unlock']
+export const MODULE_FIELDS = [...GAME_FIELDS, 'cap', 'unlock']
 
 // The chips of what applies to a module, coloured by where it comes from:
 // the module itself, the family or the person.
@@ -141,7 +142,7 @@ const AppliedChips = ({ applied }) => {
 AppliedChips.propTypes = { applied: PropTypes.object }
 
 // What a row of settings holds, as chips: only what is set on it.
-const OwnChips = ({ from, row }) => {
+export const OwnChips = ({ from, row }) => {
   const { t } = useTranslation('learn')
   const set = CHIPS.filter(([name]) => isSet(row?.[name]))
   if (!set.length) return null
@@ -191,7 +192,7 @@ Legend.propTypes = { person: PropTypes.object.isRequired }
 // open the next and the games, for the family or for the people ticked at
 // the top. Only the fields changed are sent; an empty field takes the
 // setting from above, shown in grey.
-const SettingsModal = ({
+export const SettingsModal = ({
   candidates,
   current,
   fields,
@@ -493,9 +494,18 @@ const ModuleGroup = ({
       <Stack direction='row' alignItems='center' gap={1} sx={{ mb: 1.5 }}>
         <SchoolRounded sx={{ color: HOPLA.violet }} />
         <Box sx={{ flex: 1, minWidth: 0 }}>
-          <Typography level='title-lg'>
-            {group.pack ? group.pack.name : t('manage.others')}
-          </Typography>
+          {group.pack ? (
+            <Typography
+              level='title-lg'
+              component={Link}
+              to={`/manage/learn/detail/${group.pack.id}`}
+              sx={{ color: 'inherit', textDecoration: 'none' }}
+            >
+              {group.pack.name}
+            </Typography>
+          ) : (
+            <Typography level='title-lg'>{t('manage.others')}</Typography>
+          )}
           {group.pack?.author && (
             <Typography level='body-xs' sx={{ color: 'text.tertiary' }}>
               {t('manage.by', { author: group.pack.author })}
@@ -649,13 +659,45 @@ ModuleGroup.propTypes = {
   settings: PropTypes.instanceOf(Map).isRequired,
 }
 
+// FamilySettings sets what holds for everyone on a pack or a module, unless
+// they have their own.
+export const FamilySettings = ({ defaults, entry, onClose, settings }) => {
+  const { t } = useTranslation('learn')
+  const setSetting = useSetSetting()
+  return (
+    <SettingsModal
+      title={t('manage.familyTitle', { name: entry.name })}
+      help={t('manage.familyHelp')}
+      fields={entry.children?.length ? PACK_FIELDS : MODULE_FIELDS}
+      current={() => settings.get(`${FAMILY}:${entry.id}`)}
+      placeholder={(_, field) => {
+        const own = FIELDS[field].own
+        const value = own && defaults[entry.id]?.[own]
+        return isSet(value)
+          ? t('manage.fromModule', { value })
+          : t('manage.moduleOwn')
+      }}
+      save={(_, change) =>
+        setSetting.mutateAsync({ family: true, scope: entry.id, ...change })
+      }
+      onClose={onClose}
+    />
+  )
+}
+
+FamilySettings.propTypes = {
+  defaults: PropTypes.object.isRequired,
+  entry: PropTypes.object.isRequired,
+  onClose: PropTypes.func.isRequired,
+  settings: PropTypes.instanceOf(Map).isRequired,
+}
+
 // CatalogueCard lists the modules that come with Hopla. An installed one has
 // the settings of the whole family, which hold for everyone who has none.
 const CatalogueCard = ({ defaults, installed, settings }) => {
   const { t } = useTranslation('learn')
   const { data: catalogue = [] } = useLearnCatalogue()
   const install = useInstallModule()
-  const setSetting = useSetSetting()
   const notify = useNotify()
   const [settingsFor, setSettingsFor] = useState(null)
   // A module of a pack is installed with its pack.
@@ -692,7 +734,14 @@ const CatalogueCard = ({ defaults, installed, settings }) => {
                   alignItems='center'
                   flexWrap='wrap'
                 >
-                  <Typography level='title-md'>{entry.name}</Typography>
+                  <Typography
+                    level='title-md'
+                    component={Link}
+                    to={`/manage/learn/detail/${entry.id}`}
+                    sx={{ color: 'inherit', textDecoration: 'none' }}
+                  >
+                    {entry.name}
+                  </Typography>
                   {(entry.levels || []).map(level => (
                     <Chip key={level} size='sm' variant='soft'>
                       {level}
@@ -707,14 +756,17 @@ const CatalogueCard = ({ defaults, installed, settings }) => {
                     {t('manage.by', { author: entry.author })}
                   </Typography>
                 )}
-                {entry.children?.length > 0 && (
-                  <Typography
-                    level='body-xs'
-                    sx={{ color: 'text.tertiary', mt: 0.5 }}
-                  >
-                    {t('manage.modulesCount', { count: entry.children.length })}
-                  </Typography>
-                )}
+                <Typography
+                  level='body-xs'
+                  component={Link}
+                  to={`/manage/learn/detail/${entry.id}`}
+                  endDecorator={<ChevronRightRounded />}
+                  sx={{ color: HOPLA.violet, fontWeight: 600, mt: 0.5 }}
+                >
+                  {entry.children?.length > 0
+                    ? t('manage.seeModules', { count: entry.children.length })
+                    : t('manage.seeDetail')}
+                </Typography>
               </Box>
               {installed.has(entry.id) ? (
                 <Stack direction='row' gap={0.5} alignItems='center'>
@@ -758,25 +810,10 @@ const CatalogueCard = ({ defaults, installed, settings }) => {
         ))}
       </Stack>
       {settingsFor && (
-        <SettingsModal
-          title={t('manage.familyTitle', { name: settingsFor.name })}
-          help={t('manage.familyHelp')}
-          fields={settingsFor.children?.length ? PACK_FIELDS : MODULE_FIELDS}
-          current={() => settings.get(`${FAMILY}:${settingsFor.id}`)}
-          placeholder={(_, field) => {
-            const own = FIELDS[field].own
-            const value = own && defaults[settingsFor.id]?.[own]
-            return isSet(value)
-              ? t('manage.fromModule', { value })
-              : t('manage.moduleOwn')
-          }}
-          save={(_, change) =>
-            setSetting.mutateAsync({
-              family: true,
-              scope: settingsFor.id,
-              ...change,
-            })
-          }
+        <FamilySettings
+          entry={settingsFor}
+          defaults={defaults}
+          settings={settings}
           onClose={() => setSettingsFor(null)}
         />
       )}
