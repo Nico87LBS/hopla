@@ -146,6 +146,16 @@ func checkKeys(tx *gorm.DB, circleID int, doc Document, entries map[string]Entry
 // date with the catalogue on the way: their ids do not change, so what each
 // person knows stays.
 func Modules(db *gorm.DB, circleID int, now time.Time) ([]Module, error) {
+	modules, err := freshModules(db, circleID, now)
+	if err != nil {
+		return nil, err
+	}
+	return modules, withEdits(db, circleID, modules)
+}
+
+// freshModules lists the modules of a circle as installed, up to date with
+// the catalogue, without the family's corrections.
+func freshModules(db *gorm.DB, circleID int, now time.Time) ([]Module, error) {
 	var modules []Module
 	if err := db.Where("circle_id = ?", circleID).Order("name").Find(&modules).Error; err != nil {
 		return nil, err
@@ -170,17 +180,29 @@ func Modules(db *gorm.DB, circleID int, now time.Time) ([]Module, error) {
 }
 
 // Detail is a module, or a pack with its modules, as a family sees it:
-// the version installed when it is, the catalogue's otherwise.
+// the version installed when it is, with the family's corrections, the
+// catalogue's otherwise.
 type Detail struct {
 	Installed bool `json:"installed"`
 	// Documents are the module, then for a pack each of its modules.
 	Documents []json.RawMessage `json:"documents"`
+	// Edits are the family's corrections, each with the card as the module
+	// has it.
+	Edits []EditDetail `json:"edits"`
+	// Reports are the questions reported and not looked at yet.
+	Reports []Report `json:"reports"`
+}
+
+// EditDetail is a correction and the card it changes.
+type EditDetail struct {
+	CardEdit
+	Original json.RawMessage `json:"original"`
 }
 
 // ModuleDetail reads a module of the circle or of the catalogue, and, for a
 // pack, its modules.
 func ModuleDetail(db *gorm.DB, circleID int, key string, now time.Time) (Detail, error) {
-	modules, err := Modules(db, circleID, now)
+	modules, err := freshModules(db, circleID, now)
 	if err != nil {
 		return Detail{}, err
 	}
@@ -192,28 +214,65 @@ func ModuleDetail(db *gorm.DB, circleID int, key string, now time.Time) (Detail,
 	if err != nil {
 		return Detail{}, err
 	}
-	read := func(key string) (Document, json.RawMessage, bool) {
+	edits, err := editsOf(db, circleID)
+	if err != nil {
+		return Detail{}, err
+	}
+	out := Detail{Documents: []json.RawMessage{}, Edits: []EditDetail{}}
+	var keys []string
+	// add reads a module into the detail, and tells its document.
+	add := func(key string) (Document, bool) {
 		raw, ok := installed[key]
 		if !ok {
 			entry, found := entries[key]
 			if !found {
-				return Document{}, nil, false
+				return Document{}, false
 			}
-			return entry.Doc, entry.Raw, true
+			out.Documents = append(out.Documents, entry.Raw)
+			keys = append(keys, key)
+			return entry.Doc, true
 		}
 		doc, err := Parse([]byte(raw))
-		return doc, json.RawMessage(raw), err == nil
+		if err != nil {
+			return doc, false
+		}
+		patched, err := applyEdits(raw, edits[key])
+		if err != nil {
+			return doc, false
+		}
+		out.Documents = append(out.Documents, json.RawMessage(patched))
+		keys = append(keys, key)
+		if list := edits[key]; len(list) > 0 {
+			_, cards, err := cardsOf(raw)
+			if err != nil {
+				return doc, true
+			}
+			byID := map[string]any{}
+			for _, card := range cards {
+				if m, ok := card.(map[string]any); ok {
+					id, _ := m["id"].(string)
+					byID[id] = m
+				}
+			}
+			for _, edit := range list {
+				if card, ok := byID[edit.CardID]; ok {
+					original, _ := json.Marshal(card)
+					out.Edits = append(out.Edits, EditDetail{CardEdit: edit, Original: original})
+				}
+			}
+		}
+		return doc, true
 	}
-	doc, raw, ok := read(key)
+	doc, ok := add(key)
 	if !ok {
 		return Detail{}, ErrNotFound
 	}
-	_, isInstalled := installed[key]
-	out := Detail{Installed: isInstalled, Documents: []json.RawMessage{raw}}
+	_, out.Installed = installed[key]
 	for _, child := range doc.Modules {
-		if _, raw, ok := read(child); ok {
-			out.Documents = append(out.Documents, raw)
-		}
+		add(child)
+	}
+	if out.Reports, err = OpenReports(db, circleID, keys); err != nil {
+		return Detail{}, err
 	}
 	return out, nil
 }

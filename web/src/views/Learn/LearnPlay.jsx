@@ -3,6 +3,7 @@ import {
   CheckRounded,
   CloseRounded,
   CloudOffRounded,
+  OutlinedFlagRounded,
   ReplayRounded,
 } from '@mui/icons-material'
 import {
@@ -37,6 +38,7 @@ import { applyResult, playLocally, queueGame } from '../../utils/learn/store'
 import { generateUUID } from '../../utils/UUID'
 import LoadingComponent from '../components/Loading'
 import { Stars, subjectColor, useCompiled } from './LearnParts'
+import ReportSheet from './ReportSheet'
 
 // ── the ways to answer ──
 
@@ -476,6 +478,7 @@ const LearnPlay = () => {
   const [game, setGame] = useState(null)
   const [feedback, setFeedback] = useState(null)
   const [end, setEnd] = useState(null)
+  const [reporting, setReporting] = useState(false)
 
   const start = useCallback(() => {
     if (!compiled || !module) return
@@ -601,6 +604,17 @@ const LearnPlay = () => {
           <Typography level='title-lg' sx={{ flex: 1, minWidth: 0 }} noWrap>
             {module.name}
           </Typography>
+          {!end && (feedback?.item || item) && (
+            <IconButton
+              variant='plain'
+              color='neutral'
+              aria-label={t('report.title')}
+              title={t('report.title')}
+              onClick={() => setReporting(true)}
+            >
+              <OutlinedFlagRounded />
+            </IconButton>
+          )}
         </Stack>
         <Stack direction='row' alignItems='center' gap={1.25}>
           <Stack direction='row' gap='2px' sx={{ flex: 1, height: 8 }}>
@@ -679,6 +693,15 @@ const LearnPlay = () => {
             )}
           </Stack>
         )
+      )}
+      {reporting && (feedback?.item || item) && (
+        <ReportSheet
+          item={feedback?.item || item}
+          given={feedback ? game.answers.at(-1)?.given : ''}
+          moduleId={moduleId}
+          userId={userId}
+          onClose={() => setReporting(false)}
+        />
       )}
     </Container>
   )

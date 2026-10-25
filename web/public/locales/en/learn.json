@@ -169,6 +169,39 @@
     "examples": "For example:",
     "bothWays": "Asked both ways",
     "familySettings": "Family settings",
-    "familySettingsHelp": "For everyone, except whoever has their own settings"
+    "familySettingsHelp": "For everyone, except whoever has their own settings",
+    "reports_one": "{{count}} report",
+    "reports_other": "{{count}} reports",
+    "edited": "Changed by the family"
+  },
+  "report": {
+    "title": "Report this question",
+    "send": "Send",
+    "thanks": "Thanks, noted!",
+    "comment": "What is wrong (optional)",
+    "help": "Parents will see it in the module's detail.",
+    "reasons": {
+      "pas-claire": "Unclear question",
+      "reponse-fausse": "Wrong answer",
+      "faute": "Spelling mistake",
+      "autre": "Other"
+    },
+    "by": "{{name}}, on {{date}}:",
+    "given": "(answer given: {{given}})",
+    "resolve": "Mark as handled"
+  },
+  "edit": {
+    "title": "Card “{{name}}”",
+    "question": "Question",
+    "answer": "Answer",
+    "example": "Example shown after the answer",
+    "traps": "Wrong answers offered, one per line",
+    "trapsHelp": "Empty: drawn at random from the chapter",
+    "others": "Other accepted answers, one per line",
+    "othersHelp": "For instance with or without an article",
+    "both": "Also ask the other way round",
+    "keyHelp": "Key: {{key}}. What was already learned of this card is kept.",
+    "original": "Module's original",
+    "revert": "Back to the original"
   }
 }

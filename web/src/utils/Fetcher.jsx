@@ -1242,6 +1242,32 @@ const GetLearnDetail = async key =>
     }),
   )
 
+const EditLearnCard = async change =>
+  learnAnswer(
+    await Fetch(`/learn/cards`, {
+      method: 'PUT',
+      headers: HEADERS(),
+      body: JSON.stringify(change),
+    }),
+  )
+
+const SendLearnReport = async report =>
+  learnAnswer(
+    await Fetch(`/learn/reports`, {
+      method: 'POST',
+      headers: HEADERS(),
+      body: JSON.stringify(report),
+    }),
+  )
+
+const ResolveLearnReport = async id =>
+  learnAnswer(
+    await Fetch(`/learn/reports/${id}/resolve`, {
+      method: 'PUT',
+      headers: HEADERS(),
+    }),
+  )
+
 const GetLearnStats = async key =>
   learnAnswer(
     await Fetch(`/learn/stats/${encodeURIComponent(key)}`, {
@@ -1307,6 +1333,7 @@ export {
   DeleteTimeSession,
   DeleteUser,
   DisableMFA,
+  EditLearnCard,
   GetAllCircleMembers,
   GetAllUsers,
   GetArchivedChores,
@@ -1374,6 +1401,7 @@ export {
   ResetChoreTimer,
   ResetPassword,
   ResetPoints,
+  ResolveLearnReport,
   RestoreBackup,
   RevokeCalendarURL,
   RotateCalendarURL,
@@ -1385,6 +1413,7 @@ export {
   SaveQuest,
   SaveRanks,
   SendLearnGame,
+  SendLearnReport,
   SetFamilyTimezone,
   SetLearnActivation,
   SetLearnSetting,

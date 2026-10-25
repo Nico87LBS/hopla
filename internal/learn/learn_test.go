@@ -1,6 +1,7 @@
 package learn_test
 
 import (
+	"encoding/json"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -505,4 +506,88 @@ func TestTheDetailOfAPackShowsItsModulesInstalledOrNot(t *testing.T) {
 
 	_, err = ModuleDetail(db, 1, "nowhere", now)
 	require.ErrorIs(t, err, ErrNotFound)
+}
+
+func questionOf(t *testing.T, db *gorm.DB, module, card string) string {
+	modules, err := Modules(db, 1, time.Now().UTC())
+	require.NoError(t, err)
+	for _, m := range modules {
+		if m.Key != module {
+			continue
+		}
+		doc, err := Parse([]byte(m.Content))
+		require.NoError(t, err)
+		for _, c := range doc.Cards {
+			if c.ID == card {
+				return c.Question
+			}
+		}
+	}
+	t.Fatalf("no card %s in %s", card, module)
+	return ""
+}
+
+func TestTheFamilyCorrectsACardAndTheCorrectionOutlivesUpdates(t *testing.T) {
+	db := setup(t)
+	now := time.Now().UTC()
+	require.NoError(t, Install(db, 1, "anglais-aero", now))
+	original := questionOf(t, db, "anglais-aero-meteo", "overcast")
+
+	edit := CardChange{Module: "anglais-aero-meteo", Card: "overcast",
+		Fields: map[string]json.RawMessage{"question": json.RawMessage(`"The whole sky is covered."`)}}
+	require.NoError(t, SetCardEdit(db, 1, 1, edit, now))
+	require.Equal(t, "The whole sky is covered.", questionOf(t, db, "anglais-aero-meteo", "overcast"))
+
+	detail, err := ModuleDetail(db, 1, "anglais-aero", now)
+	require.NoError(t, err)
+	require.Len(t, detail.Edits, 1)
+	require.Contains(t, string(detail.Edits[0].Original), original)
+
+	require.NoError(t, db.Model(&Module{}).Where("module_key = ?", "anglais-aero-meteo").Update("version", "0").Error)
+	require.Equal(t, "The whole sky is covered.", questionOf(t, db, "anglais-aero-meteo", "overcast"),
+		"a new version of the catalogue keeps the correction")
+
+	bad := CardChange{Module: "anglais-aero-meteo", Card: "overcast", Fields: map[string]json.RawMessage{"cle": json.RawMessage(`"en:def:x"`)}}
+	require.ErrorContains(t, SetCardEdit(db, 1, 1, bad, now), "ne se modifie pas")
+	empty := CardChange{Module: "anglais-aero-meteo", Card: "overcast", Fields: map[string]json.RawMessage{"reponse": json.RawMessage(`""`)}}
+	var invalid InvalidError
+	require.ErrorAs(t, SetCardEdit(db, 1, 1, empty, now), &invalid, "a card needs its answer")
+
+	_, err = Import(db, 1, []byte(`{"format":"hopla-module/1","id":"marie-meteo","version":"1","nom":"Météo","public":"adulte",
+		"chapitres":[{"id":"c","nom":"C"}],"fiches":[{"id":"f","chapitre":"c","type":"choix","question":"q","reponse":"overcast","cle":"en:def:overcast"}]}`), now)
+	require.NoError(t, err)
+	shared := CardChange{Module: "anglais-aero-meteo", Card: "overcast", Fields: map[string]json.RawMessage{"reponse": json.RawMessage(`"covered"`)}}
+	require.ErrorContains(t, SetCardEdit(db, 1, 1, shared, now), "marie-meteo", "a shared key keeps one answer")
+
+	require.NoError(t, SetCardEdit(db, 1, 1, CardChange{Module: "anglais-aero-meteo", Card: "overcast", Revert: true}, now))
+	require.Equal(t, original, questionOf(t, db, "anglais-aero-meteo", "overcast"))
+	require.ErrorIs(t, SetCardEdit(db, 1, 1, CardChange{Module: "anglais-aero-meteo", Card: "nowhere", Revert: true}, now), ErrNotFound)
+}
+
+func TestAReportSentTwiceCountsOnceUntilLookedAt(t *testing.T) {
+	db := setup(t)
+	now := time.Now().UTC()
+	require.NoError(t, Install(db, 1, "anglais-aero", now))
+	report := Report{ClientID: "r1", ModuleKey: "anglais-aero-meteo", Card: "sleet", Reason: "pas-claire",
+		Comment: "Les deux sens dans une définition", UserID: 1}
+	require.NoError(t, AddReport(db, 1, 1, report, now))
+	require.NoError(t, AddReport(db, 1, 1, report, now))
+	open, err := OpenReports(db, 1, nil)
+	require.NoError(t, err)
+	require.Len(t, open, 1)
+
+	report.ClientID, report.Reason = "r2", "bof"
+	var invalid InvalidError
+	require.ErrorAs(t, AddReport(db, 1, 1, report, now), &invalid)
+	report.Reason, report.ModuleKey = "autre", "nowhere"
+	require.ErrorIs(t, AddReport(db, 1, 1, report, now), ErrNotFound)
+
+	detail, err := ModuleDetail(db, 1, "anglais-aero", now)
+	require.NoError(t, err)
+	require.Len(t, detail.Reports, 1)
+	require.NoError(t, ResolveReport(db, 1, 1, open[0].ID, now))
+	require.ErrorIs(t, ResolveReport(db, 1, 1, open[0].ID, now), ErrNotFound)
+	open, err = OpenReports(db, 1, nil)
+	require.NoError(t, err)
+	require.Empty(t, open)
 }
