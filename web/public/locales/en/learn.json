@@ -62,7 +62,7 @@
     "saved": "Settings saved",
     "settings": "Settings",
     "settingsNobody": "Nobody plays this module yet.",
-    "settingsHelp": "Leave empty to keep the setting in grey: the pack's, all packs' or the module's own. Stars: ★ from the threshold, ★★ from 90%, ★★★ with no mistake.",
+    "settingsHelp": "Leave empty to keep the setting in grey: the pack's, the family's or the module's own. Stars: ★ from the threshold, ★★ from 90%, ★★★ with no mistake.",
     "cap": "Hops a day",
     "unlock": "Opening (%)",
     "moduleOwn": "Module",
@@ -83,12 +83,8 @@
     "total": "Hops a day in total",
     "packSettings": "Pack settings",
     "stats": "{{name}} statistics",
-    "allTitle": "Settings for all packs",
-    "allHelp": "The total daily cap of the games, and each module's default settings: hops, opening of chapters, questions and stars.",
-    "allSettingsHelp": "The total cap counts all modules together. The other settings apply to each module, unless its pack or the module itself has one. Leave empty to keep the module's own. Stars: ★ from the threshold, ★★ from 90%, ★★★ with no mistake.",
-    "packSettingsHelp": "These settings apply to each module of the pack, unless the module has its own. Leave empty to keep the all-packs setting or the module's own.",
+    "packSettingsHelp": "These settings apply to each module of the pack, unless the module has its own. Leave empty to keep the family's or the module's own.",
     "fromPack": "{{value}} (pack)",
-    "fromAll": "{{value}} (all)",
     "noTotal": "No total cap",
     "totalShort_one": "{{count}} hop a day in total",
     "totalShort_other": "{{count}} hops a day in total",
@@ -98,7 +94,21 @@
     "threshold": "1st star at (%)",
     "hopsByStar": "Hops per star",
     "fromModule": "{{value}} (module)",
-    "by": "by {{author}}"
+    "by": "by {{author}}",
+    "totalHelp": "The cap counts the hops of all games together, over a day. Leave empty for none.",
+    "familyTitle": "{{name}} for the whole family",
+    "familyHelp": "These settings apply to everyone, except whoever has their own in their pack or modules. Leave empty to keep the module's own. Stars: ★ from the threshold, ★★ from 90%, ★★★ with no mistake.",
+    "familySettings": "Family settings for {{name}}",
+    "fromFamily": "{{value}} (family)",
+    "forWho": "For whom?",
+    "everyone": "Everyone",
+    "saveFor_one": "Save for {{count}} person",
+    "saveFor_other": "Save for {{count}} people",
+    "different": "different: {{values}}",
+    "totalOf": "Total cap of {{name}}",
+    "totalSettings": "Set the total cap of {{name}}",
+    "moduleSettings": "{{name}} settings",
+    "notPlayed": "Not played"
   },
   "stats": {
     "chapters": "Chapters",
@@ -128,5 +138,20 @@
     "recent": "Last games",
     "score": "{{correct}}/{{total}}",
     "nobody": "Nobody plays this module yet."
+  },
+  "chips": {
+    "questions_one": "{{count}} question",
+    "questions_other": "{{count}} questions",
+    "threshold": "★ at {{value}}%",
+    "hopsByStar_one": "{{count}} hop per ★",
+    "hopsByStar_other": "{{count}} hops per ★",
+    "dailyCap_one": "{{count}} hop a day",
+    "dailyCap_other": "{{count}} hops a day",
+    "unlock": "opening at {{value}}%"
+  },
+  "legend": {
+    "module": "Module",
+    "family": "Family",
+    "person": "{{name}}"
   }
 }

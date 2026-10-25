@@ -60,12 +60,18 @@ type GameSettings struct {
 
 func (Activation) TableName() string { return "learn_activations" }
 
-// AllPacks is the scope of a person's settings that applies to every module.
+// AllPacks is the scope of a person's total cap, all games together.
 const AllPacks = "*"
 
-// PersonSetting is a person's setting for every module of a pack, or of all
-// of them (AllPacks). A module's own activation setting comes first, then
-// its pack's, then the one for all; empty settings leave the next one.
+// Family is the user id of the settings that apply to everyone, set in the
+// catalogue for a pack or a module.
+const Family = 0
+
+// PersonSetting is a person's setting for every module of a pack, the
+// family's for a pack or a module (UserID Family), or a person's total cap
+// (scope AllPacks). For a module, what the person set comes first (the
+// module's activation, then its pack), then what the family set (the
+// module, then its pack), then the module itself.
 type PersonSetting struct {
 	CircleID int    `json:"-" gorm:"primaryKey;autoIncrement:false"`
 	UserID   int    `json:"userId" gorm:"primaryKey;autoIncrement:false"`
@@ -73,7 +79,7 @@ type PersonSetting struct {
 	// DailyCap is the most hops earned with each module in a day.
 	DailyCap      *int `json:"dailyCap" gorm:"column:daily_cap"`
 	UnlockPercent *int `json:"unlockPercent" gorm:"column:unlock_percent"`
-	// TotalCap, for all modules only, is the most hops earned with the
+	// TotalCap, for AllPacks only, is the most hops a person earns with the
 	// learning games in a day, all modules together.
 	TotalCap *int `json:"totalCap" gorm:"column:total_cap"`
 	GameSettings
