@@ -10,6 +10,8 @@ import {
   MilitaryTechRounded,
   RedeemRounded,
   RestartAltRounded,
+  SchoolOutlined,
+  SchoolRounded,
   SettingsOutlined,
   TollRounded,
 } from '@mui/icons-material'
@@ -34,6 +36,10 @@ import { useIsParent } from '../../hooks/useIsParent'
 
 const GROUPS = [
   {
+    id: 'learn',
+    items: [{ id: 'play', to: '/learn', icon: <SchoolRounded /> }],
+  },
+  {
     id: 'organize',
     items: [
       { id: 'projects', to: '/projects', icon: <FolderOpenOutlined /> },
@@ -51,6 +57,7 @@ const GROUPS = [
       { id: 'rewards', to: '/shop', icon: <RedeemRounded /> },
       { id: 'games', to: '/manage/games', icon: <AutoAwesomeRounded /> },
       { id: 'ranks', to: '/manage/ranks', icon: <MilitaryTechRounded /> },
+      { id: 'learn', to: '/manage/learn', icon: <SchoolOutlined /> },
       { id: 'reset', to: '/manage/reset', icon: <RestartAltRounded /> },
     ],
   },
@@ -102,7 +109,7 @@ ManageRow.propTypes = {
   to: PropTypes.string.isRequired,
 }
 
-// Everything that is set up rather than looked at, in three groups.
+// Everything that is set up rather than looked at, in four groups.
 const ManageView = () => {
   const { t } = useTranslation('common')
   const isParent = useIsParent()

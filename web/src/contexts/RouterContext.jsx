@@ -27,6 +27,9 @@ import FilterView from '../views/Filters/FilterView'
 import ChoreHistory from '../views/History/ChoreHistory'
 import LabelDetailView from '../views/Labels/LabelDetailView'
 import LabelView from '../views/Labels/LabelView'
+import { LearnChooser, LearnHome } from '../views/Learn/LearnHome'
+import LearnPlay from '../views/Learn/LearnPlay'
+import ManageLearn from '../views/Learn/ManageLearn'
 import ManageView from '../views/Manage/ManageView'
 import {
   ManageGames,
@@ -201,6 +204,22 @@ const Router = createBrowserRouter([
       {
         path: '/manage/reset',
         element: <ManageReset />,
+      },
+      {
+        path: '/manage/learn',
+        element: <ManageLearn />,
+      },
+      {
+        path: '/learn',
+        element: <LearnChooser />,
+      },
+      {
+        path: '/learn/:userId',
+        element: <LearnHome />,
+      },
+      {
+        path: '/learn/:userId/play/:moduleId',
+        element: <LearnPlay />,
       },
       {
         // Old links: the points page was split into Famille and Boutique.

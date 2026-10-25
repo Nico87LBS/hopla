@@ -1,0 +1,29 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-ce2-division",
+  "version": "1.0.0",
+  "nom": "Divisions CE2",
+  "description": "Partager et grouper : divisions avec les tables, partages équitables et « combien de fois ». Ouvert quand les tables de 2 à 5 sont bien connues.",
+  "matiere": "maths",
+  "niveaux": ["CE2"],
+  "public": "enfant",
+  "langue": "fr",
+  "icone": "diviser",
+  "couleur": "#7A3FA8",
+  "auteur": "Hopla",
+  "prerequis": [{ "module": "maths-ce2-multiplication", "chapitre": "tables-2-5", "pourcent": 80 }],
+  "chapitres": [
+    { "id": "tables-2-5", "nom": "Diviser avec les tables de 2 à 5" },
+    { "id": "tables-6-9", "nom": "Diviser avec les tables de 6 à 9", "ouvert_apres": 80 },
+    { "id": "partages", "nom": "Partages équitables" },
+    { "id": "combien-de-fois", "nom": "Combien de fois ? Et le reste ?", "ouvert_apres": 70 }
+  ],
+  "generateurs": [
+    { "id": "div-2-5", "chapitre": "tables-2-5", "operation": "division", "tables": { "valeurs": [2, 3, 4, 5] }, "b": [1, 10] },
+    { "id": "div-6-9", "chapitre": "tables-6-9", "operation": "division", "tables": { "valeurs": [6, 7, 8, 9] }, "b": [1, 10] },
+    { "id": "partage", "chapitre": "partages", "operation": "modele", "texte": "On partage {n} bonbons entre {k} enfants. Combien de bonbons chaque enfant reçoit-il ?", "variables": { "k": [2, 5], "q": [2, 10] }, "calculs": { "n": "k*q" }, "reponse": "q" },
+    { "id": "groupes", "chapitre": "partages", "operation": "modele", "texte": "On range {n} œufs par boîtes de {k}. Combien de boîtes remplit-on ?", "variables": { "k": { "valeurs": [2, 4, 6] }, "q": [2, 9] }, "calculs": { "n": "k*q" }, "reponse": "q" },
+    { "id": "combien-de-fois", "chapitre": "combien-de-fois", "operation": "modele", "texte": "Combien de fois {k} dans {n}, sans dépasser ?", "variables": { "k": [2, 9], "q": [2, 9], "r": [0, 8] }, "si": "r<k", "calculs": { "n": "k*q+r" }, "reponse": "q" },
+    { "id": "reste", "chapitre": "combien-de-fois", "operation": "modele", "texte": "On fait des paquets de {k} avec {n} cartes. Combien de cartes restent hors des paquets ?", "variables": { "k": [2, 9], "q": [2, 9], "r": [0, 8] }, "si": "r<k", "calculs": { "n": "k*q+r" }, "reponse": "r" }
+  ]
+}

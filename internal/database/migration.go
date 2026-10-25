@@ -15,6 +15,7 @@ import (
 	filterModel "github.com/nico87lbs/hopla/internal/filter/model"
 	"github.com/nico87lbs/hopla/internal/games"
 	lModel "github.com/nico87lbs/hopla/internal/label/model"
+	"github.com/nico87lbs/hopla/internal/learn"
 	pModel "github.com/nico87lbs/hopla/internal/points"
 	projModel "github.com/nico87lbs/hopla/internal/project/model"
 	rwModel "github.com/nico87lbs/hopla/internal/reward/model"
@@ -56,6 +57,10 @@ func Migration(db *gorm.DB) error {
 		games.ChallengeWin{},
 		games.Absence{},
 		games.Flash{},
+		learn.Module{},
+		learn.Activation{},
+		learn.Session{},
+		learn.Card{},
 		stModel.SubTask{},
 		storageModel.StorageFile{},
 		storageModel.StorageUsage{},

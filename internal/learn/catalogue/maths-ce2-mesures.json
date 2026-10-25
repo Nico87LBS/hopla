@@ -1,0 +1,340 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-ce2-mesures",
+  "version": "1.0.0",
+  "nom": "Mesures CE2",
+  "description": "Longueurs, masses, contenances, durées et monnaie : convertir et calculer avec les unités.",
+  "matiere": "maths",
+  "niveaux": [
+    "CE2"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "icone": "regle",
+  "couleur": "#2F7D32",
+  "auteur": "Hopla",
+  "chapitres": [
+    {
+      "id": "longueurs",
+      "nom": "Longueurs : km, m, cm, mm"
+    },
+    {
+      "id": "masses",
+      "nom": "Masses : kg et g"
+    },
+    {
+      "id": "contenances",
+      "nom": "Contenances : L, dL, cL"
+    },
+    {
+      "id": "durees",
+      "nom": "Durées : jours, heures, minutes"
+    },
+    {
+      "id": "monnaie",
+      "nom": "Monnaie : euros et centimes"
+    }
+  ],
+  "generateurs": [
+    {
+      "id": "m-cm",
+      "chapitre": "longueurs",
+      "operation": "modele",
+      "texte": "{a} m = ? cm",
+      "variables": {
+        "a": [
+          1,
+          9
+        ]
+      },
+      "reponse": "a*100",
+      "unite": "cm"
+    },
+    {
+      "id": "cm-mm",
+      "chapitre": "longueurs",
+      "operation": "modele",
+      "texte": "{a} cm = ? mm",
+      "variables": {
+        "a": [
+          1,
+          20
+        ]
+      },
+      "reponse": "a*10",
+      "unite": "mm"
+    },
+    {
+      "id": "km-m",
+      "chapitre": "longueurs",
+      "operation": "modele",
+      "texte": "{a} km = ? m",
+      "variables": {
+        "a": [
+          1,
+          9
+        ]
+      },
+      "reponse": "a*1000",
+      "unite": "m"
+    },
+    {
+      "id": "m-cm-mixte",
+      "chapitre": "longueurs",
+      "operation": "modele",
+      "texte": "{a} m et {b} cm = ? cm",
+      "variables": {
+        "a": [
+          1,
+          5
+        ],
+        "b": [
+          5,
+          95,
+          5
+        ]
+      },
+      "reponse": "a*100+b",
+      "unite": "cm"
+    },
+    {
+      "id": "cm-m",
+      "chapitre": "longueurs",
+      "operation": "modele",
+      "texte": "{c} cm = ? m",
+      "variables": {
+        "a": [
+          2,
+          9
+        ]
+      },
+      "calculs": {
+        "c": "a*100"
+      },
+      "reponse": "a",
+      "unite": "m"
+    },
+    {
+      "id": "kg-g",
+      "chapitre": "masses",
+      "operation": "modele",
+      "texte": "{a} kg = ? g",
+      "variables": {
+        "a": [
+          1,
+          9
+        ]
+      },
+      "reponse": "a*1000",
+      "unite": "g"
+    },
+    {
+      "id": "kg-g-mixte",
+      "chapitre": "masses",
+      "operation": "modele",
+      "texte": "{a} kg et {b} g = ? g",
+      "variables": {
+        "a": [
+          1,
+          4
+        ],
+        "b": [
+          100,
+          900,
+          100
+        ]
+      },
+      "reponse": "a*1000+b",
+      "unite": "g"
+    },
+    {
+      "id": "demi-kg",
+      "chapitre": "masses",
+      "operation": "modele",
+      "texte": "Combien de grammes dans {a} kg et demi ?",
+      "variables": {
+        "a": [
+          1,
+          5
+        ]
+      },
+      "reponse": "a*1000+500",
+      "unite": "g"
+    },
+    {
+      "id": "l-cl",
+      "chapitre": "contenances",
+      "operation": "modele",
+      "texte": "{a} L = ? cL",
+      "variables": {
+        "a": [
+          1,
+          9
+        ]
+      },
+      "reponse": "a*100",
+      "unite": "cL"
+    },
+    {
+      "id": "l-dl",
+      "chapitre": "contenances",
+      "operation": "modele",
+      "texte": "{a} L = ? dL",
+      "variables": {
+        "a": [
+          1,
+          9
+        ]
+      },
+      "reponse": "a*10",
+      "unite": "dL"
+    },
+    {
+      "id": "bouteilles",
+      "chapitre": "contenances",
+      "operation": "modele",
+      "texte": "Combien de verres de {v} cL remplit-on avec une bouteille de 1 L ?",
+      "variables": {
+        "v": {
+          "valeurs": [
+            10,
+            20,
+            25,
+            50
+          ]
+        }
+      },
+      "reponse": "100/v"
+    },
+    {
+      "id": "h-min",
+      "chapitre": "durees",
+      "operation": "modele",
+      "texte": "{a} h = ? min",
+      "variables": {
+        "a": [
+          1,
+          5
+        ]
+      },
+      "reponse": "a*60",
+      "unite": "min"
+    },
+    {
+      "id": "h-min-mixte",
+      "chapitre": "durees",
+      "operation": "modele",
+      "texte": "{a} h {b} min = ? min",
+      "variables": {
+        "a": [
+          1,
+          3
+        ],
+        "b": [
+          5,
+          55,
+          5
+        ]
+      },
+      "reponse": "a*60+b",
+      "unite": "min"
+    },
+    {
+      "id": "min-s",
+      "chapitre": "durees",
+      "operation": "modele",
+      "texte": "{a} min = ? s",
+      "variables": {
+        "a": [
+          1,
+          5
+        ]
+      },
+      "reponse": "a*60",
+      "unite": "s"
+    },
+    {
+      "id": "semaines",
+      "chapitre": "durees",
+      "operation": "modele",
+      "texte": "Combien de jours dans {a} semaines ?",
+      "variables": {
+        "a": [
+          2,
+          9
+        ]
+      },
+      "reponse": "a*7",
+      "unite": "jours"
+    },
+    {
+      "id": "jours-heures",
+      "chapitre": "durees",
+      "operation": "modele",
+      "texte": "Combien d'heures dans {a} jours ?",
+      "variables": {
+        "a": [
+          1,
+          4
+        ]
+      },
+      "reponse": "a*24",
+      "unite": "h"
+    },
+    {
+      "id": "euros-centimes",
+      "chapitre": "monnaie",
+      "operation": "modele",
+      "texte": "{e} € = ? centimes",
+      "variables": {
+        "e": [
+          1,
+          9
+        ]
+      },
+      "reponse": "e*100",
+      "unite": "centimes"
+    },
+    {
+      "id": "euros-centimes-mixte",
+      "chapitre": "monnaie",
+      "operation": "modele",
+      "texte": "{e} € et {c} centimes = ? centimes",
+      "variables": {
+        "e": [
+          1,
+          9
+        ],
+        "c": [
+          5,
+          95,
+          5
+        ]
+      },
+      "reponse": "e*100+c",
+      "unite": "centimes"
+    },
+    {
+      "id": "rendre",
+      "chapitre": "monnaie",
+      "operation": "modele",
+      "texte": "Un jouet coûte {p} €. On paie avec un billet de {b} €. Combien rend-on ?",
+      "variables": {
+        "b": {
+          "valeurs": [
+            10,
+            20,
+            50
+          ]
+        },
+        "p": [
+          2,
+          45
+        ]
+      },
+      "si": "p<b",
+      "reponse": "b-p",
+      "unite": "€"
+    }
+  ]
+}

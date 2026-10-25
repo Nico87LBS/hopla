@@ -1,0 +1,38 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-ce2-problemes",
+  "version": "1.0.0",
+  "nom": "Problèmes CE2",
+  "description": "Des petits problèmes de la vie de tous les jours : ajouter, retirer, comparer, multiplier, partager, puis en deux étapes.",
+  "matiere": "maths",
+  "niveaux": ["CE2"],
+  "public": "enfant",
+  "langue": "fr",
+  "icone": "probleme",
+  "couleur": "#C93F68",
+  "auteur": "Hopla",
+  "chapitres": [
+    { "id": "ajouter-retirer", "nom": "Ajouter et retirer" },
+    { "id": "comparer", "nom": "Comparer : combien de plus, combien de moins" },
+    { "id": "multiplier-partager", "nom": "Multiplier et partager" },
+    { "id": "deux-etapes", "nom": "Problèmes en deux étapes", "ouvert_apres": 70 }
+  ],
+  "generateurs": [
+    { "id": "billes", "chapitre": "ajouter-retirer", "operation": "modele", "texte": "{p} a {a} billes et en gagne {b} à la récréation. Combien de billes a {p} maintenant ?", "variables": { "p": { "valeurs": ["Léo", "Inès", "Noah", "Jade", "Malo", "Lina"] }, "a": [12, 85], "b": [5, 48] }, "reponse": "a+b" },
+    { "id": "cartes", "chapitre": "ajouter-retirer", "operation": "modele", "texte": "{p} a {a} cartes et en donne {b} à un ami. Combien de cartes reste-t-il à {p} ?", "variables": { "p": { "valeurs": ["Léo", "Inès", "Noah", "Jade", "Malo", "Lina"] }, "a": [30, 99], "b": [8, 29] }, "reponse": "a-b" },
+    { "id": "bus", "chapitre": "ajouter-retirer", "operation": "modele", "texte": "Il y a {a} personnes dans le bus. À l'arrêt, {b} descendent et {c} montent. Combien y a-t-il de personnes dans le bus ?", "variables": { "a": [20, 45], "b": [3, 15], "c": [2, 12] }, "reponse": "a-b+c" },
+    { "id": "bibliotheque", "chapitre": "ajouter-retirer", "operation": "modele", "texte": "La bibliothèque avait {a} livres. Elle en achète {b}. Combien de livres a-t-elle maintenant ?", "variables": { "a": [150, 850, 10], "b": [25, 140, 5] }, "reponse": "a+b" },
+    { "id": "de-plus", "chapitre": "comparer", "operation": "modele", "texte": "{p} a {a} €. {q} a {b} € de plus. Combien d'euros a {q} ?", "variables": { "p": { "valeurs": ["Léo", "Inès", "Noah"] }, "q": { "valeurs": ["Jade", "Malo", "Lina"] }, "a": [8, 60], "b": [3, 25] }, "reponse": "a+b" },
+    { "id": "ecart", "chapitre": "comparer", "operation": "modele", "texte": "Une tour de cubes mesure {a} cm, une autre {b} cm. Combien de centimètres d'écart entre les deux ?", "variables": { "a": [40, 99], "b": [10, 60] }, "si": "a>b", "reponse": "a-b", "unite": "cm" },
+    { "id": "de-moins", "chapitre": "comparer", "operation": "modele", "texte": "Un vélo coûte {a} €. La trottinette coûte {b} € de moins. Combien coûte la trottinette ?", "variables": { "a": [120, 350, 10], "b": [30, 90, 5] }, "reponse": "a-b", "unite": "€" },
+    { "id": "rangees", "chapitre": "multiplier-partager", "operation": "modele", "texte": "Dans la salle, il y a {r} rangées de {c} chaises. Combien de chaises en tout ?", "variables": { "r": [3, 9], "c": [4, 9] }, "reponse": "r*c" },
+    { "id": "cahiers", "chapitre": "multiplier-partager", "operation": "modele", "texte": "Un cahier coûte {a} €. Combien coûtent {n} cahiers ?", "variables": { "a": [2, 6], "n": [3, 9] }, "reponse": "a*n", "unite": "€" },
+    { "id": "pattes", "chapitre": "multiplier-partager", "operation": "modele", "texte": "Combien de pattes ont {n} chats ensemble ?", "variables": { "n": [3, 12] }, "reponse": "n*4" },
+    { "id": "equipes", "chapitre": "multiplier-partager", "operation": "modele", "texte": "{n} enfants forment des équipes de {k}. Combien d'équipes y a-t-il ?", "variables": { "k": [3, 6], "q": [3, 8] }, "calculs": { "n": "k*q" }, "reponse": "q" },
+    { "id": "images", "chapitre": "deux-etapes", "operation": "modele", "texte": "{p} achète {n} paquets de {k} images et en donne {d} à sa sœur. Combien d'images reste-t-il à {p} ?", "variables": { "p": { "valeurs": ["Léo", "Inès", "Noah", "Jade"] }, "n": [2, 6], "k": [5, 10], "d": [3, 9] }, "si": "d<n*k", "reponse": "n*k-d" },
+    { "id": "courses", "chapitre": "deux-etapes", "operation": "modele", "texte": "Maman achète {n} baguettes à {a} € et un gâteau à {g} €. Combien paie-t-elle en tout ?", "variables": { "n": [2, 4], "a": [1, 2], "g": [8, 15] }, "reponse": "n*a+g", "unite": "€" },
+    { "id": "pages", "chapitre": "deux-etapes", "operation": "modele", "texte": "Un livre a {t} pages. {p} en lit {k} par jour pendant {j} jours. Combien de pages lui reste-t-il à lire ?", "variables": { "p": { "valeurs": ["Léo", "Inès", "Noah", "Jade"] }, "t": [80, 150, 10], "k": [5, 10], "j": [3, 7] }, "si": "k*j<t", "reponse": "t-k*j" },
+    { "id": "tirelire", "chapitre": "deux-etapes", "operation": "modele", "texte": "{p} a {a} € dans sa tirelire. Elle reçoit {b} € puis achète un livre à {c} €. Combien lui reste-t-il ?", "variables": { "p": { "valeurs": ["Inès", "Jade", "Lina"] }, "a": [10, 40], "b": [5, 20], "c": [6, 25] }, "si": "c<a+b", "reponse": "a+b-c", "unite": "€" }
+  ],
+  "reglages": { "questions_par_partie": 6, "nouvelles_par_partie": 3, "seuil": 65 }
+}

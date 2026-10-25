@@ -1,0 +1,25 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-ce2",
+  "version": "1.0.0",
+  "nom": "Maths CE2",
+  "description": "Tout le programme de maths du CE2 : nombres jusqu'à 10 000, calcul mental, opérations, tables, divisions, mesures, problèmes et géométrie.",
+  "matiere": "maths",
+  "niveaux": ["CE2"],
+  "public": "enfant",
+  "langue": "fr",
+  "icone": "calcul",
+  "couleur": "#5B4FE0",
+  "auteur": "Hopla",
+  "sources": "D'après les programmes du cycle 2 et les repères annuels de progression du CE2 (Éduscol).",
+  "modules": [
+    "maths-ce2-nombres",
+    "maths-ce2-calcul-mental",
+    "maths-ce2-addition-soustraction",
+    "maths-ce2-multiplication",
+    "maths-ce2-division",
+    "maths-ce2-mesures",
+    "maths-ce2-problemes",
+    "maths-ce2-geometrie"
+  ]
+}

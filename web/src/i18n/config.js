@@ -36,6 +36,7 @@ i18n
       'points',
       'rewards',
       'games',
+      'learn',
     ],
     defaultNS: 'common',
 

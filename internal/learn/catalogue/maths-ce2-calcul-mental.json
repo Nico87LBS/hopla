@@ -1,0 +1,37 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-ce2-calcul-mental",
+  "version": "1.0.0",
+  "nom": "Calcul mental CE2",
+  "description": "Tables d'addition, doubles et moitiés, compléments, dizaines et centaines, multiplier par 10 et 100.",
+  "matiere": "maths",
+  "niveaux": ["CE2"],
+  "public": "enfant",
+  "langue": "fr",
+  "icone": "eclair",
+  "couleur": "#B4470F",
+  "auteur": "Hopla",
+  "chapitres": [
+    { "id": "tables-addition", "nom": "Tables d'addition" },
+    { "id": "doubles-moities", "nom": "Doubles et moitiés" },
+    { "id": "complements", "nom": "Compléments à la dizaine et à 100" },
+    { "id": "dizaines-centaines", "nom": "Ajouter et retirer des dizaines, des centaines" },
+    { "id": "fois-10-100", "nom": "Multiplier par 10 et par 100" }
+  ],
+  "generateurs": [
+    { "id": "add-tables", "chapitre": "tables-addition", "operation": "addition", "a": [2, 10], "b": [2, 10], "formes": ["normal", "trou"] },
+    { "id": "sub-tables", "chapitre": "tables-addition", "operation": "soustraction", "a": [4, 20], "b": [2, 10], "resultat_max": 10, "resultat_min": 1 },
+    { "id": "doubles", "chapitre": "doubles-moities", "operation": "double", "a": [2, 50] },
+    { "id": "doubles-centaines", "chapitre": "doubles-moities", "operation": "double", "a": [100, 500, 50] },
+    { "id": "moities", "chapitre": "doubles-moities", "operation": "moitie", "a": [4, 100, 2] },
+    { "id": "moities-centaines", "chapitre": "doubles-moities", "operation": "moitie", "a": [200, 1000, 100] },
+    { "id": "complement-dizaine", "chapitre": "complements", "operation": "complement", "a": [11, 99], "cible": "dizaine" },
+    { "id": "complement-100", "chapitre": "complements", "operation": "complement", "a": [5, 95, 5], "cible": 100 },
+    { "id": "complement-100-libre", "chapitre": "complements", "operation": "complement", "a": [11, 89], "cible": 100 },
+    { "id": "plus-dizaines", "chapitre": "dizaines-centaines", "operation": "addition", "a": [100, 900, 10], "b": [10, 90, 10] },
+    { "id": "moins-dizaines", "chapitre": "dizaines-centaines", "operation": "soustraction", "a": [100, 990, 10], "b": [10, 90, 10] },
+    { "id": "plus-centaines", "chapitre": "dizaines-centaines", "operation": "addition", "a": [1000, 8900, 100], "b": [100, 900, 100] },
+    { "id": "fois-10", "chapitre": "fois-10-100", "operation": "multiplication", "a": [2, 99], "b": { "valeurs": [10, 100] } },
+    { "id": "trou-10", "chapitre": "fois-10-100", "operation": "multiplication", "a": [2, 60], "b": { "valeurs": [10] }, "formes": ["trou"] }
+  ]
+}

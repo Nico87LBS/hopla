@@ -21,7 +21,7 @@ import {
 } from '../Games/Progression'
 import ResetCard from '../Games/ResetCard'
 
-const useMembers = () => {
+export const useMembers = () => {
   const { data } = useCircleMembers()
   return useMemo(
     () => (data?.res || []).filter(m => m.isActive !== false),
@@ -30,7 +30,7 @@ const useMembers = () => {
 }
 
 // The parent space: only parents get in, everyone else goes back to Gérer.
-const ParentPage = ({ children, page }) => {
+export const ParentPage = ({ children, page }) => {
   const { t } = useTranslation('common')
   const isParent = useIsParent()
   if (isParent === undefined) return <LoadingComponent />
