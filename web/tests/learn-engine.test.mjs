@@ -265,8 +265,9 @@ test('the back arrow of the games goes one page up, never into a game', () => {
   assert.equal(learnParent('/manage/learn/maths-ce2-division'), '/manage/learn')
   assert.equal(
     learnParent('/manage/learn/detail/anglais-aero'),
-    '/manage/learn',
+    '/manage/learn/catalogue',
   )
+  assert.equal(learnParent('/manage/learn/catalogue'), '/manage/learn')
   assert.equal(learnParent('/manage/learn'), '/manage')
   assert.equal(learnParent('/chores'), null)
 })

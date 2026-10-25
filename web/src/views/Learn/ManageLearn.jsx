@@ -3,6 +3,7 @@ import {
   DeleteOutlineRounded,
   DownloadDoneRounded,
   InsightsRounded,
+  LibraryBooksRounded,
   OutlinedFlagRounded,
   SchoolRounded,
   TuneRounded,
@@ -1190,14 +1191,49 @@ export const ManageLearn = () => {
           ))}
         </Fragment>
       )}
+      <Button
+        component={Link}
+        to='/manage/learn/catalogue'
+        variant='outlined'
+        color='primary'
+        size='lg'
+        startDecorator={<LibraryBooksRounded />}
+        endDecorator={<ChevronRightRounded />}
+        sx={{ borderRadius: 'lg', justifyContent: 'flex-start' }}
+      >
+        <Box sx={{ flex: 1, textAlign: 'left' }}>
+          <Typography level='title-md' sx={{ color: 'inherit' }}>
+            {t('manage.openCatalogue')}
+          </Typography>
+          <Typography level='body-xs' sx={{ color: 'text.secondary' }}>
+            {t('manage.openCatalogueHelp')}
+          </Typography>
+        </Box>
+      </Button>
+      {modal()}
+      {confirm.isOpen && <ConfirmationModal config={confirm} />}
+    </ParentPage>
+  )
+}
+
+// /manage/learn/catalogue: the modules that come with Hopla and those the
+// family imports, for the whole family.
+export const LearnCatalogue = () => {
+  const { data } = useLearnModules()
+  const modules = data?.modules || []
+  const settings = useMemo(
+    () =>
+      new Map((data?.settings || []).map(s => [`${s.userId}:${s.scope}`, s])),
+    [data?.settings],
+  )
+  return (
+    <ParentPage page='learnCatalogue'>
       <CatalogueCard
         installed={new Set(modules.map(m => m.id))}
-        defaults={defaults}
+        defaults={data?.defaults || {}}
         settings={settings}
       />
       <ImportCard />
-      {modal()}
-      {confirm.isOpen && <ConfirmationModal config={confirm} />}
     </ParentPage>
   )
 }

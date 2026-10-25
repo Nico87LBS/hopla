@@ -3,7 +3,9 @@
 export const learnParent = path => {
   if (/^\/learn\/[^/]+\/play\/[^/]+$/.test(path))
     return path.replace(/\/play\/[^/]+$/, '')
-  if (/^\/manage\/learn\/(detail\/)?[^/]+$/.test(path)) return '/manage/learn'
+  if (/^\/manage\/learn\/detail\/[^/]+$/.test(path))
+    return '/manage/learn/catalogue'
+  if (/^\/manage\/learn\/[^/]+$/.test(path)) return '/manage/learn'
   if (/^\/(learn(\/[^/]+)?|manage\/learn)$/.test(path)) return '/manage'
   return null
 }
