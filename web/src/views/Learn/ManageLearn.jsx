@@ -119,28 +119,83 @@ SettingChip.propTypes = {
   label: PropTypes.string.isRequired,
 }
 
-const AppliedChips = ({ applied }) => {
+// AppliedChips shows the settings of a module that differ from its pack's
+// line, or, outside a pack, those not the module's own.
+const AppliedChips = ({ applied, baseline }) => {
   const { t } = useTranslation('learn')
   if (!applied) return null
+  const shown = CHIPS.filter(([name]) => {
+    const { from, value } = applied[name] || {}
+    if (!isSet(value)) return false
+    return baseline ? baseline[name]?.value !== value : from !== 'module'
+  })
+  if (!shown.length) return null
   return (
     <Stack direction='row' gap={0.75} flexWrap='wrap'>
-      {CHIPS.filter(([name]) => isSet(applied[name]?.value)).map(
-        ([name, label]) => (
-          <SettingChip
-            key={name}
-            from={applied[name].from}
-            label={t(label, {
-              count: applied[name].value,
-              value: applied[name].value,
-            })}
-          />
-        ),
-      )}
+      {shown.map(([name, label]) => (
+        <SettingChip
+          key={name}
+          from={applied[name].from}
+          label={t(label, {
+            count: applied[name].value,
+            value: applied[name].value,
+          })}
+        />
+      ))}
     </Stack>
   )
 }
 
-AppliedChips.propTypes = { applied: PropTypes.object }
+AppliedChips.propTypes = {
+  applied: PropTypes.object,
+  baseline: PropTypes.object,
+}
+
+// The module's own name of each setting, in its document.
+const OWN = {
+  questions: 'questions_par_partie',
+  threshold: 'seuil',
+  hopsByStar: 'hops_par_etoile',
+  dailyCap: 'plafond_jour',
+}
+
+// packLine is what a pack sets for a person: theirs, else the family's, else
+// what all its modules share.
+const packLine = (pack, modules, person, settings, defaults) => {
+  const mine = settings.get(`${person.userId}:${pack.id}`)
+  const family = settings.get(`${FAMILY}:${pack.id}`)
+  const line = {}
+  for (const [name] of CHIPS) {
+    if (isSet(mine?.[name])) line[name] = { value: mine[name], from: 'person' }
+    else if (isSet(family?.[name]))
+      line[name] = { value: family[name], from: 'family' }
+    else if (OWN[name]) {
+      const values = modules.map(m => defaults[m.id]?.[OWN[name]])
+      if (isSet(values[0]) && values.every(v => v === values[0]))
+        line[name] = { value: values[0], from: 'module' }
+    }
+  }
+  return line
+}
+
+// The columns at the right of a row: two icons and the box, the same width
+// on every row so they line up.
+const ICON = 36
+const Slot = ({ children }) => (
+  <Box
+    sx={{
+      alignItems: 'center',
+      display: 'flex',
+      justifyContent: 'center',
+      width: ICON,
+      flexShrink: 0,
+    }}
+  >
+    {children}
+  </Box>
+)
+
+Slot.propTypes = { children: PropTypes.node }
 
 // What a row of settings holds, as chips: only what is set on it.
 export const OwnChips = ({ from, row }) => {
@@ -458,11 +513,13 @@ TotalCard.propTypes = {
   total: PropTypes.number,
 }
 
-// One installed pack, or the modules outside any pack, for one person:
-// which modules they play and the settings that apply to each.
+// One installed pack, or the modules outside any pack, for one person: the
+// pack's settings on one line under its name, then each module with only
+// the settings of its own, and at the right the box of who plays it.
 const ModuleGroup = ({
   activations,
   applied,
+  defaults,
   group,
   onPackSettings,
   onRemove,
@@ -491,11 +548,16 @@ const ModuleGroup = ({
   const ids = group.modules.map(m => m.id)
   const on = ids.filter(isOn).length
   const reported = ids.reduce((n, id) => n + (reports?.[id] || 0), 0)
+  const line = group.pack
+    ? packLine(group.pack, group.modules, person, settings, defaults)
+    : null
+  const lineChips = line ? CHIPS.filter(([name]) => line[name]) : []
   const rowSx = { borderTop: '1px solid', borderColor: 'divider', pt: 1.25 }
+  const name = group.pack ? group.pack.name : t('manage.others')
   return (
     <Sheet sx={surfaceSx}>
-      <Stack direction='row' alignItems='center' gap={1} sx={{ mb: 1.5 }}>
-        <SchoolRounded sx={{ color: HOPLA.violet }} />
+      <Stack direction='row' alignItems='flex-start' gap={1}>
+        <SchoolRounded sx={{ color: HOPLA.violet, mt: 0.5 }} />
         <Box sx={{ flex: 1, minWidth: 0 }}>
           {group.pack ? (
             <Typography
@@ -504,10 +566,10 @@ const ModuleGroup = ({
               to={`/manage/learn/detail/${group.pack.id}`}
               sx={{ color: 'inherit', textDecoration: 'none' }}
             >
-              {group.pack.name}
+              {name}
             </Typography>
           ) : (
-            <Typography level='title-lg'>{t('manage.others')}</Typography>
+            <Typography level='title-lg'>{name}</Typography>
           )}
           {group.pack?.author && (
             <Typography level='body-xs' sx={{ color: 'text.tertiary' }}>
@@ -536,54 +598,61 @@ const ModuleGroup = ({
             </Stack>
           )}
         </Box>
-        {group.pack && (
-          <IconButton
-            variant='plain'
-            color='danger'
-            aria-label={t('manage.remove')}
-            onClick={() => onRemove(group.pack)}
-          >
-            <DeleteOutlineRounded />
-          </IconButton>
-        )}
+        <Slot>
+          {group.pack && (
+            <IconButton
+              size='sm'
+              variant='plain'
+              color='danger'
+              aria-label={t('manage.remove')}
+              onClick={() => onRemove(group.pack)}
+            >
+              <DeleteOutlineRounded />
+            </IconButton>
+          )}
+        </Slot>
+        <Slot>
+          {group.pack && (
+            <IconButton
+              size='sm'
+              variant='soft'
+              color='primary'
+              aria-label={t('manage.packSettings')}
+              onClick={() => onPackSettings(group.pack)}
+            >
+              <TuneRounded />
+            </IconButton>
+          )}
+        </Slot>
+        <Slot>
+          <Checkbox
+            checked={on === ids.length}
+            indeterminate={on > 0 && on < ids.length}
+            onChange={e =>
+              toggle(group.pack ? [group.pack.id] : ids, e.target.checked)
+            }
+            slotProps={{
+              input: { 'aria-label': `${name} · ${person.displayName}` },
+            }}
+          />
+        </Slot>
       </Stack>
+      {lineChips.length > 0 && (
+        <Stack direction='row' gap={0.75} flexWrap='wrap' sx={{ mt: 1, pl: 4 }}>
+          {lineChips.map(([key, label]) => (
+            <SettingChip
+              key={key}
+              from={line[key].from}
+              label={t(label, {
+                count: line[key].value,
+                value: line[key].value,
+              })}
+            />
+          ))}
+        </Stack>
+      )}
 
-      <Stack gap={1.25}>
-        <Legend person={person} />
-        {group.pack && (
-          <Stack gap={0.75} sx={rowSx}>
-            <Stack direction='row' alignItems='center' gap={1}>
-              <Checkbox
-                checked={on === ids.length}
-                indeterminate={on > 0 && on < ids.length}
-                onChange={e => toggle([group.pack.id], e.target.checked)}
-                slotProps={{
-                  input: {
-                    'aria-label': `${group.pack.name} · ${person.displayName}`,
-                  },
-                }}
-              />
-              <Typography level='title-sm' sx={{ flex: 1 }}>
-                {t('manage.wholePack')}
-              </Typography>
-              <IconButton
-                variant='solid'
-                color='primary'
-                aria-label={t('manage.packSettings')}
-                onClick={() => onPackSettings(group.pack)}
-              >
-                <TuneRounded />
-              </IconButton>
-            </Stack>
-            <Box sx={{ pl: 4 }}>
-              <OwnChips
-                from='person'
-                row={settings.get(`${person.userId}:${group.pack.id}`)}
-              />
-            </Box>
-          </Stack>
-        )}
-
+      <Stack gap={1.25} sx={{ mt: 1.5 }}>
         {group.modules.map(module => {
           const playing = isOn(module.id)
           return (
@@ -593,50 +662,55 @@ const ModuleGroup = ({
               sx={{ ...rowSx, opacity: playing ? 1 : 0.6 }}
             >
               <Stack direction='row' alignItems='center' gap={1}>
-                <Checkbox
-                  checked={playing}
-                  onChange={e => toggle([module.id], e.target.checked)}
-                  slotProps={{
-                    input: {
-                      'aria-label': `${module.name} · ${person.displayName}`,
-                    },
-                  }}
-                />
-                <Typography level='body-md' sx={{ flex: 1, minWidth: 0 }}>
+                <Typography
+                  level='body-md'
+                  sx={{ flex: 1, minWidth: 0, pl: 4 }}
+                >
                   {module.name}
                 </Typography>
-                <IconButton
-                  size='sm'
-                  variant='plain'
-                  component={Link}
-                  to={`/manage/learn/${module.id}`}
-                  aria-label={t('manage.stats', { name: module.name })}
-                >
-                  <InsightsRounded />
-                </IconButton>
-                {playing ? (
+                <Slot>
                   <IconButton
                     size='sm'
                     variant='plain'
-                    aria-label={t('manage.moduleSettings', {
-                      name: module.name,
-                    })}
-                    onClick={() => onSettings(module)}
+                    component={Link}
+                    to={`/manage/learn/${module.id}`}
+                    aria-label={t('manage.stats', { name: module.name })}
                   >
-                    <TuneRounded />
+                    <InsightsRounded />
                   </IconButton>
-                ) : (
-                  <Typography
-                    level='body-xs'
-                    sx={{ color: 'text.tertiary', minWidth: 32 }}
-                  >
-                    {t('manage.notPlayed')}
-                  </Typography>
-                )}
+                </Slot>
+                <Slot>
+                  {playing && (
+                    <IconButton
+                      size='sm'
+                      variant='plain'
+                      aria-label={t('manage.moduleSettings', {
+                        name: module.name,
+                      })}
+                      onClick={() => onSettings(module)}
+                    >
+                      <TuneRounded />
+                    </IconButton>
+                  )}
+                </Slot>
+                <Slot>
+                  <Checkbox
+                    checked={playing}
+                    onChange={e => toggle([module.id], e.target.checked)}
+                    slotProps={{
+                      input: {
+                        'aria-label': `${module.name} · ${person.displayName}`,
+                      },
+                    }}
+                  />
+                </Slot>
               </Stack>
               {playing && (
                 <Box sx={{ pl: 4 }}>
-                  <AppliedChips applied={applied?.[module.id]} />
+                  <AppliedChips
+                    applied={applied?.[module.id]}
+                    baseline={line}
+                  />
                 </Box>
               )}
             </Stack>
@@ -666,6 +740,7 @@ const ModuleGroup = ({
 ModuleGroup.propTypes = {
   activations: PropTypes.instanceOf(Map).isRequired,
   applied: PropTypes.object,
+  defaults: PropTypes.object.isRequired,
   group: PropTypes.object.isRequired,
   onPackSettings: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
@@ -1095,6 +1170,7 @@ export const ManageLearn = () => {
             total={settings.get(`${person.userId}:*`)?.totalCap}
             onOpen={() => setSettingsFor({ scope: 'total' })}
           />
+          <Legend person={person} />
           {groups.map(group => (
             <ModuleGroup
               key={group.pack?.id || 'others'}
@@ -1102,6 +1178,7 @@ export const ManageLearn = () => {
               person={person}
               activations={activations}
               applied={data?.applied?.[person.userId]}
+              defaults={defaults}
               reports={data?.reports}
               settings={settings}
               onRemove={askRemove}
