@@ -75,7 +75,7 @@ func Migration(db *gorm.DB) error {
 		return err
 	}
 
-	return nil
+	return learn.FoldAllPacks(db)
 }
 
 func MigrationScripts(gormDB *gorm.DB, cfg *config.Config) error {

@@ -309,7 +309,7 @@ func capOf(t *testing.T, db *gorm.DB, now time.Time, key string) (int, *int) {
 	return 0, nil
 }
 
-func TestSettingsComeFromTheModuleThenItsPackThenAllPacks(t *testing.T) {
+func TestSettingsComeFromThePersonThenTheFamilyThenTheModule(t *testing.T) {
 	db := setup(t)
 	now := time.Now().UTC()
 	require.NoError(t, Install(db, 1, "maths-ce2", now))
@@ -318,33 +318,74 @@ func TestSettingsComeFromTheModuleThenItsPackThenAllPacks(t *testing.T) {
 	require.Equal(t, 10, cap, "the module's own")
 	require.Nil(t, unlock)
 
-	three, six, ninety, seventy := 3, 6, 90, 70
-	require.NoError(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: AllPacks, DailyCap: &three, UnlockPercent: &seventy}, now))
+	three, four, six, ninety, seventy := 3, 4, 6, 90, 70
+	require.NoError(t, SetPersonSetting(db, 1, SettingChange{Family: true, Scope: "maths-ce2", DailyCap: &three,
+		UnlockPercent: &seventy}, now))
 	cap, unlock = capOf(t, db, now, "maths-ce2-geometrie")
-	require.Equal(t, 3, cap, "all packs")
+	require.Equal(t, 3, cap, "the family's for the pack")
 	require.Equal(t, 70, *unlock)
+
+	require.NoError(t, SetPersonSetting(db, 1, SettingChange{Family: true, Scope: "maths-ce2-geometrie", DailyCap: &four}, now))
+	cap, _ = capOf(t, db, now, "maths-ce2-geometrie")
+	require.Equal(t, 4, cap, "the family's for the module before its pack")
 
 	require.NoError(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: "maths-ce2", DailyCap: &six}, now))
 	cap, unlock = capOf(t, db, now, "maths-ce2-geometrie")
-	require.Equal(t, 6, cap, "the pack before all packs")
-	require.Equal(t, 70, *unlock, "a setting the pack leaves empty comes from all packs")
+	require.Equal(t, 6, cap, "the person before the family")
+	require.Equal(t, 70, *unlock, "a setting the person leaves empty comes from the family")
 
 	require.NoError(t, SetActivation(db, 1, ActivationChange{UserID: anna, Modules: []string{"maths-ce2-geometrie"},
 		Active: true, UnlockPercent: &ninety}, now))
 	_, unlock = capOf(t, db, now, "maths-ce2-geometrie")
-	require.Equal(t, 90, *unlock, "the module before its pack")
+	require.Equal(t, 90, *unlock, "the person's module before their pack")
+
+	applied, err := AppliedSettings(db, 1, []int{Family, anna})
+	require.NoError(t, err)
+	require.Equal(t, Value{Value: &six, From: FromPerson}, applied[anna]["maths-ce2-geometrie"].DailyCap)
+	require.Equal(t, Value{Value: &four, From: FromFamily}, applied[Family]["maths-ce2-geometrie"].DailyCap)
+	require.Equal(t, FromModule, applied[Family]["maths-ce2-geometrie"].Questions.From)
+	require.Equal(t, 8, *applied[Family]["maths-ce2-geometrie"].Questions.Value)
+	require.Equal(t, Value{Value: &seventy, From: FromFamily}, applied[anna]["maths-ce2-multiplication"].UnlockPercent)
 
 	back := -1
 	require.NoError(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: "maths-ce2", DailyCap: &back}, now))
 	cap, _ = capOf(t, db, now, "maths-ce2-geometrie")
-	require.Equal(t, 3, cap)
+	require.Equal(t, 4, cap)
 	settings, err := PersonSettings(db, 1)
 	require.NoError(t, err)
-	require.Len(t, settings, 1, "a pack with nothing set is forgotten")
+	require.Len(t, settings, 2, "a pack with nothing set is forgotten")
 
 	require.Error(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: "maths-ce2", TotalCap: &six}, now))
-	require.Error(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: "maths-ce2-geometrie", DailyCap: &six}, now))
+	require.Error(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: AllPacks, DailyCap: &six}, now),
+		"only the total cap is for all games")
+	require.Error(t, SetPersonSetting(db, 1, SettingChange{Family: true, Scope: AllPacks, TotalCap: &six}, now))
+	require.Error(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: "maths-ce2-geometrie", DailyCap: &six}, now),
+		"a person's module setting is on the module itself")
 	require.ErrorIs(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: "nope", DailyCap: &six}, now), ErrNotFound)
+}
+
+func TestSettingsOnceForAllPacksMoveOntoEachPack(t *testing.T) {
+	db := setup(t)
+	now := time.Now().UTC()
+	require.NoError(t, Install(db, 1, "maths-ce2", now))
+	require.NoError(t, SetActivation(db, 1, ActivationChange{UserID: anna, Modules: []string{"maths-ce2"}, Active: true}, now))
+	three, five, twelve := 3, 5, 12
+	require.NoError(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: "maths-ce2", DailyCap: &five}, now))
+	require.NoError(t, db.Create(&PersonSetting{CircleID: 1, UserID: anna, Scope: AllPacks, DailyCap: &three,
+		TotalCap: &twelve, GameSettings: GameSettings{Questions: &twelve}, UpdatedAt: now}).Error)
+
+	require.NoError(t, FoldAllPacks(db))
+	require.NoError(t, FoldAllPacks(db), "twice changes nothing")
+	var rows []PersonSetting
+	require.NoError(t, db.Order("scope").Find(&rows).Error)
+	require.Len(t, rows, 2)
+	require.Equal(t, AllPacks, rows[0].Scope)
+	require.Equal(t, 12, *rows[0].TotalCap)
+	require.Nil(t, rows[0].DailyCap)
+	require.Nil(t, rows[0].Questions)
+	require.Equal(t, "maths-ce2", rows[1].Scope)
+	require.Equal(t, 5, *rows[1].DailyCap, "what the pack had stays")
+	require.Equal(t, 12, *rows[1].Questions, "what it lacked comes from all packs")
 }
 
 func TestTheTotalCapHoldsAllModulesTogether(t *testing.T) {
@@ -416,7 +457,7 @@ func TestGameSettingsComeFromAboveAndShapeTheStarsAndHops(t *testing.T) {
 	require.Equal(t, 8, settingsOf("maths-ce2-geometrie").Questions, "the module's own")
 
 	twelve, eighty, two, five := 12, 80, 2, 5
-	require.NoError(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: AllPacks,
+	require.NoError(t, SetPersonSetting(db, 1, SettingChange{Family: true, Scope: "maths-ce2",
 		GameSettings: GameSettings{Questions: &twelve, HopsByStar: &two}}, now))
 	require.NoError(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: "maths-ce2",
 		GameSettings: GameSettings{Threshold: &eighty}}, now))
@@ -424,10 +465,10 @@ func TestGameSettingsComeFromAboveAndShapeTheStarsAndHops(t *testing.T) {
 		Active: true, GameSettings: GameSettings{Questions: &five}}, now))
 
 	s := settingsOf("maths-ce2-multiplication")
-	require.Equal(t, 12, s.Questions, "all packs")
+	require.Equal(t, 12, s.Questions, "the family")
 	require.Equal(t, 80, s.Threshold, "the pack")
 	require.Equal(t, 2, s.HopsByStar)
-	require.Equal(t, 5, settingsOf("maths-ce2-geometrie").Questions, "the module before all packs")
+	require.Equal(t, 5, settingsOf("maths-ce2-geometrie").Questions, "the person's module before the family")
 
 	// 7/10 is under the pack's 80 %: no star; 8/10 is one star, two hops.
 	result, err := Record(db, 1, anna, Game{ClientID: "settings-01", UserID: anna, Module: "maths-ce2-multiplication",
@@ -444,6 +485,6 @@ func TestGameSettingsComeFromAboveAndShapeTheStarsAndHops(t *testing.T) {
 	require.NoError(t, SetActivation(db, 1, ActivationChange{UserID: anna, Modules: []string{"maths-ce2-geometrie"},
 		Active: true, GameSettings: GameSettings{Questions: &back}}, now))
 	require.Equal(t, 12, settingsOf("maths-ce2-geometrie").Questions)
-	require.Error(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: AllPacks,
+	require.Error(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: "maths-ce2",
 		GameSettings: GameSettings{Questions: &tooMany}}, now))
 }

@@ -315,6 +315,14 @@ func ownSetting(value *int) *int {
 	return value
 }
 
+// Members lists the active members of a circle.
+func Members(db *gorm.DB, circleID int) ([]int, error) {
+	var ids []int
+	err := db.Model(&cModel.UserCircle{}).Where("circle_id = ? AND is_active = ?", circleID, true).
+		Order("user_id").Pluck("user_id", &ids).Error
+	return ids, err
+}
+
 // PersonSettings lists the settings of everyone in a circle.
 func PersonSettings(db *gorm.DB, circleID int) ([]PersonSetting, error) {
 	var rows []PersonSetting
@@ -322,11 +330,12 @@ func PersonSettings(db *gorm.DB, circleID int) ([]PersonSetting, error) {
 	return rows, err
 }
 
-// SettingChange sets a person's settings for a pack, or for all modules
-// (scope AllPacks). As for a module, empty leaves a setting as it is and
-// -1 clears it.
+// SettingChange sets a person's settings for a pack, their total cap
+// (scope AllPacks), or, with Family, everyone's settings for a pack or a
+// module. As for a module, empty leaves a setting as it is and -1 clears it.
 type SettingChange struct {
 	UserID        int    `json:"userId"`
+	Family        bool   `json:"family"`
 	Scope         string `json:"scope"`
 	DailyCap      *int   `json:"dailyCap"`
 	UnlockPercent *int   `json:"unlockPercent"`
@@ -334,7 +343,7 @@ type SettingChange struct {
 	GameSettings
 }
 
-// SetPersonSetting applies a change of a person's settings.
+// SetPersonSetting applies a change of a person's or of the family's settings.
 func SetPersonSetting(db *gorm.DB, circleID int, change SettingChange, now time.Time) error {
 	if change.DailyCap != nil && (*change.DailyCap < -1 || *change.DailyCap > 200) {
 		return invalid("plafond entre 0 et 200 hops")
@@ -348,31 +357,41 @@ func SetPersonSetting(db *gorm.DB, circleID int, change SettingChange, now time.
 	if err := change.GameSettings.check(); err != nil {
 		return err
 	}
-	if change.TotalCap != nil && change.Scope != AllPacks {
-		return invalid("le plafond total se règle pour tous les paquets")
+	if change.Family {
+		change.UserID = Family
+	}
+	switch {
+	case change.Scope == AllPacks && (change.Family || change.DailyCap != nil || change.UnlockPercent != nil ||
+		!change.GameSettings.empty()):
+		return invalid("seul le plafond total se règle pour tous les jeux, personne par personne")
+	case change.TotalCap != nil && change.Scope != AllPacks:
+		return invalid("le plafond total se règle pour tous les jeux")
 	}
 	return db.Transaction(func(tx *gorm.DB) error {
-		var member cModel.UserCircle
-		if err := tx.Where("user_id = ? AND circle_id = ?", change.UserID, circleID).First(&member).Error; err != nil {
-			if errors.Is(err, gorm.ErrRecordNotFound) {
-				return invalid("cette personne n'est pas de la famille")
+		if !change.Family {
+			var member cModel.UserCircle
+			if err := tx.Where("user_id = ? AND circle_id = ?", change.UserID, circleID).First(&member).Error; err != nil {
+				if errors.Is(err, gorm.ErrRecordNotFound) {
+					return invalid("cette personne n'est pas de la famille")
+				}
+				return err
 			}
-			return err
 		}
 		if change.Scope != AllPacks {
-			var pack Module
-			if err := tx.Where("circle_id = ? AND module_key = ?", circleID, change.Scope).First(&pack).Error; err != nil {
+			var module Module
+			if err := tx.Where("circle_id = ? AND module_key = ?", circleID, change.Scope).First(&module).Error; err != nil {
 				if errors.Is(err, gorm.ErrRecordNotFound) {
 					return ErrNotFound
 				}
 				return err
 			}
-			if !pack.IsPack() {
+			if !change.Family && !module.IsPack() {
 				return invalid("ce module n'est pas un paquet")
 			}
 		}
 		row := PersonSetting{CircleID: circleID, UserID: change.UserID, Scope: change.Scope}
-		err := tx.Where(row).First(&row).Error
+		err := tx.Where("circle_id = ? AND user_id = ? AND scope = ?", circleID, change.UserID, change.Scope).
+			First(&row).Error
 		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 			return err
 		}
@@ -395,21 +414,102 @@ func SetPersonSetting(db *gorm.DB, circleID int, change SettingChange, now time.
 	})
 }
 
+// FoldAllPacks moves the game settings people once set for all packs onto
+// each of their packs, and modules outside a pack, where nothing was set:
+// what applies stays the same, and only the total cap remains for all.
+func FoldAllPacks(db *gorm.DB) error {
+	var rows []PersonSetting
+	if err := db.Where("scope = ? AND (daily_cap IS NOT NULL OR unlock_percent IS NOT NULL OR "+
+		"questions IS NOT NULL OR threshold IS NOT NULL OR hops_by_star IS NOT NULL)", AllPacks).
+		Find(&rows).Error; err != nil {
+		return err
+	}
+	for _, all := range rows {
+		err := db.Transaction(func(tx *gorm.DB) error {
+			var modules []Module
+			if err := tx.Where("circle_id = ?", all.CircleID).Find(&modules).Error; err != nil {
+				return err
+			}
+			inPack := map[string]bool{}
+			for _, module := range modules {
+				for _, child := range module.Children {
+					inPack[child] = true
+				}
+			}
+			fill := func(dailyCap, unlock **int, game *GameSettings) {
+				for _, f := range []struct{ to, from **int }{
+					{dailyCap, &all.DailyCap}, {unlock, &all.UnlockPercent}, {&game.Questions, &all.Questions},
+					{&game.Threshold, &all.Threshold}, {&game.HopsByStar, &all.HopsByStar},
+				} {
+					if *f.to == nil {
+						*f.to = *f.from
+					}
+				}
+			}
+			for _, module := range modules {
+				switch {
+				case module.IsPack():
+					row := PersonSetting{CircleID: all.CircleID, UserID: all.UserID, Scope: module.Key}
+					if err := tx.Where(&row).Attrs(PersonSetting{UpdatedAt: all.UpdatedAt}).FirstOrInit(&row).Error; err != nil {
+						return err
+					}
+					fill(&row.DailyCap, &row.UnlockPercent, &row.GameSettings)
+					if err := tx.Save(&row).Error; err != nil {
+						return err
+					}
+				case !inPack[module.Key]:
+					var activation Activation
+					err := tx.Where("circle_id = ? AND user_id = ? AND module_key = ?", all.CircleID, all.UserID, module.Key).
+						First(&activation).Error
+					if errors.Is(err, gorm.ErrRecordNotFound) {
+						continue
+					}
+					if err != nil {
+						return err
+					}
+					fill(&activation.DailyCap, &activation.UnlockPercent, &activation.GameSettings)
+					if err := tx.Save(&activation).Error; err != nil {
+						return err
+					}
+				}
+			}
+			where := tx.Where("circle_id = ? AND user_id = ? AND scope = ?", all.CircleID, all.UserID, AllPacks)
+			if all.TotalCap == nil {
+				return where.Delete(&PersonSetting{}).Error
+			}
+			return where.Model(&PersonSetting{}).Updates(map[string]any{"daily_cap": nil, "unlock_percent": nil,
+				"questions": nil, "threshold": nil, "hops_by_star": nil}).Error
+		})
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // limits are the settings that apply to a person, module by module.
 type limits struct {
 	byScope map[string]PersonSetting
+	family  map[string]PersonSetting
 	// packsOf lists the packs a module belongs to, in their order.
 	packsOf map[string][]string
 }
 
+// loadLimits reads a person's settings and the family's. For Family, only
+// the family's apply.
 func loadLimits(tx *gorm.DB, circleID, userID int, modules []Module) (limits, error) {
-	l := limits{byScope: map[string]PersonSetting{}, packsOf: map[string][]string{}}
+	l := limits{byScope: map[string]PersonSetting{}, family: map[string]PersonSetting{}, packsOf: map[string][]string{}}
 	var rows []PersonSetting
-	if err := tx.Where("circle_id = ? AND user_id = ?", circleID, userID).Find(&rows).Error; err != nil {
+	if err := tx.Where("circle_id = ? AND user_id IN ?", circleID, []int{userID, Family}).Find(&rows).Error; err != nil {
 		return l, err
 	}
 	for _, row := range rows {
-		l.byScope[row.Scope] = row
+		if row.UserID == Family {
+			l.family[row.Scope] = row
+		}
+		if userID != Family && row.UserID == userID {
+			l.byScope[row.Scope] = row
+		}
 	}
 	for _, module := range modules {
 		for _, child := range module.Children {
@@ -419,36 +519,53 @@ func loadLimits(tx *gorm.DB, circleID, userID int, modules []Module) (limits, er
 	return l, nil
 }
 
-// pick returns the first setting found: the module's own, its packs', then
-// the one for all modules.
-func (l limits) pick(module string, own *int, field func(PersonSetting) *int) *int {
+// Where a setting comes from: the module itself, the family or the person.
+const (
+	FromModule = "module"
+	FromFamily = "family"
+	FromPerson = "person"
+)
+
+// pick returns the setting that applies and where it comes from: the
+// person's for the module, then for its packs, then the family's for the
+// module, then for its packs. Nil leaves the module's own.
+func (l limits) pick(module string, own *int, field func(PersonSetting) *int) (*int, string) {
 	if own != nil {
-		return own
+		return own, FromPerson
 	}
 	for _, pack := range l.packsOf[module] {
 		if v := field(l.byScope[pack]); v != nil {
-			return v
+			return v, FromPerson
 		}
 	}
-	return field(l.byScope[AllPacks])
+	if v := field(l.family[module]); v != nil {
+		return v, FromFamily
+	}
+	for _, pack := range l.packsOf[module] {
+		if v := field(l.family[pack]); v != nil {
+			return v, FromFamily
+		}
+	}
+	return nil, FromModule
 }
 
 func (l limits) dailyCap(module string, activation Activation, settings Settings) int {
-	if v := l.pick(module, activation.DailyCap, func(s PersonSetting) *int { return s.DailyCap }); v != nil {
+	if v, _ := l.pick(module, activation.DailyCap, func(s PersonSetting) *int { return s.DailyCap }); v != nil {
 		return *v
 	}
 	return settings.DailyCap
 }
 
 func (l limits) unlockPercent(module string, activation Activation) *int {
-	return l.pick(module, activation.UnlockPercent, func(s PersonSetting) *int { return s.UnlockPercent })
+	v, _ := l.pick(module, activation.UnlockPercent, func(s PersonSetting) *int { return s.UnlockPercent })
+	return v
 }
 
 // settings are a module's game settings for the person, what they set
 // over the module's own.
 func (l limits) settings(module string, activation Activation, own Settings) Settings {
 	pick := func(mine *int, field func(PersonSetting) *int, value *int) {
-		if v := l.pick(module, mine, field); v != nil {
+		if v, _ := l.pick(module, mine, field); v != nil {
 			*value = *v
 		}
 	}
@@ -459,6 +576,73 @@ func (l limits) settings(module string, activation Activation, own Settings) Set
 }
 
 func (l limits) totalCap() *int { return l.byScope[AllPacks].TotalCap }
+
+// Value is a setting that applies and where it comes from.
+type Value struct {
+	Value *int   `json:"value"`
+	From  string `json:"from"`
+}
+
+// Applied are the settings that apply to a module for someone.
+type Applied struct {
+	Questions     Value `json:"questions"`
+	Threshold     Value `json:"threshold"`
+	HopsByStar    Value `json:"hopsByStar"`
+	DailyCap      Value `json:"dailyCap"`
+	UnlockPercent Value `json:"unlockPercent"`
+}
+
+// AppliedSettings tells, for each person given (Family for the family alone)
+// and each module, the settings that apply and where they come from.
+func AppliedSettings(db *gorm.DB, circleID int, userIDs []int) (map[int]map[string]Applied, error) {
+	var modules []Module
+	if err := db.Where("circle_id = ?", circleID).Find(&modules).Error; err != nil {
+		return nil, err
+	}
+	var activations []Activation
+	if err := db.Where("circle_id = ?", circleID).Find(&activations).Error; err != nil {
+		return nil, err
+	}
+	active := map[string]Activation{}
+	for _, a := range activations {
+		active[fmt.Sprintf("%d:%s", a.UserID, a.ModuleKey)] = a
+	}
+	own := map[string]Settings{}
+	for _, module := range modules {
+		if doc, err := Parse([]byte(module.Content)); err == nil && !module.IsPack() {
+			own[module.Key] = doc.Settings.WithDefaults()
+		}
+	}
+	out := map[int]map[string]Applied{}
+	for _, userID := range userIDs {
+		l, err := loadLimits(db, circleID, userID, modules)
+		if err != nil {
+			return nil, err
+		}
+		out[userID] = map[string]Applied{}
+		for key, settings := range own {
+			activation := active[fmt.Sprintf("%d:%s", userID, key)]
+			if userID == Family {
+				activation = Activation{}
+			}
+			value := func(mine *int, field func(PersonSetting) *int, fallback *int) Value {
+				v, from := l.pick(key, mine, field)
+				if v == nil {
+					v = fallback
+				}
+				return Value{Value: v, From: from}
+			}
+			out[userID][key] = Applied{
+				Questions:     value(activation.Questions, func(s PersonSetting) *int { return s.Questions }, &settings.Questions),
+				Threshold:     value(activation.Threshold, func(s PersonSetting) *int { return s.Threshold }, &settings.Threshold),
+				HopsByStar:    value(activation.HopsByStar, func(s PersonSetting) *int { return s.HopsByStar }, &settings.HopsByStar),
+				DailyCap:      value(activation.DailyCap, func(s PersonSetting) *int { return s.DailyCap }, &settings.DailyCap),
+				UnlockPercent: value(activation.UnlockPercent, func(s PersonSetting) *int { return s.UnlockPercent }, nil),
+			}
+		}
+	}
+	return out, nil
+}
 
 // earnedToday is what a person earned with the learning games on a day.
 func earnedToday(tx *gorm.DB, circleID, userID int, day string) (int, error) {

@@ -123,6 +123,9 @@ type Installed struct {
 	Settings    []learn.PersonSetting `json:"settings"`
 	// Defaults are each module's own settings, shown when a person has none.
 	Defaults map[string]learn.Settings `json:"defaults"`
+	// Applied are the settings that apply to each module, for each person
+	// and for the family (user 0), with where they come from.
+	Applied map[int]map[string]learn.Applied `json:"applied"`
 }
 
 func (h *Handler) getModules(c *gin.Context) {
@@ -152,7 +155,18 @@ func (h *Handler) getModules(c *gin.Context) {
 			defaults[module.Key] = doc.Settings.WithDefaults()
 		}
 	}
-	c.JSON(200, gin.H{"res": Installed{Modules: modules, Activations: activations, Settings: settings, Defaults: defaults}})
+	people, err := learn.Members(db, who.circleID)
+	if err != nil {
+		answerError(c, err, "list the members")
+		return
+	}
+	applied, err := learn.AppliedSettings(db, who.circleID, append([]int{learn.Family}, people...))
+	if err != nil {
+		answerError(c, err, "read the settings")
+		return
+	}
+	c.JSON(200, gin.H{"res": Installed{Modules: modules, Activations: activations, Settings: settings,
+		Defaults: defaults, Applied: applied}})
 }
 
 func (h *Handler) install(c *gin.Context) {
@@ -228,7 +242,7 @@ func (h *Handler) setSetting(c *gin.Context) {
 		return
 	}
 	var change learn.SettingChange
-	if err := c.ShouldBindJSON(&change); err != nil || change.UserID == 0 || change.Scope == "" {
+	if err := c.ShouldBindJSON(&change); err != nil || (change.UserID == 0 && !change.Family) || change.Scope == "" {
 		c.JSON(400, gin.H{"error": "Invalid request"})
 		return
 	}
