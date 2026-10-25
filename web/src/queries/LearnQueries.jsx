@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 import {
   GetLearnCatalogue,
+  GetLearnDetail,
   GetLearnModules,
   GetLearnPlayer,
   GetLearnStats,
@@ -16,6 +17,7 @@ import { flushQueue, loadPlayer, savePlayer } from '../utils/learn/store'
 
 export const learnKeys = {
   catalogue: ['learn', 'catalogue'],
+  detail: key => ['learn', 'detail', key],
   modules: ['learn', 'modules'],
   player: userId => ['learn', 'player', userId],
   stats: key => ['learn', 'stats', key],
@@ -54,6 +56,12 @@ export const useLearnStats = key =>
   useQuery({
     queryKey: learnKeys.stats(key),
     queryFn: () => GetLearnStats(key),
+  })
+
+export const useLearnDetail = key =>
+  useQuery({
+    queryKey: learnKeys.detail(key),
+    queryFn: () => GetLearnDetail(key),
   })
 
 export const useLearnModules = () =>

@@ -488,3 +488,21 @@ func TestGameSettingsComeFromAboveAndShapeTheStarsAndHops(t *testing.T) {
 	require.Error(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: "maths-ce2",
 		GameSettings: GameSettings{Questions: &tooMany}}, now))
 }
+
+func TestTheDetailOfAPackShowsItsModulesInstalledOrNot(t *testing.T) {
+	db := setup(t)
+	now := time.Now().UTC()
+	detail, err := ModuleDetail(db, 1, "anglais-aero", now)
+	require.NoError(t, err)
+	require.False(t, detail.Installed)
+	require.Len(t, detail.Documents, 5, "the pack, then its four modules")
+
+	require.NoError(t, Install(db, 1, "anglais-aero", now))
+	detail, err = ModuleDetail(db, 1, "anglais-aero", now)
+	require.NoError(t, err)
+	require.True(t, detail.Installed)
+	require.Len(t, detail.Documents, 5)
+
+	_, err = ModuleDetail(db, 1, "nowhere", now)
+	require.ErrorIs(t, err, ErrNotFound)
+}

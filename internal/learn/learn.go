@@ -169,6 +169,55 @@ func Modules(db *gorm.DB, circleID int, now time.Time) ([]Module, error) {
 	return modules, nil
 }
 
+// Detail is a module, or a pack with its modules, as a family sees it:
+// the version installed when it is, the catalogue's otherwise.
+type Detail struct {
+	Installed bool `json:"installed"`
+	// Documents are the module, then for a pack each of its modules.
+	Documents []json.RawMessage `json:"documents"`
+}
+
+// ModuleDetail reads a module of the circle or of the catalogue, and, for a
+// pack, its modules.
+func ModuleDetail(db *gorm.DB, circleID int, key string, now time.Time) (Detail, error) {
+	modules, err := Modules(db, circleID, now)
+	if err != nil {
+		return Detail{}, err
+	}
+	installed := map[string]string{}
+	for _, module := range modules {
+		installed[module.Key] = module.Content
+	}
+	entries, err := Catalogue()
+	if err != nil {
+		return Detail{}, err
+	}
+	read := func(key string) (Document, json.RawMessage, bool) {
+		raw, ok := installed[key]
+		if !ok {
+			entry, found := entries[key]
+			if !found {
+				return Document{}, nil, false
+			}
+			return entry.Doc, entry.Raw, true
+		}
+		doc, err := Parse([]byte(raw))
+		return doc, json.RawMessage(raw), err == nil
+	}
+	doc, raw, ok := read(key)
+	if !ok {
+		return Detail{}, ErrNotFound
+	}
+	_, isInstalled := installed[key]
+	out := Detail{Installed: isInstalled, Documents: []json.RawMessage{raw}}
+	for _, child := range doc.Modules {
+		if _, raw, ok := read(child); ok {
+			out.Documents = append(out.Documents, raw)
+		}
+	}
+	return out, nil
+}
+
 // Remove takes a module out of a circle with its activations. The modules of
 // a pack stay; what people know stays too, should it come back.
 func Remove(db *gorm.DB, circleID int, key string) error {
