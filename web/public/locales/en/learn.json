@@ -96,7 +96,8 @@
     "questions": "Questions per game",
     "threshold": "1st star at (%)",
     "hopsByStar": "Hops per star",
-    "fromModule": "{{value}} (module)"
+    "fromModule": "{{value}} (module)",
+    "by": "by {{author}}"
   },
   "stats": {
     "chapters": "Chapters",

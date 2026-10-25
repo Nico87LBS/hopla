@@ -235,3 +235,24 @@ test('the total cap of the day holds back what a game earns', () => {
   assert.equal(expectedHops(10, 10, {}, 0, 10, 1), 1)
   assert.equal(expectedHops(10, 10, {}, 0, 10, Infinity), 3)
 })
+
+test('a card without traps of its own draws them from its chapter, game after game', () => {
+  const compiled = compile(catalogue['anglais-aero-meteo'])
+  const chapter = compiled.chapters[0]
+  const answers = new Set(chapter.sources[0].list().map(item => item.answer))
+  const drawn = new Set()
+  for (let seed = 1; seed <= 6; seed++) {
+    for (const q of pickQuestions(compiled, new Map(), {
+      rng: seededRandom(seed),
+    })) {
+      assert.equal(q.choices.length, 4)
+      assert.ok(q.choices.includes(q.answer))
+      assert.equal(new Set(q.choices).size, 4)
+      if (q.key === 'en:def:fog') {
+        q.choices.forEach(c => assert.ok(answers.has(c), c))
+        q.choices.filter(c => c !== q.answer).forEach(c => drawn.add(c))
+      }
+    }
+  }
+  assert.ok(drawn.size > 3, `${drawn.size} different traps`)
+})

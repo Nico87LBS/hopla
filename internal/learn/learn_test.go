@@ -2,6 +2,7 @@ package learn_test
 
 import (
 	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
@@ -200,6 +201,64 @@ func TestTheSameKnowledgeIsOneCardWhicheverModuleAsksIt(t *testing.T) {
 	require.NoError(t, db.Where("user_id = ?", anna).Find(&cards).Error)
 	require.Len(t, cards, 1)
 	require.Equal(t, 2, cards[0].Box)
+}
+
+func TestTheCatalogueSharesEachKeyForOneAnswer(t *testing.T) {
+	entries, err := Catalogue()
+	require.NoError(t, err)
+	docs := []Document{}
+	for _, entry := range entries {
+		docs = append(docs, entry.Doc)
+	}
+	for _, doc := range docs {
+		require.NoError(t, KeyConflict(doc, docs), doc.ID)
+	}
+	pack, ok := entries["anglais-aero"]
+	require.True(t, ok)
+	for _, child := range pack.Doc.Modules {
+		require.Equal(t, "adulte", entries[child].Doc.Audience, child)
+		require.NotEmpty(t, entries[child].Doc.SharedKeys(), child)
+	}
+}
+
+func TestSharedKeysFollowTheirFormAndOneAnswer(t *testing.T) {
+	card := func(key, answer string) string {
+		return `{"format":"hopla-module/1","id":"marie-anglais","version":"1","nom":"Anglais","auteur":"Marie","public":"enfant",
+		"chapitres":[{"id":"c","nom":"C"}],"fiches":[{"id":"f","chapitre":"c","type":"choix","question":"q","reponse":"` +
+			answer + `","cle":"` + key + `"}]}`
+	}
+	for key, reason := range map[string]string{
+		"windshear":         "invalide",
+		"en:Def:windshear":  "invalide",
+		"mul:7x8":           "réservé aux calculs",
+		"en:def:x:inverse":  "inverse",
+		"en:def:wind shear": "invalide",
+	} {
+		_, err := Parse([]byte(card(key, "windshear")))
+		require.ErrorContains(t, err, reason, key)
+	}
+	_, err := Parse([]byte(`{"format":"hopla-module/1","id":"mul","version":"1","nom":"X","public":"enfant","modules":["a-b"]}`))
+	require.ErrorContains(t, err, "réservé")
+
+	db := setup(t)
+	now := time.Now().UTC()
+	module, err := Import(db, 1, []byte(card("en:def:shear", "windshear")), now)
+	require.NoError(t, err)
+	require.Equal(t, "Marie", module.Author)
+	_, err = Import(db, 1, []byte(card("en:def:shear", "Wind  shear")), now)
+	require.NoError(t, err, "the same module comes back with another answer")
+
+	other := strings.Replace(card("en:def:shear", "gust"), "marie-anglais", "paul-anglais", 1)
+	_, err = Import(db, 1, []byte(other), now)
+	var invalid InvalidError
+	require.ErrorAs(t, err, &invalid)
+	require.Contains(t, invalid.Reason, "marie-anglais")
+	other = strings.Replace(card("en:def:shear", "WIND SHEAR"), "marie-anglais", "paul-anglais", 1)
+	_, err = Import(db, 1, []byte(other), now)
+	require.NoError(t, err, "the same answer, written another way")
+
+	_, err = Import(db, 1, []byte(strings.Replace(card("en:def:aileron", "flap"), "marie-anglais", "paul-anglais", 1)), now)
+	require.ErrorContains(t, err, "anglais-aero-systemes", "the catalogue's keys count too")
 }
 
 func TestImportChecksTheDocumentAndKeepsCatalogueIds(t *testing.T) {
