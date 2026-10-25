@@ -1,8 +1,23 @@
 import { Box, Container, Typography } from '@mui/joy'
-import { useNavigate } from 'react-router-dom'
+import PropTypes from 'prop-types'
+import { useContext } from 'react'
+
+import { SettingsEmbedContext } from './settingsEmbed'
 
 const SettingsLayout = ({ children, title }) => {
-  const navigate = useNavigate()
+  const embed = useContext(SettingsEmbedContext)
+
+  if (embed === 'tab') return children
+  if (embed === 'section') {
+    return (
+      <Box component='section'>
+        <Typography level='title-lg' sx={{ mb: 1.5 }}>
+          {title}
+        </Typography>
+        {children}
+      </Box>
+    )
+  }
 
   return (
     <Container>
@@ -16,6 +31,11 @@ const SettingsLayout = ({ children, title }) => {
       </Box>
     </Container>
   )
+}
+
+SettingsLayout.propTypes = {
+  children: PropTypes.node,
+  title: PropTypes.node,
 }
 
 export default SettingsLayout

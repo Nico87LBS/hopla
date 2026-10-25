@@ -50,7 +50,7 @@ const LocalizationSettings = () => {
       <div className='grid gap-4 py-4'>
         <Typography level='body-md'>{t('localization.description')}</Typography>
 
-        <Typography level='h3'>{t('localization.language')}</Typography>
+        <Typography level='title-md'>{t('localization.language')}</Typography>
         <Divider />
         <Typography level='body-md'>
           {t('localization.languageDescription')}
@@ -79,7 +79,7 @@ const LocalizationSettings = () => {
           )}
         </FormControl>
 
-        <Typography level='h3'>{t('localization.dateFormat')}</Typography>
+        <Typography level='title-md'>{t('localization.dateFormat')}</Typography>
         <Divider />
         <Typography level='body-md'>
           {t('localization.dateFormatDescription')}
@@ -117,7 +117,7 @@ const LocalizationSettings = () => {
           </FormHelperText>
         </FormControl>
 
-        <Typography level='h3'>{t('localization.timeFormat')}</Typography>
+        <Typography level='title-md'>{t('localization.timeFormat')}</Typography>
         <Divider />
         <Typography level='body-md'>
           {t('localization.timeFormatDescription')}
@@ -168,7 +168,9 @@ const LocalizationSettings = () => {
           </FormHelperText>
         </FormControl>
 
-        <Typography level='h3'>{t('localization.firstDayOfWeek')}</Typography>
+        <Typography level='title-md'>
+          {t('localization.firstDayOfWeek')}
+        </Typography>
         <Divider />
         <Typography level='body-md'>
           {t('localization.firstDayOfWeekDescription')}

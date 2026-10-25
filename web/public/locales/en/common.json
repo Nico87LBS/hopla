@@ -535,21 +535,13 @@
       "account": "Account"
     },
     "items": {
-      "projects": {
-        "title": "Projects",
-        "description": "Group tasks by room or topic"
+      "play": {
+        "title": "Learning games",
+        "description": "Maths, words… and hops to earn"
       },
-      "labels": {
-        "title": "Labels",
-        "description": "Spot tasks at a glance"
-      },
-      "filters": {
-        "title": "Filters",
-        "description": "Your saved views"
-      },
-      "archived": {
-        "title": "Archive",
-        "description": "Tasks put aside"
+      "tasks": {
+        "title": "Tasks",
+        "description": "Labels, projects, filters and archive"
       },
       "activities": {
         "title": "Activities",
@@ -563,33 +555,56 @@
         "title": "Rewards and requests",
         "description": "What hops can buy"
       },
-      "games": {
-        "title": "Quests, challenges and bonus periods",
-        "description": "The week’s games and multiplied points"
+      "missions": {
+        "title": "Missions",
+        "description": "Quests, challenges and bonus periods"
       },
       "ranks": {
         "title": "Ranks and rules",
         "description": "Ranks, streaks and the surprise task"
       },
-      "reset": {
-        "title": "Reset",
-        "description": "Start over for one member or the whole family"
-      },
-      "circle": {
-        "title": "Family and members",
-        "description": "Invite, manage the children’s accounts"
-      },
-      "settings": {
-        "title": "Settings",
-        "description": "Profile, appearance, language and more"
-      },
-      "play": {
-        "title": "Learning games",
-        "description": "Maths, words… and hops to earn"
-      },
       "learn": {
         "title": "Learning modules",
         "description": "Choose everyone’s games and their hops"
+      },
+      "family": {
+        "title": "Family",
+        "description": "Members, children's accounts and time zone"
+      },
+      "account": {
+        "title": "My account",
+        "description": "Profile, security, theme and language"
+      },
+      "advanced": {
+        "title": "Advanced",
+        "description": "Calendar, connections, template, offline and reset"
+      }
+    },
+    "tabs": {
+      "tasks": {
+        "labels": "Labels",
+        "projects": "Projects",
+        "filters": "Filters",
+        "archived": "Archive"
+      },
+      "missions": {
+        "quests": "Quests",
+        "challenges": "Challenges",
+        "periods": "Bonus periods"
+      },
+      "ranks": {
+        "ranks": "Ranks",
+        "rules": "Rules"
+      },
+      "family": {
+        "members": "Members",
+        "children": "Children",
+        "settings": "Settings"
+      },
+      "account": {
+        "profile": "Profile",
+        "security": "Security",
+        "appearance": "Appearance"
       }
     }
   },

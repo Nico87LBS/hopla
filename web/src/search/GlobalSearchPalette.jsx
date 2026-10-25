@@ -146,7 +146,7 @@ const buildQuickActions = t => [
       id: 'action:settings',
       title: t('search.actions.openSettings'),
       keywords: 'settings preferences configuration open',
-      route: '/settings',
+      route: '/manage',
       icon: <SettingsOutlined />,
     },
   ].map(action => ({

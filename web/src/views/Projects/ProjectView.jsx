@@ -51,6 +51,7 @@ import { getIconComponent } from '../../utils/ProjectIcons'
 import { getSafeBottom, getSafeBottomStyles } from '../../utils/SafeAreaUtils'
 import { useProjectFilter } from '../Chores/hooks/useProjectFilter'
 import ScrollHideFab from '../components/ScrollHideFab'
+import { TasksTabs } from '../Manage/ManageTabs'
 import ConfirmationModal from '../Modals/Inputs/ConfirmationModal'
 import ProjectModal from '../Modals/Inputs/ProjectModal'
 import { useProjects } from './ProjectQueries'
@@ -567,6 +568,7 @@ const ProjectView = () => {
 
   return (
     <Container maxWidth='md' sx={{ px: 0, pt: { xs: 0, md: 3 } }}>
+      <TasksTabs current='projects' />
       <Box sx={{ px: 2, mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
         <Input
           slotProps={{ input: { ref: searchInputRef } }}

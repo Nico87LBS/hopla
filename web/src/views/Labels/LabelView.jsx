@@ -42,6 +42,7 @@ import { getTextColorFromBackgroundColor } from '../../utils/Colors'
 import { DeleteLabel } from '../../utils/Fetcher'
 import { getSafeBottom, getSafeBottomStyles } from '../../utils/SafeAreaUtils'
 import ScrollHideFab from '../components/ScrollHideFab'
+import { TasksTabs } from '../Manage/ManageTabs'
 import ConfirmationModal from '../Modals/Inputs/ConfirmationModal'
 import LabelModal from '../Modals/Inputs/LabelModal'
 import { useLabels } from './LabelQueries'
@@ -332,6 +333,7 @@ const LabelView = () => {
 
   return (
     <Container maxWidth='md' sx={{ px: 0, pt: { xs: 0, md: 3 } }}>
+      <TasksTabs current='labels' />
       {userLabels.length > 0 && (
         <Box
           sx={{ px: 2, mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}

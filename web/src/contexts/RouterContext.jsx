@@ -1,15 +1,9 @@
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 
 import App from '@/App'
+import { SETTINGS_SECTIONS } from '@/constants/settingsSections'
 import ChoreEdit from '@/views/ChoreEdit/ChoreEdit'
 import Error from '@/views/Error'
-import AccountSettings from '@/views/Settings/AccountSettings'
-import AdvancedSettings from '@/views/Settings/AdvancedSettings'
-import ChildUserSettings from '@/views/Settings/ChildUserSettings'
-import CircleSettings from '@/views/Settings/CircleSettings'
-import SettingsOverview from '@/views/Settings/SettingsOverview'
-import SettingsRoutes from '@/views/Settings/SettingsRoutes'
-import ThemeSettings from '@/views/Settings/ThemeSettings'
 
 import GlobalSearchPage from '../search/GlobalSearchPage'
 import AuthenticationLoading from '../views/Authorization/Authenticating'
@@ -34,21 +28,15 @@ import LearnStats from '../views/Learn/LearnStats'
 import ManageLearn, { LearnCatalogue } from '../views/Learn/ManageLearn'
 import ManageView from '../views/Manage/ManageView'
 import {
-  ManageGames,
+  ManageAccount,
+  ManageAdvanced,
+  ManageFamily,
+  ManageMissions,
   ManagePoints,
   ManageRanks,
-  ManageReset,
 } from '../views/Manage/ParentPages'
 import CircleSetupView from '../views/Onboarding/CircleSetupView'
 import ProjectView from '../views/Projects/ProjectView'
-import APITokenSettings from '../views/Settings/APITokenSettings'
-import CalendarSettings from '../views/Settings/CalendarSettings'
-import LayoutSettings from '../views/Settings/LayoutSettings'
-import LocalizationSettings from '../views/Settings/LocalizationSettings'
-import MFASettings from '../views/Settings/MFASettings'
-import ProfileSettings from '../views/Settings/ProfileSettings'
-import StorageSettings from '../views/Settings/StorageSettings'
-import TemplateSettings from '../views/Settings/TemplateSettings'
 import ShopView from '../views/Shop/ShopView'
 import TimerDetails from '../views/Timer/TimerDetails'
 import UserActivities from '../views/User/UserActivities'
@@ -78,67 +66,14 @@ const Router = createBrowserRouter([
         element: <Navigate to='/chores' replace />,
       },
       {
+        // Old links: the settings now live in the pages of Gérer.
         path: '/settings',
-        element: <SettingsRoutes />,
-        children: [
-          {
-            index: true,
-            element: <SettingsOverview />,
-          },
-          {
-            path: 'profile',
-            element: <ProfileSettings />,
-          },
-          {
-            path: 'circle',
-            element: <CircleSettings />,
-          },
-          {
-            path: 'account',
-            element: <AccountSettings />,
-          },
-          {
-            path: 'subaccounts',
-            element: <ChildUserSettings />,
-          },
-          {
-            path: 'mfa',
-            element: <MFASettings />,
-          },
-          {
-            path: 'apitokens',
-            element: <APITokenSettings />,
-          },
-          {
-            path: 'calendar',
-            element: <CalendarSettings />,
-          },
-          {
-            path: 'storage',
-            element: <StorageSettings />,
-          },
-          {
-            path: 'template',
-            element: <TemplateSettings />,
-          },
-          {
-            path: 'layout',
-            element: <LayoutSettings />,
-          },
-          {
-            path: 'theme',
-            element: <ThemeSettings />,
-          },
-          {
-            path: 'localization',
-            element: <LocalizationSettings />,
-          },
-          {
-            path: 'advanced',
-            element: <AdvancedSettings />,
-          },
-        ],
+        element: <Navigate to='/manage' replace />,
       },
+      ...SETTINGS_SECTIONS.map(({ id, to }) => ({
+        path: `/settings/${id}`,
+        element: <Navigate to={to} replace />,
+      })),
       {
         path: '/chores',
         element: <MyChores />,
@@ -196,16 +131,60 @@ const Router = createBrowserRouter([
         element: <ManagePoints />,
       },
       {
+        path: '/manage/missions',
+        element: <ManageMissions tab='quests' />,
+      },
+      {
+        path: '/manage/missions/challenges',
+        element: <ManageMissions tab='challenges' />,
+      },
+      {
+        path: '/manage/missions/periods',
+        element: <ManageMissions tab='periods' />,
+      },
+      {
         path: '/manage/games',
-        element: <ManageGames />,
+        element: <Navigate to='/manage/missions' replace />,
       },
       {
         path: '/manage/ranks',
-        element: <ManageRanks />,
+        element: <ManageRanks tab='ranks' />,
+      },
+      {
+        path: '/manage/ranks/rules',
+        element: <ManageRanks tab='rules' />,
+      },
+      {
+        path: '/manage/family',
+        element: <ManageFamily tab='members' />,
+      },
+      {
+        path: '/manage/family/children',
+        element: <ManageFamily tab='children' />,
+      },
+      {
+        path: '/manage/family/settings',
+        element: <ManageFamily tab='settings' />,
+      },
+      {
+        path: '/manage/account',
+        element: <ManageAccount tab='profile' />,
+      },
+      {
+        path: '/manage/account/security',
+        element: <ManageAccount tab='security' />,
+      },
+      {
+        path: '/manage/account/appearance',
+        element: <ManageAccount tab='appearance' />,
+      },
+      {
+        path: '/manage/advanced',
+        element: <ManageAdvanced />,
       },
       {
         path: '/manage/reset',
-        element: <ManageReset />,
+        element: <Navigate to='/manage/advanced' replace />,
       },
       {
         path: '/manage/learn',

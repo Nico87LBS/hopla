@@ -345,7 +345,7 @@ const UserProfileAvatar = ({ showDetails = false }) => {
           )}
 
           <MenuItem
-            onClick={() => navigate('/settings')}
+            onClick={() => navigate('/manage/account')}
             sx={{
               borderRadius: 'var(--joy-radius-sm)',
               '&:hover': {
@@ -370,7 +370,7 @@ const UserProfileAvatar = ({ showDetails = false }) => {
           </MenuItem>
 
           <MenuItem
-            onClick={() => navigate('/settings/circle')}
+            onClick={() => navigate('/manage/family')}
             sx={{
               borderRadius: 'var(--joy-radius-sm)',
               '&:hover': {
@@ -395,7 +395,7 @@ const UserProfileAvatar = ({ showDetails = false }) => {
           </MenuItem>
           {isLargeScreen && (
             <MenuItem
-              onClick={() => navigate('/settings/layout')}
+              onClick={() => navigate('/manage/account/appearance')}
               sx={{
                 borderRadius: 'var(--joy-radius-sm)',
                 '&:hover': {

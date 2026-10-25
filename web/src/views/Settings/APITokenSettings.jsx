@@ -82,7 +82,7 @@ const APITokenSettings = () => {
   return (
     <SettingsLayout title={t('apiTokens.title')}>
       <div className='grid gap-4 py-4' id='apitokens'>
-        <Typography level='h3'>{t('apiTokens.accessToken')}</Typography>
+        <Typography level='title-md'>{t('apiTokens.accessToken')}</Typography>
         <Divider />
         <Typography level='body-sm'>{t('apiTokens.description')}</Typography>
         {newToken && (

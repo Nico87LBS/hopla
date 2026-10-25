@@ -17,9 +17,6 @@ import {
   Input,
   Sheet,
   Stack,
-  Tab,
-  TabList,
-  Tabs,
   Textarea,
   Typography,
 } from '@mui/joy'
@@ -29,6 +26,7 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
 import ModalActions from '../../components/common/ModalActions'
+import PageTabs from '../../components/common/PageTabs'
 import { HOPLA } from '../../constants/theme'
 import { useResponsiveModal } from '../../hooks/useResponsiveModal'
 import {
@@ -1004,35 +1002,10 @@ const TABS = [
 const LearnTabs = ({ current }) => {
   const { t } = useTranslation('learn')
   return (
-    <Tabs
-      value={current}
-      size='sm'
-      sx={{ bgcolor: 'background.level1', borderRadius: 'lg', p: 0.5 }}
-    >
-      <TabList disableUnderline sx={{ gap: 0.25 }}>
-        {TABS.map(tab => (
-          <Tab
-            key={tab.value}
-            value={tab.value}
-            component={Link}
-            to={tab.to}
-            replace
-            disableIndicator
-            sx={{
-              flex: 1,
-              borderRadius: 'md',
-              minHeight: 40,
-              '&.Mui-selected': {
-                bgcolor: 'background.surface',
-                boxShadow: 'sm',
-              },
-            }}
-          >
-            {t(`manage.tabs.${tab.value}`)}
-          </Tab>
-        ))}
-      </TabList>
-    </Tabs>
+    <PageTabs
+      current={current}
+      tabs={TABS.map(tab => ({ ...tab, label: t(`manage.tabs.${tab.value}`) }))}
+    />
   )
 }
 

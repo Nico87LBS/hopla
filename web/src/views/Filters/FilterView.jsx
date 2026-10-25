@@ -45,6 +45,7 @@ import { getFilterCount, getFilterOverdueCount } from '../../utils/FilterEngine'
 import { getSafeBottom, getSafeBottomStyles } from '../../utils/SafeAreaUtils'
 import ScrollHideFab from '../components/ScrollHideFab'
 import { useLabels } from '../Labels/LabelQueries'
+import { TasksTabs } from '../Manage/ManageTabs'
 import AdvancedFilterBuilder from '../Modals/Inputs/AdvancedFilterBuilder'
 import ConfirmationModal from '../Modals/Inputs/ConfirmationModal'
 import { useProjects } from '../Projects/ProjectQueries'
@@ -500,6 +501,7 @@ const FilterView = () => {
 
   return (
     <Container maxWidth='md' sx={{ px: 0, pt: { xs: 0, md: 3 } }}>
+      <TasksTabs current='filters' />
       {savedFilters.length > 0 && (
         <Box
           sx={{ px: 2, mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}
