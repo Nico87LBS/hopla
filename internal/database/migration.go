@@ -59,6 +59,7 @@ func Migration(db *gorm.DB) error {
 		games.Flash{},
 		learn.Module{},
 		learn.Activation{},
+		learn.PersonSetting{},
 		learn.Session{},
 		learn.Card{},
 		stModel.SubTask{},

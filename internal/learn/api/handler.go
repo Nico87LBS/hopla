@@ -117,8 +117,9 @@ func (h *Handler) getCatalogue(c *gin.Context) {
 
 // Installed is the circle's modules and who plays them.
 type Installed struct {
-	Modules     []learn.Module     `json:"modules"`
-	Activations []learn.Activation `json:"activations"`
+	Modules     []learn.Module        `json:"modules"`
+	Activations []learn.Activation    `json:"activations"`
+	Settings    []learn.PersonSetting `json:"settings"`
 }
 
 func (h *Handler) getModules(c *gin.Context) {
@@ -137,7 +138,12 @@ func (h *Handler) getModules(c *gin.Context) {
 		answerError(c, err, "list the activations")
 		return
 	}
-	c.JSON(200, gin.H{"res": Installed{Modules: modules, Activations: activations}})
+	settings, err := learn.PersonSettings(db, who.circleID)
+	if err != nil {
+		answerError(c, err, "list the settings")
+		return
+	}
+	c.JSON(200, gin.H{"res": Installed{Modules: modules, Activations: activations, Settings: settings}})
 }
 
 func (h *Handler) install(c *gin.Context) {
@@ -207,6 +213,36 @@ func (h *Handler) setActivation(c *gin.Context) {
 	h.getModules(c)
 }
 
+func (h *Handler) setSetting(c *gin.Context) {
+	who, ok := h.requireParent(c)
+	if !ok {
+		return
+	}
+	var change learn.SettingChange
+	if err := c.ShouldBindJSON(&change); err != nil || change.UserID == 0 || change.Scope == "" {
+		c.JSON(400, gin.H{"error": "Invalid request"})
+		return
+	}
+	if err := learn.SetPersonSetting(h.db.WithContext(c), who.circleID, change, time.Now().UTC()); err != nil {
+		answerError(c, err, "change the settings")
+		return
+	}
+	h.getModules(c)
+}
+
+func (h *Handler) getStats(c *gin.Context) {
+	who, ok := h.requireParent(c)
+	if !ok {
+		return
+	}
+	stats, err := learn.Stats(h.db.WithContext(c), who.circleID, c.Param("key"), time.Now().UTC())
+	if err != nil {
+		answerError(c, err, "get the statistics")
+		return
+	}
+	c.JSON(200, gin.H{"res": stats})
+}
+
 func (h *Handler) getPlayer(c *gin.Context) {
 	who, ok := h.caller(c)
 	if !ok {
@@ -257,6 +293,8 @@ func Routes(r *gin.Engine, h *Handler, auth *jwt.GinJWTMiddleware) {
 		routes.POST("/modules/import", h.importModule)
 		routes.DELETE("/modules/:key", h.remove)
 		routes.PUT("/activations", h.setActivation)
+		routes.PUT("/settings", h.setSetting)
+		routes.GET("/stats/:key", h.getStats)
 		routes.GET("/players/:userId", h.getPlayer)
 		routes.POST("/games", h.recordGame)
 	}

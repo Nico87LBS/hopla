@@ -402,16 +402,26 @@ export const stars = (correct, total, threshold) => {
   return 0
 }
 
-// expectedHops is what a game should earn, before the server confirms it.
+// totalLeft is what a player can still earn today, all modules together;
+// Infinity without a total cap.
+export const totalLeft = player =>
+  player?.totalCap === null || player?.totalCap === undefined
+    ? Infinity
+    : Math.max(0, player.totalCap - (player.earnedToday || 0))
+
+// expectedHops is what a game should earn, before the server confirms it:
+// its stars within the module's cap of the day and what is left of the
+// total.
 export const expectedHops = (
   correct,
   total,
   settings,
   earnedToday,
   dailyCap,
+  left = Infinity,
 ) => {
   if (total < MIN_ANSWERS) return 0
   const s = withDefaults(settings)
   const won = stars(correct, total, s.seuil) * s.hops_par_etoile
-  return Math.max(0, Math.min(won, dailyCap - earnedToday))
+  return Math.max(0, Math.min(won, dailyCap - earnedToday, left))
 }

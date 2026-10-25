@@ -152,7 +152,10 @@ func Remove(db *gorm.DB, circleID int, key string) error {
 		if result.RowsAffected == 0 {
 			return ErrNotFound
 		}
-		return tx.Where("circle_id = ? AND module_key = ?", circleID, key).Delete(&Activation{}).Error
+		if err := tx.Where("circle_id = ? AND module_key = ?", circleID, key).Delete(&Activation{}).Error; err != nil {
+			return err
+		}
+		return tx.Where("circle_id = ? AND scope = ?", circleID, key).Delete(&PersonSetting{}).Error
 	})
 }
 
@@ -238,6 +241,140 @@ func ownSetting(value *int) *int {
 	return value
 }
 
+// PersonSettings lists the settings of everyone in a circle.
+func PersonSettings(db *gorm.DB, circleID int) ([]PersonSetting, error) {
+	var rows []PersonSetting
+	err := db.Where("circle_id = ?", circleID).Order("user_id, scope").Find(&rows).Error
+	return rows, err
+}
+
+// SettingChange sets a person's settings for a pack, or for all modules
+// (scope AllPacks). As for a module, empty leaves a setting as it is and
+// -1 clears it.
+type SettingChange struct {
+	UserID        int    `json:"userId"`
+	Scope         string `json:"scope"`
+	DailyCap      *int   `json:"dailyCap"`
+	UnlockPercent *int   `json:"unlockPercent"`
+	TotalCap      *int   `json:"totalCap"`
+}
+
+// SetPersonSetting applies a change of a person's settings.
+func SetPersonSetting(db *gorm.DB, circleID int, change SettingChange, now time.Time) error {
+	if change.DailyCap != nil && (*change.DailyCap < -1 || *change.DailyCap > 200) {
+		return invalid("plafond entre 0 et 200 hops")
+	}
+	if change.TotalCap != nil && (*change.TotalCap < -1 || *change.TotalCap > 1000) {
+		return invalid("plafond total entre 0 et 1000 hops")
+	}
+	if change.UnlockPercent != nil && (*change.UnlockPercent < -1 || *change.UnlockPercent > 100) {
+		return invalid("seuil d'ouverture entre 0 et 100 %%")
+	}
+	if change.TotalCap != nil && change.Scope != AllPacks {
+		return invalid("le plafond total se règle pour tous les paquets")
+	}
+	return db.Transaction(func(tx *gorm.DB) error {
+		var member cModel.UserCircle
+		if err := tx.Where("user_id = ? AND circle_id = ?", change.UserID, circleID).First(&member).Error; err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				return invalid("cette personne n'est pas de la famille")
+			}
+			return err
+		}
+		if change.Scope != AllPacks {
+			var pack Module
+			if err := tx.Where("circle_id = ? AND module_key = ?", circleID, change.Scope).First(&pack).Error; err != nil {
+				if errors.Is(err, gorm.ErrRecordNotFound) {
+					return ErrNotFound
+				}
+				return err
+			}
+			if !pack.IsPack() {
+				return invalid("ce module n'est pas un paquet")
+			}
+		}
+		row := PersonSetting{CircleID: circleID, UserID: change.UserID, Scope: change.Scope}
+		err := tx.Where(row).First(&row).Error
+		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+			return err
+		}
+		if change.DailyCap != nil {
+			row.DailyCap = ownSetting(change.DailyCap)
+		}
+		if change.UnlockPercent != nil {
+			row.UnlockPercent = ownSetting(change.UnlockPercent)
+		}
+		if change.TotalCap != nil {
+			row.TotalCap = ownSetting(change.TotalCap)
+		}
+		row.UpdatedAt = now
+		if row.DailyCap == nil && row.UnlockPercent == nil && row.TotalCap == nil {
+			return tx.Where("circle_id = ? AND user_id = ? AND scope = ?", circleID, change.UserID, change.Scope).
+				Delete(&PersonSetting{}).Error
+		}
+		return tx.Save(&row).Error
+	})
+}
+
+// limits are the settings that apply to a person, module by module.
+type limits struct {
+	byScope map[string]PersonSetting
+	// packsOf lists the packs a module belongs to, in their order.
+	packsOf map[string][]string
+}
+
+func loadLimits(tx *gorm.DB, circleID, userID int, modules []Module) (limits, error) {
+	l := limits{byScope: map[string]PersonSetting{}, packsOf: map[string][]string{}}
+	var rows []PersonSetting
+	if err := tx.Where("circle_id = ? AND user_id = ?", circleID, userID).Find(&rows).Error; err != nil {
+		return l, err
+	}
+	for _, row := range rows {
+		l.byScope[row.Scope] = row
+	}
+	for _, module := range modules {
+		for _, child := range module.Children {
+			l.packsOf[child] = append(l.packsOf[child], module.Key)
+		}
+	}
+	return l, nil
+}
+
+// pick returns the first setting found: the module's own, its packs', then
+// the one for all modules.
+func (l limits) pick(module string, own *int, field func(PersonSetting) *int) *int {
+	if own != nil {
+		return own
+	}
+	for _, pack := range l.packsOf[module] {
+		if v := field(l.byScope[pack]); v != nil {
+			return v
+		}
+	}
+	return field(l.byScope[AllPacks])
+}
+
+func (l limits) dailyCap(module string, activation Activation, settings Settings) int {
+	if v := l.pick(module, activation.DailyCap, func(s PersonSetting) *int { return s.DailyCap }); v != nil {
+		return *v
+	}
+	return settings.DailyCap
+}
+
+func (l limits) unlockPercent(module string, activation Activation) *int {
+	return l.pick(module, activation.UnlockPercent, func(s PersonSetting) *int { return s.UnlockPercent })
+}
+
+func (l limits) totalCap() *int { return l.byScope[AllPacks].TotalCap }
+
+// earnedToday is what a person earned with the learning games on a day.
+func earnedToday(tx *gorm.DB, circleID, userID int, day string) (int, error) {
+	var earned int
+	err := tx.Model(&Session{}).Select("COALESCE(SUM(points), 0)").
+		Where("circle_id = ? AND user_id = ? AND day = ?", circleID, userID, day).Scan(&earned).Error
+	return earned, err
+}
+
 // leaves turns module ids into the playable modules they stand for, packs
 // opened up.
 func leaves(tx *gorm.DB, circleID int, keys []string) ([]string, error) {
@@ -315,6 +452,10 @@ type Player struct {
 	// Packs are the installed packs, to show modules under their pack.
 	Packs []Module `json:"packs"`
 	Cards []Card   `json:"cards"`
+	// TotalCap is the most hops of a day, all modules together; nil for
+	// none. EarnedToday counts them.
+	TotalCap    *int `json:"totalCap"`
+	EarnedToday int  `json:"earnedToday"`
 }
 
 // PlayerFor gathers what a person plays.
@@ -346,7 +487,13 @@ func PlayerFor(db *gorm.DB, circleID, userID int, now time.Time) (Player, error)
 	earned := map[string]total{}
 	for _, t := range totals {
 		earned[t.ModuleKey] = t
+		player.EarnedToday += t.Points
 	}
+	limits, err := loadLimits(db, circleID, userID, modules)
+	if err != nil {
+		return player, err
+	}
+	player.TotalCap = limits.totalCap()
 	for _, module := range modules {
 		if module.IsPack() {
 			player.Packs = append(player.Packs, module)
@@ -361,18 +508,93 @@ func PlayerFor(db *gorm.DB, circleID, userID int, now time.Time) (Player, error)
 			continue
 		}
 		pm := PlayerModule{Module: module, Document: json.RawMessage(module.Content),
-			Settings: doc.Settings.WithDefaults(), UnlockPercent: activation.UnlockPercent,
+			Settings: doc.Settings.WithDefaults(), UnlockPercent: limits.unlockPercent(module.Key, activation),
 			EarnedToday: earned[module.Key].Points, PlayedToday: earned[module.Key].Games}
-		pm.DailyCap = pm.Settings.DailyCap
-		if activation.DailyCap != nil {
-			pm.DailyCap = *activation.DailyCap
-		}
+		pm.DailyCap = limits.dailyCap(module.Key, activation, pm.Settings)
 		player.Modules = append(player.Modules, pm)
 	}
 	if err := db.Where("circle_id = ? AND user_id = ?", circleID, userID).Find(&player.Cards).Error; err != nil {
 		return player, err
 	}
 	return player, nil
+}
+
+// StatsDays is how far back the statistics of a module go.
+const StatsDays = 90
+
+// PersonStats is how one person does with a module: their cards, which the
+// web app matches to the module's chapters, and their recent games of it.
+type PersonStats struct {
+	UserID        int       `json:"userId"`
+	Active        bool      `json:"active"`
+	DailyCap      int       `json:"dailyCap"`
+	UnlockPercent *int      `json:"unlockPercent"`
+	Cards         []Card    `json:"cards"`
+	Sessions      []Session `json:"sessions"`
+}
+
+// ModuleStats is a module and how everyone of the family does with it.
+type ModuleStats struct {
+	Module   Module          `json:"module"`
+	Document json.RawMessage `json:"document"`
+	Day      string          `json:"day"`
+	People   []PersonStats   `json:"people"`
+}
+
+// Stats gathers the statistics of a module, for every member who plays it
+// or played it.
+func Stats(db *gorm.DB, circleID int, key string, now time.Time) (ModuleStats, error) {
+	stats := ModuleStats{Day: Day(circleID, now), People: []PersonStats{}}
+	modules, err := Modules(db, circleID, now)
+	if err != nil {
+		return stats, err
+	}
+	found := false
+	for _, module := range modules {
+		if module.Key == key && !module.IsPack() {
+			stats.Module, found = module, true
+		}
+	}
+	if !found {
+		return stats, ErrNotFound
+	}
+	stats.Document = json.RawMessage(stats.Module.Content)
+	doc, err := Parse([]byte(stats.Module.Content))
+	if err != nil {
+		return stats, err
+	}
+	var members []cModel.UserCircle
+	if err := db.Where("circle_id = ? AND is_active = ?", circleID, true).Order("user_id").Find(&members).Error; err != nil {
+		return stats, err
+	}
+	since := addDays(stats.Day, -StatsDays)
+	for _, member := range members {
+		person := PersonStats{UserID: member.UserID, Cards: []Card{}, Sessions: []Session{}}
+		var activation Activation
+		err := db.Where("circle_id = ? AND user_id = ? AND module_key = ?", circleID, member.UserID, key).First(&activation).Error
+		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+			return stats, err
+		}
+		person.Active = err == nil
+		if err := db.Where("circle_id = ? AND user_id = ? AND module_key = ? AND day >= ?", circleID, member.UserID, key, since).
+			Order("played_at").Find(&person.Sessions).Error; err != nil {
+			return stats, err
+		}
+		if !person.Active && len(person.Sessions) == 0 {
+			continue
+		}
+		limits, err := loadLimits(db, circleID, member.UserID, modules)
+		if err != nil {
+			return stats, err
+		}
+		person.DailyCap = limits.dailyCap(key, activation, doc.Settings.WithDefaults())
+		person.UnlockPercent = limits.unlockPercent(key, activation)
+		if err := db.Where("circle_id = ? AND user_id = ?", circleID, member.UserID).Find(&person.Cards).Error; err != nil {
+			return stats, err
+		}
+		stats.People = append(stats.People, person)
+	}
+	return stats, nil
 }
 
 // Answer is one question of a game.
@@ -401,6 +623,10 @@ type Result struct {
 	Cards       []Card  `json:"cards"`
 	EarnedToday int     `json:"earnedToday"`
 	DailyCap    int     `json:"dailyCap"`
+	// TotalEarned is what the day's games earned, all modules together,
+	// within TotalCap when a parent set one.
+	TotalEarned int  `json:"totalEarned"`
+	TotalCap    *int `json:"totalCap"`
 	// Capped tells that the stars earned more than the day's cap left.
 	Capped bool `json:"capped"`
 }
@@ -488,10 +714,16 @@ func Record(db *gorm.DB, circleID, playedBy int, game Game, now time.Time) (Resu
 			return err
 		}
 		settings := doc.Settings.WithDefaults()
-		result.DailyCap = settings.DailyCap
-		if activation.DailyCap != nil {
-			result.DailyCap = *activation.DailyCap
+		var modules []Module
+		if err := tx.Where("circle_id = ?", circleID).Find(&modules).Error; err != nil {
+			return err
 		}
+		limits, err := loadLimits(tx, circleID, game.UserID, modules)
+		if err != nil {
+			return err
+		}
+		result.DailyCap = limits.dailyCap(game.Module, activation, settings)
+		result.TotalCap = limits.totalCap()
 
 		day := Day(circleID, game.PlayedAt)
 		session := Session{CircleID: circleID, ClientID: game.ClientID, UserID: game.UserID, ModuleKey: game.Module,
@@ -513,8 +745,15 @@ func Record(db *gorm.DB, circleID, playedBy int, game Game, now time.Time) (Resu
 			Scan(&earned).Error; err != nil {
 			return err
 		}
+		total, err := earnedToday(tx, circleID, game.UserID, day)
+		if err != nil {
+			return err
+		}
 		wanted := session.Stars * settings.HopsByStar
 		session.Points = max(0, min(wanted, result.DailyCap-earned))
+		if result.TotalCap != nil {
+			session.Points = max(0, min(session.Points, *result.TotalCap-total))
+		}
 		result.Capped = session.Points < wanted
 		if err := tx.Create(&session).Error; err != nil {
 			return err
@@ -536,6 +775,7 @@ func Record(db *gorm.DB, circleID, playedBy int, game Game, now time.Time) (Resu
 		}
 		result.Session, result.Cards = session, cards
 		result.EarnedToday = earned + session.Points
+		result.TotalEarned = total + session.Points
 		return nil
 	})
 	return result, err
@@ -544,9 +784,14 @@ func Record(db *gorm.DB, circleID, playedBy int, game Game, now time.Time) (Resu
 // fillDay answers a game sent again with the day as it stands.
 func fillDay(tx *gorm.DB, circleID int, result *Result) error {
 	s := result.Session
-	return tx.Model(&Session{}).Select("COALESCE(SUM(points), 0)").
+	if err := tx.Model(&Session{}).Select("COALESCE(SUM(points), 0)").
 		Where("circle_id = ? AND user_id = ? AND module_key = ? AND day = ?", circleID, s.UserID, s.ModuleKey, s.Day).
-		Scan(&result.EarnedToday).Error
+		Scan(&result.EarnedToday).Error; err != nil {
+		return err
+	}
+	total, err := earnedToday(tx, circleID, s.UserID, s.Day)
+	result.TotalEarned = total
+	return err
 }
 
 // moveCards applies the answers to the cards, in the order they were given.

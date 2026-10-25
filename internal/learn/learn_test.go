@@ -237,3 +237,101 @@ func TestStars(t *testing.T) {
 	require.Equal(t, 0, Stars(6, 10, 70))
 	require.Equal(t, 0, Stars(0, 0, 70))
 }
+
+func capOf(t *testing.T, db *gorm.DB, now time.Time, key string) (int, *int) {
+	player, err := PlayerFor(db, 1, anna, now)
+	require.NoError(t, err)
+	for _, module := range player.Modules {
+		if module.Key == key {
+			return module.DailyCap, module.UnlockPercent
+		}
+	}
+	t.Fatalf("%s not played", key)
+	return 0, nil
+}
+
+func TestSettingsComeFromTheModuleThenItsPackThenAllPacks(t *testing.T) {
+	db := setup(t)
+	now := time.Now().UTC()
+	require.NoError(t, Install(db, 1, "maths-ce2", now))
+	require.NoError(t, SetActivation(db, 1, ActivationChange{UserID: anna, Modules: []string{"maths-ce2"}, Active: true}, now))
+	cap, unlock := capOf(t, db, now, "maths-ce2-geometrie")
+	require.Equal(t, 10, cap, "the module's own")
+	require.Nil(t, unlock)
+
+	three, six, ninety, seventy := 3, 6, 90, 70
+	require.NoError(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: AllPacks, DailyCap: &three, UnlockPercent: &seventy}, now))
+	cap, unlock = capOf(t, db, now, "maths-ce2-geometrie")
+	require.Equal(t, 3, cap, "all packs")
+	require.Equal(t, 70, *unlock)
+
+	require.NoError(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: "maths-ce2", DailyCap: &six}, now))
+	cap, unlock = capOf(t, db, now, "maths-ce2-geometrie")
+	require.Equal(t, 6, cap, "the pack before all packs")
+	require.Equal(t, 70, *unlock, "a setting the pack leaves empty comes from all packs")
+
+	require.NoError(t, SetActivation(db, 1, ActivationChange{UserID: anna, Modules: []string{"maths-ce2-geometrie"},
+		Active: true, UnlockPercent: &ninety}, now))
+	_, unlock = capOf(t, db, now, "maths-ce2-geometrie")
+	require.Equal(t, 90, *unlock, "the module before its pack")
+
+	back := -1
+	require.NoError(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: "maths-ce2", DailyCap: &back}, now))
+	cap, _ = capOf(t, db, now, "maths-ce2-geometrie")
+	require.Equal(t, 3, cap)
+	settings, err := PersonSettings(db, 1)
+	require.NoError(t, err)
+	require.Len(t, settings, 1, "a pack with nothing set is forgotten")
+
+	require.Error(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: "maths-ce2", TotalCap: &six}, now))
+	require.Error(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: "maths-ce2-geometrie", DailyCap: &six}, now))
+	require.ErrorIs(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: "nope", DailyCap: &six}, now), ErrNotFound)
+}
+
+func TestTheTotalCapHoldsAllModulesTogether(t *testing.T) {
+	db := setup(t)
+	now := time.Now().UTC()
+	require.NoError(t, Install(db, 1, "maths-ce2", now))
+	require.NoError(t, SetActivation(db, 1, ActivationChange{UserID: anna, Modules: []string{"maths-ce2"}, Active: true}, now))
+	four := 4
+	require.NoError(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: AllPacks, TotalCap: &four}, now))
+
+	result, err := Record(db, 1, anna, Game{ClientID: "total-0001", UserID: anna, Module: "maths-ce2-multiplication",
+		Answers: answers(10, 0)}, now)
+	require.NoError(t, err)
+	require.Equal(t, 3, result.Session.Points)
+	result, err = Record(db, 1, anna, Game{ClientID: "total-0002", UserID: anna, Module: "maths-ce2-geometrie",
+		Answers: answers(10, 0)}, now)
+	require.NoError(t, err)
+	require.Equal(t, 1, result.Session.Points, "only one hop left today")
+	require.True(t, result.Capped)
+	require.Equal(t, 4, result.TotalEarned)
+	require.Equal(t, 4, points(t, db))
+
+	player, err := PlayerFor(db, 1, anna, now)
+	require.NoError(t, err)
+	require.Equal(t, 4, *player.TotalCap)
+	require.Equal(t, 4, player.EarnedToday)
+}
+
+func TestStatsShowWhoPlaysAModuleAndTheirGames(t *testing.T) {
+	db := setup(t)
+	now := time.Now().UTC()
+	require.NoError(t, db.Create(&cModel.UserCircle{UserID: 3, CircleID: 1, Role: cModel.UserRoleMember, IsActive: true}).Error)
+	require.NoError(t, Install(db, 1, "maths-ce2", now))
+	require.NoError(t, SetActivation(db, 1, ActivationChange{UserID: anna, Modules: []string{"maths-ce2"}, Active: true}, now))
+	_, err := Record(db, 1, anna, Game{ClientID: "stats-0001", UserID: anna, Module: "maths-ce2-multiplication",
+		Answers: answers(9, 1)}, now)
+	require.NoError(t, err)
+
+	stats, err := Stats(db, 1, "maths-ce2-multiplication", now)
+	require.NoError(t, err)
+	require.Len(t, stats.People, 1, "only who plays the module")
+	require.True(t, stats.People[0].Active)
+	require.Len(t, stats.People[0].Sessions, 1)
+	require.Len(t, stats.People[0].Cards, 10)
+	require.NotEmpty(t, stats.Document)
+
+	_, err = Stats(db, 1, "maths-ce2", now)
+	require.ErrorIs(t, err, ErrNotFound, "a pack has no statistics of its own")
+}
