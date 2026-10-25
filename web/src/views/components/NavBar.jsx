@@ -49,6 +49,7 @@ const NAVBAR_TITLE_KEYS = {
   '/manage/ranks': 'manage.items.ranks.title',
   '/manage/reset': 'manage.items.reset.title',
   '/manage/learn': 'manage.items.learn.title',
+  '/manage/learn/catalogue': 'manage.items.learnCatalogue.title',
   '/projects': 'navigation.projects',
   '/settings': 'navigation.settings',
   '/shop': 'navigation.shop',

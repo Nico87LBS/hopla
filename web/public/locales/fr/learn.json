@@ -109,7 +109,9 @@
     "moduleSettings": "Réglages de {{name}}",
     "seeModules_one": "Voir son module",
     "seeModules_other": "Voir ses {{count}} modules",
-    "seeDetail": "Voir le détail"
+    "seeDetail": "Voir le détail",
+    "openCatalogue": "Catalogue et import",
+    "openCatalogueHelp": "Installer un paquet, voir son détail ou importer un module"
   },
   "stats": {
     "chapters": "Chapitres",

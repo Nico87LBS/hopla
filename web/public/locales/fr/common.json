@@ -590,6 +590,9 @@
       "learn": {
         "title": "Modules d’apprentissage",
         "description": "Choisir les jeux de chacun et leurs hops"
+      },
+      "learnCatalogue": {
+        "title": "Catalogue des modules"
       }
     }
   },

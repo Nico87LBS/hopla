@@ -590,6 +590,9 @@
       "learn": {
         "title": "Learning modules",
         "description": "Choose everyone’s games and their hops"
+      },
+      "learnCatalogue": {
+        "title": "Module catalogue"
       }
     }
   },
