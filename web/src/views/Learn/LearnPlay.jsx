@@ -430,6 +430,7 @@ const EndScreen = ({ back, color, end, onReplay }) => {
           color='neutral'
           component={Link}
           to={back}
+          replace
         >
           {t('end.back')}
         </Button>
@@ -586,41 +587,54 @@ const LearnPlay = () => {
       maxWidth='sm'
       sx={{ px: { xs: 2, sm: 3 }, pb: 6, pt: { xs: 1, sm: 2 } }}
     >
-      <Stack direction='row' alignItems='center' gap={1} sx={{ mb: 2 }}>
-        <IconButton
-          component={Link}
-          to={back}
-          aria-label={t('play.quit')}
-          variant='plain'
-        >
-          <CloseRounded />
-        </IconButton>
-        <Typography level='title-md' sx={{ flex: 1 }} noWrap>
-          {module.name}
-        </Typography>
-        <Stack direction='row' gap={0.5}>
-          {game.questions.map((q, i) => {
-            const given = game.answers[i]
-            return (
-              <Box
-                key={q.key}
-                sx={{
-                  bgcolor: given
-                    ? given.correct
-                      ? HOPLA.green
-                      : given.almost
-                        ? HOPLA.gold
-                        : HOPLA.carrot
-                    : i === index
-                      ? color
-                      : 'background.level3',
-                  borderRadius: '50%',
-                  height: 10,
-                  width: 10,
-                }}
-              />
-            )
-          })}
+      <Stack gap={1} sx={{ mb: 2 }}>
+        <Stack direction='row' alignItems='center' gap={1}>
+          <IconButton
+            component={Link}
+            to={back}
+            replace
+            aria-label={t('play.quit')}
+            variant='plain'
+          >
+            <CloseRounded />
+          </IconButton>
+          <Typography level='title-lg' sx={{ flex: 1, minWidth: 0 }} noWrap>
+            {module.name}
+          </Typography>
+        </Stack>
+        <Stack direction='row' alignItems='center' gap={1.25}>
+          <Stack direction='row' gap='2px' sx={{ flex: 1, height: 8 }}>
+            {game.questions.map((q, i) => {
+              const given = game.answers[i]
+              return (
+                <Box
+                  key={q.key}
+                  sx={{
+                    bgcolor: given
+                      ? given.correct
+                        ? HOPLA.green
+                        : given.almost
+                          ? HOPLA.gold
+                          : HOPLA.carrot
+                      : i === index
+                        ? color
+                        : 'background.level3',
+                    borderRadius: 4,
+                    flex: 1,
+                  }}
+                />
+              )
+            })}
+          </Stack>
+          <Typography
+            level='body-sm'
+            sx={{ fontWeight: 600, minWidth: 44, textAlign: 'right' }}
+          >
+            {t('play.progress', {
+              current: Math.min(index + 1, game.questions.length),
+              total: game.questions.length,
+            })}
+          </Typography>
         </Stack>
       </Stack>
 

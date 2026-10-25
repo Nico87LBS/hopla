@@ -26,6 +26,7 @@ import { useScrollDirection } from '../../hooks/useScrollDirection'
 import { useResource } from '../../queries/ResourceQueries'
 import { useGlobalSearch } from '../../search/GlobalSearchContext'
 import { apiClient } from '../../utils/ApiClient'
+import { learnParent } from '../../utils/learn/routes'
 import { MAIN_DESTINATIONS, useNavigationBadges } from './mainNavigation'
 import NavBarLink from './NavBarLink'
 import NavBarResourceSwitcher from './NavBarResourceSwitcher'
@@ -109,7 +110,9 @@ const NavBar = () => {
   }, [isDesktop])
 
   const goBack = () => {
-    if (window.history.state?.idx > 0) navigate(-1)
+    const parent = learnParent(normalizedPath)
+    if (parent) navigate(parent)
+    else if (window.history.state?.idx > 0) navigate(-1)
     else navigate(normalizedPath === '/search' ? '/chores' : '/manage')
   }
 

@@ -31,7 +31,8 @@
     "right": "Well done!",
     "wrong": "Not quite",
     "answerWas": "The answer: {{answer}}",
-    "next": "Continue"
+    "next": "Continue",
+    "progress": "{{current}} / {{total}}"
   },
   "end": {
     "title0": "Keep going, you'll get there!",
