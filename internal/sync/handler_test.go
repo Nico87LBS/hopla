@@ -14,7 +14,6 @@ import (
 	chRepo "github.com/nico87lbs/hopla/internal/chore/repo"
 	cModel "github.com/nico87lbs/hopla/internal/circle/model"
 	lModel "github.com/nico87lbs/hopla/internal/label/model"
-	pModel "github.com/nico87lbs/hopla/internal/project/model"
 	syncModel "github.com/nico87lbs/hopla/internal/sync/model"
 	uModel "github.com/nico87lbs/hopla/internal/user/model"
 	"github.com/stretchr/testify/require"
@@ -49,8 +48,6 @@ func newSyncHandlerTest(t *testing.T) (*chRepo.ChoreRepository, *gorm.DB, *gin.E
 		&lModel.Label{},
 		&syncModel.SyncCursor{},
 		&syncModel.Tombstone{},
-		&pModel.Project{},
-		&pModel.ProjectMember{},
 	))
 
 	cfg := &config.Config{}

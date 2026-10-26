@@ -869,54 +869,6 @@ const DeleteChildUser = childUserId => {
   })
 }
 
-// Project-related API functions
-const GetProjects = () => {
-  return Fetch(`/projects`, {
-    method: 'GET',
-    headers: HEADERS(),
-  })
-}
-
-const GetProjectById = id => {
-  return Fetch(`/projects/${id}`, {
-    method: 'GET',
-    headers: HEADERS(),
-  })
-}
-
-const CreateProject = project => {
-  return Fetch(`/projects`, {
-    method: 'POST',
-    headers: HEADERS(),
-    body: JSON.stringify(project),
-  })
-}
-
-const UpdateProject = (id, project) => {
-  return Fetch(`/projects/${id}`, {
-    method: 'PUT',
-    headers: HEADERS(),
-    body: JSON.stringify(project),
-  })
-}
-
-const DeleteProject = id => {
-  return Fetch(`/projects/${id}`, {
-    method: 'DELETE',
-    headers: HEADERS(),
-  })
-}
-
-// Server-side dry run of a change of who can see a project: which tasks change
-// assignees and who gains or loses access. Nothing is written.
-const PreviewProjectAccess = (id, access) => {
-  return Fetch(`/projects/${id}/access-preview`, {
-    method: 'POST',
-    headers: HEADERS(),
-    body: JSON.stringify(access),
-  })
-}
-
 const GetPointsHistory = async ({ before, limit, userId } = {}) => {
   const params = new URLSearchParams()
   if (userId) params.set('userId', userId)
@@ -1278,7 +1230,6 @@ export {
   createChore,
   CreateLabel,
   CreateLongLiveToken,
-  CreateProject,
   CreateReward,
   DeclineCircleMemberRequest,
   DeleteBonusPeriod,
@@ -1292,7 +1243,6 @@ export {
   DeleteLabel,
   DeleteLongLiveToken,
   DeletePointsPreset,
-  DeleteProject,
   DeleteQuest,
   DeleteReward,
   DeleteTimeSession,
@@ -1332,8 +1282,6 @@ export {
   GetMFAStatus,
   GetPointsHistory,
   GetPointsPresets,
-  GetProjectById,
-  GetProjects,
   GetQuests,
   GetRanks,
   GetRedemptions,
@@ -1352,7 +1300,6 @@ export {
   logout,
   MarkChoreComplete,
   PauseChore,
-  PreviewProjectAccess,
   RedeemPoints,
   RedeemReward,
   RefreshToken,
@@ -1398,7 +1345,6 @@ export {
   UpdateLabel,
   UpdateMemberRole,
   UpdatePassword,
-  UpdateProject,
   UpdateReward,
   UpdateTimeSession,
   UpdateUserDetails,

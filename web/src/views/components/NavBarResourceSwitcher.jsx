@@ -1,10 +1,4 @@
-import {
-  Check,
-  FolderOpen,
-  KeyboardArrowDown,
-  Settings,
-  Style,
-} from '@mui/icons-material'
+import { Check, KeyboardArrowDown, Settings, Style } from '@mui/icons-material'
 import {
   Avatar,
   Divider,
@@ -16,12 +10,10 @@ import {
   MenuItem,
   Typography,
 } from '@mui/joy'
-import { createElement } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import { getTextColorFromBackgroundColor } from '../../utils/Colors'
-import { getIconComponent } from '../../utils/ProjectIcons'
 
 const TYPE_CONFIG = {
   label: {
@@ -30,27 +22,13 @@ const TYPE_CONFIG = {
     manageKey: 'common:navigation.labels',
     managePath: '/labels',
   },
-  project: {
-    fallbackColor: '#1976d2',
-    headerKey: 'projects:selector.title',
-    manageKey: 'projects:selector.manage',
-    managePath: '/projects',
-  },
 }
 
 const ResourceAvatar = ({ isSelected, item, type }) => {
-  const config = TYPE_CONFIG[type] || TYPE_CONFIG.project
+  const config = TYPE_CONFIG[type] || TYPE_CONFIG.label
   const color = item?.color || config.fallbackColor
   const iconColor = getTextColorFromBackgroundColor(color)
-  let icon = <FolderOpen sx={{ color: iconColor, fontSize: 14 }} />
-
-  if (type === 'project') {
-    icon = createElement(getIconComponent(item?.icon || 'FolderOpen'), {
-      sx: { color: iconColor, fontSize: 14 },
-    })
-  } else if (type === 'label') {
-    icon = <Style sx={{ color: iconColor, fontSize: 14 }} />
-  }
+  const icon = <Style sx={{ color: iconColor, fontSize: 14 }} />
 
   return (
     <Avatar
@@ -71,25 +49,13 @@ const ResourceAvatar = ({ isSelected, item, type }) => {
 }
 
 const NavBarResourceSwitcher = ({ selector, title }) => {
-  const { t } = useTranslation(['common', 'projects', 'chores'])
+  const { t } = useTranslation(['common'])
   const navigate = useNavigate()
   const { items, onSelect, selectedId, type } = selector
-  const config = TYPE_CONFIG[type] || TYPE_CONFIG.project
+  const config = TYPE_CONFIG[type] || TYPE_CONFIG.label
   const selectedItem = items.find(
     item => String(item.id) === String(selectedId),
   )
-
-  const getItemName = item =>
-    type === 'project' && item.id === 'default'
-      ? t('chores:toolbar.defaultProject')
-      : item.name
-
-  const getItemDescription = item => {
-    if (type === 'project' && item.id === 'default') {
-      return t('projects:defaultDescription')
-    }
-    return null
-  }
 
   return (
     <Dropdown>
@@ -110,10 +76,7 @@ const NavBarResourceSwitcher = ({ selector, title }) => {
         }}
       >
         <KeyboardArrowDown sx={{ fontSize: 20, color: 'text.tertiary' }} />
-        {selectedItem &&
-          !(type === 'project' && selectedItem.id === 'default') && (
-            <ResourceAvatar item={selectedItem} type={type} />
-          )}
+        {selectedItem && <ResourceAvatar item={selectedItem} type={type} />}
         <Typography
           component='span'
           level='title-md'
@@ -162,7 +125,6 @@ const NavBarResourceSwitcher = ({ selector, title }) => {
 
         {items.map(item => {
           const isSelected = String(item.id) === String(selectedId)
-          const description = getItemDescription(item)
 
           return (
             <MenuItem
@@ -192,17 +154,8 @@ const NavBarResourceSwitcher = ({ selector, title }) => {
               </ListItemDecorator>
               <ListItemContent>
                 <Typography level='title-sm' fontWeight='lg' noWrap>
-                  {getItemName(item)}
+                  {item.name}
                 </Typography>
-                {description && (
-                  <Typography
-                    level='body-xs'
-                    noWrap
-                    sx={{ color: 'text.tertiary' }}
-                  >
-                    {description}
-                  </Typography>
-                )}
               </ListItemContent>
               {isSelected && (
                 <Check color='primary' sx={{ flexShrink: 0, fontSize: 18 }} />

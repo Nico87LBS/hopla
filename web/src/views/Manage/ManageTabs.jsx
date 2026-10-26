@@ -10,7 +10,6 @@ import { useIsParent } from '../../hooks/useIsParent'
 const PAGE_TABS = {
   tasks: [
     { value: 'labels', to: '/labels' },
-    { value: 'projects', to: '/projects' },
     { value: 'archived', to: '/archived' },
   ],
   rewards: [

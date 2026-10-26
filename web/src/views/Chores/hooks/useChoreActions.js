@@ -673,30 +673,6 @@ export const useChoreActions = ({
           }
           break
 
-        case 'moveToProject': {
-          const project = extraData?.project
-          const projectId = project?.id === null ? null : project?.id
-          const updatedChore = { ...chore, projectId }
-          try {
-            const response = await SaveChore(updatedChore)
-            if (response.ok) {
-              updateChoreInState(updatedChore, 'moved-to-project')
-              showSuccess({
-                title: t('actions.movedTitle'),
-                message: t('actions.movedMessage', {
-                  project: project?.name || t('toolbar.defaultProject'),
-                }),
-              })
-            }
-          } catch (error) {
-            showError({
-              title: t('actions.failMoveTitle'),
-              message: error?.message || t('actions.unableMove'),
-            })
-          }
-          break
-        }
-
         case 'changePriority': {
           const priority = extraData?.priority?.value ?? extraData?.priority
           if (priority === undefined || priority === null) break
@@ -1121,27 +1097,6 @@ export const useChoreActions = ({
     })
   }, [getSelectedChoresData, chores, runBulk, removeLocalChores])
 
-  const handleBulkMoveToProject = useCallback(
-    async project => {
-      const projectId = project?.id ?? null
-      runBulk({
-        targets: getSelectedChoresData(chores),
-        perChore: chore => expectOk(SaveChore({ ...chore, projectId })),
-        successTitle: t('actions.bulk.movedTitle'),
-        result: 'moved',
-        resultValues: {
-          project: project?.name || t('toolbar.defaultProject'),
-        },
-        onSucceeded: succeeded =>
-          patchLocalChores(
-            succeeded.map(c => c.id),
-            { projectId },
-          ),
-      })
-    },
-    [getSelectedChoresData, chores, runBulk, patchLocalChores],
-  )
-
   // Takes the picker's { dueDateOnly, dueTime, useCustomTime } parts, or null to
   // unplan. Moving a batch is a date operation: each task keeps the time of day
   // it was already due at, so "next week 5am" moved to tomorrow becomes
@@ -1292,7 +1247,6 @@ export const useChoreActions = ({
     handleBulkArchive,
     handleBulkDelete,
     handleBulkSkip,
-    handleBulkMoveToProject,
     handleBulkDueDate,
     handleBulkAssignee,
     handleBulkPriority,

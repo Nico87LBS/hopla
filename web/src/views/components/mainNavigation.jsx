@@ -13,7 +13,6 @@ import { useRedemptions } from '../Rewards/RewardQueries'
 const MANAGE_PATHS = [
   '/manage',
   '/settings',
-  '/projects',
   '/labels',
   '/archived',
   '/activities',

@@ -14,7 +14,6 @@ import (
 	cModel "github.com/nico87lbs/hopla/internal/circle/model"
 	cRepo "github.com/nico87lbs/hopla/internal/circle/repo"
 	pRepo "github.com/nico87lbs/hopla/internal/points/repo"
-	pjRepo "github.com/nico87lbs/hopla/internal/project/repo"
 	"github.com/nico87lbs/hopla/internal/storage"
 	uModel "github.com/nico87lbs/hopla/internal/user/model"
 	uRepo "github.com/nico87lbs/hopla/internal/user/repo"
@@ -26,19 +25,17 @@ type Handler struct {
 	userRepo             *uRepo.UserRepository
 	choreRepo            *chRepo.ChoreRepository
 	pointRepo            *pRepo.PointsRepository
-	projectRepo          *pjRepo.ProjectRepository
 	signer               storage.URLSigner
 	singleCircleInstance bool
 }
 
 func NewHandler(cr *cRepo.CircleRepository, ur *uRepo.UserRepository, c *chRepo.ChoreRepository, pr *pRepo.PointsRepository,
-	signer storage.URLSigner, config *config.Config, projectRepo *pjRepo.ProjectRepository) *Handler {
+	signer storage.URLSigner, config *config.Config) *Handler {
 	return &Handler{
 		circleRepo:           cr,
 		userRepo:             ur,
 		choreRepo:            c,
 		pointRepo:            pr,
-		projectRepo:          projectRepo,
 		signer:               signer,
 		singleCircleInstance: config.SingleCircleInstance,
 	}
@@ -247,38 +244,18 @@ func (h *Handler) LeaveCircle(c *gin.Context) {
 // reassignChoresForLeavingUser moves the chores the user created in the circle
 // they are leaving to destinationCircleID (keeping them assigned to the user),
 // and hands the chores that were merely assigned to them back to the circle.
-//
-// Chores the user created inside a project that is private to or shared with
-// selected members belong to that project's work: they stay there and the
-// project owner takes them over, since nobody could see a restricted project's
-// chore in another circle. Restricted projects the user owns are removed (their
-// remaining chores are detached and kept); circle-wide projects stay.
 func reassignChoresForLeavingUser(h *Handler, c *gin.Context, leavingUser *uModel.User, destinationCircleID int) error {
 	userAssignedCircleChores, err := h.choreRepo.GetChores(c, leavingUser.CircleID, leavingUser.ID, true, nil, false)
 	if err != nil {
 		return err
 	}
-	restricted, err := h.projectRepo.GetRestrictedProjects(c, leavingUser.CircleID)
-	if err != nil {
-		return err
-	}
 	movedChoreIDs := make([]int, 0)
 	for _, ch := range userAssignedCircleChores {
-		if ch.CreatedBy == leavingUser.ID && ch.ProjectID != nil {
-			if project, ok := restricted[*ch.ProjectID]; ok && project.CreatedBy != leavingUser.ID {
-				chore.HandOverToProjectOwner(ch, leavingUser.ID, project.CreatedBy)
-				continue
-			}
-		}
-
 		if ch.CreatedBy == leavingUser.ID && (ch.AssignedTo == nil || *ch.AssignedTo != leavingUser.ID) {
 			ch.AssignedTo = &leavingUser.ID
 			ch.UpdatedAt = time.Now().UTC()
 			ch.UpdatedBy = leavingUser.ID
 			ch.CircleID = destinationCircleID
-			// The project belongs to the circle being left; a dangling reference would
-			// hide the chore in the new circle's project views.
-			ch.ProjectID = nil
 			movedChoreIDs = append(movedChoreIDs, ch.ID)
 		} else if ch.CreatedBy != leavingUser.ID && (ch.AssignedTo != nil && *ch.AssignedTo == leavingUser.ID) {
 			chore.RemoveAssigneeAndReassign(ch, leavingUser.ID)
@@ -293,9 +270,6 @@ func reassignChoresForLeavingUser(h *Handler, c *gin.Context, leavingUser *uMode
 		logging.FromContext(c).Error("Error recording tombstones for moved chores", "error", err)
 	}
 	h.choreRepo.RemoveChoreAssigneeByCircleID(c, leavingUser.ID, leavingUser.CircleID)
-	if err := h.projectRepo.RemoveProjectsOwnedBy(c, leavingUser.CircleID, leavingUser.ID); err != nil {
-		logging.FromContext(c).Error("Error removing projects of leaving user", "error", err)
-	}
 	return nil
 }
 

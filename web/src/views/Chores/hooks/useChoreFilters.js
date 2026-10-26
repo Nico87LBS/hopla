@@ -1,28 +1,15 @@
 import Fuse from 'fuse.js'
 import { useCallback, useMemo, useState } from 'react'
 
-import { ChoreFilters, filterByProject, isTaskFor } from '../../../utils/Chores'
+import { ChoreFilters, isTaskFor } from '../../../utils/Chores'
 import { stripHtml } from '../../../utils/Helpers'
 
-export const useChoreFilters = ({
-  chores,
-  impersonatedUser,
-  selectedProject,
-  userProfile,
-}) => {
+export const useChoreFilters = ({ chores, impersonatedUser, userProfile }) => {
   const [searchTerm, setSearchTerm] = useState('')
   const [searchFilter, setSearchFilter] = useState('All')
   const [selectedChoreFilter, setSelectedChoreFilter] = useState(
     localStorage.getItem('selectedChoreFilter') || 'anyone',
   )
-
-  const projectFilteredChores = useMemo(() => {
-    if (!selectedProject || selectedProject.id === 'default') {
-      return chores.filter(chore => !chore.projectId)
-    }
-
-    return filterByProject(chores, selectedProject.id)
-  }, [chores, selectedProject])
 
   const hasSearchTerm = searchTerm.length > 0
 
@@ -46,44 +33,7 @@ export const useChoreFilters = ({
     })
   }, [chores, hasSearchTerm])
 
-  const projectChoreIds = useMemo(
-    () => new Set(projectFilteredChores.map(chore => chore.id)),
-    [projectFilteredChores],
-  )
-
   const searchFilteredChores = useMemo(() => {
-    let baseChores = projectFilteredChores
-
-    if (searchIndex) {
-      return searchIndex
-        .search(searchTerm.toLowerCase())
-        .map(result => result.item)
-        .filter(chore => projectChoreIds.has(chore.id))
-    }
-
-    if (impersonatedUser) {
-      baseChores = baseChores.filter(chore =>
-        isTaskFor(chore, impersonatedUser.userId),
-      )
-    }
-
-    return baseChores.filter(
-      ChoreFilters(impersonatedUser?.userId || userProfile?.id)[
-        selectedChoreFilter
-      ],
-    )
-  }, [
-    searchTerm,
-    projectFilteredChores,
-    searchIndex,
-    projectChoreIds,
-    impersonatedUser,
-    userProfile?.id,
-    selectedChoreFilter,
-  ])
-
-  // Non-project-filtered chores for custom filters that may have their own project conditions
-  const nonProjectFilteredChores = useMemo(() => {
     let baseChores = chores
 
     if (searchIndex) {
@@ -126,9 +76,7 @@ export const useChoreFilters = ({
     searchTerm,
     searchFilter,
     selectedChoreFilter,
-    projectFilteredChores,
     searchFilteredChores,
-    nonProjectFilteredChores,
     setSearchTerm,
     setSearchFilter,
     setSelectedChoreFilter,

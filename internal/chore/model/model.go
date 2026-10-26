@@ -9,7 +9,6 @@ import (
 
 	cModel "github.com/nico87lbs/hopla/internal/circle/model"
 	lModel "github.com/nico87lbs/hopla/internal/label/model"
-	pModel "github.com/nico87lbs/hopla/internal/project/model"
 	storageModel "github.com/nico87lbs/hopla/internal/storage/model"
 	stModel "github.com/nico87lbs/hopla/internal/subtask/model"
 )
@@ -85,8 +84,6 @@ type Chore struct {
 	SubTasks               *[]stModel.SubTask         `json:"subTasks,omitempty" gorm:"foreignkey:ChoreID;references:ID"`                             // Subtasks for the chore
 	RequireApproval        bool                       `json:"requireApproval" gorm:"column:require_approval"`                                         // Whether chore completion requires admin approval
 	IsPrivate              bool                       `json:"isPrivate" gorm:"column:is_private;default:false"`                                       // Whether the chore is private
-	ProjectID              *int                       `json:"projectId,omitempty" gorm:"column:project_id;index"`                                     // The project this chore belongs to
-	Project                *pModel.Project            `json:"project,omitempty" gorm:"foreignkey:ProjectID;references:ID"`                            // Project relationship
 	SyncVersion            int64                      `json:"syncVersion" gorm:"column:sync_version;not null;default:0;index;index:idx_chores_circle_sync_version,priority:2"`
 	Attachments            []storageModel.StorageFile `json:"attachments,omitempty" gorm:"-"`
 	SlotsToday             []SlotStatus               `json:"slotsToday,omitempty" gorm:"-"` // Today's slots of a task done several times a day
@@ -250,7 +247,6 @@ type ChoreDetail struct {
 	Duration            int                        `json:"duration" gorm:"column:duration"` // Total duration in seconds for the chore
 	StartTime           *time.Time                 `json:"startTime" gorm:"column:start_time"`
 	TimerUpdatedAt      *time.Time                 `json:"timerUpdatedAt" gorm:"column:timer_updated_at"` // When the chore was last started
-	ProjectID           *int                       `json:"projectId,omitempty" gorm:"column:project_id"`
 	IsActive            bool                       `json:"isActive" gorm:"column:is_active"`
 	SyncVersion         int64                      `json:"syncVersion" gorm:"column:sync_version"`
 	Attachments         []storageModel.StorageFile `json:"attachments,omitempty" gorm:"-"`
@@ -269,7 +265,6 @@ type ChoreLiteReq struct { // TODO: Remove this when api is removed.
 	DueDate        string  `json:"dueDate"`
 	ForceUnarchive bool    `json:"forceUnarchive,omitempty"`
 	CreatedBy      *int    `json:"createdBy,omitempty"`
-	ProjectID      *int    `json:"projectId,omitempty"` // The project this chore belongs to
 }
 
 func (c *Chore) CanDeleteHistory(
@@ -358,22 +353,7 @@ func (c *Chore) CanDelegate(userID int, circleUsers []*cModel.UserCircleDetail, 
 	return nil
 }
 
-// restrictingProject returns the chore's project when that project limits who can
-// see its chores (private or shared with selected members) and is loaded.
-func (c *Chore) restrictingProject() *pModel.Project {
-	if c.Project != nil && c.Project.IsPrivate && (c.ProjectID == nil || *c.ProjectID == c.Project.ID) {
-		return c.Project
-	}
-	return nil
-}
-
 func (c *Chore) CanView(userID int, circleUsers []*cModel.UserCircleDetail) bool {
-	// A restricted project is the outer boundary: its audience sees every chore in
-	// it and nobody else does, whatever the chore's own flag or assignees say.
-	// This matches privacyPredicate in the repository.
-	if project := c.restrictingProject(); project != nil {
-		return project.CanView(userID)
-	}
 	// if private then only creator and assignees can view:
 	if c.IsPrivate {
 		if c.CreatedBy == userID {
@@ -396,16 +376,6 @@ func (c *Chore) CanView(userID int, circleUsers []*cModel.UserCircleDetail) bool
 	return false
 }
 func (c *Chore) CanComplete(userID int, circleUsers []*cModel.UserCircleDetail) bool {
-	if project := c.restrictingProject(); project != nil {
-		if !project.CanView(userID) {
-			return false
-		}
-		// Unassigned chores in a shared project can be picked up by anyone who
-		// can see the project, like unassigned public chores within the circle.
-		if c.AssignStrategy == AssignmentStrategyNoAssignee && (c.AssignedTo == nil || *c.AssignedTo == 0) {
-			return true
-		}
-	}
 	// If using no assignee strategy, allow any circle member to complete
 	if c.AssignStrategy == AssignmentStrategyNoAssignee && (c.AssignedTo == nil || *c.AssignedTo == 0) {
 		if !c.IsPrivate {

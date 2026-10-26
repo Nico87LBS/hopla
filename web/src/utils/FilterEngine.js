@@ -36,9 +36,6 @@ export const evaluateCondition = (chore, condition, context = {}) => {
     case 'label':
       return evaluateLabel(chore, operator, value)
 
-    case 'project':
-      return evaluateProject(chore, operator, value)
-
     case 'points':
       return evaluatePoints(chore, operator, value)
 
@@ -250,34 +247,6 @@ const evaluateLabel = (chore, operator, value) => {
 }
 
 /**
- * Evaluate project condition
- */
-const evaluateProject = (chore, operator, value) => {
-  const { projectId } = chore
-
-  // Convert to array for consistent handling
-  const projectIds = Array.isArray(value) ? value : [value]
-
-  // Check if 'default' is in the selection
-  const includesDefault = projectIds.includes('default')
-
-  // Check if chore is in default project (no projectId or projectId is 'default')
-  const choreIsDefault =
-    !projectId || projectId === null || projectId === 'default'
-
-  // Check if chore matches any of the non-default project IDs
-  const otherProjectIds = projectIds.filter(id => id !== 'default')
-  const matchesOtherProject = otherProjectIds.some(
-    id => String(projectId) === String(id),
-  )
-
-  // Chore matches if it's default and default is selected, OR if it matches any other selected project
-  const isInProject = (includesDefault && choreIsDefault) || matchesOtherProject
-
-  return operator === 'is' ? isInProject : !isInProject
-}
-
-/**
  * Evaluate points condition
  */
 const evaluatePoints = (chore, operator, value) => {
@@ -357,13 +326,13 @@ export const getFilterOverdueCount = (chores, filter, context = {}) => {
 
 /**
  * Validate if a filter is still valid
- * (e.g., checks if referenced users/labels/projects still exist)
+ * (e.g., checks if referenced users/labels still exist)
  * @param {Object} filter - The filter to validate
- * @param {Object} context - Context with available users, labels, projects
+ * @param {Object} context - Context with available users and labels
  * @returns {Object} - { isValid: boolean, issues: Array }
  */
 export const validateFilter = (filter, context = {}) => {
-  const { labels = [], members = [], projects = [] } = context
+  const { labels = [], members = [] } = context
   const issues = []
 
   if (!filter.conditions || filter.conditions.length === 0) {
@@ -396,17 +365,6 @@ export const validateFilter = (filter, context = {}) => {
       )
       if (invalidLabels.length > 0) {
         issues.push(`Condition ${index + 1}: Label(s) no longer exist`)
-      }
-    }
-
-    // Check project references
-    if (type === 'project' && value !== 'default') {
-      const projectIds = Array.isArray(value) ? value : [value]
-      const invalidProjects = projectIds.filter(
-        id => !projects.some(p => p.id === id || p.id === Number(id)),
-      )
-      if (invalidProjects.length > 0) {
-        issues.push(`Condition ${index + 1}: Project(s) no longer exist`)
       }
     }
   })

@@ -52,7 +52,6 @@
     "more": "More",
     "archived": "Archived",
     "labels": "Labels",
-    "projects": "Projects",
     "filters": "Filters",
     "activities": "Activities",
     "points": "Points",
@@ -70,7 +69,7 @@
   "search": {
     "title": "Search",
     "placeholder": "Search Hopla",
-    "inputAriaLabel": "Search tasks, history, projects, labels and settings",
+    "inputAriaLabel": "Search tasks, history, labels and settings",
     "deviceNote": "Searching content available on this device",
     "escape": "Esc",
     "recent": "Recent",
@@ -82,7 +81,6 @@
     "groups": {
       "tasks": "Tasks",
       "history": "Notes",
-      "projects": "Projects",
       "labels": "Labels",
       "people": "People",
       "settings": "Settings",
@@ -93,11 +91,9 @@
       "navigation": "Navigation",
       "createTask": "Create a task",
       "createLabel": "Create a label",
-      "createProject": "Create a project",
       "viewAllTasks": "View all tasks",
       "viewArchivedTasks": "View archived tasks",
       "viewLabels": "View labels",
-      "viewProjects": "View projects",
       "viewActivities": "View activities",
       "viewPoints": "View points",
       "openSettings": "Open settings",
@@ -120,13 +116,11 @@
     },
     "untitled": {
       "task": "Untitled task",
-      "project": "Untitled project",
       "label": "Untitled label"
     },
     "kinds": {
       "task": "Task",
       "note": "Task note",
-      "project": "Project",
       "label": "Label",
       "member": "Family member",
       "settings": "Settings"
@@ -550,7 +544,7 @@
     "items": {
       "tasks": {
         "title": "Tasks",
-        "description": "Labels, projects, filters and archive"
+        "description": "Labels and archive"
       },
       "activities": {
         "title": "Activities",
@@ -588,8 +582,6 @@
     "tabs": {
       "tasks": {
         "labels": "Labels",
-        "projects": "Projects",
-        "filters": "Filters",
         "archived": "Archive"
       },
       "rewards": {

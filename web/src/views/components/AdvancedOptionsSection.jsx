@@ -136,7 +136,6 @@ const AdvancedOptionsSection = ({
   hasAssignees,
   hasDueDate,
   hasMultipleAssignees,
-  isPrivacyInherited,
   isPrivate,
   onAssignStrategyChange,
   onCompletionWindowChange,
@@ -237,22 +236,18 @@ const AdvancedOptionsSection = ({
           <FieldRow
             label={t('advancedOptions.limitedVisibility')}
             description={
-              isPrivacyInherited
-                ? t('advancedOptions.limitedVisibilityInherited')
-                : !hasAssignees
-                  ? t('advancedOptions.limitedVisibilityDisabled')
-                  : t('advancedOptions.limitedVisibilityDescription')
+              !hasAssignees
+                ? t('advancedOptions.limitedVisibilityDisabled')
+                : t('advancedOptions.limitedVisibilityDescription')
             }
             onLabelClick={
-              hasAssignees && !isPrivacyInherited
-                ? () => onIsPrivateChange(!isPrivate)
-                : undefined
+              hasAssignees ? () => onIsPrivateChange(!isPrivate) : undefined
             }
           >
             <Switch
               size='sm'
               checked={isPrivate}
-              disabled={!hasAssignees || isPrivacyInherited}
+              disabled={!hasAssignees}
               onChange={e => onIsPrivateChange(e.target.checked)}
             />
           </FieldRow>

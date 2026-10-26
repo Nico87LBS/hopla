@@ -1,7 +1,6 @@
 import {
   CalendarMonth,
   Check,
-  FolderOpen,
   HowToReg,
   Label,
   Person,
@@ -14,7 +13,6 @@ import { useTranslation } from 'react-i18next'
 
 import NumberInput from '../../../components/common/NumberInput'
 import Priorities from '../../../utils/Priorities'
-import { ProjectAccessIcon } from '../../Projects/ProjectVisibilityField'
 
 // `labelKey` resolves against `chores:filterBuilder.dueDateOption.*` — these
 // are also read by ChoreToolbarPrototype, which translates them the same way.
@@ -49,7 +47,6 @@ export const defaultSelections = () => ({
   status: { operator: 'is', values: [] },
   priority: { operator: 'is', values: [] },
   label: { operator: 'is', values: [] },
-  project: { operator: 'is', values: [] },
   dueDate: { operators: [] },
   points: { operator: 'greaterThan', value: 0, active: false },
 })
@@ -86,17 +83,15 @@ export const conditionsToSelections = conditions => {
 
 export const selectionsToConditions = selections => {
   const conditions = []
-  ;['assignee', 'createdBy', 'status', 'priority', 'label', 'project'].forEach(
-    type => {
-      if (selections[type].values?.length > 0) {
-        conditions.push({
-          type,
-          operator: selections[type].operator,
-          value: selections[type].values,
-        })
-      }
-    },
-  )
+  ;['assignee', 'createdBy', 'status', 'priority', 'label'].forEach(type => {
+    if (selections[type].values?.length > 0) {
+      conditions.push({
+        type,
+        operator: selections[type].operator,
+        value: selections[type].values,
+      })
+    }
+  })
   const dueDateOperators = selections.dueDate.operators || []
   if (dueDateOperators.length === 1) {
     // Stay on the single-operator shape whenever we can, so filters remain
@@ -186,7 +181,6 @@ const FilterBuilderContent = ({
   labels = [],
   members = [],
   onSelectionsChange,
-  projects = [],
   selections,
 }) => {
   const { t } = useTranslation('chores')
@@ -485,42 +479,6 @@ const FilterBuilderContent = ({
               )
             })}
           </Box>
-          <Divider sx={{ my: 2.5 }} />
-        </>
-      )}
-
-      {/* Projects */}
-      {projects.length > 0 && (
-        <>
-          <SectionHeader
-            icon={<FolderOpen />}
-            label={t('filterBuilder.projects')}
-          >
-            <IncludeExcludeToggle
-              value={selections.project.operator}
-              onChange={op => setOperator('project', op)}
-            />
-          </SectionHeader>
-          {chipRow('project', [
-            { value: 'default', label: t('filterBuilder.defaultProject') },
-            ...projects
-              .filter(p => p.id !== 'default')
-              .map(p => ({
-                value: p.id,
-                label: (
-                  <Box
-                    sx={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: 0.5,
-                    }}
-                  >
-                    {p.name}
-                    <ProjectAccessIcon project={p} sx={{ fontSize: 12 }} />
-                  </Box>
-                ),
-              })),
-          ])}
           <Divider sx={{ my: 2.5 }} />
         </>
       )}

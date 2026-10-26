@@ -73,7 +73,6 @@ func TodaySurprise(db *gorm.DB, circleID int, now time.Time) (*Surprise, error) 
 		Where("circle_id = ? AND is_active = ? AND points > 0 AND next_due_date IS NOT NULL AND next_due_date <= ?",
 			circleID, true, endOfDay(now, loc)).
 		Where("is_private = ?", false).
-		Where("project_id IS NULL OR project_id IN (SELECT id FROM projects WHERE is_private = ?)", false).
 		Order("id").Find(&candidates).Error
 	if err != nil {
 		return nil, err

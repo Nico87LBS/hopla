@@ -11,7 +11,6 @@ import (
 	"github.com/nico87lbs/hopla/config"
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
 	"github.com/nico87lbs/hopla/internal/database"
-	pModel "github.com/nico87lbs/hopla/internal/project/model"
 )
 
 const (
@@ -37,23 +36,8 @@ func newTestChoreRepo(t *testing.T) (*ChoreRepository, *gorm.DB) {
 	return NewChoreRepository(db, cfg), db
 }
 
-func createProject(t *testing.T, db *gorm.DB, createdBy int, isPrivate bool) *pModel.Project {
-	t.Helper()
-
-	project := &pModel.Project{
-		Name:      "project",
-		CircleID:  testCircleID,
-		CreatedBy: createdBy,
-		IsPrivate: isPrivate,
-	}
-	if err := db.Create(project).Error; err != nil {
-		t.Fatalf("failed to create project: %v", err)
-	}
-	return project
-}
-
-// createChore inserts a chore, optionally inside a project, with the given assignees.
-func createChore(t *testing.T, db *gorm.DB, name string, createdBy int, isPrivate bool, projectID *int, assignees ...int) *chModel.Chore {
+// createChore inserts a chore with the given assignees.
+func createChore(t *testing.T, db *gorm.DB, name string, createdBy int, isPrivate bool, assignees ...int) *chModel.Chore {
 	t.Helper()
 
 	chore := &chModel.Chore{
@@ -61,7 +45,6 @@ func createChore(t *testing.T, db *gorm.DB, name string, createdBy int, isPrivat
 		CircleID:  testCircleID,
 		CreatedBy: createdBy,
 		IsPrivate: isPrivate,
-		ProjectID: projectID,
 		IsActive:  true,
 	}
 	if err := db.Create(chore).Error; err != nil {
@@ -98,121 +81,22 @@ func contains(names []string, name string) bool {
 	return false
 }
 
-// A user who can't see the project can't see its chores either, not even the ones
-// assigned to them: otherwise the API hands out a chore pointing at a project that
-// isn't in the user's project list, and it silently disappears from every view.
-func TestGetChoresHidesChoresInSomeoneElsesPrivateProject(t *testing.T) {
+// A private chore is only visible to its creator and assignees.
+func TestGetChoresKeepsChoreLevelPrivacy(t *testing.T) {
 	r, db := newTestChoreRepo(t)
 
-	project := createProject(t, db, testOtherID, true)
-	createChore(t, db, "assigned-to-me", testOtherID, true, &project.ID, testOwnerID)
-	createChore(t, db, "not-mine", testOtherID, true, &project.ID, testOtherID)
+	createChore(t, db, "public", testOtherID, false)
+	createChore(t, db, "private-assigned", testOtherID, true, testOwnerID)
+	createChore(t, db, "private-theirs", testOtherID, true, testOtherID)
 
 	names := visibleChoreNames(t, r, testOwnerID)
-	if len(names) != 0 {
-		t.Errorf("got %v, want no chore from a private project owned by someone else", names)
-	}
-}
-
-// The flip side: the owner of a private project sees everything in it, including
-// chores somebody else created there while the project was still public.
-func TestGetChoresShowsEveryChoreInOwnPrivateProject(t *testing.T) {
-	r, db := newTestChoreRepo(t)
-
-	project := createProject(t, db, testOwnerID, true)
-	createChore(t, db, "created-by-other", testOtherID, true, &project.ID, testOtherID)
-	createChore(t, db, "created-by-me", testOwnerID, true, &project.ID, testOwnerID)
-
-	names := visibleChoreNames(t, r, testOwnerID)
-	if !contains(names, "created-by-other") || !contains(names, "created-by-me") {
-		t.Errorf("got %v, want both chores of the user's own private project", names)
-	}
-}
-
-// Chore-level privacy keeps working as before outside private projects.
-func TestGetChoresKeepsChoreLevelPrivacyOutsidePrivateProjects(t *testing.T) {
-	r, db := newTestChoreRepo(t)
-
-	publicProject := createProject(t, db, testOtherID, false)
-	createChore(t, db, "public-no-project", testOtherID, false, nil)
-	createChore(t, db, "public-in-project", testOtherID, false, &publicProject.ID)
-	createChore(t, db, "private-assigned", testOtherID, true, &publicProject.ID, testOwnerID)
-	createChore(t, db, "private-theirs", testOtherID, true, &publicProject.ID, testOtherID)
-
-	names := visibleChoreNames(t, r, testOwnerID)
-	for _, want := range []string{"public-no-project", "public-in-project", "private-assigned"} {
+	for _, want := range []string{"public", "private-assigned"} {
 		if !contains(names, want) {
 			t.Errorf("got %v, want it to contain %q", names, want)
 		}
 	}
 	if contains(names, "private-theirs") {
 		t.Errorf("got %v, want it to hide a private chore of another user", names)
-	}
-}
-
-func TestGetChoreAppliesProjectPrivacy(t *testing.T) {
-	r, db := newTestChoreRepo(t)
-	ctx := context.Background()
-
-	project := createProject(t, db, testOtherID, true)
-	chore := createChore(t, db, "theirs", testOtherID, true, &project.ID, testOwnerID)
-
-	if _, err := r.GetChore(ctx, chore.ID, testOwnerID, testCircleID); err == nil {
-		t.Error("GetChore should not return a chore from someone else's private project")
-	}
-	if _, err := r.GetChore(ctx, chore.ID, testOtherID, testCircleID); err != nil {
-		t.Errorf("GetChore failed for the project owner: %v", err)
-	}
-}
-
-func TestCreateChoreWithAssigneesEnforcesCurrentProjectPrivacy(t *testing.T) {
-	r, db := newTestChoreRepo(t)
-	project := createProject(t, db, testOwnerID, true)
-	chore := &chModel.Chore{
-		Name:           "private",
-		CircleID:       testCircleID,
-		CreatedBy:      testOwnerID,
-		ProjectID:      &project.ID,
-		AssignStrategy: chModel.AssignmentStrategyRandom,
-	}
-
-	_, err := r.CreateChoreWithAssignees(context.Background(), chore, []int{testOtherID}, testOwnerID)
-	if err != nil {
-		t.Fatalf("CreateChoreWithAssignees failed: %v", err)
-	}
-	if !chore.IsPrivate {
-		t.Fatal("chore should inherit private project visibility")
-	}
-	if chore.AssignedTo == nil || *chore.AssignedTo != testOwnerID {
-		t.Fatalf("assigned_to = %v, want project owner", chore.AssignedTo)
-	}
-	assertAssignees(t, db, chore.ID, []int{testOwnerID})
-}
-
-func TestSetProjectChoresPrivacyNarrowsAssigneesToOwner(t *testing.T) {
-	r, db := newTestChoreRepo(t)
-	ctx := context.Background()
-
-	project := createProject(t, db, testOwnerID, false)
-	shared := createChore(t, db, "shared", testOwnerID, false, &project.ID, testOwnerID, testOtherID)
-	anyone := createChore(t, db, "anyone", testOwnerID, false, &project.ID)
-	if err := db.Model(&chModel.Chore{}).Where("id = ?", shared.ID).Update("assigned_to", testOtherID).Error; err != nil {
-		t.Fatalf("failed to set assigned_to: %v", err)
-	}
-
-	if err := r.SetProjectChoresPrivacy(ctx, db, testCircleID, project.ID, testOwnerID, true); err != nil {
-		t.Fatalf("SetProjectChoresPrivacy failed: %v", err)
-	}
-
-	assertAssignees(t, db, shared.ID, []int{testOwnerID})
-	assertAssignees(t, db, anyone.ID, []int{testOwnerID})
-
-	var updated chModel.Chore
-	if err := db.First(&updated, shared.ID).Error; err != nil {
-		t.Fatalf("failed to reload chore: %v", err)
-	}
-	if updated.AssignedTo == nil || *updated.AssignedTo != testOwnerID {
-		t.Errorf("assigned_to = %v, want the project owner", updated.AssignedTo)
 	}
 }
 
@@ -241,7 +125,7 @@ func assertAssignees(t *testing.T, db *gorm.DB, choreID int, want []int) {
 // assignee pool from the details response, so it must carry the assignees (#848).
 func TestGetChoreDetailByIDIncludesAssignees(t *testing.T) {
 	r, db := newTestChoreRepo(t)
-	chore := createChore(t, db, "shared", testOwnerID, false, nil, testOwnerID, testOtherID)
+	chore := createChore(t, db, "shared", testOwnerID, false, testOwnerID, testOtherID)
 
 	detail, err := r.GetChoreDetailByID(context.Background(), chore.ID, testCircleID, testOwnerID)
 	if err != nil {

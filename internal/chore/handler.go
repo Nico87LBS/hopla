@@ -20,8 +20,6 @@ import (
 	cRepo "github.com/nico87lbs/hopla/internal/circle/repo"
 	lModel "github.com/nico87lbs/hopla/internal/label/model"
 	lRepo "github.com/nico87lbs/hopla/internal/label/repo"
-	pModel "github.com/nico87lbs/hopla/internal/project/model"
-	pjRepo "github.com/nico87lbs/hopla/internal/project/repo"
 	"github.com/nico87lbs/hopla/internal/realtime"
 	storage "github.com/nico87lbs/hopla/internal/storage"
 	storageModel "github.com/nico87lbs/hopla/internal/storage/model"
@@ -46,7 +44,6 @@ type Handler struct {
 	storage         storage.Storage
 	realTimeService *realtime.RealTimeService
 	signer          storage.URLSigner
-	pjRepo          *pjRepo.ProjectRepository
 }
 
 func NewHandler(cr *chRepo.ChoreRepository, circleRepo *cRepo.CircleRepository,
@@ -56,11 +53,9 @@ func NewHandler(cr *chRepo.ChoreRepository, circleRepo *cRepo.CircleRepository,
 	ur *uRepo.UserRepository,
 	stoRepo *storageRepo.StorageRepository,
 	signer storage.URLSigner,
-	rts *realtime.RealTimeService,
-	projectRepo *pjRepo.ProjectRepository) *Handler {
+	rts *realtime.RealTimeService) *Handler {
 	return &Handler{
 		choreRepo:       cr,
-		pjRepo:          projectRepo,
 		uRepo:           ur,
 		circleRepo:      circleRepo,
 		lRepo:           lRepo,
@@ -318,7 +313,6 @@ type ChoreReq struct {
 	SubTasks             *[]stModel.SubTask            `json:"subTasks" binding:"omitempty,dive"`
 	RequireApproval      bool                          `json:"requireApproval" binding:"omitempty"`
 	IsPrivate            *bool                         `json:"isPrivate" binding:"omitempty"`
-	ProjectID            *int                          `json:"projectId" binding:"omitempty"`
 	DraftId              *string                       `json:"draftId,omitempty"`
 }
 
@@ -517,15 +511,6 @@ func (h *Handler) CreateChore(c *gin.Context) {
 		dueDate = &utcDate
 	}
 
-	// Before the defaults, so a chore inheriting privacy from its project isn't warned
-	// about defaulting to public.
-	if err := h.inheritProjectPrivacy(c, &choreReq, currentUser.ID, currentUser.CircleID); err != nil {
-		c.JSON(400, gin.H{
-			"error": err.Error(),
-		})
-		return
-	}
-
 	warnings := setCreateChoreDefaults(&choreReq)
 	if choreReq.AssignStrategy == chModel.AssignmentStrategyTogether {
 		choreReq.AssignedTo = nil
@@ -567,7 +552,6 @@ func (h *Handler) CreateChore(c *gin.Context) {
 		Priority:               *choreReq.Priority,
 		RequireApproval:        choreReq.RequireApproval,
 		IsPrivate:              *choreReq.IsPrivate,
-		ProjectID:              choreReq.ProjectID,
 		// SubTasks removed to prevent duplicate creation - handled by UpdateSubtask call below
 		// it's need custom logic to handle subtask creation as we send negative ids sometimes when we creating parent child releationship
 		// when the subtask is not yet created
@@ -576,13 +560,9 @@ func (h *Handler) CreateChore(c *gin.Context) {
 	for _, assignee := range choreReq.Assignees {
 		assigneeIDs = append(assigneeIDs, assignee.UserID)
 	}
-	id, err := h.choreRepo.CreateChoreWithAssignees(c, createdChore, assigneeIDs, currentUser.ID)
+	id, err := h.choreRepo.CreateChoreWithAssignees(c, createdChore, assigneeIDs)
 	createdChore.ID = id
 
-	if errors.Is(err, chRepo.ErrAssigneeOutsideProject) {
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
 	if err != nil {
 		logger.Error("Failed to create chore", "error", err, "userID", currentUser.ID, "circleID", currentUser.CircleID)
 		c.JSON(500, gin.H{
@@ -631,8 +611,7 @@ func (h *Handler) CreateChore(c *gin.Context) {
 		}
 	}
 
-	// Reload relations used by notification and realtime authorization. In
-	// particular, Project must be populated before deciding event recipients.
+	// Reload relations used by notification and realtime authorization.
 	eventChore, err := h.choreRepo.GetChore(c, createdChore.ID, currentUser.ID, currentUser.CircleID)
 	if err != nil {
 		logger.Error("Failed to reload created chore", "error", err)
@@ -727,14 +706,6 @@ func (h *Handler) EditChore(c *gin.Context) {
 		logger.Error("Failed to retrieve circle users", "error", err)
 		c.JSON(500, gin.H{
 			"error": "Failed to retrieve circle users",
-		})
-		return
-	}
-
-	// Before the assignee diff below, so a private project can narrow the list down.
-	if err := h.inheritProjectPrivacy(c, &choreReq, currentUser.ID, currentUser.CircleID); err != nil {
-		c.JSON(400, gin.H{
-			"error": err.Error(),
 		})
 		return
 	}
@@ -898,7 +869,6 @@ func (h *Handler) EditChore(c *gin.Context) {
 		Priority:               *choreReq.Priority,
 		RequireApproval:        choreReq.RequireApproval,
 		IsPrivate:              *choreReq.IsPrivate,
-		ProjectID:              choreReq.ProjectID,
 		Status:                 oldChore.Status,
 	}
 
@@ -906,11 +876,7 @@ func (h *Handler) EditChore(c *gin.Context) {
 	for _, assignee := range choreReq.Assignees {
 		assigneeIDs = append(assigneeIDs, assignee.UserID)
 	}
-	if err := h.choreRepo.UpdateChoreVisibilityForUser(c, updatedChore, assigneeIDs, currentUser.ID); err != nil {
-		if errors.Is(err, chRepo.ErrAssigneeOutsideProject) {
-			c.JSON(400, gin.H{"error": err.Error()})
-			return
-		}
+	if err := h.choreRepo.UpdateChoreVisibility(c, updatedChore, assigneeIDs); err != nil {
 		c.JSON(500, gin.H{
 			"error": "Error adding chore",
 		})
@@ -1027,70 +993,6 @@ func setEditChoreDefaults(choreReq *ChoreReq, oldChore *chModel.Chore) {
 	if choreReq.IsPrivate == nil {
 		choreReq.IsPrivate = &oldChore.IsPrivate
 	}
-}
-
-// inheritProjectPrivacy makes sure the project a chore is being placed in is visible
-// to the user, and makes the chore follow that project's privacy: a chore always
-// takes on the privacy of the project it's placed in, in both directions — moving a
-// private chore into a public project makes it public, and moving a public chore
-// into a private project makes it private. A chore in no project at all keeps its
-// own flag, since there's no project to inherit from.
-//
-// It also keeps the assignees of a chore in a private project down to the project
-// owner, the only user who can see it: assigning it to anyone else is rejected, and
-// "Anyone" (an empty assignee list) resolves to the owner instead of the whole
-// circle, so the chore never rotates or notifies its way to someone who can't see it.
-func (h *Handler) inheritProjectPrivacy(c *gin.Context, choreReq *ChoreReq, userID int, circleID int) error {
-	if choreReq.ProjectID == nil {
-		return nil
-	}
-
-	project, err := h.pjRepo.GetProjectByID(c, *choreReq.ProjectID, circleID)
-	// Don't tell apart "missing" from "not visible", it would leak private projects.
-	if err != nil || !project.CanView(userID) {
-		return errors.New("project not found")
-	}
-
-	isPrivate := project.IsPrivate
-	choreReq.IsPrivate = &isPrivate
-
-	if !project.IsPrivate {
-		return nil
-	}
-
-	if project.Visibility() == pModel.ProjectVisibilityMembers {
-		// A shared project's audience is its owner plus the selected members: any
-		// of them can be assigned, nobody else. "Anyone" (no assignees) stays as it
-		// is and rotates and notifies within that audience only.
-		for _, assignee := range choreReq.Assignees {
-			if !project.CanView(assignee.UserID) {
-				return chRepo.ErrAssigneeOutsideProject
-			}
-		}
-		if choreReq.AssignedTo != nil && *choreReq.AssignedTo != 0 && !project.CanView(*choreReq.AssignedTo) {
-			return chRepo.ErrAssigneeOutsideProject
-		}
-		return nil
-	}
-
-	for _, assignee := range choreReq.Assignees {
-		if assignee.UserID != project.CreatedBy {
-			return errors.New("chores in a private project can only be assigned to its owner")
-		}
-	}
-	if choreReq.AssignedTo != nil && *choreReq.AssignedTo != project.CreatedBy {
-		return errors.New("chores in a private project can only be assigned to its owner")
-	}
-
-	// "Anyone" would otherwise spread over the whole circle when rotating or notifying.
-	if len(choreReq.Assignees) == 0 && choreReq.AssignStrategy != chModel.AssignmentStrategyNoAssignee {
-		choreReq.Assignees = []chModel.ChoreAssignees{{ChoreID: choreReq.ID, UserID: project.CreatedBy}}
-		if choreReq.AssignedTo == nil {
-			owner := project.CreatedBy
-			choreReq.AssignedTo = &owner
-		}
-	}
-	return nil
 }
 
 func dueDatesDiffer(oldDueDate, newDueDate *time.Time) bool {
@@ -2132,7 +2034,7 @@ func (h *Handler) ArchiveChore(c *gin.Context) {
 	}
 
 	// The repository only checks authorship; a creator who lost sight of the chore
-	// (e.g. removed from a shared project) must not be able to change it anymore.
+	// (e.g. no longer an assignee of a private task) must not be able to change it anymore.
 	if _, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.CircleID); err != nil {
 		c.JSON(404, gin.H{
 			"error": "Chore not found",
@@ -2202,7 +2104,7 @@ func (h *Handler) UnarchiveChore(c *gin.Context) {
 		return
 	}
 	// The repository only checks authorship; a creator who lost sight of the chore
-	// (e.g. removed from a shared project) must not be able to change it anymore.
+	// (e.g. no longer an assignee of a private task) must not be able to change it anymore.
 	if _, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.CircleID); err != nil {
 		c.JSON(404, gin.H{
 			"error": "Chore not found",
@@ -2363,14 +2265,6 @@ func (h *Handler) CompleteChore(c *gin.Context) {
 		// Use actualUser for authorization since this is an admin function
 		ok := authorizeChoreCompletionForUser(h, c, actualUser, req.CompletedBy)
 		if !ok {
-			return
-		}
-		// Credit only people who can see the chore: a completion (and its points)
-		// must not be attributed to somebody outside a restricted project.
-		if chore.Project != nil && chore.Project.IsPrivate && !chore.Project.CanView(*req.CompletedBy) {
-			c.JSON(403, gin.H{
-				"error": "The selected user cannot see this task",
-			})
 			return
 		}
 		completedBy = *req.CompletedBy
@@ -4084,9 +3978,8 @@ func (h *Handler) updateTimer(c *gin.Context) { // TODO: Not used in Routes
 
 // impersonationGuard keeps an admin or manager who acts as another member
 // (X-Impersonate-User-ID) from reaching into a chore they could not see
-// themselves, e.g. one in a project that is private to or shared with the
-// impersonated user only. Managing a sub-account stays possible: a parent may
-// act for their own child. Writes a 403 and returns false when blocked.
+// themselves, e.g. a private task of the impersonated user. Managing a
+// sub-account stays possible: a parent may act for their own child. Writes a 403 and returns false when blocked.
 func (h *Handler) impersonationGuard(c *gin.Context, chore *chModel.Chore, actualUser, effectiveUser *uModel.UserDetails, hasImpersonation bool) bool {
 	if !hasImpersonation || actualUser == nil || effectiveUser == nil || actualUser.ID == effectiveUser.ID {
 		return true
@@ -4124,17 +4017,6 @@ func checkNextAssignee(chore *chModel.Chore, choresHistory []*chModel.ChoreHisto
 				UserID:  circleUser.UserID,
 			})
 		}
-	}
-	// In a restricted project only its audience may be picked, so "Anyone" means
-	// anyone who can see the project, and a stale assignee never gets a turn.
-	if chore.Project != nil && chore.Project.IsPrivate {
-		visible := make([]chModel.ChoreAssignees, 0, len(assignees))
-		for _, assignee := range assignees {
-			if chore.Project.CanView(assignee.UserID) {
-				visible = append(visible, assignee)
-			}
-		}
-		assignees = visible
 	}
 
 	assigneesMap := map[int]bool{}

@@ -34,11 +34,10 @@ const document = (provider, item) => ({ provider, ...item })
 
 registerSearchProvider({
   id: 'tasks',
-  getDocuments: ({ chores, membersById, projectsById, t }) =>
+  getDocuments: ({ chores, membersById, t }) =>
     chores.map(chore => {
       const labels =
         chore.labelsV2?.map(label => label.name).filter(Boolean) || []
-      const project = projectsById.get(String(chore.projectId))
       const assignees = (chore.assignees || [])
         .map(assignee => membersById.get(String(assignee.userId))?.displayName)
         .filter(Boolean)
@@ -47,13 +46,9 @@ registerSearchProvider({
         id: `task:${chore.id}`,
         entityId: chore.id,
         title: chore.name || t('common:search.untitled.task'),
-        subtitle:
-          [project?.name, ...labels].filter(Boolean).join(' · ') ||
-          t('common:search.kinds.task'),
+        subtitle: labels.join(' · ') || t('common:search.kinds.task'),
         body: description,
-        keywords: [...labels, project?.name, ...assignees]
-          .filter(Boolean)
-          .join(' '),
+        keywords: [...labels, ...assignees].filter(Boolean).join(' '),
         route: `/chores/${chore.id}`,
         updatedAt: chore.updatedAt || chore.createdAt,
       })
@@ -90,23 +85,6 @@ registerSearchProvider({
         }),
       ]
     }),
-})
-
-registerSearchProvider({
-  id: 'projects',
-  getDocuments: ({ projects, t }) =>
-    projects.map(project =>
-      document('projects', {
-        id: `project:${project.id}`,
-        entityId: project.id,
-        title: project.name || t('common:search.untitled.project'),
-        subtitle: t('common:search.kinds.project'),
-        body: stripHtml(project.description),
-        keywords: 'folder project',
-        route: `/chores?project=${encodeURIComponent(project.id)}`,
-        updatedAt: project.updatedAt,
-      }),
-    ),
 })
 
 registerSearchProvider({

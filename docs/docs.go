@@ -10,10 +10,6 @@ const docTemplate = `{
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
         "contact": {},
-        "license": {
-            "name": "GNU Affero General Public License v3.0",
-            "url": "https://github.com/Nico87LBS/hopla/blob/main/LICENSE"
-        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
@@ -504,6 +500,19 @@ const docTemplate = `{
                 }
             }
         },
+        "/chores/flashes": {
+            "get": {
+                "description": "The speed bonus open now on each task that has one, by task",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "chores"
+                ],
+                "summary": "Speed bonuses open now",
+                "responses": {}
+            }
+        },
         "/chores/history": {
             "get": {
                 "security": [
@@ -580,6 +589,19 @@ const docTemplate = `{
                         }
                     }
                 }
+            }
+        },
+        "/chores/slots": {
+            "get": {
+                "description": "Today's slots of every task done several times a day, by task",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "chores"
+                ],
+                "summary": "Today's slots",
+                "responses": {}
             }
         },
         "/chores/{id}": {
@@ -1781,6 +1803,104 @@ const docTemplate = `{
                 }
             }
         },
+        "/chores/{id}/slots/{slot}/approve": {
+            "post": {
+                "description": "Approves a slot ticked by a child that waits for a parent (admin/manager only)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "chores"
+                ],
+                "summary": "Approve a slot of the day",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Chore ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Slot index",
+                        "name": "slot",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/chores/{id}/slots/{slot}/catchup": {
+            "post": {
+                "description": "Marks an open or missed slot of today done for a child, without approval (admin/manager only)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "chores"
+                ],
+                "summary": "Tick a slot of the day as a parent",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Chore ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Slot index",
+                        "name": "slot",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Who did it",
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/chore.CatchUpSlotReq"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/chores/{id}/slots/{slot}/reject": {
+            "post": {
+                "description": "Turns down a slot ticked by a child: it is to do again while open (admin/manager only)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "chores"
+                ],
+                "summary": "Reject a slot of the day",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Chore ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Slot index",
+                        "name": "slot",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/chores/{id}/start": {
             "put": {
                 "security": [
@@ -2850,6 +2970,86 @@ const docTemplate = `{
                 }
             }
         },
+        "/circles/members/away": {
+            "put": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Pauses a member's tasks, streak and quests while they are away, such as a child at the other parent's home (admin/manager only). Coming back makes the tasks that fell due meanwhile due today.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "circles"
+                ],
+                "summary": "Mark a member away or back home",
+                "parameters": [
+                    {
+                        "description": "Who and where",
+                        "name": "away",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "away": {
+                                    "type": "boolean"
+                                },
+                                "memberId": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "res: whether anything changed",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "boolean"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error: Invalid request / User is not a member of this circle",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "error: Only parents can do this",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "error: Error changing the member's presence",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/circles/members/requests": {
             "get": {
                 "security": [
@@ -3161,6 +3361,103 @@ const docTemplate = `{
                 }
             }
         },
+        "/circles/timezone": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Every date of the family follows this zone, whatever the device's. It is the server's unless the family moved, such as on holiday.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "circles"
+                ],
+                "summary": "Get the family's time zone",
+                "responses": {
+                    "200": {
+                        "description": "res: the family's zone",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "$ref": "#/definitions/chore.FamilyTimezone"
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Sets the zone every date of the family follows, such as on holiday (admin/manager only). Tasks keep their time of day. An empty zone, or the server's, brings the family back home.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "circles"
+                ],
+                "summary": "Move the family to another time zone",
+                "parameters": [
+                    {
+                        "description": "IANA zone, such as Europe/Lisbon",
+                        "name": "timezone",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "timezone": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "res: the family's zone",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "$ref": "#/definitions/chore.FamilyTimezone"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error: Invalid request / Invalid timezone",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "error: Only parents can do this",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/circles/{id}/members/delete": {
             "delete": {
                 "security": [
@@ -3343,819 +3640,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/filters": {
-            "get": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Gets all filters for the current user's circle",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "filters"
-                ],
-                "summary": "Get all filters",
-                "responses": {
-                    "200": {
-                        "description": "array of filters",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "additionalProperties": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/definitions/model.Filter"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Error getting current user | Error getting filters",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Creates a new filter for the current user's circle",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "filters"
-                ],
-                "summary": "Create a new filter",
-                "parameters": [
-                    {
-                        "description": "Filter creation request",
-                        "name": "filter",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.FilterReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "res: created filter object",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "$ref": "#/definitions/model.Filter"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Error binding filter data | Filter name already exists",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Error getting current user | Error checking filter name | Error creating filter",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/filters/by-usage": {
-            "get": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Gets filters sorted by usage for the current user's circle",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "filters"
-                ],
-                "summary": "Get filters by usage",
-                "responses": {
-                    "200": {
-                        "description": "array of filters sorted by usage",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/model.Filter"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Error getting current user | Error getting filters by usage",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/filters/pinned": {
-            "get": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Gets all pinned filters for the current user's circle",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "filters"
-                ],
-                "summary": "Get pinned filters",
-                "responses": {
-                    "200": {
-                        "description": "array of pinned filters",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/model.Filter"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Error getting current user | Error getting pinned filters",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/filters/{id}": {
-            "get": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Gets a specific filter by ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "filters"
-                ],
-                "summary": "Get filter by ID",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Filter ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "filter object",
-                        "schema": {
-                            "$ref": "#/definitions/model.Filter"
-                        }
-                    },
-                    "400": {
-                        "description": "error: Filter ID is required | Invalid filter ID",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "error: Filter not found",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Error getting current user",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            },
-            "put": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Updates an existing filter by ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "filters"
-                ],
-                "summary": "Update a filter",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Filter ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Filter update request",
-                        "name": "filter",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.FilterReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "res: updated filter object",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "$ref": "#/definitions/model.Filter"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Filter ID is required | Invalid filter ID | Error binding filter data | Filter name already exists",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Error getting current user | Error checking filter name | Error getting updated filter | internal error",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Deletes a filter by ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "filters"
-                ],
-                "summary": "Delete a filter",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Filter ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "res: Filter deleted successfully",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Filter ID is required | Invalid filter ID",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Error getting current user | internal error",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/filters/{id}/toggle-pin": {
-            "post": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Toggles the pin status of a filter by ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "filters"
-                ],
-                "summary": "Toggle filter pin status",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Filter ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "res: {isPinned: bool}",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    },
-                    "400": {
-                        "description": "error: Filter ID is required | Invalid filter ID",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Error getting current user | internal error",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/projects": {
-            "get": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Retrieves the projects of the current user's circle the user can see: circle-wide ones, their own private ones and the ones shared with them",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "projects"
-                ],
-                "summary": "Get all projects",
-                "responses": {
-                    "200": {
-                        "description": "array of projects",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/model.Project"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Error getting current user",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Error getting projects",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Creates a new project for the current user's circle. visibility is \"private\" (only me), \"members\" (me and memberIds) or \"circle\" (everyone in the circle, the default).",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "projects"
-                ],
-                "summary": "Create a new project",
-                "parameters": [
-                    {
-                        "description": "Project creation request",
-                        "name": "project",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.ProjectReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "res: created project object",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "$ref": "#/definitions/model.Project"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Error binding project data",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Error getting current user",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Error creating project",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/projects/{id}": {
-            "put": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Updates name, description, color and icon of a project owned by the current user and, optionally, who can see it (visibility, memberIds). Fields that are not sent keep their current value. Changing who can see the project also adjusts the assignees of its tasks; use POST /projects/{id}/access-preview to see the effect first.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "projects"
-                ],
-                "summary": "Update a project",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Project ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Project update request",
-                        "name": "project",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.ProjectReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "res: updated project object",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "$ref": "#/definitions/model.Project"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid project ID, Error binding project data or invalid members",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Error getting current user",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: not the project owner",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "error: project not found",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Error updating project or Error getting updated project",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Deletes a project by ID; restricted to the current user's circle. Its tasks are kept without a project and follow their own privacy from then on.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "projects"
-                ],
-                "summary": "Delete a project",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Project ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "res: Project deleted successfully",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid project ID",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Error getting current user",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Error deleting project",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/projects/{id}/access-preview": {
-            "post": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Returns, without changing anything, which tasks of the project would change assignees and who would gain or lose access if the given visibility and members were saved. Only the project owner may call it.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "projects"
-                ],
-                "summary": "Preview a change of who can see a project",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Project ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Target visibility and members",
-                        "name": "access",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/project.AccessPreviewReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "res: chRepo.ProjectAccessPlan",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    },
-                    "400": {
-                        "description": "error",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: not the project owner",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "error: project not found",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/sync/changes": {
             "get": {
                 "security": [
@@ -4256,6 +3740,14 @@ const docTemplate = `{
                 }
             }
         },
+        "chore.CatchUpSlotReq": {
+            "type": "object",
+            "properties": {
+                "completedBy": {
+                    "type": "integer"
+                }
+            }
+        },
         "chore.ChoreReq": {
             "type": "object",
             "required": [
@@ -4272,7 +3764,8 @@ const docTemplate = `{
                         "random",
                         "keep_last_assigned",
                         "random_except_last_assigned",
-                        "round_robin"
+                        "round_robin",
+                        "together"
                     ],
                     "allOf": [
                         {
@@ -4297,6 +3790,16 @@ const docTemplate = `{
                 },
                 "draftId": {
                     "type": "string"
+                },
+                "flashMinutes": {
+                    "type": "integer",
+                    "maximum": 720,
+                    "minimum": 1
+                },
+                "flashPoints": {
+                    "type": "integer",
+                    "maximum": 1000,
+                    "minimum": 0
                 },
                 "frequency": {
                     "type": "integer"
@@ -4363,9 +3866,6 @@ const docTemplate = `{
                 "priority": {
                     "type": "integer"
                 },
-                "projectId": {
-                    "type": "integer"
-                },
                 "requireApproval": {
                     "type": "boolean"
                 },
@@ -4415,6 +3915,23 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "chore.FamilyTimezone": {
+            "type": "object",
+            "properties": {
+                "custom": {
+                    "description": "Custom is true when the family is not in the server's zone.",
+                    "type": "boolean"
+                },
+                "server": {
+                    "description": "Server is the server's zone, the family's when it is at home.",
+                    "type": "string"
+                },
+                "timezone": {
+                    "description": "Timezone is the zone every date of the family follows.",
                     "type": "string"
                 }
             }
@@ -4553,8 +4070,16 @@ const docTemplate = `{
                     "description": "Full name",
                     "type": "string"
                 },
+                "parentsOnPodium": {
+                    "description": "ParentsOnPodium puts the parents on the podium with the children.\nWithout children, the parents are always on it.",
+                    "type": "boolean"
+                },
                 "subscriptionStatus": {
                     "description": "read one column",
+                    "type": "string"
+                },
+                "timezone": {
+                    "description": "Timezone is the family's IANA zone, empty for the server's (TZ). See\npackage zone.",
                     "type": "string"
                 },
                 "updated_at": {
@@ -4579,6 +4104,10 @@ const docTemplate = `{
         "circle.UserCircleDetail": {
             "type": "object",
             "properties": {
+                "away": {
+                    "description": "Away pauses the member's tasks and games, such as a child staying at\nthe other parent's home.",
+                    "type": "boolean"
+                },
                 "circleId": {
                     "description": "Circle ID",
                     "type": "integer"
@@ -4685,7 +4214,8 @@ const docTemplate = `{
                 "keep_last_assigned",
                 "random_except_last_assigned",
                 "round_robin",
-                "no_assignee"
+                "no_assignee",
+                "together"
             ],
             "x-enum-varnames": [
                 "AssignmentStrategyRandom",
@@ -4694,7 +4224,8 @@ const docTemplate = `{
                 "AssignmentStrategyKeepLastAssigned",
                 "AssignmentStrategyRandomExceptLastAssigned",
                 "AssignmentStrategyRoundRobin",
-                "AssignmentStrategyNoAssignee"
+                "AssignmentStrategyNoAssignee",
+                "AssignmentStrategyTogether"
             ]
         },
         "model.Chore": {
@@ -4744,6 +4275,22 @@ const docTemplate = `{
                 "description": {
                     "description": "Description of the chore",
                     "type": "string"
+                },
+                "flash": {
+                    "description": "The flash bonus open now, if any",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.FlashWindow"
+                        }
+                    ]
+                },
+                "flashMinutes": {
+                    "description": "Flash bonus: minutes after the due time it stays open",
+                    "type": "integer"
+                },
+                "flashPoints": {
+                    "description": "Flash bonus: extra points when done in time",
+                    "type": "integer"
                 },
                 "frequency": {
                     "description": "Number of days, weeks, months, or years between chores",
@@ -4814,21 +4361,16 @@ const docTemplate = `{
                 "priority": {
                     "type": "integer"
                 },
-                "project": {
-                    "description": "Project relationship",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/model.Project"
-                        }
-                    ]
-                },
-                "projectId": {
-                    "description": "The project this chore belongs to",
-                    "type": "integer"
-                },
                 "requireApproval": {
                     "description": "Whether chore completion requires admin approval",
                     "type": "boolean"
+                },
+                "slotsToday": {
+                    "description": "Today's slots of a task done several times a day",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.SlotStatus"
+                    }
                 },
                 "status": {
                     "$ref": "#/definitions/model.Status"
@@ -4889,6 +4431,10 @@ const docTemplate = `{
                     "description": "Duration in seconds calculated from query (read-only, no DB column)",
                     "type": "integer"
                 },
+                "flashId": {
+                    "description": "The flash launched by a parent this completion won",
+                    "type": "integer"
+                },
                 "id": {
                     "description": "Unique identifier",
                     "type": "integer"
@@ -4903,6 +4449,10 @@ const docTemplate = `{
                 },
                 "points": {
                     "description": "Points for completing the chore",
+                    "type": "integer"
+                },
+                "slot": {
+                    "description": "The slot of the day, for a task done several times a day",
                     "type": "integer"
                 },
                 "status": {
@@ -4944,120 +4494,17 @@ const docTemplate = `{
                 "ChoreHistoryStatusRescheduled"
             ]
         },
-        "model.Filter": {
+        "model.FlashWindow": {
             "type": "object",
             "properties": {
-                "circleId": {
+                "endsAt": {
+                    "type": "string"
+                },
+                "liveId": {
                     "type": "integer"
                 },
-                "color": {
-                    "type": "string"
-                },
-                "conditions": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/model.FilterCondition"
-                    }
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "createdBy": {
+                "points": {
                     "type": "integer"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "icon": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "isPinned": {
-                    "type": "boolean"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "operator": {
-                    "$ref": "#/definitions/model.LogicalOperator"
-                },
-                "updatedAt": {
-                    "type": "string"
-                }
-            }
-        },
-        "model.FilterCondition": {
-            "type": "object",
-            "required": [
-                "operator",
-                "type"
-            ],
-            "properties": {
-                "operator": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string",
-                    "enum": [
-                        "assignee",
-                        "createdBy",
-                        "priority",
-                        "status",
-                        "dueDate",
-                        "label",
-                        "project",
-                        "points"
-                    ]
-                },
-                "value": {}
-            }
-        },
-        "model.FilterReq": {
-            "type": "object",
-            "required": [
-                "conditions",
-                "name"
-            ],
-            "properties": {
-                "color": {
-                    "type": "string"
-                },
-                "conditions": {
-                    "type": "array",
-                    "maxItems": 20,
-                    "minItems": 1,
-                    "items": {
-                        "$ref": "#/definitions/model.FilterCondition"
-                    }
-                },
-                "description": {
-                    "type": "string",
-                    "maxLength": 500
-                },
-                "icon": {
-                    "type": "string",
-                    "maxLength": 50
-                },
-                "isPinned": {
-                    "type": "boolean"
-                },
-                "name": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 1
-                },
-                "operator": {
-                    "enum": [
-                        "AND",
-                        "OR"
-                    ],
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/model.LogicalOperator"
-                        }
-                    ]
                 }
             }
         },
@@ -5081,6 +4528,13 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "type": "integer"
+                    }
+                },
+                "slots": {
+                    "description": "Times of day a daily task is done at, each one on its own",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Slot"
                     }
                 },
                 "time": {
@@ -5179,17 +4633,6 @@ const docTemplate = `{
                 }
             }
         },
-        "model.LogicalOperator": {
-            "type": "string",
-            "enum": [
-                "AND",
-                "OR"
-            ],
-            "x-enum-varnames": [
-                "LogicalOperatorAND",
-                "LogicalOperatorOR"
-            ]
-        },
         "model.NotificationMetadata": {
             "type": "object",
             "properties": {
@@ -5262,96 +4705,79 @@ const docTemplate = `{
                 }
             }
         },
-        "model.Project": {
+        "model.Slot": {
             "type": "object",
             "properties": {
-                "circleId": {
-                    "type": "integer"
-                },
-                "color": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "created_by": {
-                    "type": "integer"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "icon": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "isDefault": {
-                    "type": "boolean"
-                },
-                "isPrivate": {
-                    "description": "Whether the project is hidden from the circle",
-                    "type": "boolean"
-                },
                 "name": {
                     "type": "string"
                 },
-                "updatedAt": {
+                "time": {
+                    "description": "\"15:04\", in the task's timezone",
                     "type": "string"
                 }
             }
         },
-        "model.ProjectReq": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "color": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "icon": {
-                    "type": "string"
-                },
-                "isPrivate": {
-                    "description": "IsPrivate is optional: when omitted on update the current value is kept, so\nolder clients that don't know about the field can't accidentally unset it.\nClients that only know isPrivate keep a \"members\" project shared as long as\nthey send isPrivate=true; isPrivate=false opens it to the whole circle.",
-                    "type": "boolean"
-                },
-                "memberIds": {
-                    "description": "MemberIDs is only read together with visibility \"members\". When omitted\nthere, the current member list is kept.",
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "name": {
-                    "type": "string"
-                },
-                "visibility": {
-                    "description": "Visibility takes precedence over IsPrivate when both are sent.",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/model.ProjectVisibility"
-                        }
-                    ]
-                }
-            }
-        },
-        "model.ProjectVisibility": {
+        "model.SlotState": {
             "type": "string",
             "enum": [
-                "private",
-                "members",
-                "circle"
+                "upcoming",
+                "open",
+                "pending",
+                "done",
+                "missed"
+            ],
+            "x-enum-comments": {
+                "SlotMissed": "closed without being done; a parent can still catch it up today",
+                "SlotOpen": "can be ticked now",
+                "SlotPending": "ticked, waiting for a parent",
+                "SlotUpcoming": "not open yet"
+            },
+            "x-enum-descriptions": [
+                "not open yet",
+                "can be ticked now",
+                "ticked, waiting for a parent",
+                "",
+                "closed without being done; a parent can still catch it up today"
             ],
             "x-enum-varnames": [
-                "ProjectVisibilityPrivate",
-                "ProjectVisibilityMembers",
-                "ProjectVisibilityCircle"
+                "SlotUpcoming",
+                "SlotOpen",
+                "SlotPending",
+                "SlotDone",
+                "SlotMissed"
             ]
+        },
+        "model.SlotStatus": {
+            "type": "object",
+            "properties": {
+                "at": {
+                    "type": "string"
+                },
+                "closesAt": {
+                    "type": "string"
+                },
+                "completedBy": {
+                    "type": "integer"
+                },
+                "historyId": {
+                    "type": "integer"
+                },
+                "index": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "opensAt": {
+                    "type": "string"
+                },
+                "state": {
+                    "$ref": "#/definitions/model.SlotState"
+                },
+                "time": {
+                    "type": "string"
+                }
+            }
         },
         "model.Status": {
             "type": "integer",
@@ -5502,49 +4928,18 @@ const docTemplate = `{
                 "WeekPatternWeekOfMonth",
                 "WeekPatternWeekOfQuarter"
             ]
-        },
-        "project.AccessPreviewReq": {
-            "type": "object",
-            "properties": {
-                "isPrivate": {
-                    "type": "boolean"
-                },
-                "memberIds": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "visibility": {
-                    "$ref": "#/definitions/model.ProjectVisibility"
-                }
-            }
-        }
-    },
-    "securityDefinitions": {
-        "APIKeyAuth": {
-            "description": "hopla issued apikey",
-            "type": "apiKey",
-            "name": "secretkey",
-            "in": "header"
-        },
-        "JWTKeyAuth": {
-            "description": "Type \"Bearer\" followed by a space and JWT token.",
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header"
         }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "1.0",
+	Version:          "",
 	Host:             "",
-	BasePath:         "/api/v1",
+	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "Hopla Swagger API",
-	Description:      "Hopla swagger documentation.",
+	Title:            "",
+	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

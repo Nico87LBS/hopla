@@ -18,7 +18,6 @@ import (
 	cModel "github.com/nico87lbs/hopla/internal/circle/model"
 	cRepo "github.com/nico87lbs/hopla/internal/circle/repo"
 	lModel "github.com/nico87lbs/hopla/internal/label/model"
-	pModel "github.com/nico87lbs/hopla/internal/project/model"
 	storageModel "github.com/nico87lbs/hopla/internal/storage/model"
 	stModel "github.com/nico87lbs/hopla/internal/subtask/model"
 	syncModel "github.com/nico87lbs/hopla/internal/sync/model"
@@ -42,7 +41,7 @@ func newAPIPermissionTest(t *testing.T) (*gin.Engine, *gorm.DB) {
 		&uModel.User{}, &uModel.APIToken{},
 		&cModel.Circle{}, &cModel.UserCircle{}, &chModel.Chore{}, &chModel.ChoreAssignees{},
 		&chModel.ChoreHistory{}, &chModel.TimeSession{}, &chModel.ChoreLabels{},
-		&stModel.SubTask{}, &lModel.Label{}, &pModel.Project{}, &pModel.ProjectMember{},
+		&stModel.SubTask{}, &lModel.Label{},
 		&storageModel.StorageFile{}, &syncModel.SyncCursor{}, &syncModel.Tombstone{},
 	))
 	cfg := &config.Config{}

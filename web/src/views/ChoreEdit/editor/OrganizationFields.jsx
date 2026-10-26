@@ -1,72 +1,22 @@
 import { Add, HorizontalRule } from '@mui/icons-material'
-import { Avatar, Box, Chip, MenuItem, Option, Select } from '@mui/joy'
+import { Box, Chip, MenuItem, Option, Select } from '@mui/joy'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
 import { getTextColorFromBackgroundColor } from '../../../utils/Colors.jsx'
 import Priorities from '../../../utils/Priorities.jsx'
-import { getIconComponent } from '../../../utils/ProjectIcons'
-import { ProjectAccessIcon } from '../../Projects/ProjectVisibilityField'
 import { FieldLabel } from './EditorCard'
 
-const DEFAULT_PROJECT_COLOR = '#1976d2'
-
-const ProjectBadge = ({ color = DEFAULT_PROJECT_COLOR, icon }) => {
-  const Icon = icon ? getIconComponent(icon) : null
-  return (
-    <Avatar size='sm' sx={{ width: 24, height: 24, bgcolor: color }}>
-      {Icon && (
-        <Icon
-          sx={{ fontSize: 14, color: getTextColorFromBackgroundColor(color) }}
-        />
-      )}
-    </Avatar>
-  )
-}
-
-ProjectBadge.propTypes = { color: PropTypes.string, icon: PropTypes.string }
-
-// The project and labels of a task.
-export const ProjectAndLabels = ({
+// The labels of a task.
+export const LabelsField = ({
   labels,
   onAddLabel,
   onLabelsChange,
-  onProjectChange,
-  projectId,
-  projects,
   userLabels,
 }) => {
   const { t } = useTranslation('chores')
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-      {projects.length >= 1 && (
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.75 }}>
-          <FieldLabel id='editor-project-label'>
-            {t('choreEdit.project')}
-          </FieldLabel>
-          <Select
-            aria-labelledby='editor-project-label'
-            value={projectId}
-            onChange={(_, value) => value != null && onProjectChange(value)}
-          >
-            <Option value='default'>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <ProjectBadge icon='FolderOpen' />
-                {t('choreEdit.defaultProject')}
-              </Box>
-            </Option>
-            {projects.map(project => (
-              <Option key={project.id} value={project.id}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <ProjectBadge color={project.color} icon={project.icon} />
-                  {project.name}
-                  <ProjectAccessIcon project={project} sx={{ fontSize: 14 }} />
-                </Box>
-              </Option>
-            ))}
-          </Select>
-        </Box>
-      )}
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.75 }}>
         <FieldLabel id='editor-labels-label'>
           {t('choreEdit.labels')}
@@ -119,13 +69,10 @@ export const ProjectAndLabels = ({
   )
 }
 
-ProjectAndLabels.propTypes = {
+LabelsField.propTypes = {
   labels: PropTypes.array,
   onAddLabel: PropTypes.func.isRequired,
   onLabelsChange: PropTypes.func.isRequired,
-  onProjectChange: PropTypes.func.isRequired,
-  projectId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  projects: PropTypes.array.isRequired,
   userLabels: PropTypes.array.isRequired,
 }
 

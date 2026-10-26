@@ -1,7 +1,6 @@
 package chore
 
 import (
-	"errors"
 	"strconv"
 	"strings"
 	"time"
@@ -19,7 +18,6 @@ import (
 
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
 	cRepo "github.com/nico87lbs/hopla/internal/circle/repo"
-	pjRepo "github.com/nico87lbs/hopla/internal/project/repo"
 	"github.com/nico87lbs/hopla/internal/storage"
 	stRepo "github.com/nico87lbs/hopla/internal/subtask/repo"
 	uRepo "github.com/nico87lbs/hopla/internal/user/repo"
@@ -30,18 +28,16 @@ type API struct {
 	userRepo   *uRepo.UserRepository
 	circleRepo *cRepo.CircleRepository
 	stRepo     *stRepo.SubTasksRepository
-	pjRepo     *pjRepo.ProjectRepository
 	handler    *Handler
 	signer     storage.URLSigner
 }
 
-func NewAPI(cr *chRepo.ChoreRepository, userRepo *uRepo.UserRepository, circleRepo *cRepo.CircleRepository, stRepo *stRepo.SubTasksRepository, pjRepo *pjRepo.ProjectRepository, handler *Handler, signer storage.URLSigner) *API {
+func NewAPI(cr *chRepo.ChoreRepository, userRepo *uRepo.UserRepository, circleRepo *cRepo.CircleRepository, stRepo *stRepo.SubTasksRepository, handler *Handler, signer storage.URLSigner) *API {
 	return &API{
 		choreRepo:  cr,
 		userRepo:   userRepo,
 		circleRepo: circleRepo,
 		stRepo:     stRepo,
-		pjRepo:     pjRepo,
 		handler:    handler,
 		signer:     signer,
 	}
@@ -130,20 +126,6 @@ func (h *API) CreateChore(c *gin.Context) {
 		}
 	}
 
-	if choreRequest.ProjectID != nil {
-		// The project must exist and be visible to the API user; a project the user
-		// can't see is reported as missing so its existence does not leak.
-		proj, _ := h.pjRepo.GetProjectByID(c, *choreRequest.ProjectID, user.CircleID)
-		if proj == nil || !proj.CanView(user.ID) {
-			c.JSON(400, gin.H{"error": "Specified project not found"})
-			return
-		}
-		if proj.IsPrivate && !proj.CanView(createdBy) {
-			c.JSON(400, gin.H{"error": chRepo.ErrAssigneeOutsideProject.Error()})
-			return
-		}
-	}
-
 	chore := &chModel.Chore{
 		CreatedBy:     createdBy,
 		CircleID:      user.CircleID,
@@ -156,18 +138,11 @@ func (h *API) CreateChore(c *gin.Context) {
 		Description:    choreRequest.Description,
 		NextDueDate:    nextDueDate,
 		CreatedAt:      time.Now().UTC(),
-		ProjectID:      choreRequest.ProjectID,
 	}
 
-	// Same path as the app: takes the project's lock, inherits its privacy and keeps
-	// the assignee inside a restricted project's audience.
-	id, err := h.choreRepo.CreateChoreWithAssignees(c, chore, []int{createdBy}, user.ID)
+	id, err := h.choreRepo.CreateChoreWithAssignees(c, chore, []int{createdBy})
 	if err != nil {
 		log.Errorw("chore.api.CreateChore failed to create chore", "error", err)
-		if errors.Is(err, chRepo.ErrAssigneeOutsideProject) {
-			c.JSON(400, gin.H{"error": err.Error()})
-			return
-		}
 		c.JSON(500, gin.H{"error": "Error creating chore"})
 		return
 	}

@@ -16,7 +16,6 @@ import (
 	lModel "github.com/nico87lbs/hopla/internal/label/model"
 	"github.com/nico87lbs/hopla/internal/learn"
 	pModel "github.com/nico87lbs/hopla/internal/points"
-	projModel "github.com/nico87lbs/hopla/internal/project/model"
 	rwModel "github.com/nico87lbs/hopla/internal/reward/model"
 	storageModel "github.com/nico87lbs/hopla/internal/storage/model"
 	stModel "github.com/nico87lbs/hopla/internal/subtask/model"
@@ -40,8 +39,6 @@ func Migration(db *gorm.DB) error {
 		uModel.APIToken{},
 		lModel.Label{},
 		chModel.ChoreLabels{},
-		projModel.Project{},
-		projModel.ProjectMember{},
 		migrations.Migration{},
 		pModel.PointsHistory{},
 		pModel.PointsPreset{},

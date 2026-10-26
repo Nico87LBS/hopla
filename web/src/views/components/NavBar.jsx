@@ -60,7 +60,6 @@ const NAVBAR_TITLE_KEYS = {
   '/manage/account/security': 'manage.items.account.title',
   '/manage/account/appearance': 'manage.items.account.title',
   '/manage/advanced': 'manage.items.advanced.title',
-  '/projects': 'manage.items.tasks.title',
 }
 // The four destinations have no back button: the bottom bar takes you there.
 const ROOT_PAGES = [

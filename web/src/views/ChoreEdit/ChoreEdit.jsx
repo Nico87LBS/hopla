@@ -3,7 +3,7 @@ import {
   Close,
   DescriptionOutlined,
   FlagOutlined,
-  FolderOutlined,
+  LabelOutlined,
   MoreHoriz,
   NotificationsOutlined,
   TimerOutlined,
@@ -60,12 +60,6 @@ import { useCircleMembers, useUserProfile } from '../../queries/UserQueries.jsx'
 import { useNotification } from '../../service/NotificationProvider'
 import { familyTimezone } from '../../utils/familyTime'
 import { GetAllCircleMembers, GetChoreByID } from '../../utils/Fetcher'
-import {
-  filterMembersForProject,
-  getProjectAudienceIds,
-  getProjectVisibility,
-  PROJECT_VISIBILITY,
-} from '../../utils/ProjectAccess'
 import { withRepeatTime } from '../../utils/repeatTime.js'
 import { getSafeBottomPadding } from '../../utils/SafeAreaUtils.js'
 import {
@@ -75,7 +69,6 @@ import {
   splitIntoCopies,
 } from '../../utils/taskCopies.js'
 import { generateUUID } from '../../utils/UUID'
-import { useProjectFilter } from '../Chores/hooks/useProjectFilter.js'
 import LoadingComponent from '../components/Loading.jsx'
 import RichTextEditor from '../components/RichTextEditor.jsx'
 import SubTasks from '../components/SubTask.jsx'
@@ -83,14 +76,13 @@ import { useLabels } from '../Labels/LabelQueries'
 import AttachmentViewerModal from '../Modals/Inputs/AttachmentViewerModal'
 import ConfirmationModal from '../Modals/Inputs/ConfirmationModal'
 import LabelModal from '../Modals/Inputs/LabelModal'
-import { useProjects } from '../Projects/ProjectQueries'
 import AttachmentsField from './editor/AttachmentsField'
 import EditorPreview, { TaskSummary } from './editor/EditorPreview'
 import MoreOptions, { OptionRow } from './editor/MoreOptions'
 import {
+  LabelsField,
   PriorityField,
   priorityName,
-  ProjectAndLabels,
 } from './editor/OrganizationFields'
 import RewardCard from './editor/RewardCard'
 import { describeTask, nextSlot } from './editor/schedule'
@@ -190,15 +182,6 @@ const ChoreEdit = () => {
   const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false)
 
   const { data: userLabelsRaw, isLoading: isUserLabelsLoading } = useLabels()
-  const { data: projects = [], isLoading: isProjectsLoading } = useProjects()
-
-  const { projectsWithDefault, selectedProject, setSelectedProjectWithCache } =
-    useProjectFilter(projects)
-
-  const [projectId, setProjectId] = useState(
-    selectedProject ? selectedProject.id : 'default',
-  )
-
   const updateChoreMutation = useUpdateChore()
   const createChoreMutation = useCreateChore()
   const archiveChore = useArchiveChore()
@@ -235,11 +218,7 @@ const ChoreEdit = () => {
 
   const Navigate = useNavigate()
 
-  // Only people who can see the selected project can be assigned to its tasks
-  // (the server rejects anybody else).
-  const choreProject = projects.find(project => project.id === projectId)
-  const assignablePerformers = filterMembersForProject(performers, choreProject)
-  const assignees = anyone ? assignablePerformers : assignableTo
+  const assignees = anyone ? performers : assignableTo
   // A task with slots is due at its next slot: the server sets the date.
   const hasSlots =
     ['daily', 'days_of_the_week'].includes(frequencyType) &&
@@ -274,7 +253,6 @@ const ChoreEdit = () => {
     name,
     description,
     priority,
-    projectId,
     labelsV2,
     anyone,
     assignableTo,
@@ -312,8 +290,7 @@ const ChoreEdit = () => {
     (isChoreLoading && choreId) ||
     isUserLabelsLoading ||
     isUserProfileLoading ||
-    isMemberDataLoading ||
-    isProjectsLoading
+    isMemberDataLoading
   useEffect(() => {
     if (formLoading || hasInteracted.current) return
     // Async defaults and child controls can normalize values after the first render.
@@ -623,7 +600,6 @@ const ChoreEdit = () => {
         completionWindow < 0 || dueDate === null ? null : completionWindow,
       deadlineOffset: deadlineOffset < 0 ? null : deadlineOffset,
       priority: priority,
-      projectId: projectId === 'default' ? null : projectId,
       draftId: newChoreId > 0 ? undefined : draftId,
     }
     let SaveFunction = createChoreMutation.mutateAsync
@@ -749,32 +725,6 @@ const ChoreEdit = () => {
     setShowSaveAssigneeDefault(dirty)
   }, [anyone, assignableTo])
 
-  // A task in a private or shared project is always private: the project's
-  // privacy wins over the task's own setting, so keep the form in sync with the
-  // selected project.
-  const selectedProjectIsPrivate = Boolean(choreProject?.isPrivate)
-  const selectedProjectVisibility = getProjectVisibility(choreProject)
-  useEffect(() => {
-    if (selectedProjectIsPrivate && !isPrivate) {
-      setIsPrivate(true)
-    }
-  }, [selectedProjectIsPrivate, isPrivate])
-
-  // Drop assignees who cannot see the newly selected project; with nobody left
-  // the task falls back to "Anyone", like unchecking the last assignee does.
-  const projectAudienceKey = (getProjectAudienceIds(choreProject) || []).join(
-    ',',
-  )
-  useEffect(() => {
-    const audience = getProjectAudienceIds(choreProject)
-    if (!audience) return
-    const kept = assignableTo.filter(a => audience.includes(a.userId))
-    if (kept.length === assignableTo.length) return
-    setAssignableTo(kept)
-    if (kept.length === 0) setAnyone(true)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [projectAudienceKey])
-
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = event => {
@@ -864,7 +814,6 @@ const ChoreEdit = () => {
       setIsRolling(data.res.isRolling)
       setIsActive(data.res.isActive)
       setSubTasks(data.res.subTasks ? data.res.subTasks : [])
-      setProjectId(data.res.projectId || 'default')
 
       if (isCloneMode) {
         if (data.res.subTasks) {
@@ -1005,8 +954,7 @@ const ChoreEdit = () => {
     (isChoreLoading && choreId) ||
     isUserLabelsLoading ||
     isUserProfileLoading ||
-    isMemberDataLoading ||
-    isProjectsLoading
+    isMemberDataLoading
   ) {
     return <LoadingComponent />
   }
@@ -1069,7 +1017,7 @@ const ChoreEdit = () => {
       setAssignableTo([...assignableTo, { userId }])
     }
   }
-  const pickedMembers = assignablePerformers.filter(p => isPicked(p.userId))
+  const pickedMembers = performers.filter(p => isPicked(p.userId))
   const copyOwner =
     copies.length > 0 ? pickedMembers[0]?.displayName || null : null
   const shownMode = mode || (copies.length > 0 ? 'each' : null)
@@ -1111,7 +1059,6 @@ const ChoreEdit = () => {
   }
   const description_ = description.replace(/<[^>]*>/g, '').trim()
   const reminders = notificationMetadata?.templates?.length || 0
-  const project = projects.find(item => item.id === projectId)
 
   const copiesChoice = copies.length > 0 && (
     <Checkbox
@@ -1160,7 +1107,7 @@ const ChoreEdit = () => {
 
   const who = (
     <WhoCard
-      members={assignablePerformers}
+      members={performers}
       isSelected={isPicked}
       onToggle={togglePerson}
       picked={pickedMembers}
@@ -1169,13 +1116,6 @@ const ChoreEdit = () => {
       onModeChange={changeMode}
       help={modeHelp}
       copyOwner={copyOwner}
-      note={
-        selectedProjectIsPrivate
-          ? t('taskEditor.onlyProjectAudienceAssignable', {
-              project: choreProject?.name,
-            })
-          : null
-      }
       onRememberDefault={
         !isEditing && peopleChanged && showSaveAssigneeDefault
           ? () => {
@@ -1425,23 +1365,15 @@ const ChoreEdit = () => {
         </OptionRow>
       )}
       <OptionRow
-        icon={FolderOutlined}
-        title={t('editor.more.project')}
+        icon={LabelOutlined}
+        title={t('choreEdit.labels')}
         value={
-          [
-            project?.name,
-            labelsV2?.length
-              ? t('editor.more.labelCount', { count: labelsV2.length })
-              : '',
-          ]
-            .filter(Boolean)
-            .join(' · ') || t('editor.more.noneM')
+          labelsV2?.length
+            ? t('editor.more.labelCount', { count: labelsV2.length })
+            : t('editor.more.noneM')
         }
       >
-        <ProjectAndLabels
-          projects={projects}
-          projectId={projectId}
-          onProjectChange={setProjectId}
+        <LabelsField
           labels={labelsV2 || []}
           userLabels={userLabels || []}
           onLabelsChange={setLabelsV2}
@@ -1459,13 +1391,9 @@ const ChoreEdit = () => {
         icon={VisibilityOutlined}
         title={t('editor.more.visibility')}
         value={
-          selectedProjectIsPrivate
-            ? t('taskEditor.followsProjectName', {
-                project: choreProject?.name,
-              })
-            : isPrivate
-              ? t('editor.more.visibleLimited')
-              : t('editor.more.visibleAll')
+          isPrivate
+            ? t('editor.more.visibleLimited')
+            : t('editor.more.visibleAll')
         }
       >
         <RadioGroup
@@ -1477,27 +1405,14 @@ const ChoreEdit = () => {
           }}
           sx={{ gap: 1.5 }}
         >
-          <Radio
-            value={false}
-            disabled={selectedProjectIsPrivate}
-            label={t('editor.more.visibleAll')}
-          />
+          <Radio value={false} label={t('editor.more.visibleAll')} />
           <Radio
             value={true}
-            disabled={
-              selectedProjectIsPrivate || anyone || assignableTo.length === 0
-            }
+            disabled={anyone || assignableTo.length === 0}
             label={t('editor.more.visibleLimited')}
           />
         </RadioGroup>
-        {selectedProjectIsPrivate && (
-          <Typography level='body-sm' sx={{ mt: 1, color: 'text.secondary' }}>
-            {selectedProjectVisibility === PROJECT_VISIBILITY.MEMBERS
-              ? t('taskEditor.inheritedFromSharedProject')
-              : t('taskEditor.inheritedFromTheProjectTasksInA')}
-          </Typography>
-        )}
-        {showSavePrivacyDefault && !selectedProjectIsPrivate && (
+        {showSavePrivacyDefault && (
           <Button
             size='sm'
             variant='plain'

@@ -52,7 +52,6 @@
     "more": "Menu",
     "archived": "Archivées",
     "labels": "Étiquettes",
-    "projects": "Projets",
     "filters": "Filtres",
     "activities": "Activités",
     "points": "Points",
@@ -70,7 +69,7 @@
   "search": {
     "title": "Recherche",
     "placeholder": "Rechercher dans Hopla",
-    "inputAriaLabel": "Rechercher des tâches, l'historique, des projets, des étiquettes et des paramètres",
+    "inputAriaLabel": "Rechercher des tâches, l'historique, des étiquettes et des paramètres",
     "deviceNote": "Recherche dans le contenu disponible sur cet appareil",
     "escape": "Échap",
     "recent": "Récents",
@@ -82,7 +81,6 @@
     "groups": {
       "tasks": "Tâches",
       "history": "Historique",
-      "projects": "Projets",
       "labels": "Étiquettes",
       "people": "Personnes",
       "settings": "Paramètres",
@@ -93,11 +91,9 @@
       "navigation": "Navigation",
       "createTask": "Créer une tâche",
       "createLabel": "Créer une étiquette",
-      "createProject": "Créer un projet",
       "viewAllTasks": "Voir toutes les tâches",
       "viewArchivedTasks": "Voir les tâches archivées",
       "viewLabels": "Voir les étiquettes",
-      "viewProjects": "Voir les projets",
       "viewActivities": "Voir les activités",
       "viewPoints": "Voir les points",
       "openSettings": "Ouvrir les paramètres",
@@ -120,13 +116,11 @@
     },
     "untitled": {
       "task": "Tâche sans nom",
-      "project": "Projet sans nom",
       "label": "Étiquette sans nom"
     },
     "kinds": {
       "task": "Tâche",
       "note": "Note de tâche",
-      "project": "Projet",
       "label": "Étiquette",
       "member": "Membre de la famille",
       "settings": "Réglages"
@@ -550,7 +544,7 @@
     "items": {
       "tasks": {
         "title": "Tâches",
-        "description": "Étiquettes, projets, filtres et archives"
+        "description": "Étiquettes et archives"
       },
       "activities": {
         "title": "Activités",
@@ -588,8 +582,6 @@
     "tabs": {
       "tasks": {
         "labels": "Étiquettes",
-        "projects": "Projets",
-        "filters": "Filtres",
         "archived": "Archives"
       },
       "rewards": {

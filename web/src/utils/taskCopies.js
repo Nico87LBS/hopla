@@ -68,7 +68,6 @@ export const SHARED_FIELDS = [
   'completionWindow',
   'deadlineOffset',
   'priority',
-  'projectId',
 ]
 
 // Two due dates are the same to the minute: the editor rounds seconds.

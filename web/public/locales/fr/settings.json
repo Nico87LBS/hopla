@@ -442,10 +442,6 @@
       "filters": {
         "name": "Filtres",
         "description": "Accès rapide à tes filtres épinglés et les plus utiles"
-      },
-      "projects": {
-        "name": "Projets",
-        "description": "Où le travail s'accumule, projet par projet"
       }
     }
   },

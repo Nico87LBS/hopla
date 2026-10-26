@@ -1,4 +1,3 @@
-basePath: /api/v1
 definitions:
   chore.ActionOptions:
     properties:
@@ -19,6 +18,11 @@ definitions:
     - assignee
     - updatedAt
     type: object
+  chore.CatchUpSlotReq:
+    properties:
+      completedBy:
+        type: integer
+    type: object
   chore.ChoreReq:
     properties:
       assignStrategy:
@@ -32,6 +36,7 @@ definitions:
         - keep_last_assigned
         - random_except_last_assigned
         - round_robin
+        - together
       assignedTo:
         type: integer
       assignees:
@@ -44,6 +49,14 @@ definitions:
         type: string
       draftId:
         type: string
+      flashMinutes:
+        maximum: 720
+        minimum: 1
+        type: integer
+      flashPoints:
+        maximum: 1000
+        minimum: 0
+        type: integer
       frequency:
         type: integer
       frequencyMetadata:
@@ -90,8 +103,6 @@ definitions:
         type: integer
       priority:
         type: integer
-      projectId:
-        type: integer
       requireApproval:
         type: boolean
       subTasks:
@@ -133,6 +144,18 @@ definitions:
         type: string
     required:
     - updatedAt
+    type: object
+  chore.FamilyTimezone:
+    properties:
+      custom:
+        description: Custom is true when the family is not in the server's zone.
+        type: boolean
+      server:
+        description: Server is the server's zone, the family's when it is at home.
+        type: string
+      timezone:
+        description: Timezone is the zone every date of the family follows.
+        type: string
     type: object
   chore.ModifyHistoryReq:
     properties:
@@ -226,8 +249,18 @@ definitions:
       name:
         description: Full name
         type: string
+      parentsOnPodium:
+        description: |-
+          ParentsOnPodium puts the parents on the podium with the children.
+          Without children, the parents are always on it.
+        type: boolean
       subscriptionStatus:
         description: read one column
+        type: string
+      timezone:
+        description: |-
+          Timezone is the family's IANA zone, empty for the server's (TZ). See
+          package zone.
         type: string
       updated_at:
         description: Updated at
@@ -245,6 +278,11 @@ definitions:
     - RoleManager
   circle.UserCircleDetail:
     properties:
+      away:
+        description: |-
+          Away pauses the member's tasks and games, such as a child staying at
+          the other parent's home.
+        type: boolean
       circleId:
         description: Circle ID
         type: integer
@@ -329,6 +367,7 @@ definitions:
     - random_except_last_assigned
     - round_robin
     - no_assignee
+    - together
     type: string
     x-enum-varnames:
     - AssignmentStrategyRandom
@@ -338,6 +377,7 @@ definitions:
     - AssignmentStrategyRandomExceptLastAssigned
     - AssignmentStrategyRoundRobin
     - AssignmentStrategyNoAssignee
+    - AssignmentStrategyTogether
   model.Chore:
     properties:
       assignStrategy:
@@ -371,6 +411,16 @@ definitions:
       description:
         description: Description of the chore
         type: string
+      flash:
+        allOf:
+        - $ref: '#/definitions/model.FlashWindow'
+        description: The flash bonus open now, if any
+      flashMinutes:
+        description: 'Flash bonus: minutes after the due time it stays open'
+        type: integer
+      flashPoints:
+        description: 'Flash bonus: extra points when done in time'
+        type: integer
       frequency:
         description: Number of days, weeks, months, or years between chores
         type: integer
@@ -416,16 +466,14 @@ definitions:
         type: integer
       priority:
         type: integer
-      project:
-        allOf:
-        - $ref: '#/definitions/model.Project'
-        description: Project relationship
-      projectId:
-        description: The project this chore belongs to
-        type: integer
       requireApproval:
         description: Whether chore completion requires admin approval
         type: boolean
+      slotsToday:
+        description: Today's slots of a task done several times a day
+        items:
+          $ref: '#/definitions/model.SlotStatus'
+        type: array
       status:
         $ref: '#/definitions/model.Status'
       subTasks:
@@ -468,6 +516,9 @@ definitions:
       duration:
         description: Duration in seconds calculated from query (read-only, no DB column)
         type: integer
+      flashId:
+        description: The flash launched by a parent this completion won
+        type: integer
       id:
         description: Unique identifier
         type: integer
@@ -479,6 +530,9 @@ definitions:
         type: string
       points:
         description: Points for completing the chore
+        type: integer
+      slot:
+        description: The slot of the day, for a task done several times a day
         type: integer
       status:
         allOf:
@@ -509,86 +563,14 @@ definitions:
     - ChoreHistoryStatusRejected
     - ChoreHistoryStatusMissed
     - ChoreHistoryStatusRescheduled
-  model.Filter:
+  model.FlashWindow:
     properties:
-      circleId:
+      endsAt:
+        type: string
+      liveId:
         type: integer
-      color:
-        type: string
-      conditions:
-        items:
-          $ref: '#/definitions/model.FilterCondition'
-        type: array
-      createdAt:
-        type: string
-      createdBy:
+      points:
         type: integer
-      description:
-        type: string
-      icon:
-        type: string
-      id:
-        type: integer
-      isPinned:
-        type: boolean
-      name:
-        type: string
-      operator:
-        $ref: '#/definitions/model.LogicalOperator'
-      updatedAt:
-        type: string
-    type: object
-  model.FilterCondition:
-    properties:
-      operator:
-        type: string
-      type:
-        enum:
-        - assignee
-        - createdBy
-        - priority
-        - status
-        - dueDate
-        - label
-        - project
-        - points
-        type: string
-      value: {}
-    required:
-    - operator
-    - type
-    type: object
-  model.FilterReq:
-    properties:
-      color:
-        type: string
-      conditions:
-        items:
-          $ref: '#/definitions/model.FilterCondition'
-        maxItems: 20
-        minItems: 1
-        type: array
-      description:
-        maxLength: 500
-        type: string
-      icon:
-        maxLength: 50
-        type: string
-      isPinned:
-        type: boolean
-      name:
-        maxLength: 100
-        minLength: 1
-        type: string
-      operator:
-        allOf:
-        - $ref: '#/definitions/model.LogicalOperator'
-        enum:
-        - AND
-        - OR
-    required:
-    - conditions
-    - name
     type: object
   model.FrequencyMetadata:
     properties:
@@ -605,6 +587,11 @@ definitions:
           day
         items:
           type: integer
+        type: array
+      slots:
+        description: Times of day a daily task is done at, each one on its own
+        items:
+          $ref: '#/definitions/model.Slot'
         type: array
       time:
         type: string
@@ -677,14 +664,6 @@ definitions:
     required:
     - id
     type: object
-  model.LogicalOperator:
-    enum:
-    - AND
-    - OR
-    type: string
-    x-enum-varnames:
-    - LogicalOperatorAND
-    - LogicalOperatorOR
   model.NotificationMetadata:
     properties:
       circleGroup:
@@ -734,73 +713,60 @@ definitions:
       updatedBy:
         type: integer
     type: object
-  model.Project:
+  model.Slot:
     properties:
-      circleId:
-        type: integer
-      color:
-        type: string
-      created_by:
-        type: integer
-      createdAt:
-        type: string
-      description:
-        type: string
-      icon:
-        type: string
-      id:
-        type: integer
-      isDefault:
-        type: boolean
-      isPrivate:
-        description: Whether the project is hidden from the circle
-        type: boolean
       name:
         type: string
-      updatedAt:
+      time:
+        description: '"15:04", in the task''s timezone'
         type: string
     type: object
-  model.ProjectReq:
-    properties:
-      color:
-        type: string
-      description:
-        type: string
-      icon:
-        type: string
-      isPrivate:
-        description: |-
-          IsPrivate is optional: when omitted on update the current value is kept, so
-          older clients that don't know about the field can't accidentally unset it.
-          Clients that only know isPrivate keep a "members" project shared as long as
-          they send isPrivate=true; isPrivate=false opens it to the whole circle.
-        type: boolean
-      memberIds:
-        description: |-
-          MemberIDs is only read together with visibility "members". When omitted
-          there, the current member list is kept.
-        items:
-          type: integer
-        type: array
-      name:
-        type: string
-      visibility:
-        allOf:
-        - $ref: '#/definitions/model.ProjectVisibility'
-        description: Visibility takes precedence over IsPrivate when both are sent.
-    required:
-    - name
-    type: object
-  model.ProjectVisibility:
+  model.SlotState:
     enum:
-    - private
-    - members
-    - circle
+    - upcoming
+    - open
+    - pending
+    - done
+    - missed
     type: string
+    x-enum-comments:
+      SlotMissed: closed without being done; a parent can still catch it up today
+      SlotOpen: can be ticked now
+      SlotPending: ticked, waiting for a parent
+      SlotUpcoming: not open yet
+    x-enum-descriptions:
+    - not open yet
+    - can be ticked now
+    - ticked, waiting for a parent
+    - ""
+    - closed without being done; a parent can still catch it up today
     x-enum-varnames:
-    - ProjectVisibilityPrivate
-    - ProjectVisibilityMembers
-    - ProjectVisibilityCircle
+    - SlotUpcoming
+    - SlotOpen
+    - SlotPending
+    - SlotDone
+    - SlotMissed
+  model.SlotStatus:
+    properties:
+      at:
+        type: string
+      closesAt:
+        type: string
+      completedBy:
+        type: integer
+      historyId:
+        type: integer
+      index:
+        type: integer
+      name:
+        type: string
+      opensAt:
+        type: string
+      state:
+        $ref: '#/definitions/model.SlotState'
+      time:
+        type: string
+    type: object
   model.Status:
     enum:
     - 0
@@ -911,25 +877,8 @@ definitions:
     - WeekpatternEveryWeek
     - WeekPatternWeekOfMonth
     - WeekPatternWeekOfQuarter
-  project.AccessPreviewReq:
-    properties:
-      isPrivate:
-        type: boolean
-      memberIds:
-        items:
-          type: integer
-        type: array
-      visibility:
-        $ref: '#/definitions/model.ProjectVisibility'
-    type: object
 info:
   contact: {}
-  description: Hopla swagger documentation.
-  license:
-    name: GNU Affero General Public License v3.0
-    url: https://github.com/Nico87LBS/hopla/blob/main/LICENSE
-  title: Hopla Swagger API
-  version: "1.0"
 paths:
   /chores:
     get:
@@ -1846,6 +1795,76 @@ paths:
       summary: Skip a chore
       tags:
       - chores
+  /chores/{id}/slots/{slot}/approve:
+    post:
+      description: Approves a slot ticked by a child that waits for a parent (admin/manager
+        only)
+      parameters:
+      - description: Chore ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Slot index
+        in: path
+        name: slot
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: Approve a slot of the day
+      tags:
+      - chores
+  /chores/{id}/slots/{slot}/catchup:
+    post:
+      consumes:
+      - application/json
+      description: Marks an open or missed slot of today done for a child, without
+        approval (admin/manager only)
+      parameters:
+      - description: Chore ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Slot index
+        in: path
+        name: slot
+        required: true
+        type: integer
+      - description: Who did it
+        in: body
+        name: body
+        schema:
+          $ref: '#/definitions/chore.CatchUpSlotReq'
+      produces:
+      - application/json
+      responses: {}
+      summary: Tick a slot of the day as a parent
+      tags:
+      - chores
+  /chores/{id}/slots/{slot}/reject:
+    post:
+      description: 'Turns down a slot ticked by a child: it is to do again while open
+        (admin/manager only)'
+      parameters:
+      - description: Chore ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Slot index
+        in: path
+        name: slot
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: Reject a slot of the day
+      tags:
+      - chores
   /chores/{id}/start:
     put:
       consumes:
@@ -2553,6 +2572,15 @@ paths:
       summary: Rotate calendar subscription URL
       tags:
       - chores
+  /chores/flashes:
+    get:
+      description: The speed bonus open now on each task that has one, by task
+      produces:
+      - application/json
+      responses: {}
+      summary: Speed bonuses open now
+      tags:
+      - chores
   /chores/history:
     get:
       consumes:
@@ -2600,6 +2628,15 @@ paths:
       - JWTKeyAuth: []
       - APIKeyAuth: []
       summary: Get chores history for user
+      tags:
+      - chores
+  /chores/slots:
+    get:
+      description: Today's slots of every task done several times a day, by task
+      produces:
+      - application/json
+      responses: {}
+      summary: Today's slots
       tags:
       - chores
   /circles:
@@ -2876,6 +2913,58 @@ paths:
       summary: Get circle members
       tags:
       - circles
+  /circles/members/away:
+    put:
+      consumes:
+      - application/json
+      description: Pauses a member's tasks, streak and quests while they are away,
+        such as a child at the other parent's home (admin/manager only). Coming back
+        makes the tasks that fell due meanwhile due today.
+      parameters:
+      - description: Who and where
+        in: body
+        name: away
+        required: true
+        schema:
+          properties:
+            away:
+              type: boolean
+            memberId:
+              type: integer
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'res: whether anything changed'
+          schema:
+            additionalProperties:
+              type: boolean
+            type: object
+        "400":
+          description: 'error: Invalid request / User is not a member of this circle'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: 'error: Only parents can do this'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: 'error: Error changing the member''s presence'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Mark a member away or back home
+      tags:
+      - circles
   /circles/members/requests:
     get:
       consumes:
@@ -3074,471 +3163,58 @@ paths:
       summary: Change member role
       tags:
       - circles
-  /filters:
+  /circles/timezone:
     get:
-      consumes:
-      - application/json
-      description: Gets all filters for the current user's circle
+      description: Every date of the family follows this zone, whatever the device's.
+        It is the server's unless the family moved, such as on holiday.
       produces:
       - application/json
       responses:
         "200":
-          description: array of filters
-          schema:
-            items:
-              additionalProperties:
-                items:
-                  $ref: '#/definitions/model.Filter'
-                type: array
-              type: object
-            type: array
-        "500":
-          description: 'error: Error getting current user | Error getting filters'
+          description: 'res: the family''s zone'
           schema:
             additionalProperties:
-              type: string
+              $ref: '#/definitions/chore.FamilyTimezone'
             type: object
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Get all filters
+      summary: Get the family's time zone
       tags:
-      - filters
-    post:
-      consumes:
-      - application/json
-      description: Creates a new filter for the current user's circle
-      parameters:
-      - description: Filter creation request
-        in: body
-        name: filter
-        required: true
-        schema:
-          $ref: '#/definitions/model.FilterReq'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 'res: created filter object'
-          schema:
-            additionalProperties:
-              $ref: '#/definitions/model.Filter'
-            type: object
-        "400":
-          description: 'error: Error binding filter data | Filter name already exists'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Error getting current user | Error checking filter
-            name | Error creating filter'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      security:
-      - JWTKeyAuth: []
-      - APIKeyAuth: []
-      summary: Create a new filter
-      tags:
-      - filters
-  /filters/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Deletes a filter by ID
-      parameters:
-      - description: Filter ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 'res: Filter deleted successfully'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "400":
-          description: 'error: Filter ID is required | Invalid filter ID'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Error getting current user | internal error'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      security:
-      - JWTKeyAuth: []
-      - APIKeyAuth: []
-      summary: Delete a filter
-      tags:
-      - filters
-    get:
-      consumes:
-      - application/json
-      description: Gets a specific filter by ID
-      parameters:
-      - description: Filter ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: filter object
-          schema:
-            $ref: '#/definitions/model.Filter'
-        "400":
-          description: 'error: Filter ID is required | Invalid filter ID'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "404":
-          description: 'error: Filter not found'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Error getting current user'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      security:
-      - JWTKeyAuth: []
-      - APIKeyAuth: []
-      summary: Get filter by ID
-      tags:
-      - filters
+      - circles
     put:
       consumes:
       - application/json
-      description: Updates an existing filter by ID
+      description: Sets the zone every date of the family follows, such as on holiday
+        (admin/manager only). Tasks keep their time of day. An empty zone, or the
+        server's, brings the family back home.
       parameters:
-      - description: Filter ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Filter update request
+      - description: IANA zone, such as Europe/Lisbon
         in: body
-        name: filter
+        name: timezone
         required: true
         schema:
-          $ref: '#/definitions/model.FilterReq'
+          properties:
+            timezone:
+              type: string
+          type: object
       produces:
       - application/json
       responses:
         "200":
-          description: 'res: updated filter object'
+          description: 'res: the family''s zone'
           schema:
             additionalProperties:
-              $ref: '#/definitions/model.Filter'
+              $ref: '#/definitions/chore.FamilyTimezone'
             type: object
         "400":
-          description: 'error: Filter ID is required | Invalid filter ID | Error binding
-            filter data | Filter name already exists'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Error getting current user | Error checking filter
-            name | Error getting updated filter | internal error'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      security:
-      - JWTKeyAuth: []
-      - APIKeyAuth: []
-      summary: Update a filter
-      tags:
-      - filters
-  /filters/{id}/toggle-pin:
-    post:
-      consumes:
-      - application/json
-      description: Toggles the pin status of a filter by ID
-      parameters:
-      - description: Filter ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 'res: {isPinned: bool}'
-          schema:
-            additionalProperties: true
-            type: object
-        "400":
-          description: 'error: Filter ID is required | Invalid filter ID'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Error getting current user | internal error'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      security:
-      - JWTKeyAuth: []
-      - APIKeyAuth: []
-      summary: Toggle filter pin status
-      tags:
-      - filters
-  /filters/by-usage:
-    get:
-      consumes:
-      - application/json
-      description: Gets filters sorted by usage for the current user's circle
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: array of filters sorted by usage
-          schema:
-            items:
-              $ref: '#/definitions/model.Filter'
-            type: array
-        "500":
-          description: 'error: Error getting current user | Error getting filters
-            by usage'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      security:
-      - JWTKeyAuth: []
-      - APIKeyAuth: []
-      summary: Get filters by usage
-      tags:
-      - filters
-  /filters/pinned:
-    get:
-      consumes:
-      - application/json
-      description: Gets all pinned filters for the current user's circle
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: array of pinned filters
-          schema:
-            items:
-              $ref: '#/definitions/model.Filter'
-            type: array
-        "500":
-          description: 'error: Error getting current user | Error getting pinned filters'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      security:
-      - JWTKeyAuth: []
-      - APIKeyAuth: []
-      summary: Get pinned filters
-      tags:
-      - filters
-  /projects:
-    get:
-      consumes:
-      - application/json
-      description: 'Retrieves the projects of the current user''s circle the user
-        can see: circle-wide ones, their own private ones and the ones shared with
-        them'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: array of projects
-          schema:
-            items:
-              $ref: '#/definitions/model.Project'
-            type: array
-        "401":
-          description: 'error: Error getting current user'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Error getting projects'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      security:
-      - JWTKeyAuth: []
-      - APIKeyAuth: []
-      summary: Get all projects
-      tags:
-      - projects
-    post:
-      consumes:
-      - application/json
-      description: Creates a new project for the current user's circle. visibility
-        is "private" (only me), "members" (me and memberIds) or "circle" (everyone
-        in the circle, the default).
-      parameters:
-      - description: Project creation request
-        in: body
-        name: project
-        required: true
-        schema:
-          $ref: '#/definitions/model.ProjectReq'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 'res: created project object'
-          schema:
-            additionalProperties:
-              $ref: '#/definitions/model.Project'
-            type: object
-        "400":
-          description: 'error: Error binding project data'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Error getting current user'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Error creating project'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      security:
-      - JWTKeyAuth: []
-      - APIKeyAuth: []
-      summary: Create a new project
-      tags:
-      - projects
-  /projects/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Deletes a project by ID; restricted to the current user's circle.
-        Its tasks are kept without a project and follow their own privacy from then
-        on.
-      parameters:
-      - description: Project ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 'res: Project deleted successfully'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "400":
-          description: 'error: Invalid project ID'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Error getting current user'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Error deleting project'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      security:
-      - JWTKeyAuth: []
-      - APIKeyAuth: []
-      summary: Delete a project
-      tags:
-      - projects
-    put:
-      consumes:
-      - application/json
-      description: Updates name, description, color and icon of a project owned by
-        the current user and, optionally, who can see it (visibility, memberIds).
-        Fields that are not sent keep their current value. Changing who can see the
-        project also adjusts the assignees of its tasks; use POST /projects/{id}/access-preview
-        to see the effect first.
-      parameters:
-      - description: Project ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Project update request
-        in: body
-        name: project
-        required: true
-        schema:
-          $ref: '#/definitions/model.ProjectReq'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 'res: updated project object'
-          schema:
-            additionalProperties:
-              $ref: '#/definitions/model.Project'
-            type: object
-        "400":
-          description: 'error: Invalid project ID, Error binding project data or invalid
-            members'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Error getting current user'
+          description: 'error: Invalid request / Invalid timezone'
           schema:
             additionalProperties:
               type: string
             type: object
         "403":
-          description: 'error: not the project owner'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "404":
-          description: 'error: project not found'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Error updating project or Error getting updated project'
+          description: 'error: Only parents can do this'
           schema:
             additionalProperties:
               type: string
@@ -3546,60 +3222,9 @@ paths:
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Update a project
+      summary: Move the family to another time zone
       tags:
-      - projects
-  /projects/{id}/access-preview:
-    post:
-      consumes:
-      - application/json
-      description: Returns, without changing anything, which tasks of the project
-        would change assignees and who would gain or lose access if the given visibility
-        and members were saved. Only the project owner may call it.
-      parameters:
-      - description: Project ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Target visibility and members
-        in: body
-        name: access
-        required: true
-        schema:
-          $ref: '#/definitions/project.AccessPreviewReq'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 'res: chRepo.ProjectAccessPlan'
-          schema:
-            additionalProperties: true
-            type: object
-        "400":
-          description: error
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: 'error: not the project owner'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "404":
-          description: 'error: project not found'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      security:
-      - JWTKeyAuth: []
-      - APIKeyAuth: []
-      summary: Preview a change of who can see a project
-      tags:
-      - projects
+      - circles
   /sync/changes:
     get:
       consumes:
@@ -3646,15 +3271,4 @@ paths:
       summary: Get sync changes
       tags:
       - sync
-securityDefinitions:
-  APIKeyAuth:
-    description: hopla issued apikey
-    in: header
-    name: secretkey
-    type: apiKey
-  JWTKeyAuth:
-    description: Type "Bearer" followed by a space and JWT token.
-    in: header
-    name: Authorization
-    type: apiKey
 swagger: "2.0"

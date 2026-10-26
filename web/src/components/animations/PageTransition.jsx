@@ -16,7 +16,6 @@ const routeHierarchy = {
   '/settings': 1,
   '/activities': 1,
   '/labels': 1,
-  '/projects': 1,
   '/login': 0,
   '/signup': 1,
   '/landing': 0,

@@ -1,8 +1,8 @@
 /**
- * The task list's toolbar: search, project, filter sheet, sort and group,
+ * The task list's toolbar: search, filter sheet, sort and group,
  * display and multi-select. Active filter chips show below it; the filter
  * sheet holds every condition (assignee, created by, status, priority, due
- * date, labels, projects, points). Filters are not saved.
+ * date, labels, points). Filters are not saved.
  */
 
 import {
@@ -33,7 +33,6 @@ import ActiveFilterChips from '../../../components/common/filter/ActiveFilterChi
 import KeyboardShortcutHint from '../../../components/common/KeyboardShortcutHint'
 import SortAndFilterMenu from '../../../components/common/SortAndFilterMenu'
 import Priorities from '../../../utils/Priorities'
-import ProjectSelector from '../../components/ProjectSelector'
 import FilterBuilderContent, {
   CHORE_STATUSES,
   conditionsToSelections,
@@ -119,7 +118,6 @@ const OptionChips = ({ multi, onToggle, options, selected }) => (
  *  -- Advanced filter (filter sheet) --
  *  members           – circle members for Assignee / Created By sections
  *  labels            – user labels for Labels section
- *  projects          – projects list (projectsWithDefault) for Projects section + Display sheet
  *  tempFilter        – current temp filter object { conditions, operator } or null
  *  tempFilterMeta    – metadata for temp filter, including saved-filter edit source when applicable
  *  applyTempFilter   – (filter) => void  — called immediately as selections change
@@ -132,8 +130,6 @@ const OptionChips = ({ multi, onToggle, options, selected }) => (
  *  onClearAllFilters – () => void
  *
  *  -- Display sheet --
- *  selectedProject   – current project object (for Display sheet section)
- *  onProjectSelect   – (project) => void
  *  selectedAssigneeFilter – 'anyone' | 'assigned_to_me' | 'available_for_me' | 'assigned_to_others'
  *  onAssigneeFilterChange – (key) => void
  *  selectedGroupBy   – 'default' | 'due_date' | 'priority' | 'labels'
@@ -164,9 +160,7 @@ const ChoreToolbar = ({
   onClearAllFilters,
   onGroupBySelect,
   // result counts
-  onProjectSelect,
   // clear all
-  // project (for Display sheet)
   // assignee (for Display sheet)
   onSearchChange,
   onSearchClose,
@@ -175,7 +169,6 @@ const ChoreToolbar = ({
   // saved / custom
   onToggleMultiSelect,
   onToggleViewMode,
-  projects = [],
   resultCount,
   // grouping
   searchInputRef,
@@ -183,7 +176,6 @@ const ChoreToolbar = ({
   // view + multiselect
   selectedAssigneeFilter = 'anyone',
   selectedGroupBy = 'default',
-  selectedProject,
   selectedSort = 'smart',
   showKeyboardShortcuts,
   sortDirection = 'asc',
@@ -218,7 +210,6 @@ const ChoreToolbar = ({
       status: t('filterBuilder.statusHeading'),
       priority: t('filterBuilder.priority'),
       label: t('labels.label'),
-      project: t('filterBuilder.project'),
       dueDate: t('filterBuilder.dueDate'),
       points: t('filterBuilder.points'),
     }
@@ -283,12 +274,6 @@ const ChoreToolbar = ({
       }
       if (condition.type === 'label') {
         return labels.find(l => l.id === value)?.name || String(value)
-      }
-      if (condition.type === 'project') {
-        if (value === 'default') return 'Default Project'
-        const project = projects.find(p => p.id === value)
-        if (!project) return String(value)
-        return project.isPrivate ? `🔒 ${project.name}` : project.name
       }
       return String(value)
     }
@@ -365,8 +350,6 @@ const ChoreToolbar = ({
 
   // ── display sheet helpers ────────────────────────────────────────────────────
 
-  const filterActive = tempConditionCount > 0
-
   const sortOptions = [
     { value: 'smart', name: t('sort.smart') },
     { value: 'due_date', name: t('dueDate') },
@@ -423,23 +406,6 @@ const ChoreToolbar = ({
           showKeyboardShortcuts={showKeyboardShortcuts}
           inputRef={searchInputRef}
         />
-
-        {/* Project selector */}
-        {!filterActive &&
-          projects.filter(p => p.id !== 'default').length > 0 && (
-            <Box
-              sx={{
-                display: 'none',
-                '@media (min-width: 1024px)': { display: 'inline-flex' },
-              }}
-            >
-              <ProjectSelector
-                selectedProject={selectedProject?.name || 'Default Project'}
-                onProjectSelect={onProjectSelect}
-                showKeyboardShortcuts={showKeyboardShortcuts}
-              />
-            </Box>
-          )}
 
         {/* Filter */}
         <Badge
@@ -602,7 +568,6 @@ const ChoreToolbar = ({
             onSelectionsChange={handleSelectionsChange}
             members={members}
             labels={labels}
-            projects={projects}
           />
         </Box>
       </AppModal>
