@@ -39,7 +39,7 @@ import {
   SaveRanks,
 } from '../../utils/Fetcher'
 import ConfirmationModal from '../Modals/Inputs/ConfirmationModal'
-import { MemberAvatar, memberShape, surfaceSx } from './GameParts'
+import { AwayPill, MemberAvatar, memberShape, surfaceSx } from './GameParts'
 
 const refreshGames = queryClient =>
   queryClient.invalidateQueries({ queryKey: ['games'] })
@@ -158,7 +158,15 @@ export const RanksCard = ({ members, today }) => {
   )
 }
 
-const GoalBar = ({ detail, done, label, progress, reward, target }) => {
+const GoalBar = ({
+  away = 0,
+  detail,
+  done,
+  label,
+  progress,
+  reward,
+  target,
+}) => {
   const { t } = useTranslation('games')
   return (
     <Box>
@@ -167,7 +175,15 @@ const GoalBar = ({ detail, done, label, progress, reward, target }) => {
           <CheckCircleRounded sx={{ color: 'success.plainColor' }} />
         ) : null}
         <Stack sx={{ flex: 1, minWidth: 0 }}>
-          <Typography level='body-sm'>{label}</Typography>
+          <Box sx={{ alignItems: 'center', display: 'flex', gap: 0.75 }}>
+            <Typography level='body-sm'>{label}</Typography>
+            {away > 0 && (
+              <AwayPill
+                days={away}
+                label={t('challenges.away', { count: away })}
+              />
+            )}
+          </Box>
           {detail && (
             <Typography level='body-xs' sx={{ color: 'text.tertiary' }}>
               {detail}
@@ -728,13 +744,14 @@ export const ChallengesCard = ({ isParent, members, today }) => {
                   .map(id => (
                     <GoalBar
                       key={id}
+                      away={challenge.daysAway?.[id]}
                       done={challenge.winners.includes(id)}
                       label={byId.get(id).displayName}
                       progress={Math.min(
                         challenge.progress[id] || 0,
-                        challenge.target,
+                        challenge.targets?.[id] ?? challenge.target,
                       )}
-                      target={challenge.target}
+                      target={challenge.targets?.[id] ?? challenge.target}
                       reward={challenge.reward}
                     />
                   ))
@@ -926,6 +943,7 @@ RanksCard.propTypes = {
   today: todayShape,
 }
 GoalBar.propTypes = {
+  away: PropTypes.number,
   detail: PropTypes.string,
   done: PropTypes.bool,
   label: PropTypes.string,

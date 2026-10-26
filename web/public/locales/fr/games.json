@@ -179,7 +179,9 @@
     "rewardWon": "Gagné : {{reward}} !",
     "deleteTitle": "Supprimer le défi",
     "deleteMessage": "Supprimer « {{name}} » ? Les points déjà gagnés restent.",
-    "failed": "Le défi n'a pas pu être enregistré."
+    "failed": "Le défi n'a pas pu être enregistré.",
+    "away_one": "Pas là {{count}} jour : objectif réduit",
+    "away_other": "Pas là {{count}} jours : objectif réduit"
   },
   "reset": {
     "title": "Remise à zéro",
