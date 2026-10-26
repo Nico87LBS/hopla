@@ -2,8 +2,10 @@ package points
 
 import (
 	"context"
+	"fmt"
 	"path/filepath"
 	"testing"
+	"time"
 
 	"github.com/glebarez/sqlite"
 	"github.com/stretchr/testify/require"
@@ -12,6 +14,7 @@ import (
 	cModel "github.com/nico87lbs/hopla/internal/circle/model"
 	"github.com/nico87lbs/hopla/internal/database"
 	"github.com/nico87lbs/hopla/internal/games"
+	"github.com/nico87lbs/hopla/internal/learn"
 	pModel "github.com/nico87lbs/hopla/internal/points"
 )
 
@@ -165,4 +168,22 @@ func TestResetCanClearTheHistory(t *testing.T) {
 	require.EqualValues(t, 1, draws, "quests done stay, so they do not pay again")
 	require.EqualValues(t, 1, wins)
 	require.Equal(t, 0, member(t, db).Points)
+}
+
+func TestClearGamesForgetsOneMembersGames(t *testing.T) {
+	repo, db := setup(t)
+	now := time.Now().UTC()
+	for i, userID := range []int{2, 3} {
+		require.NoError(t, db.Create(&learn.Session{CircleID: 1, ClientID: fmt.Sprint(i), UserID: userID, ModuleKey: "maths",
+			Day: "2026-10-26", Total: 10, PlayedAt: now}).Error)
+		require.NoError(t, db.Create(&learn.Card{CircleID: 1, UserID: userID, Key: "mul:7x8", Due: "2026-10-26"}).Error)
+	}
+
+	two := 2
+	require.NoError(t, repo.ClearGames(context.Background(), 1, &two))
+	var sessions, cards []int
+	require.NoError(t, db.Model(&learn.Session{}).Pluck("user_id", &sessions).Error)
+	require.NoError(t, db.Table("learn_cards").Pluck("user_id", &cards).Error)
+	require.Equal(t, []int{3}, sessions)
+	require.Equal(t, []int{3}, cards)
 }

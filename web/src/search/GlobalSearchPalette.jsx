@@ -3,7 +3,6 @@ import {
   ArchiveOutlined,
   ArrowBack,
   CheckCircleOutline,
-  FilterAltOutlined,
   FolderOutlined,
   HistoryRounded,
   InboxOutlined,
@@ -82,14 +81,6 @@ const buildQuickActions = t => [
     keywords: 'new project folder add create',
     route: '/projects?create=1',
   },
-  {
-    id: 'action:create-filter',
-    provider: 'actions',
-    title: t('search.actions.createFilter'),
-    subtitle: t('search.actions.quickAction'),
-    keywords: 'new filter view saved search add create',
-    route: '/filters?create=1',
-  },
   // Every destination in the nav drawer is reachable from here, so the palette
   // is a complete way to move around the app without opening the drawer.
   ...[
@@ -120,13 +111,6 @@ const buildQuickActions = t => [
       keywords: 'projects folders groups open',
       route: '/projects',
       icon: <FolderOutlined />,
-    },
-    {
-      id: 'action:filters',
-      title: t('search.actions.viewFilters'),
-      keywords: 'filters saved views open',
-      route: '/filters',
-      icon: <FilterAltOutlined />,
     },
     {
       id: 'action:activities',

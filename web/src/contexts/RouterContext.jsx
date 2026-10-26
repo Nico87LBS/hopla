@@ -17,7 +17,6 @@ import MyChores from '../views/Chores/MyChores'
 import JoinCircleView from '../views/Circles/JoinCircle'
 import NotFound from '../views/components/NotFound'
 import FamilyView from '../views/Family/FamilyView'
-import FilterView from '../views/Filters/FilterView'
 import ChoreHistory from '../views/History/ChoreHistory'
 import LabelDetailView from '../views/Labels/LabelDetailView'
 import LabelView from '../views/Labels/LabelView'
@@ -274,7 +273,7 @@ const Router = createBrowserRouter([
       },
       {
         path: 'filters/',
-        element: <FilterView />,
+        element: <Navigate to='/labels' replace />,
       },
       {
         path: '*',

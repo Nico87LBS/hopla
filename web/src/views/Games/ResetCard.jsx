@@ -29,6 +29,7 @@ const ResetCard = ({ members }) => {
   const [target, setTarget] = useState(EVERYONE)
   const [clearHistory, setClearHistory] = useState(false)
   const [clearTaskHistory, setClearTaskHistory] = useState(false)
+  const [clearGames, setClearGames] = useState(false)
   const [confirm, setConfirm] = useState({})
 
   const member = members.find(m => m.userId === target)
@@ -39,6 +40,7 @@ const ResetCard = ({ members }) => {
       userId: member ? member.userId : null,
       clearHistory,
       clearTaskHistory,
+      clearGames,
     })
     if (!resp.ok) {
       showNotification({ type: 'error', message: t('reset.failed') })
@@ -53,9 +55,11 @@ const ResetCard = ({ members }) => {
       queryClient.invalidateQueries({ queryKey: ['choresHistory'] })
       queryClient.invalidateQueries({ queryKey: ['choreHistory'] })
     }
+    if (clearGames) queryClient.invalidateQueries({ queryKey: ['learn'] })
     showNotification({ type: 'success', message: t('reset.done', { who }) })
     setClearHistory(false)
     setClearTaskHistory(false)
+    setClearGames(false)
   }
 
   const ask = () =>
@@ -65,6 +69,7 @@ const ResetCard = ({ members }) => {
       message: [
         t(clearHistory ? 'reset.confirmClear' : 'reset.confirmKeep', { who }),
         clearTaskHistory ? t('reset.confirmTasks') : '',
+        clearGames ? t('reset.confirmGames') : '',
       ]
         .filter(Boolean)
         .join(' '),
@@ -110,6 +115,12 @@ const ResetCard = ({ members }) => {
           checked={clearTaskHistory}
           onChange={event => setClearTaskHistory(event.target.checked)}
           label={t('reset.clearTaskHistory')}
+        />
+        <Checkbox
+          size='sm'
+          checked={clearGames}
+          onChange={event => setClearGames(event.target.checked)}
+          label={t('reset.clearGames')}
         />
         <Typography level='body-xs' sx={{ color: 'text.tertiary' }}>
           {t('reset.help')}

@@ -41,7 +41,6 @@ const NAVBAR_TITLE_KEYS = {
   '/archived': 'manage.items.tasks.title',
   '/chores': 'navigation.today',
   '/family': 'navigation.family',
-  '/filters': 'manage.items.tasks.title',
   '/labels': 'manage.items.tasks.title',
   '/learn': 'navigation.learn',
   '/manage': 'navigation.manage',

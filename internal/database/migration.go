@@ -12,7 +12,6 @@ import (
 	calModel "github.com/nico87lbs/hopla/internal/calendar/model"
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
 	cModel "github.com/nico87lbs/hopla/internal/circle/model"
-	filterModel "github.com/nico87lbs/hopla/internal/filter/model"
 	"github.com/nico87lbs/hopla/internal/games"
 	lModel "github.com/nico87lbs/hopla/internal/label/model"
 	"github.com/nico87lbs/hopla/internal/learn"
@@ -43,7 +42,6 @@ func Migration(db *gorm.DB) error {
 		chModel.ChoreLabels{},
 		projModel.Project{},
 		projModel.ProjectMember{},
-		filterModel.Filter{},
 		migrations.Migration{},
 		pModel.PointsHistory{},
 		pModel.PointsPreset{},

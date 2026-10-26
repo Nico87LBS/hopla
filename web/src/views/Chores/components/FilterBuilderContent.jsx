@@ -177,8 +177,7 @@ const IncludeExcludeToggle = ({ labelKeys, onChange, value }) => {
 }
 
 /**
- * Reusable filter conditions UI used by both the filter sheet in ChoreToolbar
- * and the AdvancedFilterBuilder save modal.
+ * The filter conditions of the filter sheet in ChoreToolbar.
  *
  * `onSelectionsChange` must accept either a new selections object or a
  * functional updater `prev => next` (same contract as React's setState setter).

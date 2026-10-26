@@ -917,65 +917,6 @@ const PreviewProjectAccess = (id, access) => {
   })
 }
 
-// Filter-related API functions
-const GetFilters = () => {
-  return Fetch(`/filters`, {
-    method: 'GET',
-    headers: HEADERS(),
-  })
-}
-
-const GetPinnedFilters = () => {
-  return Fetch(`/filters/pinned`, {
-    method: 'GET',
-    headers: HEADERS(),
-  })
-}
-
-const GetFiltersByUsage = () => {
-  return Fetch(`/filters/by-usage`, {
-    method: 'GET',
-    headers: HEADERS(),
-  })
-}
-
-const GetFilterById = id => {
-  return Fetch(`/filters/${id}`, {
-    method: 'GET',
-    headers: HEADERS(),
-  })
-}
-
-const CreateFilter = filter => {
-  return Fetch(`/filters`, {
-    method: 'POST',
-    headers: HEADERS(),
-    body: JSON.stringify(filter),
-  })
-}
-
-const UpdateFilter = (id, filter) => {
-  return Fetch(`/filters/${id}`, {
-    method: 'PUT',
-    headers: HEADERS(),
-    body: JSON.stringify(filter),
-  })
-}
-
-const DeleteFilter = id => {
-  return Fetch(`/filters/${id}`, {
-    method: 'DELETE',
-    headers: HEADERS(),
-  })
-}
-
-const ToggleFilterPin = id => {
-  return Fetch(`/filters/${id}/toggle-pin`, {
-    method: 'POST',
-    headers: HEADERS(),
-  })
-}
-
 const GetPointsHistory = async ({ before, limit, userId } = {}) => {
   const params = new URLSearchParams()
   if (userId) params.set('userId', userId)
@@ -999,11 +940,21 @@ const AdjustPoints = ({ points, presetId, reason, userId }) => {
   })
 }
 
-const ResetPoints = ({ clearHistory, clearTaskHistory, userId }) => {
+const ResetPoints = ({
+  clearGames,
+  clearHistory,
+  clearTaskHistory,
+  userId,
+}) => {
   return Fetch(`/points/reset`, {
     method: 'POST',
     headers: HEADERS(),
-    body: JSON.stringify({ userId, clearHistory, clearTaskHistory }),
+    body: JSON.stringify({
+      userId,
+      clearHistory,
+      clearTaskHistory,
+      clearGames,
+    }),
   })
 }
 
@@ -1325,7 +1276,6 @@ export {
   CreateChildUser,
   CreateChore,
   createChore,
-  CreateFilter,
   CreateLabel,
   CreateLongLiveToken,
   CreateProject,
@@ -1339,7 +1289,6 @@ export {
   DeleteChoreHistory,
   DeleteCircleMember,
   DeleteDraftAttachment,
-  DeleteFilter,
   DeleteLabel,
   DeleteLongLiveToken,
   DeletePointsPreset,
@@ -1369,9 +1318,6 @@ export {
   GetCircleMemberRequests,
   GetDefaultRanks,
   GetFamilyTimezone,
-  GetFilterById,
-  GetFilters,
-  GetFiltersByUsage,
   GetFlashes,
   GetGameRules,
   GetGamesToday,
@@ -1384,7 +1330,6 @@ export {
   GetLearnStats,
   GetLongLiveTokens,
   GetMFAStatus,
-  GetPinnedFilters,
   GetPointsHistory,
   GetPointsPresets,
   GetProjectById,
@@ -1443,7 +1388,6 @@ export {
   SlotAction,
   StartChore,
   StopFlash,
-  ToggleFilterPin,
   UnArchiveChore,
   UndoChoreAction,
   UpdateChildPassword,
@@ -1451,7 +1395,6 @@ export {
   UpdateChoreHistory,
   UpdateChorePriority,
   UpdateDueDate,
-  UpdateFilter,
   UpdateLabel,
   UpdateMemberRole,
   UpdatePassword,

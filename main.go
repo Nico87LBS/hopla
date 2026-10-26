@@ -49,8 +49,6 @@ import (
 	"go.uber.org/fx"
 	"gorm.io/gorm"
 
-	"github.com/nico87lbs/hopla/internal/filter"
-	fRepo "github.com/nico87lbs/hopla/internal/filter/repo"
 )
 
 func main() {
@@ -126,10 +124,6 @@ func main() {
 		fx.Provide(pjRepo.NewProjectRepository),
 		fx.Provide(project.NewHandler),
 
-		// Filters:
-		fx.Provide(fRepo.NewFilterRepository),
-		fx.Provide(filter.NewHandler),
-
 		fx.Provide(chore.NewAPI),
 
 		// Sync:
@@ -178,7 +172,6 @@ func main() {
 			gamesAPI.APIs,
 			learnAPI.Routes,
 			project.Routes,
-			filter.Routes,
 
 			storage.Routes,
 			frontend.Routes,
