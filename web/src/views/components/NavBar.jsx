@@ -22,6 +22,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import HoplaWordmark from '../../components/HoplaWordmark'
 import UserProfileAvatar from '../../components/UserProfileAvatar'
 import { useNavBarTitleContext } from '../../contexts/NavBarTitleContext'
+import { useIsParent } from '../../hooks/useIsParent'
 import { useScrollDirection } from '../../hooks/useScrollDirection'
 import { useResource } from '../../queries/ResourceQueries'
 import { useGlobalSearch } from '../../search/GlobalSearchContext'
@@ -44,7 +45,8 @@ const NAVBAR_TITLE_KEYS = {
   '/labels': 'manage.items.tasks.title',
   '/learn': 'navigation.learn',
   '/manage': 'navigation.manage',
-  '/manage/points': 'manage.items.points.title',
+  '/manage/rewards': 'manage.items.rewards.title',
+  '/manage/rewards/presets': 'manage.items.rewards.title',
   '/manage/missions': 'manage.items.missions.title',
   '/manage/missions/challenges': 'manage.items.missions.title',
   '/manage/missions/periods': 'manage.items.missions.title',
@@ -60,10 +62,16 @@ const NAVBAR_TITLE_KEYS = {
   '/manage/account/appearance': 'manage.items.account.title',
   '/manage/advanced': 'manage.items.advanced.title',
   '/projects': 'manage.items.tasks.title',
-  '/shop': 'navigation.shop',
 }
 // The four destinations have no back button: the bottom bar takes you there.
-const ROOT_PAGES = ['/', '/chores', '/my/chores', '/family', '/shop', '/manage']
+const ROOT_PAGES = [
+  '/',
+  '/chores',
+  '/my/chores',
+  '/family',
+  '/learn',
+  '/manage',
+]
 const SHELL_FREE_PAGES = [
   '/signup',
   '/login',
@@ -84,6 +92,7 @@ const NavBar = () => {
   const { navBarConfig } = useNavBarTitleContext()
   const { openSearch } = useGlobalSearch()
   const badges = useNavigationBadges()
+  const isParent = useIsParent()
   const navigate = useNavigate()
   const location = useLocation()
   const isMobile = useMediaQuery('(max-width:768px)')
@@ -99,7 +108,10 @@ const NavBar = () => {
   const dynamicNavBarConfig = supportsDynamicNavBar ? navBarConfig : null
   const navbarTitle =
     dynamicNavBarConfig?.title || (navbarTitleKey ? t(navbarTitleKey) : null)
-  const showBack = !ROOT_PAGES.includes(normalizedPath)
+  // A child lands straight on her own games: nothing to go back to.
+  const isOwnGames =
+    isParent === false && /^\/learn\/[^/]+$/.test(normalizedPath)
+  const showBack = !ROOT_PAGES.includes(normalizedPath) && !isOwnGames
 
   // Keep page content and overlays clear of the sidebar.
   useEffect(() => {

@@ -508,6 +508,7 @@
   "family": {
     "tabs": {
       "progress": "Progrès",
+      "shop": "Boutique",
       "journal": "Journal"
     },
     "hops_one": "{{count}} hop",
@@ -529,16 +530,11 @@
   },
   "manage": {
     "groups": {
-      "learn": "Apprendre",
       "organize": "Organiser",
       "parent": "Espace parent",
       "account": "Compte"
     },
     "items": {
-      "play": {
-        "title": "Jeux pour apprendre",
-        "description": "Maths, mots… et des hops à gagner"
-      },
       "tasks": {
         "title": "Tâches",
         "description": "Étiquettes, projets, filtres et archives"
@@ -547,13 +543,9 @@
         "title": "Activités",
         "description": "Tout ce qui a été fait, jour par jour"
       },
-      "points": {
-        "title": "Bonus et préréglages",
-        "description": "Donner ou retirer des hops, préparer les bonus"
-      },
       "rewards": {
-        "title": "Récompenses et demandes",
-        "description": "Ce qu’on peut s’offrir avec ses hops"
+        "title": "Récompenses",
+        "description": "Ce qu’on peut s’offrir avec ses hops, et les bonus préparés"
       },
       "missions": {
         "title": "Missions",
@@ -586,6 +578,10 @@
         "projects": "Projets",
         "filters": "Filtres",
         "archived": "Archives"
+      },
+      "rewards": {
+        "rewards": "Récompenses",
+        "presets": "Bonus préparés"
       },
       "missions": {
         "quests": "Quêtes",

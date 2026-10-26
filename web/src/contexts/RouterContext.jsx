@@ -32,19 +32,18 @@ import {
   ManageAdvanced,
   ManageFamily,
   ManageMissions,
-  ManagePoints,
   ManageRanks,
+  ManageRewards,
 } from '../views/Manage/ParentPages'
 import CircleSetupView from '../views/Onboarding/CircleSetupView'
 import ProjectView from '../views/Projects/ProjectView'
-import ShopView from '../views/Shop/ShopView'
 import TimerDetails from '../views/Timer/TimerDetails'
 import UserActivities from '../views/User/UserActivities'
 const PointsRedirect = () => {
   const tab = new URLSearchParams(window.location.search).get('tab')
   const to =
     tab === 'rewards' || tab === 'requests'
-      ? '/shop'
+      ? '/family?tab=shop'
       : tab === 'games'
         ? '/family'
         : '/family?tab=journal'
@@ -119,16 +118,25 @@ const Router = createBrowserRouter([
         element: <FamilyView />,
       },
       {
+        // The shop is a tab of Famille now.
         path: '/shop',
-        element: <ShopView />,
+        element: <Navigate to='/family?tab=shop' replace />,
       },
       {
         path: '/manage',
         element: <ManageView />,
       },
       {
+        path: '/manage/rewards',
+        element: <ManageRewards tab='rewards' />,
+      },
+      {
+        path: '/manage/rewards/presets',
+        element: <ManageRewards tab='presets' />,
+      },
+      {
         path: '/manage/points',
-        element: <ManagePoints />,
+        element: <Navigate to='/manage/rewards/presets' replace />,
       },
       {
         path: '/manage/missions',
@@ -258,7 +266,7 @@ const Router = createBrowserRouter([
       },
       {
         path: 'rewards/',
-        element: <Navigate to='/shop' replace />,
+        element: <Navigate to='/family?tab=shop' replace />,
       },
       {
         path: 'projects/',

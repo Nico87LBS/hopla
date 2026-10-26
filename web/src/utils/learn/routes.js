@@ -7,6 +7,7 @@ export const learnParent = path => {
     return '/manage/learn/catalogue'
   if (/^\/manage\/learn\/catalogue$/.test(path)) return '/manage'
   if (/^\/manage\/learn\/[^/]+$/.test(path)) return '/manage/learn'
-  if (/^\/(learn(\/[^/]+)?|manage\/learn)$/.test(path)) return '/manage'
+  if (/^\/learn\/[^/]+$/.test(path)) return '/learn'
+  if (/^\/manage\/learn$/.test(path)) return '/manage'
   return null
 }

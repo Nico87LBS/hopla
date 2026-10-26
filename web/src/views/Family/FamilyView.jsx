@@ -7,6 +7,7 @@ import {
 import {
   Box,
   Button,
+  Chip,
   Container,
   IconButton,
   LinearProgress,
@@ -37,6 +38,8 @@ import {
   RankIcon,
   starsLabel,
 } from '../Games/Progression'
+import { useRedemptions } from '../Rewards/RewardQueries'
+import ShopView from '../Shop/ShopView'
 import PointsJournal from './PointsJournal'
 
 // The grey of a child who is away, on the web and on the family card alike.
@@ -334,12 +337,17 @@ AdjustSheet.propTypes = {
   onClose: PropTypes.func.isRequired,
 }
 
+const FAMILY_TABS = ['progress', 'shop', 'journal']
+
 // Where everyone stands: what you look at, never what you set up.
 const FamilyView = () => {
   const { t } = useTranslation('common')
   const isParent = useIsParent()
   const [searchParams, setSearchParams] = useSearchParams()
-  const tab = searchParams.get('tab') === 'journal' ? 'journal' : 'progress'
+  const tab = FAMILY_TABS.includes(searchParams.get('tab'))
+    ? searchParams.get('tab')
+    : 'progress'
+  const { data: pending = [] } = useRedemptions('pending')
   const [adjusting, setAdjusting] = useState(null)
   const { data: membersData } = useCircleMembers()
   const { data: today } = useGamesToday()
@@ -374,8 +382,8 @@ const FamilyView = () => {
     setSearchParams(
       previous => {
         const next = new URLSearchParams(previous)
-        if (value === 'journal') next.set('tab', 'journal')
-        else next.delete('tab')
+        if (value === 'progress') next.delete('tab')
+        else next.set('tab', value)
         return next
       },
       { replace: true },
@@ -406,7 +414,7 @@ const FamilyView = () => {
           }}
         >
           <TabList disableUnderline sx={{ gap: 0.25 }}>
-            {['progress', 'journal'].map(value => (
+            {FAMILY_TABS.map(value => (
               <Tab
                 key={value}
                 value={value}
@@ -424,18 +432,30 @@ const FamilyView = () => {
                 }}
               >
                 {t(`family.tabs.${value}`)}
+                {value === 'shop' && isParent && pending.length > 0 && (
+                  <Chip
+                    size='sm'
+                    variant='solid'
+                    color='warning'
+                    sx={{ ml: 0.75 }}
+                  >
+                    {pending.length}
+                  </Chip>
+                )}
               </Tab>
             ))}
           </TabList>
         </Tabs>
       </Box>
 
-      {tab === 'journal' ? (
+      {tab === 'shop' && <ShopView />}
+      {tab === 'journal' && (
         <Stack gap={3}>
           <PointsJournal />
           <HistoryCard members={members} />
         </Stack>
-      ) : (
+      )}
+      {tab === 'progress' && (
         <Stack gap={2}>
           <Box
             sx={{

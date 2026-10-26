@@ -8,8 +8,6 @@ import {
   PersonRounded,
   RedeemRounded,
   SchoolOutlined,
-  SchoolRounded,
-  TollRounded,
   TuneRounded,
 } from '@mui/icons-material'
 import {
@@ -33,10 +31,6 @@ import { useIsParent } from '../../hooks/useIsParent'
 
 const GROUPS = [
   {
-    id: 'learn',
-    items: [{ id: 'play', to: '/learn', icon: <SchoolRounded /> }],
-  },
-  {
     id: 'organize',
     items: [
       { id: 'tasks', to: '/labels', icon: <LabelOutlined /> },
@@ -47,8 +41,7 @@ const GROUPS = [
     id: 'parent',
     parentOnly: true,
     items: [
-      { id: 'points', to: '/manage/points', icon: <TollRounded /> },
-      { id: 'rewards', to: '/shop', icon: <RedeemRounded /> },
+      { id: 'rewards', to: '/manage/rewards', icon: <RedeemRounded /> },
       { id: 'missions', to: '/manage/missions', icon: <FlagRounded /> },
       { id: 'ranks', to: '/manage/ranks', icon: <MilitaryTechRounded /> },
       { id: 'learn', to: '/manage/learn', icon: <SchoolOutlined /> },
@@ -103,7 +96,7 @@ ManageRow.propTypes = {
   to: PropTypes.string.isRequired,
 }
 
-// Everything that is set up rather than looked at, in four groups. Each
+// Everything that is set up rather than looked at, in three groups. Each
 // entry is one page, its parts in tabs at the top.
 const ManageView = () => {
   const { t } = useTranslation('common')

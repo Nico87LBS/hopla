@@ -41,7 +41,17 @@ func (r *RewardRepository) GetReward(ctx context.Context, id int, circleID int) 
 }
 
 func (r *RewardRepository) CreateReward(ctx context.Context, reward *rModel.Reward) error {
-	return r.db.WithContext(ctx).Create(reward).Error
+	// is_active defaults to true, so GORM leaves out a false value on insert:
+	// a reward created hidden is hidden right after.
+	active := reward.IsActive
+	if err := r.db.WithContext(ctx).Create(reward).Error; err != nil {
+		return err
+	}
+	if active {
+		return nil
+	}
+	reward.IsActive = false
+	return r.db.WithContext(ctx).Model(&rModel.Reward{}).Where("id = ?", reward.ID).Update("is_active", false).Error
 }
 
 func (r *RewardRepository) UpdateReward(ctx context.Context, reward *rModel.Reward) error {

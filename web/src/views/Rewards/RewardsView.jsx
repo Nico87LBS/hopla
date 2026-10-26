@@ -50,7 +50,7 @@ const surfaceSx = {
 
 const RewardCard = ({
   availablePoints,
-  isAdmin,
+  manage,
   onDelete,
   onEdit,
   onRedeem,
@@ -69,6 +69,7 @@ const RewardCard = ({
         display: 'flex',
         flexDirection: 'column',
         minWidth: 0,
+        opacity: reward.isActive ? 1 : 0.6,
         p: 1.25,
       }}
     >
@@ -77,7 +78,7 @@ const RewardCard = ({
           alignItems: 'center',
           display: 'grid',
           gap: 0.25,
-          gridTemplateColumns: isAdmin
+          gridTemplateColumns: manage
             ? '32px minmax(0, 1fr) 28px'
             : '32px minmax(0, 1fr)',
         }}
@@ -107,7 +108,7 @@ const RewardCard = ({
         >
           {reward.name}
         </Typography>
-        {isAdmin && (
+        {manage && (
           <Dropdown>
             <MenuButton
               slots={{ root: IconButton }}
@@ -157,29 +158,38 @@ const RewardCard = ({
         {reward.description || t('view.rewardFallbackDescription')}
       </Typography>
 
-      <Button
-        size='sm'
-        variant={canAfford ? 'solid' : 'soft'}
-        color={canAfford ? 'primary' : 'neutral'}
-        disabled={!canAfford}
-        onClick={() => onRedeem(reward)}
-        fullWidth
-        sx={{ mt: 1, minHeight: 30 }}
-      >
-        {canAfford ? t('redeem') : t('notEnoughPoints')}
-      </Button>
+      {manage ? (
+        !reward.isActive && (
+          <Typography level='body-xs' textColor='text.tertiary' sx={{ mt: 1 }}>
+            {t('view.hidden')}
+          </Typography>
+        )
+      ) : (
+        <Button
+          size='sm'
+          variant={canAfford ? 'solid' : 'soft'}
+          color={canAfford ? 'primary' : 'neutral'}
+          disabled={!canAfford}
+          onClick={() => onRedeem(reward)}
+          fullWidth
+          sx={{ mt: 1, minHeight: 30 }}
+        >
+          {canAfford ? t('redeem') : t('notEnoughPoints')}
+        </Button>
+      )}
     </Sheet>
   )
 }
 
 RewardCard.propTypes = {
   availablePoints: PropTypes.number.isRequired,
-  isAdmin: PropTypes.bool.isRequired,
+  manage: PropTypes.bool.isRequired,
   onDelete: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
   onRedeem: PropTypes.func.isRequired,
   reward: PropTypes.shape({
     description: PropTypes.string,
+    isActive: PropTypes.bool,
     name: PropTypes.string.isRequired,
     pointsCost: PropTypes.number.isRequired,
     quotaCount: PropTypes.number,
@@ -316,9 +326,12 @@ const RewardsView = ({ embedded = false, view = 'store' }) => {
       )
     : 0
 
-  const activeRewards = useMemo(
-    () => rewards.filter(reward => reward.isActive),
-    [rewards],
+  // Gérer shows every reward, hidden ones too; the shop only what can be
+  // bought.
+  const manage = view === 'manage'
+  const shownRewards = useMemo(
+    () => (manage ? rewards : rewards.filter(reward => reward.isActive)),
+    [manage, rewards],
   )
 
   const invalidateAll = () => {
@@ -374,7 +387,7 @@ const RewardsView = ({ embedded = false, view = 'store' }) => {
   }
 
   if (
-    (view === 'store' && rewardsLoading) ||
+    (view !== 'requests' && rewardsLoading) ||
     (view === 'requests' && redemptionsLoading)
   ) {
     return (
@@ -486,7 +499,7 @@ const RewardsView = ({ embedded = false, view = 'store' }) => {
         </Sheet>
       )}
 
-      {isAdmin && view === 'store' && activeRewards.length > 0 && (
+      {isAdmin && manage && shownRewards.length > 0 && (
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1.5 }}>
           <Button
             data-testid='open-add-reward-modal'
@@ -500,15 +513,15 @@ const RewardsView = ({ embedded = false, view = 'store' }) => {
         </Box>
       )}
 
-      {view === 'store' ? (
-        activeRewards.length === 0 ? (
+      {view !== 'requests' ? (
+        shownRewards.length === 0 ? (
           <Sheet sx={{ ...surfaceSx, py: 4 }}>
             <EmptyState
               icon={<CardGiftcardRounded />}
               title={t('view.emptyTitle')}
               description={t('view.emptyDescription')}
               primaryAction={
-                isAdmin
+                isAdmin && manage
                   ? {
                       label: t('view.createReward'),
                       startDecorator: <AddRounded />,
@@ -529,12 +542,12 @@ const RewardsView = ({ embedded = false, view = 'store' }) => {
               },
             }}
           >
-            {activeRewards.map(reward => (
+            {shownRewards.map(reward => (
               <RewardCard
                 key={reward.id}
                 reward={reward}
                 availablePoints={availablePoints}
-                isAdmin={isAdmin}
+                manage={isAdmin && manage}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
                 onRedeem={handleRedeem}
@@ -583,7 +596,7 @@ const RewardsView = ({ embedded = false, view = 'store' }) => {
 
 RewardsView.propTypes = {
   embedded: PropTypes.bool,
-  view: PropTypes.oneOf(['requests', 'store']),
+  view: PropTypes.oneOf(['manage', 'requests', 'store']),
 }
 
 export default RewardsView

@@ -58,7 +58,8 @@
     "rewardFallbackDescription": "Une petite surprise à attendre avec impatience.",
     "emptyTitle": "Aucune récompense pour l'instant",
     "emptyDescription": "Ajoute une récompense, comme une soirée film ou une gourmandise, contre laquelle les membres pourront échanger leurs points.",
-    "createReward": "Créer une récompense"
+    "createReward": "Créer une récompense",
+    "hidden": "Cachée de la boutique"
   },
   "quota": {
     "day_one": "{{count}} par jour",
