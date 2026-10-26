@@ -26,6 +26,7 @@ import CircleSettings from '../Settings/CircleSettings'
 import FamilyTimezoneCard from '../Settings/FamilyTimezoneCard'
 import LocalizationSettings from '../Settings/LocalizationSettings'
 import MFASettings from '../Settings/MFASettings'
+import PodiumCard from '../Settings/PodiumCard'
 import ProfileSettings from '../Settings/ProfileSettings'
 import { SettingsEmbedContext } from '../Settings/settingsEmbed'
 import SidepanelSettings from '../Settings/SidepanelSettings'
@@ -156,7 +157,12 @@ export const ManageFamily = ({ tab }) => (
     <Embedded mode='tab'>
       {tab === 'members' && <CircleSettings />}
       {tab === 'children' && <ChildUserSettings />}
-      {tab === 'settings' && <FamilyTimezoneCard />}
+      {tab === 'settings' && (
+        <Stack gap={2}>
+          <PodiumCard />
+          <FamilyTimezoneCard />
+        </Stack>
+      )}
     </Embedded>
   </TabPage>
 )

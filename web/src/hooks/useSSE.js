@@ -106,6 +106,7 @@ export const useSSE = () => {
           case 'chore.skipped': {
             queryClient.invalidateQueries({ queryKey: ['pointsHistory'] })
             queryClient.invalidateQueries({ queryKey: ['games', 'today'] })
+            queryClient.invalidateQueries({ queryKey: ['games', 'week'] })
             queryClient.invalidateQueries({ queryKey: ['slots'] })
             queryClient.invalidateQueries({ queryKey: ['flashes'] })
 
@@ -213,6 +214,7 @@ export const useSSE = () => {
             queryClient.invalidateQueries({ queryKey: ['redemptions'] })
             queryClient.invalidateQueries({ queryKey: ['circleMembers'] })
             queryClient.invalidateQueries({ queryKey: ['pointsHistory'] })
+            queryClient.invalidateQueries({ queryKey: ['games', 'week'] })
             break
 
           case 'circle.updated':

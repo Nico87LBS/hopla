@@ -32,6 +32,7 @@ import {
   GetBonusPeriods,
   GetGameRules,
   GetGamesToday,
+  GetGamesWeek,
   SaveBonusPeriod,
   SaveGameRules,
 } from '../../utils/Fetcher'
@@ -46,6 +47,13 @@ export const useGamesToday = () =>
     queryFn: async () => (await GetGamesToday())?.res || null,
     // The surprise and the periods change with the day, not only with events.
     refetchInterval: 10 * 60 * 1000,
+  })
+
+// What everyone did since Monday: tasks, hops by where they came from, games.
+export const useGamesWeek = () =>
+  useQuery({
+    queryKey: ['games', 'week'],
+    queryFn: async () => (await GetGamesWeek())?.res || null,
   })
 
 const useBonusPeriods = () =>

@@ -171,6 +171,11 @@
       "saved": "La famille passe à l'heure de {{city}}",
       "savedMessage": "Les tâches gardent leur heure de la journée.",
       "failed": "Le fuseau n'a pas pu être changé"
+    },
+    "podium": {
+      "title": "Parents sur le podium",
+      "help": "Les parents montent sur le podium avec les enfants, ici et sur l'écran de la famille. Sans enfant, ils y sont toujours.",
+      "failed": "Impossible d'enregistrer le podium"
     }
   },
   "accountSettings": {
