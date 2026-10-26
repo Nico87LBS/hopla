@@ -508,6 +508,7 @@
   "family": {
     "tabs": {
       "progress": "Progress",
+      "missions": "Missions",
       "shop": "Shop",
       "journal": "Journal"
     },
@@ -516,13 +517,27 @@
     "days_one": "{{count}} d",
     "days_other": "{{count}} d",
     "earned": "hops earned",
+    "earnedShort": "earned",
     "toNextRank": "To the next rank",
     "adjustFor": "Bonus or penalty for {{name}}",
     "manageHint": "Set up quests, challenges and bonus periods",
     "home": "Home",
     "away": "Away",
     "markAway": "Pause their tasks: away",
-    "markHome": "Back home"
+    "markHome": "Back home",
+    "week": {
+      "title": "This week",
+      "tasks_one": "{{count}} task",
+      "tasks_other": "{{count}} tasks",
+      "games_one": "{{count}} game",
+      "games_other": "{{count}} games",
+      "fromTasks": "tasks",
+      "fromGames": "games",
+      "fromBonus": "bonus",
+      "label": "This week's hops: {{tasks}} from tasks, {{games}} from games, {{bonus}} from bonuses",
+      "away_one": "Away {{count}} day this week",
+      "away_other": "Away {{count}} days this week"
+    }
   },
   "shop": {
     "pending": "Requests to approve",

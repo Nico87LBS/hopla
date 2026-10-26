@@ -508,6 +508,7 @@
   "family": {
     "tabs": {
       "progress": "Progrès",
+      "missions": "Missions",
       "shop": "Boutique",
       "journal": "Journal"
     },
@@ -516,13 +517,27 @@
     "days_one": "{{count}} j",
     "days_other": "{{count}} j",
     "earned": "hops gagnés",
+    "earnedShort": "gagnés",
     "toNextRank": "Vers le rang suivant",
     "adjustFor": "Bonus ou pénalité pour {{name}}",
     "manageHint": "Régler les quêtes, défis et périodes bonus",
     "home": "À la maison",
     "away": "Pas là",
     "markAway": "Mettre en pause ses tâches : pas là",
-    "markHome": "De retour à la maison"
+    "markHome": "De retour à la maison",
+    "week": {
+      "title": "Cette semaine",
+      "tasks_one": "{{count}} tâche",
+      "tasks_other": "{{count}} tâches",
+      "games_one": "{{count}} partie",
+      "games_other": "{{count}} parties",
+      "fromTasks": "tâches",
+      "fromGames": "jeux",
+      "fromBonus": "bonus",
+      "label": "Hops de la semaine : {{tasks}} des tâches, {{games}} des jeux, {{bonus}} de bonus",
+      "away_one": "Pas là {{count}} jour cette semaine",
+      "away_other": "Pas là {{count}} jours cette semaine"
+    }
   },
   "shop": {
     "pending": "Demandes à valider",

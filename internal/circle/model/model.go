@@ -14,7 +14,10 @@ type Circle struct {
 	Disabled   bool      `json:"disabled" gorm:"column:disabled"`       // Disabled
 	// Timezone is the family's IANA zone, empty for the server's (TZ). See
 	// package zone.
-	Timezone           string     `json:"timezone" gorm:"column:timezone"`
+	Timezone string `json:"timezone" gorm:"column:timezone"`
+	// ParentsOnPodium puts the parents on the podium with the children.
+	// Without children, the parents are always on it.
+	ParentsOnPodium    bool       `json:"parentsOnPodium" gorm:"column:parents_on_podium;not null;default:false"`
 	SubscriptionStatus *string    `gorm:"column:status;<-:false"`     // read one column
 	ExpiredAt          *time.Time `gorm:"column:expired_at;<-:false"` // read one column
 }

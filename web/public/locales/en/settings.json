@@ -171,6 +171,11 @@
       "saved": "The family is now on {{city}} time",
       "savedMessage": "Tasks keep their time of day.",
       "failed": "The time zone could not be changed"
+    },
+    "podium": {
+      "title": "Parents on the podium",
+      "help": "Parents stand on the podium with the children, here and on the family screen. Without children, they always do.",
+      "failed": "Could not save the podium"
     }
   },
   "accountSettings": {

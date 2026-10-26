@@ -1053,6 +1053,22 @@ const StopFlash = id => {
   })
 }
 
+const GetGamesWeek = async () => {
+  const resp = await Fetch(`/games/week`, {
+    method: 'GET',
+    headers: HEADERS(),
+  })
+  return resp.json()
+}
+
+const SaveParentsOnPodium = parentsOnPodium => {
+  return Fetch(`/games/podium`, {
+    method: 'PUT',
+    headers: HEADERS(),
+    body: JSON.stringify({ parentsOnPodium }),
+  })
+}
+
 const GetGameRules = async () => {
   const resp = await Fetch(`/games/rules`, {
     method: 'GET',
@@ -1359,6 +1375,7 @@ export {
   GetFlashes,
   GetGameRules,
   GetGamesToday,
+  GetGamesWeek,
   GetLabels,
   GetLearnCatalogue,
   GetLearnDetail,
@@ -1409,6 +1426,7 @@ export {
   SaveChallenge,
   SaveChore,
   SaveGameRules,
+  SaveParentsOnPodium,
   SavePointsPreset,
   SaveQuest,
   SaveRanks,

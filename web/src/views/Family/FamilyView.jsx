@@ -3,6 +3,7 @@ import {
   HomeRounded,
   LocalFireDepartmentRounded,
   LuggageRounded,
+  StarRounded,
 } from '@mui/icons-material'
 import {
   Box,
@@ -29,7 +30,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { HOPLA } from '../../constants/theme'
 import { useIsParent } from '../../hooks/useIsParent'
 import { useCircleMembers, useSetMemberAway } from '../../queries/UserQueries'
-import { TodayCard, useGamesToday } from '../Games/DailyGames'
+import { TodayCard, useGamesToday, useGamesWeek } from '../Games/DailyGames'
 import { MemberAvatar, memberShape } from '../Games/GameParts'
 import { AdjustCard, HistoryCard, usePointsPresets } from '../Games/PointsCards'
 import {
@@ -93,6 +94,117 @@ PresenceButton.propTypes = {
   onToggle: PropTypes.func,
 }
 
+// The hops' symbol, the gold star of the family screen.
+const HopsStar = ({ size }) => (
+  <StarRounded aria-hidden sx={{ color: HOPLA.gold, fontSize: size }} />
+)
+
+HopsStar.propTypes = { size: PropTypes.number.isRequired }
+
+// What a child did since Monday: tasks and games, and the hops earned from
+// each source.
+const WeekStats = ({ week }) => {
+  const { t } = useTranslation('common')
+  const sources = [
+    ['fromTasks', week.taskPoints],
+    ['fromGames', week.gamePoints],
+    ['fromBonus', week.bonusPoints],
+  ]
+  return (
+    <Box
+      sx={{ borderTop: '1px solid', borderColor: 'divider', mt: 1.5, pt: 1.25 }}
+    >
+      <Box
+        sx={{
+          alignItems: 'center',
+          display: 'flex',
+          gap: 0.75,
+          justifyContent: 'center',
+        }}
+      >
+        <Typography
+          level='body-xs'
+          sx={{ color: 'text.tertiary', fontWeight: 600 }}
+        >
+          {t('family.week.title')}
+        </Typography>
+        {week.daysAway > 0 && (
+          <Box
+            component='span'
+            title={t('family.week.away', { count: week.daysAway })}
+            aria-label={t('family.week.away', { count: week.daysAway })}
+            sx={{
+              alignItems: 'center',
+              bgcolor: 'background.level2',
+              borderRadius: 999,
+              color: 'text.secondary',
+              display: 'inline-flex',
+              font: '600 11px/16px var(--joy-fontFamily-body)',
+              gap: 0.25,
+              px: 0.75,
+            }}
+          >
+            <LuggageRounded aria-hidden sx={{ fontSize: 12 }} />
+            {week.daysAway}
+          </Box>
+        )}
+      </Box>
+      <Typography level='body-sm' sx={{ mt: 0.25 }} noWrap>
+        {t('family.week.tasks', { count: week.tasks })} ·{' '}
+        {t('family.week.games', { count: week.games })}
+      </Typography>
+      <Box
+        aria-label={t('family.week.label', {
+          bonus: week.bonusPoints,
+          games: week.gamePoints,
+          tasks: week.taskPoints,
+        })}
+        role='group'
+        sx={{
+          display: 'grid',
+          gap: 0.5,
+          gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+          mt: 0.75,
+        }}
+      >
+        {sources.map(([key, value]) => (
+          <Box
+            key={key}
+            aria-hidden
+            sx={{ bgcolor: 'background.level1', borderRadius: 'md', py: 0.5 }}
+          >
+            <Typography
+              startDecorator={<HopsStar size={12} />}
+              sx={{
+                color: value < 0 ? 'danger.plainColor' : 'text.primary',
+                font: '700 15px/18px var(--joy-fontFamily-display)',
+                justifyContent: 'center',
+                '--Typography-gap': '2px',
+              }}
+            >
+              {value}
+            </Typography>
+            <Typography level='body-xs' sx={{ color: 'text.tertiary' }} noWrap>
+              {t(`family.week.${key}`)}
+            </Typography>
+          </Box>
+        ))}
+      </Box>
+    </Box>
+  )
+}
+
+WeekStats.propTypes = {
+  week: PropTypes.shape({
+    bonusPoints: PropTypes.number,
+    daysAway: PropTypes.number,
+    gamePoints: PropTypes.number,
+    games: PropTypes.number,
+    taskPoints: PropTypes.number,
+    tasks: PropTypes.number,
+  }).isRequired,
+}
+
 const percent = (value, target) =>
   target > 0 ? Math.max(0, Math.min(100, (value / target) * 100)) : 100
 
@@ -105,6 +217,7 @@ const MemberCard = ({
   onToggleAway,
   progress,
   streak,
+  week,
 }) => {
   const { t } = useTranslation('common')
   const available = (member.points || 0) - (member.pointsRedeemed || 0)
@@ -202,8 +315,11 @@ const MemberCard = ({
             border: '2px solid',
             borderColor: 'background.surface',
             borderRadius: 999,
+            alignItems: 'center',
             bottom: -4,
             color: HOPLA.goldText,
+            display: 'inline-flex',
+            gap: 0.25,
             font: '700 12px/16px var(--joy-fontFamily-body)',
             position: 'absolute',
             px: 0.875,
@@ -211,8 +327,11 @@ const MemberCard = ({
             right: -18,
             whiteSpace: 'nowrap',
           }}
+          aria-label={t('family.hops', { count: available })}
+          title={t('family.hops', { count: available })}
         >
-          {t('family.hops', { count: available })}
+          <HopsStar size={12} />
+          {available}
         </Box>
       </Box>
       <Typography level='title-md' sx={{ mt: 1.25 }} noWrap>
@@ -278,13 +397,16 @@ const MemberCard = ({
             </Typography>
             <Typography
               level='body-xs'
+              aria-label={t('family.earned')}
+              startDecorator={<HopsStar size={13} />}
               sx={{ alignSelf: 'flex-end', color: 'text.tertiary' }}
             >
-              {t('family.earned')}
+              {t('family.earnedShort')}
             </Typography>
           </Box>
         </>
       )}
+      {week && <WeekStats week={week} />}
     </Sheet>
   )
 }
@@ -296,6 +418,7 @@ MemberCard.propTypes = {
   onToggleAway: PropTypes.func,
   progress: PropTypes.object,
   streak: PropTypes.object,
+  week: PropTypes.object,
 }
 
 const AdjustSheet = ({ member, members, onClose }) => {
@@ -337,7 +460,7 @@ AdjustSheet.propTypes = {
   onClose: PropTypes.func.isRequired,
 }
 
-const FAMILY_TABS = ['progress', 'shop', 'journal']
+const FAMILY_TABS = ['progress', 'missions', 'shop', 'journal']
 
 // Where everyone stands: what you look at, never what you set up.
 const FamilyView = () => {
@@ -351,6 +474,7 @@ const FamilyView = () => {
   const [adjusting, setAdjusting] = useState(null)
   const { data: membersData } = useCircleMembers()
   const { data: today } = useGamesToday()
+  const { data: week } = useGamesWeek()
   const setAway = useSetMemberAway()
 
   const members = useMemo(
@@ -359,12 +483,15 @@ const FamilyView = () => {
   )
   const progressById = new Map((today?.members || []).map(p => [p.userId, p]))
   const streakById = new Map((today?.streaks || []).map(s => [s.userId, s]))
-  // The cards are for the children; parents only show up in a family
-  // without children.
+  const weekById = new Map((week?.members || []).map(w => [w.userId, w]))
+  // The cards are for the children; parents show up when the family puts
+  // them on the podium, or when it has no children.
   const isChild = m => m.role !== 'admin' && m.role !== 'manager'
   const tracked = members.filter(m => progressById.has(m.userId))
   const players = (
-    tracked.some(isChild) ? tracked.filter(isChild) : tracked
+    today?.parentsOnPodium || !tracked.some(isChild)
+      ? tracked
+      : tracked.filter(isChild)
   ).sort(
     (a, b) =>
       (progressById.get(b.userId)?.earned || 0) -
@@ -455,6 +582,24 @@ const FamilyView = () => {
           <HistoryCard members={members} />
         </Stack>
       )}
+      {tab === 'missions' && (
+        <Stack gap={2}>
+          <TodayCard members={members} today={today} />
+          <QuestsCard members={members} today={today} />
+          <ChallengesCard isParent={false} members={members} today={today} />
+          {isParent && (
+            <Button
+              component={Link}
+              to='/manage/missions'
+              variant='plain'
+              endDecorator={<ChevronRightRounded />}
+              sx={{ alignSelf: 'center' }}
+            >
+              {t('family.manageHint')}
+            </Button>
+          )}
+        </Stack>
+      )}
       {tab === 'progress' && (
         <Stack gap={2}>
           <Box
@@ -474,6 +619,7 @@ const FamilyView = () => {
                 member={member}
                 progress={progressById.get(member.userId)}
                 streak={streakById.get(member.userId)}
+                week={weekById.get(member.userId)}
                 onAdjust={isParent ? () => setAdjusting(member) : undefined}
                 onToggleAway={
                   isParent
@@ -487,20 +633,6 @@ const FamilyView = () => {
               />
             ))}
           </Box>
-          <TodayCard members={members} today={today} />
-          <QuestsCard members={members} today={today} />
-          <ChallengesCard isParent={false} members={members} today={today} />
-          {isParent && (
-            <Button
-              component={Link}
-              to='/manage'
-              variant='plain'
-              endDecorator={<ChevronRightRounded />}
-              sx={{ alignSelf: 'center' }}
-            >
-              {t('family.manageHint')}
-            </Button>
-          )}
         </Stack>
       )}
 

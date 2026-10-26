@@ -81,6 +81,8 @@ type Today struct {
 	// Members is each active member's rank and running quests.
 	Members    []MemberProgress      `json:"members"`
 	Challenges []games.ChallengeView `json:"challenges"`
+	// ParentsOnPodium puts the parents on the podium with the children.
+	ParentsOnPodium bool `json:"parentsOnPodium"`
 }
 
 // MemberProgress is a member's rank, from the points earned since joining,
@@ -173,7 +175,61 @@ func (h *Handler) getToday(c *gin.Context) {
 		fail(err)
 		return
 	}
+	family, err := h.circleRepo.GetCircleByID(c, circleID)
+	if err != nil {
+		fail(err)
+		return
+	}
+	today.ParentsOnPodium = family.ParentsOnPodium
 	c.JSON(200, gin.H{"res": today})
+}
+
+// getWeek answers with this week's stats of every active member.
+func (h *Handler) getWeek(c *gin.Context) {
+	currentUser, ok := auth.CurrentUser(c)
+	if !ok {
+		c.JSON(401, gin.H{"error": "Authentication failed"})
+		return
+	}
+	members, err := h.circleRepo.GetCircleUsers(c, currentUser.CircleID)
+	if err != nil {
+		c.JSON(500, gin.H{"error": "Error getting the week"})
+		return
+	}
+	userIDs := []int{}
+	for _, m := range members {
+		if m.IsActive {
+			userIDs = append(userIDs, m.UserID)
+		}
+	}
+	stats, from, err := games.Week(h.db.WithContext(c), currentUser.CircleID, userIDs, time.Now().UTC())
+	if err != nil {
+		logging.FromContext(c).Error("Failed to get the week", "error", err)
+		c.JSON(500, gin.H{"error": "Error getting the week"})
+		return
+	}
+	c.JSON(200, gin.H{"res": gin.H{"from": from, "members": stats}})
+}
+
+// updatePodium chooses whether the parents stand on the podium.
+func (h *Handler) updatePodium(c *gin.Context) {
+	_, circleID, ok := h.requireParent(c)
+	if !ok {
+		return
+	}
+	var req struct {
+		ParentsOnPodium *bool `json:"parentsOnPodium"`
+	}
+	if err := c.ShouldBindJSON(&req); err != nil || req.ParentsOnPodium == nil {
+		c.JSON(400, gin.H{"error": "Invalid request"})
+		return
+	}
+	if err := h.db.WithContext(c).Model(&circle.Circle{}).Where("id = ?", circleID).
+		Update("parents_on_podium", *req.ParentsOnPodium).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Error saving the podium"})
+		return
+	}
+	c.JSON(200, gin.H{"res": gin.H{"parentsOnPodium": *req.ParentsOnPodium}})
 }
 
 func (h *Handler) getRules(c *gin.Context) {
@@ -427,6 +483,8 @@ func Routes(r *gin.Engine, h *Handler, auth *jwt.GinJWTMiddleware) {
 	routes.Use(auth.MiddlewareFunc())
 	{
 		routes.GET("/today", h.getToday)
+		routes.GET("/week", h.getWeek)
+		routes.PUT("/podium", h.updatePodium)
 		routes.GET("/rules", h.getRules)
 		routes.PUT("/rules", h.updateRules)
 		routes.GET("/periods", h.getPeriods)
