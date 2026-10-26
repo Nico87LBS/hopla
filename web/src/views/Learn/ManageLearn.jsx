@@ -293,7 +293,6 @@ export const SettingsModal = ({
       else next.add(userId)
       return next
     })
-  const everyone = !family && candidates.every(m => chosen.has(m.userId))
 
   const send = async () => {
     setSaving(true)
@@ -363,20 +362,6 @@ export const SettingsModal = ({
                   </IconButton>
                 )
               })}
-              <Box sx={{ flex: 1 }} />
-              <Checkbox
-                label={t('manage.everyone')}
-                checked={everyone}
-                onChange={e =>
-                  setChosen(
-                    new Set(
-                      e.target.checked
-                        ? candidates.map(m => m.userId)
-                        : initialPeople,
-                    ),
-                  )
-                }
-              />
             </Stack>
             {people.length === 0 && (
               <Typography level='body-sm' color='warning'>

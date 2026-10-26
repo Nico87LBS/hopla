@@ -100,7 +100,6 @@
     "familySettings": "Family settings for {{name}}",
     "fromFamily": "{{value}} (family)",
     "forWho": "For whom?",
-    "everyone": "Everyone",
     "saveFor_one": "Save for {{count}} person",
     "saveFor_other": "Save for {{count}} people",
     "different": "different: {{values}}",

@@ -100,7 +100,6 @@
     "familySettings": "Réglages de la famille pour {{name}}",
     "fromFamily": "{{value}} (famille)",
     "forWho": "Pour qui ?",
-    "everyone": "Tout le monde",
     "saveFor_one": "Enregistrer pour {{count}} personne",
     "saveFor_other": "Enregistrer pour {{count}} personnes",
     "different": "différent : {{values}}",
