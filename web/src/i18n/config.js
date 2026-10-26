@@ -30,7 +30,6 @@ i18n
       'chores',
       'labels',
       'history',
-      'projects',
       'timer',
       'points',
       'rewards',

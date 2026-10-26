@@ -5,7 +5,7 @@ import { applyFilter } from '../../../utils/FilterEngine'
 
 // The task list's filter of the moment: a label, a person, an insight or
 // conditions picked in the filter sheet. Nothing is saved.
-export const useCustomFilters = (chores, membersData, labels, projects) => {
+export const useCustomFilters = (chores, membersData, labels) => {
   const { data: userProfile } = useUserProfile()
 
   const [tempFilter, setTempFilter] = useState(null)
@@ -16,9 +16,8 @@ export const useCustomFilters = (chores, membersData, labels, projects) => {
       userId: userProfile?.id,
       members: membersData || [],
       labels: labels || [],
-      projects: projects || [],
     }),
-    [userProfile?.id, membersData, labels, projects],
+    [userProfile?.id, membersData, labels],
   )
 
   const hasFilterApplied = tempFilter !== null

@@ -362,8 +362,8 @@ export const useChoreDetails = choreId => {
       }
 
       if (response && (response.status === 403 || response.status === 404)) {
-        // Server says this chore is gone/inaccessible (e.g. its project
-        // turned private) — purge the stale cache instead of serving it
+        // Server says this chore is gone/inaccessible (e.g. it turned
+        // private) — purge the stale cache instead of serving it
         await offlineDB.deleteChores([choreId]).catch(() => {})
         throw new Error('Chore is no longer accessible')
       }
@@ -404,8 +404,8 @@ export const useChore = choreId => {
       }
 
       if (response && (response.status === 403 || response.status === 404)) {
-        // Server says this chore is gone/inaccessible (e.g. its project
-        // turned private) — purge the stale cache instead of serving it
+        // Server says this chore is gone/inaccessible (e.g. it turned
+        // private) — purge the stale cache instead of serving it
         await offlineDB.deleteChores([choreId]).catch(() => {})
         throw new Error('Chore is no longer accessible')
       }

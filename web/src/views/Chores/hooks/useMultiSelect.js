@@ -188,7 +188,6 @@ export const useMultiSelect = () => {
         assignee: sharedValue(selected, c => c.assignedTo),
         priority: sharedValue(selected, c => c.priority),
         dueDate: sharedValue(selected, c => c.nextDueDate),
-        project: sharedValue(selected, c => c.projectId ?? null),
         labels: {
           byId: labelsById,
           common: commonLabelIds,

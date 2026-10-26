@@ -11,7 +11,7 @@ import (
 
 func TestClearHistoryForgetsTasksDone(t *testing.T) {
 	repo, db := newTestChoreRepo(t)
-	chore := createChore(t, db, "Chambre", testOwnerID, false, nil)
+	chore := createChore(t, db, "Chambre", testOwnerID, false)
 	other := &chModel.Chore{Name: "Other circle", CircleID: 2, CreatedBy: testOwnerID}
 	if err := db.Create(other).Error; err != nil {
 		t.Fatal(err)
@@ -59,9 +59,9 @@ func TestClearHistoryForgetsTasksDone(t *testing.T) {
 // again afterwards.
 func TestClearHistoryPutsTasksBackToDo(t *testing.T) {
 	repo, db := newTestChoreRepo(t)
-	once := createChore(t, db, "Ranger", testOwnerID, false, nil)
-	weekly := createChore(t, db, "Poubelles", testOwnerID, false, nil)
-	shared := createChore(t, db, "Vaisselle", testOwnerID, false, nil)
+	once := createChore(t, db, "Ranger", testOwnerID, false)
+	weekly := createChore(t, db, "Poubelles", testOwnerID, false)
+	shared := createChore(t, db, "Vaisselle", testOwnerID, false)
 	before := time.Date(2026, 10, 20, 18, 0, 0, 0, time.UTC)
 	later := before.AddDate(0, 0, 14)
 	db.Model(&chModel.Chore{}).Where("id = ?", once.ID).Updates(map[string]interface{}{"is_active": false, "next_due_date": nil})

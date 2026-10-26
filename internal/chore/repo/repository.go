@@ -13,8 +13,6 @@ import (
 	"github.com/nico87lbs/hopla/internal/games"
 	ptModel "github.com/nico87lbs/hopla/internal/points"
 	ptRepo "github.com/nico87lbs/hopla/internal/points/repo"
-	"github.com/nico87lbs/hopla/internal/project/access"
-	pModel "github.com/nico87lbs/hopla/internal/project/model"
 	storageModel "github.com/nico87lbs/hopla/internal/storage/model"
 	stModel "github.com/nico87lbs/hopla/internal/subtask/model"
 	syncModel "github.com/nico87lbs/hopla/internal/sync/model"
@@ -40,42 +38,26 @@ func NewChoreRepository(db *gorm.DB, cfg *config.Config) *ChoreRepository {
 	return &ChoreRepository{db: db, dbType: cfg.Database.Type}
 }
 
-// privacyJoins adds the joins privacyPredicate depends on: the current user's row in
-// chore_assignees, the project the chore belongs to (if any), and the current
-// user's row in project_members for that project. Each join matches at most one
-// row per chore, so it never multiplies results.
+// privacyJoins adds the join privacyPredicate depends on: the current user's
+// row in chore_assignees. It matches at most one row per chore, so it never
+// multiplies results.
 //
 // Use as: privacyJoins(db, userID).Where(privacyPredicate(userID))
 func privacyJoins(db *gorm.DB, userID int) *gorm.DB {
 	return db.
-		Joins("LEFT JOIN chore_assignees ON chores.id = chore_assignees.chore_id AND chore_assignees.user_id = ?", userID).
-		Joins("LEFT JOIN projects ON projects.id = chores.project_id").
-		Joins("LEFT JOIN project_members ON project_members.project_id = chores.project_id AND project_members.user_id = ?", userID)
+		Joins("LEFT JOIN chore_assignees ON chores.id = chore_assignees.chore_id AND chore_assignees.user_id = ?", userID)
 }
 
 // privacyPredicate returns a GORM clause expression that enforces chore visibility
-// rules using bound parameters (no string interpolation). A chore in a restricted
-// project is visible only to that project's audience: its owner, plus the listed
-// members when the project is shared with selected members. The chore's own
-// privacy flag and its assignees don't widen it, since a user who can't see the
-// project can't see what's inside it either. Everywhere else the chore's own rule
-// applies:
+// rules using bound parameters (no string interpolation). A chore is visible when:
 //   - It is not private, OR
 //   - It is private AND (the user created it OR the user is assigned to it)
 //
-// Member rows only count while the project is marked shared_with_members, so a
-// stale row can never open a project that was switched back to "only me".
-//
-// Requires the joins added by privacyJoins.
+// Requires the join added by privacyJoins.
 func privacyPredicate(userID int) clause.Expr {
 	return clause.Expr{
-		SQL: `(
-			((projects.id IS NULL OR projects.is_private = false)
-				AND ((chores.is_private = false) OR (chores.created_by = ? OR chore_assignees.user_id = ?)))
-			OR (projects.is_private = true AND (projects.created_by = ?
-				OR (projects.shared_with_members = true AND project_members.user_id IS NOT NULL)))
-		)`,
-		Vars: []interface{}{userID, userID, userID},
+		SQL:  `((chores.is_private = false) OR (chores.created_by = ? OR chore_assignees.user_id = ?))`,
+		Vars: []interface{}{userID, userID},
 	}
 }
 
@@ -151,27 +133,9 @@ func choreViewerSet(chore *chModel.Chore, assigneeIDs []int, circleUserIDs []int
 	return viewers
 }
 
-func projectAwareChoreViewerSet(chore *chModel.Chore, project *pModel.Project, assigneeIDs []int, circleUserIDs []int) map[int]struct{} {
-	if viewers, restricted := access.ViewerSet(project); restricted {
-		return viewers
-	}
-	return choreViewerSet(chore, assigneeIDs, circleUserIDs)
-}
-
 // UpdateChoreVisibility atomically updates a chore and its complete assignee set,
 // recording a user-scoped tombstone for each circle member who loses visibility.
 func (r *ChoreRepository) UpdateChoreVisibility(ctx context.Context, chore *chModel.Chore, assigneeIDs []int) error {
-	return r.updateChoreVisibility(ctx, chore, assigneeIDs, nil)
-}
-
-// UpdateChoreVisibilityForUser additionally verifies the destination project is
-// visible to actingUserID. Project visibility is read under a lock so a concurrent
-// project privacy change cannot leave the chore with stale visibility or assignees.
-func (r *ChoreRepository) UpdateChoreVisibilityForUser(ctx context.Context, chore *chModel.Chore, assigneeIDs []int, actingUserID int) error {
-	return r.updateChoreVisibility(ctx, chore, assigneeIDs, &actingUserID)
-}
-
-func (r *ChoreRepository) updateChoreVisibility(ctx context.Context, chore *chModel.Chore, assigneeIDs []int, actingUserID *int) error {
 	return r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		lockedQuery := func() *gorm.DB {
 			q := tx.WithContext(ctx)
@@ -181,74 +145,10 @@ func (r *ChoreRepository) updateChoreVisibility(ctx context.Context, chore *chMo
 			return q
 		}
 
-		// Discover project IDs first, then lock all projects in a stable order
-		// before locking the chore. Project privacy updates use the same
-		// project-before-chore order, avoiding a lock inversion deadlock.
-		var snapshot chModel.Chore
-		if err := tx.WithContext(ctx).Select("id, project_id").Where("id = ? AND circle_id = ?", chore.ID, chore.CircleID).First(&snapshot).Error; err != nil {
-			return err
-		}
-		projectIDSet := make(map[int]struct{}, 2)
-		if snapshot.ProjectID != nil {
-			projectIDSet[*snapshot.ProjectID] = struct{}{}
-		}
-		if chore.ProjectID != nil {
-			projectIDSet[*chore.ProjectID] = struct{}{}
-		}
-		projectIDs := make([]int, 0, len(projectIDSet))
-		for projectID := range projectIDSet {
-			projectIDs = append(projectIDs, projectID)
-		}
-		sort.Ints(projectIDs)
-		projectsByID := make(map[int]*pModel.Project, len(projectIDs))
-		if len(projectIDs) > 0 {
-			var projects []pModel.Project
-			if err := lockedQuery().Where("id IN ? AND circle_id = ?", projectIDs, chore.CircleID).Order("id ASC").Find(&projects).Error; err != nil {
-				return err
-			}
-			if len(projects) != len(projectIDs) {
-				return errors.New("project not found")
-			}
-			for i := range projects {
-				projectsByID[projects[i].ID] = &projects[i]
-			}
-			if err := access.LoadMembers(ctx, tx, projectPointers(projects)...); err != nil {
-				return err
-			}
-		}
-
 		var previousChore chModel.Chore
 		if err := lockedQuery().Where("id = ? AND circle_id = ?", chore.ID, chore.CircleID).First(&previousChore).Error; err != nil {
 			return err
 		}
-		// The project cannot change between the snapshot and this lock without
-		// taking the chore lock; retry rather than reason from mismatched state.
-		if (snapshot.ProjectID == nil) != (previousChore.ProjectID == nil) ||
-			(snapshot.ProjectID != nil && *snapshot.ProjectID != *previousChore.ProjectID) {
-			return errors.New("chore project changed concurrently; retry")
-		}
-
-		var previousProject *pModel.Project
-		if previousChore.ProjectID != nil {
-			previousProject = projectsByID[*previousChore.ProjectID]
-		}
-
-		var destinationProject *pModel.Project
-		if chore.ProjectID != nil {
-			destinationProject = projectsByID[*chore.ProjectID]
-			if actingUserID != nil && !destinationProject.CanView(*actingUserID) {
-				return errors.New("project not found")
-			}
-
-			chore.IsPrivate = destinationProject.IsPrivate
-			chore.Project = destinationProject
-			var err error
-			assigneeIDs, err = constrainAssigneesToProject(chore, destinationProject, assigneeIDs)
-			if err != nil {
-				return err
-			}
-		}
-
 		var previousAssignees []chModel.ChoreAssignees
 		if err := lockedQuery().Where("chore_id = ?", chore.ID).Find(&previousAssignees).Error; err != nil {
 			return err
@@ -263,8 +163,8 @@ func (r *ChoreRepository) updateChoreVisibility(ctx context.Context, chore *chMo
 			return err
 		}
 
-		previousViewers := projectAwareChoreViewerSet(&previousChore, previousProject, previousAssigneeIDs, circleUserIDs)
-		newViewers := projectAwareChoreViewerSet(chore, destinationProject, assigneeIDs, circleUserIDs)
+		previousViewers := choreViewerSet(&previousChore, previousAssigneeIDs, circleUserIDs)
+		newViewers := choreViewerSet(chore, assigneeIDs, circleUserIDs)
 		revokedUserIDs := make([]int, 0)
 		for userID := range previousViewers {
 			if _, stillVisible := newViewers[userID]; !stillVisible {
@@ -284,7 +184,7 @@ func (r *ChoreRepository) updateChoreVisibility(ctx context.Context, chore *chMo
 			return err
 		}
 		chore.SyncVersion = firstVersion
-		if err := tx.WithContext(ctx).Omit("Project").Save(chore).Error; err != nil {
+		if err := tx.WithContext(ctx).Save(chore).Error; err != nil {
 			return err
 		}
 
@@ -319,61 +219,6 @@ func (r *ChoreRepository) updateChoreVisibility(ctx context.Context, chore *chMo
 	})
 }
 
-func projectPointers(projects []pModel.Project) []*pModel.Project {
-	out := make([]*pModel.Project, 0, len(projects))
-	for i := range projects {
-		out = append(out, &projects[i])
-	}
-	return out
-}
-
-// constrainAssigneesToProject applies the assignment rule of a restricted
-// destination project to a chore that is created in or moved into it, and returns
-// the assignee IDs to store. The chore's AssignedTo is adjusted in place.
-//
-// An owner-only project keeps the upstream behavior: the chore is pinned to the
-// owner (or left unassigned for no_assignee). A members project rejects anybody
-// who cannot see it instead of silently dropping them; an empty list ("Anyone")
-// stays empty and rotates among the project's audience.
-func constrainAssigneesToProject(chore *chModel.Chore, project *pModel.Project, assigneeIDs []int) ([]int, error) {
-	if project == nil || !project.IsPrivate {
-		return assigneeIDs, nil
-	}
-	if project.Visibility() == pModel.ProjectVisibilityPrivate {
-		if chore.AssignStrategy == chModel.AssignmentStrategyNoAssignee {
-			chore.AssignedTo = nil
-			return nil, nil
-		}
-		ownerID := project.CreatedBy
-		if chore.AssignStrategy == chModel.AssignmentStrategyTogether {
-			chore.AssignedTo = nil
-			return []int{ownerID}, nil
-		}
-		chore.AssignedTo = &ownerID
-		return []int{ownerID}, nil
-	}
-
-	viewers, _ := access.ViewerSet(project)
-	for _, id := range assigneeIDs {
-		if _, ok := viewers[id]; !ok {
-			return nil, ErrAssigneeOutsideProject
-		}
-	}
-	if chore.AssignedTo != nil && *chore.AssignedTo != 0 {
-		if _, ok := viewers[*chore.AssignedTo]; !ok {
-			return nil, ErrAssigneeOutsideProject
-		}
-	}
-	if chore.AssignStrategy == chModel.AssignmentStrategyNoAssignee {
-		chore.AssignedTo = nil
-		return nil, nil
-	}
-	if chore.AssignStrategy == chModel.AssignmentStrategyTogether {
-		chore.AssignedTo = nil
-	}
-	return assigneeIDs, nil
-}
-
 func (r *ChoreRepository) UpdateChorePriority(c context.Context, userID int, choreID int, priority int, circleID int) error {
 	nextVersion, err := r.nextSyncVersion(c, circleID)
 	if err != nil {
@@ -404,26 +249,6 @@ func (r *ChoreRepository) UpdateChoreFields(ctx context.Context, choreID int, fi
 
 func (r *ChoreRepository) nextSyncVersionRange(ctx context.Context, circleID int, count int) (int64, error) {
 	return r.nextSyncVersionRangeWithDB(ctx, r.db, circleID, count)
-}
-
-// SetProjectChoresPrivacy aligns every chore of a project with a flip between a
-// circle-wide project and an owner-only one. It is kept for callers that only know
-// the boolean flag; ApplyProjectAccessChange handles every visibility, including
-// projects shared with selected members.
-//
-// Turning a project private narrows its chores down to the owner — the only user
-// who can still see them: assignees other than the owner are dropped, chores
-// assigned to "Anyone" are pinned to the owner, and an assigned_to pointing at
-// somebody else is moved over. Users who lose visibility get user-scoped
-// tombstones, and pending notifications of affected chores are removed.
-func (r *ChoreRepository) SetProjectChoresPrivacy(ctx context.Context, tx *gorm.DB, circleID int, projectID int, ownerID int, isPrivate bool) error {
-	before := ProjectAccess{Visibility: pModel.ProjectVisibilityPrivate}
-	after := ProjectAccess{Visibility: pModel.ProjectVisibilityCircle}
-	if isPrivate {
-		before, after = after, before
-	}
-	_, err := r.ApplyProjectAccessChange(ctx, tx, circleID, projectID, ownerID, before, after)
-	return err
 }
 
 func (r *ChoreRepository) UpdateChores(c context.Context, chores []*chModel.Chore) error {
@@ -457,40 +282,15 @@ func (r *ChoreRepository) CreateChore(c context.Context, chore *chModel.Chore) (
 	return chore.ID, nil
 }
 
-// CreateChoreWithAssignees atomically creates a chore and its assignees while
-// holding the destination project's lock. This prevents a concurrent project
-// privacy change from missing the new chore or leaving stale foreign assignees.
-func (r *ChoreRepository) CreateChoreWithAssignees(ctx context.Context, chore *chModel.Chore, assigneeIDs []int, actingUserID int) (int, error) {
+// CreateChoreWithAssignees atomically creates a chore and its assignees.
+func (r *ChoreRepository) CreateChoreWithAssignees(ctx context.Context, chore *chModel.Chore, assigneeIDs []int) (int, error) {
 	err := r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		if chore.ProjectID != nil {
-			query := tx.WithContext(ctx)
-			if r.dbType == "postgres" {
-				query = query.Clauses(clause.Locking{Strength: "UPDATE"})
-			}
-			var project pModel.Project
-			if err := query.Where("id = ? AND circle_id = ?", *chore.ProjectID, chore.CircleID).First(&project).Error; err != nil {
-				return errors.New("project not found")
-			}
-			if err := access.LoadMembers(ctx, tx, &project); err != nil {
-				return err
-			}
-			if !project.CanView(actingUserID) {
-				return errors.New("project not found")
-			}
-			chore.IsPrivate = project.IsPrivate
-			var err error
-			assigneeIDs, err = constrainAssigneesToProject(chore, &project, assigneeIDs)
-			if err != nil {
-				return err
-			}
-		}
-
 		nextVersion, err := r.nextSyncVersionWithDB(ctx, tx, chore.CircleID)
 		if err != nil {
 			return err
 		}
 		chore.SyncVersion = nextVersion
-		if err := tx.WithContext(ctx).Omit("Project").Create(chore).Error; err != nil {
+		if err := tx.WithContext(ctx).Create(chore).Error; err != nil {
 			return err
 		}
 
@@ -521,15 +321,11 @@ func (r *ChoreRepository) GetChore(c context.Context, choreID int, userID int, c
 	query := privacyJoins(r.db.WithContext(c).Model(&chModel.Chore{}), userID).
 		Preload("SubTasks", "chore_id = ?", choreID).
 		Preload("Assignees").
-		Preload("Project").
 		Preload("LabelsV2").
 		Where("chores.id = ? AND chores.circle_id = ?", choreID, circleID).
 		Where(privacyPredicate(userID))
 
 	if err := query.First(&chore).Error; err != nil {
-		return nil, err
-	}
-	if err := access.LoadMembers(c, r.db, chore.Project); err != nil {
 		return nil, err
 	}
 	r.db.WithContext(c).Where("entity_type = ? AND entity_id = ?", storageModel.EntityTypeChoreAttachment, choreID).Find(&chore.Attachments)
@@ -541,10 +337,7 @@ func (r *ChoreRepository) GetChore(c context.Context, choreID int, userID int, c
 // server-side work that decides recipients itself.
 func (r *ChoreRepository) GetChoreForSystem(c context.Context, choreID int) (*chModel.Chore, error) {
 	var chore chModel.Chore
-	if err := r.db.WithContext(c).Preload("Assignees").Preload("Project").First(&chore, choreID).Error; err != nil {
-		return nil, err
-	}
-	if err := access.LoadMembers(c, r.db, chore.Project); err != nil {
+	if err := r.db.WithContext(c).Preload("Assignees").First(&chore, choreID).Error; err != nil {
 		return nil, err
 	}
 	return &chore, nil

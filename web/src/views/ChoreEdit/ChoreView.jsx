@@ -676,28 +676,6 @@ const ChoreView = () => {
     }
   }
 
-  const handleMoveToProject = async project => {
-    const projectId = project?.id ?? null
-    try {
-      const response = await SaveChore({ ...chore, projectId })
-      if (response.ok) {
-        setChore(prev => ({ ...prev, projectId }))
-        queryClient.invalidateQueries({ queryKey: ['chores'] })
-        showSuccess({
-          title: t('choreView.taskMovedTitle'),
-          message: t('choreView.taskMovedMessage', {
-            project: project?.name || t('actionMenu.defaultProject'),
-          }),
-        })
-      }
-    } catch (error) {
-      showError({
-        title: t('choreView.failedMoveTask'),
-        message: error?.message || t('choreView.unableMoveTaskToProject'),
-      })
-    }
-  }
-
   // Picking a circle member who isn't yet in the chore's assignee pool must
   // not surface the backend's "assignee not in assignees list" rejection —
   // assigning someone should always just work, so this adds them to the pool
@@ -747,9 +725,6 @@ const ChoreView = () => {
         break
       case 'changeDueDate':
         handleDueDateChange(extraData?.date?.toISOString() ?? null)
-        break
-      case 'moveToProject':
-        handleMoveToProject(extraData?.project)
         break
       default:
         break

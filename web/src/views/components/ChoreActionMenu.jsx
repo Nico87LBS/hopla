@@ -5,7 +5,6 @@ import {
   ChevronRight,
   CopyAll,
   Delete,
-  DriveFileMove,
   Edit,
   Flag,
   ManageSearch,
@@ -24,7 +23,6 @@ import {
   Weekend,
 } from '@mui/icons-material'
 import {
-  Avatar,
   Button,
   Chip,
   Divider,
@@ -47,13 +45,7 @@ import { useNavigate } from 'react-router-dom'
 import AppModal from '../../components/common/AppModal'
 import { useImpersonateUser } from '../../contexts/ImpersonateUserContext.jsx'
 import { useCircleMembers, useUserProfile } from '../../queries/UserQueries.jsx'
-import LABEL_COLORS, {
-  getTextColorFromBackgroundColor,
-} from '../../utils/Colors'
 import Priorities from '../../utils/Priorities'
-import { getIconComponent } from '../../utils/ProjectIcons'
-import { useProjects } from '../Projects/ProjectQueries'
-import { ProjectAccessIcon } from '../Projects/ProjectVisibilityField'
 import ChronoModal from './ChronoModal'
 
 const NO_PRIORITY = { name: 'No priority', value: 0, color: 'neutral' }
@@ -128,7 +120,6 @@ const ChoreActionMenu = ({
   const isControlled = controlledAnchorEl !== undefined
   const [uncontrolledAnchorEl, setUncontrolledAnchorEl] = React.useState(null)
   const anchorEl = isControlled ? controlledAnchorEl : uncontrolledAnchorEl
-  const [showProjectPicker, setShowProjectPicker] = useState(false)
   const [showPriorityPicker, setShowPriorityPicker] = useState(false)
   const [showSchedulePicker, setShowSchedulePicker] = useState(false)
   const [submenuAnchorEl, setSubmenuAnchorEl] = useState(null)
@@ -144,7 +135,6 @@ const ChoreActionMenu = ({
   const menuRef = React.useRef(null)
   const submenuRef = React.useRef(null)
   const navigate = useNavigate()
-  const { data: projects = [] } = useProjects()
   // Phone-only condition (matches AddTaskModal.jsx) — tablets/desktop keep the Menu
   const isSmallScreen = useMediaQuery(theme => theme.breakpoints.down('sm'))
 
@@ -190,7 +180,6 @@ const ChoreActionMenu = ({
   }
 
   const handleMenuClose = () => {
-    setShowProjectPicker(false)
     setShowPriorityPicker(false)
     setShowSchedulePicker(false)
     setSubmenuAnchorEl(null)
@@ -202,14 +191,12 @@ const ChoreActionMenu = ({
   }
 
   const openPicker = (picker, target) => {
-    setShowProjectPicker(picker === 'project')
     setShowPriorityPicker(picker === 'priority')
     setShowSchedulePicker(picker === 'schedule')
     setSubmenuAnchorEl(isSmallScreen ? null : target)
   }
 
   const closeDesktopSubmenu = () => {
-    setShowProjectPicker(false)
     setShowPriorityPicker(false)
     setShowSchedulePicker(false)
     setSubmenuAnchorEl(null)
@@ -217,11 +204,6 @@ const ChoreActionMenu = ({
 
   const handleChangePriority = priority => {
     onChangePriority?.(priority)
-    handleMenuClose()
-  }
-
-  const handleMoveToProject = project => {
-    onAction?.('moveToProject', chore, { project })
     handleMenuClose()
   }
 
@@ -292,18 +274,6 @@ const ChoreActionMenu = ({
     const date = option === 'remove' ? null : getQuickScheduleDate(option)
     onAction?.('changeDueDate', chore, { date })
     handleMenuClose()
-  }
-
-  const renderProjectAvatar = (color, icon) => {
-    const bg = color || LABEL_COLORS[0].value
-    const IconComponent = getIconComponent(icon || 'FolderOpen')
-    return (
-      <Avatar size='sm' sx={{ width: 22, height: 22, backgroundColor: bg }}>
-        <IconComponent
-          sx={{ fontSize: 13, color: getTextColorFromBackgroundColor(bg) }}
-        />
-      </Avatar>
-    )
   }
 
   const currentPriority =
@@ -441,14 +411,6 @@ const ChoreActionMenu = ({
         onChangeAssignee?.()
         handleMenuClose()
       },
-    },
-    projects.length > 0 && {
-      key: 'moveToProject',
-      icon: <DriveFileMove />,
-      label: t('actionMenu.moveToProject'),
-      onClick: target => openPicker('project', target),
-      submenu: 'project',
-      endDecorator: <ChevronRight fontSize='small' />,
     },
     { key: 'divider-utilities', type: 'divider' },
     {
@@ -647,88 +609,8 @@ const ChoreActionMenu = ({
     </>
   )
 
-  const renderProjectOptions = (Item, includeListItem = false) => (
-    <>
-      {includeListItem ? (
-        <ListItem>
-          <ListItemButton
-            onClick={() =>
-              handleMoveToProject({
-                id: null,
-                name: t('actionMenu.defaultProject'),
-              })
-            }
-          >
-            <ListItemDecorator>
-              {renderProjectAvatar(LABEL_COLORS[0].value, 'FolderOpen')}
-            </ListItemDecorator>
-            <ListItemContent>{t('actionMenu.defaultProject')}</ListItemContent>
-          </ListItemButton>
-        </ListItem>
-      ) : (
-        <Item
-          onClick={event => {
-            event.stopPropagation()
-            handleMoveToProject({
-              id: null,
-              name: t('actionMenu.defaultProject'),
-            })
-          }}
-        >
-          <ListItemDecorator>
-            {renderProjectAvatar(LABEL_COLORS[0].value, 'FolderOpen')}
-          </ListItemDecorator>
-          <ListItemContent>{t('actionMenu.defaultProject')}</ListItemContent>
-        </Item>
-      )}
-      {projects.map(project =>
-        includeListItem ? (
-          <ListItem key={project.id}>
-            <ListItemButton onClick={() => handleMoveToProject(project)}>
-              <ListItemDecorator>
-                {renderProjectAvatar(project.color, project.icon)}
-              </ListItemDecorator>
-              <ListItemContent>
-                {project.name}
-                <ProjectAccessIcon
-                  project={project}
-                  sx={{ fontSize: 14, ml: 0.5, verticalAlign: 'text-bottom' }}
-                />
-              </ListItemContent>
-            </ListItemButton>
-          </ListItem>
-        ) : (
-          <Item
-            key={project.id}
-            onClick={event => {
-              event.stopPropagation()
-              handleMoveToProject(project)
-            }}
-          >
-            <ListItemDecorator>
-              {renderProjectAvatar(project.color, project.icon)}
-            </ListItemDecorator>
-            <ListItemContent>
-              {project.name}
-              <ProjectAccessIcon
-                project={project}
-                sx={{ fontSize: 14, ml: 0.5, verticalAlign: 'text-bottom' }}
-              />
-            </ListItemContent>
-          </Item>
-        ),
-      )}
-    </>
-  )
-
-  const renderModalProjectPicker = () => renderProjectOptions(MenuItem, true)
-
-  const renderMenuProjectPicker = () => renderProjectOptions(MenuItem)
-
   let modalTitle
-  if (showProjectPicker) {
-    modalTitle = t('actionMenu.moveToProject')
-  } else if (showPriorityPicker) {
+  if (showPriorityPicker) {
     modalTitle = t('priority')
   } else if (showSchedulePicker) {
     modalTitle = t('choreView.schedule')
@@ -786,14 +668,13 @@ const ChoreActionMenu = ({
           showHandle
           contentSx={{ px: 0, pb: 1 }}
         >
-          {(showProjectPicker || showPriorityPicker || showSchedulePicker) && (
+          {(showPriorityPicker || showSchedulePicker) && (
             <Button
               variant='plain'
               color='neutral'
               size='sm'
               startDecorator={<ArrowBack fontSize='small' />}
               onClick={() => {
-                setShowProjectPicker(false)
                 setShowPriorityPicker(false)
                 setShowSchedulePicker(false)
               }}
@@ -811,13 +692,11 @@ const ChoreActionMenu = ({
               px: 1,
             }}
           >
-            {showProjectPicker
-              ? renderModalProjectPicker()
-              : showPriorityPicker
-                ? renderModalPriorityPicker()
-                : showSchedulePicker
-                  ? renderModalSchedulePicker()
-                  : renderModalActionItems()}
+            {showPriorityPicker
+              ? renderModalPriorityPicker()
+              : showSchedulePicker
+                ? renderModalSchedulePicker()
+                : renderModalActionItems()}
           </List>
         </AppModal>
       ) : (
@@ -867,9 +746,7 @@ const ChoreActionMenu = ({
               ? renderMenuSchedulePicker(false)
               : showPriorityPicker
                 ? renderMenuPriorityPicker(false)
-                : showProjectPicker
-                  ? renderMenuProjectPicker()
-                  : null}
+                : null}
           </Menu>
         </>
       )}

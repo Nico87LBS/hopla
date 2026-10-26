@@ -1,9 +1,8 @@
-import { Add, KeyboardArrowDown, Lock } from '@mui/icons-material'
+import { Add, KeyboardArrowDown } from '@mui/icons-material'
 import {
   Box,
   Button,
   Dropdown,
-  ListItemDecorator,
   Menu,
   MenuButton,
   MenuItem,
@@ -25,15 +24,9 @@ import { useCreateChore } from '../../queries/ChoreQueries'
 import { useCircleMembers, useUserProfile } from '../../queries/UserQueries'
 import LABEL_COLORS, { TASK_COLOR } from '../../utils/Colors'
 import { CreateLabel } from '../../utils/Fetcher'
-import {
-  filterMembersForProject,
-  getProjectAudienceIds,
-} from '../../utils/ProjectAccess'
-import { getIconComponent } from '../../utils/ProjectIcons'
 import { withRepeatTime } from '../../utils/repeatTime.js'
 import { generateUUID } from '../../utils/UUID'
 import { useLabels } from '../Labels/LabelQueries'
-import { useProjects } from '../Projects/ProjectQueries'
 import AdvancedOptionsSection, {
   AdvancedOptionsTrigger,
 } from './AdvancedOptionsSection'
@@ -118,27 +111,6 @@ const getDefaultNotification = () => {
   return DEFAULT_NOTIFICATION_TEMPLATES
 }
 
-// Get initial project from localStorage (current active project)
-const getInitialProject = () => {
-  const saved = localStorage.getItem('selectedProject')
-  if (saved) {
-    try {
-      const project = JSON.parse(saved)
-      return project?.id || 'default'
-    } catch {
-      return 'default'
-    }
-  }
-  return 'default'
-}
-
-const DEFAULT_PROJECT = {
-  id: 'default',
-  name: 'Default Project',
-  color: '#9CA3AF',
-  icon: 'FolderOpen',
-}
-
 const PRIORITY_COLORS = {
   0: TASK_COLOR.NO_PRIORITY,
   1: TASK_COLOR.PRIORITY_1,
@@ -187,8 +159,8 @@ const PARSE_DEBOUNCE_MS = 150
 
 const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
   const { t } = useTranslation('chores')
-  // Claims the keyboard while open so background listeners (e.g. the project
-  // selector's own Cmd+E) know to stay out of the way — see
+  // Claims the keyboard while open so background listeners know to stay out
+  // of the way — see
   // KeyboardShortcutScopeContext.
   const isShortcutScopeActive = useModalShortcutScope(isModalOpen)
   const { ResponsiveModal } = useResponsiveModal()
@@ -197,7 +169,6 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
   const { data: userLabels, isLoading: userLabelsLoading } = useLabels()
   const { data: circleMembers, isLoading: isCircleMembersLoading } =
     useCircleMembers()
-  const { data: projects = [], isLoading: isProjectsLoading } = useProjects()
   const createChoreMutation = useCreateChore()
   const queryClient = useQueryClient()
 
@@ -295,38 +266,13 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
   // that action for the rest of this modal session (until it closes) —
   // picking it once means the user is batching tasks, not just this one.
   const [continuousMode, setContinuousMode] = useState(false)
-  const [projectId, setProjectId] = useState(getInitialProject)
-  const selectedProject = useMemo(
-    () =>
-      (projectId !== 'default' &&
-        projects?.find(project => project.id === projectId)) ||
-      DEFAULT_PROJECT,
-    [projects, projectId],
-  )
-  const SelectedProjectIcon = useMemo(
-    () => getIconComponent(selectedProject.icon),
-    [selectedProject],
-  )
   const [attachments, setAttachments] = useState([])
 
   const [draftId, setDraftId] = useState(() => generateUUID())
 
-  // A task in a private or shared project is always private: the project's
-  // privacy wins over the task's own setting, so keep the form in sync with the
-  // selected project.
-  const taskProject = projects.find(project => project.id === projectId)
-  const selectedProjectIsPrivate = Boolean(taskProject?.isPrivate)
-  useEffect(() => {
-    if (selectedProjectIsPrivate && !isPrivate) {
-      setIsPrivate(true)
-    }
-  }, [selectedProjectIsPrivate, isPrivate])
-
-  // Only people who can see the selected project can be assigned (the server
-  // rejects anybody else), so the picker and @mentions offer just them.
   const assignableMembers = useMemo(
-    () => filterMembersForProject(circleMembers?.res || [], taskProject),
-    [circleMembers, taskProject],
+    () => circleMembers?.res || [],
+    [circleMembers],
   )
 
   const smartInputSuggestions = useMemo(
@@ -351,19 +297,6 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
     }),
     [userLabels, assignableMembers, handleCreateLabel, t],
   )
-
-  const projectAudienceKey = (getProjectAudienceIds(taskProject) || []).join(
-    ',',
-  )
-  useEffect(() => {
-    const audience = getProjectAudienceIds(taskProject)
-    if (!audience) return
-    setAssignees(current => {
-      const kept = current.filter(a => audience.includes(a.userId))
-      return kept.length === current.length ? current : kept
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [projectAudienceKey])
 
   // set showKeyboardShortcuts true as soon as the user hold ctrl or cmd key:
   useEffect(() => {
@@ -781,8 +714,8 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
     submitChore(true)
   }
 
-  // the selected project) as-is — used both on close and by "create & add
-  // another" to hand back a blank form without losing the project context.
+  // Hands back a blank form, used both on close and by "create & add
+  // another".
   const resetFormFields = () => {
     setTaskText('')
     setTaskTitle('')
@@ -815,7 +748,6 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
   const handleCloseModal = forceRefetch => {
     onClose(forceRefetch)
     resetFormFields()
-    setProjectId(getInitialProject())
     setContinuousMode(false)
   }
 
@@ -871,7 +803,6 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
       notification: false,
       notificationMetadata: {},
       subTasks: subTasks?.length > 0 ? subTasks : null,
-      projectId: projectId === 'default' ? null : projectId,
       draftId: draftId,
     }
 
@@ -959,7 +890,7 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
     handleCloseModal,
   }
 
-  if (isCircleMembersLoading || isProjectsLoading) {
+  if (isCircleMembersLoading) {
     return <></>
   }
 
@@ -973,66 +904,6 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
         title={t('addTask.title')}
         footer={
           <ModalActions>
-            {projects?.length >= 1 && (
-              <Dropdown>
-                <MenuButton
-                  variant='plain'
-                  color='neutral'
-                  size='sm'
-                  startDecorator={
-                    <SelectedProjectIcon
-                      sx={{ fontSize: 18, color: selectedProject.color }}
-                    />
-                  }
-                  endDecorator={<KeyboardArrowDown sx={{ fontSize: 16 }} />}
-                  sx={{
-                    mr: 'auto',
-                    color: 'text.secondary',
-                    fontWeight: 'normal',
-                  }}
-                >
-                  {selectedProject.id === 'default'
-                    ? t('addTask.defaultProject')
-                    : selectedProject.name}
-                </MenuButton>
-                <Menu
-                  placement='top-start'
-                  sx={{
-                    minWidth: 200,
-                    zIndex: 'calc(var(--joy-zIndex-modal) + 1)',
-                  }}
-                >
-                  {[DEFAULT_PROJECT, ...projects].map(project => {
-                    const ProjectIcon = getIconComponent(project.icon)
-                    return (
-                      <MenuItem
-                        key={project.id}
-                        selected={projectId === project.id}
-                        onClick={() => setProjectId(project.id)}
-                      >
-                        <ListItemDecorator>
-                          <ProjectIcon
-                            sx={{ fontSize: 18, color: project.color }}
-                          />
-                        </ListItemDecorator>
-                        {project.id === 'default'
-                          ? t('addTask.defaultProject')
-                          : project.name}
-                        {project.isPrivate && (
-                          <Lock
-                            sx={{
-                              fontSize: 14,
-                              ml: 0.5,
-                              verticalAlign: 'text-bottom',
-                            }}
-                          />
-                        )}
-                      </MenuItem>
-                    )
-                  })}
-                </Menu>
-              </Dropdown>
-            )}
             <Button
               variant='outlined'
               color='neutral'
@@ -1381,7 +1252,6 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
             hasAssignees={!isAnyoneTask}
             isPrivate={isPrivate}
             onIsPrivateChange={setIsPrivate}
-            isPrivacyInherited={selectedProjectIsPrivate}
           />
 
           {hasDescription && (

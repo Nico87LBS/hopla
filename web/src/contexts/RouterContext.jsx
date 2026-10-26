@@ -35,7 +35,6 @@ import {
   ManageRewards,
 } from '../views/Manage/ParentPages'
 import CircleSetupView from '../views/Onboarding/CircleSetupView'
-import ProjectView from '../views/Projects/ProjectView'
 import TimerDetails from '../views/Timer/TimerDetails'
 import UserActivities from '../views/User/UserActivities'
 const PointsRedirect = () => {
@@ -269,7 +268,7 @@ const Router = createBrowserRouter([
       },
       {
         path: 'projects/',
-        element: <ProjectView />,
+        element: <Navigate to='/labels' replace />,
       },
       {
         path: 'filters/',

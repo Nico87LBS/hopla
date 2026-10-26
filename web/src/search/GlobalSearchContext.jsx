@@ -58,26 +58,17 @@ export const GlobalSearchProvider = ({ children }) => {
       const [
         offlineChores,
         offlineHistory,
-        offlineProjects,
         offlineLabels,
         offlineMembers,
         offlineProfile,
       ] = await Promise.all([
         offlineDB.getChores(true).catch(() => []),
         offlineDB.getHistoryByDays(365).catch(() => []),
-        offlineDB.getKV('projects').catch(() => []),
         offlineDB.getKV('labels').catch(() => []),
         offlineDB.getKV('circle_members').catch(() => []),
         offlineDB.getKV('user_profile').catch(() => null),
       ])
 
-      const projects = uniqueBy(
-        [
-          ...unwrap(queryClient.getQueryData(['projects'])),
-          ...unwrap(offlineProjects),
-        ],
-        item => item.id,
-      )
       const labels = uniqueBy(
         [
           ...unwrap(queryClient.getQueryData(['labels'])),
@@ -108,13 +99,11 @@ export const GlobalSearchProvider = ({ children }) => {
       const sources = {
         chores,
         history,
-        projects,
         labels,
         members,
         isParent: isParentUser(profile),
         t,
         choresById: new Map(chores.map(item => [String(item.id), item])),
-        projectsById: new Map(projects.map(item => [String(item.id), item])),
         membersById: new Map(members.map(item => [String(item.userId), item])),
       }
 

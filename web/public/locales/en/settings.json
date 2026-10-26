@@ -442,10 +442,6 @@
       "filters": {
         "name": "Filters",
         "description": "Quick access to your pinned and most useful filters"
-      },
-      "projects": {
-        "name": "Projects",
-        "description": "Where the work is piling up, by project"
       }
     }
   },

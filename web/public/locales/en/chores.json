@@ -97,17 +97,12 @@
     "unableDeleteTask": "Unable to delete task",
     "failedReschedule": "Failed to reschedule",
     "unableChangeDueDate": "Unable to change the due date",
-    "taskMovedTitle": "Task Moved",
-    "taskMovedMessage": "Task moved to {{project}}.",
-    "failedMoveTask": "Failed to move task",
-    "unableMoveTaskToProject": "Unable to move task to project",
     "failedDelegate": "Failed to delegate",
     "unableChangeAssignee": "Unable to change the assignee",
     "availableToCompleteStarting": "Available to complete starting {{date}}",
     "delegateToSomeoneElse": "Delegate to someone else"
   },
   "toolbar": {
-    "defaultProject": "Default Project",
     "everyone": "Everyone",
     "mine": "Mine",
     "availableToMe": "Available to me",
@@ -200,11 +195,9 @@
     "skipToNext": "Skip to next due date",
     "history": "History",
     "clone": "Clone",
-    "moveToProject": "Move to project",
     "removeDueDate": "Remove due date",
     "unarchive": "Unarchive",
-    "noPriority": "None",
-    "defaultProject": "Default Project"
+    "noPriority": "None"
   },
   "actions": {
     "rescheduledTitle": "Task Rescheduled",
@@ -233,8 +226,6 @@
     "failDeleteTitle": "Failed to delete",
     "failArchiveTitle": "Failed to archive",
     "failSkipTitle": "Failed to skip",
-    "movedTitle": "Task Moved",
-    "failMoveTitle": "Failed to move task",
     "priorityUpdatedTitle": "Priority Updated",
     "priorityUpdatedMessage": "The task priority has been updated.",
     "failPriorityTitle": "Failed to update priority",
@@ -266,7 +257,6 @@
       "archiveMessage_other": "Archive {{count}} tasks?",
       "deleteMessage_one": "Delete {{count}} task?\n\nThis action cannot be undone.",
       "deleteMessage_other": "Delete {{count}} tasks?\n\nThis action cannot be undone.",
-      "movedTitle": "Tasks moved",
       "unplannedTitle": "Due date removed",
       "rescheduledTitle": "Tasks scheduled",
       "reassignedTitle": "Tasks reassigned",
@@ -288,7 +278,6 @@
     "unableArchive": "Unable to archive the task",
     "unableRestore": "Unable to restore the task",
     "unableSkip": "Unable to skip the task",
-    "unableMove": "Unable to move the task to the project",
     "undone": {
       "completed": "Task completion has been undone.",
       "approved": "Task approval has been undone.",
@@ -296,7 +285,6 @@
       "skipped": "Task skip has been undone."
     },
     "archivedMessage": "The task has been archived and hidden from the active list.",
-    "movedMessage": "Task moved to {{project}}.",
     "bulkNotDone_one": "{{count}} task could not be updated.",
     "bulkNotDone_other": "{{count}} tasks could not be updated.",
     "bulkDone": {
@@ -308,8 +296,6 @@
       "archived_other": "Archived {{count}} tasks.",
       "deleted_one": "Deleted {{count}} task.",
       "deleted_other": "Deleted {{count}} tasks.",
-      "moved_one": "Moved {{count}} task to {{project}}.",
-      "moved_other": "Moved {{count}} tasks to {{project}}.",
       "unplanned_one": "Unplanned {{count}} task.",
       "unplanned_other": "Unplanned {{count}} tasks.",
       "rescheduled_one": "Rescheduled {{count}} task.",
@@ -417,9 +403,6 @@
     "presetNextWeek": "Next week",
     "pickDate": "Pick date…",
     "noDueDate": "No due date",
-    "moveTitle": "Move selected tasks to a project",
-    "move": "Move",
-    "defaultProject": "Default Project",
     "moreTitle": "Set priority, assignee, or labels",
     "more": "More",
     "priority": "Priority",
@@ -462,8 +445,7 @@
     "taskCount_one": "{{count}} task",
     "taskCount_other": "{{count}} tasks",
     "overdueCount_one": "({{count}} overdue)",
-    "overdueCount_other": "({{count}} overdue)",
-    "smartFilter": "Smart filter"
+    "overdueCount_other": "({{count}} overdue)"
   },
   "multiSelect": {
     "showShortcuts": "Show keyboard shortcuts",
@@ -639,9 +621,6 @@
     "description": "Description",
     "priority": "Priority",
     "noPriority": "No Priority",
-    "project": "Project",
-    "projectDesc": "Which project does this task belong to?",
-    "defaultProject": "Default Project",
     "labels": "Labels",
     "addNewLabel": "Add New Label",
     "subTasks": "Sub Tasks",
@@ -695,7 +674,6 @@
     "descriptionLabel": "Description:",
     "subtasksLabel": "Subtasks:",
     "title": "Create new task",
-    "defaultProject": "Default Project",
     "anyone": "Anyone",
     "taskPlaceholder": "Type your task...",
     "descriptionChip": "Description",
@@ -850,7 +828,6 @@
     "limitedVisibility": "Limited visibility",
     "limitedVisibilityDisabled": "Assign someone to enable limited visibility",
     "limitedVisibilityDescription": "Only you and assignees can see this task",
-    "limitedVisibilityInherited": "Inherited from the project: only you and assignees can see this task",
     "assignStrategy": "Assign strategy",
     "assignStrategyDescription": "How to pick the next assignee each recurrence",
     "availableFrom": "Available from",
@@ -892,10 +869,7 @@
     "priority": "Priority",
     "dueDate": "Due Date",
     "labels": "Labels",
-    "projects": "Projects",
-    "defaultProject": "Default Project",
     "points": "Points",
-    "project": "Project",
     "filterFallback": "Filter",
     "notPrefix": "Not ",
     "customDueDate": "Custom",
@@ -915,12 +889,6 @@
     "clearSearch": "Clear search",
     "showEveryone": "Show everyone's tasks",
     "clearFilters": "Clear filters",
-    "projectTitle": "Nothing in {{name}} yet",
-    "projectDescription": "Tasks you add to this project show up here. Your other tasks are still where you left them.",
-    "addTaskHere": "Add a task here",
-    "seeOutsideProjects": "See tasks outside projects",
-    "noProjectTitle": "No tasks here yet",
-    "noProjectDescription": "Tasks that do not belong to a project live here. Add one, or switch projects to see what is in them.",
     "dayFreeDescription": "This day is free. Add a task if you want something to land here.",
     "addTask": "Add task",
     "assignee": {
@@ -1004,7 +972,6 @@
     "onCompletion": "On completion",
     "visibleToEveryoneInYourCircle": "Visible to everyone in your family.",
     "visibleToYouAndThePeopleEligible": "Visible to you and the people eligible for assignment.",
-    "inheritedFromTheProjectTasksInA": "Inherited from the project: tasks in a private project are always private",
     "taskLog": "Task log",
     "whoCreatedAndLastEditedThisTask": "Who created and last edited this task",
     "moreTaskActions": "More task actions",
@@ -1024,9 +991,6 @@
     "removePointsAction": "Remove points action",
     "removeApprovalAction": "Remove approval action",
     "addAction": "Add action",
-    "inheritedFromSharedProject": "Inherited from the project: only its members can see tasks in it",
-    "onlyProjectAudienceAssignable": "Only people who can see the project “{{project}}” can be assigned.",
-    "followsProjectName": "Follows the project “{{project}}”",
     "strategy": {
       "random": "Random user",
       "least_assigned": "Least often assigned",
@@ -1050,7 +1014,6 @@
     "errChooseEligible": "Choose at least one eligible user",
     "errChooseAssignee": "Choose who is assigned to this task",
     "copyOf": "Copy of {{name}}",
-    "anyoneInProject": "Anyone who can see this project",
     "anyoneInCircle": "Anyone in your family",
     "noEligibleUsers": "No eligible users selected",
     "editTask": "Edit task",
@@ -1172,9 +1135,6 @@
       "many": "{{n}}th",
       "other": "{{n}}th"
     }
-  },
-  "projectPicker": {
-    "label": "Project"
   },
   "taskRow": {
     "complete": "Mark “{{name}}” as done",
@@ -1308,7 +1268,7 @@
     },
     "more": {
       "title": "More options",
-      "hint": "Instructions, steps, reminders, project, visibility…",
+      "hint": "Instructions, steps, reminders, labels, visibility…",
       "instructions": "Instructions and files",
       "instructionsSet": "Instructions",
       "none": "None",
@@ -1323,7 +1283,6 @@
       "no": "No",
       "earlyHelp": "Can be ticked before the due date",
       "earlyHours": "hours before the due date",
-      "project": "Project and labels",
       "labelCount_one": "{{count}} label",
       "labelCount_other": "{{count}} labels",
       "visibility": "Visible to",

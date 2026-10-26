@@ -24,23 +24,9 @@ func NewEventBroadcaster(service *RealTimeService, config *config.Config) *Event
 	}
 }
 
-// broadcastChoreEvent enforces the same visibility boundary as the API. A
-// restricted project's audience (its owner, plus the selected members of a shared
-// project) are its sole recipients; standalone private chores go only to their
-// creator and assignees. Public chores remain circle-wide.
+// broadcastChoreEvent enforces the same visibility boundary as the API: private
+// chores go only to their creator and assignees, public chores remain circle-wide.
 func (b *EventBroadcaster) broadcastChoreEvent(chore *chModel.Chore, event *Event) {
-	// A caller that did not load the project cannot safely determine recipients.
-	// Fail closed rather than treating an unknown private project as a public one.
-	if chore.ProjectID != nil && chore.Project == nil {
-		return
-	}
-	if chore.Project != nil && chore.Project.IsPrivate {
-		// ViewerIDs only lists members once they are loaded; until then the owner
-		// alone receives the event.
-		viewers, _ := chore.Project.ViewerIDs()
-		b.service.BroadcastToUsers(chore.CircleID, viewers, event)
-		return
-	}
 	if chore.IsPrivate {
 		recipients := []int{chore.CreatedBy}
 		if chore.AssignedTo != nil {
@@ -68,21 +54,6 @@ func (b *EventBroadcaster) BroadcastChoreAccessRevoked(circleID, choreID int, ch
 		event.SyncVersion = version
 		b.service.BroadcastToUsers(circleID, []int{userID}, event)
 	}
-}
-
-// BroadcastProjectUpdated notifies users that a project changed. recipients nil
-// means the whole circle.
-func (b *EventBroadcaster) BroadcastProjectUpdated(circleID, projectID int, accessChanged bool, user *uModel.User, recipients []int) {
-	if !b.service.config.Enabled {
-		return
-	}
-	event := NewProjectUpdatedEvent(circleID, projectID, accessChanged, user)
-	event.ID = b.generateEventID()
-	if recipients == nil {
-		b.service.BroadcastToCircle(circleID, event)
-		return
-	}
-	b.service.BroadcastToUsers(circleID, recipients, event)
 }
 
 // BroadcastChoreCreated broadcasts a chore creation event

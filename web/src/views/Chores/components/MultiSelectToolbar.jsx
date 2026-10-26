@@ -7,7 +7,6 @@ import {
   Close,
   Delete,
   Done,
-  DriveFileMove,
   EditCalendar,
   Flag,
   Label as LabelIcon,
@@ -35,27 +34,11 @@ import { useTranslation } from 'react-i18next'
 
 import AppModal from '../../../components/common/AppModal'
 import KeyboardShortcutHint from '../../../components/common/KeyboardShortcutHint'
-import LABEL_COLORS, {
-  getTextColorFromBackgroundColor,
-} from '../../../utils/Colors'
+import { getTextColorFromBackgroundColor } from '../../../utils/Colors'
 import Priorities from '../../../utils/Priorities'
-import { getIconComponent } from '../../../utils/ProjectIcons'
 import DueDatePickerModal, {
   splitDueDate,
 } from '../../components/DueDatePickerModal'
-import { ProjectAccessIcon } from '../../Projects/ProjectVisibilityField'
-
-const renderProjectAvatar = (color, icon) => {
-  const bg = color || LABEL_COLORS[0].value
-  const IconComponent = getIconComponent(icon || 'FolderOpen')
-  return (
-    <Avatar size='sm' sx={{ width: 22, height: 22, backgroundColor: bg }}>
-      <IconComponent
-        sx={{ fontSize: 13, color: getTextColorFromBackgroundColor(bg) }}
-      />
-    </Avatar>
-  )
-}
 
 // `onSetDueDate` takes the same { dueDateOnly, dueTime, useCustomTime } shape
 // the picker emits, or null to unplan. The quick options move the date only and
@@ -133,7 +116,6 @@ const MultiSelectToolbar = ({
   onClear,
   onComplete,
   onDelete,
-  onMoveToProject,
   onSelectAll,
   onSetAssignee,
   onSetDueDate,
@@ -142,7 +124,6 @@ const MultiSelectToolbar = ({
   // Shape produced by useMultiSelect.getSelectionSummary — drives which value
   // each control shows as current, and which labels can be added vs removed.
   onToggleLabel,
-  projects = [],
   selectAllDisabled,
   selectedCount,
   selectionSummary,
@@ -152,12 +133,9 @@ const MultiSelectToolbar = ({
   const [moreOpen, setMoreOpen] = useState(false)
   const [dueDatePickerOpen, setDueDatePickerOpen] = useState(false)
   const [dueMenuAnchor, setDueMenuAnchor] = useState(null)
-  const [projectMenuAnchor, setProjectMenuAnchor] = useState(null)
   const dueMenuRef = useRef(null)
-  const projectMenuRef = useRef(null)
 
   const closeDueMenu = () => setDueMenuAnchor(null)
-  const closeProjectMenu = () => setProjectMenuAnchor(null)
 
   const summary = selectionSummary || {}
   const labelState = summary.labels || { common: [], partial: [] }
@@ -486,82 +464,6 @@ const MultiSelectToolbar = ({
             )}
           </Button>
 
-          {onMoveToProject && (
-            <>
-              <Button
-                size='sm'
-                variant='soft'
-                color='neutral'
-                ref={projectMenuRef}
-                onClick={() =>
-                  setProjectMenuAnchor(prev =>
-                    prev ? null : projectMenuRef.current,
-                  )
-                }
-                startDecorator={<DriveFileMove />}
-                disabled={selectedCount === 0}
-                sx={{
-                  '--Button-paddingInline': { xs: '0.75rem', sm: '1rem' },
-                }}
-                title={t('multiToolbar.moveTitle')}
-              >
-                {t('multiToolbar.move')}
-              </Button>
-              <Menu
-                size='md'
-                anchorEl={projectMenuAnchor}
-                open={Boolean(projectMenuAnchor)}
-                onClose={closeProjectMenu}
-                placement='bottom-end'
-              >
-                <MenuItem
-                  onClick={() => {
-                    closeProjectMenu()
-                    onMoveToProject({
-                      id: null,
-                      name: t('multiToolbar.defaultProject'),
-                    })
-                  }}
-                >
-                  <ListItemDecorator>
-                    {renderProjectAvatar(LABEL_COLORS[0].value, 'FolderOpen')}
-                  </ListItemDecorator>
-                  <ListItemContent>
-                    <Typography level='body-sm'>
-                      {t('multiToolbar.defaultProject')}
-                    </Typography>
-                  </ListItemContent>
-                </MenuItem>
-                {projects.map(project => (
-                  <MenuItem
-                    key={project.id}
-                    onClick={() => {
-                      closeProjectMenu()
-                      onMoveToProject(project)
-                    }}
-                  >
-                    <ListItemDecorator>
-                      {renderProjectAvatar(project.color, project.icon)}
-                    </ListItemDecorator>
-                    <ListItemContent>
-                      <Typography level='body-sm'>
-                        {project.name}
-                        <ProjectAccessIcon
-                          project={project}
-                          sx={{
-                            fontSize: 14,
-                            ml: 0.5,
-                            verticalAlign: 'text-bottom',
-                          }}
-                        />
-                      </Typography>
-                    </ListItemContent>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </>
-          )}
-
           <Button
             size='sm'
             variant='soft'
@@ -657,7 +559,7 @@ const MultiSelectToolbar = ({
         }
       >
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-          {/* Due date, project and the destructive actions are deliberately
+          {/* Due date and the destructive actions are deliberately
               absent — each has its own button in the bar, and two entry points
               would just make them ambiguous. */}
           {onSetPriority && (

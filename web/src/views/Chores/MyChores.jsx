@@ -41,7 +41,6 @@ import {
   ChoreFilters,
   ChoresGrouper,
   ChoreSorter,
-  filterByProject,
   isTaskFor,
 } from '../../utils/Chores'
 import { familyDay, fromPickedDay, pickedDay } from '../../utils/familyTime'
@@ -56,7 +55,6 @@ import LoadingComponent from '../components/Loading'
 import { OPEN_QUICK_ADD_EVENT } from '../components/navigationEvents'
 import { useLabels } from '../Labels/LabelQueries'
 import ConfirmationModal from '../Modals/Inputs/ConfirmationModal'
-import { useProjects } from '../Projects/ProjectQueries.js'
 import ChoreListView from './ChoreListView.jsx'
 import ChoreModals from './components/ChoreModals'
 import ChoreToolbar from './components/ChoreToolbarPrototype'
@@ -71,7 +69,6 @@ import { useChoreModals } from './hooks/useChoreModals'
 import { useCustomFilters } from './hooks/useCustomFilters'
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
 import { useMultiSelect } from './hooks/useMultiSelect'
-import { useProjectFilter } from './hooks/useProjectFilter'
 import Sidepanel from './Sidepanel'
 import { INSIGHT_FILTER_DEFS } from './SmartInsightsCard'
 
@@ -81,7 +78,6 @@ import { INSIGHT_FILTER_DEFS } from './SmartInsightsCard'
 // copy for each lives under `chores:empty.assignee.*` as a whole sentence,
 // since the fragment ("assigned to you") cannot be slotted mid-sentence in
 // every language.
-const EMPTY_PROJECTS = []
 
 const ASSIGNEE_FILTER_KEYS = [
   'assigned_to_me',
@@ -129,8 +125,6 @@ const MyChores = () => {
   const Navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
   const { data: userLabels, isLoading: userLabelsLoading } = useLabels()
-  const { data: projects = EMPTY_PROJECTS, isLoading: projectsLoading } =
-    useProjects()
   const {
     data: choresData,
     error: choresErrorDetails,
@@ -183,12 +177,7 @@ const MyChores = () => {
   const [selectedCalendarDate, setSelectedCalendarDate] = useState(new Date())
   const [confirmModelConfig, setConfirmModelConfig] = useState({})
 
-  const { projectsWithDefault, selectedProject, setSelectedProjectWithCache } =
-    useProjectFilter(projects, !projectsLoading)
-
   const {
-    nonProjectFilteredChores,
-    projectFilteredChores,
     searchFilteredChores,
     searchTerm,
     selectedChoreFilter,
@@ -196,7 +185,6 @@ const MyChores = () => {
     setSelectedChoreFilterWithCache,
   } = useChoreFilters({
     chores,
-    selectedProject,
     impersonatedUser,
     userProfile,
   })
@@ -225,25 +213,8 @@ const MyChores = () => {
     hasFilterApplied,
     tempFilter,
     tempFilterMeta,
-  } = useCustomFilters(
-    nonProjectFilteredChores,
-    membersData?.res,
-    userLabels,
-    projectsWithDefault,
-  )
+  } = useCustomFilters(searchFilteredChores, membersData?.res, userLabels)
 
-  const handleProjectSelect = useCallback(
-    project => {
-      setSelectedProjectWithCache(project)
-      clearActiveFilter()
-    },
-    [clearActiveFilter, setSelectedProjectWithCache],
-  )
-
-  const hasCustomProjects = projectsWithDefault.some(
-    project => project.id !== 'default',
-  )
-  const isDefaultProject = !selectedProject || selectedProject.id === 'default'
   const handleLabelSelect = useCallback(
     label => {
       clearActiveFilter()
@@ -261,30 +232,7 @@ const MyChores = () => {
 
   const choreViewTitle = tempFilter
     ? tempFilterMeta?.name || t('common:navigation.filters')
-    : !isDefaultProject
-      ? selectedProject.name
-      : hasCustomProjects
-        ? t('toolbar.defaultProject')
-        : t('common:navigation.today')
-  const projectSelector = useMemo(
-    () =>
-      hasCustomProjects && !tempFilter
-        ? {
-            items: projectsWithDefault,
-            onSelect: handleProjectSelect,
-            selectedId: isDefaultProject ? 'default' : selectedProject.id,
-            type: 'project',
-          }
-        : null,
-    [
-      handleProjectSelect,
-      hasCustomProjects,
-      isDefaultProject,
-      projectsWithDefault,
-      selectedProject?.id,
-      tempFilter,
-    ],
-  )
+    : t('common:navigation.today')
   const labelSelector = useMemo(() => {
     const conditions = tempFilter?.conditions || []
     const condition = conditions.length === 1 ? conditions[0] : null
@@ -302,7 +250,7 @@ const MyChores = () => {
       type: 'label',
     }
   }, [handleLabelSelect, tempFilter?.conditions, userLabels])
-  useNavBarTitle(choreViewTitle, labelSelector || projectSelector)
+  useNavBarTitle(choreViewTitle, labelSelector)
 
   const quickFilterDefs = useMemo(
     () => [
@@ -408,7 +356,7 @@ const MyChores = () => {
     filteredData: quickFilteredChores,
     hasActiveFilters: hasQuickFilters,
     setFilter: setQuickFilter,
-  } = useFilter(projectFilteredChores, quickFilterDefs)
+  } = useFilter(chores, quickFilterDefs)
 
   const processedChores = useMemo(() => {
     if (!choresData?.res) {
@@ -446,12 +394,6 @@ const MyChores = () => {
     } else if (hasQuickFilters) {
       // Quick filter active (Due date, Priority, Labels)
       choresToGroup = quickFilteredChores
-    } else if (!selectedProject || selectedProject.id === 'default') {
-      // No project selected or default project: only show tasks without a projectId
-      choresToGroup = chores.filter(chore => !chore.projectId)
-    } else {
-      // Specific project: use the existing filter function
-      choresToGroup = filterByProject(chores, selectedProject.id)
     }
 
     const sections = ChoresGrouper(
@@ -486,7 +428,6 @@ const MyChores = () => {
     selectedChoreFilter,
     choreSortBy,
     choreSortDirection,
-    selectedProject,
     impersonatedUser?.userId,
     userProfile?.id,
   ])
@@ -505,7 +446,6 @@ const MyChores = () => {
         setChores(processedChores)
 
         // Don't set choreSections here - let the dedicated effect handle it
-        // This prevents caching issues when switching between projects
       }
 
       processEffectAsync()
@@ -544,28 +484,6 @@ const MyChores = () => {
     // The setters above are intentionally applied only when URL search params change.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams])
-
-  // Read and apply project from URL parameters
-  useEffect(() => {
-    if (!projects.length) return
-
-    const projectIdFromUrl = searchParams.get('project')
-
-    if (projectIdFromUrl && projectIdFromUrl !== String(selectedProject?.id)) {
-      const project = projectsWithDefault.find(
-        p => String(p.id) === projectIdFromUrl,
-      )
-      if (project) {
-        setSelectedProjectWithCache(project)
-      }
-    }
-  }, [
-    searchParams,
-    projects,
-    projectsWithDefault,
-    selectedProject,
-    setSelectedProjectWithCache,
-  ])
 
   // The + of the navigation opens the quick add here.
   useEffect(() => {
@@ -683,8 +601,6 @@ const MyChores = () => {
     hasQuickFilters,
     membersData,
     applyTempFilter,
-    selectedProject,
-    projectFilteredChores,
     setQuickFilter,
     setViewMode,
     setSelectedCalendarDate,
@@ -738,7 +654,6 @@ const MyChores = () => {
     handleBulkDelete,
     handleBulkDueDate,
     handleBulkLabels,
-    handleBulkMoveToProject,
     handleBulkPriority,
     handleBulkSkip,
     handleChangeDueDate,
@@ -772,17 +687,13 @@ const MyChores = () => {
       return searchFilteredChores
     }
 
-    const baseChores = hasQuickFilters
-      ? quickFilteredChores
-      : projectFilteredChores
-
-    return baseChores
+    return hasQuickFilters ? quickFilteredChores : chores
   }, [
+    chores,
     tempFilter,
     customFilteredChores,
     hasQuickFilters,
     quickFilteredChores,
-    projectFilteredChores,
     searchFilteredChores,
     searchTerm,
   ])
@@ -885,7 +796,7 @@ const MyChores = () => {
       params.set(filterType, filterValue)
     }
 
-    // Always navigate with params (preserves project param)
+    // Always navigate with params
     Navigate(
       { pathname: '/chores', search: params.toString() },
       { replace: true },
@@ -969,7 +880,7 @@ const MyChores = () => {
   }, [getFilteredChores, selectedCalendarDate])
 
   // The assignee filter ("Mine", "Available to me", ...) is applied inside
-  // ChoresGrouper, not in projectFilteredChores, so it can hide every task
+  // ChoresGrouper, not in the task list itself, so it can hide every task
   // while the unfiltered list still looks full. It narrows like any other.
   const hasAssigneeNarrowing =
     ASSIGNEE_FILTER_KEYS.includes(selectedChoreFilter)
@@ -978,13 +889,9 @@ const MyChores = () => {
   )
 
   // "Narrowed" means the user actively cut the list down (search, quick
-  // filters, the assignee filter). Picking a project is not
-  // narrowing: an empty project is an empty place, not a filtered-away result.
+  // filters, the assignee filter).
   const isNarrowed = Boolean(
     searchTerm?.length > 0 || hasQuickFilters || hasAssigneeFilter,
-  )
-  const isCustomProjectSelected = Boolean(
-    selectedProject && selectedProject.id !== 'default',
   )
   // Worth its own wording: the assignee filter is the one narrowing that is
   // easy to forget you left on, so name it rather than saying "filters".
@@ -1060,8 +967,7 @@ const MyChores = () => {
     userProfile === null ||
     userLabelsLoading ||
     membersLoading ||
-    choresLoading ||
-    projectsLoading
+    choresLoading
   ) {
     return (
       <>
@@ -1084,7 +990,6 @@ const MyChores = () => {
         <ChoreToolbar
           members={membersData?.res || []}
           labels={userLabels || []}
-          projects={projectsWithDefault}
           tempFilter={tempFilter}
           tempFilterMeta={tempFilterMeta}
           applyTempFilter={applyTempFilter}
@@ -1093,9 +998,6 @@ const MyChores = () => {
             clearQuickFilters()
             clearActiveFilter()
             setSelectedChoreFilterWithCache('anyone')
-            setSelectedProjectWithCache(
-              projectsWithDefault.find(p => p.id === 'default') || null,
-            )
             updateFilterUrl(null, null)
           }}
           resultCount={
@@ -1104,12 +1006,8 @@ const MyChores = () => {
               : undefined
           }
           totalCount={
-            hasQuickFilters || hasFilterApplied
-              ? projectFilteredChores.length
-              : undefined
+            hasQuickFilters || hasFilterApplied ? chores.length : undefined
           }
-          selectedProject={selectedProject}
-          onProjectSelect={handleProjectSelect}
           selectedAssigneeFilter={selectedChoreFilter}
           onAssigneeFilterChange={filter => {
             setSelectedChoreFilterWithCache(filter)
@@ -1151,7 +1049,6 @@ const MyChores = () => {
           onSkip={handleBulkSkip}
           onArchive={handleBulkArchive}
           onDelete={handleBulkDelete}
-          onMoveToProject={handleBulkMoveToProject}
           onSetDueDate={handleBulkDueDate}
           onSetAssignee={handleBulkAssignee}
           onSetPriority={handleBulkPriority}
@@ -1159,7 +1056,6 @@ const MyChores = () => {
           selectionSummary={selectionSummary}
           members={membersData?.res || []}
           labels={userLabels || []}
-          projects={projects}
           showKeyboardShortcuts={showKeyboardShortcuts}
           selectAllDisabled={
             searchTerm?.length > 0 || hasQuickFilters
@@ -1169,9 +1065,8 @@ const MyChores = () => {
           }
         />
 
-        {/* Empty state. Three different situations, three different messages:
-            nothing created yet, nothing left after narrowing, or an empty
-            project. Only the middle one is about filters.
+        {/* Empty state. Two different situations, two different messages:
+            nothing created yet, or nothing left after narrowing.
             The trigger is what the list actually renders, not the pre-filter
             count, so a view emptied purely by the assignee filter still
             explains itself instead of showing a blank page. */}
@@ -1180,7 +1075,7 @@ const MyChores = () => {
           : visibleChoreCount === 0) &&
           // only if not in calendar view:
           viewMode !== 'calendar' &&
-          (chores.length === 0 ? (
+          (chores.length === 0 || !isNarrowed ? (
             <EmptyState
               variant='empty'
               fullHeight
@@ -1197,8 +1092,7 @@ const MyChores = () => {
                 onClick: () => Navigate('/chores/create'),
               }}
             />
-          ) : isNarrowed &&
-            (searchTerm?.length > 0 || projectFilteredChores.length > 0) ? (
+          ) : (
             <EmptyState
               variant='no-results'
               fullHeight
@@ -1219,38 +1113,6 @@ const MyChores = () => {
                       ? t('chores:empty.showEveryone')
                       : t('chores:empty.clearFilters'),
                 onClick: clearNarrowing,
-              }}
-            />
-          ) : isCustomProjectSelected ? (
-            <EmptyState
-              variant='empty'
-              fullHeight
-              icon={<EditCalendar />}
-              title={t('chores:empty.projectTitle', {
-                name: selectedProject.name,
-              })}
-              description={t('chores:empty.projectDescription')}
-              primaryAction={{
-                label: t('chores:empty.addTaskHere'),
-                startDecorator: <Add />,
-                onClick: () => setAddTaskModalOpen(true),
-              }}
-              secondaryAction={{
-                label: t('chores:empty.seeOutsideProjects'),
-                onClick: () => setSelectedProjectWithCache(null),
-              }}
-            />
-          ) : (
-            <EmptyState
-              variant='empty'
-              fullHeight
-              icon={<EditCalendar />}
-              title={t('chores:empty.noProjectTitle')}
-              description={t('chores:empty.noProjectDescription')}
-              primaryAction={{
-                label: t('chores:empty.createTask'),
-                startDecorator: <Add />,
-                onClick: () => setAddTaskModalOpen(true),
               }}
             />
           ))}

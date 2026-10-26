@@ -3,7 +3,6 @@ import {
   ArchiveOutlined,
   ArrowBack,
   CheckCircleOutline,
-  FolderOutlined,
   HistoryRounded,
   InboxOutlined,
   LabelOutlined,
@@ -34,20 +33,11 @@ import { useNavigate } from 'react-router-dom'
 import AppModal from '../components/common/AppModal'
 
 const RECENTS_KEY = 'hopla.globalSearch.recents'
-const GROUPS = [
-  'tasks',
-  'history',
-  'projects',
-  'labels',
-  'people',
-  'settings',
-  'actions',
-]
+const GROUPS = ['tasks', 'history', 'labels', 'people', 'settings', 'actions']
 
 const ICONS = {
   tasks: <CheckCircleOutline />,
   history: <HistoryRounded />,
-  projects: <FolderOutlined />,
   labels: <LabelOutlined />,
   people: <PersonOutline />,
   settings: <SettingsOutlined />,
@@ -73,14 +63,6 @@ const buildQuickActions = t => [
     keywords: 'new label tag add create',
     route: '/labels?create=1',
   },
-  {
-    id: 'action:create-project',
-    provider: 'actions',
-    title: t('search.actions.createProject'),
-    subtitle: t('search.actions.quickAction'),
-    keywords: 'new project folder add create',
-    route: '/projects?create=1',
-  },
   // Every destination in the nav drawer is reachable from here, so the palette
   // is a complete way to move around the app without opening the drawer.
   ...[
@@ -104,13 +86,6 @@ const buildQuickActions = t => [
       keywords: 'labels tags open',
       route: '/labels',
       icon: <LabelOutlined />,
-    },
-    {
-      id: 'action:projects',
-      title: t('search.actions.viewProjects'),
-      keywords: 'projects folders groups open',
-      route: '/projects',
-      icon: <FolderOutlined />,
     },
     {
       id: 'action:activities',

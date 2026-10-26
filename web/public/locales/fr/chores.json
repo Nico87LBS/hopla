@@ -97,17 +97,12 @@
     "unableDeleteTask": "Impossible de supprimer la tâche",
     "failedReschedule": "Échec de la replanification",
     "unableChangeDueDate": "Impossible de modifier la date d'échéance",
-    "taskMovedTitle": "Tâche déplacée",
-    "taskMovedMessage": "Tâche déplacée vers {{project}}.",
-    "failedMoveTask": "Impossible de déplacer la tâche",
-    "unableMoveTaskToProject": "Impossible de déplacer la tâche vers le projet",
     "failedDelegate": "Impossible de déléguer",
     "unableChangeAssignee": "Impossible de changer la personne assignée",
     "availableToCompleteStarting": "Peut être terminée à partir du {{date}}",
     "delegateToSomeoneElse": "Déléguer à quelqu'un d'autre"
   },
   "toolbar": {
-    "defaultProject": "Projet par défaut",
     "everyone": "Tout le monde",
     "mine": "À moi",
     "availableToMe": "Disponible pour moi",
@@ -200,11 +195,9 @@
     "skipToNext": "Passer à la date d'échéance suivante",
     "history": "Historique",
     "clone": "Cloner",
-    "moveToProject": "Déplacer vers un projet",
     "removeDueDate": "Supprimer la date d'échéance",
     "unarchive": "Désarchiver",
-    "noPriority": "Aucune",
-    "defaultProject": "Projet par défaut"
+    "noPriority": "Aucune"
   },
   "actions": {
     "rescheduledTitle": "Tâche replanifiée",
@@ -233,8 +226,6 @@
     "failDeleteTitle": "Échec de la suppression",
     "failArchiveTitle": "Échec de l'archivage",
     "failSkipTitle": "Impossible de passer",
-    "movedTitle": "Tâche déplacée",
-    "failMoveTitle": "Impossible de déplacer la tâche",
     "priorityUpdatedTitle": "Priorité modifiée",
     "priorityUpdatedMessage": "La priorité de la tâche a été modifiée.",
     "failPriorityTitle": "Échec de la modification de la priorité",
@@ -266,7 +257,6 @@
       "archiveMessage_other": "Archiver {{count}} tâches ?",
       "deleteMessage_one": "Supprimer {{count}} tâche ?\n\nCette action est définitive.",
       "deleteMessage_other": "Supprimer {{count}} tâches ?\n\nCette action est définitive.",
-      "movedTitle": "Tâches déplacées",
       "unplannedTitle": "Échéance retirée",
       "rescheduledTitle": "Tâches planifiées",
       "reassignedTitle": "Tâches réattribuées",
@@ -288,7 +278,6 @@
     "unableArchive": "Impossible d'archiver la tâche",
     "unableRestore": "Impossible de restaurer la tâche",
     "unableSkip": "Impossible de passer la tâche",
-    "unableMove": "Impossible de déplacer la tâche dans le projet",
     "undone": {
       "completed": "La tâche n'est plus marquée comme faite.",
       "approved": "La validation a été annulée.",
@@ -296,7 +285,6 @@
       "skipped": "La tâche n'est plus passée."
     },
     "archivedMessage": "La tâche est archivée et n'apparaît plus dans la liste.",
-    "movedMessage": "Tâche déplacée dans {{project}}.",
     "bulkNotDone_one": "{{count}} tâche n'a pas pu être modifiée.",
     "bulkNotDone_other": "{{count}} tâches n'ont pas pu être modifiées.",
     "bulkDone": {
@@ -308,8 +296,6 @@
       "archived_other": "{{count}} tâches archivées.",
       "deleted_one": "{{count}} tâche supprimée.",
       "deleted_other": "{{count}} tâches supprimées.",
-      "moved_one": "{{count}} tâche déplacée dans {{project}}.",
-      "moved_other": "{{count}} tâches déplacées dans {{project}}.",
       "unplanned_one": "{{count}} tâche sans échéance.",
       "unplanned_other": "{{count}} tâches sans échéance.",
       "rescheduled_one": "{{count}} tâche replanifiée.",
@@ -417,9 +403,6 @@
     "presetNextWeek": "Semaine prochaine",
     "pickDate": "Choisir une date...",
     "noDueDate": "Sans échéance",
-    "moveTitle": "Déplacer les tâches sélectionnées vers un projet",
-    "move": "Déplacer",
-    "defaultProject": "Projet par défaut",
     "moreTitle": "Définir la priorité, la personne assignée ou les étiquettes",
     "more": "Plus",
     "priority": "Priorité",
@@ -462,8 +445,7 @@
     "taskCount_one": "{{count}} tâche",
     "taskCount_other": "{{count}} tâches",
     "overdueCount_one": "({{count}} en retard)",
-    "overdueCount_other": "({{count}} en retard)",
-    "smartFilter": "Filtre intelligent"
+    "overdueCount_other": "({{count}} en retard)"
   },
   "multiSelect": {
     "showShortcuts": "Afficher les raccourcis clavier",
@@ -639,9 +621,6 @@
     "description": "Description",
     "priority": "Priorité",
     "noPriority": "Aucune priorité",
-    "project": "Projet",
-    "projectDesc": "À quel projet cette tâche appartient-elle ?",
-    "defaultProject": "Projet par défaut",
     "labels": "Étiquettes",
     "addNewLabel": "Ajouter une nouvelle étiquette",
     "subTasks": "Sous-tâches",
@@ -695,7 +674,6 @@
     "descriptionLabel": "Description :",
     "subtasksLabel": "Sous-tâches :",
     "title": "Créer une nouvelle tâche",
-    "defaultProject": "Projet par défaut",
     "anyone": "Tout le monde",
     "taskPlaceholder": "Saisis ta tâche...",
     "descriptionChip": "Description",
@@ -850,7 +828,6 @@
     "limitedVisibility": "Visibilité limitée",
     "limitedVisibilityDisabled": "Assigne quelqu'un pour activer la visibilité limitée",
     "limitedVisibilityDescription": "Seules les personnes assignées et toi pouvez voir cette tâche",
-    "limitedVisibilityInherited": "Hérité du projet : seuls toi et les personnes assignées voient cette tâche",
     "assignStrategy": "Stratégie d'assignation",
     "assignStrategyDescription": "Comment choisir la prochaine personne assignée à chaque récurrence",
     "availableFrom": "Disponible à partir de",
@@ -892,10 +869,7 @@
     "priority": "Priorité",
     "dueDate": "Date d'échéance",
     "labels": "Étiquettes",
-    "projects": "Projets",
-    "defaultProject": "Projet par défaut",
     "points": "Points",
-    "project": "Projet",
     "filterFallback": "Filtre",
     "notPrefix": "Non ",
     "customDueDate": "Personnalisé",
@@ -915,12 +889,6 @@
     "clearSearch": "Effacer la recherche",
     "showEveryone": "Afficher les tâches de tout le monde",
     "clearFilters": "Effacer les filtres",
-    "projectTitle": "Rien dans {{name}} pour l'instant",
-    "projectDescription": "Les tâches que tu ajoutes à ce projet apparaissent ici. Tes autres tâches sont toujours là où tu les as laissées.",
-    "addTaskHere": "Ajouter une tâche ici",
-    "seeOutsideProjects": "Voir les tâches en dehors des projets",
-    "noProjectTitle": "Pas encore de tâches ici",
-    "noProjectDescription": "Les tâches qui n'appartiennent à aucun projet se trouvent ici. Ajoutes-en une, ou change de projet pour voir son contenu.",
     "dayFreeDescription": "Cette journée est libre. Ajoute une tâche si tu veux y prévoir quelque chose.",
     "addTask": "Ajouter une tâche",
     "assignee": {
@@ -1004,7 +972,6 @@
     "onCompletion": "Une fois faite",
     "visibleToEveryoneInYourCircle": "Visible par toute la famille.",
     "visibleToYouAndThePeopleEligible": "Visible par toi et les personnes qui peuvent la recevoir.",
-    "inheritedFromTheProjectTasksInA": "Hérité du projet : les tâches d'un projet privé sont toujours privées",
     "taskLog": "Journal de la tâche",
     "whoCreatedAndLastEditedThisTask": "Qui a créé et modifié en dernier cette tâche",
     "moreTaskActions": "Autres actions",
@@ -1024,9 +991,6 @@
     "removePointsAction": "Retirer l'action de points",
     "removeApprovalAction": "Retirer l'action de validation",
     "addAction": "Ajouter une action",
-    "inheritedFromSharedProject": "Hérité du projet : seuls ses membres voient ses tâches",
-    "onlyProjectAudienceAssignable": "Seules les personnes qui voient le projet « {{project}} » peuvent recevoir la tâche.",
-    "followsProjectName": "Suit le projet « {{project}} »",
     "strategy": {
       "random": "Au hasard",
       "least_assigned": "Le moins souvent assigné",
@@ -1050,7 +1014,6 @@
     "errChooseEligible": "Choisis au moins une personne",
     "errChooseAssignee": "Choisis à qui donner cette tâche",
     "copyOf": "Copie de {{name}}",
-    "anyoneInProject": "Toute personne qui voit ce projet",
     "anyoneInCircle": "Toute la famille",
     "noEligibleUsers": "Personne de choisi",
     "editTask": "Modifier la tâche",
@@ -1172,9 +1135,6 @@
       "many": "{{n}}",
       "other": "{{n}}"
     }
-  },
-  "projectPicker": {
-    "label": "Projet"
   },
   "taskRow": {
     "complete": "Marquer « {{name}} » comme faite",
@@ -1308,7 +1268,7 @@
     },
     "more": {
       "title": "Plus d'options",
-      "hint": "Consignes, étapes, rappels, projet, visibilité…",
+      "hint": "Consignes, étapes, rappels, étiquettes, visibilité…",
       "instructions": "Consignes et fichiers",
       "instructionsSet": "Consignes",
       "none": "Aucune",
@@ -1323,7 +1283,6 @@
       "no": "Non",
       "earlyHelp": "Peut être cochée avant l'échéance",
       "earlyHours": "heures avant l'échéance",
-      "project": "Projet et étiquettes",
       "labelCount_one": "{{count}} étiquette",
       "labelCount_other": "{{count}} étiquettes",
       "visibility": "Visible par",
