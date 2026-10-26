@@ -23,8 +23,8 @@ func TestWeekSplitsTasksGamesAndBonuses(t *testing.T) {
 	}
 	bonus(ptModel.PointsHistoryActionBonus, 5)
 	bonus(ptModel.PointsHistoryActionPenalty, 2)
-	// A game writes its points as a bonus too.
-	bonus(ptModel.PointsHistoryActionBonus, 3)
+	// A game writes its points as a game row.
+	bonus(ptModel.PointsHistoryActionGame, 3)
 	require.NoError(t, db.Create(&learn.Session{CircleID: 1, ClientID: "a", UserID: 2, ModuleKey: "maths",
 		Day: "2026-10-21", Correct: 8, Total: 10, Stars: 2, Points: 3, PlayedAt: wednesday}).Error)
 	require.NoError(t, db.Create(&learn.Session{CircleID: 1, ClientID: "b", UserID: 2, ModuleKey: "maths",

@@ -114,7 +114,7 @@ func TestWeeklyQuestsAreDrawnOnceAndPaid(t *testing.T) {
 	require.Equal(t, 6+7, earned(t, db, 2), "a quest pays once")
 
 	var bonus ptModel.PointsHistory
-	require.NoError(t, db.Where("action = ?", ptModel.PointsHistoryActionBonus).First(&bonus).Error)
+	require.NoError(t, db.Where("action = ?", ptModel.PointsHistoryActionGame).First(&bonus).Error)
 	require.Equal(t, "Quête : Mettre la table 2 fois", *bonus.Reason)
 }
 

@@ -88,10 +88,10 @@ const buildQuickActions = t => [
       icon: <LabelOutlined />,
     },
     {
-      id: 'action:activities',
-      title: t('search.actions.viewActivities'),
-      keywords: 'activities history timeline log open',
-      route: '/activities',
+      id: 'action:journal',
+      title: t('search.actions.viewJournal'),
+      keywords: 'journal activities history timeline log open',
+      route: '/family?tab=journal',
       icon: <HistoryRounded />,
     },
     {

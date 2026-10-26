@@ -49,6 +49,9 @@ const (
 	// PointsHistoryActionReset is a parent setting a member back to zero:
 	// balance, points earned and so rank. Points is the balance it took away.
 	PointsHistoryActionReset
+	// PointsHistoryActionGame is points the app itself awards: a game of
+	// Apprendre, a streak, a quest or a challenge. They count as earned.
+	PointsHistoryActionGame
 )
 
 // PointsPreset is a ready-made bonus or penalty, such as "+5 Helped without

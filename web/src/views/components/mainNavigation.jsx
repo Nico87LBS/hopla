@@ -10,13 +10,7 @@ import { useRedemptions } from '../Rewards/RewardQueries'
 
 // The four places of the app. Everything that is set up rather than looked at
 // lives under Gérer, so these paths light up the Gérer entry too.
-const MANAGE_PATHS = [
-  '/manage',
-  '/settings',
-  '/labels',
-  '/archived',
-  '/activities',
-]
+const MANAGE_PATHS = ['/manage', '/settings', '/labels', '/archived']
 
 const startsWithPath = (pathname, path) =>
   pathname === path || pathname.startsWith(`${path}/`)

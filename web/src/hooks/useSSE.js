@@ -104,7 +104,7 @@ export const useSSE = () => {
           case 'chore.completed':
           case 'chore.status':
           case 'chore.skipped': {
-            queryClient.invalidateQueries({ queryKey: ['pointsHistory'] })
+            queryClient.invalidateQueries({ queryKey: ['journal'] })
             queryClient.invalidateQueries({ queryKey: ['games', 'today'] })
             queryClient.invalidateQueries({ queryKey: ['games', 'week'] })
             queryClient.invalidateQueries({ queryKey: ['slots'] })
@@ -205,7 +205,7 @@ export const useSSE = () => {
             queryClient.invalidateQueries({ queryKey: ['rewards'] })
             queryClient.invalidateQueries({ queryKey: ['redemptions'] })
             queryClient.invalidateQueries({ queryKey: ['circleMembers'] })
-            queryClient.invalidateQueries({ queryKey: ['pointsHistory'] })
+            queryClient.invalidateQueries({ queryKey: ['journal'] })
             queryClient.invalidateQueries({ queryKey: ['games', 'week'] })
             break
 
@@ -216,7 +216,7 @@ export const useSSE = () => {
             queryClient.invalidateQueries({ queryKey: ['allCircleMembers'] })
             queryClient.invalidateQueries({ queryKey: ['childUsers'] })
             queryClient.invalidateQueries({ queryKey: ['userCircle'] })
-            queryClient.invalidateQueries({ queryKey: ['pointsHistory'] })
+            queryClient.invalidateQueries({ queryKey: ['journal'] })
             queryClient.invalidateQueries({ queryKey: ['pointsPresets'] })
             queryClient.invalidateQueries({ queryKey: ['games'] })
             queryClient.invalidateQueries({ queryKey: ['flashes'] })

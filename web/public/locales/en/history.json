@@ -18,8 +18,7 @@
     "scheduled": "Scheduled"
   },
   "badge": {
-    "onTime": "On Time",
-    "onTimeLabel": "On time"
+    "onTime": "On Time"
   },
   "card": {
     "wasDue": "Was due {{date}}",
@@ -58,55 +57,16 @@
     "dueDate": "Due date"
   },
   "charts": {
-    "noData": "No data available",
-    "noLabels": "No Labels",
-    "unassigned": "Unassigned",
-    "unknownTask": "Unknown Task",
-    "late": "Late",
     "status": {
-      "title": "Status",
-      "description": "Completed tasks status"
-    },
-    "due": {
-      "title": "Due Date",
-      "description": "Current tasks due date"
-    },
-    "priority": {
-      "title": "Priority",
-      "description": "Tasks by priority"
-    },
-    "labels": {
-      "title": "Labels",
-      "description": "Tasks by labels"
-    },
-    "labelsDuration": {
-      "title": "Labels (time)",
-      "description": "Time spent by labels (hours)"
-    },
-    "tasksTime": {
-      "title": "Tasks (time)",
-      "description": "Time spent by individual tasks (hours)"
-    },
-    "assigneeBreakdown": {
-      "title": "by Assignee",
-      "description": "Tasks grouped by assignee"
+      "title": "Status"
     }
   },
   "filter": {
     "status": "Status",
     "pending": "Pending",
-    "labels": "Labels",
     "hasNotes": "Has Notes",
-    "hasPoints": "Has Points",
-    "timePeriod": "Time Period",
-    "user": "User",
     "completedBy": "Completed By",
     "completedAt": "Completed At"
-  },
-  "period": {
-    "days_one": "{{count}} Day",
-    "days_other": "{{count}} Days",
-    "allTime": "All Time"
   },
   "search": {
     "placeholder": "Search history...",
@@ -118,23 +78,6 @@
     "performer": "Completed by",
     "status": "Status",
     "points": "Points"
-  },
-  "activities": {
-    "title": "Activities",
-    "subtitle": "See what's been completed, skipped, or missed",
-    "emptyTitle": "No activity in this range",
-    "emptyDescriptionEveryone": "Nothing was completed by anyone in your family {{period}}. Try a wider time range or a different member.",
-    "emptyDescriptionMember": "Nothing was completed by {{name}} {{period}}. Try a wider time range or a different member.",
-    "periodSoFar": "so far",
-    "periodLastDays": "in the last {{count}} days",
-    "unknownMember": "this member",
-    "searchPlaceholder": "Search activities...",
-    "sort": {
-      "date": "Date",
-      "name": "Task name",
-      "status": "Status",
-      "points": "Points"
-    }
   },
   "title": {
     "summary": "Task Summary",

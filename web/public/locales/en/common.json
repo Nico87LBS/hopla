@@ -53,7 +53,6 @@
     "archived": "Archived",
     "labels": "Labels",
     "filters": "Filters",
-    "activities": "Activities",
     "points": "Points",
     "rewards": "Rewards",
     "settings": "Settings",
@@ -94,7 +93,7 @@
       "viewAllTasks": "View all tasks",
       "viewArchivedTasks": "View archived tasks",
       "viewLabels": "View labels",
-      "viewActivities": "View activities",
+      "viewJournal": "View the journal",
       "viewPoints": "View points",
       "openSettings": "Open settings",
       "filterTasks": "Show tasks matching “{{query}}”",
@@ -545,10 +544,6 @@
       "tasks": {
         "title": "Tasks",
         "description": "Labels and archive"
-      },
-      "activities": {
-        "title": "Activities",
-        "description": "Everything done, day by day"
       },
       "rewards": {
         "title": "Rewards",

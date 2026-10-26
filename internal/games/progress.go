@@ -363,13 +363,13 @@ func challengeView(db *gorm.DB, challenge Challenge, members []int, now time.Tim
 	return view, nil
 }
 
-// giveBonus credits points a game awards, as a bonus in the ledger. Game
+// giveBonus credits points a game awards, as a game row in the ledger. Game
 // bonuses are never multiplied.
 func giveBonus(tx *gorm.DB, circleID, userID, points int, reason string) (*ptModel.PointsHistory, error) {
 	if points <= 0 {
 		return nil, nil
 	}
-	entry := ptModel.PointsHistory{Action: ptModel.PointsHistoryActionBonus, Points: points, UserID: userID,
+	entry := ptModel.PointsHistory{Action: ptModel.PointsHistoryActionGame, Points: points, UserID: userID,
 		CircleID: circleID, CreatedBy: userID, Reason: &reason, CreatedAt: time.Now().UTC()}
 	if err := tx.Model(&cModel.UserCircle{}).Where("user_id = ? AND circle_id = ?", userID, circleID).
 		Update("points", gorm.Expr("points + ?", points)).Error; err != nil {

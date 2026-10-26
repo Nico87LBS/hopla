@@ -46,7 +46,7 @@ const ResetCard = ({ members }) => {
       showNotification({ type: 'error', message: t('reset.failed') })
       return
     }
-    queryClient.invalidateQueries({ queryKey: ['pointsHistory'] })
+    queryClient.invalidateQueries({ queryKey: ['journal'] })
     queryClient.invalidateQueries({ queryKey: ['allCircleMembers'] })
     queryClient.invalidateQueries({ queryKey: ['circleMembers'] })
     queryClient.invalidateQueries({ queryKey: ['games'] })

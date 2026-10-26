@@ -42,6 +42,7 @@ var actionNames = map[pModel.PointsHistoryAction]string{
 	pModel.PointsHistoryActionBonus:   "bonus",
 	pModel.PointsHistoryActionPenalty: "penalty",
 	pModel.PointsHistoryActionReset:   "reset",
+	pModel.PointsHistoryActionGame:    "game",
 }
 
 // Entry is one ledger row as clients see it. Delta is the signed change to
@@ -57,6 +58,9 @@ type Entry struct {
 	RewardID  *int      `json:"rewardId,omitempty"`
 	CreatedAt time.Time `json:"createdAt"`
 	CreatedBy int       `json:"createdBy"`
+	// Source is "task" for a task done that earned nothing, which has no
+	// ledger row: its ID is the task history's.
+	Source string `json:"source,omitempty"`
 }
 
 func toEntry(h pModel.PointsHistory) Entry {
@@ -66,6 +70,61 @@ func toEntry(h pModel.PointsHistory) Entry {
 	}
 	return Entry{ID: h.ID, UserID: h.UserID, Action: actionNames[h.Action], Points: points, Delta: h.Delta(),
 		Reason: h.Reason, ChoreID: h.ChoreID, RewardID: h.RewardID, CreatedAt: h.CreatedAt, CreatedBy: h.CreatedBy}
+}
+
+// getJournal is the family journal: every change to the points and the tasks
+// done that earned none, newest first, one page at a time.
+func (h *Handler) getJournal(c *gin.Context) {
+	currentUser, ok := auth.CurrentUser(c)
+	if !ok {
+		c.JSON(401, gin.H{"error": "Authentication failed"})
+		return
+	}
+	userID, ok := optionalInt(c, "userId")
+	if !ok {
+		return
+	}
+	limit, ok := optionalInt(c, "limit")
+	if !ok {
+		return
+	}
+	filter := pRepo.JournalFilter{UserID: userID, Kind: pRepo.JournalKind(c.Query("kind"))}
+	switch filter.Kind {
+	case pRepo.JournalAll, pRepo.JournalTasks, pRepo.JournalGames, pRepo.JournalBonus, pRepo.JournalReward:
+	default:
+		c.JSON(400, gin.H{"error": "Invalid kind"})
+		return
+	}
+	if raw := c.Query("before"); raw != "" {
+		before, err := time.Parse(time.RFC3339Nano, raw)
+		if err != nil {
+			c.JSON(400, gin.H{"error": "Invalid before"})
+			return
+		}
+		filter.Before = &before
+	}
+	if limit != nil {
+		filter.Limit = *limit
+	}
+	rows, more, err := h.pRepo.Journal(c, currentUser.CircleID, currentUser.ID, filter)
+	if err != nil {
+		logging.FromContext(c).Error("Failed to get the journal", "error", err)
+		c.JSON(500, gin.H{"error": "Error getting the journal"})
+		return
+	}
+	entries := make([]Entry, 0, len(rows))
+	for _, row := range rows {
+		entry := toEntry(row.PointsHistory)
+		if row.ChoreName != nil {
+			entry.Reason, entry.Source = row.ChoreName, "task"
+		}
+		entries = append(entries, entry)
+	}
+	var next *time.Time
+	if more && len(rows) > 0 {
+		next = &rows[len(rows)-1].CreatedAt
+	}
+	c.JSON(200, gin.H{"res": entries, "next": next})
 }
 
 func (h *Handler) isAdminOrManager(c *gin.Context, userID, circleID int) (bool, error) {
@@ -371,6 +430,7 @@ func Routes(r *gin.Engine, h *Handler, auth *jwt.GinJWTMiddleware) {
 	routes.Use(auth.MiddlewareFunc())
 	{
 		routes.GET("/history", h.getHistory)
+		routes.GET("/journal", h.getJournal)
 		routes.POST("/adjust", h.adjust)
 		routes.POST("/reset", h.reset)
 		routes.GET("/presets", h.getPresets)
@@ -391,6 +451,7 @@ func APIs(cfg *config.Config, h *Handler, r *gin.Engine, limiter *limiter.Limite
 	)
 	{
 		routes.GET("/history", h.getHistory)
+		routes.GET("/journal", h.getJournal)
 		routes.POST("/adjust", h.adjust)
 		routes.GET("/presets", h.getPresets)
 	}

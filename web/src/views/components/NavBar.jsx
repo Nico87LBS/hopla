@@ -37,7 +37,6 @@ import SyncStatusIndicator from './SyncStatusIndicator'
 const NAV_WIDTH = 248
 const version = import.meta.env.VITE_APP_VERSION
 const NAVBAR_TITLE_KEYS = {
-  '/activities': 'navigation.activities',
   '/archived': 'manage.items.tasks.title',
   '/chores': 'navigation.today',
   '/family': 'navigation.family',

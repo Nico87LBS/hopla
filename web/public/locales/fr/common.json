@@ -53,7 +53,6 @@
     "archived": "Archivées",
     "labels": "Étiquettes",
     "filters": "Filtres",
-    "activities": "Activités",
     "points": "Points",
     "rewards": "Récompenses",
     "settings": "Paramètres",
@@ -94,7 +93,7 @@
       "viewAllTasks": "Voir toutes les tâches",
       "viewArchivedTasks": "Voir les tâches archivées",
       "viewLabels": "Voir les étiquettes",
-      "viewActivities": "Voir les activités",
+      "viewJournal": "Voir le journal",
       "viewPoints": "Voir les points",
       "openSettings": "Ouvrir les paramètres",
       "filterTasks": "Afficher les tâches correspondant à « {{query}} »",
@@ -545,10 +544,6 @@
       "tasks": {
         "title": "Tâches",
         "description": "Étiquettes et archives"
-      },
-      "activities": {
-        "title": "Activités",
-        "description": "Tout ce qui a été fait, jour par jour"
       },
       "rewards": {
         "title": "Récompenses",

@@ -37,20 +37,30 @@
     "empty": "No presets yet.",
     "failed": "The preset could not be saved."
   },
-  "history": {
-    "title": "Points history",
+  "journal": {
+    "title": "Journal",
     "everyone": "Everyone",
-    "empty": "No points changes yet.",
-    "unknown": "Unknown member",
-    "by": "by {{name}}",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "empty": "Nothing yet.",
     "more": "Show more",
+    "by": "by {{name}}",
+    "onBalance": "from the balance",
+    "kinds": {
+      "all": "All",
+      "task": "Tasks",
+      "game": "Games",
+      "bonus": "Bonus and penalties",
+      "reward": "Rewards"
+    },
     "actions": {
       "task": "Task",
       "undo": "Task undone",
-      "redeem": "Points spent",
+      "redeem": "Reward",
       "bonus": "Bonus",
       "penalty": "Penalty",
-      "reset": "Reset"
+      "reset": "Reset",
+      "game": "Game"
     }
   },
   "today": {
@@ -176,7 +186,7 @@
     "subtitle": "Sets a member's points, or everyone's, back to zero, and so to the first rank. For example once a year, or after testing.",
     "everyone": "Everyone",
     "clearHistory": "Also erase the points history",
-    "help": "Unchecked, the points history is kept and a \"Reset\" row is added. Streaks start over from zero. \"Also put the tasks done back to do\" erases the task history (done today, activities) and puts each task done back to do, with the due date it had before; archived one-time tasks come back. Quests done and challenges won stay counted so they do not pay twice. \"Also clear the games\" erases games played, their stats and learning progress; game settings stay.",
+    "help": "Unchecked, the points history is kept and a \"Reset\" row is added. Streaks start over from zero. \"Also put the tasks done back to do\" erases the task history (done today, tasks in the journal) and puts each task done back to do, with the due date it had before; archived one-time tasks come back. Quests done and challenges won stay counted so they do not pay twice. \"Also clear the games\" erases games played, their stats and learning progress; game settings stay.",
     "button": "Reset",
     "confirmTitle": "Reset?",
     "confirmKeep": "{{who}}: points, rank and streak back to zero. The history is kept.",

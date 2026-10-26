@@ -21,25 +21,10 @@
     "titlePoints": "Classement des points",
     "subtitlePoints": "Qui a gagné le plus de points sur la période.",
     "titleTasks": "Classement des tâches",
-    "subtitleTasks": "Qui a terminé le plus de tâches sur la période.",
-    "modePoints": "Points",
-    "modeTasks": "Tâches",
-    "you": "Toi",
-    "tasksAndAvg": "{{tasks}} tâches • {{avg}} en moyenne par tâche",
-    "available": "Disponibles : {{count}}",
-    "points_one": "{{count}} point",
-    "points_other": "{{count}} points"
-  },
-  "tabs": {
-    "short7d": "7 j",
-    "short6m": "6 mois",
-    "shortAll": "Tout",
-    "allTime": "Toute la période",
-    "short30d": "30 j"
+    "subtitleTasks": "Qui a terminé le plus de tâches sur la période."
   },
   "filter": {
-    "title": "Filtrer les points",
-    "timePeriod": "Période :"
+    "title": "Filtrer les points"
   },
   "cards": {
     "available": {
@@ -55,22 +40,11 @@
       "subtext": "Gagnés sur toute la période"
     },
     "period": {
-      "title": "Points de la période",
-      "allTime": "Toute la période",
-      "last6Months": "6 derniers mois",
-      "lastDays_one": "{{count}} dernier jour",
-      "lastDays_other": "{{count}} derniers jours"
+      "title": "Points de la période"
     }
   },
   "summary": {
     "selectUser": "Choisis le membre dont tu veux voir les points",
-    "unknownUser": "Utilisateur inconnu",
-    "allTime": "toute la période",
-    "last6Months": "les 6 derniers mois",
-    "lastDays_one": "{{count}} jour",
-    "lastDays_other": "{{count}} jours"
-  },
-  "trend": {
-    "title": "Évolution des points"
+    "unknownUser": "Utilisateur inconnu"
   }
 }

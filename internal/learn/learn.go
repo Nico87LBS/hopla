@@ -1153,7 +1153,7 @@ func Record(db *gorm.DB, circleID, playedBy int, game Game, now time.Time) (Resu
 				Update("points", gorm.Expr("points + ?", session.Points)).Error; err != nil {
 				return err
 			}
-			if err := tx.Create(&ptModel.PointsHistory{Action: ptModel.PointsHistoryActionBonus, Points: session.Points,
+			if err := tx.Create(&ptModel.PointsHistory{Action: ptModel.PointsHistoryActionGame, Points: session.Points,
 				UserID: game.UserID, CircleID: circleID, CreatedBy: playedBy, Reason: &reason, CreatedAt: now}).Error; err != nil {
 				return err
 			}
