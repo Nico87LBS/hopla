@@ -114,10 +114,7 @@
     "others": "Autres",
     "calendar": "Calendrier",
     "filters": "Filtres",
-    "filterNamePlaceholder": "Nom du filtre...",
     "clearAll": "Tout effacer",
-    "saveFilter": "Enregistrer le filtre",
-    "saveAsNew": "Enregistrer en tant que nouveau filtre",
     "groupBy": "Regrouper par",
     "showTasksFor": "Afficher les tâches pour",
     "type": {
@@ -125,10 +122,8 @@
     },
     "display": "Afficher",
     "displayOptions": "Options d'affichage",
-    "moreSaveOptions": "Plus d'options d'enregistrement",
     "showCount": "Afficher {{count}}",
     "done": "Terminé",
-    "savedFilters": "Filtres enregistrés",
     "list": "Liste"
   },
   "sort": {
@@ -398,14 +393,8 @@
   },
   "list": {
     "complete": "Terminer",
-    "filterSaved": "Filtre enregistré",
-    "filterSavedMsg": "« {{name}} » a été enregistré",
     "nothingScheduled": "Rien de programmé",
     "createChore": "Créer une nouvelle tâche (Cmd+C)",
-    "filterUpdated": "Filtre mis à jour",
-    "filterUpdatedMsg": "« {{name}} » a été mis à jour",
-    "advancedFilterCreated": "Filtre avancé créé",
-    "advancedFilterCreatedMsg": "« {{name}} » a été créé",
     "reject": "Rejeter",
     "pending": "En attente",
     "schedule": "Planifier",

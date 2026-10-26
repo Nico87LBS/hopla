@@ -158,6 +158,24 @@ func (r *PointsRepository) Reset(c context.Context, circleID int, userID *int, b
 	return entries, err
 }
 
+// ClearGames forgets the games played and what was learned from them: the
+// sessions behind the stats and the daily cap, and the cards of the spaced
+// repetition. The games' settings stay. userID nil clears every member.
+func (r *PointsRepository) ClearGames(c context.Context, circleID int, userID *int) error {
+	return r.db.WithContext(c).Transaction(func(tx *gorm.DB) error {
+		for _, table := range []string{"learn_sessions", "learn_cards"} {
+			query := tx.Table(table).Where("circle_id = ?", circleID)
+			if userID != nil {
+				query = query.Where("user_id = ?", *userID)
+			}
+			if err := query.Delete(nil).Error; err != nil {
+				return err
+			}
+		}
+		return nil
+	})
+}
+
 func (r *PointsRepository) Presets(c context.Context, circleID int) ([]pModel.PointsPreset, error) {
 	var presets []pModel.PointsPreset
 	err := r.db.WithContext(c).Where("circle_id = ?", circleID).Order("points desc, name").Find(&presets).Error

@@ -55,7 +55,6 @@ import CalendarMonthly from '../components/CalendarMonthly.jsx'
 import LoadingComponent from '../components/Loading'
 import { OPEN_QUICK_ADD_EVENT } from '../components/navigationEvents'
 import { useLabels } from '../Labels/LabelQueries'
-import AdvancedFilterBuilder from '../Modals/Inputs/AdvancedFilterBuilder'
 import ConfirmationModal from '../Modals/Inputs/ConfirmationModal'
 import { useProjects } from '../Projects/ProjectQueries.js'
 import ChoreListView from './ChoreListView.jsx'
@@ -219,22 +218,13 @@ const MyChores = () => {
     useChoreModals()
 
   const {
-    activeFilter,
-    activeFilterId,
-    applyCustomFilter,
     applyTempFilter,
     clearActiveFilter,
     clearTempFilter,
-    createFilterFromCurrentState,
-    deleteFilter,
     filteredChores: customFilteredChores,
     hasFilterApplied,
-    pinFilter,
-    saveFilter,
-    savedFilters,
     tempFilter,
     tempFilterMeta,
-    updateFilter,
   } = useCustomFilters(
     nonProjectFilteredChores,
     membersData?.res,
@@ -254,33 +244,6 @@ const MyChores = () => {
     project => project.id !== 'default',
   )
   const isDefaultProject = !selectedProject || selectedProject.id === 'default'
-  const handleSavedFilterSelect = useCallback(
-    filter => {
-      setSearchTerm('')
-      setSelectedChoreFilterWithCache('anyone')
-      if (filter.conditions?.some(condition => condition.type === 'project')) {
-        setSelectedProjectWithCache(null)
-      }
-      applyCustomFilter(filter.id)
-      setSearchParams(
-        params => {
-          params.delete('filter')
-          params.delete('filter_id')
-          params.set('filterId', String(filter.id))
-          return params
-        },
-        { replace: true },
-      )
-    },
-    [
-      applyCustomFilter,
-      setSearchParams,
-      setSearchTerm,
-      setSelectedChoreFilterWithCache,
-      setSelectedProjectWithCache,
-    ],
-  )
-
   const handleLabelSelect = useCallback(
     label => {
       clearActiveFilter()
@@ -298,16 +261,14 @@ const MyChores = () => {
 
   const choreViewTitle = tempFilter
     ? tempFilterMeta?.name || t('common:navigation.filters')
-    : activeFilterId
-      ? activeFilter?.name || t('common:navigation.filters')
-      : !isDefaultProject
-        ? selectedProject.name
-        : hasCustomProjects
-          ? t('toolbar.defaultProject')
-          : t('common:navigation.today')
+    : !isDefaultProject
+      ? selectedProject.name
+      : hasCustomProjects
+        ? t('toolbar.defaultProject')
+        : t('common:navigation.today')
   const projectSelector = useMemo(
     () =>
-      hasCustomProjects && !activeFilterId && !tempFilter
+      hasCustomProjects && !tempFilter
         ? {
             items: projectsWithDefault,
             onSelect: handleProjectSelect,
@@ -316,7 +277,6 @@ const MyChores = () => {
           }
         : null,
     [
-      activeFilterId,
       handleProjectSelect,
       hasCustomProjects,
       isDefaultProject,
@@ -342,26 +302,7 @@ const MyChores = () => {
       type: 'label',
     }
   }, [handleLabelSelect, tempFilter?.conditions, userLabels])
-  const filterSelector = useMemo(
-    () =>
-      activeFilterId && savedFilters.length > 0
-        ? {
-            items: savedFilters,
-            onSelect: handleSavedFilterSelect,
-            selectedId: activeFilterId,
-            type: 'filter',
-          }
-        : null,
-    [activeFilterId, handleSavedFilterSelect, savedFilters],
-  )
-  useNavBarTitle(
-    choreViewTitle,
-    filterSelector || labelSelector || projectSelector,
-  )
-
-  const [showAdvancedFilterBuilder, setShowAdvancedFilterBuilder] =
-    useState(false)
-  const [editingFilter, setEditingFilter] = useState(null)
+  useNavBarTitle(choreViewTitle, labelSelector || projectSelector)
 
   const quickFilterDefs = useMemo(
     () => [
@@ -499,7 +440,7 @@ const MyChores = () => {
 
     // Determine which chores to group based on active filter type
     let choresToGroup = chores
-    if (tempFilter || activeFilterId) {
+    if (tempFilter) {
       // Advanced/custom filter active
       choresToGroup = customFilteredChores
     } else if (hasQuickFilters) {
@@ -540,7 +481,6 @@ const MyChores = () => {
     quickFilteredChores,
     customFilteredChores,
     tempFilter,
-    activeFilterId,
     hasQuickFilters,
     selectedChoreSection,
     selectedChoreFilter,
@@ -717,25 +657,10 @@ const MyChores = () => {
       return
     }
 
-    // If filterId is no longer in URL but filter is still active in state, clear it
-    if (!filterId && !oldFilter && activeFilterId) {
-      clearActiveFilter()
-      return
-    }
-
-    if (!chores.length || !savedFilters.length) return
-
-    // Handle advanced filter parameter
-    if (filterId && !activeFilterId) {
-      const filter = savedFilters.find(f => f.id === filterId)
-      if (filter) {
-        applyCustomFilter(filterId)
-        return
-      }
-    }
+    if (!chores.length) return
 
     // Handle legacy filter parameter (e.g., filter=unplanned)
-    if (oldFilter && !hasQuickFilters && !activeFilterId) {
+    if (oldFilter && !hasQuickFilters) {
       const filterMap = {
         unplanned: 'No Due Date',
         overdue: 'Overdue',
@@ -756,12 +681,8 @@ const MyChores = () => {
     searchParams,
     chores,
     hasQuickFilters,
-    activeFilterId,
-    savedFilters,
     membersData,
-    applyCustomFilter,
     applyTempFilter,
-    clearActiveFilter,
     selectedProject,
     projectFilteredChores,
     setQuickFilter,
@@ -843,7 +764,7 @@ const MyChores = () => {
   })
 
   const getFilteredChores = useMemo(() => {
-    if (activeFilterId || tempFilter) {
+    if (tempFilter) {
       return customFilteredChores
     }
 
@@ -857,7 +778,6 @@ const MyChores = () => {
 
     return baseChores
   }, [
-    activeFilterId,
     tempFilter,
     customFilteredChores,
     hasQuickFilters,
@@ -1058,13 +978,10 @@ const MyChores = () => {
   )
 
   // "Narrowed" means the user actively cut the list down (search, quick
-  // filters, a saved filter, the assignee filter). Picking a project is not
+  // filters, the assignee filter). Picking a project is not
   // narrowing: an empty project is an empty place, not a filtered-away result.
   const isNarrowed = Boolean(
-    searchTerm?.length > 0 ||
-    hasQuickFilters ||
-    activeFilterId ||
-    hasAssigneeFilter,
+    searchTerm?.length > 0 || hasQuickFilters || hasAssigneeFilter,
   )
   const isCustomProjectSelected = Boolean(
     selectedProject && selectedProject.id !== 'default',
@@ -1072,10 +989,7 @@ const MyChores = () => {
   // Worth its own wording: the assignee filter is the one narrowing that is
   // easy to forget you left on, so name it rather than saying "filters".
   const isAssigneeOnlyNarrowing = Boolean(
-    hasAssigneeNarrowing &&
-    !searchTerm?.length &&
-    !hasQuickFilters &&
-    !activeFilterId,
+    hasAssigneeNarrowing && !searchTerm?.length && !hasQuickFilters,
   )
 
   // What the list actually renders. Sections are the source of truth outside
@@ -1175,14 +1089,6 @@ const MyChores = () => {
           tempFilterMeta={tempFilterMeta}
           applyTempFilter={applyTempFilter}
           clearTempFilter={clearTempFilterAndUrl}
-          saveFilter={saveFilter}
-          updateFilter={updateFilter}
-          onFilterSaved={name =>
-            showSuccess({
-              title: t('chores:list.filterSaved'),
-              message: t('chores:list.filterSavedMsg', { name }),
-            })
-          }
           onClearAllFilters={() => {
             clearQuickFilters()
             clearActiveFilter()
@@ -1207,37 +1113,7 @@ const MyChores = () => {
           selectedAssigneeFilter={selectedChoreFilter}
           onAssigneeFilterChange={filter => {
             setSelectedChoreFilterWithCache(filter)
-            if (activeFilterId) {
-              clearActiveFilter()
-              updateFilterUrl(null, null)
-            }
           }}
-          savedFilters={savedFilters}
-          activeFilterId={activeFilterId}
-          onSavedFilterClick={filterId => {
-            if (activeFilterId === filterId) {
-              clearActiveFilter()
-              updateFilterUrl(null, null)
-            } else {
-              clearQuickFilters()
-              setSearchTerm('')
-              if (selectedChoreFilter !== 'anyone') {
-                setSelectedChoreFilterWithCache('anyone')
-              }
-              const filter = savedFilters.find(f => f.id === filterId)
-              if (filter?.conditions?.some(c => c.type === 'project')) {
-                setSelectedProjectWithCache(null)
-              }
-              applyCustomFilter(filterId)
-              updateFilterUrl('filterId', filterId)
-            }
-          }}
-          onSavedFilterEdit={filter => {
-            setEditingFilter(filter)
-            setShowAdvancedFilterBuilder(true)
-          }}
-          onSavedFilterDelete={deleteFilter}
-          onSavedFilterPin={pinFilter}
           selectedGroupBy={selectedChoreSection}
           onGroupBySelect={value => {
             setSelectedChoreSectionWithCache(value)
@@ -1263,7 +1139,7 @@ const MyChores = () => {
           selectedCount={selectedChores.size}
           onSelectAll={() =>
             selectAllVisibleChores(
-              searchTerm?.length > 0 || hasQuickFilters || activeFilterId
+              searchTerm?.length > 0 || hasQuickFilters
                 ? getFilteredChores
                 : null,
               choreSections,
@@ -1322,9 +1198,7 @@ const MyChores = () => {
               }}
             />
           ) : isNarrowed &&
-            (searchTerm?.length > 0 ||
-              activeFilterId ||
-              projectFilteredChores.length > 0) ? (
+            (searchTerm?.length > 0 || projectFilteredChores.length > 0) ? (
             <EmptyState
               variant='no-results'
               fullHeight
@@ -1681,54 +1555,6 @@ const MyChores = () => {
         onAssigneeChange={handleAssigneeChange}
         onCompleteWithNote={handleCompleteWithNote}
         onClose={closeModal}
-      />
-
-      {/* Advanced Filter Builder */}
-      <AdvancedFilterBuilder
-        isOpen={showAdvancedFilterBuilder}
-        onClose={() => {
-          setShowAdvancedFilterBuilder(false)
-          setEditingFilter(null)
-        }}
-        onSave={filter => {
-          if (filter.id) {
-            // Update existing filter
-            updateFilter(filter.id, {
-              name: filter.name,
-              description: filter.description,
-              color: filter.color,
-              conditions: filter.conditions,
-              operator: filter.operator,
-            })
-            showSuccess({
-              title: t('chores:list.filterUpdated'),
-              message: t('chores:list.filterUpdatedMsg', {
-                name: filter.name,
-              }),
-            })
-          } else {
-            // Create new filter — the mutation re-checks the plan allowance,
-            // so only announce it once it actually saved.
-            saveFilter(filter)
-              .then(() => {
-                showSuccess({
-                  title: t('chores:list.advancedFilterCreated'),
-                  message: t('chores:list.advancedFilterCreatedMsg', {
-                    name: filter.name,
-                  }),
-                })
-              })
-              .catch(() => {})
-          }
-          setShowAdvancedFilterBuilder(false)
-          setEditingFilter(null)
-        }}
-        members={membersData?.res || []}
-        labels={userLabels || []}
-        projects={projectsWithDefault}
-        allChores={searchFilteredChores}
-        userProfile={userProfile}
-        editingFilter={editingFilter}
       />
     </div>
   )

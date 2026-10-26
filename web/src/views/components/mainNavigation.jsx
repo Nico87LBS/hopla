@@ -15,7 +15,6 @@ const MANAGE_PATHS = [
   '/settings',
   '/projects',
   '/labels',
-  '/filters',
   '/archived',
   '/activities',
 ]

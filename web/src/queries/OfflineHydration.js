@@ -43,16 +43,15 @@ export const hydrateQueriesFromOfflineCache = async queryClient => {
     await offlineDB.init()
 
     // These KV keys are written by the queries being seeded — UserQueries,
-    // LabelQueries, ProjectQueries and FilterQueries — so the two sides have
+    // LabelQueries and ProjectQueries — so the two sides have
     // to stay in step. Hydration is silent when it finds nothing, and a
     // renamed key would quietly cost that screen its offline first paint.
-    const [profile, labels, projects, circleMembers, filters, chores] =
+    const [profile, labels, projects, circleMembers, chores] =
       await Promise.all([
         offlineDB.getKV('user_profile'),
         offlineDB.getKV('labels'),
         offlineDB.getKV('projects'),
         offlineDB.getKV('circle_members'),
-        offlineDB.getKV('filters'),
         // Both backends scan the whole store regardless of this flag. Read the
         // complete list once, then derive the active list in memory so direct
         // launches into the archive screen are hydrated without a second scan.
@@ -62,7 +61,6 @@ export const hydrateQueriesFromOfflineCache = async queryClient => {
     seed(queryClient, ['userProfile', token], profile)
     seed(queryClient, ['labels'], asList(labels))
     seed(queryClient, ['projects'], asList(projects))
-    seed(queryClient, ['filters'], asList(filters))
     const members = asList(circleMembers)
     if (members) seed(queryClient, ['allCircleMembers'], { res: members })
 

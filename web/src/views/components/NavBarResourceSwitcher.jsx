@@ -1,6 +1,5 @@
 import {
   Check,
-  FilterAlt,
   FolderOpen,
   KeyboardArrowDown,
   Settings,
@@ -25,12 +24,6 @@ import { getTextColorFromBackgroundColor } from '../../utils/Colors'
 import { getIconComponent } from '../../utils/ProjectIcons'
 
 const TYPE_CONFIG = {
-  filter: {
-    fallbackColor: '#64748b',
-    headerKey: 'common:navigation.filters',
-    manageKey: 'common:navigation.filters',
-    managePath: '/filters',
-  },
   label: {
     fallbackColor: '#64748b',
     headerKey: 'common:navigation.labels',
@@ -55,8 +48,6 @@ const ResourceAvatar = ({ isSelected, item, type }) => {
     icon = createElement(getIconComponent(item?.icon || 'FolderOpen'), {
       sx: { color: iconColor, fontSize: 14 },
     })
-  } else if (type === 'filter') {
-    icon = <FilterAlt sx={{ color: iconColor, fontSize: 14 }} />
   } else if (type === 'label') {
     icon = <Style sx={{ color: iconColor, fontSize: 14 }} />
   }
@@ -80,7 +71,7 @@ const ResourceAvatar = ({ isSelected, item, type }) => {
 }
 
 const NavBarResourceSwitcher = ({ selector, title }) => {
-  const { t } = useTranslation(['common', 'projects', 'chores', 'filters'])
+  const { t } = useTranslation(['common', 'projects', 'chores'])
   const navigate = useNavigate()
   const { items, onSelect, selectedId, type } = selector
   const config = TYPE_CONFIG[type] || TYPE_CONFIG.project
@@ -96,9 +87,6 @@ const NavBarResourceSwitcher = ({ selector, title }) => {
   const getItemDescription = item => {
     if (type === 'project' && item.id === 'default') {
       return t('projects:defaultDescription')
-    }
-    if (type === 'filter') {
-      return t('filters:tasks', { count: item.count || 0 })
     }
     return null
   }

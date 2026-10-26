@@ -114,10 +114,7 @@
     "others": "Others",
     "calendar": "Calendar",
     "filters": "Filters",
-    "filterNamePlaceholder": "Filter name…",
     "clearAll": "Clear all",
-    "saveFilter": "Save Filter",
-    "saveAsNew": "Save as New Filter",
     "groupBy": "Group by",
     "showTasksFor": "Show tasks for",
     "type": {
@@ -125,10 +122,8 @@
     },
     "display": "Display",
     "displayOptions": "Display options",
-    "moreSaveOptions": "More save options",
     "showCount": "Show {{count}}",
     "done": "Done",
-    "savedFilters": "Saved Filters",
     "list": "List"
   },
   "sort": {
@@ -398,14 +393,8 @@
   },
   "list": {
     "complete": "Complete",
-    "filterSaved": "Filter Saved",
-    "filterSavedMsg": "\"{{name}}\" has been saved",
     "nothingScheduled": "Nothing scheduled",
     "createChore": "Create new chore (Cmd+C)",
-    "filterUpdated": "Filter Updated",
-    "filterUpdatedMsg": "\"{{name}}\" has been updated successfully",
-    "advancedFilterCreated": "Advanced Filter Created",
-    "advancedFilterCreatedMsg": "\"{{name}}\" has been created successfully",
     "reject": "Reject",
     "pending": "Pending",
     "schedule": "Schedule",

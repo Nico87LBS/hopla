@@ -176,7 +176,7 @@
     "subtitle": "Sets a member's points, or everyone's, back to zero, and so to the first rank. For example once a year, or after testing.",
     "everyone": "Everyone",
     "clearHistory": "Also erase the points history",
-    "help": "Unchecked, the points history is kept and a \"Reset\" row is added. Streaks start over from zero. \"Also put the tasks done back to do\" erases the task history (done today, activities) and puts each task done back to do, with the due date it had before; archived one-time tasks come back. Quests done and challenges won stay counted so they do not pay twice.",
+    "help": "Unchecked, the points history is kept and a \"Reset\" row is added. Streaks start over from zero. \"Also put the tasks done back to do\" erases the task history (done today, activities) and puts each task done back to do, with the due date it had before; archived one-time tasks come back. Quests done and challenges won stay counted so they do not pay twice. \"Also clear the games\" erases games played, their stats and learning progress; game settings stay.",
     "button": "Reset",
     "confirmTitle": "Reset?",
     "confirmKeep": "{{who}}: points, rank and streak back to zero. The history is kept.",
@@ -184,6 +184,8 @@
     "done": "{{who}}: reset.",
     "failed": "The reset failed.",
     "clearTaskHistory": "Also put the tasks done back to do",
-    "confirmTasks": "The tasks done go back to do, with the due date they had before, and their history is erased."
+    "confirmTasks": "The tasks done go back to do, with the due date they had before, and their history is erased.",
+    "clearGames": "Also clear the games and their stats",
+    "confirmGames": "Games played, their stats and what was learned are erased; the games start over. Game settings stay."
   }
 }

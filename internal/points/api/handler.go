@@ -219,6 +219,9 @@ type ResetReq struct {
 	// ClearTaskHistory also puts the tasks done back to do and forgets their
 	// history.
 	ClearTaskHistory bool `json:"clearTaskHistory"`
+	// ClearGames also forgets the games played, their stats and what was
+	// learned.
+	ClearGames bool `json:"clearGames"`
 }
 
 func (h *Handler) reset(c *gin.Context) {
@@ -249,6 +252,13 @@ func (h *Handler) reset(c *gin.Context) {
 		if _, err := h.choreRepo.ClearHistory(c, circleID, userIDs); err != nil {
 			logging.FromContext(c).Error("Failed to clear task history", "error", err)
 			c.JSON(500, gin.H{"error": "Error clearing task history"})
+			return
+		}
+	}
+	if req.ClearGames {
+		if err := h.pRepo.ClearGames(c, circleID, req.UserID); err != nil {
+			logging.FromContext(c).Error("Failed to clear the games", "error", err)
+			c.JSON(500, gin.H{"error": "Error clearing the games"})
 			return
 		}
 	}
