@@ -222,23 +222,29 @@ func goalProgress(db *gorm.DB, circleID int, kind string, choreID *int, from, to
 	return map[int]int{}, nil
 }
 
-// scaledTarget lowers a quest's target in proportion to the days of the
-// period the member was away, rounded up and never below 1.
+// scaledTarget lowers a quest's or a challenge's target in proportion to the
+// days of the period the member was away, rounded up and never below 1.
 func scaledTarget(target int, from, to time.Time, away map[string]bool, loc *time.Location) int {
 	if len(away) == 0 || target <= 1 {
 		return target
 	}
-	total, here := 0, 0
-	for day := middayOf(from, loc); day.Before(to); day = day.AddDate(0, 0, 1) {
-		total++
-		if !away[dayKey(day, loc)] {
-			here++
-		}
-	}
-	if here == total || total == 0 {
+	total, gone := periodDays(from, to, away, loc)
+	if gone == 0 || total == 0 {
 		return target
 	}
+	here := total - gone
 	return max(1, (target*here+total-1)/total)
+}
+
+// periodDays counts the days of a period, and those the member was away.
+func periodDays(from, to time.Time, away map[string]bool, loc *time.Location) (total, gone int) {
+	for day := middayOf(from, loc); day.Before(to); day = day.AddDate(0, 0, 1) {
+		total++
+		if away[dayKey(day, loc)] {
+			gone++
+		}
+	}
+	return total, gone
 }
 
 // QuestView is a member's quest with how far they are.
@@ -310,13 +316,24 @@ func Quests(db *gorm.DB, circleID int, userIDs []int, now time.Time) (map[int][]
 }
 
 // ChallengeView is a challenge with each member's progress, the total for a
-// shared one, and who won.
+// shared one, and who won. In a challenge that isn't shared, a member who was
+// away has a lower target, and DaysAway says how many days they missed.
 type ChallengeView struct {
 	Challenge
 	Members  []int       `json:"members"`
 	Progress map[int]int `json:"progress"`
 	Total    int         `json:"total"`
 	Winners  []int       `json:"winners"`
+	Targets  map[int]int `json:"targets"`
+	DaysAway map[int]int `json:"daysAway"`
+}
+
+// TargetOf is what the member has to reach.
+func (v ChallengeView) TargetOf(userID int) int {
+	if target, ok := v.Targets[userID]; ok {
+		return target
+	}
+	return v.Target
 }
 
 // Challenges returns the challenges running at now or ended since the given
@@ -340,7 +357,8 @@ func Challenges(db *gorm.DB, circleID int, members []int, endedSince, now time.T
 }
 
 func challengeView(db *gorm.DB, challenge Challenge, members []int, now time.Time) (ChallengeView, error) {
-	view := ChallengeView{Challenge: challenge, Members: challenge.UserIDs, Progress: map[int]int{}, Winners: []int{}}
+	view := ChallengeView{Challenge: challenge, Members: challenge.UserIDs, Progress: map[int]int{}, Winners: []int{},
+		Targets: map[int]int{}, DaysAway: map[int]int{}}
 	if len(view.Members) == 0 {
 		view.Members = members
 	}
@@ -355,6 +373,22 @@ func challengeView(db *gorm.DB, challenge Challenge, members []int, now time.Tim
 	for _, userID := range view.Members {
 		view.Progress[userID] = max(progress[userID], 0)
 		view.Total += view.Progress[userID]
+	}
+	if !challenge.Shared {
+		// Only the days already gone by count: an absence ahead is not known.
+		away, err := absenceDays(db, challenge.CircleID, challenge.StartsAt, to)
+		if err != nil {
+			return view, err
+		}
+		loc := zone.Of(challenge.CircleID)
+		for _, userID := range view.Members {
+			_, days := periodDays(challenge.StartsAt, challenge.EndsAt, away[userID], loc)
+			if days == 0 {
+				continue
+			}
+			view.DaysAway[userID] = days
+			view.Targets[userID] = scaledTarget(challenge.Target, challenge.StartsAt, challenge.EndsAt, away[userID], loc)
+		}
 	}
 	if err := db.Model(&ChallengeWin{}).Where("challenge_id = ?", challenge.ID).Order("won_at").
 		Pluck("user_id", &view.Winners).Error; err != nil {
@@ -441,7 +475,7 @@ func awardChallenges(tx *gorm.DB, circleID, userID int, now time.Time) error {
 				continue
 			}
 			winners = view.Members
-		} else if view.Progress[userID] >= challenge.Target && !slices.Contains(view.Winners, userID) {
+		} else if view.Progress[userID] >= view.TargetOf(userID) && !slices.Contains(view.Winners, userID) {
 			winners = []int{userID}
 		}
 		for _, winner := range winners {

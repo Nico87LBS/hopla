@@ -153,3 +153,33 @@ func TestChallenges(t *testing.T) {
 	require.NoError(t, AfterTask(db, 1, 2, now, now))
 	require.Equal(t, 30+5+3, earned(t, db, 2), "a challenge pays once")
 }
+
+func TestChallengeTargetLowerAfterAbsence(t *testing.T) {
+	db := setup(t)
+	require.NoError(t, db.Create(&cModel.UserCircle{UserID: 3, CircleID: 1, Role: cModel.UserRoleMember, IsActive: true}).Error)
+	require.NoError(t, db.Save(&Rules{CircleID: 1}).Error)
+	now := time.Now()
+	start := time.Date(now.Year(), now.Month(), now.Day()-6, 0, 0, 0, 0, time.Local)
+	task := chore(t, db, "Chambre", 10, now, nil)
+	require.NoError(t, db.Create(&Challenge{CircleID: 1, Name: "Chambre 5 fois", Kind: GoalTasks, ChoreID: &task.ID,
+		Target: 5, Reward: 3, StartsAt: start, EndsAt: start.AddDate(0, 0, 7)}).Error)
+	require.NoError(t, db.Create(&Challenge{CircleID: 1, Name: "Ensemble", Kind: GoalTasks, ChoreID: &task.ID,
+		Target: 5, Shared: true, StartsAt: start, EndsAt: start.AddDate(0, 0, 7)}).Error)
+	back := start.AddDate(0, 0, 2).Add(12 * time.Hour)
+	require.NoError(t, db.Create(&Absence{CircleID: 1, UserID: 2, StartAt: start.AddDate(0, 0, 1).Add(12 * time.Hour), EndAt: &back}).Error)
+
+	views, err := Challenges(db, 1, []int{2, 3}, now, now)
+	require.NoError(t, err)
+	require.Equal(t, 4, views[0].TargetOf(2), "2 days away out of 7: 5 × 5/7 rounded up")
+	require.Equal(t, 2, views[0].DaysAway[2])
+	require.Equal(t, 5, views[0].TargetOf(3), "Anna was there")
+	require.Empty(t, views[1].Targets, "a shared challenge keeps its target")
+
+	for range 4 {
+		credit(t, db, task.ID, 2, 10, now)
+		require.NoError(t, AfterTask(db, 1, 2, now, now))
+	}
+	views, err = Challenges(db, 1, []int{2, 3}, now, now)
+	require.NoError(t, err)
+	require.Equal(t, []int{2}, views[0].Winners, "Elena reached her lower target")
+}

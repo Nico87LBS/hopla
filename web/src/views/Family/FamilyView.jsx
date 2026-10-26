@@ -31,7 +31,7 @@ import { HOPLA } from '../../constants/theme'
 import { useIsParent } from '../../hooks/useIsParent'
 import { useCircleMembers, useSetMemberAway } from '../../queries/UserQueries'
 import { TodayCard, useGamesToday, useGamesWeek } from '../Games/DailyGames'
-import { MemberAvatar, memberShape } from '../Games/GameParts'
+import { AwayPill, MemberAvatar, memberShape } from '../Games/GameParts'
 import { AdjustCard, usePointsPresets } from '../Games/PointsCards'
 import {
   ChallengesCard,
@@ -129,24 +129,10 @@ const WeekStats = ({ week }) => {
           {t('family.week.title')}
         </Typography>
         {week.daysAway > 0 && (
-          <Box
-            component='span'
-            title={t('family.week.away', { count: week.daysAway })}
-            aria-label={t('family.week.away', { count: week.daysAway })}
-            sx={{
-              alignItems: 'center',
-              bgcolor: 'background.level2',
-              borderRadius: 999,
-              color: 'text.secondary',
-              display: 'inline-flex',
-              font: '600 11px/16px var(--joy-fontFamily-body)',
-              gap: 0.25,
-              px: 0.75,
-            }}
-          >
-            <LuggageRounded aria-hidden sx={{ fontSize: 12 }} />
-            {week.daysAway}
-          </Box>
+          <AwayPill
+            days={week.daysAway}
+            label={t('family.week.away', { count: week.daysAway })}
+          />
         )}
       </Box>
       <Typography level='body-sm' sx={{ mt: 0.25 }} noWrap>

@@ -179,7 +179,9 @@
     "rewardWon": "Won: {{reward}}!",
     "deleteTitle": "Delete challenge",
     "deleteMessage": "Delete \"{{name}}\"? Points already won stay.",
-    "failed": "The challenge could not be saved."
+    "failed": "The challenge could not be saved.",
+    "away_one": "Away {{count}} day: lower target",
+    "away_other": "Away {{count}} days: lower target"
   },
   "reset": {
     "title": "Reset",
