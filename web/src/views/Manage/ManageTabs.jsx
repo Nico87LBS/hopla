@@ -14,6 +14,10 @@ const PAGE_TABS = {
     { value: 'filters', to: '/filters' },
     { value: 'archived', to: '/archived' },
   ],
+  rewards: [
+    { value: 'rewards', to: '/manage/rewards' },
+    { value: 'presets', to: '/manage/rewards/presets' },
+  ],
   missions: [
     { value: 'quests', to: '/manage/missions' },
     { value: 'challenges', to: '/manage/missions/challenges' },

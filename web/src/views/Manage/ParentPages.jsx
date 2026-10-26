@@ -9,18 +9,14 @@ import { useIsParent } from '../../hooks/useIsParent'
 import { useCircleMembers } from '../../queries/UserQueries'
 import LoadingComponent from '../components/Loading'
 import { PeriodsCard, RulesCard, useGamesToday } from '../Games/DailyGames'
-import {
-  AdjustCard,
-  HistoryCard,
-  PresetsCard,
-  usePointsPresets,
-} from '../Games/PointsCards'
+import { PresetsCard, usePointsPresets } from '../Games/PointsCards'
 import {
   ChallengesCard,
   QuestListCard,
   RankSettingsCard,
 } from '../Games/Progression'
 import ResetCard from '../Games/ResetCard'
+import RewardsView from '../Rewards/RewardsView'
 import AccountSettings from '../Settings/AccountSettings'
 import AdvancedSettings from '../Settings/AdvancedSettings'
 import APITokenSettings from '../Settings/APITokenSettings'
@@ -110,16 +106,23 @@ Embedded.propTypes = {
   mode: PropTypes.oneOf(['section', 'tab']).isRequired,
 }
 
-export const ManagePoints = () => {
-  const members = useMembers()
+// Récompenses: what the shop offers, and the bonuses ready to be given
+// from a child's card in Famille.
+export const ManageRewards = ({ tab }) => {
   const { data: presets = [] } = usePointsPresets()
   return (
-    <ParentPage page='points'>
-      <AdjustCard members={members} presets={presets} />
-      <PresetsCard presets={presets} />
-      <HistoryCard members={members} />
-    </ParentPage>
+    <TabPage page='rewards' current={tab}>
+      {tab === 'rewards' ? (
+        <RewardsView embedded view='manage' />
+      ) : (
+        <PresetsCard presets={presets} />
+      )}
+    </TabPage>
   )
+}
+
+ManageRewards.propTypes = {
+  tab: PropTypes.oneOf(['rewards', 'presets']).isRequired,
 }
 
 export const ManageMissions = ({ tab }) => {

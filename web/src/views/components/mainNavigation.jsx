@@ -1,6 +1,6 @@
 import {
   LeaderboardRounded,
-  RedeemRounded,
+  SchoolRounded,
   TaskAltRounded,
   TuneRounded,
 } from '@mui/icons-material'
@@ -18,7 +18,6 @@ const MANAGE_PATHS = [
   '/filters',
   '/archived',
   '/activities',
-  '/learn',
 ]
 
 const startsWithPath = (pathname, path) =>
@@ -44,11 +43,11 @@ export const MAIN_DESTINATIONS = [
     isActive: pathname => startsWithPath(pathname, '/family'),
   },
   {
-    id: 'shop',
-    to: '/shop',
-    labelKey: 'navigation.shop',
-    icon: <RedeemRounded />,
-    isActive: pathname => startsWithPath(pathname, '/shop'),
+    id: 'learn',
+    to: '/learn',
+    labelKey: 'navigation.learn',
+    icon: <SchoolRounded />,
+    isActive: pathname => startsWithPath(pathname, '/learn'),
   },
   {
     id: 'manage',
@@ -60,9 +59,10 @@ export const MAIN_DESTINATIONS = [
   },
 ]
 
-// Badge counts on the destinations: reward requests waiting for a parent.
+// Badge counts on the destinations: reward requests waiting for a parent,
+// on Famille where the shop is.
 export const useNavigationBadges = () => {
   const isParent = useIsParent()
   const { data: pending = [] } = useRedemptions('pending')
-  return { shop: isParent ? pending.length : 0 }
+  return { family: isParent ? pending.length : 0 }
 }

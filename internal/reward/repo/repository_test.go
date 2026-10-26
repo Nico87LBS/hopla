@@ -238,3 +238,21 @@ func TestQuotaWindow(t *testing.T) {
 		}
 	}
 }
+
+// A reward created hidden stays hidden: is_active defaults to true in the
+// table, so GORM would otherwise drop the false value on insert.
+func TestCreateRewardKeepsHidden(t *testing.T) {
+	db := setupTestDB(t)
+	repo := NewRewardRepository(db, nil)
+	reward := &rModel.Reward{CircleID: 1, Name: "Cinéma", PointsCost: 200, IsActive: false}
+	if err := repo.CreateReward(context.Background(), reward); err != nil {
+		t.Fatalf("CreateReward: %v", err)
+	}
+	var stored rModel.Reward
+	if err := db.First(&stored, reward.ID).Error; err != nil {
+		t.Fatalf("reload: %v", err)
+	}
+	if stored.IsActive || reward.IsActive {
+		t.Fatalf("reward created hidden is active: stored=%v returned=%v", stored.IsActive, reward.IsActive)
+	}
+}

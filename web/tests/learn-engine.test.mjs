@@ -260,8 +260,10 @@ test('a card without traps of its own draws them from its chapter, game after ga
 
 test('the back arrow of the games goes one page up, never into a game', () => {
   assert.equal(learnParent('/learn/1/play/anglais-aero-meteo'), '/learn/1')
-  assert.equal(learnParent('/learn/1'), '/manage')
-  assert.equal(learnParent('/learn'), '/manage')
+  // Apprendre is a place of the bottom bar: a person's games go back to
+  // the choice of the person, and the choice itself has no back arrow.
+  assert.equal(learnParent('/learn/1'), '/learn')
+  assert.equal(learnParent('/learn'), null)
   assert.equal(learnParent('/manage/learn/maths-ce2-division'), '/manage/learn')
   assert.equal(
     learnParent('/manage/learn/detail/anglais-aero'),

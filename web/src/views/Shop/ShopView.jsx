@@ -1,11 +1,12 @@
-import { Box, Chip, Container, Typography } from '@mui/joy'
+import { Box, Chip, Typography } from '@mui/joy'
 import { useTranslation } from 'react-i18next'
 
 import { useIsParent } from '../../hooks/useIsParent'
 import { useRedemptions } from '../Rewards/RewardQueries'
 import RewardsView from '../Rewards/RewardsView'
 
-// Spending hops. Parents see the requests waiting for them first.
+// The Boutique tab of Famille: spending hops. Parents see the requests
+// waiting for them first. The rewards themselves are set up in Gérer.
 const ShopView = () => {
   const { t } = useTranslation('common')
   const isParent = useIsParent()
@@ -13,16 +14,7 @@ const ShopView = () => {
   const showRequests = isParent && pending.length > 0
 
   return (
-    <Container
-      maxWidth='md'
-      sx={{ px: { xs: 2, sm: 3 }, pb: 6, pt: { xs: 1, sm: 3 } }}
-    >
-      <Typography
-        level='h2'
-        sx={{ display: { xs: 'none', lg: 'block' }, mb: 2 }}
-      >
-        {t('navigation.shop')}
-      </Typography>
+    <Box>
       {showRequests && (
         <Box component='section' sx={{ mb: 3 }}>
           <Typography
@@ -47,7 +39,7 @@ const ShopView = () => {
         )}
         <RewardsView embedded view='store' />
       </Box>
-    </Container>
+    </Box>
   )
 }
 

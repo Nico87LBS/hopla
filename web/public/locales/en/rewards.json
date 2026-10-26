@@ -58,7 +58,8 @@
     "rewardFallbackDescription": "A little something to look forward to.",
     "emptyTitle": "No rewards yet",
     "emptyDescription": "Add a reward — like movie night or a treat — that family members can redeem their points for.",
-    "createReward": "Create a reward"
+    "createReward": "Create a reward",
+    "hidden": "Hidden from the shop"
   },
   "quota": {
     "day_one": "{{count}} per day",
