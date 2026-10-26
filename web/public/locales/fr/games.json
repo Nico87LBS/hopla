@@ -37,20 +37,30 @@
     "empty": "Aucun préréglage pour l'instant.",
     "failed": "Le préréglage n'a pas pu être enregistré."
   },
-  "history": {
-    "title": "Historique des points",
+  "journal": {
+    "title": "Journal",
     "everyone": "Tout le monde",
-    "empty": "Aucun mouvement de points pour l'instant.",
-    "unknown": "Membre inconnu",
-    "by": "par {{name}}",
+    "today": "Aujourd'hui",
+    "yesterday": "Hier",
+    "empty": "Rien pour l'instant.",
     "more": "Voir plus",
+    "by": "par {{name}}",
+    "onBalance": "sur le solde",
+    "kinds": {
+      "all": "Tout",
+      "task": "Tâches",
+      "game": "Jeux",
+      "bonus": "Bonus et pénalités",
+      "reward": "Récompenses"
+    },
     "actions": {
       "task": "Tâche",
       "undo": "Tâche annulée",
-      "redeem": "Points utilisés",
+      "redeem": "Récompense",
       "bonus": "Bonus",
       "penalty": "Pénalité",
-      "reset": "Remise à zéro"
+      "reset": "Remise à zéro",
+      "game": "Jeu"
     }
   },
   "today": {
@@ -176,7 +186,7 @@
     "subtitle": "Remet les points d'un membre, ou de tout le monde, à zéro, et donc au premier rang. Par exemple une fois par an, ou à la fin des essais.",
     "everyone": "Tout le monde",
     "clearHistory": "Effacer aussi l'historique des points",
-    "help": "Sans cocher, l'historique des points est gardé et une ligne « Remise à zéro » y est ajoutée. Les séries repartent de zéro. « Remettre aussi les tâches faites à faire » efface l'historique des tâches (« Déjà fait », activités) et remet chaque tâche faite à faire, avec l'échéance qu'elle avait avant d'être faite ; les tâches uniques archivées reviennent. Les quêtes réussies et les défis gagnés restent acquis pour ne pas payer deux fois. « Effacer aussi les jeux » efface les parties jouées, leurs statistiques et la progression d'apprentissage ; les réglages des jeux restent.",
+    "help": "Sans cocher, l'historique des points est gardé et une ligne « Remise à zéro » y est ajoutée. Les séries repartent de zéro. « Remettre aussi les tâches faites à faire » efface l'historique des tâches (« Déjà fait », tâches du journal) et remet chaque tâche faite à faire, avec l'échéance qu'elle avait avant d'être faite ; les tâches uniques archivées reviennent. Les quêtes réussies et les défis gagnés restent acquis pour ne pas payer deux fois. « Effacer aussi les jeux » efface les parties jouées, leurs statistiques et la progression d'apprentissage ; les réglages des jeux restent.",
     "button": "Remettre à zéro",
     "confirmTitle": "Remettre à zéro ?",
     "confirmKeep": "{{who}} : points, rang et série remis à zéro. L'historique est gardé.",

@@ -14,7 +14,6 @@ const routeHierarchy = {
   '/manage': 0,
   '/chores/create': 2,
   '/settings': 1,
-  '/activities': 1,
   '/labels': 1,
   '/login': 0,
   '/signup': 1,

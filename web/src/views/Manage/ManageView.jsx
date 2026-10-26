@@ -2,7 +2,6 @@ import {
   ChevronRightRounded,
   FlagRounded,
   GroupsRounded,
-  HistoryRounded,
   LabelOutlined,
   MilitaryTechRounded,
   PersonRounded,
@@ -32,10 +31,7 @@ import { useIsParent } from '../../hooks/useIsParent'
 const GROUPS = [
   {
     id: 'organize',
-    items: [
-      { id: 'tasks', to: '/labels', icon: <LabelOutlined /> },
-      { id: 'activities', to: '/activities', icon: <HistoryRounded /> },
-    ],
+    items: [{ id: 'tasks', to: '/labels', icon: <LabelOutlined /> }],
   },
   {
     id: 'parent',

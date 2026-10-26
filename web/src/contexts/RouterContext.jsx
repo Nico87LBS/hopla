@@ -36,7 +36,6 @@ import {
 } from '../views/Manage/ParentPages'
 import CircleSetupView from '../views/Onboarding/CircleSetupView'
 import TimerDetails from '../views/Timer/TimerDetails'
-import UserActivities from '../views/User/UserActivities'
 const PointsRedirect = () => {
   const tab = new URLSearchParams(window.location.search).get('tab')
   const to =
@@ -108,8 +107,9 @@ const Router = createBrowserRouter([
         element: <MyChores />,
       },
       {
+        // Activités is the journal of Famille now.
         path: '/activities',
-        element: <UserActivities />,
+        element: <Navigate to='/family?tab=journal' replace />,
       },
       {
         path: '/family',

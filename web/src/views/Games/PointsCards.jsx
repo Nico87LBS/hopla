@@ -11,52 +11,32 @@ import {
   Chip,
   IconButton,
   Input,
-  Option,
-  Select,
   Sheet,
   Stack,
   ToggleButtonGroup,
   Typography,
 } from '@mui/joy'
-import {
-  useInfiniteQuery,
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import PropTypes from 'prop-types'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { useLocalization } from '../../contexts/LocalizationContext'
 import { useNotification } from '../../service/NotificationProvider'
 import {
   AdjustPoints,
   DeletePointsPreset,
-  GetPointsHistory,
   GetPointsPresets,
   SavePointsPreset,
 } from '../../utils/Fetcher'
 import ConfirmationModal from '../Modals/Inputs/ConfirmationModal'
 import { MemberAvatar, memberShape, surfaceSx } from './GameParts'
 
-const PAGE_SIZE = 30
 const MAX_POINTS = 1000
 
 export const usePointsPresets = () =>
   useQuery({
     queryKey: ['pointsPresets'],
     queryFn: async () => (await GetPointsPresets())?.res || [],
-  })
-
-const usePointsHistory = userId =>
-  useInfiniteQuery({
-    queryKey: ['pointsHistory', userId || 'all'],
-    queryFn: async ({ pageParam }) =>
-      (await GetPointsHistory({ userId, before: pageParam, limit: PAGE_SIZE }))
-        ?.res || [],
-    initialPageParam: undefined,
-    getNextPageParam: lastPage =>
-      lastPage.length === PAGE_SIZE ? lastPage[lastPage.length - 1].id : null,
   })
 
 const signed = points => (points > 0 ? `+${points}` : `${points}`)
@@ -87,7 +67,7 @@ export const AdjustCard = ({
       const resp = await AdjustPoints({ userId, ...body })
       if (!resp.ok) throw new Error()
       const { res } = await resp.json()
-      queryClient.invalidateQueries({ queryKey: ['pointsHistory'] })
+      queryClient.invalidateQueries({ queryKey: ['journal'] })
       queryClient.invalidateQueries({ queryKey: ['allCircleMembers'] })
       queryClient.invalidateQueries({ queryKey: ['circleMembers'] })
       showNotification({
@@ -387,110 +367,6 @@ export const PresetsCard = ({ presets }) => {
   )
 }
 
-export const HistoryCard = ({ members }) => {
-  const { t } = useTranslation('games')
-  const { fmt } = useLocalization()
-  const [userId, setUserId] = useState(null)
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
-    usePointsHistory(userId)
-  const byId = useMemo(
-    () => new Map(members.map(m => [m.userId, m])),
-    [members],
-  )
-  const entries = data?.pages.flat() || []
-
-  return (
-    <Sheet sx={surfaceSx}>
-      <Box
-        sx={{
-          alignItems: { sm: 'center' },
-          display: 'flex',
-          flexDirection: { xs: 'column', sm: 'row' },
-          gap: 1,
-          mb: 1.5,
-        }}
-      >
-        <Typography level='title-lg' sx={{ flex: 1 }}>
-          {t('history.title')}
-        </Typography>
-        <Select
-          size='sm'
-          value={userId}
-          onChange={(event, value) => setUserId(value)}
-          placeholder={t('history.everyone')}
-          sx={{ minWidth: 180 }}
-        >
-          <Option value={null}>{t('history.everyone')}</Option>
-          {members.map(m => (
-            <Option key={m.userId} value={m.userId}>
-              {m.displayName}
-            </Option>
-          ))}
-        </Select>
-      </Box>
-
-      {!isLoading && entries.length === 0 && (
-        <Typography level='body-sm' sx={{ color: 'text.tertiary' }}>
-          {t('history.empty')}
-        </Typography>
-      )}
-      <Stack gap={1}>
-        {entries.map(entry => {
-          const member = byId.get(entry.userId)
-          const by = byId.get(entry.createdBy)
-          return (
-            <Box
-              key={entry.id}
-              sx={{ alignItems: 'center', display: 'flex', gap: 1.25 }}
-            >
-              <MemberAvatar member={member} />
-              <Stack sx={{ flex: 1, minWidth: 0 }}>
-                <Typography level='body-sm' noWrap>
-                  <b>{member?.displayName || t('history.unknown')}</b>
-                  {' · '}
-                  {t(`history.actions.${entry.action}`)}
-                  {entry.reason ? ` · ${entry.reason}` : ''}
-                </Typography>
-                <Typography level='body-xs' sx={{ color: 'text.tertiary' }}>
-                  {fmt.calendar(entry.createdAt)}
-                  {by && by.userId !== entry.userId
-                    ? ` · ${t('history.by', { name: by.displayName })}`
-                    : ''}
-                </Typography>
-              </Stack>
-              <Typography
-                level='title-sm'
-                sx={{
-                  color:
-                    entry.delta > 0
-                      ? 'success.plainColor'
-                      : entry.delta < 0
-                        ? 'danger.plainColor'
-                        : 'text.tertiary',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {signed(entry.delta)}
-              </Typography>
-            </Box>
-          )
-        })}
-      </Stack>
-      {hasNextPage && (
-        <Button
-          size='sm'
-          variant='plain'
-          loading={isFetchingNextPage}
-          onClick={() => fetchNextPage()}
-          sx={{ mt: 1.5, width: '100%' }}
-        >
-          {t('history.more')}
-        </Button>
-      )}
-    </Sheet>
-  )
-}
-
 const presetShape = PropTypes.shape({
   id: PropTypes.number,
   name: PropTypes.string,
@@ -506,4 +382,3 @@ AdjustCard.propTypes = {
 PresetsCard.propTypes = {
   presets: PropTypes.arrayOf(presetShape).isRequired,
 }
-HistoryCard.propTypes = { members: PropTypes.arrayOf(memberShape).isRequired }

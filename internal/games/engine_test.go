@@ -150,7 +150,7 @@ func TestStreakBonusOnTheFirstTaskOfTheDay(t *testing.T) {
 	entry, err := AwardStreakBonus(db, 1, 2, now, now)
 	require.NoError(t, err)
 	require.NotNil(t, entry)
-	require.Equal(t, ptModel.PointsHistoryActionBonus, entry.Action)
+	require.Equal(t, ptModel.PointsHistoryActionGame, entry.Action)
 	require.Equal(t, "Série de 3 jours", *entry.Reason)
 	var member cModel.UserCircle
 	require.NoError(t, db.Where("user_id = 2").First(&member).Error)

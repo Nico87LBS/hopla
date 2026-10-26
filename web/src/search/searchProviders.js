@@ -80,7 +80,7 @@ registerSearchProvider({
           keywords: `${HISTORY_STATUS[entry.status] || 'activity'} ${member?.displayName || ''}`,
           route: entry.choreId
             ? `/chores/${entry.choreId}/history`
-            : '/activities',
+            : '/family?tab=journal',
           updatedAt: entry.performedAt || entry.updatedAt,
         }),
       ]

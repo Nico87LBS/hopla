@@ -32,7 +32,7 @@ import { useIsParent } from '../../hooks/useIsParent'
 import { useCircleMembers, useSetMemberAway } from '../../queries/UserQueries'
 import { TodayCard, useGamesToday, useGamesWeek } from '../Games/DailyGames'
 import { MemberAvatar, memberShape } from '../Games/GameParts'
-import { AdjustCard, HistoryCard, usePointsPresets } from '../Games/PointsCards'
+import { AdjustCard, usePointsPresets } from '../Games/PointsCards'
 import {
   ChallengesCard,
   QuestsCard,
@@ -41,7 +41,7 @@ import {
 } from '../Games/Progression'
 import { useRedemptions } from '../Rewards/RewardQueries'
 import ShopView from '../Shop/ShopView'
-import PointsJournal from './PointsJournal'
+import FamilyJournal from './FamilyJournal'
 
 // The grey of a child who is away, on the web and on the family card alike.
 const AWAY_GREY = '#8E8A99'
@@ -576,12 +576,7 @@ const FamilyView = () => {
       </Box>
 
       {tab === 'shop' && <ShopView />}
-      {tab === 'journal' && (
-        <Stack gap={3}>
-          <PointsJournal />
-          <HistoryCard members={members} />
-        </Stack>
-      )}
+      {tab === 'journal' && <FamilyJournal members={members} />}
       {tab === 'missions' && (
         <Stack gap={2}>
           <TodayCard members={members} today={today} />

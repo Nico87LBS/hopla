@@ -44,7 +44,7 @@ func Week(db *gorm.DB, circleID int, userIDs []int, now time.Time) ([]WeekStats,
 	}
 	if err := db.Model(&ptModel.PointsHistory{}).Select("user_id, action, points").
 		Where("circle_id = ? AND action IN ? AND created_at >= ? AND created_at < ?", circleID,
-			[]ptModel.PointsHistoryAction{ptModel.PointsHistoryActionBonus, ptModel.PointsHistoryActionPenalty}, from, to).
+			[]ptModel.PointsHistoryAction{ptModel.PointsHistoryActionBonus, ptModel.PointsHistoryActionPenalty, ptModel.PointsHistoryActionGame}, from, to).
 		Scan(&bonusRows).Error; err != nil {
 		return nil, from, err
 	}
@@ -52,7 +52,7 @@ func Week(db *gorm.DB, circleID int, userIDs []int, now time.Time) ([]WeekStats,
 	for _, row := range bonusRows {
 		bonus[row.UserID] += ptModel.PointsHistory{Action: row.Action, Points: row.Points}.Delta()
 	}
-	// A game's points are written as a bonus too, so they come out of it.
+	// A game of Apprendre is written as a game row too, so it comes out of it.
 	var gameRows []struct {
 		UserID int
 		Count  int

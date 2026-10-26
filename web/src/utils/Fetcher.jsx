@@ -869,13 +869,16 @@ const DeleteChildUser = childUserId => {
   })
 }
 
-const GetPointsHistory = async ({ before, limit, userId } = {}) => {
+// The family journal, newest first: the hops won and spent, and the tasks
+// done that earned none. next is the before of the following page.
+const GetJournal = async ({ before, kind, limit, userId } = {}) => {
   const params = new URLSearchParams()
   if (userId) params.set('userId', userId)
+  if (kind) params.set('kind', kind)
   if (before) params.set('before', before)
   if (limit) params.set('limit', limit)
   const query = params.toString() ? `?${params}` : ''
-  const resp = await Fetch(`/points/history${query}`, {
+  const resp = await Fetch(`/points/journal${query}`, {
     method: 'GET',
     headers: HEADERS(),
   })
@@ -1272,6 +1275,7 @@ export {
   GetGameRules,
   GetGamesToday,
   GetGamesWeek,
+  GetJournal,
   GetLabels,
   GetLearnCatalogue,
   GetLearnDetail,
@@ -1280,7 +1284,6 @@ export {
   GetLearnStats,
   GetLongLiveTokens,
   GetMFAStatus,
-  GetPointsHistory,
   GetPointsPresets,
   GetQuests,
   GetRanks,
