@@ -163,6 +163,7 @@ func main() {
 			gamesAPI.Routes,
 			gamesAPI.APIs,
 			learnAPI.Routes,
+			learnAPI.PlayRoutes,
 
 			storage.Routes,
 			frontend.Routes,

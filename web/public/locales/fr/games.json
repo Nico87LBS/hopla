@@ -114,7 +114,9 @@
     "kind": {
       "tasks": "Faire des tâches",
       "points": "Gagner des {{units}}",
-      "streak": "Tenir une série"
+      "streak": "Tenir une série",
+      "games": "Jouer à Apprendre",
+      "stars": "Gagner des étoiles à Apprendre"
     },
     "anyTask": "N'importe quelle tâche",
     "target": "Objectif",
@@ -130,7 +132,16 @@
     "streak_one": "Série de {{count}} jour",
     "streak_other": "Série de {{count}} jours",
     "reward_one": "+{{count}} {{unit}}",
-    "reward_other": "+{{count}} {{units}}"
+    "reward_other": "+{{count}} {{units}}",
+    "allGames": "Tous les jeux",
+    "games_one": "{{count}} partie à Apprendre",
+    "games_other": "{{count}} parties à Apprendre",
+    "gamesIn_one": "{{count}} partie de « {{name}} »",
+    "gamesIn_other": "{{count}} parties de « {{name}} »",
+    "stars_one": "{{count}} étoile à Apprendre",
+    "stars_other": "{{count}} étoiles à Apprendre",
+    "starsIn_one": "{{count}} étoile en « {{name}} »",
+    "starsIn_other": "{{count}} étoiles en « {{name}} »"
   },
   "ranks": {
     "title": "Rangs",

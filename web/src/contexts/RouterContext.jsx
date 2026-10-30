@@ -25,6 +25,7 @@ import { LearnChooser, LearnHome } from '../views/Learn/LearnHome'
 import LearnPlay from '../views/Learn/LearnPlay'
 import LearnStats from '../views/Learn/LearnStats'
 import ManageLearn, { LearnCatalogue } from '../views/Learn/ManageLearn'
+import { PlayGame, PlayHome, PlayStart } from '../views/Learn/PlayPages'
 import ManageView from '../views/Manage/ManageView'
 import {
   ManageAccount,
@@ -47,6 +48,15 @@ const PointsRedirect = () => {
 }
 
 const Router = createBrowserRouter([
+  // The play pages stand outside the app: the family screen opens them
+  // signed in as nobody, so nothing there may ask for the account.
+  { path: '/play', element: <PlayHome />, errorElement: <Error /> },
+  { path: '/play/:code', element: <PlayStart />, errorElement: <Error /> },
+  {
+    path: '/play/:userId/:moduleId',
+    element: <PlayGame />,
+    errorElement: <Error />,
+  },
   {
     path: '/',
     element: <App />,

@@ -114,7 +114,9 @@
     "kind": {
       "tasks": "Do tasks",
       "points": "Earn {{units}}",
-      "streak": "Keep a streak"
+      "streak": "Keep a streak",
+      "games": "Play Learn games",
+      "stars": "Win Learn stars"
     },
     "anyTask": "Any task",
     "target": "Target",
@@ -130,7 +132,16 @@
     "streak_one": "{{count}}-day streak",
     "streak_other": "{{count}}-day streak",
     "reward_one": "+{{count}} {{unit}}",
-    "reward_other": "+{{count}} {{units}}"
+    "reward_other": "+{{count}} {{units}}",
+    "allGames": "Every game",
+    "games_one": "{{count}} Learn game",
+    "games_other": "{{count}} Learn games",
+    "gamesIn_one": "{{count}} game of “{{name}}”",
+    "gamesIn_other": "{{count}} games of “{{name}}”",
+    "stars_one": "{{count}} Learn star",
+    "stars_other": "{{count}} Learn stars",
+    "starsIn_one": "{{count}} star in “{{name}}”",
+    "starsIn_other": "{{count}} stars in “{{name}}”"
   },
   "ranks": {
     "title": "Ranks",

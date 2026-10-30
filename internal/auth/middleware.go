@@ -30,6 +30,12 @@ func CurrentUser(c *gin.Context) (*uModel.UserDetails, bool) {
 	return acc, ok
 }
 
+// SetCurrentUser makes user the current user of the request, for a session
+// that is not a sign-in, such as a child's play session.
+func SetCurrentUser(c *gin.Context, user *uModel.UserDetails) {
+	c.Set(identityKey, user)
+}
+
 func MustCurrentUser(c *gin.Context) *uModel.UserDetails {
 	acc, ok := CurrentUser(c)
 	if ok {

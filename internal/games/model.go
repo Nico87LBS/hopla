@@ -101,7 +101,13 @@ const (
 	GoalTasks  = "tasks"  // complete tasks, or one given task, Target times
 	GoalPoints = "points" // earn Target points with tasks
 	GoalStreak = "streak" // reach a streak of Target days (quests only)
+	GoalGames  = "games"  // play Target learning games, of every pack or of Module
+	GoalStars  = "stars"  // win Target stars in learning games, of every pack or of Module
 )
+
+// IsLearnGoal tells whether a goal counts learning games, which can name a
+// module or a pack.
+func IsLearnGoal(kind string) bool { return kind == GoalGames || kind == GoalStars }
 
 // Quest periods.
 const (
@@ -118,9 +124,12 @@ type Quest struct {
 	Name     string `json:"name" gorm:"column:name;not null"`
 	Kind     string `json:"kind" gorm:"column:kind;not null"`
 	ChoreID  *int   `json:"choreId" gorm:"column:chore_id"`
-	Target   int    `json:"target" gorm:"column:target;not null"`
-	Reward   int    `json:"reward" gorm:"column:reward;not null"`
-	Period   string `json:"period" gorm:"column:period;not null"`
+	// Module is the learning module or pack a learn goal counts, empty for
+	// all of them.
+	Module string `json:"module" gorm:"column:module_key;size:80"`
+	Target int    `json:"target" gorm:"column:target;not null"`
+	Reward int    `json:"reward" gorm:"column:reward;not null"`
+	Period string `json:"period" gorm:"column:period;not null"`
 	// Members who can draw it, such as the younger child only. Empty means
 	// every member.
 	UserIDs   []int     `json:"userIds" gorm:"column:user_ids;type:text;serializer:json"`
@@ -141,6 +150,7 @@ type QuestDraw struct {
 	Name        string     `json:"name" gorm:"column:name;not null"`
 	Kind        string     `json:"kind" gorm:"column:kind;not null"`
 	ChoreID     *int       `json:"choreId" gorm:"column:chore_id"`
+	Module      string     `json:"module" gorm:"column:module_key;size:80"`
 	Target      int        `json:"target" gorm:"column:target;not null"`
 	Reward      int        `json:"reward" gorm:"column:reward;not null"`
 	CompletedAt *time.Time `json:"completedAt" gorm:"column:completed_at"`
@@ -157,6 +167,7 @@ type Challenge struct {
 	Name     string `json:"name" gorm:"column:name;not null"`
 	Kind     string `json:"kind" gorm:"column:kind;not null"`
 	ChoreID  *int   `json:"choreId" gorm:"column:chore_id"`
+	Module   string `json:"module" gorm:"column:module_key;size:80"`
 	Target   int    `json:"target" gorm:"column:target;not null"`
 	// Reward is the points each winner gets; RewardText is a reward outside
 	// the game, such as "Sortie piscine".
