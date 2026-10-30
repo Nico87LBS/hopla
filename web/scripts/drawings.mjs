@@ -565,8 +565,8 @@ const DRAWINGS = {
   egg:
     shape(
       'M50 16 C66 16 76 42 76 58 C76 74 64 84 50 84 C36 84 24 74 24 58 C24 42 34 16 50 16Z',
-      '#FFF3D6',
-    ) + flat('M36 40 C38 30 44 24 48 24 C44 30 40 36 40 46Z', '#fff', 0.9),
+      '#fff',
+    ) + flat('M70 52 C72 68 64 80 50 82 C62 76 68 66 66 50Z', '#E6E1F0'),
   cheese:
     shape('M14 60 L74 28 C82 32 86 40 86 48 L86 74 L14 74Z', '#FFD23F') +
     line('M14 60 L86 48', 1.6) +
@@ -884,9 +884,7 @@ const groupOf = id => {
 
 mkdirSync(out, { recursive: true })
 for (const [id, body] of Object.entries(DRAWINGS)) {
-  // White paint needs a darker ground to show.
-  const background =
-    id === 'colour-white' ? '#CFC8E3' : BACKGROUNDS[groupOf(id)] || '#F4F1FA'
+  const background = BACKGROUNDS[groupOf(id)] || '#F4F1FA'
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="256" height="256"><circle cx="50" cy="50" r="49" fill="${background}"/>${body}</svg>\n`
   writeFileSync(new URL(`${id}.svg`, out), svg)
 }
