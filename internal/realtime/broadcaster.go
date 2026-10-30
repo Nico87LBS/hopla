@@ -25,7 +25,7 @@ func NewEventBroadcaster(service *RealTimeService, config *config.Config) *Event
 }
 
 // broadcastChoreEvent enforces the same visibility boundary as the API: private
-// chores go only to their creator and assignees, public chores remain circle-wide.
+// chores go only to their creator and assignees, public chores remain family-wide.
 func (b *EventBroadcaster) broadcastChoreEvent(chore *chModel.Chore, event *Event) {
 	if chore.IsPrivate {
 		recipients := []int{chore.CreatedBy}
@@ -35,24 +35,24 @@ func (b *EventBroadcaster) broadcastChoreEvent(chore *chModel.Chore, event *Even
 		for _, assignee := range chore.Assignees {
 			recipients = append(recipients, assignee.UserID)
 		}
-		b.service.BroadcastToUsers(chore.CircleID, recipients, event)
+		b.service.BroadcastToUsers(chore.FamilyID, recipients, event)
 		return
 	}
-	b.service.BroadcastToCircle(chore.CircleID, event)
+	b.service.BroadcastToFamily(chore.FamilyID, event)
 }
 
 // BroadcastChoreAccessRevoked tells users who just lost sight of a chore to drop it,
 // using the regular deletion event so older clients handle it too. versions maps
 // each user to the sync version of their tombstone.
-func (b *EventBroadcaster) BroadcastChoreAccessRevoked(circleID, choreID int, choreName string, user *uModel.User, versions map[int]int64) {
+func (b *EventBroadcaster) BroadcastChoreAccessRevoked(familyID, choreID int, choreName string, user *uModel.User, versions map[int]int64) {
 	if !b.service.config.Enabled {
 		return
 	}
 	for userID, version := range versions {
-		event := NewChoreDeletedEvent(choreID, choreName, circleID, user)
+		event := NewChoreDeletedEvent(choreID, choreName, familyID, user)
 		event.ID = b.generateEventID()
 		event.SyncVersion = version
-		b.service.BroadcastToUsers(circleID, []int{userID}, event)
+		b.service.BroadcastToUsers(familyID, []int{userID}, event)
 	}
 }
 
@@ -88,7 +88,7 @@ func (b *EventBroadcaster) BroadcastChoreDeleted(chore *chModel.Chore, user *uMo
 		return
 	}
 
-	event := NewChoreDeletedEvent(chore.ID, chore.Name, chore.CircleID, user)
+	event := NewChoreDeletedEvent(chore.ID, chore.Name, chore.FamilyID, user)
 	event.ID = b.generateEventID()
 	event.SyncVersion = syncVersion
 
@@ -107,19 +107,6 @@ func (b *EventBroadcaster) BroadcastChoreCompleted(chore *chModel.Chore, user *u
 	if history != nil && history.SyncVersion > event.SyncVersion {
 		event.SyncVersion = history.SyncVersion
 	}
-
-	b.broadcastChoreEvent(chore, event)
-}
-
-// BroadcastChoreStarted broadcasts a chore start event
-func (b *EventBroadcaster) BroadcastChoreStatus(chore *chModel.Chore, user *uModel.User, changes map[string]interface{}) {
-	if !b.service.config.Enabled {
-		return
-	}
-
-	event := NewChoreStatusChangedEvent(chore, user, changes, nil)
-	event.ID = b.generateEventID()
-	event.SyncVersion = chore.SyncVersion
 
 	b.broadcastChoreEvent(chore, event)
 }
@@ -146,7 +133,7 @@ func (b *EventBroadcaster) BroadcastSubtaskUpdated(chore *chModel.Chore, subtask
 		return
 	}
 
-	event := NewSubtaskUpdatedEvent(chore.ID, subtaskID, completedAt, user, chore.CircleID)
+	event := NewSubtaskUpdatedEvent(chore.ID, subtaskID, completedAt, user, chore.FamilyID)
 	event.ID = b.generateEventID()
 	event.SyncVersion = syncVersion
 
@@ -159,7 +146,7 @@ func (b *EventBroadcaster) BroadcastSubtaskCompleted(chore *chModel.Chore, subta
 		return
 	}
 
-	event := NewSubtaskCompletedEvent(chore.ID, subtaskID, completedAt, user, chore.CircleID)
+	event := NewSubtaskCompletedEvent(chore.ID, subtaskID, completedAt, user, chore.FamilyID)
 	event.ID = b.generateEventID()
 	event.SyncVersion = syncVersion
 
@@ -173,16 +160,16 @@ func (b *EventBroadcaster) generateEventID() string {
 	return hex.EncodeToString(bytes)
 }
 
-// BroadcastChange announces a change event. recipients nil means the whole circle.
-func (b *EventBroadcaster) BroadcastChange(circleID int, recipients []int, eventType EventType, userID int) {
+// BroadcastChange announces a change event. recipients nil means the whole family.
+func (b *EventBroadcaster) BroadcastChange(familyID int, recipients []int, eventType EventType, userID int) {
 	if !b.service.config.Enabled {
 		return
 	}
-	event := NewEvent(eventType, circleID, &ChangeEventData{UserID: userID})
+	event := NewEvent(eventType, familyID, &ChangeEventData{UserID: userID})
 	event.ID = b.generateEventID()
 	if recipients == nil {
-		b.service.BroadcastToCircle(circleID, event)
+		b.service.BroadcastToFamily(familyID, event)
 		return
 	}
-	b.service.BroadcastToUsers(circleID, recipients, event)
+	b.service.BroadcastToUsers(familyID, recipients, event)
 }

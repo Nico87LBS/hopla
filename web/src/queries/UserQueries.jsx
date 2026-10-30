@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { setFamilyCurrency } from '../utils/currency'
 import { setFamilyTimezone } from '../utils/familyTime'
 import {
-  GetAllCircleMembers,
+  GetAllFamilyMembers,
   GetAllUsers,
   GetChildUsers,
   GetFamilyCurrency,
@@ -33,34 +33,34 @@ export const useAllUsers = () => {
   })
 }
 
-export const useCircleMembers = () => {
+export const useFamilyMembers = () => {
   const queryClient = useQueryClient()
   const token = localStorage.getItem('token')
 
   const { data, error, isLoading } = useQuery({
-    queryKey: ['allCircleMembers'],
+    queryKey: ['allFamilyMembers'],
     queryFn: async () => {
       try {
-        const result = await GetAllCircleMembers()
+        const result = await GetAllFamilyMembers()
         // Cache for offline use
         if (result?.res) {
-          offlineDB.saveKV('circle_members', result.res).catch(() => {})
+          offlineDB.saveKV('family_members', result.res).catch(() => {})
         }
         return result
       } catch {
-        const cached = await offlineDB.getKV('circle_members')
+        const cached = await offlineDB.getKV('family_members')
         if (cached) return { res: cached }
         return { res: [] }
       }
     },
     // NavBar's avatar mounts this on every route, including the signed-out
     // ones. Without the gate the 401 tips ApiClient into a forced logout that
-    // hard-navigates to /login — which is what used to eat circle invites.
+    // hard-navigates to /login — which is what used to eat family invites.
     enabled: !!token,
   })
 
   const handleRefetch = () => {
-    queryClient.invalidateQueries({ queryKey: ['allCircleMembers'] })
+    queryClient.invalidateQueries({ queryKey: ['allFamilyMembers'] })
   }
 
   return { data, error, isLoading, handleRefetch }
@@ -73,7 +73,7 @@ export const useSetMemberAway = () => {
   return useMutation({
     mutationFn: ({ away, memberId }) => SetMemberAway(memberId, away),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['allCircleMembers'] })
+      queryClient.invalidateQueries({ queryKey: ['allFamilyMembers'] })
       queryClient.invalidateQueries({ queryKey: ['chores'] })
       queryClient.invalidateQueries({ queryKey: ['games'] })
     },

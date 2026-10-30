@@ -30,31 +30,31 @@ func Init(database *gorm.DB) {
 func Server() *time.Location { return time.Local }
 
 // Of returns a family's zone.
-func Of(circleID int) *time.Location {
+func Of(familyID int) *time.Location {
 	mu.RLock()
-	loc, ok := cache[circleID]
+	loc, ok := cache[familyID]
 	database := db
 	mu.RUnlock()
 	if ok {
 		return loc
 	}
 	loc = Server()
-	if database != nil && circleID != 0 {
+	if database != nil && familyID != 0 {
 		var name string
-		if err := database.Table("circles").Select("timezone").Where("id = ?", circleID).Scan(&name).Error; err == nil {
+		if err := database.Table("families").Select("timezone").Where("id = ?", familyID).Scan(&name).Error; err == nil {
 			if l, err := Load(name); err == nil && l != nil {
 				loc = l
 			}
 		}
 		mu.Lock()
-		cache[circleID] = loc
+		cache[familyID] = loc
 		mu.Unlock()
 	}
 	return loc
 }
 
 // Name returns the IANA name of a family's zone.
-func Name(circleID int) string { return NameOf(Of(circleID)) }
+func Name(familyID int) string { return NameOf(Of(familyID)) }
 
 // NameOf returns the IANA name of a zone; the server's zone has the name of
 // TZ, "UTC" when unset.
@@ -74,19 +74,19 @@ func Load(name string) (*time.Location, error) {
 }
 
 // Set records a family's zone; nil is the server's.
-func Set(circleID int, loc *time.Location) {
+func Set(familyID int, loc *time.Location) {
 	if loc == nil {
 		loc = Server()
 	}
 	mu.Lock()
-	cache[circleID] = loc
+	cache[familyID] = loc
 	mu.Unlock()
 }
 
 // Forget drops a family's cached zone after it changed.
-func Forget(circleID int) {
+func Forget(familyID int) {
 	mu.Lock()
-	delete(cache, circleID)
+	delete(cache, familyID)
 	mu.Unlock()
 }
 

@@ -212,7 +212,7 @@ func scheduleNextDueDate(ctx context.Context, chore *chModel.Chore, completedDat
 // its family's. The zone saved with the chore only tells how to read the time
 // of day saved with it.
 func choreLocation(chore *chModel.Chore) *time.Location {
-	return zone.Of(chore.CircleID)
+	return zone.Of(chore.FamilyID)
 }
 
 // toUTC normalises a computed due date to UTC for storage, passing through

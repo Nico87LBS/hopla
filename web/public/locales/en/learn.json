@@ -67,7 +67,6 @@
     "cap": "{{Units}} a day",
     "unlock": "Opening (%)",
     "moduleOwn": "Module",
-    "hopsUnit": "{{units}}",
     "catalogue": "Catalogue",
     "catalogueHelp": "The modules that come with Hopla. A pack installs all its modules.",
     "modulesCount_one": "{{count}} module",

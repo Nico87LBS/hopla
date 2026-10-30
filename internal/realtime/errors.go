@@ -13,8 +13,8 @@ var (
 
 	// Connection errors
 	ErrConnectionClosed   = errors.New("connection is closed")
-	ErrInvalidCircleID    = errors.New("invalid circle ID")
-	ErrUnauthorizedCircle = errors.New("user not authorized for circle")
+	ErrInvalidFamilyID    = errors.New("invalid family ID")
+	ErrUnauthorizedFamily = errors.New("user not authorized for family")
 	ErrInvalidEventType   = errors.New("invalid event type")
 
 	// Authentication errors

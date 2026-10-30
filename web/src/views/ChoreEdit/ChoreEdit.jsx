@@ -55,10 +55,10 @@ import {
   useUnArchiveChore,
   useUpdateChore,
 } from '../../queries/ChoreQueries.jsx'
-import { useCircleMembers, useUserProfile } from '../../queries/UserQueries.jsx'
+import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries.jsx'
 import { useNotification } from '../../service/NotificationProvider'
 import { familyTimezone } from '../../utils/familyTime'
-import { GetAllCircleMembers, GetChoreByID } from '../../utils/Fetcher'
+import { GetAllFamilyMembers, GetChoreByID } from '../../utils/Fetcher'
 import { withRepeatTime } from '../../utils/repeatTime.js'
 import { getSafeBottomPadding } from '../../utils/SafeAreaUtils.js'
 import {
@@ -199,7 +199,7 @@ const ChoreEdit = () => {
     refetch: refetchChore,
   } = useChore(choreId)
   const { data: membersData, isLoading: isMemberDataLoading } =
-    useCircleMembers()
+    useFamilyMembers()
   const { showError, showSuccess } = useNotification()
 
   const [userLabels, setUserLabels] = useState([])
@@ -666,7 +666,7 @@ const ChoreEdit = () => {
   }
   useEffect(() => {
     //fetch performers:
-    GetAllCircleMembers().then(data => {
+    GetAllFamilyMembers().then(data => {
       setPerformers(data.res)
     })
 

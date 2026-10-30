@@ -73,10 +73,6 @@ func parseLogLevel(level string) zapcore.Level {
 	}
 }
 
-func SetLevel(l zapcore.Level) {
-	conf.Level = l
-}
-
 // NewLogger creates a new logger with the given log level
 func NewLogger(conf *Config) *zap.SugaredLogger {
 	ec := zap.NewProductionEncoderConfig()

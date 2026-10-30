@@ -25,7 +25,7 @@ type visibilityDelta struct {
 //     client that syncs the revocation and the re-grant together keeps the chore.
 //
 // It returns, per chore and revoked user, the version of the chore tombstone.
-func (r *ChoreRepository) applyVisibilityDeltas(ctx context.Context, tx *gorm.DB, circleID int, deltas []visibilityDelta) (map[int]map[int]int64, error) {
+func (r *ChoreRepository) applyVisibilityDeltas(ctx context.Context, tx *gorm.DB, familyID int, deltas []visibilityDelta) (map[int]map[int]int64, error) {
 	revocations := map[int]map[int]int64{}
 	if len(deltas) == 0 {
 		return revocations, nil
@@ -55,7 +55,7 @@ func (r *ChoreRepository) applyVisibilityDeltas(ctx context.Context, tx *gorm.DB
 	nextVersion := int64(0)
 	if versionsNeeded > 0 {
 		var err error
-		nextVersion, err = r.nextSyncVersionRangeWithDB(ctx, tx, circleID, versionsNeeded)
+		nextVersion, err = r.nextSyncVersionRangeWithDB(ctx, tx, familyID, versionsNeeded)
 		if err != nil {
 			return nil, err
 		}
@@ -71,13 +71,13 @@ func (r *ChoreRepository) applyVisibilityDeltas(ctx context.Context, tx *gorm.DB
 			}
 			revocations[d.choreID][user] = nextVersion
 			tombstones = append(tombstones, syncModel.Tombstone{
-				CircleID: circleID, EntityType: syncModel.EntityTypeChore, EntityID: d.choreID,
+				FamilyID: familyID, EntityType: syncModel.EntityTypeChore, EntityID: d.choreID,
 				UserID: &user, SyncVersion: nextVersion,
 			})
 			nextVersion++
 			for _, historyID := range historyIDs {
 				tombstones = append(tombstones, syncModel.Tombstone{
-					CircleID: circleID, EntityType: syncModel.EntityTypeChoreHistory, EntityID: historyID,
+					FamilyID: familyID, EntityType: syncModel.EntityTypeChoreHistory, EntityID: historyID,
 					UserID: &user, SyncVersion: nextVersion,
 				})
 				nextVersion++
@@ -92,13 +92,13 @@ func (r *ChoreRepository) applyVisibilityDeltas(ctx context.Context, tx *gorm.DB
 				nextVersion++
 			}
 			if err := tx.WithContext(ctx).
-				Where("circle_id = ? AND entity_type = ? AND entity_id = ? AND user_id IN ?", circleID, syncModel.EntityTypeChore, d.choreID, d.granted).
+				Where("family_id = ? AND entity_type = ? AND entity_id = ? AND user_id IN ?", familyID, syncModel.EntityTypeChore, d.choreID, d.granted).
 				Delete(&syncModel.Tombstone{}).Error; err != nil {
 				return nil, err
 			}
 			if len(historyIDs) > 0 {
 				if err := tx.WithContext(ctx).
-					Where("circle_id = ? AND entity_type = ? AND entity_id IN ? AND user_id IN ?", circleID, syncModel.EntityTypeChoreHistory, historyIDs, d.granted).
+					Where("family_id = ? AND entity_type = ? AND entity_id IN ? AND user_id IN ?", familyID, syncModel.EntityTypeChoreHistory, historyIDs, d.granted).
 					Delete(&syncModel.Tombstone{}).Error; err != nil {
 					return nil, err
 				}
@@ -113,11 +113,11 @@ func (r *ChoreRepository) applyVisibilityDeltas(ctx context.Context, tx *gorm.DB
 	return revocations, nil
 }
 
-// TombstoneChoresLeavingCircle records circle-wide tombstones for chores (and
-// their history) that were moved out of circleID, e.g. when their creator leaves
-// the circle and takes them along. Without them, the devices of the remaining
+// TombstoneChoresLeavingFamily records family-wide tombstones for chores (and
+// their history) that were moved out of familyID, e.g. when their creator leaves
+// the family and takes them along. Without them, the devices of the remaining
 // members would keep showing the moved chores until their cache is rebuilt.
-func (r *ChoreRepository) TombstoneChoresLeavingCircle(ctx context.Context, circleID int, choreIDs []int) error {
+func (r *ChoreRepository) TombstoneChoresLeavingFamily(ctx context.Context, familyID int, choreIDs []int) error {
 	if len(choreIDs) == 0 {
 		return nil
 	}
@@ -127,17 +127,17 @@ func (r *ChoreRepository) TombstoneChoresLeavingCircle(ctx context.Context, circ
 			Order("id asc").Pluck("id", &historyIDs).Error; err != nil {
 			return err
 		}
-		next, err := r.nextSyncVersionRangeWithDB(ctx, tx, circleID, len(choreIDs)+len(historyIDs))
+		next, err := r.nextSyncVersionRangeWithDB(ctx, tx, familyID, len(choreIDs)+len(historyIDs))
 		if err != nil {
 			return err
 		}
 		tombstones := make([]syncModel.Tombstone, 0, len(choreIDs)+len(historyIDs))
 		for _, id := range choreIDs {
-			tombstones = append(tombstones, syncModel.Tombstone{CircleID: circleID, EntityType: syncModel.EntityTypeChore, EntityID: id, SyncVersion: next})
+			tombstones = append(tombstones, syncModel.Tombstone{FamilyID: familyID, EntityType: syncModel.EntityTypeChore, EntityID: id, SyncVersion: next})
 			next++
 		}
 		for _, id := range historyIDs {
-			tombstones = append(tombstones, syncModel.Tombstone{CircleID: circleID, EntityType: syncModel.EntityTypeChoreHistory, EntityID: id, SyncVersion: next})
+			tombstones = append(tombstones, syncModel.Tombstone{FamilyID: familyID, EntityType: syncModel.EntityTypeChoreHistory, EntityID: id, SyncVersion: next})
 			next++
 		}
 		return tx.WithContext(ctx).CreateInBatches(&tombstones, 200).Error

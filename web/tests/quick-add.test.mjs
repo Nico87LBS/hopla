@@ -16,7 +16,7 @@ const grammar = lang =>
     .quickAdd
 
 const repeatOf = (sentence, lang) => {
-  const { result, cleanedSentence } = parseRepeatV2(sentence, grammar(lang))
+  const { cleanedSentence, result } = parseRepeatV2(sentence, grammar(lang))
   return result && { ...result.frequencyMetadata, ...result, cleanedSentence }
 }
 

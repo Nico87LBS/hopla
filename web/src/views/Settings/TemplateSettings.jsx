@@ -15,7 +15,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { useCircleMembers, useUserProfile } from '../../queries/UserQueries'
+import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries'
 import { useNotification } from '../../service/NotificationProvider'
 import {
   CreateChore,
@@ -176,7 +176,7 @@ const PlanLine = ({ label, part }) => {
 const ImportCard = () => {
   const { t } = useTranslation('settings')
   const queryClient = useQueryClient()
-  const { data: membersData } = useCircleMembers()
+  const { data: membersData } = useFamilyMembers()
   const members = useMemo(
     () => (membersData?.res || []).filter(m => m.isActive !== false),
     [membersData?.res],

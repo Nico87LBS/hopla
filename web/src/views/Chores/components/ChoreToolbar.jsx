@@ -115,7 +115,7 @@ const OptionChips = ({ multi, onToggle, options, selected }) => (
 /**
  * Props:
  *  -- Advanced filter (filter sheet) --
- *  members           – circle members for Assignee / Created By sections
+ *  members           – family members for Assignee / Created By sections
  *  labels            – user labels for Labels section
  *  tempFilter        – current temp filter object { conditions, operator } or null
  *  tempFilterMeta    – metadata for temp filter, including saved-filter edit source when applicable

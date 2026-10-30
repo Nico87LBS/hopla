@@ -11,7 +11,7 @@ type PointsHistory struct {
 	CreatedAt time.Time           `json:"created_at" gorm:"column:created_at"`     // Created at
 	CreatedBy int                 `json:"created_by" gorm:"column:created_by"`     // Created by
 	UserID    int                 `json:"user_id" gorm:"column:user_id;index"`     // User ID
-	CircleID  int                 `json:"circle_id" gorm:"column:circle_id;index"` // Circle ID with index
+	FamilyID  int                 `json:"family_id" gorm:"column:family_id;index"` // Family ID with index
 	// Why the points moved: the task, the reward, or a parent's own words.
 	Reason   *string `json:"reason,omitempty" gorm:"column:reason"`
 	ChoreID  *int    `json:"chore_id,omitempty" gorm:"column:chore_id"`
@@ -58,7 +58,7 @@ const (
 // being asked" or "-3 Forgot the dishes", that parents pick with one tap.
 type PointsPreset struct {
 	ID        int       `json:"id" gorm:"primary_key"`
-	CircleID  int       `json:"circleId" gorm:"column:circle_id;index"`
+	FamilyID  int       `json:"familyId" gorm:"column:family_id;index"`
 	Name      string    `json:"name" gorm:"column:name"`
 	Points    int       `json:"points" gorm:"column:points"` // positive for a bonus, negative for a penalty
 	CreatedAt time.Time `json:"createdAt" gorm:"column:created_at"`

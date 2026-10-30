@@ -161,7 +161,7 @@ class ApiClient {
     // way to /login. Stash it first so sign-in returns to the join.
     try {
       const { pathname, search } = window.location
-      if (pathname === '/circle/join') {
+      if (pathname === '/family/join') {
         const code = new URLSearchParams(search).get('code')
         if (code) {
           const { setPendingInvite } = await import('./PendingInvite')

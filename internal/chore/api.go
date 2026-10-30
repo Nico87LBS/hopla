@@ -17,7 +17,7 @@ import (
 	limiter "github.com/ulule/limiter/v3"
 
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
-	cRepo "github.com/nico87lbs/hopla/internal/circle/repo"
+	fRepo "github.com/nico87lbs/hopla/internal/family/repo"
 	"github.com/nico87lbs/hopla/internal/storage"
 	stRepo "github.com/nico87lbs/hopla/internal/subtask/repo"
 	uRepo "github.com/nico87lbs/hopla/internal/user/repo"
@@ -26,17 +26,17 @@ import (
 type API struct {
 	choreRepo  *chRepo.ChoreRepository
 	userRepo   *uRepo.UserRepository
-	circleRepo *cRepo.CircleRepository
+	familyRepo *fRepo.FamilyRepository
 	stRepo     *stRepo.SubTasksRepository
 	handler    *Handler
 	signer     storage.URLSigner
 }
 
-func NewAPI(cr *chRepo.ChoreRepository, userRepo *uRepo.UserRepository, circleRepo *cRepo.CircleRepository, stRepo *stRepo.SubTasksRepository, handler *Handler, signer storage.URLSigner) *API {
+func NewAPI(cr *chRepo.ChoreRepository, userRepo *uRepo.UserRepository, familyRepo *fRepo.FamilyRepository, stRepo *stRepo.SubTasksRepository, handler *Handler, signer storage.URLSigner) *API {
 	return &API{
 		choreRepo:  cr,
 		userRepo:   userRepo,
-		circleRepo: circleRepo,
+		familyRepo: familyRepo,
 		stRepo:     stRepo,
 		handler:    handler,
 		signer:     signer,
@@ -52,7 +52,7 @@ func (h *API) GetAllChores(c *gin.Context) {
 		includeSubtasks = true
 	}
 
-	chores, err := h.choreRepo.GetChores(c, user.CircleID, user.ID, false, nil, includeSubtasks)
+	chores, err := h.choreRepo.GetChores(c, user.FamilyID, user.ID, false, nil, includeSubtasks)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
@@ -101,18 +101,18 @@ func (h *API) CreateChore(c *gin.Context) {
 		}
 		nextDueDate = &parsedDate
 	}
-	// get all circle members:
-	circleUsers, err := h.circleRepo.GetCircleUsers(c, user.CircleID)
+	// get all family members:
+	familyUsers, err := h.familyRepo.GetFamilyUsers(c, user.FamilyID)
 	if err != nil {
-		log.Errorw("chore.api.CreateChore failed to get circle users", "error", err)
-		c.JSON(500, gin.H{"error": "Failed to get circle members"})
+		log.Errorw("chore.api.CreateChore failed to get family users", "error", err)
+		c.JSON(500, gin.H{"error": "Failed to get family members"})
 		return
 	}
 	createdBy := user.ID
 	if choreRequest.CreatedBy != nil {
-		// Check if the specified user exists in the circle
+		// Check if the specified user exists in the family
 		var found bool
-		for _, u := range circleUsers {
+		for _, u := range familyUsers {
 			if u.UserID == *choreRequest.CreatedBy {
 				found = true
 				createdBy = u.UserID
@@ -120,15 +120,15 @@ func (h *API) CreateChore(c *gin.Context) {
 			}
 		}
 		if !found {
-			log.Errorw("chore.api.CreateChore specified user not found in circle", "userID", *choreRequest.CreatedBy)
-			c.JSON(400, gin.H{"error": "Specified user not found in circle"})
+			log.Errorw("chore.api.CreateChore specified user not found in family", "userID", *choreRequest.CreatedBy)
+			c.JSON(400, gin.H{"error": "Specified user not found in family"})
 			return
 		}
 	}
 
 	chore := &chModel.Chore{
 		CreatedBy:     createdBy,
-		CircleID:      user.CircleID,
+		FamilyID:      user.FamilyID,
 		Name:          choreRequest.Name,
 		IsActive:      true,
 		FrequencyType: chModel.FrequencyTypeOnce,
@@ -148,7 +148,7 @@ func (h *API) CreateChore(c *gin.Context) {
 	}
 
 	// Fetch the created chore with all relations
-	createdChore, err := h.choreRepo.GetChore(c, id, user.ID, user.CircleID)
+	createdChore, err := h.choreRepo.GetChore(c, id, user.ID, user.FamilyID)
 	if err != nil {
 		log.Errorw("chore.api.CreateChore failed to fetch created chore", "error", err)
 		c.JSON(500, gin.H{"error": "Error fetching created chore"})
@@ -178,24 +178,24 @@ func (h *API) UpdateChore(c *gin.Context) {
 	}
 
 	// Get existing chore
-	existingChore, err := h.choreRepo.GetChore(c, choreID, user.ID, user.CircleID)
+	existingChore, err := h.choreRepo.GetChore(c, choreID, user.ID, user.FamilyID)
 	if err != nil {
 		log.Errorw("chore.api.UpdateChore failed to get chore", "error", err)
 		c.JSON(404, gin.H{"error": "Chore not found"})
 		return
 	}
-	// get circle members:
-	circleUsers, err := h.circleRepo.GetCircleUsers(c, user.CircleID)
+	// get family members:
+	familyUsers, err := h.familyRepo.GetFamilyUsers(c, user.FamilyID)
 	if err != nil {
-		log.Errorw("chore.api.UpdateChore failed to get circle users", "error", err)
-		c.JSON(500, gin.H{"error": "Failed to get circle members"})
+		log.Errorw("chore.api.UpdateChore failed to get family users", "error", err)
+		c.JSON(500, gin.H{"error": "Failed to get family members"})
 		return
 	}
 	// Match external API delete permissions. Partial updates do not supply a
 	// client updatedAt value, so the web editor's stale-data check does not apply.
-	if existingChore.CreatedBy != user.ID && !user.IsAdminOrManager(circleUsers) {
-		log.Debugw("chore.api.UpdateChore edit denied", "userID", user.ID, "circleID", user.CircleID, "choreCreatedBy", existingChore.CreatedBy)
-		c.JSON(403, gin.H{"error": "Only the chore creator or a circle admin/manager can update this chore"})
+	if existingChore.CreatedBy != user.ID && !user.IsAdminOrManager(familyUsers) {
+		log.Debugw("chore.api.UpdateChore edit denied", "userID", user.ID, "familyID", user.FamilyID, "choreCreatedBy", existingChore.CreatedBy)
+		c.JSON(403, gin.H{"error": "Only the chore creator or a family admin/manager can update this chore"})
 		return
 	}
 
@@ -252,7 +252,7 @@ func (h *API) UpdateChore(c *gin.Context) {
 	}
 
 	// Fetch the updated chore
-	updatedChore, err := h.choreRepo.GetChore(c, choreID, user.ID, user.CircleID)
+	updatedChore, err := h.choreRepo.GetChore(c, choreID, user.ID, user.FamilyID)
 	if err != nil {
 		log.Errorw("chore.api.UpdateChore failed to fetch updated chore", "error", err)
 		c.JSON(500, gin.H{"error": "Error fetching updated chore"})
@@ -283,7 +283,7 @@ func (h *API) CompleteChore(c *gin.Context) {
 		log.Debugw("chore.api.CompleteChore completedBy is set", "completedBy", completedBy)
 		performer = completedBy
 	}
-	chore, err := h.choreRepo.GetChore(c, choreID, currentUser.ID, currentUser.CircleID)
+	chore, err := h.choreRepo.GetChore(c, choreID, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		log.Errorw("chore.api.CompleteChore failed to get chore", "error", err)
 		c.JSON(500, gin.H{
@@ -293,15 +293,15 @@ func (h *API) CompleteChore(c *gin.Context) {
 	}
 
 	// user need to be assigned to the chore to complete it
-	circleUsers, err := h.circleRepo.GetCircleUsers(c, currentUser.CircleID)
+	familyUsers, err := h.familyRepo.GetFamilyUsers(c, currentUser.FamilyID)
 	if err != nil {
-		log.Errorw("Failed to retrieve circle users", "error", err)
+		log.Errorw("Failed to retrieve family users", "error", err)
 		c.JSON(500, gin.H{
-			"error": "Failed to retrieve circle users",
+			"error": "Failed to retrieve family users",
 		})
 		return
 	}
-	if !chore.CanComplete(performer, circleUsers) {
+	if !chore.CanComplete(performer, familyUsers) {
 		log.Debugw("chore.api.CompleteChore user is not assigned to chore", "userID", performer, "choreID", choreID)
 		c.JSON(400, gin.H{
 			"error": "User is not assigned to chore",
@@ -316,7 +316,7 @@ func (h *API) CompleteChore(c *gin.Context) {
 			slotError(c, err)
 			return
 		}
-		updatedChore, err := h.choreRepo.GetChore(c, choreID, currentUser.ID, currentUser.CircleID)
+		updatedChore, err := h.choreRepo.GetChore(c, choreID, currentUser.ID, currentUser.FamilyID)
 		if err != nil {
 			c.JSON(500, gin.H{"error": "Error getting chore"})
 			return
@@ -390,7 +390,7 @@ func (h *API) CompleteChore(c *gin.Context) {
 		return
 	}
 
-	nextAssignedTo, err := checkNextAssignee(chore, choreHistory, performer, circleUsers)
+	nextAssignedTo, err := checkNextAssignee(chore, choreHistory, performer, familyUsers)
 	if err != nil {
 		log.Debugw("chore.api.CompleteChore failed to check next assignee", "error", err)
 		c.JSON(500, gin.H{
@@ -409,7 +409,7 @@ func (h *API) CompleteChore(c *gin.Context) {
 		h.stRepo.ResetSubtasksCompletion(c, chore.ID)
 	}
 
-	updatedChore, err := h.choreRepo.GetChore(c, choreID, currentUser.ID, currentUser.CircleID)
+	updatedChore, err := h.choreRepo.GetChore(c, choreID, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		c.JSON(500, gin.H{
 			"error": "Error getting chore",
@@ -421,15 +421,15 @@ func (h *API) CompleteChore(c *gin.Context) {
 	)
 }
 
-func (h *API) GetCircleMembers(c *gin.Context) {
+func (h *API) GetFamilyMembers(c *gin.Context) {
 	currentUser := auth.MustCurrentUser(c)
-	users, err := h.circleRepo.GetCircleUsers(c, currentUser.CircleID)
+	users, err := h.familyRepo.GetFamilyUsers(c, currentUser.FamilyID)
 	if err != nil {
-		c.JSON(500, gin.H{"error": "Failed to get circle members"})
+		c.JSON(500, gin.H{"error": "Failed to get family members"})
 		return
 	}
 	if len(users) == 0 {
-		c.JSON(404, gin.H{"error": "No members found in the circle"})
+		c.JSON(404, gin.H{"error": "No members found in the family"})
 		return
 	}
 	for i := range users {
@@ -445,19 +445,19 @@ func (h *API) DeleteChore(c *gin.Context) {
 		return
 	}
 	currentUser := auth.MustCurrentUser(c)
-	chore, err := h.choreRepo.GetChore(c, choreID, currentUser.ID, currentUser.CircleID)
+	chore, err := h.choreRepo.GetChore(c, choreID, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		c.JSON(404, gin.H{"error": "Chore not found"})
 		return
 	}
 	if chore.CreatedBy != currentUser.ID {
-		circleUsers, err := h.circleRepo.GetCircleUsers(c, currentUser.CircleID)
+		familyUsers, err := h.familyRepo.GetFamilyUsers(c, currentUser.FamilyID)
 		if err != nil {
-			c.JSON(500, gin.H{"error": "Failed to get circle members"})
+			c.JSON(500, gin.H{"error": "Failed to get family members"})
 			return
 		}
-		if !currentUser.IsAdminOrManager(circleUsers) {
-			c.JSON(403, gin.H{"error": "Only the chore creator or a circle admin/manager can delete this chore"})
+		if !currentUser.IsAdminOrManager(familyUsers) {
+			c.JSON(403, gin.H{"error": "Only the chore creator or a family admin/manager can delete this chore"})
 			return
 		}
 	}
@@ -499,17 +499,17 @@ func APIs(cfg *config.Config, api *API, r *gin.Engine, auth *jwt.GinJWTMiddlewar
 		taskActionsAPI.POST("/:id/slots/:slot/catchup", api.handler.CatchUpSlot)
 	}
 
-	circleAPI := r.Group("eapi/v1/circle")
-	circleAPI.Use(
+	familyAPI := r.Group("eapi/v1/family")
+	familyAPI.Use(
 		utils.TimeoutMiddleware(cfg.Server.WriteTimeout),
 		utils.RateLimitMiddleware(limiter),
 		authMiddleware.APITokenMiddleware(userRepo),
 	)
 	{
-		circleAPI.GET("/members", api.GetCircleMembers)
-		circleAPI.PUT("/members/:id/away", api.SetMemberAway)
-		circleAPI.GET("/timezone", api.GetFamilyTimezone)
-		circleAPI.PUT("/timezone", api.SetFamilyTimezone)
+		familyAPI.GET("/members", api.GetFamilyMembers)
+		familyAPI.PUT("/members/:id/away", api.SetMemberAway)
+		familyAPI.GET("/timezone", api.GetFamilyTimezone)
+		familyAPI.PUT("/timezone", api.SetFamilyTimezone)
 	}
 
 }

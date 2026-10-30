@@ -147,7 +147,6 @@
   "loadingSlow": "Cela prend plus de temps que d'habitude. Il y a peut-être un problème.",
   "navigateBack": "Revenir en arrière",
   "profile": "Profil",
-  "autocompletePlaceholder": "Tape du texte ici...",
   "errorScreen": {
     "title": "Une erreur est survenue",
     "fallback": "Une erreur inattendue s'est produite. Essaie de recharger la page — cela suffit généralement.",
@@ -217,9 +216,7 @@
     "deleteHistoryPending": "Suppression de l'historique en attente",
     "reschedulePending": "Replanification en attente",
     "archivePending": "Archivage en attente",
-    "restorePending": "Restauration en attente",
-    "startPending": "Démarrage en attente",
-    "pausePending": "Mise en pause en attente"
+    "restorePending": "Restauration en attente"
   },
   "sortAndFilter": {
     "sortBy": "Trier par",
@@ -242,8 +239,6 @@
       "updateChoreHistory": "Modifier l'historique",
       "completeChore": "Terminer la tâche",
       "skipChore": "Passer la tâche",
-      "startChore": "Démarrer la tâche",
-      "pauseChore": "Mettre la tâche en pause",
       "deleteChore": "Supprimer la tâche",
       "deleteChoreHistory": "Supprimer l'historique",
       "rescheduleChore": "Replanifier la tâche",
@@ -302,68 +297,28 @@
     "voiceWave": {
       "listening": "Écoute en cours…"
     },
-    "capture": {
-      "voiceCaption": "Dates, étiquettes et {{units}} tiré{{e}}s de tes paroles",
-      "deviceCaption": "Lecture sur ton appareil",
-      "typeCaption": "#étiquettes @personnes *{{units}} à la saisie",
-      "trashTitle": "♻️ Sortir les poubelles",
-      "trashDue": "Échéance demain",
-      "trashRepeat": "Tous les lundis",
-      "homeLabel": "Maison",
-      "vehicleTitle": "🚗 Contrôle technique",
-      "vehicleDue": "Échéance le 3 août",
-      "acTitle": "💨 Changer le filtre de la climatisation",
-      "acDue": "Échéance ven.",
-      "acRepeat": "Tous les 3 mois"
-    },
     "schedule": {
-      "fromDueDate": "Replanifier depuis la date d'échéance",
-      "fromCompletionDate": "Replanifier depuis la date de fin",
       "due": "Échéance",
       "done": "Terminé",
       "next": "Suivante"
     },
-    "circle": {
+    "family": {
       "kitchenTitle": "Grand ménage de la cuisine",
       "kitchenDue": "Échéance sam.",
       "kitchenRepeat": "Toutes les semaines",
       "takesTurns": "À tour de rôle"
     },
     "turns": {
-      "binsTitle": "🗑️ Sortir les poubelles sur le trottoir",
-      "binsDue": "Échéance demain",
-      "binsRepeat": "Toutes les semaines",
-      "completed": "Terminée",
-      "metaJustNow": "À l'instant · ★ 5 pts"
+      "completed": "Terminée"
     },
     "widget": {
-      "schoolForms": "Papiers de l'école",
-      "takeOutTrash": "Sortir les poubelles",
-      "waterPlants": "Arroser les plantes",
       "today": "Aujourd'hui",
       "left": "encore {{count}}"
     },
-    "reminders": {
-      "trashTitle": "Sortir les poubelles",
-      "trashBody": "Échéance dans 30 minutes · Soir des poubelles",
-      "finishedTitle": "Amalie a terminé le grand ménage de la cuisine",
-      "finishedBody": "C'est ton tour samedi prochain"
-    },
     "things": {
-      "waterBill": "Facture d'eau",
-      "acFilter": "Filtre de climatisation",
-      "trashDay": "Jour des poubelles",
-      "dogMedicine": "Médicament du chien",
-      "whoseTurn": "À qui de cuisiner",
       "monthly": "Tous les mois",
-      "everyThreeMonths": "Tous les 3 mois",
-      "everyMonday": "Tous les lundis",
       "daily": "Tous les jours",
-      "weekly": "Toutes les semaines",
-      "tagBills": "Factures",
-      "tagHome": "Maison",
-      "tagPets": "Animaux",
-      "tagCooking": "Cuisine"
+      "weekly": "Toutes les semaines"
     },
     "slides": {
       "scheduleTitle": "La tâche revient exactement quand il faut"
@@ -394,7 +349,7 @@
       "subtitle": "Ton serveur, tes données. Ces deux options restent désactivées tant que tu ne les actives pas."
     }
   },
-  "circleSetup": {
+  "familySetup": {
     "inviteTitle": "Invite ta famille",
     "inviteSubtitle": "Toutes les personnes qui rejoignent ta famille voient les mêmes tâches, prennent leur tour et restent synchronisées automatiquement.",
     "joinTitle": "Rejoindre une famille",
@@ -414,7 +369,7 @@
     "alreadyMember": "Tu fais déjà partie de cette famille",
     "joinFailed": "Impossible de rejoindre la famille"
   },
-  "joinCircle": {
+  "joinFamily": {
     "title": "Invitation à rejoindre une famille",
     "incompleteTitle": "Lien d'invitation incomplet",
     "incompleteSubtitle": "Il manque un code à ce lien d'invitation. Demande un nouveau lien à la personne qui te l'a transmis.",

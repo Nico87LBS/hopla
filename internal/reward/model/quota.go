@@ -24,7 +24,7 @@ func (r *Reward) HasQuota() bool {
 // starting on Monday, or the month, in the family's time zone. Both bounds
 // are returned in UTC.
 func (r *Reward) QuotaWindow(now time.Time) (start, end time.Time) {
-	loc := zone.Of(r.CircleID)
+	loc := zone.Of(r.FamilyID)
 	local := now.In(loc)
 	day := time.Date(local.Year(), local.Month(), local.Day(), 0, 0, 0, 0, loc)
 	switch r.QuotaPeriod {

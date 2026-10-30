@@ -19,7 +19,7 @@ const HIDDEN_ROUTES = [
   '/onboarding',
   '/get-started',
   '/ready',
-  '/circle/join',
+  '/family/join',
   '/landing',
   '/privacy',
   '/terms',

@@ -23,15 +23,15 @@ func NewStorageRepository(db *gorm.DB, config *config.Config) *StorageRepository
 
 func (r *StorageRepository) AddMediaRecord(ctx context.Context, media *st.StorageFile, user *uModel.UserDetails) error {
 	return r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		// Check total circle-wide usage against quota (all members share the same pool).
-		var circleUsed int64
+		// Check total family-wide usage against quota (all members share the same pool).
+		var familyUsed int64
 		if err := tx.Model(&st.StorageUsage{}).
 			Select("COALESCE(SUM(used_bytes), 0)").
-			Where("circle_id = ?", user.CircleID).
-			Scan(&circleUsed).Error; err != nil {
+			Where("family_id = ?", user.FamilyID).
+			Scan(&familyUsed).Error; err != nil {
 			return err
 		}
-		if int(circleUsed)+media.SizeBytes > r.maxUserStorage {
+		if int(familyUsed)+media.SizeBytes > r.maxUserStorage {
 			return errorx.ErrNotEnoughSpace
 		}
 
@@ -100,44 +100,11 @@ func (r *StorageRepository) GetStorageStats(ctx context.Context, currentUser *uM
 	var totalUsedBytes int64
 	if err := r.db.WithContext(ctx).Model(&st.StorageUsage{}).
 		Select("COALESCE(SUM(used_bytes), 0)").
-		Where("circle_id = ?", currentUser.CircleID).
+		Where("family_id = ?", currentUser.FamilyID).
 		Scan(&totalUsedBytes).Error; err != nil {
 		return 0, 0, err
 	}
 	return int(totalUsedBytes), r.maxUserStorage, nil
-}
-
-func (r *StorageRepository) RemoveAllFileByEntity(ctx context.Context, entityType st.EntityType, entityID int) error {
-	return r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		var files []*st.StorageFile
-		if err := tx.Where("entity_type = ? AND entity_id = ?", entityType, entityID).Find(&files).Error; err != nil {
-			return err
-		}
-		if len(files) == 0 {
-			return nil
-		}
-
-		// group by user so each user's quota is decremented correctly
-		byUser := make(map[int]int)
-		paths := make([]string, 0, len(files))
-		for _, f := range files {
-			byUser[f.UserID] += f.SizeBytes
-			paths = append(paths, f.FilePath)
-		}
-
-		if err := tx.Where("file_path IN (?)", paths).Delete(&st.StorageFile{}).Error; err != nil {
-			return err
-		}
-
-		for userID, totalBytes := range byUser {
-			if err := tx.Model(&st.StorageUsage{}).
-				Where("user_id = ?", userID).
-				Updates(map[string]interface{}{"used_bytes": gorm.Expr("used_bytes - ?", totalBytes)}).Error; err != nil {
-				return err
-			}
-		}
-		return nil
-	})
 }
 
 func (r *StorageRepository) GetFileByPath(ctx context.Context, filePath string, userID int) (*st.StorageFile, error) {
@@ -176,10 +143,10 @@ func (r *StorageRepository) ReassignDraftAttachments(ctx context.Context, draftI
 }
 
 // GetExpiredDraftFiles returns draft attachment files older than the given unix timestamp.
-func (r *StorageRepository) CreateStorageUsage(ctx context.Context, userID, circleID int) error {
+func (r *StorageRepository) CreateStorageUsage(ctx context.Context, userID, familyID int) error {
 	return r.db.WithContext(ctx).Create(&st.StorageUsage{
 		UserID:    userID,
-		CircleID:  circleID,
+		FamilyID:  familyID,
 		UsedBytes: 0,
 		UpdatedAt: time.Now().UTC(),
 	}).Error

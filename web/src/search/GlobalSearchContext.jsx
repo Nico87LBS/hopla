@@ -65,7 +65,7 @@ export const GlobalSearchProvider = ({ children }) => {
         offlineDB.getChores(true).catch(() => []),
         offlineDB.getHistoryByDays(365).catch(() => []),
         offlineDB.getKV('labels').catch(() => []),
-        offlineDB.getKV('circle_members').catch(() => []),
+        offlineDB.getKV('family_members').catch(() => []),
         offlineDB.getKV('user_profile').catch(() => null),
       ])
 
@@ -78,7 +78,7 @@ export const GlobalSearchProvider = ({ children }) => {
       )
       const members = uniqueBy(
         [
-          ...unwrap(queryClient.getQueryData(['allCircleMembers'])),
+          ...unwrap(queryClient.getQueryData(['allFamilyMembers'])),
           ...unwrap(offlineMembers),
         ],
         item => item.userId,

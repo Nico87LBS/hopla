@@ -9,8 +9,8 @@ import (
 	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
 
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
 	"github.com/nico87lbs/hopla/internal/database"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	rModel "github.com/nico87lbs/hopla/internal/reward/model"
 	"github.com/nico87lbs/hopla/internal/zone"
 )
@@ -28,14 +28,14 @@ func setupTestDB(t *testing.T) *gorm.DB {
 	return db
 }
 
-// seedMember inserts a user_circles row directly (bypassing the circle
-// package) so tests don't need a full user/circle signup flow.
-func seedMember(t *testing.T, db *gorm.DB, userID, circleID, points, pointsRedeemed int) {
+// seedMember inserts a user_families row directly (bypassing the family
+// package) so tests don't need a full user/family signup flow.
+func seedMember(t *testing.T, db *gorm.DB, userID, familyID, points, pointsRedeemed int) {
 	t.Helper()
-	member := &cModel.UserCircle{
+	member := &fModel.UserFamily{
 		UserID:         userID,
-		CircleID:       circleID,
-		Role:           cModel.UserRoleMember,
+		FamilyID:       familyID,
+		Role:           fModel.UserRoleMember,
 		IsActive:       true,
 		Points:         points,
 		PointsRedeemed: pointsRedeemed,
@@ -45,10 +45,10 @@ func seedMember(t *testing.T, db *gorm.DB, userID, circleID, points, pointsRedee
 	}
 }
 
-func seedReward(t *testing.T, db *gorm.DB, circleID, pointsCost int) *rModel.Reward {
+func seedReward(t *testing.T, db *gorm.DB, familyID, pointsCost int) *rModel.Reward {
 	t.Helper()
 	reward := &rModel.Reward{
-		CircleID:   circleID,
+		FamilyID:   familyID,
 		Name:       "Movie Night",
 		PointsCost: pointsCost,
 		IsActive:   true,
@@ -109,8 +109,8 @@ func TestApproveRedemption_DebitsPoints(t *testing.T) {
 		t.Fatalf("approve failed: %v", err)
 	}
 
-	var member cModel.UserCircle
-	if err := db.Where("user_id = ? AND circle_id = ?", 1, 1).First(&member).Error; err != nil {
+	var member fModel.UserFamily
+	if err := db.Where("user_id = ? AND family_id = ?", 1, 1).First(&member).Error; err != nil {
 		t.Fatalf("failed to load member: %v", err)
 	}
 	if member.PointsRedeemed != 50 {
@@ -163,8 +163,8 @@ func TestRejectRedemption_DoesNotTouchPoints(t *testing.T) {
 		t.Fatalf("reject failed: %v", err)
 	}
 
-	var member cModel.UserCircle
-	db.Where("user_id = ? AND circle_id = ?", 1, 1).First(&member)
+	var member fModel.UserFamily
+	db.Where("user_id = ? AND family_id = ?", 1, 1).First(&member)
 	if member.PointsRedeemed != 0 {
 		t.Fatalf("expected points_redeemed unchanged at 0, got %d", member.PointsRedeemed)
 	}
@@ -224,7 +224,7 @@ func TestQuotaWindow(t *testing.T) {
 	loc, _ := time.LoadLocation("Europe/Brussels")
 	zone.Set(7, loc)
 	defer zone.Forget(7)
-	brussels := &rModel.Reward{CircleID: 7, QuotaCount: 1}
+	brussels := &rModel.Reward{FamilyID: 7, QuotaCount: 1}
 	now := time.Date(2026, 10, 21, 22, 30, 0, 0, time.UTC) // Thursday 00:30 in Brussels
 	for _, tc := range []struct{ period, start, end string }{
 		{rModel.QuotaPeriodDay, "2026-10-21T22:00:00Z", "2026-10-22T22:00:00Z"},
@@ -244,7 +244,7 @@ func TestQuotaWindow(t *testing.T) {
 func TestCreateRewardKeepsHidden(t *testing.T) {
 	db := setupTestDB(t)
 	repo := NewRewardRepository(db, nil)
-	reward := &rModel.Reward{CircleID: 1, Name: "Cinéma", PointsCost: 200, IsActive: false}
+	reward := &rModel.Reward{FamilyID: 1, Name: "Cinéma", PointsCost: 200, IsActive: false}
 	if err := repo.CreateReward(context.Background(), reward); err != nil {
 		t.Fatalf("CreateReward: %v", err)
 	}

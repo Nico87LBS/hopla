@@ -11,8 +11,8 @@ import (
 	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	auth "github.com/nico87lbs/hopla/internal/auth"
-	circle "github.com/nico87lbs/hopla/internal/circle/model"
-	cRepo "github.com/nico87lbs/hopla/internal/circle/repo"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
+	fRepo "github.com/nico87lbs/hopla/internal/family/repo"
 	"github.com/nico87lbs/hopla/internal/games"
 	"github.com/nico87lbs/hopla/internal/learn"
 	"github.com/nico87lbs/hopla/logging"
@@ -21,17 +21,17 @@ import (
 
 type Handler struct {
 	db         *gorm.DB
-	circleRepo *cRepo.CircleRepository
+	familyRepo *fRepo.FamilyRepository
 }
 
-func NewHandler(db *gorm.DB, circleRepo *cRepo.CircleRepository) *Handler {
-	return &Handler{db: db, circleRepo: circleRepo}
+func NewHandler(db *gorm.DB, familyRepo *fRepo.FamilyRepository) *Handler {
+	return &Handler{db: db, familyRepo: familyRepo}
 }
 
 // caller is who sends a request, and whether they are a parent.
 type caller struct {
 	userID   int
-	circleID int
+	familyID int
 	parent   bool
 }
 
@@ -41,14 +41,14 @@ func (h *Handler) caller(c *gin.Context) (caller, bool) {
 		c.JSON(401, gin.H{"error": "Authentication failed"})
 		return caller{}, false
 	}
-	members, err := h.circleRepo.GetCircleUsers(c, currentUser.CircleID)
+	members, err := h.familyRepo.GetFamilyUsers(c, currentUser.FamilyID)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Error checking permissions"})
 		return caller{}, false
 	}
-	who := caller{userID: currentUser.ID, circleID: currentUser.CircleID}
+	who := caller{userID: currentUser.ID, familyID: currentUser.FamilyID}
 	for _, m := range members {
-		if m.UserID == currentUser.ID && (m.Role == circle.UserRoleAdmin || m.Role == circle.UserRoleManager) {
+		if m.UserID == currentUser.ID && (m.Role == fModel.UserRoleAdmin || m.Role == fModel.UserRoleManager) {
 			who.parent = true
 		}
 	}
@@ -117,7 +117,7 @@ func (h *Handler) getCatalogue(c *gin.Context) {
 	c.JSON(200, gin.H{"res": out})
 }
 
-// Installed is the circle's modules and who plays them.
+// Installed is the family's modules and who plays them.
 type Installed struct {
 	Modules     []learn.Module        `json:"modules"`
 	Activations []learn.Activation    `json:"activations"`
@@ -137,17 +137,17 @@ func (h *Handler) getModules(c *gin.Context) {
 		return
 	}
 	db := h.db.WithContext(c)
-	modules, err := learn.Modules(db, who.circleID, time.Now().UTC())
+	modules, err := learn.Modules(db, who.familyID, time.Now().UTC())
 	if err != nil {
 		answerError(c, err, "list the modules")
 		return
 	}
-	activations, err := learn.Activations(db, who.circleID)
+	activations, err := learn.Activations(db, who.familyID)
 	if err != nil {
 		answerError(c, err, "list the activations")
 		return
 	}
-	settings, err := learn.PersonSettings(db, who.circleID)
+	settings, err := learn.PersonSettings(db, who.familyID)
 	if err != nil {
 		answerError(c, err, "list the settings")
 		return
@@ -158,17 +158,17 @@ func (h *Handler) getModules(c *gin.Context) {
 			defaults[module.Key] = doc.Settings.WithDefaults()
 		}
 	}
-	people, err := learn.Members(db, who.circleID)
+	people, err := learn.Members(db, who.familyID)
 	if err != nil {
 		answerError(c, err, "list the members")
 		return
 	}
-	applied, err := learn.AppliedSettings(db, who.circleID, append([]int{learn.Family}, people...))
+	applied, err := learn.AppliedSettings(db, who.familyID, append([]int{learn.Family}, people...))
 	if err != nil {
 		answerError(c, err, "read the settings")
 		return
 	}
-	reports, err := learn.OpenReports(db, who.circleID, nil)
+	reports, err := learn.OpenReports(db, who.familyID, nil)
 	if err != nil {
 		answerError(c, err, "list the reports")
 		return
@@ -193,7 +193,7 @@ func (h *Handler) install(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "Invalid request"})
 		return
 	}
-	if err := learn.Install(h.db.WithContext(c), who.circleID, req.ID, time.Now().UTC()); err != nil {
+	if err := learn.Install(h.db.WithContext(c), who.familyID, req.ID, time.Now().UTC()); err != nil {
 		answerError(c, err, "install the module")
 		return
 	}
@@ -211,7 +211,7 @@ func (h *Handler) importModule(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "Invalid request"})
 		return
 	}
-	module, err := learn.Import(h.db.WithContext(c), who.circleID, raw, time.Now().UTC())
+	module, err := learn.Import(h.db.WithContext(c), who.familyID, raw, time.Now().UTC())
 	if err != nil {
 		answerError(c, err, "import the module")
 		return
@@ -224,7 +224,7 @@ func (h *Handler) remove(c *gin.Context) {
 	if !ok {
 		return
 	}
-	if err := learn.Remove(h.db.WithContext(c), who.circleID, c.Param("key")); err != nil {
+	if err := learn.Remove(h.db.WithContext(c), who.familyID, c.Param("key")); err != nil {
 		answerError(c, err, "remove the module")
 		return
 	}
@@ -241,7 +241,7 @@ func (h *Handler) setActivation(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "Invalid request"})
 		return
 	}
-	if err := learn.SetActivation(h.db.WithContext(c), who.circleID, change, time.Now().UTC()); err != nil {
+	if err := learn.SetActivation(h.db.WithContext(c), who.familyID, change, time.Now().UTC()); err != nil {
 		answerError(c, err, "change the activation")
 		return
 	}
@@ -258,7 +258,7 @@ func (h *Handler) setSetting(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "Invalid request"})
 		return
 	}
-	if err := learn.SetPersonSetting(h.db.WithContext(c), who.circleID, change, time.Now().UTC()); err != nil {
+	if err := learn.SetPersonSetting(h.db.WithContext(c), who.familyID, change, time.Now().UTC()); err != nil {
 		answerError(c, err, "change the settings")
 		return
 	}
@@ -270,7 +270,7 @@ func (h *Handler) getStats(c *gin.Context) {
 	if !ok {
 		return
 	}
-	stats, err := learn.Stats(h.db.WithContext(c), who.circleID, c.Param("key"), time.Now().UTC())
+	stats, err := learn.Stats(h.db.WithContext(c), who.familyID, c.Param("key"), time.Now().UTC())
 	if err != nil {
 		answerError(c, err, "get the statistics")
 		return
@@ -283,7 +283,7 @@ func (h *Handler) getDetail(c *gin.Context) {
 	if !ok {
 		return
 	}
-	detail, err := learn.ModuleDetail(h.db.WithContext(c), who.circleID, c.Param("key"), time.Now().UTC())
+	detail, err := learn.ModuleDetail(h.db.WithContext(c), who.familyID, c.Param("key"), time.Now().UTC())
 	if err != nil {
 		answerError(c, err, "read the module")
 		return
@@ -302,11 +302,11 @@ func (h *Handler) editCard(c *gin.Context) {
 		return
 	}
 	db := h.db.WithContext(c)
-	if err := learn.SetCardEdit(db, who.circleID, who.userID, change, time.Now().UTC()); err != nil {
+	if err := learn.SetCardEdit(db, who.familyID, who.userID, change, time.Now().UTC()); err != nil {
 		answerError(c, err, "change the card")
 		return
 	}
-	detail, err := learn.ModuleDetail(db, who.circleID, change.Module, time.Now().UTC())
+	detail, err := learn.ModuleDetail(db, who.familyID, change.Module, time.Now().UTC())
 	if err != nil {
 		answerError(c, err, "read the module")
 		return
@@ -328,7 +328,7 @@ func (h *Handler) addReport(c *gin.Context) {
 		c.JSON(403, gin.H{"error": "You can only play as yourself"})
 		return
 	}
-	if err := learn.AddReport(h.db.WithContext(c), who.circleID, who.userID, report, time.Now().UTC()); err != nil {
+	if err := learn.AddReport(h.db.WithContext(c), who.familyID, who.userID, report, time.Now().UTC()); err != nil {
 		answerError(c, err, "keep the report")
 		return
 	}
@@ -345,7 +345,7 @@ func (h *Handler) resolveReport(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "Invalid report"})
 		return
 	}
-	if err := learn.ResolveReport(h.db.WithContext(c), who.circleID, who.userID, id, time.Now().UTC()); err != nil {
+	if err := learn.ResolveReport(h.db.WithContext(c), who.familyID, who.userID, id, time.Now().UTC()); err != nil {
 		answerError(c, err, "resolve the report")
 		return
 	}
@@ -362,7 +362,7 @@ func (h *Handler) getPlayer(c *gin.Context) {
 		c.JSON(403, gin.H{"error": "You can only play as yourself"})
 		return
 	}
-	player, err := learn.PlayerFor(h.db.WithContext(c), who.circleID, userID, time.Now().UTC())
+	player, err := learn.PlayerFor(h.db.WithContext(c), who.familyID, userID, time.Now().UTC())
 	if err != nil {
 		answerError(c, err, "get the player")
 		return
@@ -385,13 +385,13 @@ func (h *Handler) recordGame(c *gin.Context) {
 		return
 	}
 	now := time.Now().UTC()
-	result, err := learn.Record(h.db.WithContext(c), who.circleID, who.userID, game, now)
+	result, err := learn.Record(h.db.WithContext(c), who.familyID, who.userID, game, now)
 	if err != nil {
 		answerError(c, err, "record the game")
 		return
 	}
 	// A game can reach a quest or a challenge on learning games.
-	if err := games.Settle(h.db.WithContext(c), who.circleID, []int{game.UserID}, now); err != nil {
+	if err := games.Settle(h.db.WithContext(c), who.familyID, []int{game.UserID}, now); err != nil {
 		logging.FromContext(c).Error("Failed to settle the quests after a game", "error", err)
 	}
 	c.JSON(200, gin.H{"res": result})

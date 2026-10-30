@@ -16,8 +16,8 @@ import (
 	auth "github.com/nico87lbs/hopla/internal/auth"
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
 	chRepo "github.com/nico87lbs/hopla/internal/chore/repo"
-	circle "github.com/nico87lbs/hopla/internal/circle/model"
-	cRepo "github.com/nico87lbs/hopla/internal/circle/repo"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
+	fRepo "github.com/nico87lbs/hopla/internal/family/repo"
 	lModel "github.com/nico87lbs/hopla/internal/label/model"
 	lRepo "github.com/nico87lbs/hopla/internal/label/repo"
 	"github.com/nico87lbs/hopla/internal/realtime"
@@ -36,7 +36,7 @@ import (
 
 type Handler struct {
 	choreRepo       *chRepo.ChoreRepository
-	circleRepo      *cRepo.CircleRepository
+	familyRepo      *fRepo.FamilyRepository
 	lRepo           *lRepo.LabelRepository
 	uRepo           *uRepo.UserRepository
 	stRepo          *stRepo.SubTasksRepository
@@ -46,7 +46,7 @@ type Handler struct {
 	signer          storage.URLSigner
 }
 
-func NewHandler(cr *chRepo.ChoreRepository, circleRepo *cRepo.CircleRepository,
+func NewHandler(cr *chRepo.ChoreRepository, familyRepo *fRepo.FamilyRepository,
 	lRepo *lRepo.LabelRepository,
 	stRepo *stRepo.SubTasksRepository,
 	stor storage.Storage,
@@ -57,7 +57,7 @@ func NewHandler(cr *chRepo.ChoreRepository, circleRepo *cRepo.CircleRepository,
 	return &Handler{
 		choreRepo:       cr,
 		uRepo:           ur,
-		circleRepo:      circleRepo,
+		familyRepo:      familyRepo,
 		lRepo:           lRepo,
 		stRepo:          stRepo,
 		storageRepo:     stoRepo,
@@ -70,7 +70,7 @@ func NewHandler(cr *chRepo.ChoreRepository, circleRepo *cRepo.CircleRepository,
 // GetChores godoc
 //
 //	@Summary		Get all chores
-//	@Description	Retrieves all chores for the current user's circle with optional archived chores
+//	@Description	Retrieves all chores for the current user's family with optional archived chores
 //	@Tags			chores
 //	@Accept			json
 //	@Produce		json
@@ -103,9 +103,9 @@ func (h *Handler) GetChores(c *gin.Context) {
 		includeArchived = true
 	}
 
-	chores, err := h.choreRepo.GetChores(c, u.CircleID, u.ID, includeArchived, nil, includeSubtasks)
+	chores, err := h.choreRepo.GetChores(c, u.FamilyID, u.ID, includeArchived, nil, includeSubtasks)
 	if err != nil {
-		logger.Error("Failed to retrieve chores", "error", err, "userID", u.ID, "circleID", u.CircleID, "includeArchived", includeArchived)
+		logger.Error("Failed to retrieve chores", "error", err, "userID", u.ID, "familyID", u.FamilyID, "includeArchived", includeArchived)
 		c.JSON(500, gin.H{
 			"error": "Failed to retrieve chores",
 		})
@@ -123,7 +123,7 @@ func (h *Handler) GetChores(c *gin.Context) {
 // GetArchivedChores godoc
 //
 //	@Summary		Get archived chores
-//	@Description	Retrieves all archived chores for the current user's circle
+//	@Description	Retrieves all archived chores for the current user's family
 //	@Tags			chores
 //	@Accept			json
 //	@Produce		json
@@ -143,9 +143,9 @@ func (h *Handler) GetArchivedChores(c *gin.Context) {
 		})
 		return
 	}
-	chores, err := h.choreRepo.GetArchivedChores(c, u.CircleID, u.ID)
+	chores, err := h.choreRepo.GetArchivedChores(c, u.FamilyID, u.ID)
 	if err != nil {
-		logger.Error("Failed to retrieve archived chores", "error", err, "userID", u.ID, "circleID", u.CircleID)
+		logger.Error("Failed to retrieve archived chores", "error", err, "userID", u.ID, "familyID", u.FamilyID)
 		c.JSON(500, gin.H{
 			"error": "Failed to retrieve archived chores",
 		})
@@ -194,7 +194,7 @@ func (h *Handler) GetChore(c *gin.Context) {
 		return
 	}
 
-	chore, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.CircleID)
+	chore, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		logger.Error("Failed to retrieve chore", "error", err, "choreID", id, "userID", currentUser.ID)
 		c.JSON(500, gin.H{
@@ -202,21 +202,21 @@ func (h *Handler) GetChore(c *gin.Context) {
 		})
 		return
 	}
-	circleUsers, err := h.circleRepo.GetCircleUsers(c, currentUser.CircleID)
+	familyUsers, err := h.familyRepo.GetFamilyUsers(c, currentUser.FamilyID)
 	if err != nil {
-		logger.Error("Failed to retrieve circle users", "error", err, "circleID", currentUser.CircleID, "userID", currentUser.ID)
-		c.JSON(500, gin.H{"error": "Failed to retrieve circle users"})
+		logger.Error("Failed to retrieve family users", "error", err, "familyID", currentUser.FamilyID, "userID", currentUser.ID)
+		c.JSON(500, gin.H{"error": "Failed to retrieve family users"})
 		return
 	}
 
-	if !chore.CanView(currentUser.ID, circleUsers) {
+	if !chore.CanView(currentUser.ID, familyUsers) {
 		c.JSON(403, gin.H{
 			"error": "You are not allowed to view this chore",
 		})
 		return
 	}
 	if chore.Description != nil {
-		// see if we have an <img> tag with attribute dt-data-path if so resigned the url using it's value and replace the src:
+		// see if we have an <img> tag with attribute data-hopla-path if so resigned the url using it's value and replace the src:
 		updatedDescription := h.generateUpdatedSignedDescription(c, *chore.Description)
 		chore.Description = &updatedDescription
 	}
@@ -231,7 +231,7 @@ func (h *Handler) GetChore(c *gin.Context) {
 
 func (h *Handler) generateUpdatedSignedDescription(c *gin.Context, description string) string {
 	logger := logging.FromContext(c)
-	reg := regexp.MustCompile(`<img[^>]+dt-data-path="([^">]+)"[^>]*>`)
+	reg := regexp.MustCompile(`<img[^>]+data-hopla-path="([^">]+)"[^>]*>`)
 	matches := reg.FindAllStringSubmatch(description, -1)
 	if len(matches) > 0 {
 		for _, match := range matches {
@@ -250,13 +250,13 @@ func (h *Handler) generateUpdatedSignedDescription(c *gin.Context, description s
 					continue
 				}
 
-				// Update the img tag: ensure dt-data-path has clean path and src has signed URL
+				// Update the img tag: ensure data-hopla-path has clean path and src has signed URL
 				oldImgTag := match[0]
 				newImgTag := oldImgTag
 
-				// If dt-data-path had query params, update it to the clean path
+				// If data-hopla-path had query params, update it to the clean path
 				if originalDataPath != cleanPath {
-					newImgTag = strings.Replace(newImgTag, fmt.Sprintf(`dt-data-path="%s"`, originalDataPath), fmt.Sprintf(`dt-data-path="%s"`, cleanPath), 1)
+					newImgTag = strings.Replace(newImgTag, fmt.Sprintf(`data-hopla-path="%s"`, originalDataPath), fmt.Sprintf(`data-hopla-path="%s"`, cleanPath), 1)
 				}
 
 				// Update the src attribute to have the new signed URL
@@ -386,7 +386,7 @@ func actionCreatedAtOrNow(options *ActionOptions) time.Time {
 //	@Security		APIKeyAuth
 //	@Param			chore	body		ChoreReq			true	"Chore creation request"
 //	@Success		200		{object}	map[string]int		"res: created chore ID"
-//	@Failure		400		{object}	map[string]string	"error: Invalid request format | Assignee not found in circle | Invalid date"
+//	@Failure		400		{object}	map[string]string	"error: Invalid request format | Assignee not found in family | Invalid date"
 //	@Failure		401		{object}	map[string]string	"error: Authentication failed"
 //	@Failure		500		{object}	map[string]string	"error: Failed to create chore | Error adding labels | Error adding chore assignees"
 //	@Router			/chores [post]
@@ -414,40 +414,40 @@ func (h *Handler) CreateChore(c *gin.Context) {
 		return
 	}
 
-	circleUsers, err := h.circleRepo.GetCircleUsers(c, currentUser.CircleID)
+	familyUsers, err := h.familyRepo.GetFamilyUsers(c, currentUser.FamilyID)
 	if err != nil {
-		logger.Error("Failed to retrieve circle users", "error", err, "circleID", currentUser.CircleID, "userID", currentUser.ID)
-		c.JSON(500, gin.H{"error": "Failed to retrieve circle users"})
+		logger.Error("Failed to retrieve family users", "error", err, "familyID", currentUser.FamilyID, "userID", currentUser.ID)
+		c.JSON(500, gin.H{"error": "Failed to retrieve family users"})
 		return
 	}
 
 	assignees := choreReq.Assignees
 	if len(assignees) == 0 {
-		for _, circleUser := range circleUsers {
+		for _, familyUser := range familyUsers {
 			assignees = append(assignees, chModel.ChoreAssignees{
-				UserID:  circleUser.UserID,
+				UserID:  familyUser.UserID,
 				ChoreID: choreReq.ID,
 			})
 		}
 	}
 	for _, assignee := range assignees {
 		userFound := false
-		for _, circleUser := range circleUsers {
-			if assignee.UserID == circleUser.UserID {
+		for _, familyUser := range familyUsers {
+			if assignee.UserID == familyUser.UserID {
 				userFound = true
 				break
 			}
 		}
 		if !userFound {
 			c.JSON(400, gin.H{
-				"error": "Assignee not found in circle",
+				"error": "Assignee not found in family",
 			})
 			return
 		}
 
 	}
 
-	//  validate assignedTo is one of the assignees (which are all in the circle):
+	//  validate assignedTo is one of the assignees (which are all in the family):
 	if choreReq.AssignedTo != nil {
 		assigneeFound := false
 		for _, assignee := range assignees {
@@ -477,7 +477,7 @@ func (h *Handler) CreateChore(c *gin.Context) {
 		utcDate := choreReq.NextDueDate.UTC()
 		if fm := choreReq.FrequencyMetadata; choreReq.FrequencyType == chModel.FrequencyTypeDayOfTheWeek && fm != nil && len(fm.Days) > 0 &&
 			(fm.WeekPattern == nil || *fm.WeekPattern == "" || *fm.WeekPattern == chModel.WeekpatternEveryWeek) {
-			utcDate = firstDueDateOnSelectedWeekday(utcDate, fm.Days, zone.Of(currentUser.CircleID))
+			utcDate = firstDueDateOnSelectedWeekday(utcDate, fm.Days, zone.Of(currentUser.FamilyID))
 		}
 		dueDate = &utcDate
 	}
@@ -514,7 +514,7 @@ func (h *Handler) CreateChore(c *gin.Context) {
 		NotificationMetadataV2: choreReq.NotificationMetadata,
 		CreatedBy:              currentUser.ID,
 		CreatedAt:              time.Now().UTC(),
-		CircleID:               currentUser.CircleID,
+		FamilyID:               currentUser.FamilyID,
 		Points:                 choreReq.Points,
 		FlashPoints:            choreReq.FlashPoints,
 		FlashMinutes:           choreReq.FlashMinutes,
@@ -535,7 +535,7 @@ func (h *Handler) CreateChore(c *gin.Context) {
 	createdChore.ID = id
 
 	if err != nil {
-		logger.Error("Failed to create chore", "error", err, "userID", currentUser.ID, "circleID", currentUser.CircleID)
+		logger.Error("Failed to create chore", "error", err, "userID", currentUser.ID, "familyID", currentUser.FamilyID)
 		c.JSON(500, gin.H{
 			"error": "Failed to create chore",
 		})
@@ -556,7 +556,7 @@ func (h *Handler) CreateChore(c *gin.Context) {
 		for i, label := range *choreReq.LabelsV2 {
 			labelsV2[i] = int(label.LabelID)
 		}
-		if err := h.lRepo.AssignLabelsToChore(c, createdChore.ID, currentUser.ID, currentUser.CircleID, labelsV2, []int{}); err != nil {
+		if err := h.lRepo.AssignLabelsToChore(c, createdChore.ID, currentUser.ID, currentUser.FamilyID, labelsV2, []int{}); err != nil {
 			c.JSON(500, gin.H{
 				"error": "Error adding labels",
 			})
@@ -583,7 +583,7 @@ func (h *Handler) CreateChore(c *gin.Context) {
 	}
 
 	// Reload relations used by notification and realtime authorization.
-	eventChore, err := h.choreRepo.GetChore(c, createdChore.ID, currentUser.ID, currentUser.CircleID)
+	eventChore, err := h.choreRepo.GetChore(c, createdChore.ID, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		logger.Error("Failed to reload created chore", "error", err)
 		c.JSON(500, gin.H{"error": "Failed to reload created chore"})
@@ -645,7 +645,7 @@ func setCreateChoreDefaults(choreReq *ChoreReq) []string {
 //	@Security		APIKeyAuth
 //	@Param			chore	body		ChoreReq			true	"Chore update request"
 //	@Success		200		{object}	map[string]string	"message: Chore updated successfully"
-//	@Failure		400		{object}	map[string]string	"error: Invalid request format | Invalid date | Assignee not found in circle | Assigned to not found in assignees"
+//	@Failure		400		{object}	map[string]string	"error: Invalid request format | Invalid date | Assignee not found in family | Assigned to not found in assignees"
 //	@Failure		401		{object}	map[string]string	"error: Authentication failed"
 //	@Failure		403		{object}	map[string]string	"error: You cannot edit this chore"
 //	@Failure		500		{object}	map[string]string	"error: Failed to retrieve chore | Error adding chore | Error adding subtasks"
@@ -672,27 +672,27 @@ func (h *Handler) EditChore(c *gin.Context) {
 		return
 	}
 
-	circleUsers, err := h.circleRepo.GetCircleUsers(c, currentUser.CircleID)
+	familyUsers, err := h.familyRepo.GetFamilyUsers(c, currentUser.FamilyID)
 	if err != nil {
-		logger.Error("Failed to retrieve circle users", "error", err)
+		logger.Error("Failed to retrieve family users", "error", err)
 		c.JSON(500, gin.H{
-			"error": "Failed to retrieve circle users",
+			"error": "Failed to retrieve family users",
 		})
 		return
 	}
 
-	//  filter assignees that not in the circle
+	//  filter assignees that not in the family
 	for _, assignee := range choreReq.Assignees {
 		userFound := false
-		for _, circleUser := range circleUsers {
-			if assignee.UserID == circleUser.UserID {
+		for _, familyUser := range familyUsers {
+			if assignee.UserID == familyUser.UserID {
 				userFound = true
 				break
 			}
 		}
 		if !userFound {
 			c.JSON(400, gin.H{
-				"error": "Assignee not found in circle",
+				"error": "Assignee not found in family",
 			})
 			return
 		}
@@ -701,12 +701,12 @@ func (h *Handler) EditChore(c *gin.Context) {
 	//  validate assignedTo part of the assignees:
 	if choreReq.AssignedTo != nil {
 		assigneeFound := false
-		// if we have assignees loop through them if we don't have any we default to circle as this task assigned to Anyone
+		// if we have assignees loop through them if we don't have any we default to family as this task assigned to Anyone
 		assignees := choreReq.Assignees
 		if len(assignees) == 0 {
-			// everyone in the circle is considered an assignee, so we check if the assignedTo user is in the circle:
-			for _, circleUser := range circleUsers {
-				if circleUser.UserID == *choreReq.AssignedTo {
+			// everyone in the family is considered an assignee, so we check if the assignedTo user is in the family:
+			for _, familyUser := range familyUsers {
+				if familyUser.UserID == *choreReq.AssignedTo {
 					assigneeFound = true
 					break
 				}
@@ -727,7 +727,7 @@ func (h *Handler) EditChore(c *gin.Context) {
 	}
 
 	// Remove the auto-assignment logic - if no assignee then keep no assignee
-	oldChore, err := h.choreRepo.GetChore(c, choreReq.ID, currentUser.ID, currentUser.CircleID)
+	oldChore, err := h.choreRepo.GetChore(c, choreReq.ID, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		logger.Error("Failed to retrieve chore", "error", err)
 		c.JSON(500, gin.H{
@@ -735,7 +735,7 @@ func (h *Handler) EditChore(c *gin.Context) {
 		})
 		return
 	}
-	if err := oldChore.CanEdit(currentUser.ID, circleUsers, choreReq.UpdatedAt); err != nil {
+	if err := oldChore.CanEdit(currentUser.ID, familyUsers, choreReq.UpdatedAt); err != nil {
 		c.JSON(403, gin.H{
 			"error": fmt.Sprintf("You cannot edit this chore: %s", err.Error()),
 		})
@@ -773,7 +773,7 @@ func (h *Handler) EditChore(c *gin.Context) {
 			}
 		}
 
-		if err := h.lRepo.AssignLabelsToChore(c, choreReq.ID, currentUser.ID, currentUser.CircleID, labelsV2ToAdd, labelsV2ToBeRemoved); err != nil {
+		if err := h.lRepo.AssignLabelsToChore(c, choreReq.ID, currentUser.ID, currentUser.FamilyID, labelsV2ToAdd, labelsV2ToBeRemoved); err != nil {
 			c.JSON(500, gin.H{
 				"error": "Error adding labels",
 			})
@@ -828,7 +828,7 @@ func (h *Handler) EditChore(c *gin.Context) {
 		IsActive:               *choreReq.IsActive,
 		Notification:           choreReq.Notification,
 		NotificationMetadataV2: choreReq.NotificationMetadata,
-		CircleID:               oldChore.CircleID,
+		FamilyID:               oldChore.FamilyID,
 		UpdatedBy:              currentUser.ID,
 		CreatedBy:              oldChore.CreatedBy,
 		CreatedAt:              oldChore.CreatedAt,
@@ -915,7 +915,7 @@ func (h *Handler) EditChore(c *gin.Context) {
 		}
 	}
 
-	eventChore, err := h.choreRepo.GetChore(c, updatedChore.ID, currentUser.ID, currentUser.CircleID)
+	eventChore, err := h.choreRepo.GetChore(c, updatedChore.ID, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		logger.Error("Failed to reload updated chore", "error", err)
 		c.JSON(500, gin.H{"error": "Failed to reload updated chore"})
@@ -971,26 +971,6 @@ func dueDatesDiffer(oldDueDate, newDueDate *time.Time) bool {
 		return oldDueDate != newDueDate
 	}
 	return !oldDueDate.Equal(*newDueDate)
-}
-
-func (h *Handler) deleteChoreFiles(ctx *gin.Context, choreID int) {
-	files, err := h.storageRepo.GetAllFilesByOwnerType(ctx, storageModel.EntityTypeChoreDescription, choreID)
-	if err != nil || len(files) == 0 {
-		return
-	}
-	paths := make([]string, len(files))
-	for i, f := range files {
-		paths[i] = f.FilePath
-	}
-	h.storage.Delete(ctx, paths)
-
-	byUser := make(map[int][]*storageModel.StorageFile)
-	for _, f := range files {
-		byUser[f.UserID] = append(byUser[f.UserID], f)
-	}
-	for userID, userFiles := range byUser {
-		h.storageRepo.RemoveFileRecords(ctx, userFiles, userID)
-	}
 }
 
 func (h *Handler) cleanUpUnreferencedFiles(ctx *gin.Context, userID int, entityType storageModel.EntityType, entityID int, text string) error {
@@ -1057,8 +1037,8 @@ func (h *Handler) DeleteChore(c *gin.Context) {
 		})
 		return
 	}
-	// Get chore details before deletion for real-time event; scopes to current circle
-	chore, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.CircleID)
+	// Get chore details before deletion for real-time event; scopes to current family
+	chore, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		logger.Error("Failed to retrieve chore", "error", err)
 		c.JSON(500, gin.H{
@@ -1067,15 +1047,15 @@ func (h *Handler) DeleteChore(c *gin.Context) {
 		return
 	}
 	if chore.CreatedBy != currentUser.ID {
-		circleUsers, err := h.circleRepo.GetCircleUsers(c, currentUser.CircleID)
+		familyUsers, err := h.familyRepo.GetFamilyUsers(c, currentUser.FamilyID)
 		if err != nil {
-			logger.Error("Failed to retrieve circle users", "error", err)
+			logger.Error("Failed to retrieve family users", "error", err)
 			c.JSON(500, gin.H{
-				"error": "Failed to retrieve circle users",
+				"error": "Failed to retrieve family users",
 			})
 			return
 		}
-		if !currentUser.IsAdminOrManager(circleUsers) {
+		if !currentUser.IsAdminOrManager(familyUsers) {
 			c.JSON(403, gin.H{
 				"error": "You are not allowed to delete this chore",
 			})
@@ -1177,7 +1157,7 @@ func (h *Handler) UpdateAssignee(c *gin.Context) {
 		})
 		return
 	}
-	chore, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.CircleID)
+	chore, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		logger.Error("Failed to retrieve chore", "error", err)
 		c.JSON(500, gin.H{
@@ -1200,15 +1180,15 @@ func (h *Handler) UpdateAssignee(c *gin.Context) {
 		})
 		return
 	}
-	circleUsers, err := h.circleRepo.GetCircleUsers(c, currentUser.CircleID)
+	familyUsers, err := h.familyRepo.GetFamilyUsers(c, currentUser.FamilyID)
 	if err != nil {
-		logger.Error("Failed to retrieve circle users", "error", err)
+		logger.Error("Failed to retrieve family users", "error", err)
 		c.JSON(500, gin.H{
-			"error": "Failed to retrieve circle users",
+			"error": "Failed to retrieve family users",
 		})
 		return
 	}
-	if err := chore.CanDelegate(currentUser.ID, circleUsers, &assigneeReq.UpdatedAt); err != nil {
+	if err := chore.CanDelegate(currentUser.ID, familyUsers, &assigneeReq.UpdatedAt); err != nil {
 		c.JSON(403, gin.H{
 			"error": fmt.Sprintf("You cannot edit this chore: %s", err.Error()),
 		})
@@ -1230,7 +1210,7 @@ func (h *Handler) UpdateAssignee(c *gin.Context) {
 
 	// Respond with the chore as it is now, not as it was before the update,
 	// otherwise the client keeps showing the previous assignee (#848).
-	updatedChore, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.CircleID)
+	updatedChore, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		logger.Error("Failed to retrieve updated chore", "error", err, "choreID", id)
 		c.JSON(500, gin.H{
@@ -1312,7 +1292,7 @@ func (h *Handler) SkipChore(c *gin.Context) {
 		effectiveUser = actualUser
 	}
 
-	chore, err := h.choreRepo.GetChore(c, id, effectiveUser.ID, actualUser.CircleID)
+	chore, err := h.choreRepo.GetChore(c, id, effectiveUser.ID, actualUser.FamilyID)
 	if err != nil {
 		logger.Error("Failed to retrieve chore", "error", err)
 		c.JSON(500, gin.H{
@@ -1361,7 +1341,7 @@ func (h *Handler) SkipChore(c *gin.Context) {
 		return
 	}
 
-	updatedChore, err := h.choreRepo.GetChore(c, id, effectiveUser.ID, actualUser.CircleID)
+	updatedChore, err := h.choreRepo.GetChore(c, id, effectiveUser.ID, actualUser.FamilyID)
 	if err != nil {
 		logger.Error("Failed to retrieve chore", "error", err)
 		c.JSON(500, gin.H{
@@ -1448,7 +1428,7 @@ func (h *Handler) UpdateDueDate(c *gin.Context) {
 		utcTime := dueDateReq.DueDate.UTC()
 		dueDate = &utcTime
 	}
-	chore, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.CircleID)
+	chore, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		logger.Error("Failed to retrieve chore", "error", err)
 		c.JSON(500, gin.H{
@@ -1456,15 +1436,15 @@ func (h *Handler) UpdateDueDate(c *gin.Context) {
 		})
 		return
 	}
-	circleUsers, err := h.circleRepo.GetCircleUsers(c, currentUser.CircleID)
+	familyUsers, err := h.familyRepo.GetFamilyUsers(c, currentUser.FamilyID)
 	if err != nil {
-		logger.Error("Failed to retrieve circle users", "error", err)
+		logger.Error("Failed to retrieve family users", "error", err)
 		c.JSON(500, gin.H{
-			"error": "Failed to retrieve circle users",
+			"error": "Failed to retrieve family users",
 		})
 		return
 	}
-	if err := chore.CanEdit(currentUser.ID, circleUsers, dueDateReq.UpdatedAt); err != nil {
+	if err := chore.CanEdit(currentUser.ID, familyUsers, dueDateReq.UpdatedAt); err != nil {
 		c.JSON(403, gin.H{})
 		return
 	}
@@ -1495,7 +1475,7 @@ func (h *Handler) UpdateDueDate(c *gin.Context) {
 
 	// Broadcast real-time due date update event
 	if h.realTimeService != nil {
-		updatedChore, err := h.choreRepo.GetChore(c, chore.ID, currentUser.ID, currentUser.CircleID)
+		updatedChore, err := h.choreRepo.GetChore(c, chore.ID, currentUser.ID, currentUser.FamilyID)
 		if err == nil {
 			broadcaster := h.realTimeService.GetEventBroadcaster()
 			changes := map[string]interface{}{
@@ -1549,13 +1529,13 @@ func (h *Handler) ArchiveChore(c *gin.Context) {
 
 	// The repository only checks authorship; a creator who lost sight of the chore
 	// (e.g. no longer an assignee of a private task) must not be able to change it anymore.
-	if _, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.CircleID); err != nil {
+	if _, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.FamilyID); err != nil {
 		c.JSON(404, gin.H{
 			"error": "Chore not found",
 		})
 		return
 	}
-	err = h.choreRepo.ArchiveChore(c, id, currentUser.ID, currentUser.CircleID)
+	err = h.choreRepo.ArchiveChore(c, id, currentUser.ID, currentUser.FamilyID)
 
 	if err != nil {
 		c.JSON(500, gin.H{
@@ -1566,7 +1546,7 @@ func (h *Handler) ArchiveChore(c *gin.Context) {
 
 	// Broadcast real-time chore archive event
 	if h.realTimeService != nil {
-		updatedChore, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.CircleID)
+		updatedChore, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.FamilyID)
 		if err == nil {
 			broadcaster := h.realTimeService.GetEventBroadcaster()
 			changes := map[string]interface{}{
@@ -1619,13 +1599,13 @@ func (h *Handler) UnarchiveChore(c *gin.Context) {
 	}
 	// The repository only checks authorship; a creator who lost sight of the chore
 	// (e.g. no longer an assignee of a private task) must not be able to change it anymore.
-	if _, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.CircleID); err != nil {
+	if _, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.FamilyID); err != nil {
 		c.JSON(404, gin.H{
 			"error": "Chore not found",
 		})
 		return
 	}
-	err = h.choreRepo.UnarchiveChore(c, id, currentUser.ID, currentUser.CircleID)
+	err = h.choreRepo.UnarchiveChore(c, id, currentUser.ID, currentUser.FamilyID)
 
 	if err != nil {
 		c.JSON(500, gin.H{
@@ -1636,7 +1616,7 @@ func (h *Handler) UnarchiveChore(c *gin.Context) {
 
 	// Broadcast real-time chore unarchive event
 	if h.realTimeService != nil {
-		updatedChore, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.CircleID)
+		updatedChore, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.FamilyID)
 		if err == nil {
 			broadcaster := h.realTimeService.GetEventBroadcaster()
 			changes := map[string]interface{}{
@@ -1733,7 +1713,7 @@ func (h *Handler) CompleteChore(c *gin.Context) {
 		})
 		return
 	}
-	chore, err := h.choreRepo.GetChore(c, id, effectiveUser.ID, actualUser.CircleID)
+	chore, err := h.choreRepo.GetChore(c, id, effectiveUser.ID, actualUser.FamilyID)
 	if err != nil {
 		logger.Error("Failed to retrieve chore", "error", err)
 		c.JSON(500, gin.H{
@@ -1749,15 +1729,15 @@ func (h *Handler) CompleteChore(c *gin.Context) {
 	}
 
 	// user need to be assigned to the chore to complete it
-	circleUsers, err := h.circleRepo.GetCircleUsers(c, actualUser.CircleID)
+	familyUsers, err := h.familyRepo.GetFamilyUsers(c, actualUser.FamilyID)
 	if err != nil {
-		logger.Error("Failed to retrieve circle users", "error", err)
+		logger.Error("Failed to retrieve family users", "error", err)
 		c.JSON(500, gin.H{
-			"error": "Failed to retrieve circle users",
+			"error": "Failed to retrieve family users",
 		})
 		return
 	}
-	if !chore.CanComplete(effectiveUser.ID, circleUsers) {
+	if !chore.CanComplete(effectiveUser.ID, familyUsers) {
 		c.JSON(400, gin.H{
 			"error": "User is not assigned to chore",
 		})
@@ -1775,7 +1755,7 @@ func (h *Handler) CompleteChore(c *gin.Context) {
 	}
 
 	if req.CompletedBy != nil {
-		// Only allow admins to complete chores on behalf of others in the circle
+		// Only allow admins to complete chores on behalf of others in the family
 		// Use actualUser for authorization since this is an admin function
 		ok := authorizeChoreCompletionForUser(h, c, actualUser, req.CompletedBy)
 		if !ok {
@@ -1860,7 +1840,7 @@ func (h *Handler) CompleteChore(c *gin.Context) {
 		return
 	}
 
-	nextAssignedTo, err := checkNextAssignee(chore, choreHistory, completedBy, circleUsers)
+	nextAssignedTo, err := checkNextAssignee(chore, choreHistory, completedBy, familyUsers)
 	if err != nil {
 		logging.FromContext(c).Error("Failed to check next assignee", "error", err)
 		c.JSON(500, gin.H{
@@ -1875,7 +1855,7 @@ func (h *Handler) CompleteChore(c *gin.Context) {
 		})
 		return
 	}
-	updatedChore, err := h.choreRepo.GetChore(c, id, effectiveUser.ID, actualUser.CircleID)
+	updatedChore, err := h.choreRepo.GetChore(c, id, effectiveUser.ID, actualUser.FamilyID)
 	if err != nil {
 		logger.Error("Failed to retrieve chore", "error", err)
 		c.JSON(500, gin.H{
@@ -1909,10 +1889,10 @@ func (h *Handler) CompleteChore(c *gin.Context) {
 }
 
 func authorizeChoreCompletionForUser(h *Handler, c *gin.Context, currentUser *uModel.UserDetails, completedByUserID *int) bool {
-	circleUsers, err := h.circleRepo.GetCircleUsers(c, currentUser.CircleID)
+	familyUsers, err := h.familyRepo.GetFamilyUsers(c, currentUser.FamilyID)
 	if err != nil {
 		c.JSON(500, gin.H{
-			"error": "Error getting circle users",
+			"error": "Error getting family users",
 		})
 		return false
 	}
@@ -1920,18 +1900,18 @@ func authorizeChoreCompletionForUser(h *Handler, c *gin.Context, currentUser *uM
 	isAuthorized := false
 	isCompletedByAuthorized := false
 
-	for _, circleUser := range circleUsers {
-		if circleUser.UserID == currentUser.ID && (circleUser.Role == circle.UserRoleAdmin || circleUser.Role == circle.UserRoleManager) {
+	for _, familyUser := range familyUsers {
+		if familyUser.UserID == currentUser.ID && (familyUser.Role == fModel.UserRoleAdmin || familyUser.Role == fModel.UserRoleManager) {
 			isAuthorized = true
 		}
-		if circleUser.UserID == *completedByUserID {
+		if familyUser.UserID == *completedByUserID {
 			isCompletedByAuthorized = true
 		}
 	}
 	if !isAuthorized || !isCompletedByAuthorized {
 
 		c.JSON(403, gin.H{
-			"error": "You are not allowed to complete this action, either you are not admin or the completed by user is not in the circle",
+			"error": "You are not allowed to complete this action, either you are not admin or the completed by user is not in the family",
 		})
 		return false
 	}
@@ -1973,8 +1953,8 @@ func (h *Handler) GetChoreHistory(c *gin.Context) {
 		return
 	}
 
-	// Verify the chore belongs to the user's circle before returning history
-	chore, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.CircleID)
+	// Verify the chore belongs to the user's family before returning history
+	chore, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		logger.Errorw("Failed to fetch chore", "error", err, "choreID", id, "userID", currentUser.ID)
 		c.JSON(500, gin.H{
@@ -1983,14 +1963,14 @@ func (h *Handler) GetChoreHistory(c *gin.Context) {
 		return
 	}
 
-	circleUsers, err := h.circleRepo.GetCircleUsers(c, currentUser.CircleID)
+	familyUsers, err := h.familyRepo.GetFamilyUsers(c, currentUser.FamilyID)
 	if err != nil {
-		logger.Error("Failed to retrieve circle users", "error", err)
-		c.JSON(500, gin.H{"error": "Failed to retrieve circle users"})
+		logger.Error("Failed to retrieve family users", "error", err)
+		c.JSON(500, gin.H{"error": "Failed to retrieve family users"})
 		return
 	}
 
-	if !chore.CanView(currentUser.ID, circleUsers) {
+	if !chore.CanView(currentUser.ID, familyUsers) {
 		c.JSON(403, gin.H{
 			"error": "You are not allowed to view this chore's history",
 		})
@@ -2049,7 +2029,7 @@ func (h *Handler) GetChoreDetail(c *gin.Context) {
 		return
 	}
 
-	detailed, err := h.choreRepo.GetChoreDetailByID(c, id, currentUser.CircleID, currentUser.ID)
+	detailed, err := h.choreRepo.GetChoreDetailByID(c, id, currentUser.FamilyID, currentUser.ID)
 	if err != nil {
 		logger.Errorw("Failed to fetch chore details", "error", err, "choreID", id, "userID", currentUser.ID)
 		c.JSON(500, gin.H{
@@ -2058,7 +2038,7 @@ func (h *Handler) GetChoreDetail(c *gin.Context) {
 		return
 	}
 	if detailed.Description != nil {
-		// see if we have an <img> tag with attribute dt-data-path if so resigned the url using it's value and replace the src:
+		// see if we have an <img> tag with attribute data-hopla-path if so resigned the url using it's value and replace the src:
 		updatedDescription := h.generateUpdatedSignedDescription(c, *detailed.Description)
 		detailed.Description = &updatedDescription
 	}
@@ -2134,8 +2114,8 @@ func (h *Handler) ModifyHistory(c *gin.Context) {
 		return
 	}
 
-	// Verify the chore belongs to the user's circle before accessing history
-	if _, err := h.choreRepo.GetChore(c, choreID, currentUser.ID, currentUser.CircleID); err != nil {
+	// Verify the chore belongs to the user's family before accessing history
+	if _, err := h.choreRepo.GetChore(c, choreID, currentUser.ID, currentUser.FamilyID); err != nil {
 		logger.Error("Failed to retrieve chore", "error", err, "choreID", choreID, "userID", currentUser.ID)
 		c.JSON(500, gin.H{
 			"error": "Failed to retrieve chore",
@@ -2152,16 +2132,16 @@ func (h *Handler) ModifyHistory(c *gin.Context) {
 		return
 	}
 
-	circleUsers, err := h.circleRepo.GetCircleUsers(c, currentUser.CircleID)
+	familyUsers, err := h.familyRepo.GetFamilyUsers(c, currentUser.FamilyID)
 	if err != nil {
-		logger.Error("Failed to retrieve circle users", "error", err)
+		logger.Error("Failed to retrieve family users", "error", err)
 		c.JSON(500, gin.H{
-			"error": "Failed to retrieve circle users",
+			"error": "Failed to retrieve family users",
 		})
 		return
 	}
 
-	if currentUser.ID != history.CompletedBy && (history.AssignedTo == nil || currentUser.ID != *history.AssignedTo) && !currentUser.IsAdminOrManager(circleUsers) {
+	if currentUser.ID != history.CompletedBy && (history.AssignedTo == nil || currentUser.ID != *history.AssignedTo) && !currentUser.IsAdminOrManager(familyUsers) {
 		c.JSON(403, gin.H{
 			"error": "You are not allowed to modify this history",
 		})
@@ -2200,7 +2180,7 @@ func (h *Handler) ModifyHistory(c *gin.Context) {
 //	@Security		JWTKeyAuth
 //	@Security		APIKeyAuth
 //	@Param			limit	query		int									false	"Number of days to retrieve history (default: 7)"
-//	@Param			members	query		boolean								false	"Include other circle members' history"
+//	@Param			members	query		boolean								false	"Include other family members' history"
 //	@Success		200		{object}	map[string][]chModel.ChoreHistory	"res: array of chore history entries"
 //	@Failure		400		{object}	map[string]string					"error: Invalid duration"
 //	@Failure		401		{object}	map[string]string					"error: Authentication failed"
@@ -2229,13 +2209,13 @@ func (h *Handler) GetChoresHistory(c *gin.Context) {
 		})
 		return
 	}
-	includeCircleRaw := c.Query("members")
-	includeCircle := false
-	if includeCircleRaw == "true" {
-		includeCircle = true
+	includeFamilyRaw := c.Query("members")
+	includeFamily := false
+	if includeFamilyRaw == "true" {
+		includeFamily = true
 	}
 
-	choreHistories, err := h.choreRepo.GetChoresHistoryByUserID(c, currentUser.ID, currentUser.CircleID, duration, includeCircle)
+	choreHistories, err := h.choreRepo.GetChoresHistoryByUserID(c, currentUser.ID, currentUser.FamilyID, duration, includeFamily)
 	if err != nil {
 		logging.FromContext(c).Errorw("Failed to fetch user's chore history", "error", err, "userID", currentUser.ID, "duration", duration)
 		c.JSON(500, gin.H{
@@ -2295,7 +2275,7 @@ func (h *Handler) DeleteHistory(c *gin.Context) {
 		return
 	}
 
-	chore, err := h.choreRepo.GetChore(c, choreID, currentUser.ID, currentUser.CircleID)
+	chore, err := h.choreRepo.GetChore(c, choreID, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		logger.Error("Failed to retrieve chore", "error", err)
 		c.JSON(500, gin.H{
@@ -2304,10 +2284,10 @@ func (h *Handler) DeleteHistory(c *gin.Context) {
 		return
 	}
 
-	circleUsers, err := h.circleRepo.GetCircleUsers(c, currentUser.CircleID)
+	familyUsers, err := h.familyRepo.GetFamilyUsers(c, currentUser.FamilyID)
 	if err != nil {
-		logger.Error("Failed to retrieve circle users", "error", err, "circleID", currentUser.CircleID, "userID", currentUser.ID)
-		c.JSON(500, gin.H{"error": "Failed to retrieve circle users"})
+		logger.Error("Failed to retrieve family users", "error", err, "familyID", currentUser.FamilyID, "userID", currentUser.ID)
+		c.JSON(500, gin.H{"error": "Failed to retrieve family users"})
 		return
 	}
 
@@ -2320,14 +2300,14 @@ func (h *Handler) DeleteHistory(c *gin.Context) {
 		return
 	}
 
-	if !chore.CanDeleteHistory(currentUser.ID, circleUsers, history) {
+	if !chore.CanDeleteHistory(currentUser.ID, familyUsers, history) {
 		c.JSON(403, gin.H{
 			"error": "You are not allowed to delete this history",
 		})
 		return
 	}
 
-	if err := h.choreRepo.DeleteChoreHistory(c, historyID, currentUser.CircleID); err != nil {
+	if err := h.choreRepo.DeleteChoreHistory(c, historyID, currentUser.FamilyID); err != nil {
 		c.JSON(500, gin.H{
 			"error": "Error deleting history",
 		})
@@ -2410,7 +2390,7 @@ func (h *Handler) UpdateSubtaskCompletedAt(c *gin.Context) {
 		})
 		return
 	}
-	chore, err := h.choreRepo.GetChore(c, choreID, effectiveUser.ID, actualUser.CircleID)
+	chore, err := h.choreRepo.GetChore(c, choreID, effectiveUser.ID, actualUser.FamilyID)
 	if err != nil {
 		logger.Error("Failed to retrieve chore", "error", err)
 		c.JSON(500, gin.H{
@@ -2421,15 +2401,15 @@ func (h *Handler) UpdateSubtaskCompletedAt(c *gin.Context) {
 	if !h.impersonationGuard(c, chore, actualUser, effectiveUser, hasImpersonation) {
 		return
 	}
-	circleUsers, err := h.circleRepo.GetCircleUsers(c, actualUser.CircleID)
+	familyUsers, err := h.familyRepo.GetFamilyUsers(c, actualUser.FamilyID)
 	if err != nil {
-		logger.Error("Failed to retrieve circle users", "error", err)
+		logger.Error("Failed to retrieve family users", "error", err)
 		c.JSON(500, gin.H{
-			"error": "Failed to retrieve circle users",
+			"error": "Failed to retrieve family users",
 		})
 		return
 	}
-	if !chore.CanComplete(effectiveUser.ID, circleUsers) {
+	if !chore.CanComplete(effectiveUser.ID, familyUsers) {
 		c.JSON(400, gin.H{
 			"error": "User is not assigned to chore",
 		})
@@ -2469,7 +2449,7 @@ func (h *Handler) submitForApproval(c *gin.Context, chore *chModel.Chore, note *
 		return nil, errors.New("Error setting chore pending approval")
 	}
 
-	updatedChore, err := h.choreRepo.GetChore(c, chore.ID, effectiveUser.ID, actualUser.CircleID)
+	updatedChore, err := h.choreRepo.GetChore(c, chore.ID, effectiveUser.ID, actualUser.FamilyID)
 	if err != nil {
 		return nil, errors.New("Error getting chore")
 	}
@@ -2532,7 +2512,7 @@ func (h *Handler) ApproveChore(c *gin.Context) {
 	}
 
 	// Get the chore
-	chore, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.CircleID)
+	chore, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		logger.Error("Failed to retrieve chore", "error", err)
 		c.JSON(500, gin.H{
@@ -2544,19 +2524,19 @@ func (h *Handler) ApproveChore(c *gin.Context) {
 		return
 	}
 
-	// Check if user is admin in the circle
-	circleUsers, err := h.circleRepo.GetCircleUsers(c, currentUser.CircleID)
+	// Check if user is admin in the family
+	familyUsers, err := h.familyRepo.GetFamilyUsers(c, currentUser.FamilyID)
 	if err != nil {
-		logger.Error("Failed to retrieve circle users", "error", err)
+		logger.Error("Failed to retrieve family users", "error", err)
 		c.JSON(500, gin.H{
-			"error": "Failed to retrieve circle users",
+			"error": "Failed to retrieve family users",
 		})
 		return
 	}
 
 	isAdmin := false
-	for _, user := range circleUsers {
-		if user.UserID == currentUser.ID && (user.Role == circle.UserRoleAdmin || user.Role == circle.UserRoleManager) {
+	for _, user := range familyUsers {
+		if user.UserID == currentUser.ID && (user.Role == fModel.UserRoleAdmin || user.Role == fModel.UserRoleManager) {
 			isAdmin = true
 			break
 		}
@@ -2638,7 +2618,7 @@ func (h *Handler) ApproveChore(c *gin.Context) {
 		}
 	}
 
-	nextAssignedTo, err := checkNextAssignee(chore, allHistory, completedBy, circleUsers)
+	nextAssignedTo, err := checkNextAssignee(chore, allHistory, completedBy, familyUsers)
 	if err != nil {
 		c.JSON(500, gin.H{
 			"error": "Error checking next assignee",
@@ -2654,7 +2634,7 @@ func (h *Handler) ApproveChore(c *gin.Context) {
 		return
 	}
 
-	updatedChore, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.CircleID)
+	updatedChore, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		logger.Error("Failed to retrieve chore", "error", err)
 		c.JSON(500, gin.H{
@@ -2737,7 +2717,7 @@ func (h *Handler) RejectChore(c *gin.Context) {
 		return
 	}
 	// Get the chore
-	chore, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.CircleID)
+	chore, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		logger.Error("Failed to retrieve chore", "error", err)
 		c.JSON(500, gin.H{
@@ -2749,19 +2729,19 @@ func (h *Handler) RejectChore(c *gin.Context) {
 		return
 	}
 
-	// Check if user is admin in the circle
-	circleUsers, err := h.circleRepo.GetCircleUsers(c, currentUser.CircleID)
+	// Check if user is admin in the family
+	familyUsers, err := h.familyRepo.GetFamilyUsers(c, currentUser.FamilyID)
 	if err != nil {
-		logger.Error("Failed to retrieve circle users", "error", err)
+		logger.Error("Failed to retrieve family users", "error", err)
 		c.JSON(500, gin.H{
-			"error": "Failed to retrieve circle users",
+			"error": "Failed to retrieve family users",
 		})
 		return
 	}
 
 	isAdmin := false
-	for _, user := range circleUsers {
-		if user.UserID == currentUser.ID && (user.Role == circle.UserRoleAdmin || user.Role == circle.UserRoleManager) {
+	for _, user := range familyUsers {
+		if user.UserID == currentUser.ID && (user.Role == fModel.UserRoleAdmin || user.Role == fModel.UserRoleManager) {
 			isAdmin = true
 			break
 		}
@@ -2801,7 +2781,7 @@ func (h *Handler) RejectChore(c *gin.Context) {
 	}
 
 	// Reject the chore
-	if err := h.choreRepo.RejectChore(c, id, currentUser.CircleID, note); err != nil {
+	if err := h.choreRepo.RejectChore(c, id, currentUser.FamilyID, note); err != nil {
 
 		c.JSON(500, gin.H{
 			"error": "Error rejecting chore",
@@ -2809,7 +2789,7 @@ func (h *Handler) RejectChore(c *gin.Context) {
 		return
 	}
 
-	updatedChore, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.CircleID)
+	updatedChore, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		logger.Error("Failed to retrieve chore", "error", err)
 		c.JSON(500, gin.H{
@@ -2850,7 +2830,7 @@ func (h *Handler) impersonationGuard(c *gin.Context, chore *chModel.Chore, actua
 	if effectiveUser.ParentUserID != nil && *effectiveUser.ParentUserID == actualUser.ID {
 		return true
 	}
-	if _, err := h.choreRepo.GetChore(c, chore.ID, actualUser.ID, actualUser.CircleID); err == nil {
+	if _, err := h.choreRepo.GetChore(c, chore.ID, actualUser.ID, actualUser.FamilyID); err == nil {
 		return true
 	}
 	logging.FromContext(c).Warn("Impersonation into a chore the actual user cannot see was blocked",
@@ -2861,23 +2841,23 @@ func (h *Handler) impersonationGuard(c *gin.Context, chore *chModel.Chore, actua
 	return false
 }
 
-func checkNextAssignee(chore *chModel.Chore, choresHistory []*chModel.ChoreHistory, performerID int, circleUsers []*circle.UserCircleDetail) (*int, error) {
+func checkNextAssignee(chore *chModel.Chore, choresHistory []*chModel.ChoreHistory, performerID int, familyUsers []*fModel.UserFamilyDetail) (*int, error) {
 	// copy the history to avoid modifying the original:
 	history := make([]*chModel.ChoreHistory, len(choresHistory))
 	copy(history, choresHistory)
 
-	// "Anyone" chores carry no explicit assignees, so rotate across the whole circle rather
+	// "Anyone" chores carry no explicit assignees, so rotate across the whole family rather
 	// than dropping the assignment: a nil result is persisted verbatim by CompleteChore/
 	// ApproveChore/SkipChore, and the notification planner only emits for an assigned user,
 	// so dropping it would silence the chore. no_assignee is excluded because nil is its
 	// intended result. Mirrors the create/edit validation, which treats an empty assignee
-	// list as the whole circle.
+	// list as the whole family.
 	assignees := chore.Assignees
 	if len(assignees) == 0 && chore.AssignStrategy != chModel.AssignmentStrategyNoAssignee {
-		for _, circleUser := range circleUsers {
+		for _, familyUser := range familyUsers {
 			assignees = append(assignees, chModel.ChoreAssignees{
 				ChoreID: chore.ID,
-				UserID:  circleUser.UserID,
+				UserID:  familyUser.UserID,
 			})
 		}
 	}
@@ -2977,7 +2957,7 @@ func checkNextAssignee(chore *chModel.Chore, choresHistory []*chModel.ChoreHisto
 			assigneeID := removeLastAssigned[rand.Intn(len(removeLastAssigned))].UserID
 			nextAssignee = &assigneeID
 		} else {
-			// only candidate is the last assignee (e.g. a single-member circle), so keep
+			// only candidate is the last assignee (e.g. a single-member family), so keep
 			// them rather than dropping the assignment
 			nextAssignee = chore.AssignedTo
 		}
@@ -3069,7 +3049,7 @@ func (h *Handler) UndoChore(c *gin.Context) {
 	}
 
 	// Check if user can access this chore
-	chore, err := h.choreRepo.GetChore(c, choreID, currentUser.ID, currentUser.CircleID)
+	chore, err := h.choreRepo.GetChore(c, choreID, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		logger.Error("Failed to retrieve chore", "error", err)
 		c.JSON(500, gin.H{
@@ -3129,7 +3109,7 @@ func (h *Handler) UndoChore(c *gin.Context) {
 	}
 
 	// Perform the undo
-	err = h.choreRepo.UndoChoreAction(c, choreID, lastAction.ID, currentUser.CircleID, previousAssignedTo, previousDueDate)
+	err = h.choreRepo.UndoChoreAction(c, choreID, lastAction.ID, currentUser.FamilyID, previousAssignedTo, previousDueDate)
 	if err != nil {
 		logger.Error("Failed to undo chore action", "error", err)
 		c.JSON(500, gin.H{
@@ -3165,7 +3145,7 @@ func (h *Handler) UndoChore(c *gin.Context) {
 	}
 
 	// Get updated chore
-	updatedChore, err := h.choreRepo.GetChore(c, choreID, currentUser.ID, currentUser.CircleID)
+	updatedChore, err := h.choreRepo.GetChore(c, choreID, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		logger.Error("Failed to retrieve updated chore", "error", err)
 		c.JSON(500, gin.H{
@@ -3218,7 +3198,7 @@ func Routes(router *gin.Engine, h *Handler, multiAuthMiddleware *auth.MultiAuthM
 
 	choresRoutes := router.Group("api/v1/chores")
 	choresRoutes.Use(multiAuthMiddleware.MiddlewareFunc())
-	choresRoutes.Use(auth.ImpersonationMiddleware(h.uRepo, h.circleRepo))
+	choresRoutes.Use(auth.ImpersonationMiddleware(h.uRepo, h.familyRepo))
 	{
 		choresRoutes.GET("/", h.GetChores)
 		choresRoutes.GET("/archived", h.GetArchivedChores)

@@ -17,9 +17,9 @@ import (
 	"github.com/nico87lbs/hopla/config"
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
 	chRepo "github.com/nico87lbs/hopla/internal/chore/repo"
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
-	cRepo "github.com/nico87lbs/hopla/internal/circle/repo"
 	"github.com/nico87lbs/hopla/internal/database"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
+	fRepo "github.com/nico87lbs/hopla/internal/family/repo"
 	lModel "github.com/nico87lbs/hopla/internal/label/model"
 	lRepo "github.com/nico87lbs/hopla/internal/label/repo"
 	"github.com/nico87lbs/hopla/internal/storage"
@@ -66,19 +66,19 @@ func newCreateChoreTestRouter(t *testing.T) (*gin.Engine, *gorm.DB) {
 	require.NoError(t, err)
 	sqlDB.SetMaxOpenConns(1)
 	require.NoError(t, database.Migration(db))
-	require.NoError(t, db.Create(&cModel.UserCircle{UserID: 1, CircleID: 1, Role: cModel.UserRoleAdmin, IsActive: true}).Error)
+	require.NoError(t, db.Create(&fModel.UserFamily{UserID: 1, FamilyID: 1, Role: fModel.UserRoleAdmin, IsActive: true}).Error)
 
 	cfg := &config.Config{}
 	cfg.Database.Type = "sqlite"
-	circleRepository := cRepo.NewCircleRepository(db)
+	familyRepository := fRepo.NewFamilyRepository(db)
 	h := &Handler{
 		choreRepo:  chRepo.NewChoreRepository(db, cfg),
-		circleRepo: circleRepository,
+		familyRepo: familyRepository,
 	}
 
 	router := gin.New()
 	router.Use(func(c *gin.Context) {
-		c.Set("id", &uModel.UserDetails{User: uModel.User{ID: 1, CircleID: 1}})
+		c.Set("id", &uModel.UserDetails{User: uModel.User{ID: 1, FamilyID: 1}})
 		c.Next()
 	})
 	router.POST("/chores", h.CreateChore)
@@ -170,15 +170,15 @@ func newEditChoreTestRouter(t *testing.T) (*gin.Engine, *gorm.DB) {
 	db, err := gorm.Open(sqlite.Open(filepath.Join(t.TempDir(), "edit.db")), &gorm.Config{})
 	require.NoError(t, err)
 	require.NoError(t, database.Migration(db))
-	require.NoError(t, db.Create(&cModel.UserCircle{UserID: 1, CircleID: 1, Role: cModel.UserRoleAdmin, IsActive: true}).Error)
+	require.NoError(t, db.Create(&fModel.UserFamily{UserID: 1, FamilyID: 1, Role: fModel.UserRoleAdmin, IsActive: true}).Error)
 
 	cfg := &config.Config{}
 	cfg.Database.Type = "sqlite"
 	cfg.Storage.BasePath = t.TempDir()
-	circleRepository := cRepo.NewCircleRepository(db)
+	familyRepository := fRepo.NewFamilyRepository(db)
 	h := &Handler{
 		choreRepo:   chRepo.NewChoreRepository(db, cfg),
-		circleRepo:  circleRepository,
+		familyRepo:  familyRepository,
 		lRepo:       lRepo.NewLabelRepository(db, cfg),
 		stRepo:      stRepo.NewSubTasksRepository(db),
 		storage:     storage.NewLocalStorage(cfg),
@@ -187,7 +187,7 @@ func newEditChoreTestRouter(t *testing.T) (*gin.Engine, *gorm.DB) {
 
 	router := gin.New()
 	router.Use(func(c *gin.Context) {
-		c.Set("id", &uModel.UserDetails{User: uModel.User{ID: 1, CircleID: 1}})
+		c.Set("id", &uModel.UserDetails{User: uModel.User{ID: 1, FamilyID: 1}})
 		c.Next()
 	})
 	router.PUT("/chores", h.EditChore)
@@ -198,11 +198,11 @@ func newEditChoreTestRouter(t *testing.T) (*gin.Engine, *gorm.DB) {
 // be able to update a chore without touching its labels.
 func TestEditChoreWithoutLabelsV2KeepsLabels(t *testing.T) {
 	router, db := newEditChoreTestRouter(t)
-	circleID := 1
-	label := lModel.Label{Name: "garden", Color: "#4caf50", CircleID: &circleID, CreatedBy: 1}
+	familyID := 1
+	label := lModel.Label{Name: "garden", Color: "#4caf50", FamilyID: &familyID, CreatedBy: 1}
 	require.NoError(t, db.Create(&label).Error)
 	chore := chModel.Chore{Name: "water plants", FrequencyType: chModel.FrequencyTypeOnce,
-		AssignStrategy: chModel.AssignmentStrategyRandom, CircleID: 1, CreatedBy: 1, IsActive: true}
+		AssignStrategy: chModel.AssignmentStrategyRandom, FamilyID: 1, CreatedBy: 1, IsActive: true}
 	require.NoError(t, db.Create(&chore).Error)
 	require.NoError(t, db.Create(&chModel.ChoreLabels{ChoreID: chore.ID, LabelID: label.ID, UserID: 1}).Error)
 
@@ -259,7 +259,7 @@ func TestEditChoreWithoutDueDate(t *testing.T) {
 			router, db := newEditChoreTestRouter(t)
 			due := time.Date(2026, 10, 24, 21, 59, 0, 0, time.UTC)
 			chore := chModel.Chore{Name: "trash", FrequencyType: chModel.FrequencyTypeDaily, Frequency: 1,
-				NextDueDate: &due, AssignStrategy: chModel.AssignmentStrategyRandom, CircleID: 1, CreatedBy: 1, IsActive: true}
+				NextDueDate: &due, AssignStrategy: chModel.AssignmentStrategyRandom, FamilyID: 1, CreatedBy: 1, IsActive: true}
 			require.NoError(t, db.Create(&chore).Error)
 
 			raw, err := json.Marshal(map[string]any{

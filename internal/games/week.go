@@ -27,14 +27,14 @@ type WeekStats struct {
 
 // Week returns this week's stats of the given members, in their order, and
 // the Monday the week started on.
-func Week(db *gorm.DB, circleID int, userIDs []int, now time.Time) ([]WeekStats, time.Time, error) {
-	from := weekStart(now, zone.Of(circleID))
+func Week(db *gorm.DB, familyID int, userIDs []int, now time.Time) ([]WeekStats, time.Time, error) {
+	from := weekStart(now, zone.Of(familyID))
 	to := from.AddDate(0, 0, 7)
-	tasks, err := tasksDone(db, circleID, nil, from, to)
+	tasks, err := tasksDone(db, familyID, nil, from, to)
 	if err != nil {
 		return nil, from, err
 	}
-	taskPoints, err := taskPointsEarned(db, circleID, from, to)
+	taskPoints, err := taskPointsEarned(db, familyID, from, to)
 	if err != nil {
 		return nil, from, err
 	}
@@ -44,7 +44,7 @@ func Week(db *gorm.DB, circleID int, userIDs []int, now time.Time) ([]WeekStats,
 		Points int
 	}
 	if err := db.Model(&ptModel.PointsHistory{}).Select("user_id, action, points").
-		Where("circle_id = ? AND action IN ? AND created_at >= ? AND created_at < ?", circleID,
+		Where("family_id = ? AND action IN ? AND created_at >= ? AND created_at < ?", familyID,
 			[]ptModel.PointsHistoryAction{ptModel.PointsHistoryActionBonus, ptModel.PointsHistoryActionPenalty, ptModel.PointsHistoryActionGame}, from, to).
 		Scan(&bonusRows).Error; err != nil {
 		return nil, from, err
@@ -60,7 +60,7 @@ func Week(db *gorm.DB, circleID int, userIDs []int, now time.Time) ([]WeekStats,
 		Points int
 	}
 	if err := db.Table("learn_sessions").Select("user_id, COUNT(*) AS count, COALESCE(SUM(points), 0) AS points").
-		Where("circle_id = ? AND played_at >= ? AND played_at < ?", circleID, from, to).
+		Where("family_id = ? AND played_at >= ? AND played_at < ?", familyID, from, to).
 		Group("user_id").Scan(&gameRows).Error; err != nil {
 		return nil, from, err
 	}
@@ -68,7 +68,7 @@ func Week(db *gorm.DB, circleID int, userIDs []int, now time.Time) ([]WeekStats,
 	for _, row := range gameRows {
 		played[row.UserID], gamePoints[row.UserID] = row.Count, row.Points
 	}
-	away, err := absenceDays(db, circleID, from, now)
+	away, err := absenceDays(db, familyID, from, now)
 	if err != nil {
 		return nil, from, err
 	}
@@ -88,8 +88,8 @@ type DayTally struct {
 }
 
 // TodayTallies returns each member's tally of the family's day so far.
-func TodayTallies(db *gorm.DB, circleID int, now time.Time) (map[int]DayTally, error) {
-	start := endOfDay(now, zone.Of(circleID)).Add(-24*time.Hour + time.Second)
+func TodayTallies(db *gorm.DB, familyID int, now time.Time) (map[int]DayTally, error) {
+	start := endOfDay(now, zone.Of(familyID)).Add(-24*time.Hour + time.Second)
 	tallies := map[int]DayTally{}
 	var done []struct {
 		CompletedBy int
@@ -97,7 +97,7 @@ func TodayTallies(db *gorm.DB, circleID int, now time.Time) (map[int]DayTally, e
 	}
 	if err := db.Table("chore_histories AS h").Joins("JOIN chores AS c ON c.id = h.chore_id").
 		Select("h.completed_by, COUNT(*) AS n").
-		Where("c.circle_id = ? AND h.status = ? AND h.performed_at >= ?", circleID, chModel.ChoreHistoryStatusCompleted, start).
+		Where("c.family_id = ? AND h.status = ? AND h.performed_at >= ?", familyID, chModel.ChoreHistoryStatusCompleted, start).
 		Group("h.completed_by").Scan(&done).Error; err != nil {
 		return nil, err
 	}
@@ -107,7 +107,7 @@ func TodayTallies(db *gorm.DB, circleID int, now time.Time) (map[int]DayTally, e
 		tallies[row.CompletedBy] = tally
 	}
 	var rows []ptModel.PointsHistory
-	if err := db.Where("circle_id = ? AND created_at >= ? AND action NOT IN ?", circleID, start,
+	if err := db.Where("family_id = ? AND created_at >= ? AND action NOT IN ?", familyID, start,
 		[]ptModel.PointsHistoryAction{ptModel.PointsHistoryActionRedeem, ptModel.PointsHistoryActionReset}).
 		Find(&rows).Error; err != nil {
 		return nil, err

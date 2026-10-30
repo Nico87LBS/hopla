@@ -7,15 +7,15 @@ import (
 	"github.com/stretchr/testify/require"
 	"gorm.io/gorm"
 
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	. "github.com/nico87lbs/hopla/internal/games"
 	"github.com/nico87lbs/hopla/internal/learn"
 	ptModel "github.com/nico87lbs/hopla/internal/points"
 )
 
 func earned(t *testing.T, db *gorm.DB, userID int) int {
-	var member cModel.UserCircle
-	require.NoError(t, db.Where("user_id = ? AND circle_id = 1", userID).First(&member).Error)
+	var member fModel.UserFamily
+	require.NoError(t, db.Where("user_id = ? AND family_id = 1", userID).First(&member).Error)
 	return member.Points
 }
 
@@ -23,8 +23,8 @@ func earned(t *testing.T, db *gorm.DB, userID int) int {
 func credit(t *testing.T, db *gorm.DB, choreID, userID, points int, at time.Time) {
 	done(t, db, choreID, userID, at)
 	require.NoError(t, db.Create(&ptModel.PointsHistory{Action: ptModel.PointsHistoryActionAdd, Points: points,
-		UserID: userID, CircleID: 1, CreatedAt: at}).Error)
-	require.NoError(t, db.Model(&cModel.UserCircle{}).Where("user_id = ?", userID).
+		UserID: userID, FamilyID: 1, CreatedAt: at}).Error)
+	require.NoError(t, db.Model(&fModel.UserFamily{}).Where("user_id = ?", userID).
 		Update("points", gorm.Expr("points + ?", points)).Error)
 }
 
@@ -63,13 +63,13 @@ func TestRanks(t *testing.T) {
 	require.Len(t, ranks, 2)
 	other, err := RanksFor(db, 2)
 	require.NoError(t, err)
-	require.Len(t, other, 7, "another circle keeps the defaults")
+	require.Len(t, other, 7, "another family keeps the defaults")
 }
 
 func TestWeeklyQuestsAreDrawnOnceAndPaid(t *testing.T) {
 	db := setup(t)
-	require.NoError(t, db.Create(&cModel.UserCircle{UserID: 3, CircleID: 1, Role: cModel.UserRoleMember, IsActive: true}).Error)
-	require.NoError(t, db.Save(&Rules{CircleID: 1, QuestsPerWeek: 2}).Error)
+	require.NoError(t, db.Create(&fModel.UserFamily{UserID: 3, FamilyID: 1, Role: fModel.UserRoleMember, IsActive: true}).Error)
+	require.NoError(t, db.Save(&Rules{FamilyID: 1, QuestsPerWeek: 2}).Error)
 	now := time.Now()
 	task := chore(t, db, "Table", 2, now, nil)
 	for i, quest := range []Quest{
@@ -78,10 +78,10 @@ func TestWeeklyQuestsAreDrawnOnceAndPaid(t *testing.T) {
 		{Name: "Série de 30 jours", Kind: GoalStreak, Target: 30, Reward: 50},
 		{Name: "Réservée à Anna", Kind: GoalTasks, Target: 1, Reward: 1, UserIDs: []int{3}},
 	} {
-		quest.CircleID, quest.Period = 1, QuestWeek
+		quest.FamilyID, quest.Period = 1, QuestWeek
 		require.NoError(t, db.Create(&quest).Error, i)
 	}
-	require.NoError(t, db.Create(&Quest{CircleID: 1, Name: "Du mois", Kind: GoalTasks, Target: 40, Reward: 30, Period: QuestMonth}).Error)
+	require.NoError(t, db.Create(&Quest{FamilyID: 1, Name: "Du mois", Kind: GoalTasks, Target: 40, Reward: 30, Period: QuestMonth}).Error)
 
 	quests, err := Quests(db, 1, []int{2, 3}, now)
 	require.NoError(t, err)
@@ -92,7 +92,7 @@ func TestWeeklyQuestsAreDrawnOnceAndPaid(t *testing.T) {
 	again, err := Quests(db, 1, []int{2}, now)
 	require.NoError(t, err)
 	require.Equal(t, quests[2], again[2], "the draw stays for the week")
-	require.NoError(t, db.Create(&Quest{CircleID: 1, Name: "Nouvelle du mois", Kind: GoalPoints, Target: 50, Reward: 5, Period: QuestMonth}).Error)
+	require.NoError(t, db.Create(&Quest{FamilyID: 1, Name: "Nouvelle du mois", Kind: GoalPoints, Target: 50, Reward: 5, Period: QuestMonth}).Error)
 	again, err = Quests(db, 1, []int{2}, now)
 	require.NoError(t, err)
 	require.Len(t, again[2], 4, "a quest added during the month is given too")
@@ -100,7 +100,7 @@ func TestWeeklyQuestsAreDrawnOnceAndPaid(t *testing.T) {
 
 	// Make sure Elena has the table quest whatever the draw, then do it twice.
 	require.NoError(t, db.Where("user_id = 2 AND period = ?", QuestWeek).Delete(&QuestDraw{}).Error)
-	require.NoError(t, db.Create(&QuestDraw{CircleID: 1, UserID: 2, PeriodKey: quests[2][0].PeriodKey, QuestID: 1,
+	require.NoError(t, db.Create(&QuestDraw{FamilyID: 1, UserID: 2, PeriodKey: quests[2][0].PeriodKey, QuestID: 1,
 		Period: QuestWeek, Name: "Mettre la table 2 fois", Kind: GoalTasks, ChoreID: &task.ID, Target: 2, Reward: 7}).Error)
 	credit(t, db, task.ID, 2, 2, now)
 	require.NoError(t, AfterTask(db, 1, 2, now, now))
@@ -121,13 +121,13 @@ func TestWeeklyQuestsAreDrawnOnceAndPaid(t *testing.T) {
 
 func TestChallenges(t *testing.T) {
 	db := setup(t)
-	require.NoError(t, db.Create(&cModel.UserCircle{UserID: 3, CircleID: 1, Role: cModel.UserRoleMember, IsActive: true}).Error)
-	require.NoError(t, db.Save(&Rules{CircleID: 1}).Error) // no streak bonus in the way
+	require.NoError(t, db.Create(&fModel.UserFamily{UserID: 3, FamilyID: 1, Role: fModel.UserRoleMember, IsActive: true}).Error)
+	require.NoError(t, db.Save(&Rules{FamilyID: 1}).Error) // no streak bonus in the way
 	now := time.Now()
 	task := chore(t, db, "Chambre", 10, now, nil)
-	require.NoError(t, db.Create(&Challenge{CircleID: 1, Name: "Piscine", Kind: GoalPoints, Target: 25, Reward: 5,
+	require.NoError(t, db.Create(&Challenge{FamilyID: 1, Name: "Piscine", Kind: GoalPoints, Target: 25, Reward: 5,
 		RewardText: "Sortie piscine", Shared: true, UserIDs: []int{2, 3}, StartsAt: now.Add(-time.Hour), EndsAt: now.Add(time.Hour)}).Error)
-	require.NoError(t, db.Create(&Challenge{CircleID: 1, Name: "Chambre 2 fois", Kind: GoalTasks, ChoreID: &task.ID,
+	require.NoError(t, db.Create(&Challenge{FamilyID: 1, Name: "Chambre 2 fois", Kind: GoalTasks, ChoreID: &task.ID,
 		Target: 2, Reward: 3, StartsAt: now.Add(-time.Hour), EndsAt: now.Add(time.Hour)}).Error)
 
 	credit(t, db, task.ID, 2, 10, now)
@@ -157,17 +157,17 @@ func TestChallenges(t *testing.T) {
 
 func TestLearnGoalsCountGamesAndStars(t *testing.T) {
 	db := setup(t)
-	require.NoError(t, db.Save(&Rules{CircleID: 1}).Error)
+	require.NoError(t, db.Save(&Rules{FamilyID: 1}).Error)
 	now := time.Now().UTC()
-	require.NoError(t, db.Create(&learn.Module{CircleID: 1, Key: "maths-ce2", Name: "Maths CE2",
+	require.NoError(t, db.Create(&learn.Module{FamilyID: 1, Key: "maths-ce2", Name: "Maths CE2",
 		Children: []string{"tables-ce2", "divisions"}, Content: "{}"}).Error)
 	play := func(module string, stars int) {
-		require.NoError(t, db.Create(&learn.Session{CircleID: 1, ClientID: module + time.Now().String(), UserID: 2,
+		require.NoError(t, db.Create(&learn.Session{FamilyID: 1, ClientID: module + time.Now().String(), UserID: 2,
 			ModuleKey: module, Day: "2026-10-30", Total: 10, Stars: stars, PlayedAt: now}).Error)
 	}
-	require.NoError(t, db.Create(&Challenge{CircleID: 1, Name: "3 parties", Kind: GoalGames, Target: 3, Reward: 4,
+	require.NoError(t, db.Create(&Challenge{FamilyID: 1, Name: "3 parties", Kind: GoalGames, Target: 3, Reward: 4,
 		StartsAt: now.Add(-time.Hour), EndsAt: now.Add(time.Hour)}).Error)
-	require.NoError(t, db.Create(&Challenge{CircleID: 1, Name: "5 étoiles en maths", Kind: GoalStars,
+	require.NoError(t, db.Create(&Challenge{FamilyID: 1, Name: "5 étoiles en maths", Kind: GoalStars,
 		Module: "maths-ce2", Target: 5, Reward: 6, StartsAt: now.Add(-time.Hour), EndsAt: now.Add(time.Hour)}).Error)
 
 	play("tables-ce2", 3)
@@ -188,17 +188,17 @@ func TestLearnGoalsCountGamesAndStars(t *testing.T) {
 
 func TestChallengeTargetLowerAfterAbsence(t *testing.T) {
 	db := setup(t)
-	require.NoError(t, db.Create(&cModel.UserCircle{UserID: 3, CircleID: 1, Role: cModel.UserRoleMember, IsActive: true}).Error)
-	require.NoError(t, db.Save(&Rules{CircleID: 1}).Error)
+	require.NoError(t, db.Create(&fModel.UserFamily{UserID: 3, FamilyID: 1, Role: fModel.UserRoleMember, IsActive: true}).Error)
+	require.NoError(t, db.Save(&Rules{FamilyID: 1}).Error)
 	now := time.Now()
 	start := time.Date(now.Year(), now.Month(), now.Day()-6, 0, 0, 0, 0, time.Local)
 	task := chore(t, db, "Chambre", 10, now, nil)
-	require.NoError(t, db.Create(&Challenge{CircleID: 1, Name: "Chambre 5 fois", Kind: GoalTasks, ChoreID: &task.ID,
+	require.NoError(t, db.Create(&Challenge{FamilyID: 1, Name: "Chambre 5 fois", Kind: GoalTasks, ChoreID: &task.ID,
 		Target: 5, Reward: 3, StartsAt: start, EndsAt: start.AddDate(0, 0, 7)}).Error)
-	require.NoError(t, db.Create(&Challenge{CircleID: 1, Name: "Ensemble", Kind: GoalTasks, ChoreID: &task.ID,
+	require.NoError(t, db.Create(&Challenge{FamilyID: 1, Name: "Ensemble", Kind: GoalTasks, ChoreID: &task.ID,
 		Target: 5, Shared: true, StartsAt: start, EndsAt: start.AddDate(0, 0, 7)}).Error)
 	back := start.AddDate(0, 0, 2).Add(12 * time.Hour)
-	require.NoError(t, db.Create(&Absence{CircleID: 1, UserID: 2, StartAt: start.AddDate(0, 0, 1).Add(12 * time.Hour), EndAt: &back}).Error)
+	require.NoError(t, db.Create(&Absence{FamilyID: 1, UserID: 2, StartAt: start.AddDate(0, 0, 1).Add(12 * time.Hour), EndAt: &back}).Error)
 
 	views, err := Challenges(db, 1, []int{2, 3}, now, now)
 	require.NoError(t, err)

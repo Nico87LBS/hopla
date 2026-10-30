@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { Navigate } from 'react-router-dom'
 
 import { useIsParent } from '../../hooks/useIsParent'
-import { useCircleMembers } from '../../queries/UserQueries'
+import { useFamilyMembers } from '../../queries/UserQueries'
 import LoadingComponent from '../components/Loading'
 import { PeriodsCard, RulesCard, useGamesToday } from '../Games/DailyGames'
 import { PresetsCard, usePointsPresets } from '../Games/PointsCards'
@@ -23,8 +23,8 @@ import AdvancedSettings from '../Settings/AdvancedSettings'
 import APITokenSettings from '../Settings/APITokenSettings'
 import CalendarSettings from '../Settings/CalendarSettings'
 import ChildUserSettings from '../Settings/ChildUserSettings'
-import CircleSettings from '../Settings/CircleSettings'
 import CurrencyCard from '../Settings/CurrencyCard'
+import FamilyMembersSettings from '../Settings/FamilyMembersSettings'
 import FamilyTimezoneCard from '../Settings/FamilyTimezoneCard'
 import LocalizationSettings from '../Settings/LocalizationSettings'
 import MFASettings from '../Settings/MFASettings'
@@ -37,7 +37,7 @@ import ThemeSettings from '../Settings/ThemeSettings'
 import { ManageTabs } from './ManageTabs'
 
 export const useMembers = () => {
-  const { data } = useCircleMembers()
+  const { data } = useFamilyMembers()
   return useMemo(
     () => (data?.res || []).filter(m => m.isActive !== false),
     [data?.res],
@@ -163,7 +163,7 @@ ManageRanks.propTypes = { tab: PropTypes.oneOf(['ranks', 'rules']).isRequired }
 export const ManageFamily = ({ tab }) => (
   <TabPage page='family' current={tab}>
     <Embedded mode='tab'>
-      {tab === 'members' && <CircleSettings />}
+      {tab === 'members' && <FamilyMembersSettings />}
       {tab === 'children' && <ChildUserSettings />}
       {tab === 'settings' && (
         <Stack gap={2}>

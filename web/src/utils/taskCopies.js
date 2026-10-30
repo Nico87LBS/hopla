@@ -9,7 +9,7 @@ export const sameName = name =>
     .toLowerCase()
 
 // copiesOf lists the other tasks that share this task's name, archived ones
-// included, in the circle's task list.
+// included, in the family's task list.
 export const copiesOf = (chore, chores) => {
   if (!chore?.id || !chore?.name) return []
   const key = sameName(chore.name)

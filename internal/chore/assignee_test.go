@@ -4,16 +4,16 @@ import (
 	"testing"
 
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
-	circle "github.com/nico87lbs/hopla/internal/circle/model"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
 )
 
-// circleOf builds the circle-member list checkNextAssignee falls back to when a chore
+// familyOf builds the family-member list checkNextAssignee falls back to when a chore
 // has no explicit assignees (an "Anyone" chore).
-func circleOf(userIDs ...int) []*circle.UserCircleDetail {
-	members := make([]*circle.UserCircleDetail, 0, len(userIDs))
+func familyOf(userIDs ...int) []*fModel.UserFamilyDetail {
+	members := make([]*fModel.UserFamilyDetail, 0, len(userIDs))
 	for _, userID := range userIDs {
-		members = append(members, &circle.UserCircleDetail{
-			UserCircle: circle.UserCircle{UserID: userID},
+		members = append(members, &fModel.UserFamilyDetail{
+			UserFamily: fModel.UserFamily{UserID: userID},
 		})
 	}
 	return members
@@ -127,10 +127,10 @@ func TestCheckNextAssigneeLeastAssignedIgnoresNonAssignees(t *testing.T) {
 	}
 }
 
-func TestCheckNextAssigneeAnyoneChoreRotatesAcrossCircle(t *testing.T) {
+func TestCheckNextAssigneeAnyoneChoreRotatesAcrossFamily(t *testing.T) {
 	// An "Anyone" chore has no explicit assignees. Rather than dropping the assignment
 	// (which would also silence notifications, since the planner only emits for an
-	// assigned user), round_robin should rotate across the whole circle.
+	// assigned user), round_robin should rotate across the whole family.
 
 	userA, userB, userC := 1, 2, 3
 
@@ -141,7 +141,7 @@ func TestCheckNextAssigneeAnyoneChoreRotatesAcrossCircle(t *testing.T) {
 		Assignees:      nil,
 	}
 
-	nextAssignee, err := checkNextAssignee(chore, nil, userB, circleOf(userA, userB, userC))
+	nextAssignee, err := checkNextAssignee(chore, nil, userB, familyOf(userA, userB, userC))
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -149,7 +149,7 @@ func TestCheckNextAssigneeAnyoneChoreRotatesAcrossCircle(t *testing.T) {
 		t.Fatal("expected a next assignee, got nil")
 	}
 	if *nextAssignee != userC {
-		t.Errorf("expected rotation to the next circle member %d, got %d", userC, *nextAssignee)
+		t.Errorf("expected rotation to the next family member %d, got %d", userC, *nextAssignee)
 	}
 
 	// The fallback pool must not leak back onto the chore: an "Anyone" chore stays
@@ -171,7 +171,7 @@ func TestCheckNextAssigneeAnyoneChoreDoesNotDropAssignment(t *testing.T) {
 	}
 
 	assigned := 2
-	members := circleOf(1, assigned, 3)
+	members := familyOf(1, assigned, 3)
 
 	for _, strategy := range strategies {
 		chore := &chModel.Chore{
@@ -190,29 +190,29 @@ func TestCheckNextAssigneeAnyoneChoreDoesNotDropAssignment(t *testing.T) {
 			t.Errorf("%s: assignment was dropped for an Anyone chore", strategy)
 			continue
 		}
-		// Whichever member is picked, it must be someone in the circle.
-		inCircle := false
+		// Whichever member is picked, it must be someone in the family.
+		inFamily := false
 		for _, member := range members {
 			if member.UserID == *nextAssignee {
-				inCircle = true
+				inFamily = true
 				break
 			}
 		}
-		if !inCircle {
-			t.Errorf("%s: next assignee %d is not a circle member", strategy, *nextAssignee)
+		if !inFamily {
+			t.Errorf("%s: next assignee %d is not a family member", strategy, *nextAssignee)
 		}
 	}
 }
 
 func TestCheckNextAssigneeNoAssigneeStrategyStaysUnassigned(t *testing.T) {
-	// no_assignee must keep returning nil: the circle fallback does not apply to it.
+	// no_assignee must keep returning nil: the family fallback does not apply to it.
 	chore := &chModel.Chore{
 		ID:             7,
 		AssignStrategy: chModel.AssignmentStrategyNoAssignee,
 		Assignees:      nil,
 	}
 
-	nextAssignee, err := checkNextAssignee(chore, nil, 1, circleOf(1, 2, 3))
+	nextAssignee, err := checkNextAssignee(chore, nil, 1, familyOf(1, 2, 3))
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -229,14 +229,14 @@ func TestCheckNextAssigneeTogetherStaysUnassigned(t *testing.T) {
 		Assignees:      []chModel.ChoreAssignees{{ChoreID: 7, UserID: 2}, {ChoreID: 7, UserID: 3}},
 	}
 
-	nextAssignee, err := checkNextAssignee(chore, nil, 2, circleOf(1, 2, 3))
+	nextAssignee, err := checkNextAssignee(chore, nil, 2, familyOf(1, 2, 3))
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	if nextAssignee != nil {
 		t.Errorf("expected together to stay unassigned, got %d", *nextAssignee)
 	}
-	if !chore.CanComplete(3, circleOf(1, 2, 3)) {
+	if !chore.CanComplete(3, familyOf(1, 2, 3)) {
 		t.Error("expected any assignee to be able to complete a together task")
 	}
 }
@@ -244,10 +244,10 @@ func TestCheckNextAssigneeTogetherStaysUnassigned(t *testing.T) {
 func TestCheckNextAssigneeRandomExceptLastKeepsSoleCandidate(t *testing.T) {
 	// When the last assignee is the only candidate there is nobody else to rotate to,
 	// so the assignment must be kept rather than dropped. Covers both a single-member
-	// circle ("Anyone" chore) and a chore with a single explicit assignee.
+	// family ("Anyone" chore) and a chore with a single explicit assignee.
 	assigned := 2
 
-	t.Run("single member circle", func(t *testing.T) {
+	t.Run("single member family", func(t *testing.T) {
 		chore := &chModel.Chore{
 			ID:             7,
 			AssignedTo:     intPtr(assigned),
@@ -255,12 +255,12 @@ func TestCheckNextAssigneeRandomExceptLastKeepsSoleCandidate(t *testing.T) {
 			Assignees:      nil,
 		}
 
-		nextAssignee, err := checkNextAssignee(chore, nil, assigned, circleOf(assigned))
+		nextAssignee, err := checkNextAssignee(chore, nil, assigned, familyOf(assigned))
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
 		if nextAssignee == nil || *nextAssignee != assigned {
-			t.Errorf("expected sole circle member %d to be kept, got %v", assigned, nextAssignee)
+			t.Errorf("expected sole family member %d to be kept, got %v", assigned, nextAssignee)
 		}
 	})
 
@@ -274,7 +274,7 @@ func TestCheckNextAssigneeRandomExceptLastKeepsSoleCandidate(t *testing.T) {
 			},
 		}
 
-		nextAssignee, err := checkNextAssignee(chore, nil, assigned, circleOf(1, assigned, 3))
+		nextAssignee, err := checkNextAssignee(chore, nil, assigned, familyOf(1, assigned, 3))
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}

@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
 )
 
 type User struct {
@@ -15,8 +15,7 @@ type User struct {
 	Email       string           `json:"email" gorm:"column:email;uniqueIndex:idx_email_not_null,where:email != ''"` // Email (unique when not empty, allows empty for child users)
 	Provider    AuthProviderType `json:"provider" gorm:"column:provider"`                                            // Provider
 	Password    string           `json:"-" gorm:"column:password"`                                                   // Password
-	CircleID    int              `json:"circleID" gorm:"column:circle_id"`                                           // Circle ID
-	ChatID      int64            `json:"chatID" gorm:"column:chat_id"`                                               // legacy column, unused
+	FamilyID    int              `json:"familyID" gorm:"column:family_id"`                                           // Family ID
 	Image       string           `json:"image" gorm:"column:image"`                                                  // Image
 	Timezone    string           `json:"timezone" gorm:"column:timezone"`                                            // Timezone
 	// Parent-Child relationship fields
@@ -49,12 +48,12 @@ type APIToken struct {
 	Name      string    `json:"name" gorm:"column:name"`            // Name (display only, not unique)
 	UserID    int       `json:"userId" gorm:"column:user_id;index"` // Index on userID
 	Token     string    `json:"token" gorm:"column:token;index"`    // Index on token
-	Prefix    *string   `json:"prefix" gorm:"column:prefix"`        // Token format/type marker, e.g. "dt_"
+	Prefix    *string   `json:"prefix" gorm:"column:prefix"`        // Token format/type marker, e.g. "hp_"
 	Suffix    *string   `json:"suffix" gorm:"column:suffix"`        // Last few chars of the token, for masked display
 	CreatedAt time.Time `json:"createdAt" gorm:"column:created_at"`
 }
 
-const APITokenPrefix = "dt_"
+const APITokenPrefix = "hp_"
 
 func BuildFullToken(prefix, body string) string {
 	return prefix + body
@@ -90,15 +89,15 @@ type MFASession struct {
 
 // UserSession represents refresh tokens for JWT authentication with rotation
 type UserSession struct {
-	ID        string     `json:"id" gorm:"primaryKey;type:varchar(36)"`                                // UUID primary key
-	UserID    int        `json:"userId" gorm:"column:user_id;not null;index"`                          // User ID foreign key
-	TokenHash string     `json:"-" gorm:"column:token_hash;type:varchar(255);unique;not null;index"`   // Hashed refresh token
-	FamilyID  string     `json:"-" gorm:"column:family_id;type:varchar(36);not null;index"`            // Token family for rotation tracking
-	CreatedAt time.Time  `json:"createdAt" gorm:"column:created_at;not null"`                          // Creation timestamp
-	ExpiresAt time.Time  `json:"expiresAt" gorm:"column:expires_at;not null;index"`                    // Expiration timestamp
-	UsedAt    *time.Time `json:"-" gorm:"column:used_at"`                                              // When token was used (for reuse detection)
-	RevokedAt *time.Time `json:"-" gorm:"column:revoked_at"`                                           // When token was revoked
-	User      User       `json:"-" gorm:"foreignKey:UserID;references:ID;constraint:OnDelete:CASCADE"` // User relationship
+	ID          string     `json:"id" gorm:"primaryKey;type:varchar(36)"`                                // UUID primary key
+	UserID      int        `json:"userId" gorm:"column:user_id;not null;index"`                          // User ID foreign key
+	TokenHash   string     `json:"-" gorm:"column:token_hash;type:varchar(255);unique;not null;index"`   // Hashed refresh token
+	TokenFamily string     `json:"-" gorm:"column:token_family;type:varchar(36);not null;index"`         // Token family for rotation tracking
+	CreatedAt   time.Time  `json:"createdAt" gorm:"column:created_at;not null"`                          // Creation timestamp
+	ExpiresAt   time.Time  `json:"expiresAt" gorm:"column:expires_at;not null;index"`                    // Expiration timestamp
+	UsedAt      *time.Time `json:"-" gorm:"column:used_at"`                                              // When token was used (for reuse detection)
+	RevokedAt   *time.Time `json:"-" gorm:"column:revoked_at"`                                           // When token was revoked
+	User        User       `json:"-" gorm:"foreignKey:UserID;references:ID;constraint:OnDelete:CASCADE"` // User relationship
 }
 
 // MFASetupResponse represents the response when setting up MFA
@@ -114,10 +113,10 @@ type MFAVerifyRequest struct {
 	SessionToken string `json:"sessionToken,omitempty"` // For login flow
 }
 
-func (u User) IsAdminOrManager(circleUsers []*cModel.UserCircleDetail) bool {
-	for _, cu := range circleUsers {
+func (u User) IsAdminOrManager(familyUsers []*fModel.UserFamilyDetail) bool {
+	for _, cu := range familyUsers {
 		if cu.UserID == u.ID {
-			return cu.Role == cModel.UserRoleAdmin || cu.Role == cModel.UserRoleManager
+			return cu.Role == fModel.UserRoleAdmin || cu.Role == fModel.UserRoleManager
 		}
 	}
 	return false

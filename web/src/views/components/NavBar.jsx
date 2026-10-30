@@ -81,7 +81,7 @@ const SHELL_FREE_PAGES = [
   '/onboarding',
   '/get-started',
   '/ready',
-  '/circle/join',
+  '/family/join',
 ]
 
 const NavBar = () => {

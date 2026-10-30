@@ -106,7 +106,7 @@ test('copyUpdate gives the copies a due date the edit changed', () => {
 
 test('splitIntoCopies keeps the task with the current assignee', () => {
   const chore = { id: 7, name: 'Dents', assignees: [], draftId: 'd' }
-  const { update, creates } = splitIntoCopies(
+  const { creates, update } = splitIntoCopies(
     chore,
     [{ userId: 1 }, { userId: 2 }, { userId: 3 }],
     2,

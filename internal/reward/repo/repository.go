@@ -6,7 +6,7 @@ import (
 	"time"
 
 	config "github.com/nico87lbs/hopla/config"
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	pModel "github.com/nico87lbs/hopla/internal/points"
 	rModel "github.com/nico87lbs/hopla/internal/reward/model"
 	"gorm.io/gorm"
@@ -24,20 +24,12 @@ func NewRewardRepository(db *gorm.DB, cfg *config.Config) *RewardRepository {
 	return &RewardRepository{db: db}
 }
 
-func (r *RewardRepository) GetRewardsByCircle(ctx context.Context, circleID int) ([]*rModel.Reward, error) {
+func (r *RewardRepository) GetRewardsByFamily(ctx context.Context, familyID int) ([]*rModel.Reward, error) {
 	var rewards []*rModel.Reward
-	if err := r.db.WithContext(ctx).Where("circle_id = ?", circleID).Order("points_cost asc").Find(&rewards).Error; err != nil {
+	if err := r.db.WithContext(ctx).Where("family_id = ?", familyID).Order("points_cost asc").Find(&rewards).Error; err != nil {
 		return nil, err
 	}
 	return rewards, nil
-}
-
-func (r *RewardRepository) GetReward(ctx context.Context, id int, circleID int) (*rModel.Reward, error) {
-	var reward rModel.Reward
-	if err := r.db.WithContext(ctx).Where("id = ? AND circle_id = ?", id, circleID).First(&reward).Error; err != nil {
-		return nil, err
-	}
-	return &reward, nil
 }
 
 func (r *RewardRepository) CreateReward(ctx context.Context, reward *rModel.Reward) error {
@@ -56,7 +48,7 @@ func (r *RewardRepository) CreateReward(ctx context.Context, reward *rModel.Rewa
 
 func (r *RewardRepository) UpdateReward(ctx context.Context, reward *rModel.Reward) error {
 	return r.db.WithContext(ctx).Model(&rModel.Reward{}).
-		Where("id = ? AND circle_id = ?", reward.ID, reward.CircleID).
+		Where("id = ? AND family_id = ?", reward.ID, reward.FamilyID).
 		Updates(map[string]interface{}{
 			"name":           reward.Name,
 			"description":    reward.Description,
@@ -68,24 +60,24 @@ func (r *RewardRepository) UpdateReward(ctx context.Context, reward *rModel.Rewa
 		}).Error
 }
 
-func (r *RewardRepository) DeleteReward(ctx context.Context, id int, circleID int) error {
-	return r.db.WithContext(ctx).Where("id = ? AND circle_id = ?", id, circleID).Delete(&rModel.Reward{}).Error
+func (r *RewardRepository) DeleteReward(ctx context.Context, id int, familyID int) error {
+	return r.db.WithContext(ctx).Where("id = ? AND family_id = ?", id, familyID).Delete(&rModel.Reward{}).Error
 }
 
 // RequestRedemption validates the reward exists/is active and the user has enough
 // available balance (points - points_redeemed), then inserts a pending redemption
 // request. Balance is re-checked at approval time too (see ApproveRedemption) since
 // balance can change between request and approval.
-func (r *RewardRepository) RequestRedemption(ctx context.Context, rewardID int, userID int, circleID int, note *string) (*rModel.RewardRedemption, error) {
+func (r *RewardRepository) RequestRedemption(ctx context.Context, rewardID int, userID int, familyID int, note *string) (*rModel.RewardRedemption, error) {
 	var redemption *rModel.RewardRedemption
 	err := r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var reward rModel.Reward
-		if err := tx.Where("id = ? AND circle_id = ? AND is_active = ?", rewardID, circleID, true).First(&reward).Error; err != nil {
+		if err := tx.Where("id = ? AND family_id = ? AND is_active = ?", rewardID, familyID, true).First(&reward).Error; err != nil {
 			return err
 		}
 
-		var member cModel.UserCircle
-		if err := tx.Where("user_id = ? AND circle_id = ?", userID, circleID).First(&member).Error; err != nil {
+		var member fModel.UserFamily
+		if err := tx.Where("user_id = ? AND family_id = ?", userID, familyID).First(&member).Error; err != nil {
 			return err
 		}
 
@@ -109,7 +101,7 @@ func (r *RewardRepository) RequestRedemption(ctx context.Context, rewardID int, 
 
 		redemption = &rModel.RewardRedemption{
 			RewardID:    reward.ID,
-			CircleID:    circleID,
+			FamilyID:    familyID,
 			UserID:      userID,
 			RewardName:  reward.Name,
 			PointsCost:  reward.PointsCost,
@@ -126,22 +118,22 @@ func (r *RewardRepository) RequestRedemption(ctx context.Context, rewardID int, 
 }
 
 // ApproveRedemption debits the user's points (same points_redeemed increment +
-// PointsHistory pattern as CircleRepository.RedeemPoints) and marks the redemption
+// PointsHistory pattern as FamilyRepository.RedeemPoints) and marks the redemption
 // approved. Re-validates balance and pending status inside the transaction to avoid
 // a race with other redemptions/undo actions approved in between.
-func (r *RewardRepository) ApproveRedemption(ctx context.Context, redemptionID int, circleID int, adminUserID int) error {
+func (r *RewardRepository) ApproveRedemption(ctx context.Context, redemptionID int, familyID int, adminUserID int) error {
 	return r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var redemption rModel.RewardRedemption
 		if err := tx.Set("gorm:query_option", "FOR UPDATE").
-			Where("id = ? AND circle_id = ?", redemptionID, circleID).First(&redemption).Error; err != nil {
+			Where("id = ? AND family_id = ?", redemptionID, familyID).First(&redemption).Error; err != nil {
 			return err
 		}
 		if redemption.Status != rModel.RedemptionStatusPending {
 			return ErrRedemptionNotPending
 		}
 
-		var member cModel.UserCircle
-		if err := tx.Where("user_id = ? AND circle_id = ?", redemption.UserID, circleID).First(&member).Error; err != nil {
+		var member fModel.UserFamily
+		if err := tx.Where("user_id = ? AND family_id = ?", redemption.UserID, familyID).First(&member).Error; err != nil {
 			return err
 		}
 		available := member.Points - member.PointsRedeemed
@@ -149,14 +141,14 @@ func (r *RewardRepository) ApproveRedemption(ctx context.Context, redemptionID i
 			return ErrInsufficientPoints
 		}
 
-		if err := tx.Model(&cModel.UserCircle{}).
-			Where("user_id = ? AND circle_id = ?", redemption.UserID, circleID).
+		if err := tx.Model(&fModel.UserFamily{}).
+			Where("user_id = ? AND family_id = ?", redemption.UserID, familyID).
 			Update("points_redeemed", gorm.Expr("points_redeemed + ?", redemption.PointsCost)).Error; err != nil {
 			return err
 		}
 		if err := tx.Create(&pModel.PointsHistory{
 			Action:    pModel.PointsHistoryActionRedeem,
-			CircleID:  circleID,
+			FamilyID:  familyID,
 			UserID:    redemption.UserID,
 			Points:    redemption.PointsCost,
 			CreatedAt: time.Now().UTC(),
@@ -176,10 +168,10 @@ func (r *RewardRepository) ApproveRedemption(ctx context.Context, redemptionID i
 	})
 }
 
-func (r *RewardRepository) RejectRedemption(ctx context.Context, redemptionID int, circleID int, adminUserID int, note *string) error {
+func (r *RewardRepository) RejectRedemption(ctx context.Context, redemptionID int, familyID int, adminUserID int, note *string) error {
 	return r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var redemption rModel.RewardRedemption
-		if err := tx.Where("id = ? AND circle_id = ?", redemptionID, circleID).First(&redemption).Error; err != nil {
+		if err := tx.Where("id = ? AND family_id = ?", redemptionID, familyID).First(&redemption).Error; err != nil {
 			return err
 		}
 		if redemption.Status != rModel.RedemptionStatusPending {
@@ -199,8 +191,8 @@ func (r *RewardRepository) RejectRedemption(ctx context.Context, redemptionID in
 	})
 }
 
-func (r *RewardRepository) GetRedemptionsByCircle(ctx context.Context, circleID int, status *rModel.RedemptionStatus) ([]*rModel.RewardRedemption, error) {
-	q := r.db.WithContext(ctx).Where("circle_id = ?", circleID)
+func (r *RewardRepository) GetRedemptionsByFamily(ctx context.Context, familyID int, status *rModel.RedemptionStatus) ([]*rModel.RewardRedemption, error) {
+	q := r.db.WithContext(ctx).Where("family_id = ?", familyID)
 	if status != nil {
 		q = q.Where("status = ?", *status)
 	}
@@ -211,9 +203,9 @@ func (r *RewardRepository) GetRedemptionsByCircle(ctx context.Context, circleID 
 	return redemptions, nil
 }
 
-func (r *RewardRepository) GetRedemptionsByUser(ctx context.Context, userID int, circleID int) ([]*rModel.RewardRedemption, error) {
+func (r *RewardRepository) GetRedemptionsByUser(ctx context.Context, userID int, familyID int) ([]*rModel.RewardRedemption, error) {
 	var redemptions []*rModel.RewardRedemption
-	if err := r.db.WithContext(ctx).Where("user_id = ? AND circle_id = ?", userID, circleID).
+	if err := r.db.WithContext(ctx).Where("user_id = ? AND family_id = ?", userID, familyID).
 		Order("requested_at desc").Find(&redemptions).Error; err != nil {
 		return nil, err
 	}
@@ -222,7 +214,7 @@ func (r *RewardRepository) GetRedemptionsByUser(ctx context.Context, userID int,
 
 // FillQuotaUsage sets QuotaUsed and QuotaResetsAt on each reward with a
 // quota, counting pending and approved redemptions in the current period.
-func (r *RewardRepository) FillQuotaUsage(ctx context.Context, circleID int, rewards []*rModel.Reward, now time.Time) error {
+func (r *RewardRepository) FillQuotaUsage(ctx context.Context, familyID int, rewards []*rModel.Reward, now time.Time) error {
 	for _, reward := range rewards {
 		if !reward.HasQuota() {
 			continue
@@ -234,7 +226,7 @@ func (r *RewardRepository) FillQuotaUsage(ctx context.Context, circleID int, rew
 		}
 		if err := r.db.WithContext(ctx).Model(&rModel.RewardRedemption{}).
 			Select("user_id, count(*) as used").
-			Where("reward_id = ? AND circle_id = ? AND status <> ? AND requested_at >= ?", reward.ID, circleID, rModel.RedemptionStatusRejected, start).
+			Where("reward_id = ? AND family_id = ? AND status <> ? AND requested_at >= ?", reward.ID, familyID, rModel.RedemptionStatusRejected, start).
 			Group("user_id").Scan(&rows).Error; err != nil {
 			return err
 		}

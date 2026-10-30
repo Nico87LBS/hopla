@@ -289,7 +289,7 @@ func (h *Handler) ServeCalendar(c *gin.Context) {
 		return
 	}
 
-	chores, err := h.choreRepo.GetChores(ctx, user.CircleID, token.UserID, false, nil, false)
+	chores, err := h.choreRepo.GetChores(ctx, user.FamilyID, token.UserID, false, nil, false)
 	if err != nil {
 		logger.Error("Failed to retrieve chores for calendar", "error", err, "userID", token.UserID)
 		c.String(http.StatusInternalServerError, "Failed to generate calendar")

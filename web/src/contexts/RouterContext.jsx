@@ -14,9 +14,9 @@ import UpdatePasswordView from '../views/Authorization/UpdatePasswordView'
 import ChoreView from '../views/ChoreEdit/ChoreView'
 import ArchivedTasks from '../views/Chores/ArchivedTasks'
 import MyChores from '../views/Chores/MyChores'
-import JoinCircleView from '../views/Circles/JoinCircle'
 import NotFound from '../views/components/NotFound'
 import FamilyView from '../views/Family/FamilyView'
+import JoinFamilyView from '../views/Family/JoinFamily'
 import ChoreHistory from '../views/History/ChoreHistory'
 import LabelDetailView from '../views/Labels/LabelDetailView'
 import LabelView from '../views/Labels/LabelView'
@@ -36,7 +36,7 @@ import {
   ManageRewards,
   ManageRoutines,
 } from '../views/Manage/ParentPages'
-import CircleSetupView from '../views/Onboarding/CircleSetupView'
+import FamilySetupView from '../views/Onboarding/FamilySetupView'
 const PointsRedirect = () => {
   const tab = new URLSearchParams(window.location.search).get('tab')
   const to =
@@ -244,8 +244,8 @@ const Router = createBrowserRouter([
         element: <SignupView />,
       },
       {
-        path: '/circle-setup',
-        element: <CircleSetupView />,
+        path: '/family-setup',
+        element: <FamilySetupView />,
       },
 
       {
@@ -261,8 +261,8 @@ const Router = createBrowserRouter([
         element: <UpdatePasswordView />,
       },
       {
-        path: 'circle/join',
-        element: <JoinCircleView />,
+        path: 'family/join',
+        element: <JoinFamilyView />,
       },
       {
         path: 'labels/',
@@ -271,18 +271,6 @@ const Router = createBrowserRouter([
       {
         path: 'labels/:labelId',
         element: <LabelDetailView />,
-      },
-      {
-        path: 'rewards/',
-        element: <Navigate to='/family?tab=shop' replace />,
-      },
-      {
-        path: 'projects/',
-        element: <Navigate to='/labels' replace />,
-      },
-      {
-        path: 'filters/',
-        element: <Navigate to='/labels' replace />,
       },
       {
         path: '*',

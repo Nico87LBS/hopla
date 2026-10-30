@@ -57,7 +57,7 @@ export const useSSE = () => {
     // Get the API URL from apiManager
     const apiUrl = apiClient.getApiURL() // e.g., "http://localhost:8080/api/v1"
 
-    // Build SSE URL - let backend determine circle from authenticated user
+    // Build SSE URL - let backend determine family from authenticated user
     const sseUrl = `${apiUrl}/realtime/sse`
 
     return { url: sseUrl, token }
@@ -102,7 +102,6 @@ export const useSSE = () => {
             break
           case 'chore.updated':
           case 'chore.completed':
-          case 'chore.status':
           case 'chore.skipped': {
             queryClient.invalidateQueries({ queryKey: ['journal'] })
             queryClient.invalidateQueries({ queryKey: ['games', 'today'] })
@@ -132,10 +131,7 @@ export const useSSE = () => {
             })
 
             // If chore update then also refetch chore details:
-            if (
-              eventData.type === 'chore.updated' ||
-              eventData.type === 'chore.status'
-            ) {
+            if (eventData.type === 'chore.updated') {
               queryClient.invalidateQueries({
                 queryKey: ['choreDetails', updatedChore.id],
               })
@@ -204,18 +200,18 @@ export const useSSE = () => {
             // A reward or a redemption changed, which can also move points.
             queryClient.invalidateQueries({ queryKey: ['rewards'] })
             queryClient.invalidateQueries({ queryKey: ['redemptions'] })
-            queryClient.invalidateQueries({ queryKey: ['circleMembers'] })
+            queryClient.invalidateQueries({ queryKey: ['familyMembers'] })
             queryClient.invalidateQueries({ queryKey: ['journal'] })
             queryClient.invalidateQueries({ queryKey: ['games', 'week'] })
             break
 
-          case 'circle.updated':
+          case 'family.updated':
             // A child coming back home brings her tasks back, due today.
             queryClient.invalidateQueries({ queryKey: ['chores'] })
-            queryClient.invalidateQueries({ queryKey: ['circleMembers'] })
-            queryClient.invalidateQueries({ queryKey: ['allCircleMembers'] })
+            queryClient.invalidateQueries({ queryKey: ['familyMembers'] })
+            queryClient.invalidateQueries({ queryKey: ['allFamilyMembers'] })
             queryClient.invalidateQueries({ queryKey: ['childUsers'] })
-            queryClient.invalidateQueries({ queryKey: ['userCircle'] })
+            queryClient.invalidateQueries({ queryKey: ['userFamily'] })
             queryClient.invalidateQueries({ queryKey: ['journal'] })
             queryClient.invalidateQueries({ queryKey: ['pointsPresets'] })
             queryClient.invalidateQueries({ queryKey: ['games'] })

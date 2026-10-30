@@ -68,8 +68,8 @@ export const AdjustCard = ({
       if (!resp.ok) throw new Error()
       const { res } = await resp.json()
       queryClient.invalidateQueries({ queryKey: ['journal'] })
-      queryClient.invalidateQueries({ queryKey: ['allCircleMembers'] })
-      queryClient.invalidateQueries({ queryKey: ['circleMembers'] })
+      queryClient.invalidateQueries({ queryKey: ['allFamilyMembers'] })
+      queryClient.invalidateQueries({ queryKey: ['familyMembers'] })
       showNotification({
         type: 'success',
         message: t(`adjust.done.${res.action}`, {

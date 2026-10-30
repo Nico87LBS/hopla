@@ -9,8 +9,8 @@ import (
 
 	"github.com/glebarez/sqlite"
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
 	"github.com/nico87lbs/hopla/internal/database"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	"github.com/nico87lbs/hopla/internal/storage"
 	storageModel "github.com/nico87lbs/hopla/internal/storage/model"
 	stModel "github.com/nico87lbs/hopla/internal/subtask/model"
@@ -155,7 +155,7 @@ func TestDeleteUserAccount_SimpleUser(t *testing.T) {
 	// Note: Storage service operations are mocked and will show warnings in logs
 }
 
-func TestDeleteUserAccount_CircleOwner(t *testing.T) {
+func TestDeleteUserAccount_FamilyOwner(t *testing.T) {
 	db := setupTestDeletionDB(t)
 	mockStor := &mockStorage{}
 
@@ -167,7 +167,7 @@ func TestDeleteUserAccount_CircleOwner(t *testing.T) {
 	owner := uModel.User{
 		ID:          1,
 		Username:    "owner",
-		DisplayName: "Circle Owner",
+		DisplayName: "Family Owner",
 		Email:       "owner@example.com",
 		Password:    "password",
 		CreatedAt:   now,
@@ -180,7 +180,7 @@ func TestDeleteUserAccount_CircleOwner(t *testing.T) {
 	member := uModel.User{
 		ID:          2,
 		Username:    "member",
-		DisplayName: "Circle Member",
+		DisplayName: "Family Member",
 		Email:       "member@example.com",
 		Password:    "password",
 		CreatedAt:   now,
@@ -190,36 +190,36 @@ func TestDeleteUserAccount_CircleOwner(t *testing.T) {
 		t.Fatalf("Failed to create member user: %v", err)
 	}
 
-	// Insert circle owned by user 1
-	circle := cModel.Circle{
+	// Insert family owned by user 1
+	family := fModel.Family{
 		ID:        1,
-		Name:      "Test Circle",
+		Name:      "Test Family",
 		CreatedBy: 1,
 		CreatedAt: now,
 	}
-	if err := db.Create(&circle).Error; err != nil {
-		t.Fatalf("Failed to create circle: %v", err)
+	if err := db.Create(&family).Error; err != nil {
+		t.Fatalf("Failed to create family: %v", err)
 	}
 
-	// Add users to circle
-	ownerCircle := cModel.UserCircle{
+	// Add users to family
+	ownerFamily := fModel.UserFamily{
 		UserID:   1,
-		CircleID: 1,
+		FamilyID: 1,
 		Role:     "admin",
 		IsActive: true,
 	}
-	if err := db.Create(&ownerCircle).Error; err != nil {
-		t.Fatalf("Failed to create owner circle membership: %v", err)
+	if err := db.Create(&ownerFamily).Error; err != nil {
+		t.Fatalf("Failed to create owner family membership: %v", err)
 	}
 
-	memberCircle := cModel.UserCircle{
+	memberFamily := fModel.UserFamily{
 		UserID:   2,
-		CircleID: 1,
+		FamilyID: 1,
 		Role:     "admin",
 		IsActive: true,
 	}
-	if err := db.Create(&memberCircle).Error; err != nil {
-		t.Fatalf("Failed to create member circle membership: %v", err)
+	if err := db.Create(&memberFamily).Error; err != nil {
+		t.Fatalf("Failed to create member family membership: %v", err)
 	}
 
 	// First attempt - should require transfer
@@ -233,7 +233,7 @@ func TestDeleteUserAccount_CircleOwner(t *testing.T) {
 	}
 
 	if !result.RequiresTransfer {
-		t.Errorf("Expected requiresTransfer to be true for circle owner")
+		t.Errorf("Expected requiresTransfer to be true for family owner")
 	}
 
 	if len(result.TransferOptions) == 0 {
@@ -241,8 +241,8 @@ func TestDeleteUserAccount_CircleOwner(t *testing.T) {
 	}
 
 	// Second attempt - with transfer options
-	transferOptions := []CircleTransferOption{
-		{CircleID: 1, NewOwnerID: 2, NewOwnerName: "Circle Member"},
+	transferOptions := []FamilyTransferOption{
+		{FamilyID: 1, NewOwnerID: 2, NewOwnerName: "Family Member"},
 	}
 
 	result, err = service.DeleteUserAccount(context.Background(), 1, transferOptions)
@@ -254,13 +254,13 @@ func TestDeleteUserAccount_CircleOwner(t *testing.T) {
 		t.Errorf("Expected success to be true after providing transfer options")
 	}
 
-	// Verify circle ownership was transferred
-	var updatedCircle cModel.Circle
-	if err := db.First(&updatedCircle, 1).Error; err != nil {
-		t.Fatalf("Failed to fetch updated circle: %v", err)
+	// Verify family ownership was transferred
+	var updatedFamily fModel.Family
+	if err := db.First(&updatedFamily, 1).Error; err != nil {
+		t.Fatalf("Failed to fetch updated family: %v", err)
 	}
-	if updatedCircle.CreatedBy != 2 {
-		t.Errorf("Expected circle ownership to be transferred to user 2, got %d", updatedCircle.CreatedBy)
+	if updatedFamily.CreatedBy != 2 {
+		t.Errorf("Expected family ownership to be transferred to user 2, got %d", updatedFamily.CreatedBy)
 	}
 
 	// Verify user is deleted
@@ -293,15 +293,15 @@ func TestDeleteUserAccount_WithChores(t *testing.T) {
 		t.Fatalf("Failed to create test user: %v", err)
 	}
 
-	// Insert circle (owned by another user so deletion doesn't require transfer)
-	circle := cModel.Circle{
+	// Insert family (owned by another user so deletion doesn't require transfer)
+	family := fModel.Family{
 		ID:        1,
-		Name:      "Test Circle",
-		CreatedBy: 2, // Different user owns the circle
+		Name:      "Test Family",
+		CreatedBy: 2, // Different user owns the family
 		CreatedAt: now,
 	}
-	if err := db.Create(&circle).Error; err != nil {
-		t.Fatalf("Failed to create circle: %v", err)
+	if err := db.Create(&family).Error; err != nil {
+		t.Fatalf("Failed to create family: %v", err)
 	}
 
 	// Insert chores created by user
@@ -309,7 +309,7 @@ func TestDeleteUserAccount_WithChores(t *testing.T) {
 		ID:        1,
 		Name:      "Test Chore",
 		CreatedBy: 1,
-		CircleID:  1,
+		FamilyID:  1,
 		CreatedAt: now,
 	}
 	if err := db.Create(&chore1).Error; err != nil {
@@ -320,7 +320,7 @@ func TestDeleteUserAccount_WithChores(t *testing.T) {
 		ID:        2,
 		Name:      "Another Chore",
 		CreatedBy: 1,
-		CircleID:  1,
+		FamilyID:  1,
 		CreatedAt: now,
 	}
 	if err := db.Create(&chore2).Error; err != nil {

@@ -139,7 +139,7 @@ const MultiSelectToolbar = ({
   const commonLabelIds = new Set(labelState.common || [])
   const partialLabelIds = new Set(labelState.partial || [])
 
-  // null from the summary means "no restriction" — every circle member is a
+  // null from the summary means "no restriction" — every family member is a
   // valid assignee for the whole selection.
   const assignableMembers =
     summary.assignableUserIds == null

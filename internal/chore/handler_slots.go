@@ -140,7 +140,7 @@ func (h *Handler) broadcastSlot(c *gin.Context, chore *chModel.Chore, user *uMod
 }
 
 // slotRequest reads the task and the slot of a parent's slot action, and
-// checks the user is a parent of the circle.
+// checks the user is a parent of the family.
 func (h *Handler) slotRequest(c *gin.Context) (*uModel.UserDetails, *chModel.Chore, *chModel.SlotStatus, []chModel.SlotStatus, bool) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -157,17 +157,17 @@ func (h *Handler) slotRequest(c *gin.Context) (*uModel.UserDetails, *chModel.Cho
 		c.JSON(400, gin.H{"error": "Invalid slot"})
 		return nil, nil, nil, nil, false
 	}
-	chore, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.CircleID)
+	chore, err := h.choreRepo.GetChore(c, id, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		c.JSON(404, gin.H{"error": "Task not found"})
 		return nil, nil, nil, nil, false
 	}
-	circleUsers, err := h.circleRepo.GetCircleUsers(c, currentUser.CircleID)
+	familyUsers, err := h.familyRepo.GetFamilyUsers(c, currentUser.FamilyID)
 	if err != nil {
-		c.JSON(500, gin.H{"error": "Failed to retrieve circle users"})
+		c.JSON(500, gin.H{"error": "Failed to retrieve family users"})
 		return nil, nil, nil, nil, false
 	}
-	if !currentUser.IsAdminOrManager(circleUsers) {
+	if !currentUser.IsAdminOrManager(familyUsers) {
 		c.JSON(403, gin.H{"error": "Only parents can do this"})
 		return nil, nil, nil, nil, false
 	}
@@ -190,7 +190,7 @@ func (h *Handler) slotRequest(c *gin.Context) (*uModel.UserDetails, *chModel.Cho
 
 // respondSlot answers a slot action with the task and its slots of today.
 func (h *Handler) respondSlot(c *gin.Context, user *uModel.UserDetails, choreID int, entry *chModel.ChoreHistory) {
-	updated, err := h.choreRepo.GetChore(c, choreID, user.ID, user.CircleID)
+	updated, err := h.choreRepo.GetChore(c, choreID, user.ID, user.FamilyID)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Failed to retrieve chore"})
 		return
@@ -311,12 +311,12 @@ func (h *Handler) CatchUpSlot(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "Say who did it"})
 		return
 	}
-	circleUsers, err := h.circleRepo.GetCircleUsers(c, user.CircleID)
+	familyUsers, err := h.familyRepo.GetFamilyUsers(c, user.FamilyID)
 	if err != nil {
-		c.JSON(500, gin.H{"error": "Failed to retrieve circle users"})
+		c.JSON(500, gin.H{"error": "Failed to retrieve family users"})
 		return
 	}
-	if !chore.CanComplete(completedBy, circleUsers) {
+	if !chore.CanComplete(completedBy, familyUsers) {
 		c.JSON(400, gin.H{"error": "User is not assigned to chore"})
 		return
 	}
@@ -352,7 +352,7 @@ func (h *Handler) GetSlotsToday(c *gin.Context) {
 		c.JSON(401, gin.H{"error": "Authentication failed"})
 		return
 	}
-	chores, err := h.choreRepo.GetChores(c, user.CircleID, user.ID, false, nil, false)
+	chores, err := h.choreRepo.GetChores(c, user.FamilyID, user.ID, false, nil, false)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Failed to retrieve chores"})
 		return
@@ -383,7 +383,7 @@ func (h *Handler) GetFlashes(c *gin.Context) {
 		c.JSON(401, gin.H{"error": "Authentication failed"})
 		return
 	}
-	chores, err := h.choreRepo.GetChores(c, user.CircleID, user.ID, false, nil, false)
+	chores, err := h.choreRepo.GetChores(c, user.FamilyID, user.ID, false, nil, false)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Failed to retrieve chores"})
 		return

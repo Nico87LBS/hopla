@@ -6,24 +6,24 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import useAcknowledgmentModal from '../../hooks/useAcknowledgmentModal'
 import { useUserProfile } from '../../queries/UserQueries'
 import { useNotification } from '../../service/NotificationProvider'
-import { JoinCircle } from '../../utils/Fetcher'
+import { JoinFamily } from '../../utils/Fetcher'
 import { clearPendingInvite, setPendingInvite } from '../../utils/PendingInvite'
 import { authButtonSx } from '../Authorization/authStyles'
 import AcknowledgmentModal from '../Modals/Inputs/AcknowledgmentModal'
-import { CircleVignette } from '../Onboarding/CircleVignette'
+import { FamilyVignette } from '../Onboarding/FamilyVignette'
 
 const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)'
 
 const enter = (delay = 0) => ({
-  animation: `joinCircleIn 520ms ${EASE} ${delay}ms both`,
-  '@keyframes joinCircleIn': {
+  animation: `joinFamilyIn 520ms ${EASE} ${delay}ms both`,
+  '@keyframes joinFamilyIn': {
     from: { opacity: 0, transform: 'translateY(12px)' },
     to: { opacity: 1, transform: 'none' },
   },
   '@media (prefers-reduced-motion: reduce)': { animation: 'none' },
 })
 
-const JoinCircleView = () => {
+const JoinFamilyView = () => {
   const { t } = useTranslation()
   const { data: userProfile, isLoading: isProfileLoading } = useUserProfile()
   // Read the token rather than useAuth(): the provider's copy only updates
@@ -46,23 +46,23 @@ const JoinCircleView = () => {
 
   const submitJoin = useCallback(() => {
     setIsJoining(true)
-    JoinCircle(code)
+    JoinFamily(code)
       .then(resp => {
         clearPendingInvite()
         if (resp.ok) {
           showAcknowledgment(
-            t('joinCircle.requestSentBody'),
-            t('joinCircle.requestSentTitle'),
+            t('joinFamily.requestSentBody'),
+            t('joinFamily.requestSentTitle'),
             () => navigate('/chores'),
-            t('joinCircle.gotIt'),
+            t('joinFamily.gotIt'),
             'success',
           )
         } else {
           setIsJoining(false)
           if (resp.status === 409) {
-            showError(t('joinCircle.alreadyMember'))
+            showError(t('joinFamily.alreadyMember'))
           } else {
-            showError(t('joinCircle.joinFailed'))
+            showError(t('joinFamily.joinFailed'))
           }
           navigate('/chores')
         }
@@ -70,7 +70,7 @@ const JoinCircleView = () => {
       .catch(() => {
         setIsJoining(false)
         clearPendingInvite()
-        showError(t('joinCircle.requestError'))
+        showError(t('joinFamily.requestError'))
       })
   }, [code, navigate, showAcknowledgment, showError, t])
 
@@ -102,13 +102,13 @@ const JoinCircleView = () => {
     />
   )
 
-  let title = t('joinCircle.title')
+  let title = t('joinFamily.title')
   let subtitle = null
   let body = null
 
   if (!code) {
-    title = t('joinCircle.incompleteTitle')
-    subtitle = t('joinCircle.incompleteSubtitle')
+    title = t('joinFamily.incompleteTitle')
+    subtitle = t('joinFamily.incompleteSubtitle')
     body = (
       <Button
         fullWidth
@@ -116,13 +116,13 @@ const JoinCircleView = () => {
         sx={authButtonSx}
         onClick={() => navigate('/chores')}
       >
-        {t('joinCircle.goToHopla')}
+        {t('joinFamily.goToHopla')}
       </Button>
     )
     // A token that no longer resolves to a profile is as good as signed out —
     // better to offer sign-in than to spin forever.
   } else if (!isAuthenticated || (!isProfileLoading && !userProfile)) {
-    subtitle = t('joinCircle.signedOutSubtitle')
+    subtitle = t('joinFamily.signedOutSubtitle')
     body = (
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
         {inviteCodeField}
@@ -132,7 +132,7 @@ const JoinCircleView = () => {
           sx={authButtonSx}
           onClick={() => goToAuth('/login')}
         >
-          {t('joinCircle.signIn')}
+          {t('joinFamily.signIn')}
         </Button>
         <Button
           fullWidth
@@ -142,20 +142,20 @@ const JoinCircleView = () => {
           sx={authButtonSx}
           onClick={() => goToAuth('/signup')}
         >
-          {t('joinCircle.createAccount')}
+          {t('joinFamily.createAccount')}
         </Button>
       </Box>
     )
   } else if (isProfileLoading || isJoining) {
-    title = t('joinCircle.sendingTitle')
-    subtitle = t('joinCircle.sendingSubtitle')
+    title = t('joinFamily.sendingTitle')
+    subtitle = t('joinFamily.sendingSubtitle')
     body = (
       <Box sx={{ display: 'flex', justifyContent: 'center', py: 2 }}>
         <CircularProgress />
       </Box>
     )
   } else {
-    subtitle = t('joinCircle.greetingSubtitle', {
+    subtitle = t('joinFamily.greetingSubtitle', {
       name: userProfile?.displayName || userProfile?.username,
     })
     body = (
@@ -164,10 +164,10 @@ const JoinCircleView = () => {
           level='body-sm'
           sx={{ textAlign: 'center', color: 'text.secondary' }}
         >
-          {t('joinCircle.adminReviewNote')}
+          {t('joinFamily.adminReviewNote')}
         </Typography>
         <Button fullWidth size='lg' sx={authButtonSx} onClick={submitJoin}>
-          {t('joinCircle.sendRequest')}
+          {t('joinFamily.sendRequest')}
         </Button>
         <Button
           fullWidth
@@ -209,7 +209,7 @@ const JoinCircleView = () => {
         }}
       >
         <Box sx={{ mb: 2, ...enter(0) }}>
-          <CircleVignette />
+          <FamilyVignette />
         </Box>
 
         <Box
@@ -256,4 +256,4 @@ const JoinCircleView = () => {
   )
 }
 
-export default JoinCircleView
+export default JoinFamilyView

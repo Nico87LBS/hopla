@@ -147,7 +147,6 @@
   "loadingSlow": "This is taking longer than usual. There might be an issue.",
   "navigateBack": "Navigate Back",
   "profile": "Profile",
-  "autocompletePlaceholder": "Type here...",
   "errorScreen": {
     "title": "Something went wrong",
     "fallback": "An unexpected error occurred. Try reloading — it usually fixes it.",
@@ -217,9 +216,7 @@
     "deleteHistoryPending": "Delete history pending",
     "reschedulePending": "Reschedule pending",
     "archivePending": "Archive pending",
-    "restorePending": "Restore pending",
-    "startPending": "Start pending",
-    "pausePending": "Pause pending"
+    "restorePending": "Restore pending"
   },
   "sortAndFilter": {
     "sortBy": "Sort by",
@@ -242,8 +239,6 @@
       "updateChoreHistory": "Edit history",
       "completeChore": "Complete chore",
       "skipChore": "Skip chore",
-      "startChore": "Start chore",
-      "pauseChore": "Pause chore",
       "deleteChore": "Delete chore",
       "deleteChoreHistory": "Delete history",
       "rescheduleChore": "Reschedule chore",
@@ -302,68 +297,28 @@
     "voiceWave": {
       "listening": "Listening…"
     },
-    "capture": {
-      "voiceCaption": "Dates, labels and {{units}} from your words",
-      "deviceCaption": "Read on your device",
-      "typeCaption": "#labels @people *{{units}} as you type",
-      "trashTitle": "♻️ Take out the trash",
-      "trashDue": "Due tomorrow",
-      "trashRepeat": "Every Monday",
-      "homeLabel": "Home",
-      "vehicleTitle": "🚗 Vehicle Registration Renewal",
-      "vehicleDue": "Due Aug 3",
-      "acTitle": "💨 Change the AC filter",
-      "acDue": "Due Fri",
-      "acRepeat": "Every 3 months"
-    },
     "schedule": {
-      "fromDueDate": "Reschedule from due date",
-      "fromCompletionDate": "Reschedule from completion date",
       "due": "Due",
       "done": "Done",
       "next": "Next"
     },
-    "circle": {
+    "family": {
       "kitchenTitle": "Kitchen deep clean",
       "kitchenDue": "Due Sat",
       "kitchenRepeat": "Every week",
       "takesTurns": "Takes turns"
     },
     "turns": {
-      "binsTitle": "🗑️ Take bins to the curb",
-      "binsDue": "Due Tomorrow",
-      "binsRepeat": "Every week",
-      "completed": "Completed",
-      "metaJustNow": "Just now · ★ 5 pts"
+      "completed": "Completed"
     },
     "widget": {
-      "schoolForms": "School forms",
-      "takeOutTrash": "Take out the trash",
-      "waterPlants": "Water the plants",
       "today": "Today",
       "left": "{{count}} left"
     },
-    "reminders": {
-      "trashTitle": "Take out the trash",
-      "trashBody": "Due in 30 minutes · Bin night",
-      "finishedTitle": "Amalie finished Kitchen deep clean",
-      "finishedBody": "Your turn is next Saturday"
-    },
     "things": {
-      "waterBill": "Water bill",
-      "acFilter": "AC filter",
-      "trashDay": "Trash day",
-      "dogMedicine": "Dog's medicine",
-      "whoseTurn": "Whose turn to cook",
       "monthly": "Monthly",
-      "everyThreeMonths": "Every 3 months",
-      "everyMonday": "Every Monday",
       "daily": "Daily",
-      "weekly": "Weekly",
-      "tagBills": "Bills",
-      "tagHome": "Home",
-      "tagPets": "Pets",
-      "tagCooking": "Cooking"
+      "weekly": "Weekly"
     },
     "slides": {
       "scheduleTitle": "It comes back exactly when it should"
@@ -394,7 +349,7 @@
       "subtitle": "Your server, your data. Both of these are off from this point unless you turn them on."
     }
   },
-  "circleSetup": {
+  "familySetup": {
     "inviteTitle": "Bring your squad in",
     "inviteSubtitle": "Everyone who joins your Family sees the same chores, takes their own turn, and stays in sync automatically.",
     "joinTitle": "Join a family",
@@ -414,7 +369,7 @@
     "alreadyMember": "You are already a member of this family",
     "joinFailed": "Failed to join family"
   },
-  "joinCircle": {
+  "joinFamily": {
     "title": "You're invited to join a family",
     "incompleteTitle": "Invite link is incomplete",
     "incompleteSubtitle": "This invite link is missing a code. Ask the person who invited you to send a new link.",

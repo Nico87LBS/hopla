@@ -72,10 +72,10 @@ func (sl *SanitizedLogger) sanitizeUserData(fields map[string]interface{}) map[s
 }
 
 // LogAuthSuccess logs successful authentication events
-func (sl *SanitizedLogger) LogAuthSuccess(userID int, circleID int, remoteAddr string, userAgent string) {
+func (sl *SanitizedLogger) LogAuthSuccess(userID int, familyID int, remoteAddr string, userAgent string) {
 	sl.logger.Infow("WebSocket authentication successful",
 		"user_id", userID,
-		"circle_id", circleID,
+		"family_id", familyID,
 		"remote_addr", remoteAddr,
 		"user_agent", userAgent,
 		"timestamp", time.Now().UTC(),
@@ -94,11 +94,11 @@ func (sl *SanitizedLogger) LogAuthFailure(reason string, remoteAddr string, user
 }
 
 // LogConnectionEvent logs WebSocket connection events
-func (sl *SanitizedLogger) LogConnectionEvent(event string, userID int, circleID int, connectionID string, remoteAddr string) {
+func (sl *SanitizedLogger) LogConnectionEvent(event string, userID int, familyID int, connectionID string, remoteAddr string) {
 	sl.logger.Infow("WebSocket connection event",
 		"event", event,
 		"user_id", userID,
-		"circle_id", circleID,
+		"family_id", familyID,
 		"connection_id", connectionID,
 		"remote_addr", remoteAddr,
 		"timestamp", time.Now().UTC(),

@@ -132,7 +132,7 @@ func NewAuthMiddleware(cfg *config.Config, userRepo *uRepo.UserRepository, mfaSe
 						CreatedAt: user.CreatedAt,
 						UpdatedAt: user.UpdatedAt,
 						Disabled:  user.Disabled,
-						CircleID:  user.CircleID,
+						FamilyID:  user.FamilyID,
 					},
 				}, nil
 			case "3rdPartyAuth":

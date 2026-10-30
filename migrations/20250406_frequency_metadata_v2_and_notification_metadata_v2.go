@@ -122,8 +122,8 @@ type NotificationMetadata struct {
 	Completion    bool   `json:"completion,omitempty"`
 	Nagging       bool   `json:"nagging,omitempty"`
 	PreDue        bool   `json:"predue,omitempty"`
-	CircleGroup   bool   `json:"circleGroup,omitempty"`
-	CircleGroupID *int64 `json:"circleGroupID,omitempty"`
+	FamilyGroup   bool   `json:"familyGroup,omitempty"`
+	FamilyGroupID *int64 `json:"familyGroupID,omitempty"`
 }
 
 // Implement driver.Valuer to convert the struct to JSON when saving to the database otherwise will

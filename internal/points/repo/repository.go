@@ -5,13 +5,13 @@ import (
 	"errors"
 	"time"
 
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	pModel "github.com/nico87lbs/hopla/internal/points"
 	"gorm.io/gorm"
 )
 
 var (
-	ErrNotMember     = errors.New("user is not a member of this circle")
+	ErrNotMember     = errors.New("user is not a member of this family")
 	ErrNoPoints      = errors.New("points must not be zero")
 	ErrPresetMissing = errors.New("preset not found")
 )
@@ -22,14 +22,6 @@ type PointsRepository struct {
 
 func NewPointsRepository(db *gorm.DB) *PointsRepository {
 	return &PointsRepository{db}
-}
-
-func (r *PointsRepository) CreatePointsHistory(c context.Context, tx *gorm.DB, pointsHistory *pModel.PointsHistory) error {
-	if tx != nil {
-		return tx.Model(&pModel.PointsHistory{}).Save(pointsHistory).Error
-	}
-
-	return r.db.WithContext(c).Save(pointsHistory).Error
 }
 
 // Record adds a ledger row inside the transaction that changes the points.
@@ -47,13 +39,13 @@ type HistoryFilter struct {
 	Limit    int
 }
 
-// History returns ledger rows of a circle, newest first.
-func (r *PointsRepository) History(c context.Context, circleID int, filter HistoryFilter) ([]pModel.PointsHistory, error) {
+// History returns ledger rows of a family, newest first.
+func (r *PointsRepository) History(c context.Context, familyID int, filter HistoryFilter) ([]pModel.PointsHistory, error) {
 	limit := filter.Limit
 	if limit <= 0 || limit > 200 {
 		limit = 50
 	}
-	query := r.db.WithContext(c).Where("circle_id = ?", circleID)
+	query := r.db.WithContext(c).Where("family_id = ?", familyID)
 	if filter.UserID != nil {
 		query = query.Where("user_id = ?", *filter.UserID)
 	}
@@ -73,21 +65,21 @@ func (r *PointsRepository) History(c context.Context, circleID int, filter Histo
 // points are what was actually applied: a penalty larger than the balance is
 // cut down to it, and can come to zero. Like every ledger row, its points are
 // positive; the action tells which way they went.
-func (r *PointsRepository) Adjust(c context.Context, circleID, userID, points, byUserID int, reason *string) (*pModel.PointsHistory, error) {
+func (r *PointsRepository) Adjust(c context.Context, familyID, userID, points, byUserID int, reason *string) (*pModel.PointsHistory, error) {
 	if points == 0 {
 		return nil, ErrNoPoints
 	}
 	var entry pModel.PointsHistory
 	err := r.db.WithContext(c).Transaction(func(tx *gorm.DB) error {
-		var member cModel.UserCircle
-		if err := tx.Where("user_id = ? AND circle_id = ? AND is_active = ?", userID, circleID, true).
+		var member fModel.UserFamily
+		if err := tx.Where("user_id = ? AND family_id = ? AND is_active = ?", userID, familyID, true).
 			First(&member).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return ErrNotMember
 			}
 			return err
 		}
-		entry = pModel.PointsHistory{UserID: userID, CircleID: circleID, CreatedBy: byUserID, Reason: reason}
+		entry = pModel.PointsHistory{UserID: userID, FamilyID: familyID, CreatedBy: byUserID, Reason: reason}
 		if points > 0 {
 			entry.Action = pModel.PointsHistoryActionBonus
 			entry.Points = points
@@ -116,12 +108,12 @@ func (r *PointsRepository) Adjust(c context.Context, circleID, userID, points, b
 // Reset sets members back to zero points, so to the first rank, such as for a
 // new year. It keeps the ledger and adds a reset row per member, unless
 // clearHistory, which erases their ledger instead.
-// userID nil resets every member of the circle.
-func (r *PointsRepository) Reset(c context.Context, circleID int, userID *int, byUserID int, clearHistory bool) ([]pModel.PointsHistory, error) {
+// userID nil resets every member of the family.
+func (r *PointsRepository) Reset(c context.Context, familyID int, userID *int, byUserID int, clearHistory bool) ([]pModel.PointsHistory, error) {
 	entries := []pModel.PointsHistory{}
 	err := r.db.WithContext(c).Transaction(func(tx *gorm.DB) error {
-		var members []cModel.UserCircle
-		query := tx.Where("circle_id = ?", circleID)
+		var members []fModel.UserFamily
+		query := tx.Where("family_id = ?", familyID)
 		if userID != nil {
 			query = query.Where("user_id = ?", *userID)
 		}
@@ -136,18 +128,18 @@ func (r *PointsRepository) Reset(c context.Context, circleID int, userID *int, b
 			ids = append(ids, member.UserID)
 		}
 		now := time.Now().UTC()
-		if err := tx.Model(&cModel.UserCircle{}).Where("circle_id = ? AND user_id IN ?", circleID, ids).
+		if err := tx.Model(&fModel.UserFamily{}).Where("family_id = ? AND user_id IN ?", familyID, ids).
 			Updates(map[string]any{"points": 0, "points_redeemed": 0, "streak_since": now}).Error; err != nil {
 			return err
 		}
 		if clearHistory {
 			// Quests done and challenges won stay recorded, so they do not pay again.
-			return tx.Where("circle_id = ? AND user_id IN ?", circleID, ids).Delete(&pModel.PointsHistory{}).Error
+			return tx.Where("family_id = ? AND user_id IN ?", familyID, ids).Delete(&pModel.PointsHistory{}).Error
 		}
 		reason := "Remise à zéro"
 		for _, member := range members {
 			entry := pModel.PointsHistory{Action: pModel.PointsHistoryActionReset, Points: max(0, member.Points-member.PointsRedeemed),
-				UserID: member.UserID, CircleID: circleID, CreatedBy: byUserID, Reason: &reason, CreatedAt: now}
+				UserID: member.UserID, FamilyID: familyID, CreatedBy: byUserID, Reason: &reason, CreatedAt: now}
 			if err := tx.Create(&entry).Error; err != nil {
 				return err
 			}
@@ -161,10 +153,10 @@ func (r *PointsRepository) Reset(c context.Context, circleID int, userID *int, b
 // ClearGames forgets the games played and what was learned from them: the
 // sessions behind the stats and the daily cap, and the cards of the spaced
 // repetition. The games' settings stay. userID nil clears every member.
-func (r *PointsRepository) ClearGames(c context.Context, circleID int, userID *int) error {
+func (r *PointsRepository) ClearGames(c context.Context, familyID int, userID *int) error {
 	return r.db.WithContext(c).Transaction(func(tx *gorm.DB) error {
 		for _, table := range []string{"learn_sessions", "learn_cards"} {
-			query := tx.Table(table).Where("circle_id = ?", circleID)
+			query := tx.Table(table).Where("family_id = ?", familyID)
 			if userID != nil {
 				query = query.Where("user_id = ?", *userID)
 			}
@@ -176,9 +168,9 @@ func (r *PointsRepository) ClearGames(c context.Context, circleID int, userID *i
 	})
 }
 
-func (r *PointsRepository) Presets(c context.Context, circleID int) ([]pModel.PointsPreset, error) {
+func (r *PointsRepository) Presets(c context.Context, familyID int) ([]pModel.PointsPreset, error) {
 	var presets []pModel.PointsPreset
-	err := r.db.WithContext(c).Where("circle_id = ?", circleID).Order("points desc, name").Find(&presets).Error
+	err := r.db.WithContext(c).Where("family_id = ?", familyID).Order("points desc, name").Find(&presets).Error
 	return presets, err
 }
 
@@ -189,12 +181,12 @@ func (r *PointsRepository) CreatePreset(c context.Context, preset *pModel.Points
 	return r.db.WithContext(c).Create(preset).Error
 }
 
-func (r *PointsRepository) UpdatePreset(c context.Context, circleID int, preset *pModel.PointsPreset) error {
+func (r *PointsRepository) UpdatePreset(c context.Context, familyID int, preset *pModel.PointsPreset) error {
 	if preset.Points == 0 {
 		return ErrNoPoints
 	}
 	result := r.db.WithContext(c).Model(&pModel.PointsPreset{}).
-		Where("id = ? AND circle_id = ?", preset.ID, circleID).
+		Where("id = ? AND family_id = ?", preset.ID, familyID).
 		Updates(map[string]interface{}{"name": preset.Name, "points": preset.Points, "updated_at": time.Now().UTC()})
 	if result.Error != nil {
 		return result.Error
@@ -205,8 +197,8 @@ func (r *PointsRepository) UpdatePreset(c context.Context, circleID int, preset 
 	return nil
 }
 
-func (r *PointsRepository) DeletePreset(c context.Context, circleID, presetID int) error {
-	result := r.db.WithContext(c).Where("id = ? AND circle_id = ?", presetID, circleID).Delete(&pModel.PointsPreset{})
+func (r *PointsRepository) DeletePreset(c context.Context, familyID, presetID int) error {
+	result := r.db.WithContext(c).Where("id = ? AND family_id = ?", presetID, familyID).Delete(&pModel.PointsPreset{})
 	if result.Error != nil {
 		return result.Error
 	}

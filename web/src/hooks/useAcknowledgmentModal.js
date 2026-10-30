@@ -9,7 +9,7 @@ const useAcknowledgmentModal = () => {
     message,
     title,
     onAcknowledge,
-    acknowledgeText = t('joinCircle.gotIt'),
+    acknowledgeText = t('joinFamily.gotIt'),
     color = 'primary',
   ) => {
     setAckModalConfig({

@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	. "github.com/nico87lbs/hopla/internal/games"
 )
 
@@ -25,7 +25,7 @@ func TestARoutineShowsOneStepAtATimeAndPaysOnceFinished(t *testing.T) {
 	teeth := chore(t, db, "Dents", 1, now, assignedTo(2))
 	teethAnna := chore(t, db, "dents", 1, now, assignedTo(3))
 	bag := chore(t, db, "Cartable", 1, now.AddDate(0, 0, 2), assignedTo(2))
-	routine := Routine{CircleID: 1, Name: "Matin", Bonus: 4, ChoreIDs: []int{dress.ID, teeth.ID, bag.ID}}
+	routine := Routine{FamilyID: 1, Name: "Matin", Bonus: 4, ChoreIDs: []int{dress.ID, teeth.ID, bag.ID}}
 	require.NoError(t, SaveRoutine(db, &routine))
 
 	views, err := RoutineViews(db, 1, []int{2, 3}, now)
@@ -61,7 +61,7 @@ func TestARoutineShowsOneStepAtATimeAndPaysOnceFinished(t *testing.T) {
 	require.NoError(t, err)
 	require.True(t, views[0].Members[0].Finished)
 	require.Nil(t, views[0].Members[0].Current)
-	var member cModel.UserCircle
+	var member fModel.UserFamily
 	require.NoError(t, db.Where("user_id = 2").First(&member).Error)
 	require.Equal(t, 4, member.Points, "bonus once")
 }
@@ -72,9 +72,9 @@ func TestATaskIsInOneRoutineOnly(t *testing.T) {
 	teeth := chore(t, db, "Dents", 1, now, nil)
 	teethAnna := chore(t, db, "Dents", 1, now, nil)
 	bed := chore(t, db, "Lit", 1, now, nil)
-	morning := Routine{CircleID: 1, Name: "Matin", ChoreIDs: []int{teeth.ID}}
+	morning := Routine{FamilyID: 1, Name: "Matin", ChoreIDs: []int{teeth.ID}}
 	require.NoError(t, SaveRoutine(db, &morning))
-	evening := Routine{CircleID: 1, Name: "Soir", ChoreIDs: []int{teethAnna.ID, bed.ID}}
+	evening := Routine{FamilyID: 1, Name: "Soir", ChoreIDs: []int{teethAnna.ID, bed.ID}}
 	require.ErrorIs(t, SaveRoutine(db, &evening), ErrRoutineTaskTaken, "the same task by its copy")
 	evening.ChoreIDs = []int{bed.ID, bed.ID}
 	require.ErrorIs(t, SaveRoutine(db, &evening), ErrRoutineTaskTwice)

@@ -22,7 +22,7 @@ import {
   useRoutinesToday,
   useSlotsToday,
 } from '../../queries/ChoreQueries'
-import { useCircleMembers, useUserProfile } from '../../queries/UserQueries'
+import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries'
 import { useNotification } from '../../service/NotificationProvider'
 import { isTogether, taskMemberIds } from '../../utils/Chores.jsx'
 import {
@@ -391,10 +391,10 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
   const slotted = hasSlots(first)
   const { data: slotsByTask } = useSlotsToday({ enabled: slotted })
   const { data: userProfile } = useUserProfile()
-  const { data: circleMembersData } = useCircleMembers()
+  const { data: familyMembersData } = useFamilyMembers()
   const { impersonatedUser } = useImpersonateUser()
   const actingUserId = impersonatedUser?.userId || userProfile?.id
-  const actingMember = circleMembersData?.res?.find(
+  const actingMember = familyMembersData?.res?.find(
     member => member.userId === actingUserId,
   )
   const canApprove =

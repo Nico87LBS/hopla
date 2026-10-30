@@ -8,7 +8,7 @@ import (
 	"github.com/glebarez/sqlite"
 	"github.com/nico87lbs/hopla/config"
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	syncModel "github.com/nico87lbs/hopla/internal/sync/model"
 	"github.com/stretchr/testify/require"
 	"gorm.io/gorm"
@@ -24,7 +24,7 @@ func newVisibilityTestRepository(t *testing.T) (*ChoreRepository, *gorm.DB) {
 		&chModel.Chore{},
 		&chModel.ChoreAssignees{},
 		&chModel.ChoreHistory{},
-		&cModel.UserCircle{},
+		&fModel.UserFamily{},
 		&syncModel.SyncCursor{},
 		&syncModel.Tombstone{},
 	))
@@ -37,7 +37,7 @@ func newVisibilityTestRepository(t *testing.T) (*ChoreRepository, *gorm.DB) {
 func seedVisibilityTest(t *testing.T, db *gorm.DB, chore *chModel.Chore, assigneeIDs ...int) {
 	t.Helper()
 	for _, userID := range []int{1, 2, 3, 4} {
-		require.NoError(t, db.Create(&cModel.UserCircle{UserID: userID, CircleID: chore.CircleID, IsActive: true}).Error)
+		require.NoError(t, db.Create(&fModel.UserFamily{UserID: userID, FamilyID: chore.FamilyID, IsActive: true}).Error)
 	}
 	require.NoError(t, db.Create(chore).Error)
 	for _, userID := range assigneeIDs {
@@ -53,9 +53,9 @@ func TestGetTombstonesSinceFiltersUserScope(t *testing.T) {
 	userID := 7
 	otherUserID := 8
 	require.NoError(t, db.Create([]syncModel.Tombstone{
-		{CircleID: 1, EntityType: syncModel.EntityTypeChore, EntityID: 10, SyncVersion: 1},
-		{CircleID: 1, EntityType: syncModel.EntityTypeChore, EntityID: 11, UserID: &userID, SyncVersion: 2},
-		{CircleID: 1, EntityType: syncModel.EntityTypeChore, EntityID: 12, UserID: &otherUserID, SyncVersion: 3},
+		{FamilyID: 1, EntityType: syncModel.EntityTypeChore, EntityID: 10, SyncVersion: 1},
+		{FamilyID: 1, EntityType: syncModel.EntityTypeChore, EntityID: 11, UserID: &userID, SyncVersion: 2},
+		{FamilyID: 1, EntityType: syncModel.EntityTypeChore, EntityID: 12, UserID: &otherUserID, SyncVersion: 3},
 	}).Error)
 
 	cfg := &config.Config{}
@@ -80,7 +80,7 @@ func TestGetTombstonesSinceFiltersUserScope(t *testing.T) {
 func TestUpdateChoreVisibilityPrivateAssigneeChanges(t *testing.T) {
 	t.Run("removed assignee is revoked", func(t *testing.T) {
 		repository, db := newVisibilityTestRepository(t)
-		chore := &chModel.Chore{ID: 10, CircleID: 1, CreatedBy: 1, IsPrivate: true}
+		chore := &chModel.Chore{ID: 10, FamilyID: 1, CreatedBy: 1, IsPrivate: true}
 		seedVisibilityTest(t, db, chore, 2, 3)
 
 		require.NoError(t, repository.UpdateChoreVisibility(context.Background(), chore, []int{3}))
@@ -94,7 +94,7 @@ func TestUpdateChoreVisibilityPrivateAssigneeChanges(t *testing.T) {
 
 	t.Run("retained assignee is not revoked", func(t *testing.T) {
 		repository, db := newVisibilityTestRepository(t)
-		chore := &chModel.Chore{ID: 10, CircleID: 1, CreatedBy: 1, IsPrivate: true}
+		chore := &chModel.Chore{ID: 10, FamilyID: 1, CreatedBy: 1, IsPrivate: true}
 		seedVisibilityTest(t, db, chore, 2)
 
 		require.NoError(t, repository.UpdateChoreVisibility(context.Background(), chore, []int{2}))
@@ -106,7 +106,7 @@ func TestUpdateChoreVisibilityPrivateAssigneeChanges(t *testing.T) {
 
 	t.Run("added assignee receives bumped private chore", func(t *testing.T) {
 		repository, db := newVisibilityTestRepository(t)
-		chore := &chModel.Chore{ID: 10, CircleID: 1, CreatedBy: 1, IsPrivate: true}
+		chore := &chModel.Chore{ID: 10, FamilyID: 1, CreatedBy: 1, IsPrivate: true}
 		seedVisibilityTest(t, db, chore, 2)
 		previousVersion := chore.SyncVersion
 
@@ -117,7 +117,7 @@ func TestUpdateChoreVisibilityPrivateAssigneeChanges(t *testing.T) {
 		require.NoError(t, db.Model(&syncModel.Tombstone{}).Count(&count).Error)
 		require.Zero(t, count)
 
-		chores, err := repository.GetChores(context.Background(), chore.CircleID, 3, true, &SyncOptions{
+		chores, err := repository.GetChores(context.Background(), chore.FamilyID, 3, true, &SyncOptions{
 			SyncVersion: &previousVersion,
 			Limit:       10,
 		}, false)
@@ -129,7 +129,7 @@ func TestUpdateChoreVisibilityPrivateAssigneeChanges(t *testing.T) {
 
 	t.Run("creator remains visible without assignment", func(t *testing.T) {
 		repository, db := newVisibilityTestRepository(t)
-		chore := &chModel.Chore{ID: 10, CircleID: 1, CreatedBy: 1, IsPrivate: true}
+		chore := &chModel.Chore{ID: 10, FamilyID: 1, CreatedBy: 1, IsPrivate: true}
 		seedVisibilityTest(t, db, chore, 1, 2)
 
 		require.NoError(t, repository.UpdateChoreVisibility(context.Background(), chore, nil))
@@ -144,7 +144,7 @@ func TestUpdateChoreVisibilityPrivateAssigneeChanges(t *testing.T) {
 func TestUpdateChoreVisibilityPrivacyChanges(t *testing.T) {
 	t.Run("public to private revokes newly unauthorized users with distinct versions", func(t *testing.T) {
 		repository, db := newVisibilityTestRepository(t)
-		chore := &chModel.Chore{ID: 10, CircleID: 1, CreatedBy: 1, IsPrivate: false}
+		chore := &chModel.Chore{ID: 10, FamilyID: 1, CreatedBy: 1, IsPrivate: false}
 		seedVisibilityTest(t, db, chore, 2)
 		chore.IsPrivate = true
 
@@ -157,13 +157,13 @@ func TestUpdateChoreVisibilityPrivacyChanges(t *testing.T) {
 		require.Equal(t, chore.SyncVersion+1, tombstones[0].SyncVersion)
 		require.Equal(t, tombstones[0].SyncVersion+1, tombstones[1].SyncVersion)
 		var cursor syncModel.SyncCursor
-		require.NoError(t, db.Where("circle_id = ? AND entity_type = ?", chore.CircleID, syncModel.EntityTypeChore).First(&cursor).Error)
+		require.NoError(t, db.Where("family_id = ? AND entity_type = ?", chore.FamilyID, syncModel.EntityTypeChore).First(&cursor).Error)
 		require.Equal(t, tombstones[1].SyncVersion, cursor.MaxVersion)
 	})
 
 	t.Run("private to public grants access without revocations", func(t *testing.T) {
 		repository, db := newVisibilityTestRepository(t)
-		chore := &chModel.Chore{ID: 10, CircleID: 1, CreatedBy: 1, IsPrivate: true}
+		chore := &chModel.Chore{ID: 10, FamilyID: 1, CreatedBy: 1, IsPrivate: true}
 		seedVisibilityTest(t, db, chore, 2)
 		chore.IsPrivate = false
 
@@ -178,7 +178,7 @@ func TestUpdateChoreVisibilityPrivacyChanges(t *testing.T) {
 
 func TestUpdateChoreVisibilityRollsBackWhenTombstoneInsertFails(t *testing.T) {
 	repository, db := newVisibilityTestRepository(t)
-	chore := &chModel.Chore{ID: 10, CircleID: 1, CreatedBy: 1, IsPrivate: true, Name: "before"}
+	chore := &chModel.Chore{ID: 10, FamilyID: 1, CreatedBy: 1, IsPrivate: true, Name: "before"}
 	seedVisibilityTest(t, db, chore, 2)
 	require.NoError(t, db.Migrator().DropTable(&syncModel.Tombstone{}))
 	chore.Name = "after"

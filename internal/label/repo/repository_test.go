@@ -24,15 +24,15 @@ func TestAssignLabelsToChoreRemovesLabelAddedByAnotherMember(t *testing.T) {
 	repo := NewLabelRepository(db, &config.Config{})
 	ctx := context.Background()
 
-	circleID := 1
-	label := lModel.Label{Name: "kitchen", Color: "#ff9800", CircleID: &circleID, CreatedBy: 2}
+	familyID := 1
+	label := lModel.Label{Name: "kitchen", Color: "#ff9800", FamilyID: &familyID, CreatedBy: 2}
 	require.NoError(t, db.Create(&label).Error)
 	chore := chModel.Chore{Name: "dishes", FrequencyType: chModel.FrequencyTypeOnce,
-		AssignStrategy: chModel.AssignmentStrategyRandom, CircleID: circleID, CreatedBy: 2, IsActive: true}
+		AssignStrategy: chModel.AssignmentStrategyRandom, FamilyID: familyID, CreatedBy: 2, IsActive: true}
 	require.NoError(t, db.Create(&chore).Error)
-	require.NoError(t, repo.AssignLabelsToChore(ctx, chore.ID, 2, circleID, []int{label.ID}, nil))
+	require.NoError(t, repo.AssignLabelsToChore(ctx, chore.ID, 2, familyID, []int{label.ID}, nil))
 
-	require.NoError(t, repo.AssignLabelsToChore(ctx, chore.ID, 1, circleID, nil, []int{label.ID}))
+	require.NoError(t, repo.AssignLabelsToChore(ctx, chore.ID, 1, familyID, nil, []int{label.ID}))
 
 	var count int64
 	require.NoError(t, db.Model(&chModel.ChoreLabels{}).Where("chore_id = ?", chore.ID).Count(&count).Error)

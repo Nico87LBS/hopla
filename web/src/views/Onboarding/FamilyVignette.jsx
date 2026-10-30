@@ -258,14 +258,14 @@ const AVATAR = 40
 const AVATAR_GAP = 12
 const STEP = AVATAR + AVATAR_GAP
 
-export const CircleVignette = () => {
+export const FamilyVignette = () => {
   const { t } = useTranslation('common')
   return (
     <Stage>
       <MiniChoreCard
-        title={t('onboarding.circle.kitchenTitle')}
-        due={t('onboarding.circle.kitchenDue')}
-        repeat={t('onboarding.circle.kitchenRepeat')}
+        title={t('onboarding.family.kitchenTitle')}
+        due={t('onboarding.family.kitchenDue')}
+        repeat={t('onboarding.family.kitchenRepeat')}
         footer={
           <Cycler>
             {MEMBERS.map(member => (
@@ -339,7 +339,7 @@ export const CircleVignette = () => {
         </Box>
 
         <Chip icon={<PeopleAltRounded />} color='neutral'>
-          {t('onboarding.circle.takesTurns')}
+          {t('onboarding.family.takesTurns')}
         </Chip>
       </Box>
     </Stage>

@@ -1,10 +1,10 @@
-package circle
+package family
 
 import (
 	"time"
 )
 
-type Circle struct {
+type Family struct {
 	ID         int       `json:"id" gorm:"primary_key"`                 // Unique identifier
 	Name       string    `json:"name" gorm:"column:name"`               // Full name
 	CreatedBy  int       `json:"created_by" gorm:"column:created_by"`   // Created by
@@ -19,9 +19,7 @@ type Circle struct {
 	// Without children, the parents are always on it.
 	ParentsOnPodium bool `json:"parentsOnPodium" gorm:"column:parents_on_podium;not null;default:false"`
 	// Currency names what the family earns, one of Currencies.
-	Currency           string     `json:"currency" gorm:"column:currency;not null;default:hops"`
-	SubscriptionStatus *string    `gorm:"column:status;<-:false"`     // read one column
-	ExpiredAt          *time.Time `gorm:"column:expired_at;<-:false"` // read one column
+	Currency string `json:"currency" gorm:"column:currency;not null;default:hops"`
 }
 
 // Currencies are the names a family can give to what it earns, the first
@@ -38,15 +36,15 @@ func CurrencyOf(name string) string {
 	return Currencies[0]
 }
 
-type CircleDetail struct {
-	Circle
+type FamilyDetail struct {
+	Family
 	UserRole string `json:"userRole" gorm:"column:role"`
 }
 
-type UserCircle struct {
+type UserFamily struct {
 	ID             int       `json:"id" gorm:"primary_key"`                                        // Unique identifier
-	UserID         int       `json:"userId" gorm:"column:user_id;uniqueIndex:idx_user_circle"`     // User ID
-	CircleID       int       `json:"circleId" gorm:"column:circle_id;uniqueIndex:idx_user_circle"` // Circle ID
+	UserID         int       `json:"userId" gorm:"column:user_id;uniqueIndex:idx_user_family"`     // User ID
+	FamilyID       int       `json:"familyId" gorm:"column:family_id;uniqueIndex:idx_user_family"` // Family ID
 	Role           UserRole  `json:"role" gorm:"column:role"`                                      // Role
 	IsActive       bool      `json:"isActive" gorm:"column:is_active;default:false"`
 	CreatedAt      time.Time `json:"createdAt" gorm:"column:created_at"`                              // Created at
@@ -69,8 +67,8 @@ const (
 	UserRoleManager UserRole = "manager"
 )
 
-type UserCircleDetail struct {
-	UserCircle
+type UserFamilyDetail struct {
+	UserFamily
 	Username    string `json:"username" gorm:"column:username"`
 	DisplayName string `json:"displayName" gorm:"column:display_name"`
 	Image       string `json:"image" gorm:"column:image"` // Image
@@ -94,6 +92,6 @@ func IsValidRole(r Role) bool {
 	}
 }
 
-func (ucd UserCircleDetail) IsManagerOrAdmin() bool {
+func (ucd UserFamilyDetail) IsManagerOrAdmin() bool {
 	return ucd.Role == UserRoleAdmin || ucd.Role == UserRoleManager
 }

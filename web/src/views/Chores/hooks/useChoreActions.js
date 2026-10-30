@@ -566,7 +566,6 @@ export const useChoreActions = ({
         case 'completeWithNote':
         case 'completeWithPastDate':
         case 'changeAssignee':
-        case 'writeNFC':
         case 'nudge':
           openModal(action, chore, extraData)
           break
@@ -673,7 +672,7 @@ export const useChoreActions = ({
     [modalChore, impersonatedUser, updateChoreInState, closeModal],
   )
 
-  // Picking a circle member who isn't yet in the chore's assignee pool must
+  // Picking a family member who isn't yet in the chore's assignee pool must
   // not surface the backend's "assignee not in assignees list" rejection —
   // assigning someone should always just work, so this adds them to the pool
   // first (existing per-chore state, no dedicated endpoint for it) and only

@@ -45,7 +45,7 @@ func NewMessageValidator(logger *SanitizedLogger) *MessageValidator {
 			"chore_skipped":   true,
 			"user_joined":     true,
 			"user_left":       true,
-			"circle_updated":  true,
+			"family_updated":  true,
 			"notification":    true,
 			"heartbeat":       true,
 		},

@@ -12,7 +12,7 @@ import (
 	"github.com/nico87lbs/hopla/config"
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
 	chRepo "github.com/nico87lbs/hopla/internal/chore/repo"
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	lModel "github.com/nico87lbs/hopla/internal/label/model"
 	syncModel "github.com/nico87lbs/hopla/internal/sync/model"
 	uModel "github.com/nico87lbs/hopla/internal/user/model"
@@ -44,7 +44,7 @@ func newSyncHandlerTest(t *testing.T) (*chRepo.ChoreRepository, *gorm.DB, *gin.E
 		&chModel.ChoreHistory{},
 		&chModel.ChoreLabels{},
 		&chModel.TimeSession{},
-		&cModel.UserCircle{},
+		&fModel.UserFamily{},
 		&lModel.Label{},
 		&syncModel.SyncCursor{},
 		&syncModel.Tombstone{},
@@ -56,7 +56,7 @@ func newSyncHandlerTest(t *testing.T) (*chRepo.ChoreRepository, *gorm.DB, *gin.E
 	handler := NewHandler(repository)
 	router := gin.New()
 	router.Use(func(c *gin.Context) {
-		c.Set("id", &uModel.UserDetails{User: uModel.User{ID: 2, CircleID: 1}})
+		c.Set("id", &uModel.UserDetails{User: uModel.User{ID: 2, FamilyID: 1}})
 		c.Next()
 	})
 	router.GET("/sync/changes", handler.GetChanges)
@@ -81,7 +81,7 @@ func TestGetChangesPaginatesScopedTombstonesWithoutSkippingBoundary(t *testing.T
 	userID := 2
 	for i := range tombstones {
 		tombstones[i] = syncModel.Tombstone{
-			CircleID:    1,
+			FamilyID:    1,
 			EntityType:  syncModel.EntityTypeChore,
 			EntityID:    i + 1,
 			UserID:      &userID,
@@ -110,9 +110,9 @@ func TestGetChangesPaginatesScopedTombstonesWithoutSkippingBoundary(t *testing.T
 func TestGetChangesDropsRevocationSupersededByRegrant(t *testing.T) {
 	repository, db, router := newSyncHandlerTest(t)
 	for _, userID := range []int{1, 2} {
-		require.NoError(t, db.Create(&cModel.UserCircle{UserID: userID, CircleID: 1, IsActive: true}).Error)
+		require.NoError(t, db.Create(&fModel.UserFamily{UserID: userID, FamilyID: 1, IsActive: true}).Error)
 	}
-	chore := &chModel.Chore{ID: 10, Name: "private chore", CircleID: 1, CreatedBy: 1, IsPrivate: true}
+	chore := &chModel.Chore{ID: 10, Name: "private chore", FamilyID: 1, CreatedBy: 1, IsPrivate: true}
 	require.NoError(t, db.Create(chore).Error)
 	require.NoError(t, db.Create(&chModel.ChoreAssignees{ChoreID: chore.ID, UserID: 2}).Error)
 

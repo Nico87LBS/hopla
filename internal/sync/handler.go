@@ -38,7 +38,7 @@ func NewHandler(cr *chRepo.ChoreRepository) *SyncHandler {
 //	@Router			/sync/changes [get]
 func (h *SyncHandler) GetChanges(c *gin.Context) {
 	currentUser := auth.MustCurrentUser(c)
-	circleID := currentUser.CircleID
+	familyID := currentUser.FamilyID
 	userID := currentUser.ID
 
 	sinceStr := c.DefaultQuery("since", "0")
@@ -54,7 +54,7 @@ func (h *SyncHandler) GetChanges(c *gin.Context) {
 		SyncVersion: &since,
 		Limit:       defaultSyncLimit,
 	}
-	chores, err := h.choreRepo.GetChores(c, circleID, userID, true, syncOpts, false)
+	chores, err := h.choreRepo.GetChores(c, familyID, userID, true, syncOpts, false)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Failed to fetch changes"})
 		return
@@ -65,7 +65,7 @@ func (h *SyncHandler) GetChanges(c *gin.Context) {
 		chores = chores[:defaultSyncLimit]
 	}
 
-	choreTombstones, err := h.choreRepo.GetTombstonesSince(c, circleID, syncModel.EntityTypeChore, userID, since, defaultSyncLimit+1)
+	choreTombstones, err := h.choreRepo.GetTombstonesSince(c, familyID, syncModel.EntityTypeChore, userID, since, defaultSyncLimit+1)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Failed to fetch deletions"})
 		return
@@ -75,8 +75,8 @@ func (h *SyncHandler) GetChanges(c *gin.Context) {
 		choreTombstones = choreTombstones[:defaultSyncLimit]
 	}
 
-	// Use sync-aware GetChoresHistoryByCircle with privacy filtering.
-	histories, err := h.choreRepo.GetChoresHistoryByCircle(c, circleID, userID, syncOpts)
+	// Use sync-aware GetChoresHistoryByFamily with privacy filtering.
+	histories, err := h.choreRepo.GetChoresHistoryByFamily(c, familyID, userID, syncOpts)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Failed to fetch history changes"})
 		return
@@ -86,7 +86,7 @@ func (h *SyncHandler) GetChanges(c *gin.Context) {
 		histories = histories[:defaultSyncLimit]
 	}
 
-	historyTombstones, err := h.choreRepo.GetTombstonesSince(c, circleID, syncModel.EntityTypeChoreHistory, userID, since, defaultSyncLimit+1)
+	historyTombstones, err := h.choreRepo.GetTombstonesSince(c, familyID, syncModel.EntityTypeChoreHistory, userID, since, defaultSyncLimit+1)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Failed to fetch history deletions"})
 		return

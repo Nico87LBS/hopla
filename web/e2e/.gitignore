@@ -1,5 +1,0 @@
-node_modules/
-.auth/
-playwright-report/
-test-results/
-.e2e-run/

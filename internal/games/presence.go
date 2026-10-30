@@ -4,7 +4,7 @@ import (
 	"time"
 
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	"github.com/nico87lbs/hopla/internal/zone"
 	"gorm.io/gorm"
 )
@@ -13,7 +13,7 @@ import (
 // other parent's home. It is still running while EndAt is nil.
 type Absence struct {
 	ID       int        `json:"id" gorm:"primaryKey"`
-	CircleID int        `json:"-" gorm:"column:circle_id;not null;index:idx_absence_member"`
+	FamilyID int        `json:"-" gorm:"column:family_id;not null;index:idx_absence_member"`
 	UserID   int        `json:"userId" gorm:"column:user_id;not null;index:idx_absence_member"`
 	StartAt  time.Time  `json:"startAt" gorm:"column:start_at;not null"`
 	EndAt    *time.Time `json:"endAt" gorm:"column:end_at"`
@@ -21,10 +21,10 @@ type Absence struct {
 
 func (Absence) TableName() string { return "absences" }
 
-// AwayMembers returns the members of a circle who are away now.
-func AwayMembers(db *gorm.DB, circleID int) (map[int]bool, error) {
+// AwayMembers returns the members of a family who are away now.
+func AwayMembers(db *gorm.DB, familyID int) (map[int]bool, error) {
 	var ids []int
-	if err := db.Model(&cModel.UserCircle{}).Where("circle_id = ? AND away = ?", circleID, true).
+	if err := db.Model(&fModel.UserFamily{}).Where("family_id = ? AND away = ?", familyID, true).
 		Pluck("user_id", &ids).Error; err != nil {
 		return nil, err
 	}
@@ -66,10 +66,10 @@ func middayOf(t time.Time, loc *time.Location) time.Time {
 // absenceDays returns, per member, the local days they were away at some
 // point since the given time. A day away neither breaks nor extends a streak,
 // and is left out of the quests.
-func absenceDays(db *gorm.DB, circleID int, since, now time.Time) (map[int]map[string]bool, error) {
-	loc := zone.Of(circleID)
+func absenceDays(db *gorm.DB, familyID int, since, now time.Time) (map[int]map[string]bool, error) {
+	loc := zone.Of(familyID)
 	var absences []Absence
-	if err := db.Where("circle_id = ? AND (end_at IS NULL OR end_at >= ?)", circleID, since).
+	if err := db.Where("family_id = ? AND (end_at IS NULL OR end_at >= ?)", familyID, since).
 		Find(&absences).Error; err != nil {
 		return nil, err
 	}
@@ -99,29 +99,29 @@ func absenceDays(db *gorm.DB, circleID int, since, now time.Time) (map[int]map[s
 
 // SetAway records that a member left or came back. It returns false when
 // they already were in that state.
-func SetAway(tx *gorm.DB, circleID, userID int, away bool, now time.Time) (bool, error) {
-	result := tx.Model(&cModel.UserCircle{}).Where("circle_id = ? AND user_id = ? AND away = ?", circleID, userID, !away).
+func SetAway(tx *gorm.DB, familyID, userID int, away bool, now time.Time) (bool, error) {
+	result := tx.Model(&fModel.UserFamily{}).Where("family_id = ? AND user_id = ? AND away = ?", familyID, userID, !away).
 		Update("away", away)
 	if result.Error != nil || result.RowsAffected == 0 {
 		return false, result.Error
 	}
 	if away {
-		return true, tx.Create(&Absence{CircleID: circleID, UserID: userID, StartAt: now}).Error
+		return true, tx.Create(&Absence{FamilyID: familyID, UserID: userID, StartAt: now}).Error
 	}
-	return true, tx.Model(&Absence{}).Where("circle_id = ? AND user_id = ? AND end_at IS NULL", circleID, userID).
+	return true, tx.Model(&Absence{}).Where("family_id = ? AND user_id = ? AND end_at IS NULL", familyID, userID).
 		Update("end_at", now).Error
 }
 
 // ForgetSurprise drops today's surprise task when nobody has done it yet, so
 // it is drawn again among the tasks of the members who are here.
-func ForgetSurprise(tx *gorm.DB, circleID int, now time.Time) error {
-	loc := zone.Of(circleID)
+func ForgetSurprise(tx *gorm.DB, familyID int, now time.Time) error {
+	loc := zone.Of(familyID)
 	var surprise Surprise
-	err := tx.Where("circle_id = ? AND day = ?", circleID, dayKey(now, loc)).Limit(1).Find(&surprise).Error
+	err := tx.Where("family_id = ? AND day = ?", familyID, dayKey(now, loc)).Limit(1).Find(&surprise).Error
 	if err != nil || surprise.ChoreID == 0 {
 		return err
 	}
-	same, err := SameTaskIDs(tx, circleID, surprise.ChoreID)
+	same, err := SameTaskIDs(tx, familyID, surprise.ChoreID)
 	if err != nil {
 		return err
 	}
@@ -135,5 +135,5 @@ func ForgetSurprise(tx *gorm.DB, circleID int, now time.Time) error {
 		Count(&done).Error; err != nil || done > 0 {
 		return err
 	}
-	return tx.Where("circle_id = ? AND day = ?", circleID, surprise.Day).Delete(&Surprise{}).Error
+	return tx.Where("family_id = ? AND day = ?", familyID, surprise.Day).Delete(&Surprise{}).Error
 }

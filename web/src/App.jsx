@@ -174,8 +174,6 @@ function App() {
   const resource = useResource()
   const { mode, systemMode } = useColorScheme()
 
-  // startOpenReplay()
-
   const setThemeClass = useCallback(() => {
     const value = JSON.parse(localStorage.getItem('themeMode')) || mode
 

@@ -11,7 +11,7 @@ export const useDescriptionHtml = (html, meta = {}) => {
   useEffect(() => {
     let cancelled = false
     setPatched(html)
-    if (!html || !html.includes('dt-data-path')) return undefined
+    if (!html || !html.includes('data-hopla-path')) return undefined
     patchDescriptionHtml(html, meta).then(result => {
       if (!cancelled && result !== html) setPatched(result)
     })

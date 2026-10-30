@@ -24,7 +24,7 @@ export const useRewards = () => {
 }
 
 // status: 'pending' | 'approved' | 'rejected' | undefined (all, scoped to the
-// caller — admins/managers get the whole circle, everyone else gets their own)
+// caller — admins/managers get the whole family, everyone else gets their own)
 export const useRedemptions = status => {
   return useQuery({
     queryKey: ['redemptions', status || 'all'],

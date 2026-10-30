@@ -4,24 +4,11 @@
     "overview": "Résumé"
   },
   "redeemModal": {
-    "redeemButton": "Utiliser",
-    "pointsAvailable": "Disponibles : {{count}}",
-    "pointsToRedeem": "{{Units}} à utiliser",
     "placeholder": "Saisis un nombre {{ofUnits}}...",
-    "cannotExceed": "Le solde {{ofUnits}} disponibles ne peut pas être dépassé",
     "quickAdd": "Ajout rapide :",
-    "aboutToRedeem": "Tu vas utiliser",
     "amount": "{{Units}} : {{count}}",
     "remaining": "{{Units}} restant{{e}}s : {{count}}",
-    "user": "Membre",
-    "addPoints_one": "Ajouter {{count}} {{unit}}",
-    "addPoints_other": "Ajouter {{count}} {{units}}"
-  },
-  "leaderboard": {
-    "titlePoints": "Classement des {{units}}",
-    "subtitlePoints": "Qui a gagné le plus {{ofUnits}} sur la période.",
-    "titleTasks": "Classement des tâches",
-    "subtitleTasks": "Qui a terminé le plus de tâches sur la période."
+    "user": "Membre"
   },
   "filter": {
     "title": "Filtrer les {{units}}"

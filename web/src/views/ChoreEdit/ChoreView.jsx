@@ -46,7 +46,7 @@ import {
   useChoreDetails,
   useChoreHistory,
 } from '../../queries/ChoreQueries.jsx'
-import { useCircleMembers, useUserProfile } from '../../queries/UserQueries.jsx'
+import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries.jsx'
 import { useNotification } from '../../service/NotificationProvider'
 import {
   ChoreHistoryStatus,
@@ -123,8 +123,8 @@ const ChoreView = () => {
   const [activeModal, setActiveModal] = useState(null)
   const [noteViewerConfig, setNoteViewerConfig] = useState({ isOpen: false })
   const [attachmentBrowserOpen, setAttachmentBrowserOpen] = useState(false)
-  const { data: circleMembersData, isLoading: isCircleMembersLoading } =
-    useCircleMembers()
+  const { data: familyMembersData, isLoading: isFamilyMembersLoading } =
+    useFamilyMembers()
   const { data: userProfile } = useUserProfile()
   const { impersonatedUser } = useImpersonateUser()
   const descriptionHtml = useDescriptionHtml(chore?.description || '', {
@@ -153,18 +153,18 @@ const ChoreView = () => {
     : chore.totalCompletedCount || 0
 
   useEffect(() => {
-    if (!choreData || !choreData.res || !circleMembersData) {
+    if (!choreData || !choreData.res || !familyMembersData) {
       return
     }
     setChore(choreData.res)
     document.title = 'Hopla: ' + choreData.res.name
 
-    setPerformers(circleMembersData.res)
+    setPerformers(familyMembersData.res)
     if (searchParams.get('auto_complete') === 'true') {
       navigate({ search: '' }, { replace: true })
       handleTaskCompletion()
     }
-  }, [choreData, circleMembersData])
+  }, [choreData, familyMembersData])
 
   useEffect(() => {
     if (chore && performers?.length > 0) {
@@ -516,7 +516,7 @@ const ChoreView = () => {
     }
   }
 
-  // Picking a circle member who isn't yet in the chore's assignee pool must
+  // Picking a family member who isn't yet in the chore's assignee pool must
   // not surface the backend's "assignee not in assignees list" rejection —
   // assigning someone should always just work, so this adds them to the pool
   // first (existing per-chore state, no dedicated endpoint for it) and only
@@ -573,14 +573,14 @@ const ChoreView = () => {
 
   // Check if the current user can approve/reject (admin, manager, or task owner)
   const canApproveReject = () => {
-    if (!circleMembersData?.res || !chore) return false
+    if (!familyMembersData?.res || !chore) return false
 
-    const currentUser = circleMembersData.res.find(
+    const currentUser = familyMembersData.res.find(
       member => member.userId === (impersonatedUser?.userId || userProfile?.id),
     )
 
     // User can approve/reject if they are:
-    // 1. Admin or manager of the circle
+    // 1. Admin or manager of the family
     // 2. Owner/creator of the task
     return (
       currentUser?.role === 'admin' ||
@@ -589,8 +589,8 @@ const ChoreView = () => {
     )
   }
 
-  if (isChoreLoading || isCircleMembersLoading) {
-    // while loading the chore or circle members, return a loading state
+  if (isChoreLoading || isFamilyMembersLoading) {
+    // while loading the chore or family members, return a loading state
     return <LoadingComponent />
   }
   if (isChoreError) {

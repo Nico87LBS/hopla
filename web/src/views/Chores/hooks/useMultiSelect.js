@@ -197,7 +197,7 @@ export const useMultiSelect = () => {
         // Candidate assignees common to the whole selection. An empty (or
         // absent) `assignees` list on a chore means "anyone", so those chores
         // place no restriction. null here means no restriction at all, and the
-        // caller should offer every circle member.
+        // caller should offer every family member.
         assignableUserIds: selected.reduce((acc, chore) => {
           const ids = (chore.assignees || []).map(a => a.userId)
           if (ids.length === 0) return acc

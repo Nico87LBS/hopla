@@ -20,7 +20,7 @@ import (
 // earns it once.
 type Flash struct {
 	ID        int       `json:"id" gorm:"primaryKey"`
-	CircleID  int       `json:"-" gorm:"column:circle_id;index;not null"`
+	FamilyID  int       `json:"-" gorm:"column:family_id;index;not null"`
 	ChoreID   int       `json:"choreId" gorm:"column:chore_id;not null"`
 	Points    int       `json:"points" gorm:"column:points;not null"`
 	StartsAt  time.Time `json:"startsAt" gorm:"column:starts_at;not null"`
@@ -38,28 +38,28 @@ func TaskFlashEnd(chore *chModel.Chore, dueAt *time.Time, at time.Time) (time.Ti
 	if dueAt == nil || chore.FlashPoints == nil || *chore.FlashPoints <= 0 || chore.FlashMinutes == nil || *chore.FlashMinutes <= 0 {
 		return time.Time{}, false
 	}
-	loc := zone.Of(chore.CircleID)
+	loc := zone.Of(chore.FamilyID)
 	local := dueAt.In(loc)
 	opens := time.Date(local.Year(), local.Month(), local.Day(), 0, 0, 0, 0, loc)
 	ends := dueAt.Add(time.Duration(*chore.FlashMinutes) * time.Minute)
 	return ends, !at.Before(opens) && at.Before(ends)
 }
 
-// runningFlashes returns the circle's flashes running at the given time.
-func runningFlashes(db *gorm.DB, circleID int, at time.Time) ([]Flash, error) {
+// runningFlashes returns the family's flashes running at the given time.
+func runningFlashes(db *gorm.DB, familyID int, at time.Time) ([]Flash, error) {
 	var flashes []Flash
-	err := db.Where("circle_id = ? AND starts_at <= ? AND ends_at > ?", circleID, at, at).Order("id").Find(&flashes).Error
+	err := db.Where("family_id = ? AND starts_at <= ? AND ends_at > ?", familyID, at, at).Order("id").Find(&flashes).Error
 	return flashes, err
 }
 
 // liveFlashOn returns the flash running at the given time on the task or a
 // copy of it, or nil.
 func liveFlashOn(db *gorm.DB, chore *chModel.Chore, at time.Time) (*Flash, error) {
-	flashes, err := runningFlashes(db, chore.CircleID, at)
+	flashes, err := runningFlashes(db, chore.FamilyID, at)
 	if err != nil || len(flashes) == 0 {
 		return nil, err
 	}
-	same, err := SameTaskIDs(db, chore.CircleID, chore.ID)
+	same, err := SameTaskIDs(db, chore.FamilyID, chore.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -111,14 +111,14 @@ func FlashBonus(tx *gorm.DB, chore *chModel.Chore, userID int, dueAt *time.Time,
 
 // FillFlashes sets on each task the flash bonus open now: one a parent
 // launched, else the task's own after its due time.
-func FillFlashes(db *gorm.DB, circleID int, chores []*chModel.Chore, now time.Time) error {
-	flashes, err := runningFlashes(db, circleID, now)
+func FillFlashes(db *gorm.DB, familyID int, chores []*chModel.Chore, now time.Time) error {
+	flashes, err := runningFlashes(db, familyID, now)
 	if err != nil {
 		return err
 	}
 	live := map[int]*Flash{}
 	for i := range flashes {
-		same, err := SameTaskIDs(db, circleID, flashes[i].ChoreID)
+		same, err := SameTaskIDs(db, familyID, flashes[i].ChoreID)
 		if err != nil {
 			return err
 		}
@@ -146,14 +146,14 @@ func FillFlashes(db *gorm.DB, circleID int, chores []*chModel.Chore, now time.Ti
 	return nil
 }
 
-// ErrNoTask is returned when launching a flash on a task outside the circle.
+// ErrNoTask is returned when launching a flash on a task outside the family.
 var ErrNoTask = errors.New("task not found")
 
 // LaunchFlash starts a flash on a task for the given minutes. It replaces a
 // flash still running on the task or a copy of it.
-func LaunchFlash(tx *gorm.DB, circleID, choreID, points, minutes, parentID int, now time.Time) (*Flash, error) {
+func LaunchFlash(tx *gorm.DB, familyID, choreID, points, minutes, parentID int, now time.Time) (*Flash, error) {
 	var chore chModel.Chore
-	if err := tx.Select("id", "circle_id").Where("id = ? AND circle_id = ?", choreID, circleID).First(&chore).Error; err != nil {
+	if err := tx.Select("id", "family_id").Where("id = ? AND family_id = ?", choreID, familyID).First(&chore).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, ErrNoTask
 		}
@@ -168,7 +168,7 @@ func LaunchFlash(tx *gorm.DB, circleID, choreID, points, minutes, parentID int, 
 			return nil, err
 		}
 	}
-	flash := &Flash{CircleID: circleID, ChoreID: choreID, Points: points, StartsAt: now,
+	flash := &Flash{FamilyID: familyID, ChoreID: choreID, Points: points, StartsAt: now,
 		EndsAt: now.Add(time.Duration(minutes) * time.Minute), CreatedBy: parentID, CreatedAt: now}
 	return flash, tx.Create(flash).Error
 }

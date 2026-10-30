@@ -47,8 +47,8 @@ const ResetCard = ({ members }) => {
       return
     }
     queryClient.invalidateQueries({ queryKey: ['journal'] })
-    queryClient.invalidateQueries({ queryKey: ['allCircleMembers'] })
-    queryClient.invalidateQueries({ queryKey: ['circleMembers'] })
+    queryClient.invalidateQueries({ queryKey: ['allFamilyMembers'] })
+    queryClient.invalidateQueries({ queryKey: ['familyMembers'] })
     queryClient.invalidateQueries({ queryKey: ['games'] })
     if (clearTaskHistory) {
       queryClient.invalidateQueries({ queryKey: ['chores'] })

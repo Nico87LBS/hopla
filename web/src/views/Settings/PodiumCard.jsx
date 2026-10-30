@@ -23,7 +23,7 @@ const PodiumCard = () => {
     const resp = await SaveParentsOnPodium(on).catch(() => null)
     setSaving(false)
     if (!resp?.ok) {
-      showError({ title: t('circleSettings.podium.failed') })
+      showError({ title: t('familySettings.podium.failed') })
       return
     }
     queryClient.setQueryData(['games', 'today'], old =>
@@ -66,10 +66,10 @@ const PodiumCard = () => {
           level='title-lg'
           sx={{ fontWeight: 650 }}
         >
-          {t('circleSettings.podium.title')}
+          {t('familySettings.podium.title')}
         </Typography>
         <Typography level='body-sm' textColor='text.secondary'>
-          {t('circleSettings.podium.help')}
+          {t('familySettings.podium.help')}
         </Typography>
       </Box>
       <Switch

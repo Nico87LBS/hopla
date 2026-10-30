@@ -127,7 +127,7 @@ func (h *PollingHandler) HandleSSE(c *gin.Context) {
 		return
 	}
 
-	// Get authenticated user and circle ID from middleware
+	// Get authenticated user and family ID from middleware
 	userInterface, exists := c.Get("user")
 	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{
@@ -138,7 +138,7 @@ func (h *PollingHandler) HandleSSE(c *gin.Context) {
 	}
 
 	user := userInterface.(*uModel.User)
-	circleID := user.CircleID
+	familyID := user.FamilyID
 
 	// Validate the request parameters
 	if err := h.validateSSERequest(c, user); err != nil {
@@ -188,7 +188,7 @@ func (h *PollingHandler) HandleSSE(c *gin.Context) {
 	}
 
 	// Create SSE connection object - we use nil for websocket conn as this is SSE
-	sseConn := NewConnection(connectionID, circleID, user.ID, user, nil, h.logger)
+	sseConn := NewConnection(connectionID, familyID, user.ID, user, nil, h.logger)
 
 	// Add connection to the real-time service pool so it can receive broadcast events
 	if err := h.realTimeService.AddConnection(sseConn); err != nil {
@@ -196,7 +196,7 @@ func (h *PollingHandler) HandleSSE(c *gin.Context) {
 			"error", err,
 			"connectionId", connectionID,
 			"userId", user.ID,
-			"circleId", circleID)
+			"familyId", familyID)
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": "Failed to establish connection",
 			"code":  "CONNECTION_FAILED",
@@ -212,10 +212,10 @@ func (h *PollingHandler) HandleSSE(c *gin.Context) {
 		"connectionId", connectionID,
 		"userId", user.ID,
 		"username", "[REDACTED]", // Don't log username for security
-		"circleId", circleID)
+		"familyId", familyID)
 
 	// Send initial connection event
-	initialEvent := NewConnectionEstablishedEvent(connectionID, circleID, user.ID)
+	initialEvent := NewConnectionEstablishedEvent(connectionID, familyID, user.ID)
 	if !h.sendSSEEvent(c, initialEvent) {
 		h.logger.Errorw("Failed to send initial SSE event", "connectionId", connectionID)
 		h.realTimeService.RemoveConnection(sseConn)
@@ -251,7 +251,7 @@ func (h *PollingHandler) HandleSSE(c *gin.Context) {
 
 	// Start the main SSE event loop
 	h.logger.Infow("Starting SSE event loop", "connectionId", connectionID)
-	h.sseEventLoop(ctx, c, sseConn, circleID)
+	h.sseEventLoop(ctx, c, sseConn, familyID)
 }
 
 // setSSEHeaders sets the necessary headers for Server-Sent Events
@@ -305,7 +305,7 @@ func (h *PollingHandler) sendSSEEvent(c *gin.Context, event *Event) bool {
 }
 
 // heartbeatLoop sends periodic heartbeat events
-func (h *PollingHandler) heartbeatLoop(ctx context.Context, c *gin.Context, circleID int) {
+func (h *PollingHandler) heartbeatLoop(ctx context.Context, c *gin.Context, familyID int) {
 	ticker := time.NewTicker(h.config.RealTimeConfig.HeartbeatInterval)
 	defer ticker.Stop()
 
@@ -314,7 +314,7 @@ func (h *PollingHandler) heartbeatLoop(ctx context.Context, c *gin.Context, circ
 		case <-ctx.Done():
 			return
 		case <-ticker.C:
-			heartbeatEvent := NewHeartbeatEvent(circleID)
+			heartbeatEvent := NewHeartbeatEvent(familyID)
 			if !h.sendSSEEvent(c, heartbeatEvent) {
 				return
 			}
@@ -323,7 +323,7 @@ func (h *PollingHandler) heartbeatLoop(ctx context.Context, c *gin.Context, circ
 }
 
 // sseEventLoop manages the main event loop for SSE connections
-func (h *PollingHandler) sseEventLoop(ctx context.Context, c *gin.Context, conn *Connection, circleID int) {
+func (h *PollingHandler) sseEventLoop(ctx context.Context, c *gin.Context, conn *Connection, familyID int) {
 	ticker := time.NewTicker(h.config.RealTimeConfig.HeartbeatInterval)
 	defer ticker.Stop()
 
@@ -360,7 +360,7 @@ func (h *PollingHandler) sseEventLoop(ctx context.Context, c *gin.Context, conn 
 			}
 			h.logger.Debugw("Sending SSE heartbeat", "connectionId", conn.ID)
 
-			heartbeatEvent := NewHeartbeatEvent(circleID)
+			heartbeatEvent := NewHeartbeatEvent(familyID)
 			if !h.sendSSEEvent(c, heartbeatEvent) {
 				h.logger.Warnw("Failed to send SSE heartbeat, client likely disconnected. Closing event loop.",
 					"connectionId", conn.ID)
@@ -388,10 +388,10 @@ func (h *PollingHandler) validateSSERequest(c *gin.Context, user *uModel.User) e
 		return fmt.Errorf("invalid user ID: %d", user.ID)
 	}
 
-	// Validate circle ID
-	if user.CircleID <= 0 {
-		h.logger.Warnw("Invalid circle ID in SSE request", "circleId", user.CircleID, "userId", user.ID)
-		return fmt.Errorf("invalid circle ID: %d", user.CircleID)
+	// Validate family ID
+	if user.FamilyID <= 0 {
+		h.logger.Warnw("Invalid family ID in SSE request", "familyId", user.FamilyID, "userId", user.ID)
+		return fmt.Errorf("invalid family ID: %d", user.FamilyID)
 	}
 
 	// Check if user is disabled

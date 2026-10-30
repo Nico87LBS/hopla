@@ -13,8 +13,8 @@ import (
 	"github.com/nico87lbs/hopla/config"
 	auth "github.com/nico87lbs/hopla/internal/auth"
 	chRepo "github.com/nico87lbs/hopla/internal/chore/repo"
-	circle "github.com/nico87lbs/hopla/internal/circle/model"
-	cRepo "github.com/nico87lbs/hopla/internal/circle/repo"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
+	fRepo "github.com/nico87lbs/hopla/internal/family/repo"
 	pModel "github.com/nico87lbs/hopla/internal/points"
 	pRepo "github.com/nico87lbs/hopla/internal/points/repo"
 	uRepo "github.com/nico87lbs/hopla/internal/user/repo"
@@ -27,12 +27,12 @@ const maxAdjustment = 1000
 
 type Handler struct {
 	pRepo      *pRepo.PointsRepository
-	circleRepo *cRepo.CircleRepository
+	familyRepo *fRepo.FamilyRepository
 	choreRepo  *chRepo.ChoreRepository
 }
 
-func NewHandler(pRepo *pRepo.PointsRepository, circleRepo *cRepo.CircleRepository, choreRepo *chRepo.ChoreRepository) *Handler {
-	return &Handler{pRepo: pRepo, circleRepo: circleRepo, choreRepo: choreRepo}
+func NewHandler(pRepo *pRepo.PointsRepository, familyRepo *fRepo.FamilyRepository, choreRepo *chRepo.ChoreRepository) *Handler {
+	return &Handler{pRepo: pRepo, familyRepo: familyRepo, choreRepo: choreRepo}
 }
 
 var actionNames = map[pModel.PointsHistoryAction]string{
@@ -106,7 +106,7 @@ func (h *Handler) getJournal(c *gin.Context) {
 	if limit != nil {
 		filter.Limit = *limit
 	}
-	rows, more, err := h.pRepo.Journal(c, currentUser.CircleID, currentUser.ID, filter)
+	rows, more, err := h.pRepo.Journal(c, currentUser.FamilyID, currentUser.ID, filter)
 	if err != nil {
 		logging.FromContext(c).Error("Failed to get the journal", "error", err)
 		c.JSON(500, gin.H{"error": "Error getting the journal"})
@@ -127,13 +127,13 @@ func (h *Handler) getJournal(c *gin.Context) {
 	c.JSON(200, gin.H{"res": entries, "next": next})
 }
 
-func (h *Handler) isAdminOrManager(c *gin.Context, userID, circleID int) (bool, error) {
-	members, err := h.circleRepo.GetCircleUsers(c, circleID)
+func (h *Handler) isAdminOrManager(c *gin.Context, userID, familyID int) (bool, error) {
+	members, err := h.familyRepo.GetFamilyUsers(c, familyID)
 	if err != nil {
 		return false, err
 	}
 	for _, m := range members {
-		if m.UserID == userID && (m.Role == circle.UserRoleAdmin || m.Role == circle.UserRoleManager) {
+		if m.UserID == userID && (m.Role == fModel.UserRoleAdmin || m.Role == fModel.UserRoleManager) {
 			return true, nil
 		}
 	}
@@ -147,7 +147,7 @@ func (h *Handler) requireParent(c *gin.Context) (int, int, bool) {
 		c.JSON(401, gin.H{"error": "Authentication failed"})
 		return 0, 0, false
 	}
-	isAdmin, err := h.isAdminOrManager(c, currentUser.ID, currentUser.CircleID)
+	isAdmin, err := h.isAdminOrManager(c, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Error checking permissions"})
 		return 0, 0, false
@@ -156,7 +156,7 @@ func (h *Handler) requireParent(c *gin.Context) (int, int, bool) {
 		c.JSON(403, gin.H{"error": "Only admins or managers can change points"})
 		return 0, 0, false
 	}
-	return currentUser.ID, currentUser.CircleID, true
+	return currentUser.ID, currentUser.FamilyID, true
 }
 
 func optionalInt(c *gin.Context, name string) (*int, bool) {
@@ -194,7 +194,7 @@ func (h *Handler) getHistory(c *gin.Context) {
 	if limit != nil {
 		filter.Limit = *limit
 	}
-	rows, err := h.pRepo.History(c, currentUser.CircleID, filter)
+	rows, err := h.pRepo.History(c, currentUser.FamilyID, filter)
 	if err != nil {
 		logging.FromContext(c).Error("Failed to get points history", "error", err)
 		c.JSON(500, gin.H{"error": "Error getting points history"})
@@ -215,7 +215,7 @@ type AdjustReq struct {
 }
 
 func (h *Handler) adjust(c *gin.Context) {
-	parentID, circleID, ok := h.requireParent(c)
+	parentID, familyID, ok := h.requireParent(c)
 	if !ok {
 		return
 	}
@@ -225,7 +225,7 @@ func (h *Handler) adjust(c *gin.Context) {
 		return
 	}
 	if req.PresetID != nil {
-		presets, err := h.pRepo.Presets(c, circleID)
+		presets, err := h.pRepo.Presets(c, familyID)
 		if err != nil {
 			c.JSON(500, gin.H{"error": "Error getting presets"})
 			return
@@ -258,9 +258,9 @@ func (h *Handler) adjust(c *gin.Context) {
 			req.Reason = &reason
 		}
 	}
-	entry, err := h.pRepo.Adjust(c, circleID, req.UserID, req.Points, parentID, req.Reason)
+	entry, err := h.pRepo.Adjust(c, familyID, req.UserID, req.Points, parentID, req.Reason)
 	if errors.Is(err, pRepo.ErrNotMember) {
-		c.JSON(400, gin.H{"error": "User is not a member of this circle"})
+		c.JSON(400, gin.H{"error": "User is not a member of this family"})
 		return
 	}
 	if err != nil {
@@ -284,7 +284,7 @@ type ResetReq struct {
 }
 
 func (h *Handler) reset(c *gin.Context) {
-	parentID, circleID, ok := h.requireParent(c)
+	parentID, familyID, ok := h.requireParent(c)
 	if !ok {
 		return
 	}
@@ -293,9 +293,9 @@ func (h *Handler) reset(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "Invalid request"})
 		return
 	}
-	rows, err := h.pRepo.Reset(c, circleID, req.UserID, parentID, req.ClearHistory)
+	rows, err := h.pRepo.Reset(c, familyID, req.UserID, parentID, req.ClearHistory)
 	if errors.Is(err, pRepo.ErrNotMember) {
-		c.JSON(400, gin.H{"error": "User is not a member of this circle"})
+		c.JSON(400, gin.H{"error": "User is not a member of this family"})
 		return
 	}
 	if err != nil {
@@ -308,14 +308,14 @@ func (h *Handler) reset(c *gin.Context) {
 		if req.UserID != nil {
 			userIDs = []int{*req.UserID}
 		}
-		if _, err := h.choreRepo.ClearHistory(c, circleID, userIDs); err != nil {
+		if _, err := h.choreRepo.ClearHistory(c, familyID, userIDs); err != nil {
 			logging.FromContext(c).Error("Failed to clear task history", "error", err)
 			c.JSON(500, gin.H{"error": "Error clearing task history"})
 			return
 		}
 	}
 	if req.ClearGames {
-		if err := h.pRepo.ClearGames(c, circleID, req.UserID); err != nil {
+		if err := h.pRepo.ClearGames(c, familyID, req.UserID); err != nil {
 			logging.FromContext(c).Error("Failed to clear the games", "error", err)
 			c.JSON(500, gin.H{"error": "Error clearing the games"})
 			return
@@ -347,7 +347,7 @@ func (h *Handler) getPresets(c *gin.Context) {
 		c.JSON(401, gin.H{"error": "Authentication failed"})
 		return
 	}
-	presets, err := h.pRepo.Presets(c, currentUser.CircleID)
+	presets, err := h.pRepo.Presets(c, currentUser.FamilyID)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Error getting presets"})
 		return
@@ -356,7 +356,7 @@ func (h *Handler) getPresets(c *gin.Context) {
 }
 
 func (h *Handler) createPreset(c *gin.Context) {
-	_, circleID, ok := h.requireParent(c)
+	_, familyID, ok := h.requireParent(c)
 	if !ok {
 		return
 	}
@@ -367,7 +367,7 @@ func (h *Handler) createPreset(c *gin.Context) {
 		}
 		return
 	}
-	preset := pModel.PointsPreset{CircleID: circleID, Name: strings.TrimSpace(req.Name), Points: req.Points}
+	preset := pModel.PointsPreset{FamilyID: familyID, Name: strings.TrimSpace(req.Name), Points: req.Points}
 	if err := h.pRepo.CreatePreset(c, &preset); err != nil {
 		c.JSON(500, gin.H{"error": "Error creating preset"})
 		return
@@ -376,7 +376,7 @@ func (h *Handler) createPreset(c *gin.Context) {
 }
 
 func (h *Handler) updatePreset(c *gin.Context) {
-	_, circleID, ok := h.requireParent(c)
+	_, familyID, ok := h.requireParent(c)
 	if !ok {
 		return
 	}
@@ -392,8 +392,8 @@ func (h *Handler) updatePreset(c *gin.Context) {
 		}
 		return
 	}
-	preset := pModel.PointsPreset{ID: id, CircleID: circleID, Name: strings.TrimSpace(req.Name), Points: req.Points}
-	if err := h.pRepo.UpdatePreset(c, circleID, &preset); err != nil {
+	preset := pModel.PointsPreset{ID: id, FamilyID: familyID, Name: strings.TrimSpace(req.Name), Points: req.Points}
+	if err := h.pRepo.UpdatePreset(c, familyID, &preset); err != nil {
 		if errors.Is(err, pRepo.ErrPresetMissing) {
 			c.JSON(404, gin.H{"error": "Preset not found"})
 			return
@@ -405,7 +405,7 @@ func (h *Handler) updatePreset(c *gin.Context) {
 }
 
 func (h *Handler) deletePreset(c *gin.Context) {
-	_, circleID, ok := h.requireParent(c)
+	_, familyID, ok := h.requireParent(c)
 	if !ok {
 		return
 	}
@@ -414,7 +414,7 @@ func (h *Handler) deletePreset(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "Invalid preset ID"})
 		return
 	}
-	if err := h.pRepo.DeletePreset(c, circleID, id); err != nil {
+	if err := h.pRepo.DeletePreset(c, familyID, id); err != nil {
 		if errors.Is(err, pRepo.ErrPresetMissing) {
 			c.JSON(404, gin.H{"error": "Preset not found"})
 			return

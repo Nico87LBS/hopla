@@ -30,7 +30,7 @@ import { useImpersonateUser } from '../../contexts/ImpersonateUserContext.jsx'
 import { useNavBarTitle } from '../../contexts/NavBarTitleContext'
 import { useFilter } from '../../hooks/useFilter'
 import { useChores, useRoutinesToday } from '../../queries/ChoreQueries'
-import { useCircleMembers, useUserProfile } from '../../queries/UserQueries'
+import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries'
 import { useNotification } from '../../service/NotificationProvider'
 import {
   ChoreFilters,
@@ -126,7 +126,7 @@ const MyChores = () => {
     data: membersData,
     isError: membersError,
     isLoading: membersLoading,
-  } = useCircleMembers()
+  } = useFamilyMembers()
 
   const [chores, setChores] = useState([])
   const [addTaskModalOpen, setAddTaskModalOpen] = useState(false)
@@ -420,7 +420,6 @@ const MyChores = () => {
       membersData?.res &&
       choresData?.res
     ) {
-      // throw new Error('FAKE ERROR') // For testing Sentry error tracking
       const processEffectAsync = async () => {
         // Sync local state with query data to ensure updates are reflected
         setChores(processedChores)
@@ -929,7 +928,7 @@ const MyChores = () => {
             label: t('chores:empty.errorAction'),
             onClick: () => {
               refetchChores()
-              queryClient.invalidateQueries({ queryKey: ['circleMembers'] })
+              queryClient.invalidateQueries({ queryKey: ['familyMembers'] })
             },
           }}
         />

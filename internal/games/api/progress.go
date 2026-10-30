@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	auth "github.com/nico87lbs/hopla/internal/auth"
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
-	circle "github.com/nico87lbs/hopla/internal/circle/model"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	"github.com/nico87lbs/hopla/internal/games"
 	"gorm.io/gorm"
 )
@@ -33,13 +33,13 @@ func idParam(c *gin.Context) (int, error) {
 	return id, nil
 }
 
-// findInCircle loads a row of the circle by the id in the path.
-func (h *Handler) findInCircle(c *gin.Context, circleID int, row any) error {
+// findInFamily loads a row of the family by the id in the path.
+func (h *Handler) findInFamily(c *gin.Context, familyID int, row any) error {
 	id, err := idParam(c)
 	if err != nil {
 		return err
 	}
-	err = h.db.WithContext(c).Where("id = ? AND circle_id = ?", id, circleID).First(row).Error
+	err = h.db.WithContext(c).Where("id = ? AND family_id = ?", id, familyID).First(row).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return errNotFound
 	}
@@ -60,7 +60,7 @@ func (h *Handler) getRanks(c *gin.Context) {
 		c.JSON(401, gin.H{"error": "Authentication failed"})
 		return
 	}
-	ranks, err := games.RanksFor(h.db.WithContext(c), currentUser.CircleID)
+	ranks, err := games.RanksFor(h.db.WithContext(c), currentUser.FamilyID)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Error getting the ranks"})
 		return
@@ -75,7 +75,7 @@ func (h *Handler) getDefaultRanks(c *gin.Context) {
 }
 
 func (h *Handler) updateRanks(c *gin.Context) {
-	_, circleID, ok := h.requireParent(c)
+	_, familyID, ok := h.requireParent(c)
 	if !ok {
 		return
 	}
@@ -85,7 +85,7 @@ func (h *Handler) updateRanks(c *gin.Context) {
 		return
 	}
 	if len(ranks) == 0 || len(ranks) > maxRanks {
-		c.JSON(400, gin.H{"error": "A circle has 1 to 12 ranks"})
+		c.JSON(400, gin.H{"error": "A family has 1 to 12 ranks"})
 		return
 	}
 	seen := map[int]bool{}
@@ -103,7 +103,7 @@ func (h *Handler) updateRanks(c *gin.Context) {
 		}
 		seen[ranks[i].MinPoints] = true
 	}
-	saved, err := games.SaveRanks(h.db.WithContext(c), circleID, ranks)
+	saved, err := games.SaveRanks(h.db.WithContext(c), familyID, ranks)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Error saving the ranks"})
 		return
@@ -122,8 +122,8 @@ type goalReq struct {
 	UserIDs []int  `json:"userIds"`
 }
 
-// valid checks the goal, and that its task and members are in the circle.
-func (h *Handler) validGoal(c *gin.Context, circleID int, req *goalReq, kinds ...string) bool {
+// valid checks the goal, and that its task and members are in the family.
+func (h *Handler) validGoal(c *gin.Context, familyID int, req *goalReq, kinds ...string) bool {
 	req.Name = strings.TrimSpace(req.Name)
 	switch {
 	case req.Name == "":
@@ -147,7 +147,7 @@ func (h *Handler) validGoal(c *gin.Context, circleID int, req *goalReq, kinds ..
 	}
 	if req.Module != "" {
 		var count int64
-		if err := h.db.WithContext(c).Table("learn_modules").Where("module_key = ? AND circle_id = ?", req.Module, circleID).
+		if err := h.db.WithContext(c).Table("learn_modules").Where("module_key = ? AND family_id = ?", req.Module, familyID).
 			Count(&count).Error; err != nil || count == 0 {
 			c.JSON(400, gin.H{"error": "Module not found"})
 			return false
@@ -155,21 +155,21 @@ func (h *Handler) validGoal(c *gin.Context, circleID int, req *goalReq, kinds ..
 	}
 	if req.ChoreID != nil {
 		var count int64
-		if err := h.db.WithContext(c).Model(&chModel.Chore{}).Where("id = ? AND circle_id = ?", *req.ChoreID, circleID).
+		if err := h.db.WithContext(c).Model(&chModel.Chore{}).Where("id = ? AND family_id = ?", *req.ChoreID, familyID).
 			Count(&count).Error; err != nil || count == 0 {
 			c.JSON(400, gin.H{"error": "Task not found"})
 			return false
 		}
 	}
 	if len(req.UserIDs) > 0 {
-		members, err := h.circleRepo.GetCircleUsers(c, circleID)
+		members, err := h.familyRepo.GetFamilyUsers(c, familyID)
 		if err != nil {
 			c.JSON(500, gin.H{"error": "Error getting the members"})
 			return false
 		}
 		for _, userID := range req.UserIDs {
-			if !slices.ContainsFunc(members, func(m *circle.UserCircleDetail) bool { return m.UserID == userID }) {
-				c.JSON(400, gin.H{"error": "User is not a member of this circle"})
+			if !slices.ContainsFunc(members, func(m *fModel.UserFamilyDetail) bool { return m.UserID == userID }) {
+				c.JSON(400, gin.H{"error": "User is not a member of this family"})
 				return false
 			}
 		}
@@ -182,7 +182,7 @@ type QuestReq struct {
 	Period string `json:"period" binding:"required"`
 }
 
-func (h *Handler) bindQuest(c *gin.Context, circleID int) (QuestReq, bool) {
+func (h *Handler) bindQuest(c *gin.Context, familyID int) (QuestReq, bool) {
 	var req QuestReq
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(400, gin.H{"error": "Invalid request"})
@@ -192,7 +192,7 @@ func (h *Handler) bindQuest(c *gin.Context, circleID int) (QuestReq, bool) {
 		c.JSON(400, gin.H{"error": "A quest lasts a week or a month"})
 		return req, false
 	}
-	return req, h.validGoal(c, circleID, &req.goalReq, games.GoalTasks, games.GoalPoints, games.GoalStreak,
+	return req, h.validGoal(c, familyID, &req.goalReq, games.GoalTasks, games.GoalPoints, games.GoalStreak,
 		games.GoalGames, games.GoalStars)
 }
 
@@ -208,7 +208,7 @@ func (h *Handler) getQuests(c *gin.Context) {
 		return
 	}
 	quests := []games.Quest{}
-	if err := h.db.WithContext(c).Where("circle_id = ?", currentUser.CircleID).Order("period desc, id").
+	if err := h.db.WithContext(c).Where("family_id = ?", currentUser.FamilyID).Order("period desc, id").
 		Find(&quests).Error; err != nil {
 		c.JSON(500, gin.H{"error": "Error getting the quests"})
 		return
@@ -217,15 +217,15 @@ func (h *Handler) getQuests(c *gin.Context) {
 }
 
 func (h *Handler) createQuest(c *gin.Context) {
-	_, circleID, ok := h.requireParent(c)
+	_, familyID, ok := h.requireParent(c)
 	if !ok {
 		return
 	}
-	req, ok := h.bindQuest(c, circleID)
+	req, ok := h.bindQuest(c, familyID)
 	if !ok {
 		return
 	}
-	quest := games.Quest{CircleID: circleID, CreatedAt: time.Now().UTC()}
+	quest := games.Quest{FamilyID: familyID, CreatedAt: time.Now().UTC()}
 	req.apply(&quest)
 	if err := h.db.WithContext(c).Create(&quest).Error; err != nil {
 		c.JSON(500, gin.H{"error": "Error creating the quest"})
@@ -235,16 +235,16 @@ func (h *Handler) createQuest(c *gin.Context) {
 }
 
 func (h *Handler) updateQuest(c *gin.Context) {
-	_, circleID, ok := h.requireParent(c)
+	_, familyID, ok := h.requireParent(c)
 	if !ok {
 		return
 	}
 	var quest games.Quest
-	if err := h.findInCircle(c, circleID, &quest); err != nil {
+	if err := h.findInFamily(c, familyID, &quest); err != nil {
 		answerFindError(c, err, "Quest")
 		return
 	}
-	req, ok := h.bindQuest(c, circleID)
+	req, ok := h.bindQuest(c, familyID)
 	if !ok {
 		return
 	}
@@ -257,12 +257,12 @@ func (h *Handler) updateQuest(c *gin.Context) {
 }
 
 func (h *Handler) deleteQuest(c *gin.Context) {
-	_, circleID, ok := h.requireParent(c)
+	_, familyID, ok := h.requireParent(c)
 	if !ok {
 		return
 	}
 	var quest games.Quest
-	if err := h.findInCircle(c, circleID, &quest); err != nil {
+	if err := h.findInFamily(c, familyID, &quest); err != nil {
 		answerFindError(c, err, "Quest")
 		return
 	}
@@ -282,7 +282,7 @@ type ChallengeReq struct {
 	EndsAt     time.Time `json:"endsAt" binding:"required"`
 }
 
-func (h *Handler) bindChallenge(c *gin.Context, circleID int) (ChallengeReq, bool) {
+func (h *Handler) bindChallenge(c *gin.Context, familyID int) (ChallengeReq, bool) {
 	var req ChallengeReq
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(400, gin.H{"error": "Invalid request"})
@@ -292,7 +292,7 @@ func (h *Handler) bindChallenge(c *gin.Context, circleID int) (ChallengeReq, boo
 		c.JSON(400, gin.H{"error": "A challenge ends after it starts, within a year"})
 		return req, false
 	}
-	return req, h.validGoal(c, circleID, &req.goalReq, games.GoalTasks, games.GoalPoints,
+	return req, h.validGoal(c, familyID, &req.goalReq, games.GoalTasks, games.GoalPoints,
 		games.GoalGames, games.GoalStars)
 }
 
@@ -311,7 +311,7 @@ func (h *Handler) getChallenges(c *gin.Context) {
 		return
 	}
 	challenges := []games.Challenge{}
-	if err := h.db.WithContext(c).Where("circle_id = ? AND ends_at > ?", currentUser.CircleID,
+	if err := h.db.WithContext(c).Where("family_id = ? AND ends_at > ?", currentUser.FamilyID,
 		time.Now().UTC().Add(-endedChallengesKept)).Order("starts_at, id").Find(&challenges).Error; err != nil {
 		c.JSON(500, gin.H{"error": "Error getting the challenges"})
 		return
@@ -320,15 +320,15 @@ func (h *Handler) getChallenges(c *gin.Context) {
 }
 
 func (h *Handler) createChallenge(c *gin.Context) {
-	parentID, circleID, ok := h.requireParent(c)
+	parentID, familyID, ok := h.requireParent(c)
 	if !ok {
 		return
 	}
-	req, ok := h.bindChallenge(c, circleID)
+	req, ok := h.bindChallenge(c, familyID)
 	if !ok {
 		return
 	}
-	challenge := games.Challenge{CircleID: circleID, CreatedBy: parentID, CreatedAt: time.Now().UTC()}
+	challenge := games.Challenge{FamilyID: familyID, CreatedBy: parentID, CreatedAt: time.Now().UTC()}
 	req.apply(&challenge)
 	if err := h.db.WithContext(c).Create(&challenge).Error; err != nil {
 		c.JSON(500, gin.H{"error": "Error creating the challenge"})
@@ -338,16 +338,16 @@ func (h *Handler) createChallenge(c *gin.Context) {
 }
 
 func (h *Handler) updateChallenge(c *gin.Context) {
-	_, circleID, ok := h.requireParent(c)
+	_, familyID, ok := h.requireParent(c)
 	if !ok {
 		return
 	}
 	var challenge games.Challenge
-	if err := h.findInCircle(c, circleID, &challenge); err != nil {
+	if err := h.findInFamily(c, familyID, &challenge); err != nil {
 		answerFindError(c, err, "Challenge")
 		return
 	}
-	req, ok := h.bindChallenge(c, circleID)
+	req, ok := h.bindChallenge(c, familyID)
 	if !ok {
 		return
 	}
@@ -360,12 +360,12 @@ func (h *Handler) updateChallenge(c *gin.Context) {
 }
 
 func (h *Handler) deleteChallenge(c *gin.Context) {
-	_, circleID, ok := h.requireParent(c)
+	_, familyID, ok := h.requireParent(c)
 	if !ok {
 		return
 	}
 	var challenge games.Challenge
-	if err := h.findInCircle(c, circleID, &challenge); err != nil {
+	if err := h.findInFamily(c, familyID, &challenge); err != nil {
 		answerFindError(c, err, "Challenge")
 		return
 	}

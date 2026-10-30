@@ -11,8 +11,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"gorm.io/gorm"
 
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
 	"github.com/nico87lbs/hopla/internal/database"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	"github.com/nico87lbs/hopla/internal/games"
 	"github.com/nico87lbs/hopla/internal/learn"
 	pModel "github.com/nico87lbs/hopla/internal/points"
@@ -22,14 +22,14 @@ func setup(t *testing.T) (*PointsRepository, *gorm.DB) {
 	db, err := gorm.Open(sqlite.Open(filepath.Join(t.TempDir(), "points.db")), &gorm.Config{})
 	require.NoError(t, err)
 	require.NoError(t, database.Migration(db))
-	require.NoError(t, db.Create(&cModel.UserCircle{UserID: 2, CircleID: 1, Role: cModel.UserRoleMember, IsActive: true,
+	require.NoError(t, db.Create(&fModel.UserFamily{UserID: 2, FamilyID: 1, Role: fModel.UserRoleMember, IsActive: true,
 		Points: 10, PointsRedeemed: 4}).Error)
 	return NewPointsRepository(db), db
 }
 
-func member(t *testing.T, db *gorm.DB) cModel.UserCircle {
-	var m cModel.UserCircle
-	require.NoError(t, db.Where("user_id = ? AND circle_id = ?", 2, 1).First(&m).Error)
+func member(t *testing.T, db *gorm.DB) fModel.UserFamily {
+	var m fModel.UserFamily
+	require.NoError(t, db.Where("user_id = ? AND family_id = ?", 2, 1).First(&m).Error)
 	return m
 }
 
@@ -70,7 +70,7 @@ func TestAdjustRefusesOutsiders(t *testing.T) {
 	_, err := repo.Adjust(context.Background(), 1, 99, 5, 1, nil)
 	require.ErrorIs(t, err, ErrNotMember)
 	_, err = repo.Adjust(context.Background(), 2, 2, 5, 1, nil)
-	require.ErrorIs(t, err, ErrNotMember, "a member of another circle")
+	require.ErrorIs(t, err, ErrNotMember, "a member of another family")
 	_, err = repo.Adjust(context.Background(), 1, 2, 0, 1, nil)
 	require.ErrorIs(t, err, ErrNoPoints)
 }
@@ -94,13 +94,13 @@ func TestHistoryIsNewestFirstAndPages(t *testing.T) {
 	require.Empty(t, rows)
 	rows, err = repo.History(ctx, 2, HistoryFilter{})
 	require.NoError(t, err)
-	require.Empty(t, rows, "another circle sees nothing")
+	require.Empty(t, rows, "another family sees nothing")
 }
 
-func TestPresetsBelongToTheirCircle(t *testing.T) {
+func TestPresetsBelongToTheirFamily(t *testing.T) {
 	repo, _ := setup(t)
 	ctx := context.Background()
-	preset := pModel.PointsPreset{CircleID: 1, Name: "Dishes forgotten", Points: -3}
+	preset := pModel.PointsPreset{FamilyID: 1, Name: "Dishes forgotten", Points: -3}
 	require.NoError(t, repo.CreatePreset(ctx, &preset))
 	require.ErrorIs(t, repo.UpdatePreset(ctx, 2, &pModel.PointsPreset{ID: preset.ID, Name: "x", Points: 1}), ErrPresetMissing)
 	require.ErrorIs(t, repo.DeletePreset(ctx, 2, preset.ID), ErrPresetMissing)
@@ -114,7 +114,7 @@ func TestPresetsBelongToTheirCircle(t *testing.T) {
 
 func TestResetKeepsTheLedgerWithAResetRow(t *testing.T) {
 	repo, db := setup(t)
-	require.NoError(t, db.Create(&cModel.UserCircle{UserID: 3, CircleID: 1, Role: cModel.UserRoleMember, IsActive: true, Points: 7}).Error)
+	require.NoError(t, db.Create(&fModel.UserFamily{UserID: 3, FamilyID: 1, Role: fModel.UserRoleMember, IsActive: true, Points: 7}).Error)
 	_, err := repo.Adjust(context.Background(), 1, 2, 5, 1, nil)
 	require.NoError(t, err)
 
@@ -128,7 +128,7 @@ func TestResetKeepsTheLedgerWithAResetRow(t *testing.T) {
 	require.Equal(t, 0, m.Points)
 	require.Equal(t, 0, m.PointsRedeemed)
 	require.NotNil(t, m.StreakSince, "the streak restarts from the reset")
-	var other cModel.UserCircle
+	var other fModel.UserFamily
 	require.NoError(t, db.Where("user_id = 3").First(&other).Error)
 	require.Equal(t, 7, other.Points, "only Elena was reset")
 
@@ -150,9 +150,9 @@ func TestResetCanClearTheHistory(t *testing.T) {
 	repo, db := setup(t)
 	_, err := repo.Adjust(context.Background(), 1, 2, 5, 1, nil)
 	require.NoError(t, err)
-	require.NoError(t, db.Create(&games.QuestDraw{CircleID: 1, UserID: 2, PeriodKey: "2026-10-19", QuestID: 1,
+	require.NoError(t, db.Create(&games.QuestDraw{FamilyID: 1, UserID: 2, PeriodKey: "2026-10-19", QuestID: 1,
 		Period: games.QuestWeek, Name: "Table", Kind: games.GoalTasks, Target: 1}).Error)
-	challenge := games.Challenge{CircleID: 1, Name: "Piscine", Kind: games.GoalPoints, Target: 10}
+	challenge := games.Challenge{FamilyID: 1, Name: "Piscine", Kind: games.GoalPoints, Target: 10}
 	require.NoError(t, db.Create(&challenge).Error)
 	require.NoError(t, db.Create(&games.ChallengeWin{ChallengeID: challenge.ID, UserID: 2}).Error)
 
@@ -174,9 +174,9 @@ func TestClearGamesForgetsOneMembersGames(t *testing.T) {
 	repo, db := setup(t)
 	now := time.Now().UTC()
 	for i, userID := range []int{2, 3} {
-		require.NoError(t, db.Create(&learn.Session{CircleID: 1, ClientID: fmt.Sprint(i), UserID: userID, ModuleKey: "maths",
+		require.NoError(t, db.Create(&learn.Session{FamilyID: 1, ClientID: fmt.Sprint(i), UserID: userID, ModuleKey: "maths",
 			Day: "2026-10-26", Total: 10, PlayedAt: now}).Error)
-		require.NoError(t, db.Create(&learn.Card{CircleID: 1, UserID: userID, Key: "mul:7x8", Due: "2026-10-26"}).Error)
+		require.NoError(t, db.Create(&learn.Card{FamilyID: 1, UserID: userID, Key: "mul:7x8", Due: "2026-10-26"}).Error)
 	}
 
 	two := 2

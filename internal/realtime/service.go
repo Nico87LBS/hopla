@@ -14,7 +14,7 @@ import (
 // RealTimeService manages WebSocket connections and event broadcasting
 type RealTimeService struct {
 	config          *config.RealTimeConfig
-	connectionPools map[int]*ConnectionPool // circleID -> ConnectionPool
+	connectionPools map[int]*ConnectionPool // familyID -> ConnectionPool
 	broadcaster     *EventBroadcaster
 	mu              sync.RWMutex
 	ctx             context.Context
@@ -31,7 +31,7 @@ type ServiceStats struct {
 	EventsPublished    int64
 	EventsDelivered    int64
 	ConnectionsDropped int64
-	CirclesActive      int64
+	FamiliesActive     int64
 	mu                 sync.RWMutex
 }
 
@@ -102,9 +102,9 @@ func (s *RealTimeService) Stop() error {
 	s.cancel()
 
 	// Close all connection pools
-	for circleID, pool := range s.connectionPools {
+	for familyID, pool := range s.connectionPools {
 		pool.Close()
-		delete(s.connectionPools, circleID)
+		delete(s.connectionPools, familyID)
 	}
 
 	s.started = false
@@ -118,35 +118,35 @@ func (s *RealTimeService) GetEventBroadcaster() *EventBroadcaster {
 	return s.broadcaster
 }
 
-// GetConnectionPool gets or creates a connection pool for a circle
-func (s *RealTimeService) GetConnectionPool(circleID int) *ConnectionPool {
+// GetConnectionPool gets or creates a connection pool for a family
+func (s *RealTimeService) GetConnectionPool(familyID int) *ConnectionPool {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	pool, exists := s.connectionPools[circleID]
+	pool, exists := s.connectionPools[familyID]
 	if !exists {
-		pool = NewConnectionPool(circleID, s.config)
-		s.connectionPools[circleID] = pool
+		pool = NewConnectionPool(familyID, s.config)
+		s.connectionPools[familyID] = pool
 		s.updateStats()
 	}
 
 	return pool
 }
 
-// AddConnection adds a WebSocket connection to the appropriate circle pool
+// AddConnection adds a WebSocket connection to the appropriate family pool
 func (s *RealTimeService) AddConnection(conn *Connection) error {
 	if !s.started || !s.config.Enabled {
 		return ErrServiceNotEnabled
 	}
 
-	pool := s.GetConnectionPool(conn.CircleID)
+	pool := s.GetConnectionPool(conn.FamilyID)
 	return pool.AddConnection(conn)
 }
 
-// RemoveConnection removes a WebSocket connection from its circle pool
+// RemoveConnection removes a WebSocket connection from its family pool
 func (s *RealTimeService) RemoveConnection(conn *Connection) {
 	s.mu.RLock()
-	pool, exists := s.connectionPools[conn.CircleID]
+	pool, exists := s.connectionPools[conn.FamilyID]
 	s.mu.RUnlock()
 
 	if exists {
@@ -155,14 +155,14 @@ func (s *RealTimeService) RemoveConnection(conn *Connection) {
 	}
 }
 
-// BroadcastToCircle sends an event to all connections in a specific circle
-func (s *RealTimeService) BroadcastToCircle(circleID int, event *Event) {
+// BroadcastToFamily sends an event to all connections in a specific family
+func (s *RealTimeService) BroadcastToFamily(familyID int, event *Event) {
 	if !s.started || !s.config.Enabled {
 		return
 	}
 
 	s.mu.RLock()
-	pool, exists := s.connectionPools[circleID]
+	pool, exists := s.connectionPools[familyID]
 	s.mu.RUnlock()
 
 	if exists {
@@ -173,14 +173,14 @@ func (s *RealTimeService) BroadcastToCircle(circleID int, event *Event) {
 	}
 }
 
-// BroadcastToUsers sends an event only to the listed users in a circle.
-func (s *RealTimeService) BroadcastToUsers(circleID int, userIDs []int, event *Event) {
+// BroadcastToUsers sends an event only to the listed users in a family.
+func (s *RealTimeService) BroadcastToUsers(familyID int, userIDs []int, event *Event) {
 	if !s.started || !s.config.Enabled {
 		return
 	}
 
 	s.mu.RLock()
-	pool, exists := s.connectionPools[circleID]
+	pool, exists := s.connectionPools[familyID]
 	s.mu.RUnlock()
 	if !exists {
 		return
@@ -211,7 +211,7 @@ func (s *RealTimeService) GetStats() ServiceStats {
 		EventsPublished:    s.stats.EventsPublished,
 		EventsDelivered:    s.stats.EventsDelivered,
 		ConnectionsDropped: s.stats.ConnectionsDropped,
-		CirclesActive:      s.stats.CirclesActive,
+		FamiliesActive:     s.stats.FamiliesActive,
 		// Note: deliberately omitting 'mu' field to avoid copying mutex
 	}
 }
@@ -236,14 +236,14 @@ func (s *RealTimeService) performCleanup() {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	for circleID, pool := range s.connectionPools {
+	for familyID, pool := range s.connectionPools {
 		// Clean up stale connections in the pool
 		pool.CleanupStaleConnections(s.config.StaleThreshold)
 
 		// Remove empty pools
 		if pool.IsEmpty() {
 			pool.Close()
-			delete(s.connectionPools, circleID)
+			delete(s.connectionPools, familyID)
 		}
 	}
 
@@ -261,7 +261,7 @@ func (s *RealTimeService) updateStats() {
 
 	s.stats.mu.Lock()
 	s.stats.ActiveConnections = activeConnections
-	s.stats.CirclesActive = int64(len(s.connectionPools))
+	s.stats.FamiliesActive = int64(len(s.connectionPools))
 	s.stats.mu.Unlock()
 }
 

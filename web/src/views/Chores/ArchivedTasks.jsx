@@ -36,7 +36,7 @@ import { useImpersonateUser } from '../../contexts/ImpersonateUserContext.jsx'
 import { usePageShortcutScope } from '../../contexts/KeyboardShortcutScopeContext'
 import { useFilter } from '../../hooks/useFilter'
 import { useUnArchiveChore } from '../../queries/ChoreQueries'
-import { useCircleMembers, useUserProfile } from '../../queries/UserQueries'
+import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries'
 import { useNotification } from '../../service/NotificationProvider'
 import { commandQueue, CommandType } from '../../utils/CommandQueue'
 import { DeleteChore, GetArchivedChores } from '../../utils/Fetcher'
@@ -115,7 +115,7 @@ const ArchivedTasks = () => {
   const [selectedChores, setSelectedChores] = useState(new Set())
   const [confirmModelConfig, setConfirmModelConfig] = useState({})
 
-  const { data: membersData, isLoading: membersLoading } = useCircleMembers()
+  const { data: membersData, isLoading: membersLoading } = useFamilyMembers()
 
   // Unique labels present across all archived chores
   const availableLabels = useMemo(() => {

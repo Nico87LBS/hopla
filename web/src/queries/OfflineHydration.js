@@ -46,10 +46,10 @@ export const hydrateQueriesFromOfflineCache = async queryClient => {
     // and LabelQueries — so the two sides have
     // to stay in step. Hydration is silent when it finds nothing, and a
     // renamed key would quietly cost that screen its offline first paint.
-    const [profile, labels, circleMembers, chores] = await Promise.all([
+    const [profile, labels, familyMembers, chores] = await Promise.all([
       offlineDB.getKV('user_profile'),
       offlineDB.getKV('labels'),
-      offlineDB.getKV('circle_members'),
+      offlineDB.getKV('family_members'),
       // Both backends scan the whole store regardless of this flag. Read the
       // complete list once, then derive the active list in memory so direct
       // launches into the archive screen are hydrated without a second scan.
@@ -58,8 +58,8 @@ export const hydrateQueriesFromOfflineCache = async queryClient => {
 
     seed(queryClient, ['userProfile', token], profile)
     seed(queryClient, ['labels'], asList(labels))
-    const members = asList(circleMembers)
-    if (members) seed(queryClient, ['allCircleMembers'], { res: members })
+    const members = asList(familyMembers)
+    if (members) seed(queryClient, ['allFamilyMembers'], { res: members })
 
     const cachedChores = asList(chores)
     if (cachedChores) {

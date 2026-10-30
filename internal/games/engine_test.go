@@ -10,8 +10,8 @@ import (
 	"gorm.io/gorm"
 
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
 	"github.com/nico87lbs/hopla/internal/database"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	. "github.com/nico87lbs/hopla/internal/games"
 	ptModel "github.com/nico87lbs/hopla/internal/points"
 )
@@ -20,12 +20,12 @@ func setup(t *testing.T) *gorm.DB {
 	db, err := gorm.Open(sqlite.Open(filepath.Join(t.TempDir(), "games.db")), &gorm.Config{})
 	require.NoError(t, err)
 	require.NoError(t, database.Migration(db))
-	require.NoError(t, db.Create(&cModel.UserCircle{UserID: 2, CircleID: 1, Role: cModel.UserRoleMember, IsActive: true}).Error)
+	require.NoError(t, db.Create(&fModel.UserFamily{UserID: 2, FamilyID: 1, Role: fModel.UserRoleMember, IsActive: true}).Error)
 	return db
 }
 
 func chore(t *testing.T, db *gorm.DB, name string, points int, due time.Time, extra func(*chModel.Chore)) *chModel.Chore {
-	c := &chModel.Chore{Name: name, CircleID: 1, IsActive: true, Points: &points, NextDueDate: &due, FrequencyType: "daily"}
+	c := &chModel.Chore{Name: name, FamilyID: 1, IsActive: true, Points: &points, NextDueDate: &due, FrequencyType: "daily"}
 	if extra != nil {
 		extra(c)
 	}
@@ -52,9 +52,9 @@ func TestBonusPeriodAndSurpriseRaiseTaskPoints(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, 3, earning.Points)
 
-	require.NoError(t, db.Create(&BonusPeriod{CircleID: 1, Name: "Vacances", StartsAt: now.Add(-time.Hour),
+	require.NoError(t, db.Create(&BonusPeriod{FamilyID: 1, Name: "Vacances", StartsAt: now.Add(-time.Hour),
 		EndsAt: now.Add(time.Hour), Multiplier: 2}).Error)
-	require.NoError(t, db.Create(&BonusPeriod{CircleID: 2, Name: "Other circle", StartsAt: now.Add(-time.Hour),
+	require.NoError(t, db.Create(&BonusPeriod{FamilyID: 2, Name: "Other family", StartsAt: now.Add(-time.Hour),
 		EndsAt: now.Add(time.Hour), Multiplier: 5}).Error)
 	surprise, err := TodaySurprise(db, 1, now)
 	require.NoError(t, err)
@@ -133,7 +133,7 @@ func TestSurpriseStaysPutAndSkipsHiddenTasks(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, first.ChoreID, again.ChoreID, "doing it does not move the surprise")
 
-	require.NoError(t, db.Save(&Rules{CircleID: 1, SurpriseEnabled: false, SurpriseBonus: 5}).Error)
+	require.NoError(t, db.Save(&Rules{FamilyID: 1, SurpriseEnabled: false, SurpriseBonus: 5}).Error)
 	off, err := TodaySurprise(db, 1, now)
 	require.NoError(t, err)
 	require.Nil(t, off)
@@ -141,7 +141,7 @@ func TestSurpriseStaysPutAndSkipsHiddenTasks(t *testing.T) {
 
 func TestStreakBonusOnTheFirstTaskOfTheDay(t *testing.T) {
 	db := setup(t)
-	require.NoError(t, db.Save(&Rules{CircleID: 1, StreakEvery: 3, StreakBonus: 10}).Error)
+	require.NoError(t, db.Save(&Rules{FamilyID: 1, StreakEvery: 3, StreakBonus: 10}).Error)
 	task := chore(t, db, "Lit", 1, time.Now(), nil)
 	done(t, db, task.ID, 2, noon(2))
 	done(t, db, task.ID, 2, noon(1))
@@ -152,7 +152,7 @@ func TestStreakBonusOnTheFirstTaskOfTheDay(t *testing.T) {
 	require.NotNil(t, entry)
 	require.Equal(t, ptModel.PointsHistoryActionGame, entry.Action)
 	require.Equal(t, "Série de 3 jours", *entry.Reason)
-	var member cModel.UserCircle
+	var member fModel.UserFamily
 	require.NoError(t, db.Where("user_id = 2").First(&member).Error)
 	require.Equal(t, 10, member.Points)
 
@@ -177,7 +177,7 @@ func TestPointsResetRestartsTheStreak(t *testing.T) {
 	require.Equal(t, 3, streaks[0].Current)
 
 	resetAt := noon(0).Add(time.Hour)
-	require.NoError(t, db.Model(&cModel.UserCircle{}).Where("user_id = 2").Update("streak_since", resetAt).Error)
+	require.NoError(t, db.Model(&fModel.UserFamily{}).Where("user_id = 2").Update("streak_since", resetAt).Error)
 	streaks, err = Streaks(db, 1, []int{2}, resetAt)
 	require.NoError(t, err)
 	require.Equal(t, 0, streaks[0].Current, "tasks before the reset no longer count")
@@ -191,7 +191,7 @@ func TestPointsResetRestartsTheStreak(t *testing.T) {
 
 func TestTheSurpriseSkipsTheTasksOfAChildAway(t *testing.T) {
 	db := setup(t)
-	require.NoError(t, db.Create(&cModel.UserCircle{UserID: 3, CircleID: 1, Role: cModel.UserRoleMember, IsActive: true}).Error)
+	require.NoError(t, db.Create(&fModel.UserFamily{UserID: 3, FamilyID: 1, Role: fModel.UserRoleMember, IsActive: true}).Error)
 	now := noon(0)
 	elena, anna := 2, 3
 	chore(t, db, "Faire son lit", 3, now, func(c *chModel.Chore) { c.AssignedTo = &elena })
@@ -220,7 +220,7 @@ func TestDaysAwayKeepTheStreak(t *testing.T) {
 	require.Equal(t, 0, streaks[0].Current)
 
 	end := noon(1)
-	require.NoError(t, db.Create(&Absence{CircleID: 1, UserID: 2, StartAt: noon(3), EndAt: &end}).Error)
+	require.NoError(t, db.Create(&Absence{FamilyID: 1, UserID: 2, StartAt: noon(3), EndAt: &end}).Error)
 	streaks, err = Streaks(db, 1, []int{2}, noon(0))
 	require.NoError(t, err)
 	require.Equal(t, 2, streaks[0].Current, "three days away, then home today")
@@ -235,7 +235,7 @@ func TestNextChangeIsMidnightOrABonusPeriodEdge(t *testing.T) {
 	require.NoError(t, err)
 	require.True(t, next.Equal(midnight), "no period: next midnight, got %v", next)
 
-	require.NoError(t, db.Create(&BonusPeriod{CircleID: 1, Name: "Goûter", Multiplier: 2,
+	require.NoError(t, db.Create(&BonusPeriod{FamilyID: 1, Name: "Goûter", Multiplier: 2,
 		StartsAt: now.Add(7 * time.Hour), EndsAt: now.Add(8 * time.Hour)}).Error)
 	next, err = NextChange(db, 1, now)
 	require.NoError(t, err)
@@ -245,7 +245,7 @@ func TestNextChangeIsMidnightOrABonusPeriodEdge(t *testing.T) {
 	require.NoError(t, err)
 	require.True(t, next.Equal(now.Add(8*time.Hour)), "period ending today, got %v", next)
 
-	require.NoError(t, db.Create(&BonusPeriod{CircleID: 2, Name: "Ailleurs", Multiplier: 2,
+	require.NoError(t, db.Create(&BonusPeriod{FamilyID: 2, Name: "Ailleurs", Multiplier: 2,
 		StartsAt: now.Add(time.Hour), EndsAt: now.Add(2 * time.Hour)}).Error)
 	next, err = NextChange(db, 1, now)
 	require.NoError(t, err)

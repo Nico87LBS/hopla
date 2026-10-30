@@ -16,8 +16,8 @@ import (
 	"github.com/nico87lbs/hopla/config"
 	auth "github.com/nico87lbs/hopla/internal/auth"
 	chRepo "github.com/nico87lbs/hopla/internal/chore/repo"
-	cRepo "github.com/nico87lbs/hopla/internal/circle/repo"
 	errorx "github.com/nico87lbs/hopla/internal/error"
+	fRepo "github.com/nico87lbs/hopla/internal/family/repo"
 	storageModel "github.com/nico87lbs/hopla/internal/storage/model"
 	storageRepo "github.com/nico87lbs/hopla/internal/storage/repo"
 	user "github.com/nico87lbs/hopla/internal/user/model"
@@ -30,16 +30,16 @@ type Handler struct {
 	signer      URLSigner
 	storageRepo *storageRepo.StorageRepository
 	choreRepo   *chRepo.ChoreRepository
-	circleRepo  *cRepo.CircleRepository
+	familyRepo  *fRepo.FamilyRepository
 	maxFileSize int64
 }
 
 // NewHandler creates a new Handler
-func NewHandler(storage Storage, choreRepo *chRepo.ChoreRepository, circleRepo *cRepo.CircleRepository,
+func NewHandler(storage Storage, choreRepo *chRepo.ChoreRepository, familyRepo *fRepo.FamilyRepository,
 	repo *storageRepo.StorageRepository, signer URLSigner, cfg *config.Config) *Handler {
 	return &Handler{
 		storage:     storage,
-		circleRepo:  circleRepo,
+		familyRepo:  familyRepo,
 		choreRepo:   choreRepo,
 		storageRepo: repo,
 		signer:      signer,
@@ -248,45 +248,45 @@ func handleEntityType(c *gin.Context, h *Handler, currentUser *user.UserDetails)
 	switch entityType {
 	case "chore",
 		"chore_description":
-		chore, err := h.choreRepo.GetChore(c, entityID, currentUser.ID, currentUser.CircleID)
+		chore, err := h.choreRepo.GetChore(c, entityID, currentUser.ID, currentUser.FamilyID)
 		if err != nil {
 			log.Error("failed to get chore from db", "error", err)
 			return storageModel.EntityTypeUnknown, 0, "", false
 		}
-		circleUsers, err := h.circleRepo.GetCircleUsers(c, currentUser.CircleID)
+		familyUsers, err := h.familyRepo.GetFamilyUsers(c, currentUser.FamilyID)
 		if err != nil {
-			log.Error("failed to get circle users from db", "error", err)
+			log.Error("failed to get family users from db", "error", err)
 			return storageModel.EntityTypeUnknown, 0, "", false
 		}
 		now := time.Now().UTC()
-		if err := chore.CanEdit(currentUser.ID, circleUsers, &now); err != nil {
+		if err := chore.CanEdit(currentUser.ID, familyUsers, &now); err != nil {
 			log.Error("user is not allowed to edit chore", "error", err)
 			c.JSON(http.StatusForbidden, gin.H{"error": "user is not allowed to edit chore"})
 			return storageModel.EntityTypeUnknown, 0, "", false
 		}
 		return storageModel.EntityTypeChoreDescription, chore.ID, "", true
 	case "chore_completion_note":
-		// Completion-note images belong to the chore's history. Any circle
+		// Completion-note images belong to the chore's history. Any family
 		// member who can view the chore can complete it, so GetChore access
 		// (no CanEdit) is the right gate here.
-		if _, err := h.choreRepo.GetChore(c, entityID, currentUser.ID, currentUser.CircleID); err != nil {
+		if _, err := h.choreRepo.GetChore(c, entityID, currentUser.ID, currentUser.FamilyID); err != nil {
 			log.Error("failed to get chore from db", "error", err)
 			return storageModel.EntityTypeUnknown, 0, "", false
 		}
 		return storageModel.EntityTypeChoreHistory, entityID, "", true
 	case "chore_attachment":
-		chore, err := h.choreRepo.GetChore(c, entityID, currentUser.ID, currentUser.CircleID)
+		chore, err := h.choreRepo.GetChore(c, entityID, currentUser.ID, currentUser.FamilyID)
 		if err != nil {
 			log.Error("failed to get chore from db", "error", err)
 			return storageModel.EntityTypeUnknown, 0, "", false
 		}
-		circleUsers, err := h.circleRepo.GetCircleUsers(c, currentUser.CircleID)
+		familyUsers, err := h.familyRepo.GetFamilyUsers(c, currentUser.FamilyID)
 		if err != nil {
-			log.Error("failed to get circle users from db", "error", err)
+			log.Error("failed to get family users from db", "error", err)
 			return storageModel.EntityTypeUnknown, 0, "", false
 		}
 		now := time.Now().UTC()
-		if err := chore.CanEdit(currentUser.ID, circleUsers, &now); err != nil {
+		if err := chore.CanEdit(currentUser.ID, familyUsers, &now); err != nil {
 			log.Error("user is not allowed to edit chore", "error", err)
 			c.JSON(http.StatusForbidden, gin.H{"error": "user is not allowed to edit chore"})
 			return storageModel.EntityTypeUnknown, 0, "", false
@@ -313,7 +313,7 @@ func (h *Handler) ListChoreAttachmentsHandler(c *gin.Context) {
 		return
 	}
 
-	if _, err := h.choreRepo.GetChore(c, choreID, currentUser.ID, currentUser.CircleID); err != nil {
+	if _, err := h.choreRepo.GetChore(c, choreID, currentUser.ID, currentUser.FamilyID); err != nil {
 		log.Error("failed to get chore", "error", err)
 		c.JSON(http.StatusNotFound, gin.H{"error": "chore not found"})
 		return
@@ -370,21 +370,21 @@ func (h *Handler) DeleteChoreAttachmentHandler(c *gin.Context) {
 		return
 	}
 
-	chore, err := h.choreRepo.GetChore(c, choreID, currentUser.ID, currentUser.CircleID)
+	chore, err := h.choreRepo.GetChore(c, choreID, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		log.Error("failed to get chore", "error", err)
 		c.JSON(http.StatusNotFound, gin.H{"error": "chore not found"})
 		return
 	}
 
-	circleUsers, err := h.circleRepo.GetCircleUsers(c, currentUser.CircleID)
+	familyUsers, err := h.familyRepo.GetFamilyUsers(c, currentUser.FamilyID)
 	if err != nil {
-		log.Error("failed to get circle users", "error", err)
+		log.Error("failed to get family users", "error", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "internal error"})
 		return
 	}
 	now := time.Now().UTC()
-	if err := chore.CanEdit(currentUser.ID, circleUsers, &now); err != nil {
+	if err := chore.CanEdit(currentUser.ID, familyUsers, &now); err != nil {
 		c.JSON(http.StatusForbidden, gin.H{"error": "not allowed to edit chore"})
 		return
 	}
@@ -448,7 +448,7 @@ func (h *Handler) RedirectAssetHandler(c *gin.Context) {
 	case storageModel.EntityTypeChoreAttachment,
 		storageModel.EntityTypeChoreDescription,
 		storageModel.EntityTypeChoreHistory:
-		if _, err := h.choreRepo.GetChore(c, file.EntityID, currentUser.ID, currentUser.CircleID); err != nil {
+		if _, err := h.choreRepo.GetChore(c, file.EntityID, currentUser.ID, currentUser.FamilyID); err != nil {
 			log.Error("redirect asset: chore access denied", "error", err)
 			c.JSON(http.StatusForbidden, gin.H{"error": "access denied"})
 			return
@@ -492,7 +492,7 @@ func (h *Handler) SignAssetHandler(c *gin.Context) {
 	case storageModel.EntityTypeChoreAttachment,
 		storageModel.EntityTypeChoreDescription,
 		storageModel.EntityTypeChoreHistory:
-		if _, err := h.choreRepo.GetChore(c, file.EntityID, currentUser.ID, currentUser.CircleID); err != nil {
+		if _, err := h.choreRepo.GetChore(c, file.EntityID, currentUser.ID, currentUser.FamilyID); err != nil {
 			log.Error("sign asset: chore access denied", "error", err)
 			c.JSON(http.StatusForbidden, gin.H{"error": "access denied"})
 			return

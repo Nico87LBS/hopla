@@ -11,8 +11,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"gorm.io/gorm"
 
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
 	"github.com/nico87lbs/hopla/internal/database"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	. "github.com/nico87lbs/hopla/internal/learn"
 	ptModel "github.com/nico87lbs/hopla/internal/points"
 )
@@ -23,7 +23,7 @@ func setup(t *testing.T) *gorm.DB {
 	db, err := gorm.Open(sqlite.Open(filepath.Join(t.TempDir(), "learn.db")), &gorm.Config{})
 	require.NoError(t, err)
 	require.NoError(t, database.Migration(db))
-	require.NoError(t, db.Create(&cModel.UserCircle{UserID: anna, CircleID: 1, Role: cModel.UserRoleMember, IsActive: true}).Error)
+	require.NoError(t, db.Create(&fModel.UserFamily{UserID: anna, FamilyID: 1, Role: fModel.UserRoleMember, IsActive: true}).Error)
 	return db
 }
 
@@ -39,7 +39,7 @@ func answers(right, wrong int) []Answer {
 }
 
 func points(t *testing.T, db *gorm.DB) int {
-	var member cModel.UserCircle
+	var member fModel.UserFamily
 	require.NoError(t, db.Where("user_id = ?", anna).First(&member).Error)
 	return member.Points
 }
@@ -372,7 +372,7 @@ func TestSettingsOnceForAllPacksMoveOntoEachPack(t *testing.T) {
 	require.NoError(t, SetActivation(db, 1, ActivationChange{UserID: anna, Modules: []string{"maths-ce2"}, Active: true}, now))
 	three, five, twelve := 3, 5, 12
 	require.NoError(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: "maths-ce2", DailyCap: &five}, now))
-	require.NoError(t, db.Create(&PersonSetting{CircleID: 1, UserID: anna, Scope: AllPacks, DailyCap: &three,
+	require.NoError(t, db.Create(&PersonSetting{FamilyID: 1, UserID: anna, Scope: AllPacks, DailyCap: &three,
 		TotalCap: &twelve, GameSettings: GameSettings{Questions: &twelve}, UpdatedAt: now}).Error)
 
 	require.NoError(t, FoldAllPacks(db))
@@ -418,7 +418,7 @@ func TestTheTotalCapHoldsAllModulesTogether(t *testing.T) {
 func TestStatsShowWhoPlaysAModuleAndTheirGames(t *testing.T) {
 	db := setup(t)
 	now := time.Now().UTC()
-	require.NoError(t, db.Create(&cModel.UserCircle{UserID: 3, CircleID: 1, Role: cModel.UserRoleMember, IsActive: true}).Error)
+	require.NoError(t, db.Create(&fModel.UserFamily{UserID: 3, FamilyID: 1, Role: fModel.UserRoleMember, IsActive: true}).Error)
 	require.NoError(t, Install(db, 1, "maths-ce2", now))
 	require.NoError(t, SetActivation(db, 1, ActivationChange{UserID: anna, Modules: []string{"maths-ce2"}, Active: true}, now))
 	_, err := Record(db, 1, anna, Game{ClientID: "stats-0001", UserID: anna, Module: "maths-ce2-multiplication",

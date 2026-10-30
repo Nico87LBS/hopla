@@ -7,9 +7,9 @@ import (
 	"github.com/nico87lbs/hopla/config"
 )
 
-// ConnectionPool manages WebSocket connections for a specific circle
+// ConnectionPool manages WebSocket connections for a specific family
 type ConnectionPool struct {
-	CircleID    int
+	FamilyID    int
 	connections map[string]*Connection
 	userConns   map[int][]*Connection // userID -> connections
 	mu          sync.RWMutex
@@ -25,10 +25,10 @@ type ConnectionPoolStats struct {
 	mu                sync.RWMutex
 }
 
-// NewConnectionPool creates a new connection pool for a circle
-func NewConnectionPool(circleID int, config *config.RealTimeConfig) *ConnectionPool {
+// NewConnectionPool creates a new connection pool for a family
+func NewConnectionPool(familyID int, config *config.RealTimeConfig) *ConnectionPool {
 	return &ConnectionPool{
-		CircleID:    circleID,
+		FamilyID:    familyID,
 		connections: make(map[string]*Connection),
 		userConns:   make(map[int][]*Connection),
 		config:      config,

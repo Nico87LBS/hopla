@@ -11,7 +11,7 @@ import (
 	"github.com/nico87lbs/hopla/config"
 	calModel "github.com/nico87lbs/hopla/internal/calendar/model"
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	"github.com/nico87lbs/hopla/internal/games"
 	lModel "github.com/nico87lbs/hopla/internal/label/model"
 	"github.com/nico87lbs/hopla/internal/learn"
@@ -28,10 +28,13 @@ import (
 var embeddedMigrations embed.FS
 
 func Migration(db *gorm.DB) error {
+	if err := renameToFamily(db); err != nil {
+		return err
+	}
 	if err := db.AutoMigrate(uModel.User{}, chModel.Chore{},
 		chModel.ChoreHistory{},
-		cModel.Circle{},
-		cModel.UserCircle{},
+		fModel.Family{},
+		fModel.UserFamily{},
 		chModel.ChoreAssignees{},
 		uModel.UserPasswordReset{},
 		uModel.MFASession{},
