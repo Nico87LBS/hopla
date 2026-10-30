@@ -1381,5 +1381,9 @@
     "separator": "(?:,|\\s|\\sand\\s|&)+",
     "anyone": "anyone|everyone",
     "preceding": "starting|from|beginning|begin|commence|commencing"
+  },
+  "routines": {
+    "step": "{{step}}/{{total}}",
+    "stepTitle": "Routine “{{name}}”: step {{step}} of {{total}}"
   }
 }

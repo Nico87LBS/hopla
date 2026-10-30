@@ -210,5 +210,22 @@
     "confirmTasks": "The tasks done go back to do, with the due date they had before, and their history is erased.",
     "clearGames": "Also clear the games and their stats",
     "confirmGames": "Games played, their stats and what was learned are erased; the games start over. Game settings stay."
+  },
+  "routines": {
+    "title": "Routines",
+    "subtitle": "Tasks done in order, one step at a time",
+    "name": "Routine name (e.g. Morning)",
+    "addTask": "Add a task",
+    "noTask": "No task left to add",
+    "bonus": "Finishing bonus",
+    "help": "Each child only sees the step to do. Tasks that are not theirs that day are skipped. The bonus is given once a day, when all their steps are done.",
+    "up": "Move up",
+    "down": "Move down",
+    "remove": "Remove",
+    "edit": "Edit",
+    "empty": "No routine yet. A routine chains existing tasks, such as getting dressed, teeth, then school bag.",
+    "failed": "Could not save the routine",
+    "deleteTitle": "Delete the routine?",
+    "deleteMessage": "“{{name}}” will be deleted. Its tasks stay."
   }
 }

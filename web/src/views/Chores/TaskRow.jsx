@@ -12,6 +12,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import ChronoChip from '../../components/common/ChronoChip'
+import RoutineChip from '../../components/common/RoutineChip'
 import TaskMode from '../../components/common/TaskMode'
 import { HOPLA } from '../../constants/theme'
 import { useImpersonateUser } from '../../contexts/ImpersonateUserContext.jsx'
@@ -309,6 +310,7 @@ const TaskRow = ({
           {chore.status !== PENDING_APPROVAL && (
             <ChronoChip flash={flashes?.[chore.id]} sx={{ mr: 0.75 }} />
           )}
+          <RoutineChip chores={[chore]} sx={{ mr: 0.75 }} />
           <TaskMode mode={mode} />
           {mode &&
             (chore.nextDueDate || repeats || visibleLabels.length > 0) && (

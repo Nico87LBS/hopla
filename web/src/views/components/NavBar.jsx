@@ -45,6 +45,7 @@ const NAVBAR_TITLE_KEYS = {
   '/manage': 'navigation.manage',
   '/manage/rewards': 'manage.items.rewards.title',
   '/manage/rewards/presets': 'manage.items.rewards.title',
+  '/manage/routines': 'manage.items.tasks.title',
   '/manage/missions': 'manage.items.missions.title',
   '/manage/missions/challenges': 'manage.items.missions.title',
   '/manage/missions/periods': 'manage.items.missions.title',

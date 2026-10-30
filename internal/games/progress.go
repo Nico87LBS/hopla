@@ -533,10 +533,13 @@ func awardChallenges(tx *gorm.DB, circleID, userID int, now time.Time) error {
 }
 
 // AfterTask runs the games that follow a credited task: the streak bonus,
-// then the quests and challenges it completes. Call it after the completion
+// the routines it finishes, then the quests and challenges it completes. Call it after the completion
 // and its points are saved, in the same transaction.
 func AfterTask(tx *gorm.DB, circleID, userID int, performedAt, now time.Time) error {
 	if _, err := AwardStreakBonus(tx, circleID, userID, performedAt, now); err != nil {
+		return err
+	}
+	if err := awardRoutines(tx, circleID, userID, performedAt, now); err != nil {
 		return err
 	}
 	if err := awardQuests(tx, circleID, userID, now); err != nil {

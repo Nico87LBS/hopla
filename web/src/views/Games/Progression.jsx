@@ -78,7 +78,7 @@ const useGoalText = () => {
   }
 }
 
-const sendOrWarn = async (resp, showNotification, fallback) => {
+export const sendOrWarn = async (resp, showNotification, fallback) => {
   if (resp.ok) return true
   const body = await resp.json().catch(() => ({}))
   showNotification({ type: 'error', message: body.error || fallback })
@@ -422,7 +422,7 @@ const goalPayload = draft => ({
 const validGoal = draft =>
   draft && draft.name.trim() && Number(draft.target) >= 1
 
-const useConfirmDelete = () => {
+export const useConfirmDelete = () => {
   const { t } = useTranslation('games')
   const [confirm, setConfirm] = useState({})
   const ask = (title, message, action) =>
@@ -442,7 +442,7 @@ const useConfirmDelete = () => {
   return [ask, modal]
 }
 
-const CardHeader = ({ onAdd, subtitle, title }) => {
+export const CardHeader = ({ onAdd, subtitle, title }) => {
   const { t } = useTranslation('games')
   return (
     <Box sx={{ alignItems: 'center', display: 'flex', mb: 1.5 }}>
