@@ -1,48 +1,37 @@
 export const DEFAULT_SIDEPANEL_CONFIG = [
   {
+    // Names and descriptions are in settings:sidepanel.cards.
     id: 'welcome', // legacy name, now represents User Switcher
-    name: 'User Switcher',
-    description: 'Allows admins/managers to view tasks as different users',
     iconName: 'SupervisorAccount',
     enabled: true,
     order: 0,
   },
   {
     id: 'smartInsights',
-    name: 'Smart Insights',
-    description: 'Quick actions based on your tasks',
     iconName: 'TrendingUp',
     enabled: false,
     order: 1,
   },
   {
     id: 'assignees',
-    name: 'Tasks by Assignee',
-    description: 'Groups tasks by who they are assigned to',
     iconName: 'Person',
     enabled: true,
     order: 2,
   },
   {
     id: 'calendar',
-    name: 'Calendar View',
-    description: 'Shows tasks in a calendar format',
     iconName: 'CalendarMonth',
     enabled: true,
     order: 3,
   },
   {
     id: 'activities',
-    name: 'Recent Activities',
-    description: 'Shows recent task completions and activities',
     iconName: 'History',
     enabled: true,
     order: 4,
   },
   {
     id: 'weeklyGoals',
-    name: 'Weekly Goals',
-    description: 'Shows weekly progress and family completion stats',
     iconName: 'EmojiEvents',
     enabled: true,
     order: 5,

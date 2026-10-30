@@ -176,6 +176,11 @@
       "title": "Parents sur le podium",
       "help": "Les parents montent sur le podium avec les enfants, ici et sur l'écran de la famille. Sans enfant, ils y sont toujours.",
       "failed": "Impossible d'enregistrer le podium"
+    },
+    "currency": {
+      "title": "Ce qu'on gagne",
+      "help": "Le nom donné à ce que chacun gagne en faisant ses tâches et en jouant, partout dans Hopla.",
+      "failed": "Le nom n'a pas pu être changé."
     }
   },
   "accountSettings": {
@@ -581,10 +586,10 @@
     "warningLead": "Cette action est irréversible.",
     "warningIntro": "La suppression de ton compte effacera définitivement :",
     "removesProfile": "Ton profil et tes données de connexion",
-    "removesChores": "Toutes tes tâches, leur historique et les sessions de minuteur",
+    "removesChores": "Toutes tes tâches et leur historique",
     "removesTokens": "Les jetons d'API, les sessions MFA et les jetons de réinitialisation du mot de passe",
     "removesStorage": "Les fichiers stockés et les données d'utilisation",
-    "removesPoints": "L'historique des points et les notifications",
+    "removesPoints": "L'historique des {{units}} et les notifications",
     "removesCircles": "Ta place dans la famille et ce qui s'y rattache",
     "passwordToContinue": "Saisis ton mot de passe pour continuer",
     "circleLabel": "Famille : {{name}}",

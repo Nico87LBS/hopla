@@ -23,6 +23,7 @@ import APITokenSettings from '../Settings/APITokenSettings'
 import CalendarSettings from '../Settings/CalendarSettings'
 import ChildUserSettings from '../Settings/ChildUserSettings'
 import CircleSettings from '../Settings/CircleSettings'
+import CurrencyCard from '../Settings/CurrencyCard'
 import FamilyTimezoneCard from '../Settings/FamilyTimezoneCard'
 import LocalizationSettings from '../Settings/LocalizationSettings'
 import MFASettings from '../Settings/MFASettings'
@@ -159,6 +160,7 @@ export const ManageFamily = ({ tab }) => (
       {tab === 'children' && <ChildUserSettings />}
       {tab === 'settings' && (
         <Stack gap={2}>
+          <CurrencyCard />
           <PodiumCard />
           <FamilyTimezoneCard />
         </Stack>

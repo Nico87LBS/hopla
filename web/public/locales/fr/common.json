@@ -53,7 +53,7 @@
     "archived": "Archivées",
     "labels": "Étiquettes",
     "filters": "Filtres",
-    "points": "Points",
+    "points": "{{Units}}",
     "rewards": "Récompenses",
     "settings": "Paramètres",
     "primaryNavigation": "Navigation principale",
@@ -94,7 +94,7 @@
       "viewArchivedTasks": "Voir les tâches archivées",
       "viewLabels": "Voir les étiquettes",
       "viewJournal": "Voir le journal",
-      "viewPoints": "Voir les points",
+      "viewPoints": "Voir les {{units}}",
       "openSettings": "Ouvrir les paramètres",
       "filterTasks": "Afficher les tâches correspondant à « {{query}} »",
       "filterTasksSubtitle": "Filtrer la liste des tâches"
@@ -303,9 +303,9 @@
       "listening": "Écoute en cours…"
     },
     "capture": {
-      "voiceCaption": "Dates, étiquettes et points tirés de tes paroles",
+      "voiceCaption": "Dates, étiquettes et {{units}} tiré{{e}}s de tes paroles",
       "deviceCaption": "Lecture sur ton appareil",
-      "typeCaption": "#étiquettes @personnes *points à la saisie",
+      "typeCaption": "#étiquettes @personnes *{{units}} à la saisie",
       "trashTitle": "♻️ Sortir les poubelles",
       "trashDue": "Échéance demain",
       "trashRepeat": "Tous les lundis",
@@ -322,21 +322,6 @@
       "due": "Échéance",
       "done": "Terminé",
       "next": "Suivante"
-    },
-    "nfc": {
-      "tagOnWasher": "Tag sur le lave-linge",
-      "tapToOpen": "Approche pour ouvrir",
-      "swapFilter": "Changer le filtre du lave-linge",
-      "done": "Terminé",
-      "skip": "Passer",
-      "startTimer": "Démarrer le minuteur",
-      "waitingApproval": "{{name}} l'a marquée terminée · elle attend ta validation",
-      "approve": "Approuver",
-      "reject": "Refuser",
-      "completed": "Terminée",
-      "note": "Cycle délicat utilisé — le filtre sera à nettoyer la prochaine fois.",
-      "metaJustNow": "À l'instant · ★ 5 pts",
-      "metaLastWeek": "La semaine dernière · ★ 5 pts"
     },
     "circle": {
       "kitchenTitle": "Grand ménage de la cuisine",
@@ -503,11 +488,11 @@
       "shop": "Boutique",
       "journal": "Journal"
     },
-    "hops_one": "{{count}} hop",
-    "hops_other": "{{count}} hops",
+    "hops_one": "{{count}} {{unit}}",
+    "hops_other": "{{count}} {{units}}",
     "days_one": "{{count}} j",
     "days_other": "{{count}} j",
-    "earned": "hops gagnés",
+    "earned": "{{units}} gagné{{e}}s",
     "earnedShort": "gagnés",
     "toNextRank": "Vers le rang suivant",
     "adjustFor": "Bonus ou pénalité pour {{name}}",
@@ -525,7 +510,7 @@
       "fromTasks": "tâches",
       "fromGames": "jeux",
       "fromBonus": "bonus",
-      "label": "Hops de la semaine : {{tasks}} des tâches, {{games}} des jeux, {{bonus}} de bonus",
+      "label": "{{Units}} de la semaine : {{tasks}} des tâches, {{games}} des jeux, {{bonus}} de bonus",
       "away_one": "Pas là {{count}} jour cette semaine",
       "away_other": "Pas là {{count}} jours cette semaine"
     }
@@ -547,7 +532,7 @@
       },
       "rewards": {
         "title": "Récompenses",
-        "description": "Ce qu’on peut s’offrir avec ses hops, et les bonus préparés"
+        "description": "Ce qu’on peut s’offrir avec ses {{units}}, et les bonus préparés"
       },
       "missions": {
         "title": "Missions",
@@ -559,7 +544,7 @@
       },
       "learn": {
         "title": "Modules d’apprentissage",
-        "description": "Choisir les jeux de chacun et leurs hops"
+        "description": "Choisir les jeux de chacun et leurs {{units}}"
       },
       "family": {
         "title": "Famille",
@@ -611,5 +596,49 @@
     "moved": "La famille passe à l'heure de {{city}}",
     "movedMessage": "Les tâches gardent leur heure de la journée.",
     "moveFailed": "Le fuseau n'a pas pu être changé"
+  },
+  "currency": {
+    "hops": {
+      "one": "hop",
+      "other": "hops",
+      "of": "de hops",
+      "a": "un hop",
+      "e": ""
+    },
+    "points": {
+      "one": "point",
+      "other": "points",
+      "of": "de points",
+      "a": "un point",
+      "e": ""
+    },
+    "stars": {
+      "one": "étoile",
+      "other": "étoiles",
+      "of": "d'étoiles",
+      "a": "une étoile",
+      "e": "e"
+    },
+    "carrots": {
+      "one": "carotte",
+      "other": "carottes",
+      "of": "de carottes",
+      "a": "une carotte",
+      "e": "e"
+    },
+    "coins": {
+      "one": "pièce",
+      "other": "pièces",
+      "of": "de pièces",
+      "a": "une pièce",
+      "e": "e"
+    },
+    "tokens": {
+      "one": "jeton",
+      "other": "jetons",
+      "of": "de jetons",
+      "a": "un jeton",
+      "e": ""
+    }
   }
 }

@@ -221,6 +221,7 @@ export const useSSE = () => {
             queryClient.invalidateQueries({ queryKey: ['games'] })
             queryClient.invalidateQueries({ queryKey: ['flashes'] })
             queryClient.invalidateQueries({ queryKey: ['familyTimezone'] })
+            queryClient.invalidateQueries({ queryKey: ['familyCurrency'] })
             break
 
           case 'subtask.updated':

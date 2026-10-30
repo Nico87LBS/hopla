@@ -83,6 +83,8 @@ type Today struct {
 	Challenges []games.ChallengeView `json:"challenges"`
 	// ParentsOnPodium puts the parents on the podium with the children.
 	ParentsOnPodium bool `json:"parentsOnPodium"`
+	// Currency names what the family earns, see circle.Currencies.
+	Currency string `json:"currency"`
 	// NextChangeAt is when the games change on their own (midnight, a bonus
 	// period starting or ending), so boards know when to refresh.
 	NextChangeAt time.Time `json:"nextChangeAt"`
@@ -188,6 +190,7 @@ func (h *Handler) getToday(c *gin.Context) {
 		return
 	}
 	today.ParentsOnPodium = family.ParentsOnPodium
+	today.Currency = circle.CurrencyOf(family.Currency)
 	c.JSON(200, gin.H{"res": today})
 }
 

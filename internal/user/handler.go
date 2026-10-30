@@ -484,6 +484,8 @@ func (h *Handler) resetPassword(c *gin.Context) {
 	log := logging.FromContext(c)
 	type ResetPasswordReq struct {
 		Email string `json:"email" binding:"required,email"`
+		// Language is the e-mail's, else the browser's (Accept-Language).
+		Language string `json:"language"`
 	}
 	var req ResetPasswordReq
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -525,7 +527,11 @@ func (h *Handler) resetPassword(c *gin.Context) {
 		return
 	}
 	// send an email to the user with the new password:
-	err = h.email.SendResetPasswordEmail(c, req.Email, token)
+	lang := req.Language
+	if lang == "" {
+		lang = c.GetHeader("Accept-Language")
+	}
+	err = h.email.SendResetPasswordEmail(c, req.Email, token, email.Language(lang))
 	if err != nil {
 		log.Errorw("account.handler.resetPassword failed to send email", "err", err)
 		c.JSON(http.StatusInternalServerError, gin.H{

@@ -1,13 +1,13 @@
 {
   "redeem": "Redeem",
-  "notEnoughPoints": "Not enough points",
+  "notEnoughPoints": "Not enough {{units}}",
   "approve": "Approve",
   "reject": "Reject",
   "actions": {
     "menu": "Actions for {{name}}"
   },
-  "pointsCost_one": "{{count}} point",
-  "pointsCost_other": "{{count}} points",
+  "pointsCost_one": "{{count}} {{unit}}",
+  "pointsCost_other": "{{count}} {{units}}",
   "tabs": {
     "store": "Store",
     "requests": "Requests"
@@ -23,7 +23,7 @@
   },
   "redeemConfirm": {
     "title": "Redeem Reward",
-    "message": "Request \"{{name}}\" for {{cost}} points? An admin will need to approve it."
+    "message": "Request \"{{name}}\" for {{cost}} {{units}}? An admin will need to approve it."
   },
   "requests": {
     "emptyTitle": "No redemption requests",
@@ -31,12 +31,12 @@
   },
   "modal": {
     "errorEmptyName": "Name cannot be empty",
-    "errorInvalidCost": "Points cost must be a number greater than 0",
+    "errorInvalidCost": "{{Units}} cost must be a number greater than 0",
     "saveFailedTitle": "Failed to save reward",
     "saveFailedMessage": "Unable to save reward. Please try again.",
     "name": "Name",
     "description": "Description",
-    "pointsCost": "Points cost",
+    "pointsCost": "{{Units}} cost",
     "active": "Active",
     "editTitle": "Edit Reward",
     "addTitle": "Add Reward",
@@ -52,12 +52,12 @@
     "quotaHelp": "How many times each member can redeem it per calendar day, week (from Monday) or month. Leave empty for no limit."
   },
   "view": {
-    "subtitle": "Use the points you earn to choose something special.",
+    "subtitle": "Use the {{units}} you earn to choose something special.",
     "availableBalance": "Available balance",
-    "pointsLabel": "points",
+    "pointsLabel": "{{units}}",
     "rewardFallbackDescription": "A little something to look forward to.",
     "emptyTitle": "No rewards yet",
-    "emptyDescription": "Add a reward — like movie night or a treat — that family members can redeem their points for.",
+    "emptyDescription": "Add a reward — like movie night or a treat — that family members can redeem their {{units}} for.",
     "createReward": "Create a reward",
     "hidden": "Hidden from the shop"
   },

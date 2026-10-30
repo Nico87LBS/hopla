@@ -1,3 +1,4 @@
+import i18n from 'i18next'
 import moment from 'moment'
 
 import { apiClient } from './ApiClient'
@@ -325,6 +326,25 @@ const GetFamilyTimezone = async () => {
   return resp.json()
 }
 
+const GetFamilyCurrency = async () => {
+  const resp = await Fetch(`/circles/currency`, {
+    method: 'GET',
+    headers: HEADERS(),
+  })
+  if (!resp.ok) throw new Error('Unable to get the family currency')
+  return resp.json()
+}
+
+const SetFamilyCurrency = async currency => {
+  const resp = await Fetch(`/circles/currency`, {
+    method: 'PUT',
+    headers: HEADERS(),
+    body: JSON.stringify({ currency }),
+  })
+  if (!resp.ok) throw new Error('Unable to change the family currency')
+  return resp.json()
+}
+
 const SetFamilyTimezone = async timezone => {
   const resp = await Fetch(`/circles/timezone`, {
     method: 'PUT',
@@ -478,7 +498,8 @@ const ResetPassword = async email => {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ email: email }),
+    // The e-mail is written in the language of the app.
+    body: JSON.stringify({ email, language: i18n.resolvedLanguage }),
   })
 }
 
@@ -1209,6 +1230,7 @@ export {
   GetChoresWithSubtasks,
   GetCircleMemberRequests,
   GetDefaultRanks,
+  GetFamilyCurrency,
   GetFamilyTimezone,
   GetFlashes,
   GetGameRules,
@@ -1264,6 +1286,7 @@ export {
   SaveRanks,
   SendLearnGame,
   SendLearnReport,
+  SetFamilyCurrency,
   SetFamilyTimezone,
   SetLearnActivation,
   SetLearnSetting,

@@ -23,6 +23,7 @@ import { useResponsiveModal } from '../../hooks/useResponsiveModal'
 import { useCreateChore } from '../../queries/ChoreQueries'
 import { useCircleMembers, useUserProfile } from '../../queries/UserQueries'
 import LABEL_COLORS from '../../utils/Colors'
+import { currencyVariables } from '../../utils/currency'
 import { CreateLabel } from '../../utils/Fetcher'
 import { withRepeatTime } from '../../utils/repeatTime.js'
 import { generateUUID } from '../../utils/UUID'
@@ -109,19 +110,8 @@ const getDefaultNotification = () => {
   return DEFAULT_NOTIFICATION_TEMPLATES
 }
 
-// Static option sets for the smart input's trigger suggestions
-const POINTS_SUGGESTIONS = {
-  value: 'id',
-  display: 'name',
-  options: [
-    { id: '1', name: '1 point' },
-    { id: '5', name: '5 points' },
-    { id: '10', name: '10 points' },
-    { id: '25', name: '25 points' },
-    { id: '50', name: '50 points' },
-    { id: '100', name: '100 points' },
-  ],
-}
+// The amounts offered after a *.
+const POINTS_AMOUNTS = [1, 5, 10, 25, 50, 100]
 
 // Delay between the last keystroke and the smart-input parse. Parsing (chrono
 // especially) is too heavy to run per keystroke; submitChore flushes a pending
@@ -129,7 +119,7 @@ const POINTS_SUGGESTIONS = {
 const PARSE_DEBOUNCE_MS = 150
 
 const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
-  const { t } = useTranslation('chores')
+  const { i18n, t } = useTranslation('chores')
   // Claims the keyboard while open so background listeners know to stay out
   // of the way — see
   // KeyboardShortcutScopeContext.
@@ -262,7 +252,14 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
           ...assignableMembers,
         ],
       },
-      '*': POINTS_SUGGESTIONS,
+      '*': {
+        value: 'id',
+        display: 'name',
+        options: POINTS_AMOUNTS.map(count => ({
+          id: String(count),
+          name: t('taskEditor.points', { count }),
+        })),
+      },
     }),
     [userLabels, assignableMembers, handleCreateLabel, t],
   )
@@ -486,14 +483,27 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
     [assignableMembers],
   )
 
+  // The quick add reads the user's language: its words come from the
+  // translation files, its dates from chrono's matching locale.
+  const grammar = useMemo(() => t('quickAdd', { returnObjects: true }), [t])
+  const dateParser = chrono[i18n.resolvedLanguage] ?? chrono
+  const unitWords = useMemo(() => {
+    const { unit, units } = currencyVariables()
+    return [unit, units]
+  }, [i18n.resolvedLanguage]) // eslint-disable-line react-hooks/exhaustive-deps
+
   const processText = useCallback(
     sentence => {
-      const pointsParsed = parsePoints(sentence)
+      const pointsParsed = parsePoints(sentence, unitWords)
       const labels = parseLabels(sentence, userLabels || [])
 
-      const assigneesResult = parseAssignees(sentence, assigneesForParsing)
-      const repeat = parseRepeatV2(sentence)
-      const dueDateParsed = parseDueDate(sentence, chrono)
+      const assigneesResult = parseAssignees(
+        sentence,
+        assigneesForParsing,
+        grammar,
+      )
+      const repeat = parseRepeatV2(sentence, grammar)
+      const dueDateParsed = parseDueDate(sentence, dateParser, grammar)
 
       // Set all the parsed values
       if (pointsParsed.result) setPoints(pointsParsed.result)
@@ -558,7 +568,7 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
         const pointsReparse =
           cleanedSentence === sentence
             ? pointsParsed
-            : parsePoints(cleanedSentence)
+            : parsePoints(cleanedSentence, unitWords)
         if (pointsReparse.result)
           cleanedSentence = pointsReparse.cleanedSentence
       }
@@ -574,13 +584,15 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
         const assigneesReparse =
           cleanedSentence === sentence
             ? assigneesResult
-            : parseAssignees(cleanedSentence, assigneesForParsing)
+            : parseAssignees(cleanedSentence, assigneesForParsing, grammar)
         if (assigneesReparse.result)
           cleanedSentence = assigneesReparse.cleanedSentence
       }
       if (repeat.result) {
         const repeatReparse =
-          cleanedSentence === sentence ? repeat : parseRepeatV2(cleanedSentence)
+          cleanedSentence === sentence
+            ? repeat
+            : parseRepeatV2(cleanedSentence, grammar)
         if (repeatReparse.result)
           cleanedSentence = repeatReparse.cleanedSentence
       }
@@ -588,7 +600,7 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
         const dueDateReparse =
           cleanedSentence === sentence
             ? dueDateParsed
-            : parseDueDate(cleanedSentence, chrono)
+            : parseDueDate(cleanedSentence, dateParser, grammar)
         if (dueDateReparse.result)
           cleanedSentence = dueDateReparse.cleanedSentence
       }
@@ -608,7 +620,14 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
 
       setRenderedParts({ text: sentence, parts })
     },
-    [userLabels, renderHighlightedSentence, assigneesForParsing],
+    [
+      userLabels,
+      renderHighlightedSentence,
+      assigneesForParsing,
+      grammar,
+      dateParser,
+      unitWords,
+    ],
   )
 
   useEffect(() => {
@@ -948,52 +967,6 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
       >
         <>
           <Box sx={{ mt: 1 }}>
-            {/* <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}
-              >
-                <Typography level='body-sm'>Task in a sentence:</Typography>
-                <LearnMoreButton
-                  content={
-                    <>
-                      <Typography level='body-sm' sx={{ mb: 1 }}>
-                        This feature lets you create a task simply by typing a
-                        sentence. It attempt parses the sentence to identify the
-                        task&apos;s due date and frequency.
-                      </Typography>
-
-                      <Typography
-                        level='body-sm'
-                        sx={{ fontWeight: 'bold', mt: 2 }}
-                      >
-                        Examples:
-                      </Typography>
-
-                      <Typography
-                        level='body-sm'
-                        component='ul'
-                        sx={{ pl: 2, mt: 1, listStyle: 'disc' }}
-                      >
-                        <li>
-                          <strong>Due date:</strong> Specify dates with phrases
-                          like <em>tomorrow</em>, <em>next week</em>,{' '}
-                          <em>Monday</em>, or <em>August 1st at 12pm</em>.
-                        </li>
-                        <li>
-                          <strong>Frequency:</strong> Set recurring tasks with
-                          terms like <em>daily</em>, <em>weekly</em>,{' '}
-                          <em>monthly</em>, <em>yearly</em>, or patterns such as{' '}
-                          <em>every Tuesday and Thursday</em>.
-                        </li>
-                      </Typography>
-                    </>
-                  }
-                />
-              </Box> */}
-
             <SmartTaskTitleInput
               autoFocus
               value={taskText}

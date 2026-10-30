@@ -15,32 +15,28 @@ import { useTranslation } from 'react-i18next'
 import { Link, useRouteError } from 'react-router-dom'
 
 const getErrorKind = error => {
-  if (!error)
-    return { label: 'Unknown Error', color: 'danger', Icon: ErrorRounded }
+  if (!error) return { color: 'danger', Icon: ErrorRounded }
   const status = error?.status ?? error?.response?.status
   if (status === 404)
     return {
-      label: '404 · Not Found',
       color: 'warning',
       Icon: SearchOffRounded,
     }
   if (status === 401 || status === 403)
     return {
-      label: `${status} · Unauthorized`,
       color: 'warning',
       Icon: LockRounded,
     }
   if (status >= 500)
     return {
-      label: `${status} · Server Error`,
       color: 'danger',
       Icon: CloudOffRounded,
     }
   if (error?.name === 'TypeError')
-    return { label: 'Runtime Error', color: 'danger', Icon: BugReportRounded }
+    return { color: 'danger', Icon: BugReportRounded }
   if (error?.name === 'SyntaxError')
-    return { label: 'Syntax Error', color: 'danger', Icon: BugReportRounded }
-  return { label: 'Unexpected Error', color: 'danger', Icon: ErrorRounded }
+    return { color: 'danger', Icon: BugReportRounded }
+  return { color: 'danger', Icon: ErrorRounded }
 }
 
 const safeMessage = error => {

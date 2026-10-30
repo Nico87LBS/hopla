@@ -42,7 +42,7 @@
     "assignedTo": "Assigned to",
     "lastUpdated": "Last updated",
     "duration": "Duration",
-    "pointsEarned": "Points earned",
+    "pointsEarned": "{{Units}} earned",
     "points_one": "{{count}} pt",
     "points_other": "{{count}} pts",
     "note": "Note",
@@ -77,7 +77,7 @@
     "updatedDate": "Updated date",
     "performer": "Completed by",
     "status": "Status",
-    "points": "Points"
+    "points": "{{Units}}"
   },
   "title": {
     "summary": "Task Summary",

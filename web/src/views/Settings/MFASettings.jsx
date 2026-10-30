@@ -229,31 +229,6 @@ const MFASettings = () => {
             </Box>
           </Box>
         </Card>
-        {/*
-      {mfaEnabled && (
-        <Card variant='outlined'>
-          <Box className='flex items-center justify-between'>
-            <Box className='flex items-center gap-3'>
-              <Key color='primary' />
-              <Box>
-                <Typography level='title-md'>Backup Codes</Typography>
-                <Typography level='body-sm' sx={{ color: 'text.secondary' }}>
-                  Generate new backup codes in case you lose access to your
-                  authenticator
-                </Typography>
-              </Box>
-            </Box>
-            <Button
-              color='neutral'
-              variant='outlined'
-              size='sm'
-              onClick={handleRegenerateBackupCodes}
-            >
-              {t('mfa.generateCodes')}
-            </Button>
-          </Box>
-        </Card>
-      )} */}
 
         {/* Setup MFA Modal */}
         <AppModal

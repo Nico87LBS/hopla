@@ -1,51 +1,50 @@
 import moment from 'moment'
 
-const VALID_DAYS = {
-  monday: 'Monday',
-  mon: 'Monday',
-  tuesday: 'Tuesday',
-  tue: 'Tuesday',
-  wednesday: 'Wednesday',
-  wed: 'Wednesday',
-  thursday: 'Thursday',
-  thu: 'Thursday',
-  friday: 'Friday',
-  fri: 'Friday',
-  saturday: 'Saturday',
-  sat: 'Saturday',
-  sunday: 'Sunday',
-  sun: 'Sunday',
+// The quick add reads a sentence in the user's language. Every word it knows
+// comes from the translation files (chores:quickAdd), as a grammar:
+//  - days, months, units and occurrences map a canonical value to the words
+//    that say it, separated by "|", such as monday: "lundi|lundis|lun";
+//  - patterns are regular expressions, where {day}, {month}, {unit} and
+//    {occurrence} stand for any of those words;
+//  - separator splits a list of days or months, anyone names everyone after
+//    an @, and preceding are the words before a start date to drop with it.
+
+const escape = text => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
+// The words of a map, longest first so "lundis" wins over "lundi".
+const wordsOf = map =>
+  Object.values(map || {})
+    .flatMap(words => words.split('|'))
+    .filter(Boolean)
+    .sort((a, b) => b.length - a.length)
+
+const lookup = (map, word) => {
+  const wanted = word.trim().toLowerCase()
+  return Object.keys(map || {}).find(value =>
+    map[value].split('|').some(w => w.toLowerCase() === wanted),
+  )
 }
 
-const VALID_MONTHS = {
-  january: 'January',
-  jan: 'January',
-  february: 'February',
-  feb: 'February',
-  march: 'March',
-  mar: 'March',
-  april: 'April',
-  apr: 'April',
-  may: 'May',
-  june: 'June',
-  jun: 'June',
-  july: 'July',
-  jul: 'July',
-  august: 'August',
-  aug: 'August',
-  september: 'September',
-  sep: 'September',
-  october: 'October',
-  oct: 'October',
-  november: 'November',
-  nov: 'November',
-  december: 'December',
-  dec: 'December',
-}
+const capitalize = word => word.charAt(0).toUpperCase() + word.slice(1)
 
-const ALL_MONTHS = Object.values(VALID_MONTHS).filter(
-  (v, i, a) => a.indexOf(v) === i,
-)
+// A pattern of the grammar as a regular expression that only matches whole
+// words.
+const patternOf = (grammar, source) => {
+  const alternatives = {
+    day: wordsOf(grammar.days),
+    month: wordsOf(grammar.months),
+    occurrence: wordsOf(grammar.occurrences),
+    unit: wordsOf(grammar.units),
+  }
+  const expanded = source.replace(
+    /\{(day|month|occurrence|unit)\}/g,
+    (_, kind) => `(?:${alternatives[kind].map(escape).join('|')})`,
+  )
+  return new RegExp(
+    `(?<![\\p{L}\\p{N}_])(?:${expanded})(?![\\p{L}\\p{N}_])`,
+    'iu',
+  )
+}
 
 // Helper function to validate word boundaries for date/time matches
 // Prevents matching partial words like 'wed' in 'wedding', 'fri' in 'friend', etc.
@@ -130,435 +129,142 @@ export const parseLabels = (inputSentence, userLabels) => {
   }
 }
 
-export const parseRepeatV2 = inputSentence => {
-  const sentence = inputSentence.toLowerCase()
-  const lowerInputSentence = inputSentence.toLowerCase()
-  const result = {
-    frequency: 1,
-    frequencyType: null,
-    frequencyMetadata: {
-      days: [],
-      months: [],
-      unit: null,
-      time: new Date().toISOString(),
+const matched = (inputSentence, match, extra = {}) => ({
+  ...extra,
+  highlight: [
+    {
+      text: match[0],
+      start: match.index,
+      end: match.index + match[0].length,
     },
-  }
+  ],
+  cleanedSentence: (
+    inputSentence.slice(0, match.index) +
+    inputSentence.slice(match.index + match[0].length)
+  )
+    .replace(/\s+/g, ' ')
+    .trim(),
+})
 
-  const patterns = [
-    {
-      frequencyType: 'day_of_the_month:every',
-      regex: /(\d+)(?:th|st|nd|rd)? of every month/i,
-      name: 'Every {day} of every month',
-    },
-    {
-      frequencyType: 'days_of_the_week:nth_occurrence',
-      regex:
-        /(first|second|third|fourth|last|\d+(?:st|nd|rd|th)?) (monday|tuesday|wednesday|thursday|friday|saturday|sunday) of (?:the )?month/i,
-      name: '{occurrence} {day} of the month',
-    },
-    {
-      frequencyType: 'days_of_the_week:nth_occurrence_multiple',
-      regex:
-        /((?:first|second|third|fourth|last|\d+(?:st|nd|rd|th)?)(?:,? (?:and |& )?))+\s+(monday|tuesday|wednesday|thursday|friday|saturday|sunday)s? of (?:the )?month/i,
-      name: '{occurrences} {day} of the month',
-    },
-    {
-      frequencyType: 'daily',
-      regex: /(every day|daily|everyday)/i,
-      name: 'Every day',
-    },
-    {
-      frequencyType: 'daily:time',
-      regex: /every (morning|noon|afternoon|evening|night)/i,
-      name: 'Every {time} daily',
-    },
-    {
-      frequencyType: 'weekly',
-      regex: /(every week|weekly)/i,
-      name: 'Every week',
-    },
-    {
-      frequencyType: 'monthly',
-      regex: /(every month|monthly)/i,
-      name: 'Every month',
-    },
-    {
-      frequencyType: 'yearly',
-      regex: /every year/i,
-      name: 'Every year',
-    },
-    {
-      frequencyType: 'monthly',
-      regex: /every (?:other )?month/i,
-      name: 'Bi Monthly',
-      value: 2,
-    },
-    {
-      frequencyType: 'interval:2week',
-      regex: /(bi-?weekly|every other week)/i,
-      value: 2,
-      name: 'Bi Weekly',
-    },
-    {
-      frequencyType: 'interval',
-      regex: /every (\d+) (days?|weeks?|months?|years?)/i,
-      name: 'Every {frequency} {unit}',
-    },
-    {
-      frequencyType: 'interval:every_other',
-      regex: /every other (days?|weeks?|months?|years?)/i,
-      name: 'Every other {unit}',
-    },
-    {
-      frequencyType: 'days_of_the_week',
-      regex: /every ([\w, ]+(?:day)?(?:, [\w, ]+(?:day)?)*)/i,
-      name: 'Every {days}',
-    },
-    {
-      frequencyType: 'day_of_the_month',
-      regex: /(\d+)(?:st|nd|rd|th)? of ([\w ]+(?:(?:,| and |\s)[\w ]+)*)/i,
-      name: 'Every {day} days of {months}',
-    },
-  ]
+const interval = (frequency, unit) => ({
+  frequency,
+  frequencyType: 'interval',
+  frequencyMetadata: {
+    days: [],
+    months: [],
+    unit,
+    time: new Date().toISOString(),
+  },
+})
 
-  for (const pattern of patterns) {
-    const match = sentence.match(pattern.regex)
+// How each pattern of the grammar turns its match into a repeat, in the
+// order they are tried.
+const REPEATS = {
+  // "15th of every month": monthly, from the next 15th.
+  monthDay: match => {
+    const dayOfMonth = parseInt(match[1], 10)
+    const now = moment()
+    let dueDate = moment(now).set({
+      date: dayOfMonth,
+      hour: 23,
+      minute: 59,
+      second: 0,
+      millisecond: 0,
+    })
+    if (!dueDate.isAfter(now)) dueDate = dueDate.add(1, 'month')
+    return { result: interval(1, 'months'), dueDate: dueDate.toISOString() }
+  },
+  // "last Friday of the month".
+  nthWeekday: (match, grammar) => {
+    const occurrence = Number(lookup(grammar.occurrences, match[1]))
+    const day = lookup(grammar.days, match[2])
+    if (!occurrence || !day) return null
+    const result = interval(1, null)
+    result.frequencyType = 'days_of_the_week'
+    result.frequencyMetadata.unit = null
+    result.frequencyMetadata.days = [day]
+    result.frequencyMetadata.weekPattern = 'week_of_month'
+    result.frequencyMetadata.occurrences = [occurrence]
+    return { result }
+  },
+  daily: () => ({ result: interval(1, 'days') }),
+  dailyTime: () => {
+    const result = interval(1, 'days')
+    result.frequencyType = 'daily'
+    return { result }
+  },
+  weekly: () => ({ result: interval(1, 'weeks') }),
+  monthly: () => ({ result: interval(1, 'months') }),
+  yearly: () => ({ result: interval(1, 'years') }),
+  everyOtherWeek: () => ({ result: interval(2, 'weeks') }),
+  interval: (match, grammar) => {
+    const unit = lookup(grammar.units, match[2])
+    return unit ? { result: interval(parseInt(match[1], 10), unit) } : null
+  },
+  everyOther: (match, grammar) => {
+    const unit = lookup(grammar.units, match[1])
+    return unit ? { result: interval(2, unit) } : null
+  },
+  // "every Tuesday and Thursday".
+  weekdays: (match, grammar) => {
+    const days = match[1]
+      .split(new RegExp(grammar.separator, 'iu'))
+      .map(word => lookup(grammar.days, word))
+      .filter(Boolean)
+      .filter((day, i, all) => all.indexOf(day) === i)
+      .map(capitalize)
+    if (!days.length) return null
+    const result = interval(1, null)
+    result.frequencyType = 'days_of_the_week'
+    result.frequencyMetadata.unit = null
+    result.frequencyMetadata.days = days
+    return { result }
+  },
+  // "1st of January and July".
+  monthDays: (match, grammar) => {
+    const months = match[2]
+      .split(new RegExp(grammar.separator, 'iu'))
+      .map(word => lookup(grammar.months, word))
+      .filter(Boolean)
+      .filter((month, i, all) => all.indexOf(month) === i)
+      .map(capitalize)
+    if (!months.length) return null
+    const result = interval(parseInt(match[1], 10), 'days')
+    result.frequencyType = 'day_of_the_month'
+    result.frequencyMetadata.months = months
+    return { result }
+  },
+}
+
+export const parseRepeatV2 = (inputSentence, grammar) => {
+  for (const [name, toRepeat] of Object.entries(REPEATS)) {
+    const source = grammar?.patterns?.[name]
+    if (!source) continue
+    const match = inputSentence.match(patternOf(grammar, source))
     if (!match) continue
-
-    result.frequencyType = pattern.frequencyType
-    const unitMap = {
-      daily: 'days',
-      weekly: 'weeks',
-      monthly: 'months',
-      yearly: 'years',
-    }
-
-    switch (pattern.frequencyType) {
-      case 'daily':
-      case 'weekly':
-      case 'monthly':
-      case 'yearly':
-        result.frequencyType = 'interval'
-        result.frequency = pattern.value || 1
-        result.frequencyMetadata.unit = unitMap[pattern.frequencyType]
-        return {
-          result,
-          name: pattern.name,
-          highlight: [
-            {
-              text: pattern.name,
-              start: lowerInputSentence.indexOf(match[0]),
-              end: lowerInputSentence.indexOf(match[0]) + match[0].length,
-            },
-          ],
-          cleanedSentence: inputSentence.replace(match[0], '').trim(),
-        }
-
-      case 'interval':
-        result.frequency = parseInt(match[1], 10)
-        result.frequencyMetadata.unit = match[2]
-        return {
-          result,
-          name: pattern.name
-            .replace('{frequency}', result.frequency)
-            .replace('{unit}', result.frequencyMetadata.unit),
-          highlight: [
-            {
-              text: pattern.name,
-              start: lowerInputSentence.indexOf(match[0]),
-              end: lowerInputSentence.indexOf(match[0]) + match[0].length,
-            },
-          ],
-          cleanedSentence: inputSentence.replace(match[0], '').trim(),
-        }
-
-      case 'days_of_the_week':
-        result.frequencyMetadata.days = match[1]
-          .toLowerCase()
-          .split(/ and |,|\s/)
-          .map(day => day.trim())
-          .filter(day => {
-            // Validate that the day abbreviation is at proper word boundaries
-            // This prevents matches like 'wed' in 'wedding', 'fri' in 'friend'
-            if (!VALID_DAYS[day]) return false
-            // For short abbreviations (3 chars or less), validate word boundaries
-            if (day.length <= 3) {
-              const dayIndex = sentence.toLowerCase().indexOf(day)
-              if (dayIndex === -1) return false
-              return isValidWordBoundary(
-                sentence.toLowerCase(),
-                dayIndex,
-                day.length,
-              )
-            }
-            return true
-          })
-          .map(day => VALID_DAYS[day])
-        if (!result.frequencyMetadata.days.length)
-          return { result: null, name: null, cleanedSentence: inputSentence }
-        return {
-          result,
-          name: pattern.name.replace(
-            '{days}',
-            result.frequencyMetadata.days.join(', '),
-          ),
-          highlight: [
-            {
-              text: pattern.name,
-              start: lowerInputSentence.indexOf(match[0]),
-              end: lowerInputSentence.indexOf(match[0]) + match[0].length,
-            },
-          ],
-          cleanedSentence: inputSentence.replace(match[0], '').trim(),
-        }
-
-      case 'day_of_the_month':
-        result.frequency = parseInt(match[1], 10)
-        result.frequencyMetadata.months = match[2]
-          .toLowerCase()
-          .split(/ and |,|\s/)
-          .map(month => month.trim())
-          .filter(month => {
-            if (!VALID_MONTHS[month]) return false
-            // For short abbreviations (3 chars or less), validate word boundaries
-            if (month.length <= 3) {
-              const monthIndex = sentence.toLowerCase().indexOf(month)
-              if (monthIndex === -1) return false
-              return isValidWordBoundary(
-                sentence.toLowerCase(),
-                monthIndex,
-                month.length,
-              )
-            }
-            return true
-          })
-          .map(month => VALID_MONTHS[month])
-        result.frequencyMetadata.unit = 'days'
-        return {
-          result,
-          name: pattern.name
-            .replace('{day}', result.frequency)
-            .replace('{months}', result.frequencyMetadata.months.join(', ')),
-          highlight: [
-            {
-              text: pattern.name,
-              start: lowerInputSentence.indexOf(match[0]),
-              end: lowerInputSentence.indexOf(match[0]) + match[0].length,
-            },
-          ],
-          cleanedSentence: inputSentence.replace(match[0], '').trim(),
-        }
-      case 'interval:2week':
-        result.frequency = 2
-        result.frequencyMetadata.unit = 'weeks'
-        result.frequencyType = 'interval'
-        return {
-          result,
-          name: pattern.name,
-          highlight: [
-            {
-              text: pattern.name,
-              start: lowerInputSentence.indexOf(match[0]),
-              end: lowerInputSentence.indexOf(match[0]) + match[0].length,
-            },
-          ],
-          cleanedSentence: inputSentence.replace(match[0], '').trim(),
-        }
-      case 'daily:time':
-        result.frequency = 1
-        result.frequencyMetadata.unit = 'days'
-        result.frequencyType = 'daily'
-        return {
-          result,
-          name: pattern.name.replace('{time}', match[1]),
-          // replace every x with ''
-          highlight: [
-            {
-              text: pattern.name,
-              start: lowerInputSentence.indexOf(match[0]),
-              end: lowerInputSentence.indexOf(match[0]) + match[0].length,
-            },
-          ],
-          cleanedSentence: inputSentence.replace(match[0], '').trim(),
-        }
-
-      case 'day_of_the_month:every':
-        const dayOfMonth = parseInt(match[1], 10)
-        result.frequencyType = 'interval'
-        result.frequency = 1
-        result.frequencyMetadata.unit = 'months'
-
-        // Calculate the next occurrence of this day of the month
-        const todayEvery = moment()
-        let suggestedDueDate = moment(todayEvery).set({
-          date: dayOfMonth,
-          hour: 23,
-          minute: 59,
-          second: 0,
-          millisecond: 0,
-        })
-        if (!suggestedDueDate.isAfter(todayEvery)) {
-          // Day has already passed this month, move to next month
-          suggestedDueDate = suggestedDueDate.add(1, 'month')
-        }
-
-        return {
-          result,
-          name: pattern.name.replace('{day}', dayOfMonth),
-          dueDate: suggestedDueDate.toISOString(),
-          highlight: [
-            {
-              text: pattern.name,
-              start: lowerInputSentence.indexOf(match[0]),
-              end: lowerInputSentence.indexOf(match[0]) + match[0].length,
-            },
-          ],
-          cleanedSentence: inputSentence.replace(match[0], '').trim(),
-        }
-      case 'interval:every_other':
-        result.frequency = 2
-        result.frequencyMetadata.unit = match[1]
-        result.frequencyType = 'interval'
-        return {
-          result,
-          name: pattern.name.replace('{unit}', result.frequencyMetadata.unit),
-          highlight: [
-            {
-              text: pattern.name,
-              start: lowerInputSentence.indexOf(match[0]),
-              end: lowerInputSentence.indexOf(match[0]) + match[0].length,
-            },
-          ],
-          cleanedSentence: inputSentence.replace(match[0], '').trim(),
-        }
-
-      case 'days_of_the_week:nth_occurrence':
-        const occurrenceText = match[1].toLowerCase()
-        const dayName = match[2].toLowerCase()
-
-        // Map occurrence words to numbers
-        const occurrenceMap = {
-          first: 1,
-          '1st': 1,
-          second: 2,
-          '2nd': 2,
-          third: 3,
-          '3rd': 3,
-          fourth: 4,
-          '4th': 4,
-          last: -1,
-        }
-
-        const occurrence =
-          occurrenceMap[occurrenceText] ||
-          parseInt(occurrenceText.replace(/\D/g, ''), 10)
-
-        if (!VALID_DAYS[dayName]) {
-          return { result: null, name: null, cleanedSentence: inputSentence }
-        }
-
-        result.frequencyType = 'days_of_the_week'
-        result.frequencyMetadata.days = [VALID_DAYS[dayName].toLowerCase()]
-        result.frequencyMetadata.weekPattern = 'week_of_month'
-        result.frequencyMetadata.occurrences = [occurrence]
-
-        const startIndex = inputSentence
-          .toLowerCase()
-          .indexOf(match[0].toLowerCase())
-        return {
-          result,
-          name: pattern.name
-            .replace('{occurrence}', match[1])
-            .replace('{day}', VALID_DAYS[dayName]),
-          highlight: [
-            {
-              text: inputSentence.substring(
-                startIndex,
-                startIndex + match[0].length,
-              ),
-              start: startIndex,
-              end: startIndex + match[0].length,
-            },
-          ],
-          cleanedSentence: inputSentence.replace(match[0], '').trim(),
-        }
-
-      case 'days_of_the_week:nth_occurrence_multiple':
-        const occurrencesText = match[1].toLowerCase()
-        const dayName2 = match[2].toLowerCase()
-
-        if (!VALID_DAYS[dayName2]) {
-          return { result: null, name: null, cleanedSentence: inputSentence }
-        }
-
-        // Parse multiple occurrences like "first, second and third"
-        const occurrences = occurrencesText
-          .replace(/,?\s*(and|&)\s*/g, ' ')
-          .split(/\s+/)
-          .filter(word => word.trim())
-          .map(word => {
-            const cleanWord = word.replace(',', '').trim()
-            const occurrenceMap = {
-              first: 1,
-              '1st': 1,
-              second: 2,
-              '2nd': 2,
-              third: 3,
-              '3rd': 3,
-              fourth: 4,
-              '4th': 4,
-              last: -1,
-            }
-            return (
-              occurrenceMap[cleanWord] ||
-              parseInt(cleanWord.replace(/\D/g, ''), 10)
-            )
-          })
-          .filter(num => !isNaN(num))
-
-        result.frequencyType = 'days_of_the_week'
-        result.frequencyMetadata.days = [VALID_DAYS[dayName2].toLowerCase()]
-        result.frequencyMetadata.weekPattern = 'week_of_month'
-        result.frequencyMetadata.occurrences = occurrences
-
-        const startIndex2 = inputSentence
-          .toLowerCase()
-          .indexOf(match[0].toLowerCase())
-        return {
-          result,
-          name: pattern.name
-            .replace('{occurrences}', match[1])
-            .replace('{day}', VALID_DAYS[dayName2]),
-          highlight: [
-            {
-              text: inputSentence.substring(
-                startIndex2,
-                startIndex2 + match[0].length,
-              ),
-              start: startIndex2,
-              end: startIndex2 + match[0].length,
-            },
-          ],
-          cleanedSentence: inputSentence.replace(match[0], '').trim(),
-        }
-    }
+    const repeat = toRepeat(match, grammar)
+    if (repeat) return matched(inputSentence, match, repeat)
   }
   return {
     result: null,
-    name: null,
     highlight: [],
     cleanedSentence: inputSentence,
   }
 }
 
-export const parseAssignees = (inputSentence, users) => {
-  const sentence = inputSentence.toLowerCase()
+export const parseAssignees = (inputSentence, users, grammar) => {
   const result = []
   const highlight = []
   const matchedTexts = []
 
-  // Check for @Anyone first (special case)
-  const anyoneRegex = /@anyone(?=\s|$)/i
+  // Check for @Anyone first (special case), in any language.
+  const anyoneWords = ['anyone', ...(grammar?.anyone || '').split('|')]
+    .filter(Boolean)
+    .sort((a, b) => b.length - a.length)
+  const anyoneRegex = new RegExp(
+    `@(?:${anyoneWords.map(escape).join('|')})(?=\\s|$)`,
+    'iu',
+  )
   const anyoneMatch = inputSentence.match(anyoneRegex)
 
   if (anyoneMatch) {
@@ -647,9 +353,19 @@ export const parseAssignees = (inputSentence, users) => {
   return { result: null, isAnyone: false, cleanedSentence: inputSentence }
 }
 
-export const parsePoints = inputSentence => {
-  let sentence = inputSentence.toLowerCase()
-  const pointsPattern = /\*(\d+)\s*(?:points?)?/gi
+// "*5", or "*5 hops" with the family's words for what it earns.
+export const parsePoints = (inputSentence, unitWords = []) => {
+  const sentence = inputSentence.toLowerCase()
+  const words = unitWords
+    .filter(Boolean)
+    .sort((a, b) => b.length - a.length)
+    .map(escape)
+  const pointsPattern = new RegExp(
+    words.length
+      ? `\\*(\\d+)(?:\\s*(?:${words.join('|')})(?![\\p{L}\\p{N}_]))?`
+      : '\\*(\\d+)',
+    'giu',
+  )
   const match = sentence.match(pointsPattern)
 
   if (!match) {
@@ -686,7 +402,7 @@ export const parsePoints = inputSentence => {
   }
 }
 
-export const parseDueDate = (inputSentence, chrono) => {
+export const parseDueDate = (inputSentence, chrono, grammar) => {
   // Parse the due date using chrono
   // Read in the family's time zone, not the device's.
   const parsedDueDate = chrono.parse(
@@ -722,15 +438,8 @@ export const parseDueDate = (inputSentence, chrono) => {
   const dueDateStartIndex = dueDateMatch.index
   const dueDateEndIndex = dueDateStartIndex + dueDateText.length
 
-  // Define words that might precede the due date and should be removed
-  const precedingWords = [
-    'starting',
-    'from',
-    'beginning',
-    'begin',
-    'commence',
-    'commencing',
-  ]
+  // Words that might precede the due date and should be removed
+  const precedingWords = (grammar?.preceding || '').split('|').filter(Boolean)
 
   // Look for preceding words before the due date
   let cleanStartIndex = dueDateStartIndex
@@ -742,7 +451,10 @@ export const parseDueDate = (inputSentence, chrono) => {
 
   for (const word of precedingWords) {
     // Check if the text before due date ends with this preceding word
-    const wordPattern = new RegExp(`\\b${word}\\s*$`, 'i')
+    const wordPattern = new RegExp(
+      `(?<![\\p{L}\\p{N}_])${escape(word)}\\s*$`,
+      'iu',
+    )
     const match = textBeforeDueDate.match(wordPattern)
 
     if (match) {
