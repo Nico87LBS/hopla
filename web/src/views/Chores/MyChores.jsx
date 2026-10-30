@@ -1,13 +1,11 @@
 import {
   Add,
-  Bolt,
   CalendarMonth,
   Check,
   CloudOff,
   EditCalendar,
   ExpandMore,
   Person,
-  PriorityHigh,
   Remove,
   SearchOff,
   Style,
@@ -17,10 +15,7 @@ import {
   AccordionDetails,
   AccordionGroup,
   Box,
-  Chip,
   Container,
-  Divider,
-  IconButton,
   Typography,
 } from '@mui/joy'
 import { useMediaQuery } from '@mui/material'
@@ -30,7 +25,6 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import EmptyState from '../../components/common/EmptyState'
-import KeyboardShortcutHint from '../../components/common/KeyboardShortcutHint'
 import { useImpersonateUser } from '../../contexts/ImpersonateUserContext.jsx'
 import { useNavBarTitle } from '../../contexts/NavBarTitleContext'
 import { useFilter } from '../../hooks/useFilter'
@@ -45,8 +39,6 @@ import {
 } from '../../utils/Chores'
 import { familyDay, fromPickedDay, pickedDay } from '../../utils/familyTime'
 import { awayMemberIds, waitsForAbsent } from '../../utils/presence.js'
-import Priorities from '../../utils/Priorities'
-import { getSafeBottom } from '../../utils/SafeAreaUtils.js'
 import { pullCopiesTogether } from '../../utils/taskSlots'
 import TaskInput from '../components/AddTaskModal'
 import CalendarDual from '../components/CalendarDual'
@@ -57,7 +49,7 @@ import { useLabels } from '../Labels/LabelQueries'
 import ConfirmationModal from '../Modals/Inputs/ConfirmationModal'
 import ChoreListView from './ChoreListView.jsx'
 import ChoreModals from './components/ChoreModals'
-import ChoreToolbar from './components/ChoreToolbarPrototype'
+import ChoreToolbar from './components/ChoreToolbar'
 import {
   conditionsToSelections,
   selectionsToConditions,
@@ -91,12 +83,6 @@ const sortChores = (a, b, sortBy, direction) => {
   const multiplier = direction === 'desc' ? -1 : 1
 
   if (sortBy === 'smart') return ChoreSorter(a, b) * multiplier
-
-  if (sortBy === 'priority') {
-    const priorityA = a.priority ?? Number.MAX_SAFE_INTEGER
-    const priorityB = b.priority ?? Number.MAX_SAFE_INTEGER
-    return (priorityA - priorityB) * multiplier
-  }
 
   const dateField =
     sortBy === 'due_date'
@@ -305,19 +291,6 @@ const MyChores = () => {
           }
         },
       },
-      {
-        id: 'priority',
-        label: t('chores:priority'),
-        type: 'multi-select',
-        icon: <PriorityHigh />,
-        options: Priorities.map(p => ({
-          value: p.value,
-          label: p.name,
-          color: p.color || 'neutral',
-          icon: p.icon,
-        })),
-        filterFn: (item, values) => values.includes(item.priority ?? 0),
-      },
       ...(userLabels?.length > 0
         ? [
             {
@@ -392,7 +365,7 @@ const MyChores = () => {
       // Advanced/custom filter active
       choresToGroup = customFilteredChores
     } else if (hasQuickFilters) {
-      // Quick filter active (Due date, Priority, Labels)
+      // Quick filter active (Due date, Labels)
       choresToGroup = quickFilteredChores
     }
 
@@ -654,7 +627,6 @@ const MyChores = () => {
     handleBulkDelete,
     handleBulkDueDate,
     handleBulkLabels,
-    handleBulkPriority,
     handleBulkSkip,
     handleChangeDueDate,
     handleChoreAction,
@@ -740,14 +712,12 @@ const MyChores = () => {
     },
   })
 
-  // Clicking a label / priority chip on a task card feeds the advanced filter
+  // Clicking a label chip on a task card feeds the advanced filter
   // (as a temp filter) rather than the legacy quick filters. Clicking the same
   // chip again removes that value, so chips toggle.
   const handleLabelFiltering = chipClicked => {
-    const type = chipClicked.label ? 'label' : 'priority'
-    const value = chipClicked.label
-      ? chipClicked.label.id
-      : chipClicked.priority
+    const type = 'label'
+    const value = chipClicked.label?.id
     if (value === undefined || value === null) return
 
     const selections = conditionsToSelections(tempFilter?.conditions)
@@ -771,9 +741,7 @@ const MyChores = () => {
       return
     }
 
-    const chipName = chipClicked.label
-      ? chipClicked.label.name
-      : `P${chipClicked.priority}`
+    const chipName = chipClicked.label.name
     applyTempFilter(
       { conditions, operator: 'AND' },
       // Keep whatever the temp filter was already labelled as (e.g. an
@@ -1051,7 +1019,6 @@ const MyChores = () => {
           onDelete={handleBulkDelete}
           onSetDueDate={handleBulkDueDate}
           onSetAssignee={handleBulkAssignee}
-          onSetPriority={handleBulkPriority}
           onToggleLabel={handleBulkLabels}
           selectionSummary={selectionSummary}
           members={membersData?.res || []}

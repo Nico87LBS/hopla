@@ -225,3 +225,29 @@ func TestDaysAwayKeepTheStreak(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, 2, streaks[0].Current, "three days away, then home today")
 }
+
+func TestNextChangeIsMidnightOrABonusPeriodEdge(t *testing.T) {
+	db := setup(t)
+	now := time.Date(2026, 10, 30, 9, 0, 0, 0, time.Local).UTC()
+	midnight := time.Date(2026, 10, 31, 0, 0, 0, 0, time.Local)
+
+	next, err := NextChange(db, 1, now)
+	require.NoError(t, err)
+	require.True(t, next.Equal(midnight), "no period: next midnight, got %v", next)
+
+	require.NoError(t, db.Create(&BonusPeriod{CircleID: 1, Name: "Goûter", Multiplier: 2,
+		StartsAt: now.Add(7 * time.Hour), EndsAt: now.Add(8 * time.Hour)}).Error)
+	next, err = NextChange(db, 1, now)
+	require.NoError(t, err)
+	require.True(t, next.Equal(now.Add(7*time.Hour)), "period starting today, got %v", next)
+
+	next, err = NextChange(db, 1, now.Add(7*time.Hour+time.Minute))
+	require.NoError(t, err)
+	require.True(t, next.Equal(now.Add(8*time.Hour)), "period ending today, got %v", next)
+
+	require.NoError(t, db.Create(&BonusPeriod{CircleID: 2, Name: "Ailleurs", Multiplier: 2,
+		StartsAt: now.Add(time.Hour), EndsAt: now.Add(2 * time.Hour)}).Error)
+	next, err = NextChange(db, 1, now)
+	require.NoError(t, err)
+	require.True(t, next.Equal(now.Add(7*time.Hour)), "another family's period is ignored, got %v", next)
+}

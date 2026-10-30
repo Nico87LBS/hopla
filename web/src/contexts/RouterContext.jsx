@@ -35,7 +35,6 @@ import {
   ManageRewards,
 } from '../views/Manage/ParentPages'
 import CircleSetupView from '../views/Onboarding/CircleSetupView'
-import TimerDetails from '../views/Timer/TimerDetails'
 const PointsRedirect = () => {
   const tab = new URLSearchParams(window.location.search).get('tab')
   const to =
@@ -97,10 +96,6 @@ const Router = createBrowserRouter([
       {
         path: '/chores/:choreId/history',
         element: <ChoreHistory />,
-      },
-      {
-        path: '/chores/:choreId/timer',
-        element: <TimerDetails />,
       },
       {
         path: '/my/chores',

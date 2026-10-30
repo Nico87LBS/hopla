@@ -22,7 +22,7 @@ import { useModalShortcutScope } from '../../contexts/KeyboardShortcutScopeConte
 import { useResponsiveModal } from '../../hooks/useResponsiveModal'
 import { useCreateChore } from '../../queries/ChoreQueries'
 import { useCircleMembers, useUserProfile } from '../../queries/UserQueries'
-import LABEL_COLORS, { TASK_COLOR } from '../../utils/Colors'
+import LABEL_COLORS from '../../utils/Colors'
 import { CreateLabel } from '../../utils/Fetcher'
 import { withRepeatTime } from '../../utils/repeatTime.js'
 import { generateUUID } from '../../utils/UUID'
@@ -37,14 +37,12 @@ import {
   parseDueDate,
   parseLabels,
   parsePoints,
-  parsePriority,
   parseRepeatV2,
 } from './CustomParsers'
 import DueDatePickerField from './DueDatePickerField'
 import { combineDueDate } from './DueDatePickerModal'
 import LabelsPickerField from './LabelsPickerField'
 import NotificationPickerField from './NotificationPickerField'
-import PriorityPickerField from './PriorityPickerField'
 import RepeatPickerField from './RepeatPickerField'
 import RichTextEditor from './RichTextEditor'
 import SmartTaskTitleInput from './SmartTaskTitleInput'
@@ -111,34 +109,7 @@ const getDefaultNotification = () => {
   return DEFAULT_NOTIFICATION_TEMPLATES
 }
 
-const PRIORITY_COLORS = {
-  0: TASK_COLOR.NO_PRIORITY,
-  1: TASK_COLOR.PRIORITY_1,
-  2: TASK_COLOR.PRIORITY_2,
-  3: TASK_COLOR.PRIORITY_3,
-  4: TASK_COLOR.PRIORITY_4,
-}
-
-const PRIORITY_LABELS = {
-  0: '--',
-  1: 'P1',
-  2: 'P2',
-  3: 'P3',
-  4: 'P4',
-}
-
 // Static option sets for the smart input's trigger suggestions
-const PRIORITY_SUGGESTIONS = {
-  value: 'id',
-  display: 'name',
-  options: [
-    { id: '1', name: 'P1' },
-    { id: '2', name: 'P2' },
-    { id: '3', name: 'P3' },
-    { id: '4', name: 'P4' },
-  ],
-}
-
 const POINTS_SUGGESTIONS = {
   value: 'id',
   display: 'name',
@@ -228,7 +199,6 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
   // Identities (type + text) of the highlights from the previous parse, so
   // the appear animation only plays for tokens detected just now
   const prevHighlightKeysRef = useRef(new Set())
-  const [priority, setPriority] = useState(0)
   const [description, setDescription] = useState(null)
   const [assignees, setAssignees] = useState([])
   const [labelsV2, setLabelsV2] = useState([])
@@ -284,7 +254,6 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
         creatable: true,
         onCreate: handleCreateLabel,
       },
-      '!': PRIORITY_SUGGESTIONS,
       '@': {
         value: 'userId',
         display: 'displayName',
@@ -378,7 +347,6 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
     (
       sentence,
       repeatHighlight,
-      priorityHighlight,
       labelsHighlight,
       dueDateHighlight,
       pointsHighlight,
@@ -393,11 +361,6 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
       if (repeatHighlight) {
         repeatHighlight.forEach(h =>
           allHighlights.push({ ...h, type: 'repeat', priority: 60 }),
-        )
-      }
-      if (priorityHighlight) {
-        priorityHighlight.forEach(h =>
-          allHighlights.push({ ...h, type: 'priority', priority: 50 }),
         )
       }
       if (pointsHighlight) {
@@ -451,9 +414,6 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
         switch (highlight.type) {
           case 'repeat':
             className = 'highlight-repeat'
-            break
-          case 'priority':
-            className = 'highlight-priority'
             break
           case 'points':
             className = 'highlight-points'
@@ -528,7 +488,6 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
 
   const processText = useCallback(
     sentence => {
-      const priority = parsePriority(sentence)
       const pointsParsed = parsePoints(sentence)
       const labels = parseLabels(sentence, userLabels || [])
 
@@ -537,7 +496,6 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
       const dueDateParsed = parseDueDate(sentence, chrono)
 
       // Set all the parsed values
-      if (priority.result) setPriority(parseInt(priority.result, 10))
       if (pointsParsed.result) setPoints(pointsParsed.result)
       if (labels.result) {
         // parseLabels only returns #mentions matched to an existing label
@@ -596,7 +554,6 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
       // changed the sentence; otherwise the first-pass result (computed on the
       // identical string) is reused as-is.
       let cleanedSentence = sentence
-      if (priority.result) cleanedSentence = priority.cleanedSentence
       if (pointsParsed.result) {
         const pointsReparse =
           cleanedSentence === sentence
@@ -643,7 +600,6 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
       const { parts } = renderHighlightedSentence(
         sentence,
         repeat.highlight,
-        priority.highlight,
         labels.highlight,
         dueDateHighlight,
         pointsParsed.highlight,
@@ -720,7 +676,6 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
     setTaskText('')
     setTaskTitle('')
     setFrequency(null)
-    setPriority(0)
     setPoints(-1)
     setIsAnyoneTask(false)
     setHasDescription(false)
@@ -788,7 +743,6 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
       assignStrategy: finalAssignStrategy,
       isRolling: false,
       labelsV2: labelsV2,
-      priority: priority ? Number(priority) : 0,
       points: points > -1 ? points : null,
       deadlineOffset: deadlineOffset < 0 ? null : deadlineOffset,
       completionWindow:
@@ -1008,7 +962,7 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
                       <Typography level='body-sm' sx={{ mb: 1 }}>
                         This feature lets you create a task simply by typing a
                         sentence. It attempt parses the sentence to identify the
-                        task&apos;s due date, priority, and frequency.
+                        task&apos;s due date and frequency.
                       </Typography>
 
                       <Typography
@@ -1023,13 +977,6 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
                         component='ul'
                         sx={{ pl: 2, mt: 1, listStyle: 'disc' }}
                       >
-                        <li>
-                          <strong>Priority:</strong>For highest priority any of
-                          the following keyword <em>P1</em>, <em>Urgent</em>,{' '}
-                          <em>Important</em>, or <em>ASAP</em>. For lower
-                          priorities, use <em>P2</em>, <em>P3</em>, or{' '}
-                          <em>P4</em>.
-                        </li>
                         <li>
                           <strong>Due date:</strong> Specify dates with phrases
                           like <em>tomorrow</em>, <em>next week</em>,{' '}
@@ -1107,14 +1054,6 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
                 }
               }}
               onClear={() => setFrequency(null)}
-            />
-            <PriorityPickerField
-              value={priority}
-              onChange={setPriority}
-              onClear={() => setPriority(0)}
-              emptyDisplay={pickerEmptyDisplay}
-              priorityColors={PRIORITY_COLORS}
-              priorityLabels={PRIORITY_LABELS}
             />
             <AssigneePickerField
               emptyDisplay={pickerEmptyDisplay}

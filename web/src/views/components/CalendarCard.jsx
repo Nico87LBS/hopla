@@ -1,5 +1,5 @@
 import { CalendarMonth } from '@mui/icons-material'
-import { Avatar, Box, Chip, Grid, Typography } from '@mui/joy'
+import { Avatar, Box, Chip, Typography } from '@mui/joy'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { useLocalization } from '../../contexts/LocalizationContext'
 import { useCircleMembers, useUserProfile } from '../../queries/UserQueries'
-import { getPriorityColor, TASK_COLOR } from '../../utils/Colors'
+import { TASK_COLOR } from '../../utils/Colors'
 import {
   familyDay,
   fromPickedDay,
@@ -98,90 +98,6 @@ const CalendarCard = ({ chores }) => {
         />
       </div>
 
-      {!selectedDate && (
-        <Grid
-          container
-          ml={3}
-          mt={1}
-          // start from left:
-          sx={{
-            width: '100%',
-            display: 'flex',
-            // alignItems: 'center',
-            justifyContent: 'start',
-          }}
-        >
-          {/* Show legend with priority colors */}
-          {(() => {
-            const priorityLevels = new Set(
-              chores.map(chore => chore.priority).filter(p => p !== undefined),
-            )
-            const legendItems = []
-
-            // Add priority levels that exist in the chores
-            if (priorityLevels.has(1)) {
-              legendItems.push({
-                name: t('calendarCard.highPriority'),
-                color: TASK_COLOR.PRIORITY_1,
-              })
-            }
-            if (priorityLevels.has(2)) {
-              legendItems.push({
-                name: t('calendarCard.mediumPriority'),
-                color: TASK_COLOR.PRIORITY_2,
-              })
-            }
-            if (priorityLevels.has(3)) {
-              legendItems.push({
-                name: t('calendarCard.lowPriority'),
-                color: TASK_COLOR.PRIORITY_3,
-              })
-            }
-            if (priorityLevels.has(4)) {
-              legendItems.push({
-                name: t('calendarCard.lowestPriority'),
-                color: TASK_COLOR.PRIORITY_4,
-              })
-            }
-            if (
-              chores.some(
-                chore =>
-                  chore.priority === undefined || chore.priority === null,
-              )
-            ) {
-              legendItems.push({
-                name: t('calendarCard.noPriority'),
-                color: TASK_COLOR.NO_PRIORITY,
-              })
-            }
-
-            return legendItems.map((item, index) => (
-              <Grid
-                key={index}
-                xs={6}
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'start',
-                }}
-              >
-                <Box
-                  sx={{
-                    display: 'inline-block',
-                    width: 5,
-                    height: 5,
-                    borderRadius: '50%',
-                    backgroundColor: item.color,
-                  }}
-                />
-                <Typography level='body-xs' ml={0.5}>
-                  {item.name}
-                </Typography>
-              </Grid>
-            ))
-          })()}
-        </Grid>
-      )}
       {selectedDate && (
         <Box
           sx={{
@@ -261,7 +177,7 @@ const CalendarCard = ({ chores }) => {
                       top: 0,
                       bottom: 0,
                       width: '3px',
-                      backgroundColor: getPriorityColor(chore.priority),
+                      backgroundColor: TASK_COLOR.ANYTIME,
                       borderRadius: '2px',
                     },
                   }}

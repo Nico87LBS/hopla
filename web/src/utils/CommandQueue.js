@@ -8,8 +8,6 @@ export const CommandType = {
   UPDATE_CHORE_HISTORY: 'update_chore_history',
   COMPLETE_CHORE: 'complete_chore',
   SKIP_CHORE: 'skip_chore',
-  START_CHORE: 'start_chore',
-  PAUSE_CHORE: 'pause_chore',
   DELETE_CHORE: 'delete_chore',
   DELETE_CHORE_HISTORY: 'delete_chore_history',
   RESCHEDULE_CHORE: 'reschedule_chore',

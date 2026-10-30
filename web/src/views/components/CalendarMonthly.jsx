@@ -2,7 +2,7 @@ import moment from 'moment'
 import Calendar from 'react-calendar'
 
 import { useLocalization } from '../../contexts/LocalizationContext'
-import { getPriorityColor } from '../../utils/Colors'
+import { TASK_COLOR } from '../../utils/Colors'
 import { familyDay, pickedDay } from '../../utils/familyTime'
 import styles from './Calendar.module.css'
 const CalendarMonthly = ({ chores, onDateChange }) => {
@@ -34,7 +34,7 @@ const CalendarMonthly = ({ chores, onDateChange }) => {
             <span
               className={styles.dotWithLine}
               style={{
-                backgroundColor: getPriorityColor(dayChores[0].priority),
+                backgroundColor: TASK_COLOR.ANYTIME,
               }}
             ></span>
           </div>
@@ -49,7 +49,7 @@ const CalendarMonthly = ({ chores, onDateChange }) => {
                 key={index}
                 className={styles.dot}
                 style={{
-                  backgroundColor: getPriorityColor(chore.priority),
+                  backgroundColor: TASK_COLOR.ANYTIME,
                 }}
               ></span>
             )

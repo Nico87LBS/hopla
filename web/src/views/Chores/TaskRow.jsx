@@ -2,8 +2,6 @@ import {
   CheckRounded,
   HourglassEmptyRounded,
   OpenInNew,
-  PauseRounded,
-  PlayArrowRounded,
   RepeatRounded,
   ThumbUpRounded,
   TollRounded,
@@ -27,7 +25,6 @@ import {
   getRecurrentChipText,
 } from '../../utils/ChoreCardHelpers.jsx'
 import { notInCompletionWindow, taskMemberIds } from '../../utils/Chores.jsx'
-import { getPriorityColor } from '../../utils/Colors.jsx'
 import {
   getUrlHostname,
   openExternalUrl,
@@ -83,23 +80,6 @@ const TaskRing = ({ canApprove, chore, onAction }) => {
         }}
       >
         {canApprove ? <ThumbUpRounded /> : <HourglassEmptyRounded />}
-      </Box>
-    )
-  } else if (chore.status === 1 || chore.status === 2) {
-    const running = chore.status === 1
-    label = running ? t('taskRow.pause') : t('taskRow.resume')
-    onClick = () => onAction(running ? 'pause' : 'start', chore)
-    ring = (
-      <Box
-        sx={{
-          ...ringSx,
-          bgcolor: running ? 'primary.solidBg' : 'transparent',
-          border: '2px solid',
-          borderColor: 'primary.solidBg',
-          color: running ? '#fff' : 'primary.plainColor',
-        }}
-      >
-        {running ? <PauseRounded /> : <PlayArrowRounded />}
       </Box>
     )
   } else {
@@ -252,18 +232,6 @@ const TaskRow = ({
         '&:hover': {
           bgcolor: isSelected ? 'primary.softHoverBg' : 'background.level1',
         },
-        ...(chore.priority > 0 && {
-          '&::before': {
-            bgcolor: getPriorityColor(chore.priority),
-            borderRadius: 4,
-            bottom: 12,
-            content: '""',
-            left: 0,
-            position: 'absolute',
-            top: 12,
-            width: 3,
-          },
-        }),
       }}
     >
       {isMultiSelectMode ? (

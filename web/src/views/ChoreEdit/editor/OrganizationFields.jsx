@@ -1,10 +1,9 @@
-import { Add, HorizontalRule } from '@mui/icons-material'
+import { Add } from '@mui/icons-material'
 import { Box, Chip, MenuItem, Option, Select } from '@mui/joy'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
 import { getTextColorFromBackgroundColor } from '../../../utils/Colors.jsx'
-import Priorities from '../../../utils/Priorities.jsx'
 import { FieldLabel } from './EditorCard'
 
 // The labels of a task.
@@ -74,48 +73,4 @@ LabelsField.propTypes = {
   onAddLabel: PropTypes.func.isRequired,
   onLabelsChange: PropTypes.func.isRequired,
   userLabels: PropTypes.array.isRequired,
-}
-
-export const priorityName = (priority, t) =>
-  priority
-    ? Priorities.find(item => item.value === priority)?.name.trim()
-    : t('taskEditor.noPriority')
-
-// The priority of a task, none by default.
-export const PriorityField = ({ onChange, priority }) => {
-  const { t } = useTranslation('chores')
-  return (
-    <Select
-      aria-label={t('choreEdit.priority')}
-      value={priority}
-      onChange={(_, value) => value !== null && onChange(value)}
-      startDecorator={
-        Priorities.find(item => item.value === priority)?.icon || (
-          <HorizontalRule />
-        )
-      }
-    >
-      <Option value={0}>{t('taskEditor.noPriority')}</Option>
-      {Priorities.map(item => (
-        <Option key={item.value} value={item.value}>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1,
-              color: item.color ? `${item.color}.500` : 'text.primary',
-            }}
-          >
-            {item.icon}
-            {item.name.trim()}
-          </Box>
-        </Option>
-      ))}
-    </Select>
-  )
-}
-
-PriorityField.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  priority: PropTypes.number,
 }

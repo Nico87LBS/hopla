@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { useLocalization } from '../../contexts/LocalizationContext'
 import { useCircleMembers, useUserProfile } from '../../queries/UserQueries'
-import { getPriorityColor, TASK_COLOR } from '../../utils/Colors'
+import { TASK_COLOR } from '../../utils/Colors'
 import { familyDay, fromPickedDay, pickedDay } from '../../utils/familyTime'
 import styles from './CalendarDual.module.css'
 
@@ -78,7 +78,7 @@ const CalendarDual = ({ chores, onDateChange }) => {
             <span
               className={styles.dotWithLine}
               style={{
-                backgroundColor: getPriorityColor(dayChores[0].priority),
+                backgroundColor: TASK_COLOR.ANYTIME,
               }}
             ></span>
           </div>
@@ -93,7 +93,7 @@ const CalendarDual = ({ chores, onDateChange }) => {
                 key={index}
                 className={styles.dot}
                 style={{
-                  backgroundColor: getPriorityColor(chore.priority),
+                  backgroundColor: TASK_COLOR.ANYTIME,
                 }}
               ></span>
             )

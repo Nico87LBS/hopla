@@ -6,7 +6,6 @@ import {
   CopyAll,
   Delete,
   Edit,
-  Flag,
   ManageSearch,
   MoreTime,
   MoreVert,
@@ -24,7 +23,6 @@ import {
 } from '@mui/icons-material'
 import {
   Button,
-  Chip,
   Divider,
   IconButton,
   List,
@@ -45,10 +43,7 @@ import { useNavigate } from 'react-router-dom'
 import AppModal from '../../components/common/AppModal'
 import { useImpersonateUser } from '../../contexts/ImpersonateUserContext.jsx'
 import { useCircleMembers, useUserProfile } from '../../queries/UserQueries.jsx'
-import Priorities from '../../utils/Priorities'
 import ChronoModal from './ChronoModal'
-
-const NO_PRIORITY = { name: 'No priority', value: 0, color: 'neutral' }
 
 // Popper's default tethering keeps a popup close to its trigger even when that
 // leaves part of a tall menu off-screen. These modifiers prefer another side,
@@ -104,7 +99,6 @@ const ChoreActionMenu = ({
   onAction,
   onChangeAssignee,
   onChangeDueDate,
-  onChangePriority,
   onClose: controlledOnClose,
   onCompleteWithNote,
   onCompleteWithPastDate,
@@ -120,7 +114,6 @@ const ChoreActionMenu = ({
   const isControlled = controlledAnchorEl !== undefined
   const [uncontrolledAnchorEl, setUncontrolledAnchorEl] = React.useState(null)
   const anchorEl = isControlled ? controlledAnchorEl : uncontrolledAnchorEl
-  const [showPriorityPicker, setShowPriorityPicker] = useState(false)
   const [showSchedulePicker, setShowSchedulePicker] = useState(false)
   const [submenuAnchorEl, setSubmenuAnchorEl] = useState(null)
   const [showChrono, setShowChrono] = useState(false)
@@ -180,7 +173,6 @@ const ChoreActionMenu = ({
   }
 
   const handleMenuClose = () => {
-    setShowPriorityPicker(false)
     setShowSchedulePicker(false)
     setSubmenuAnchorEl(null)
     if (isControlled) {
@@ -191,20 +183,13 @@ const ChoreActionMenu = ({
   }
 
   const openPicker = (picker, target) => {
-    setShowPriorityPicker(picker === 'priority')
     setShowSchedulePicker(picker === 'schedule')
     setSubmenuAnchorEl(isSmallScreen ? null : target)
   }
 
   const closeDesktopSubmenu = () => {
-    setShowPriorityPicker(false)
     setShowSchedulePicker(false)
     setSubmenuAnchorEl(null)
-  }
-
-  const handleChangePriority = priority => {
-    onChangePriority?.(priority)
-    handleMenuClose()
   }
 
   const handleEdit = () => {
@@ -275,9 +260,6 @@ const ChoreActionMenu = ({
     onAction?.('changeDueDate', chore, { date })
     handleMenuClose()
   }
-
-  const currentPriority =
-    Priorities.find(p => p.value === chore?.priority) || null
 
   const scheduleOptions = [
     {
@@ -383,25 +365,6 @@ const ChoreActionMenu = ({
       onClick: target => openPicker('schedule', target),
       submenu: 'schedule',
       endDecorator: <ChevronRight fontSize='small' />,
-    },
-    onChangePriority && {
-      key: 'priority',
-      icon: <Flag />,
-      label: t('priority'),
-      onClick: target => openPicker('priority', target),
-      submenu: 'priority',
-      endDecorator: (
-        <>
-          <Chip
-            size='sm'
-            variant='soft'
-            color={currentPriority?.color || 'neutral'}
-          >
-            {currentPriority?.name.trim() || t('actionMenu.noPriority')}
-          </Chip>
-          <ChevronRight fontSize='small' />
-        </>
-      ),
     },
     {
       key: 'delegate',
@@ -553,66 +516,8 @@ const ChoreActionMenu = ({
     </>
   )
 
-  const priorityOptions = [...Priorities, NO_PRIORITY]
-
-  const renderModalPriorityPicker = () =>
-    priorityOptions.map(priority => (
-      <ListItem key={priority.value}>
-        <ListItemButton
-          selected={(currentPriority?.value || 0) === priority.value}
-          color={priority.color || 'neutral'}
-          onClick={() => handleChangePriority(priority)}
-        >
-          <ListItemDecorator>{priority.icon || <Flag />}</ListItemDecorator>
-          <ListItemContent>
-            {priority.value === 0
-              ? t('taskEditor.noPriority')
-              : priority.name.trim()}
-          </ListItemContent>
-        </ListItemButton>
-      </ListItem>
-    ))
-
-  const renderMenuPriorityPicker = (showBack = true) => (
-    <>
-      {showBack && (
-        <>
-          <MenuItem
-            onClick={e => {
-              e.stopPropagation()
-              closeDesktopSubmenu()
-            }}
-            sx={{ gap: 1 }}
-          >
-            <ArrowBack fontSize='small' />
-            <Typography level='body-sm' fontWeight={600}>
-              {t('priority')}
-            </Typography>
-          </MenuItem>
-          <Divider />
-        </>
-      )}
-      {priorityOptions.map(priority => (
-        <MenuItem
-          key={priority.value}
-          selected={(currentPriority?.value || 0) === priority.value}
-          color={priority.color || 'neutral'}
-          onClick={e => {
-            e.stopPropagation()
-            handleChangePriority(priority)
-          }}
-        >
-          {priority.icon || <Flag />}
-          {priority.name.trim()}
-        </MenuItem>
-      ))}
-    </>
-  )
-
   let modalTitle
-  if (showPriorityPicker) {
-    modalTitle = t('priority')
-  } else if (showSchedulePicker) {
+  if (showSchedulePicker) {
     modalTitle = t('choreView.schedule')
   } else {
     // A named sheet gives mobile users context and gives the dialog an
@@ -668,14 +573,13 @@ const ChoreActionMenu = ({
           showHandle
           contentSx={{ px: 0, pb: 1 }}
         >
-          {(showPriorityPicker || showSchedulePicker) && (
+          {showSchedulePicker && (
             <Button
               variant='plain'
               color='neutral'
               size='sm'
               startDecorator={<ArrowBack fontSize='small' />}
               onClick={() => {
-                setShowPriorityPicker(false)
                 setShowSchedulePicker(false)
               }}
               sx={{ mx: 2, mb: 1 }}
@@ -692,11 +596,9 @@ const ChoreActionMenu = ({
               px: 1,
             }}
           >
-            {showPriorityPicker
-              ? renderModalPriorityPicker()
-              : showSchedulePicker
-                ? renderModalSchedulePicker()
-                : renderModalActionItems()}
+            {showSchedulePicker
+              ? renderModalSchedulePicker()
+              : renderModalActionItems()}
           </List>
         </AppModal>
       ) : (
@@ -742,11 +644,7 @@ const ChoreActionMenu = ({
               p: 0.5,
             }}
           >
-            {showSchedulePicker
-              ? renderMenuSchedulePicker(false)
-              : showPriorityPicker
-                ? renderMenuPriorityPicker(false)
-                : null}
+            {showSchedulePicker ? renderMenuSchedulePicker(false) : null}
           </Menu>
         </>
       )}

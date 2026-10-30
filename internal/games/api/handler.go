@@ -83,6 +83,9 @@ type Today struct {
 	Challenges []games.ChallengeView `json:"challenges"`
 	// ParentsOnPodium puts the parents on the podium with the children.
 	ParentsOnPodium bool `json:"parentsOnPodium"`
+	// NextChangeAt is when the games change on their own (midnight, a bonus
+	// period starting or ending), so boards know when to refresh.
+	NextChangeAt time.Time `json:"nextChangeAt"`
 }
 
 // MemberProgress is a member's rank, from the points earned since joining,
@@ -114,6 +117,10 @@ func (h *Handler) getToday(c *gin.Context) {
 	}
 	today := Today{Rules: rules}
 	if today.Period, err = games.ActivePeriod(db, circleID, now); err != nil {
+		fail(err)
+		return
+	}
+	if today.NextChangeAt, err = games.NextChange(db, circleID, now); err != nil {
 		fail(err)
 		return
 	}

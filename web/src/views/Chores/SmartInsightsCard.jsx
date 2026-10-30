@@ -2,7 +2,6 @@ import {
   EventBusy,
   EventNote,
   HourglassEmpty,
-  PriorityHigh,
   TrendingUp,
   WatchLater,
 } from '@mui/icons-material'
@@ -102,13 +101,6 @@ export const INSIGHT_FILTER_DEFS = {
           value: ['isOverdue', 'isDueThisWeek'],
         },
       ],
-      operator: 'AND',
-    },
-  },
-  'high-priority': {
-    name: 'High Priority',
-    filter: {
-      conditions: [{ type: 'priority', operator: 'is', value: [1, 2] }],
       operator: 'AND',
     },
   },
@@ -255,36 +247,7 @@ const SmartInsightsCard = ({
       })
     }
 
-    // 5. High priority tasks (Medium Priority)
-    const highPriorityTasks = chores.filter(
-      chore => chore.priority === 1 || chore.priority === 2,
-    )
-    if (highPriorityTasks.length > 0) {
-      detectedInsights.push({
-        id: 'high-priority',
-        priority: 5,
-        count: highPriorityTasks.length,
-        title: t('insights.highPriority'),
-        description: t('insights.highPriorityDesc', {
-          count: highPriorityTasks.length,
-        }),
-        color: 'warning',
-        bgColor: '#FF6B6B',
-        icon: <PriorityHigh />,
-        filter: {
-          conditions: [
-            {
-              type: 'priority',
-              operator: 'is',
-              value: [1, 2],
-            },
-          ],
-          operator: 'AND',
-        },
-      })
-    }
-
-    // 6. No due date (Lower Priority)
+    // 5. No due date (Lower Priority)
     const noDueDateTasks = chores.filter(
       chore => !chore.nextDueDate || chore.nextDueDate === null,
     )

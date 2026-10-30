@@ -34,14 +34,10 @@ const getRouteLevel = pathname => {
   if (pathname.includes('/chores/') && pathname.includes('/history')) {
     return 3
   }
-  if (pathname.includes('/chores/') && pathname.includes('/timer')) {
-    return 3
-  }
   if (
     pathname.includes('/chores/') &&
     !pathname.includes('/edit') &&
-    !pathname.includes('/history') &&
-    !pathname.includes('/timer')
+    !pathname.includes('/history')
   ) {
     return 2
   }

@@ -186,7 +186,6 @@ export const useMultiSelect = () => {
       return {
         count: selected.length,
         assignee: sharedValue(selected, c => c.assignedTo),
-        priority: sharedValue(selected, c => c.priority),
         dueDate: sharedValue(selected, c => c.nextDueDate),
         labels: {
           byId: labelsById,

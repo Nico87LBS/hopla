@@ -46,7 +46,6 @@ import (
 	"github.com/nico87lbs/hopla/migrations"
 	"go.uber.org/fx"
 	"gorm.io/gorm"
-
 )
 
 func main() {
@@ -89,7 +88,7 @@ func main() {
 		// Rate limiter
 		fx.Provide(utils.NewRateLimiter),
 
-		// add email sender (implementation selected by email.provider config):
+		// add email sender (SMTP, from the email config):
 		fx.Provide(email.NewSender),
 
 		// MFA services
@@ -118,7 +117,6 @@ func main() {
 		fx.Provide(gamesAPI.NewHandler),
 		fx.Provide(learnAPI.NewHandler),
 
-
 		fx.Provide(chore.NewAPI),
 
 		// Sync:
@@ -130,8 +128,7 @@ func main() {
 		// Docs
 		fx.Provide(docs.NewHandler),
 
-		// storage: factory selects local vs S3 based on config.Storage.StorageType.
-		// Set storage_type: "local" in config for local dev, leave blank for S3.
+		// storage: attachments and photos on the server's disk.
 		fx.Provide(storage.NewStorage),
 		fx.Provide(storage.NewURLSigner),
 		fx.Provide(storage.NewHandler),

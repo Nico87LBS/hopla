@@ -18,22 +18,16 @@ type EmailSender struct {
 	logRawURL bool
 }
 
-// Sender is the interface consumed by callers so the concrete implementation
-// (SMTP vs an HTTP-API provider like SMTP2Go) can be swapped via config.
+// Sender is the interface consumed by callers, so tests can swap the SMTP
+// sender for a fake one.
 type Sender interface {
 	SendResetPasswordEmail(c context.Context, to, code string) error
 	SendVerificationEmail(to, code string) error
 }
 
-// NewSender picks the email implementation based on email.provider.
-// Defaults to the SMTP sender so self-hosted behavior is unchanged.
+// NewSender returns the SMTP sender configured in email.
 func NewSender(conf *config.Config) Sender {
-	switch conf.EmailConfig.Provider {
-	case "smtp2go":
-		return NewSMTP2GoSender(conf)
-	default:
-		return NewEmailSender(conf)
-	}
+	return NewEmailSender(conf)
 }
 
 func NewEmailSender(conf *config.Config) *EmailSender {

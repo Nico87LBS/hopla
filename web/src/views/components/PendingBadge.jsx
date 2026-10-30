@@ -27,8 +27,6 @@ const LABEL_KEYS = {
   reschedule_chore: 'reschedulePending',
   archive_chore: 'archivePending',
   unarchive_chore: 'restorePending',
-  start_chore: 'startPending',
-  pause_chore: 'pausePending',
 }
 
 const formatCommandLabel = (commandType, t) => {
