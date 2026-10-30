@@ -34,7 +34,7 @@
     "next": "Continue",
     "progress": "{{current}} / {{total}}",
     "listen": "Listen again",
-    "heard": "The word: {{word}}"
+    "heard": "You heard: {{word}}"
   },
   "end": {
     "title0": "Keep going, you'll get there!",

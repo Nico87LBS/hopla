@@ -524,7 +524,7 @@ export const cardKey = (moduleId, card, direction = 'direct') =>
 export const cardItems = (card, moduleId, siblings, lang) => {
   const listening = card.type === 'ecoute'
   const known = listening
-    ? ['direct', 'lire', 'inverse', 'dictee']
+    ? ['direct', 'lire', 'inverse', 'dictee', 'chiffres']
     : ['direct', 'inverse']
   const directions = card.sens?.length ? card.sens : ['direct']
   return directions
@@ -577,9 +577,14 @@ export const cardItems = (card, moduleId, siblings, lang) => {
 // - direct: hear the word, pick its meaning, as a drawing when it has one;
 // - lire: read the word, pick its meaning; the word is said once answered;
 // - inverse: see the meaning, pick the word, said once answered too;
-// - dictee: hear the word and write it.
+// - dictee: hear the word and write it;
+// - chiffres: hear a message and type the figures of its answer, such as
+//   the levels and codes of a clearance to read back.
 const listeningItem = (card, base, direction, siblings, lang) => {
   const say = { listen: card.question, lang }
+  if (direction === 'chiffres') {
+    return { ...base, ...say, mode: 'number' }
+  }
   if (direction === 'dictee') {
     return {
       ...base,
