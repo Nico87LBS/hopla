@@ -60,13 +60,6 @@ func (r *UserRepository) GetAllUsers(c context.Context, circleID int) ([]*uModel
 	return users, nil
 }
 
-func (r *UserRepository) GetAllUsersForSystemOnly(c context.Context) ([]*uModel.User, error) {
-	var users []*uModel.User
-	if err := r.db.WithContext(c).Find(&users).Error; err != nil {
-		return nil, err
-	}
-	return users, nil
-}
 func (r *UserRepository) CreateUser(c context.Context, user *uModel.User) (*uModel.User, error) {
 	if err := r.db.WithContext(c).Create(user).Error; err != nil {
 		return nil, err
@@ -95,14 +88,6 @@ func (r *UserRepository) GetChildUsersByParentID(c context.Context, parentID int
 		return nil, err
 	}
 	return childUsers, nil
-}
-
-func (r *UserRepository) GetChildUserCount(c context.Context, parentID int) (int64, error) {
-	var count int64
-	if err := r.db.WithContext(c).Model(&uModel.User{}).Where("parent_user_id = ? AND user_type = ?", parentID, uModel.UserTypeChild).Count(&count).Error; err != nil {
-		return 0, err
-	}
-	return count, nil
 }
 
 func (r *UserRepository) UpdateUser(c context.Context, user *uModel.User) error {

@@ -130,8 +130,5 @@
   },
   "noteViewer": {
     "updatedAt": "Updated at {{date}}"
-  },
-  "plan": {
-    "lockedTitle": "Older history is kept for {{days}} days on Free"
   }
 }

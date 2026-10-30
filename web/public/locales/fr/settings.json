@@ -88,7 +88,6 @@
     "displayName": "Nom affiché",
     "displayNamePlaceholder": "Saisis ton nom affiché",
     "timezone": "Fuseau horaire",
-    "timezonePlaceholder": "Choisis ton fuseau horaire",
     "save": "Enregistrer",
     "cancel": "Annuler"
   },
@@ -279,8 +278,7 @@
     "backupCodesModal": {
       "title": "Nouveaux codes de secours",
       "warning": "Tes anciens codes de secours ne sont plus valides. Garde ces nouveaux codes en lieu sûr. Chaque code ne sert qu'une fois."
-    },
-    "generateCodes": "Générer de nouveaux codes"
+    }
   },
   "apiTokens": {
     "title": "Jetons d'accès",
@@ -512,29 +510,14 @@
     "confirmPasswordPlaceholder": "Répéter le mot de passe"
   },
   "backup": {
-    "keyRequired": "La clé de chiffrement est obligatoire",
     "created": "Sauvegarde créée et téléchargée avec succès",
     "createFailed": "Impossible de créer la sauvegarde",
-    "selectFile": "Choisis un fichier de sauvegarde",
     "restored": "Sauvegarde restaurée. Actualise la page.",
     "restoreFailed": "Impossible de restaurer la sauvegarde",
-    "readFailed": "Impossible de lire le fichier de sauvegarde",
-    "createIntro": "Crée une sauvegarde chiffrée de tes données : toutes tes tâches, ton historique, tes paramètres et, si tu veux, tes fichiers envoyés.",
-    "keyPlaceholder": "Saisir une clé de chiffrement robuste",
     "includeAssets": "Inclure les fichiers envoyés et les ressources",
-    "warningLabel": "Attention :",
-    "restoreWarning": "La restauration d'une sauvegarde remplacera toutes tes données actuelles. Cette action est irréversible.",
-    "restoreKeyPlaceholder": "Saisir la clé de chiffrement utilisée pour cette sauvegarde",
     "title": "Sauvegarde et restauration",
-    "createTab": "Créer une sauvegarde",
-    "restoreTab": "Restaurer une sauvegarde",
     "creating": "Création de la sauvegarde...",
-    "restoring": "Restauration de la sauvegarde...",
-    "encryptionKeyRequired": "Clé de chiffrement *",
-    "keySafetyNotice": "Garde cette clé en lieu sûr — tu en auras besoin pour restaurer ta sauvegarde",
-    "nameOptional": "Nom de la sauvegarde (facultatif)",
     "namePlaceholder": "ex. : sauvegarde-hebdomadaire",
-    "fileRequired": "Fichier de sauvegarde *",
     "selectedFile": "Sélectionné : {{name}}"
   },
   "deletion": {

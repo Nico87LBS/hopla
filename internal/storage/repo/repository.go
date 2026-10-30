@@ -107,39 +107,6 @@ func (r *StorageRepository) GetStorageStats(ctx context.Context, currentUser *uM
 	return int(totalUsedBytes), r.maxUserStorage, nil
 }
 
-func (r *StorageRepository) RemoveAllFileByEntity(ctx context.Context, entityType st.EntityType, entityID int) error {
-	return r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		var files []*st.StorageFile
-		if err := tx.Where("entity_type = ? AND entity_id = ?", entityType, entityID).Find(&files).Error; err != nil {
-			return err
-		}
-		if len(files) == 0 {
-			return nil
-		}
-
-		// group by user so each user's quota is decremented correctly
-		byUser := make(map[int]int)
-		paths := make([]string, 0, len(files))
-		for _, f := range files {
-			byUser[f.UserID] += f.SizeBytes
-			paths = append(paths, f.FilePath)
-		}
-
-		if err := tx.Where("file_path IN (?)", paths).Delete(&st.StorageFile{}).Error; err != nil {
-			return err
-		}
-
-		for userID, totalBytes := range byUser {
-			if err := tx.Model(&st.StorageUsage{}).
-				Where("user_id = ?", userID).
-				Updates(map[string]interface{}{"used_bytes": gorm.Expr("used_bytes - ?", totalBytes)}).Error; err != nil {
-				return err
-			}
-		}
-		return nil
-	})
-}
-
 func (r *StorageRepository) GetFileByPath(ctx context.Context, filePath string, userID int) (*st.StorageFile, error) {
 	var file st.StorageFile
 	if err := r.db.WithContext(ctx).Where("file_path = ? and user_id = ?", filePath, userID).First(&file).Error; err != nil {

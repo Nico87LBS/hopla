@@ -36,14 +36,6 @@ func (r *LabelRepository) CreateLabels(ctx context.Context, labels []*lModel.Lab
 	return nil
 }
 
-func (r *LabelRepository) GetLabelsByIDs(ctx context.Context, ids []int) ([]*lModel.Label, error) {
-	var labels []*lModel.Label
-	if err := r.db.WithContext(ctx).Where("id IN (?)", ids).Find(&labels).Error; err != nil {
-		return nil, err
-	}
-	return labels, nil
-}
-
 func (r *LabelRepository) isLabelsAssignableByUser(ctx context.Context, userID int, circleID int, toBeAdded []int, toBeRemoved []int) bool {
 	// combine toBeAdded and toBeRemoved into a new slice
 	labelIDs := []int(nil)
@@ -91,13 +83,6 @@ func (r *LabelRepository) AssignLabelsToChore(ctx context.Context, choreID int, 
 		}
 		return nil
 	})
-}
-
-func (r *LabelRepository) DeassignLabelsFromChore(ctx context.Context, choreID int, userID int, labelIDs []int) error {
-	if err := r.db.WithContext(ctx).Where("chore_id = ? AND user_id = ? AND label_id IN (?)", choreID, userID, labelIDs).Delete(&chModel.ChoreLabels{}).Error; err != nil {
-		return err
-	}
-	return nil
 }
 
 // bumpChoreSyncVersions assigns a fresh sync version to every chore in choreIDs so
@@ -193,50 +178,6 @@ func (r *LabelRepository) DeassignLabelFromAllChoreAndDelete(ctx context.Context
 
 		return nil
 	})
-}
-
-func (r *LabelRepository) isLabelsOwner(ctx context.Context, userID int, labelIDs []int) bool {
-	var count int64
-	r.db.WithContext(ctx).Model(&lModel.Label{}).Where("id IN (?) AND created_by = ?", labelIDs, userID).Count(&count)
-	return count == int64(len(labelIDs))
-}
-
-func (r *LabelRepository) DeleteLabels(ctx context.Context, userID int, ids []int) error {
-	// remove all ChoreLabels record for this:
-	if !r.isLabelsOwner(ctx, userID, ids) {
-		return errors.New("labels are not owned by user")
-	}
-
-	tx := r.db.WithContext(ctx).Begin()
-
-	// Capture affected chores before the join rows disappear.
-	choreIDs, err := r.choreIDsWithLabels(ctx, tx, ids)
-	if err != nil {
-		tx.Rollback()
-		return err
-	}
-
-	if err := tx.Where("label_id IN (?)", ids).Delete(&chModel.ChoreLabels{}).Error; err != nil {
-		tx.Rollback()
-		return err
-	}
-
-	if err := tx.Where("id IN (?)", ids).Delete(&lModel.Label{}).Error; err != nil {
-		tx.Rollback()
-		return err
-	}
-
-	if err := r.bumpChoreSyncVersions(ctx, tx, choreIDs); err != nil {
-		tx.Rollback()
-		return err
-	}
-
-	if err := tx.Commit().Error; err != nil {
-		tx.Rollback()
-		return err
-	}
-
-	return nil
 }
 
 func (r *LabelRepository) UpdateLabel(ctx context.Context, userID int, label *lModel.Label) error {

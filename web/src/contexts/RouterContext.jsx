@@ -273,18 +273,6 @@ const Router = createBrowserRouter([
         element: <LabelDetailView />,
       },
       {
-        path: 'rewards/',
-        element: <Navigate to='/family?tab=shop' replace />,
-      },
-      {
-        path: 'projects/',
-        element: <Navigate to='/labels' replace />,
-      },
-      {
-        path: 'filters/',
-        element: <Navigate to='/labels' replace />,
-      },
-      {
         path: '*',
         element: <NotFound />,
       },

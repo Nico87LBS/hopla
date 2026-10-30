@@ -24,14 +24,6 @@ func NewPointsRepository(db *gorm.DB) *PointsRepository {
 	return &PointsRepository{db}
 }
 
-func (r *PointsRepository) CreatePointsHistory(c context.Context, tx *gorm.DB, pointsHistory *pModel.PointsHistory) error {
-	if tx != nil {
-		return tx.Model(&pModel.PointsHistory{}).Save(pointsHistory).Error
-	}
-
-	return r.db.WithContext(c).Save(pointsHistory).Error
-}
-
 // Record adds a ledger row inside the transaction that changes the points.
 func Record(tx *gorm.DB, entry pModel.PointsHistory) error {
 	if entry.CreatedAt.IsZero() {

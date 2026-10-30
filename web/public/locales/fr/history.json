@@ -130,8 +130,5 @@
   },
   "noteViewer": {
     "updatedAt": "Mise à jour le {{date}}"
-  },
-  "plan": {
-    "lockedTitle": "L'historique plus ancien est conservé pendant {{days}} jours sur Basic"
   }
 }

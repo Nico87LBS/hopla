@@ -13,15 +13,11 @@ type EventType string
 
 const (
 	// Chore events
-	EventTypeChoreCreated         EventType = "chore.created"
-	EventTypeChoreUpdated         EventType = "chore.updated"
-	EventTypeChoreDeleted         EventType = "chore.deleted"
-	EventTypeChoreCompleted       EventType = "chore.completed"
-	EventTypeChoreSkipped         EventType = "chore.skipped"
-	EventTypeChoreAssigneeChanged EventType = "chore.assignee_changed"
-	EventTypeChoreStatus          EventType = "chore.status"
-	EventTypeChoreDueDateChanged  EventType = "chore.due_date_changed"
-	EventTypeChoreArchived        EventType = "chore.archived"
+	EventTypeChoreCreated   EventType = "chore.created"
+	EventTypeChoreUpdated   EventType = "chore.updated"
+	EventTypeChoreDeleted   EventType = "chore.deleted"
+	EventTypeChoreCompleted EventType = "chore.completed"
+	EventTypeChoreSkipped   EventType = "chore.skipped"
 
 	// Change events tell clients to refresh data that has no detailed event:
 	// rewards and redemptions, and the circle's members.
@@ -153,15 +149,6 @@ func NewChoreCompletedEvent(chore *chModel.Chore, user *uModel.User, history *ch
 		Chore:   chore,
 		User:    user,
 		History: history,
-		Note:    note,
-	})
-}
-
-func NewChoreStatusChangedEvent(chore *chModel.Chore, user *uModel.User, changes map[string]interface{}, note *string) *Event {
-	return NewEvent(EventTypeChoreStatus, chore.CircleID, &ChoreEventData{
-		Chore:   chore,
-		User:    user,
-		Changes: changes,
 		Note:    note,
 	})
 }

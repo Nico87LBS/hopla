@@ -111,19 +111,6 @@ func (b *EventBroadcaster) BroadcastChoreCompleted(chore *chModel.Chore, user *u
 	b.broadcastChoreEvent(chore, event)
 }
 
-// BroadcastChoreStarted broadcasts a chore start event
-func (b *EventBroadcaster) BroadcastChoreStatus(chore *chModel.Chore, user *uModel.User, changes map[string]interface{}) {
-	if !b.service.config.Enabled {
-		return
-	}
-
-	event := NewChoreStatusChangedEvent(chore, user, changes, nil)
-	event.ID = b.generateEventID()
-	event.SyncVersion = chore.SyncVersion
-
-	b.broadcastChoreEvent(chore, event)
-}
-
 // BroadcastChoreSkipped broadcasts a chore skip event
 func (b *EventBroadcaster) BroadcastChoreSkipped(chore *chModel.Chore, user *uModel.User, history *chModel.ChoreHistory, note *string) {
 	if !b.service.config.Enabled {

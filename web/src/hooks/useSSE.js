@@ -102,7 +102,6 @@ export const useSSE = () => {
             break
           case 'chore.updated':
           case 'chore.completed':
-          case 'chore.status':
           case 'chore.skipped': {
             queryClient.invalidateQueries({ queryKey: ['journal'] })
             queryClient.invalidateQueries({ queryKey: ['games', 'today'] })
@@ -132,10 +131,7 @@ export const useSSE = () => {
             })
 
             // If chore update then also refetch chore details:
-            if (
-              eventData.type === 'chore.updated' ||
-              eventData.type === 'chore.status'
-            ) {
+            if (eventData.type === 'chore.updated') {
               queryClient.invalidateQueries({
                 queryKey: ['choreDetails', updatedChore.id],
               })

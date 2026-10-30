@@ -566,7 +566,6 @@ export const useChoreActions = ({
         case 'completeWithNote':
         case 'completeWithPastDate':
         case 'changeAssignee':
-        case 'writeNFC':
         case 'nudge':
           openModal(action, chore, extraData)
           break

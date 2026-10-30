@@ -88,7 +88,6 @@
     "displayName": "Display Name",
     "displayNamePlaceholder": "Enter your display name",
     "timezone": "Timezone",
-    "timezonePlaceholder": "Select your timezone",
     "save": "Save",
     "cancel": "Cancel"
   },
@@ -279,8 +278,7 @@
     "backupCodesModal": {
       "title": "New Backup Codes",
       "warning": "Your previous backup codes are now invalid. Save these new codes in a safe place. Each code can only be used once."
-    },
-    "generateCodes": "Generate New Codes"
+    }
   },
   "apiTokens": {
     "title": "Access tokens",
@@ -512,29 +510,14 @@
     "confirmPasswordPlaceholder": "Repeat password"
   },
   "backup": {
-    "keyRequired": "Encryption key is required",
     "created": "Backup created and downloaded successfully",
     "createFailed": "Failed to create backup",
-    "selectFile": "Please select a backup file",
     "restored": "Backup restored successfully. Please refresh the page.",
     "restoreFailed": "Failed to restore backup",
-    "readFailed": "Failed to read backup file",
-    "createIntro": "Create an encrypted backup of your data. This backup will include all your chores, history, settings, and optionally your uploaded files.",
-    "keyPlaceholder": "Enter a strong encryption key",
     "includeAssets": "Include uploaded files and assets",
-    "warningLabel": "Warning:",
-    "restoreWarning": "Restoring a backup will replace all your current data. This action cannot be undone.",
-    "restoreKeyPlaceholder": "Enter the encryption key used for this backup",
     "title": "Backup & Restore",
-    "createTab": "Create Backup",
-    "restoreTab": "Restore Backup",
     "creating": "Creating backup...",
-    "restoring": "Restoring backup...",
-    "encryptionKeyRequired": "Encryption Key *",
-    "keySafetyNotice": "Keep this key safe—you'll need it to restore your backup",
-    "nameOptional": "Backup Name (Optional)",
     "namePlaceholder": "e.g., weekly-backup",
-    "fileRequired": "Backup File *",
     "selectedFile": "Selected: {{name}}"
   },
   "deletion": {
