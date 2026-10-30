@@ -116,6 +116,7 @@ type goalReq struct {
 	Name    string `json:"name" binding:"required,max=80"`
 	Kind    string `json:"kind" binding:"required"`
 	ChoreID *int   `json:"choreId"`
+	Module  string `json:"module" binding:"max=80"`
 	Target  int    `json:"target"`
 	Reward  int    `json:"reward"`
 	UserIDs []int  `json:"userIds"`
@@ -140,6 +141,17 @@ func (h *Handler) validGoal(c *gin.Context, circleID int, req *goalReq, kinds ..
 	}
 	if req.Kind != games.GoalTasks {
 		req.ChoreID = nil
+	}
+	if !games.IsLearnGoal(req.Kind) {
+		req.Module = ""
+	}
+	if req.Module != "" {
+		var count int64
+		if err := h.db.WithContext(c).Table("learn_modules").Where("module_key = ? AND circle_id = ?", req.Module, circleID).
+			Count(&count).Error; err != nil || count == 0 {
+			c.JSON(400, gin.H{"error": "Module not found"})
+			return false
+		}
 	}
 	if req.ChoreID != nil {
 		var count int64
@@ -180,12 +192,13 @@ func (h *Handler) bindQuest(c *gin.Context, circleID int) (QuestReq, bool) {
 		c.JSON(400, gin.H{"error": "A quest lasts a week or a month"})
 		return req, false
 	}
-	return req, h.validGoal(c, circleID, &req.goalReq, games.GoalTasks, games.GoalPoints, games.GoalStreak)
+	return req, h.validGoal(c, circleID, &req.goalReq, games.GoalTasks, games.GoalPoints, games.GoalStreak,
+		games.GoalGames, games.GoalStars)
 }
 
 func (req QuestReq) apply(quest *games.Quest) {
-	quest.Name, quest.Kind, quest.ChoreID, quest.Target, quest.Reward, quest.Period, quest.UserIDs =
-		req.Name, req.Kind, req.ChoreID, req.Target, req.Reward, req.Period, req.UserIDs
+	quest.Name, quest.Kind, quest.ChoreID, quest.Module, quest.Target, quest.Reward, quest.Period, quest.UserIDs =
+		req.Name, req.Kind, req.ChoreID, req.Module, req.Target, req.Reward, req.Period, req.UserIDs
 }
 
 func (h *Handler) getQuests(c *gin.Context) {
@@ -279,12 +292,13 @@ func (h *Handler) bindChallenge(c *gin.Context, circleID int) (ChallengeReq, boo
 		c.JSON(400, gin.H{"error": "A challenge ends after it starts, within a year"})
 		return req, false
 	}
-	return req, h.validGoal(c, circleID, &req.goalReq, games.GoalTasks, games.GoalPoints)
+	return req, h.validGoal(c, circleID, &req.goalReq, games.GoalTasks, games.GoalPoints,
+		games.GoalGames, games.GoalStars)
 }
 
 func (req ChallengeReq) apply(challenge *games.Challenge) {
-	challenge.Name, challenge.Kind, challenge.ChoreID, challenge.Target, challenge.Reward, challenge.UserIDs =
-		req.Name, req.Kind, req.ChoreID, req.Target, req.Reward, req.UserIDs
+	challenge.Name, challenge.Kind, challenge.ChoreID, challenge.Module, challenge.Target, challenge.Reward,
+		challenge.UserIDs = req.Name, req.Kind, req.ChoreID, req.Module, req.Target, req.Reward, req.UserIDs
 	challenge.RewardText, challenge.Shared = strings.TrimSpace(req.RewardText), req.Shared
 	challenge.StartsAt, challenge.EndsAt = req.StartsAt.UTC(), req.EndsAt.UTC()
 }

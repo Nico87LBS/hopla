@@ -59,6 +59,7 @@ func Migration(db *gorm.DB) error {
 		learn.Card{},
 		learn.CardEdit{},
 		learn.Report{},
+		learn.PlayToken{},
 		stModel.SubTask{},
 		storageModel.StorageFile{},
 		storageModel.StorageUsage{},

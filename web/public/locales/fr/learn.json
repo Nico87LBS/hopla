@@ -204,5 +204,10 @@
     "keyHelp": "Clé : {{key}}. Ce qui est déjà appris sur cette fiche est gardé.",
     "original": "Original du module",
     "revert": "Revenir à l'original"
+  },
+  "playLink": {
+    "expiredTitle": "Ce lien ne marche plus",
+    "expired": "Rouvre les jeux depuis l'écran de la famille.",
+    "ended": "Les jeux sont fermés. Rouvre-les depuis l'écran de la famille."
   }
 }

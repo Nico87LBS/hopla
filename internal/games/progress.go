@@ -144,7 +144,8 @@ func drawQuests(db *gorm.DB, circleID, userID int, now time.Time) error {
 		}
 		for _, quest := range pool {
 			draw := QuestDraw{CircleID: circleID, UserID: userID, PeriodKey: key, QuestID: quest.ID, Period: period,
-				Name: quest.Name, Kind: quest.Kind, ChoreID: quest.ChoreID, Target: quest.Target, Reward: quest.Reward}
+				Name: quest.Name, Kind: quest.Kind, ChoreID: quest.ChoreID, Module: quest.Module, Target: quest.Target,
+				Reward: quest.Reward}
 			if err := db.Clauses(clause.OnConflict{DoNothing: true}).Create(&draw).Error; err != nil {
 				return err
 			}
@@ -177,6 +178,39 @@ func tasksDone(db *gorm.DB, circleID int, choreID *int, from, to time.Time) (map
 	return counts, nil
 }
 
+// learnDone counts, per member, the learning games played between from and
+// to, or the stars they won, in every module or only in one module or pack
+// (a pack counts the games of its modules).
+func learnDone(db *gorm.DB, circleID int, kind, module string, from, to time.Time) (map[int]int, error) {
+	query := db.Table("learn_sessions").Where("circle_id = ? AND played_at >= ? AND played_at < ?", circleID, from, to)
+	if module != "" {
+		var pack struct {
+			Children []string `gorm:"column:children;serializer:json"`
+		}
+		if err := db.Table("learn_modules").Select("children").Where("circle_id = ? AND module_key = ?", circleID, module).
+			Limit(1).Scan(&pack).Error; err != nil {
+			return nil, err
+		}
+		query = query.Where("module_key IN ?", append(pack.Children, module))
+	}
+	count := "COUNT(*)"
+	if kind == GoalStars {
+		count = "COALESCE(SUM(stars), 0)"
+	}
+	var rows []struct {
+		UserID int
+		Count  int
+	}
+	if err := query.Select("user_id, " + count + " AS count").Group("user_id").Scan(&rows).Error; err != nil {
+		return nil, err
+	}
+	counts := map[int]int{}
+	for _, row := range rows {
+		counts[row.UserID] = row.Count
+	}
+	return counts, nil
+}
+
 // taskPointsEarned sums, per member, the points of tasks credited between from
 // and to, less the undone ones. Bonuses do not count, so a quest reward never
 // helps reach another goal.
@@ -201,9 +235,11 @@ func taskPointsEarned(db *gorm.DB, circleID int, from, to time.Time) (map[int]in
 
 // goalProgress returns, per member, how far they are on a goal between from
 // and to.
-func goalProgress(db *gorm.DB, circleID int, kind string, choreID *int, from, to, now time.Time) (map[int]int, error) {
+func goalProgress(db *gorm.DB, circleID int, kind string, choreID *int, module string, from, to, now time.Time) (map[int]int, error) {
 	loc := zone.Of(circleID)
 	switch kind {
+	case GoalGames, GoalStars:
+		return learnDone(db, circleID, kind, module, from, to)
 	case GoalTasks:
 		return tasksDone(db, circleID, choreID, from, to)
 	case GoalPoints:
@@ -292,14 +328,14 @@ func Quests(db *gorm.DB, circleID int, userIDs []int, now time.Time) (map[int][]
 	cache := map[string]map[int]int{}
 	for _, draw := range draws {
 		from, to, _ := periodBounds(draw.Period, now, loc)
-		key := fmt.Sprintf("%s:%s:%v", draw.Period, draw.Kind, draw.ChoreID)
+		key := fmt.Sprintf("%s:%s:%v:%s", draw.Period, draw.Kind, draw.ChoreID, draw.Module)
 		if draw.ChoreID != nil {
 			key = fmt.Sprintf("%s:%s:%d", draw.Period, draw.Kind, *draw.ChoreID)
 		}
 		progress, ok := cache[key]
 		if !ok {
 			var err error
-			if progress, err = goalProgress(db, circleID, draw.Kind, draw.ChoreID, from, to, now); err != nil {
+			if progress, err = goalProgress(db, circleID, draw.Kind, draw.ChoreID, draw.Module, from, to, now); err != nil {
 				return nil, err
 			}
 			cache[key] = progress
@@ -366,7 +402,8 @@ func challengeView(db *gorm.DB, challenge Challenge, members []int, now time.Tim
 	if now.Before(to) {
 		to = now.Add(time.Second)
 	}
-	progress, err := goalProgress(db, challenge.CircleID, challenge.Kind, challenge.ChoreID, challenge.StartsAt, to, now)
+	progress, err := goalProgress(db, challenge.CircleID, challenge.Kind, challenge.ChoreID, challenge.Module,
+		challenge.StartsAt, to, now)
 	if err != nil {
 		return view, err
 	}

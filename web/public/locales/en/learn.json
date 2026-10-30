@@ -204,5 +204,10 @@
     "keyHelp": "Key: {{key}}. What was already learned of this card is kept.",
     "original": "Module's original",
     "revert": "Back to the original"
+  },
+  "playLink": {
+    "expiredTitle": "This link no longer works",
+    "expired": "Open the games again from the family screen.",
+    "ended": "The games are closed. Open them again from the family screen."
   }
 }

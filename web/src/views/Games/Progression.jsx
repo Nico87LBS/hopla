@@ -26,6 +26,7 @@ import { useTranslation } from 'react-i18next'
 
 import { useLocalization } from '../../contexts/LocalizationContext'
 import { useChores } from '../../queries/ChoreQueries'
+import { useLearnModules } from '../../queries/LearnQueries'
 import { useNotification } from '../../service/NotificationProvider'
 import {
   DeleteChallenge,
@@ -55,7 +56,18 @@ const useGoalText = () => {
     () => new Map((choresData?.res || []).map(c => [c.id, c.name])),
     [choresData?.res],
   )
+  const { data: learnData } = useLearnModules()
+  const modules = useMemo(
+    () => new Map((learnData?.modules || []).map(m => [m.id, m.name])),
+    [learnData?.modules],
+  )
   return goal => {
+    if ((goal.kind === 'games' || goal.kind === 'stars') && goal.module) {
+      return t(`goals.${goal.kind}In`, {
+        count: goal.target,
+        name: modules.get(goal.module) || '?',
+      })
+    }
     if (goal.kind === 'tasks' && goal.choreId) {
       return t('goals.oneTask', {
         count: goal.target,
@@ -266,6 +278,7 @@ const emptyGoal = () => ({
   name: '',
   kind: 'tasks',
   choreId: null,
+  module: '',
   target: 5,
   reward: 10,
   userIds: [],
@@ -276,6 +289,13 @@ const GoalFields = ({ draft, kinds, members, setDraft }) => {
   const { t } = useTranslation('games')
   const { data: choresData } = useChores()
   const chores = (choresData?.res || []).filter(c => c.isActive !== false)
+  const { data: learnData } = useLearnModules()
+  // Packs first, then the modules, for a goal on learning games.
+  const modules = [...(learnData?.modules || [])].sort(
+    (a, b) =>
+      (b.children?.length > 0) - (a.children?.length > 0) ||
+      a.name.localeCompare(b.name),
+  )
   const set = (key, value) => setDraft({ ...draft, [key]: value })
   const toggle = userId =>
     set(
@@ -300,7 +320,7 @@ const GoalFields = ({ draft, kinds, members, setDraft }) => {
           size='sm'
           value={draft.kind}
           onChange={(event, value) =>
-            setDraft({ ...draft, kind: value, choreId: null })
+            setDraft({ ...draft, kind: value, choreId: null, module: '' })
           }
           sx={{ minWidth: 170 }}
         >
@@ -322,6 +342,21 @@ const GoalFields = ({ draft, kinds, members, setDraft }) => {
             {chores.map(chore => (
               <Option key={chore.id} value={chore.id}>
                 {chore.name}
+              </Option>
+            ))}
+          </Select>
+        )}
+        {(draft.kind === 'games' || draft.kind === 'stars') && (
+          <Select
+            size='sm'
+            value={draft.module}
+            onChange={(event, value) => set('module', value)}
+            sx={{ flex: 1, minWidth: 0 }}
+          >
+            <Option value=''>{t('goals.allGames')}</Option>
+            {modules.map(module => (
+              <Option key={module.id} value={module.id}>
+                {module.name}
               </Option>
             ))}
           </Select>
@@ -377,6 +412,8 @@ const goalPayload = draft => ({
   name: draft.name.trim(),
   kind: draft.kind,
   choreId: draft.kind === 'tasks' ? draft.choreId : null,
+  module:
+    draft.kind === 'games' || draft.kind === 'stars' ? draft.module || '' : '',
   target: Number(draft.target) || 0,
   reward: Number(draft.reward) || 0,
   userIds: draft.userIds,
@@ -467,7 +504,7 @@ export const QuestListCard = ({ members }) => {
             draft={draft}
             setDraft={setDraft}
             members={members}
-            kinds={['tasks', 'points', 'streak']}
+            kinds={['tasks', 'points', 'streak', 'games', 'stars']}
           />
           <Select
             size='sm'
@@ -629,7 +666,7 @@ export const ChallengesCard = ({ isParent, members, today }) => {
             draft={draft}
             setDraft={setDraft}
             members={members}
-            kinds={['points', 'tasks']}
+            kinds={['points', 'tasks', 'games', 'stars']}
           />
           <Input
             size='sm'

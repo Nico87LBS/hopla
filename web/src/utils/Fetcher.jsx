@@ -2,6 +2,7 @@ import i18n from 'i18next'
 import moment from 'moment'
 
 import { apiClient } from './ApiClient'
+import { inPlayPages, playFetch } from './learn/playSession'
 
 // Migration helpers to maintain compatibility with existing code
 const Fetch = async (endpoint, options = {}) => {
@@ -1138,11 +1139,13 @@ const EditLearnCard = async change =>
 
 const SendLearnReport = async report =>
   learnAnswer(
-    await Fetch(`/learn/reports`, {
-      method: 'POST',
-      headers: HEADERS(),
-      body: JSON.stringify(report),
-    }),
+    await (inPlayPages()
+      ? playFetch('/reports', { method: 'POST', body: JSON.stringify(report) })
+      : Fetch(`/learn/reports`, {
+          method: 'POST',
+          headers: HEADERS(),
+          body: JSON.stringify(report),
+        })),
   )
 
 const ResolveLearnReport = async id =>
@@ -1161,21 +1164,30 @@ const GetLearnStats = async key =>
     }),
   )
 
+// On the /play pages, a family screen plays with a play session instead of
+// a sign-in.
 const GetLearnPlayer = async userId =>
   learnAnswer(
-    await Fetch(`/learn/players/${userId}`, {
-      method: 'GET',
-      headers: HEADERS(),
-    }),
+    inPlayPages()
+      ? await playFetch('/player', { method: 'GET' })
+      : await Fetch(`/learn/players/${userId}`, {
+          method: 'GET',
+          headers: HEADERS(),
+        }),
   )
 
 const SendLearnGame = async game =>
   learnAnswer(
-    await Fetch(`/learn/games`, {
-      method: 'POST',
-      headers: HEADERS(),
-      body: JSON.stringify(game),
-    }),
+    inPlayPages()
+      ? await playFetch('/games', {
+          method: 'POST',
+          body: JSON.stringify(game),
+        })
+      : await Fetch(`/learn/games`, {
+          method: 'POST',
+          headers: HEADERS(),
+          body: JSON.stringify(game),
+        }),
   )
 
 export {

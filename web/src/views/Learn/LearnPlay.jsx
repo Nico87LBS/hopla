@@ -464,8 +464,9 @@ const sendGame = async (game, userId) => {
   }
 }
 
-// /learn/:userId/play/:moduleId: one game, question after question.
-const LearnPlay = () => {
+// /learn/:userId/play/:moduleId: one game, question after question. On the
+// family screen (playMode), it goes back to the play pages.
+const LearnPlay = ({ playMode = false }) => {
   const { t } = useTranslation('learn')
   const { moduleId, userId: param } = useParams()
   const userId = Number(param)
@@ -502,7 +503,7 @@ const LearnPlay = () => {
     if (!game && compiled && module) start()
   }, [game, compiled, module, start])
 
-  const back = `/learn/${userId}`
+  const back = playMode ? '/play' : `/learn/${userId}`
   if (isLoading || (!game && compiled)) return <LoadingComponent />
   if (!module || !compiled || moduleLocked(compiled, byId, cards)) {
     return <Navigate to={back} replace />
@@ -706,5 +707,7 @@ const LearnPlay = () => {
     </Container>
   )
 }
+
+LearnPlay.propTypes = { playMode: PropTypes.bool }
 
 export default LearnPlay

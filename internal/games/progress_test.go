@@ -9,6 +9,7 @@ import (
 
 	cModel "github.com/nico87lbs/hopla/internal/circle/model"
 	. "github.com/nico87lbs/hopla/internal/games"
+	"github.com/nico87lbs/hopla/internal/learn"
 	ptModel "github.com/nico87lbs/hopla/internal/points"
 )
 
@@ -152,6 +153,37 @@ func TestChallenges(t *testing.T) {
 	credit(t, db, task.ID, 2, 10, now)
 	require.NoError(t, AfterTask(db, 1, 2, now, now))
 	require.Equal(t, 30+5+3, earned(t, db, 2), "a challenge pays once")
+}
+
+func TestLearnGoalsCountGamesAndStars(t *testing.T) {
+	db := setup(t)
+	require.NoError(t, db.Save(&Rules{CircleID: 1}).Error)
+	now := time.Now().UTC()
+	require.NoError(t, db.Create(&learn.Module{CircleID: 1, Key: "maths-ce2", Name: "Maths CE2",
+		Children: []string{"tables-ce2", "divisions"}, Content: "{}"}).Error)
+	play := func(module string, stars int) {
+		require.NoError(t, db.Create(&learn.Session{CircleID: 1, ClientID: module + time.Now().String(), UserID: 2,
+			ModuleKey: module, Day: "2026-10-30", Total: 10, Stars: stars, PlayedAt: now}).Error)
+	}
+	require.NoError(t, db.Create(&Challenge{CircleID: 1, Name: "3 parties", Kind: GoalGames, Target: 3, Reward: 4,
+		StartsAt: now.Add(-time.Hour), EndsAt: now.Add(time.Hour)}).Error)
+	require.NoError(t, db.Create(&Challenge{CircleID: 1, Name: "5 étoiles en maths", Kind: GoalStars,
+		Module: "maths-ce2", Target: 5, Reward: 6, StartsAt: now.Add(-time.Hour), EndsAt: now.Add(time.Hour)}).Error)
+
+	play("tables-ce2", 3)
+	play("anglais", 3)
+	views, err := Challenges(db, 1, []int{2}, now, now)
+	require.NoError(t, err)
+	require.Equal(t, 2, views[0].Progress[2], "every game counts")
+	require.Equal(t, 3, views[1].Progress[2], "only the pack's modules count their stars")
+
+	play("divisions", 2)
+	require.NoError(t, Settle(db, 1, []int{2}, now))
+	views, err = Challenges(db, 1, []int{2}, now, now)
+	require.NoError(t, err)
+	require.Equal(t, []int{2}, views[0].Winners)
+	require.Equal(t, []int{2}, views[1].Winners)
+	require.Equal(t, 4+6, earned(t, db, 2))
 }
 
 func TestChallengeTargetLowerAfterAbsence(t *testing.T) {

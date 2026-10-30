@@ -93,14 +93,7 @@ export const LearnChooser = () => {
   )
 }
 
-const ModuleCard = ({
-  cards,
-  compiled,
-  compiledById,
-  dayFull,
-  module,
-  userId,
-}) => {
+const ModuleCard = ({ cards, compiled, compiledById, dayFull, module, to }) => {
   const { t } = useTranslation('learn')
   const color = subjectColor(module.subject, module.document?.couleur)
   const locked = moduleLocked(compiled, compiledById, cards)
@@ -192,7 +185,7 @@ const ModuleCard = ({
     <Sheet
       variant='outlined'
       component={locked ? 'div' : Link}
-      to={locked ? undefined : `/learn/${userId}/play/${module.id}`}
+      to={locked ? undefined : to}
       sx={{
         borderRadius: 'xl',
         display: 'block',
@@ -213,7 +206,7 @@ ModuleCard.propTypes = {
   compiled: PropTypes.object.isRequired,
   compiledById: PropTypes.object.isRequired,
   module: PropTypes.object.isRequired,
-  userId: PropTypes.number.isRequired,
+  to: PropTypes.string.isRequired,
 }
 
 // groupByPack puts the modules under their pack, in the pack's order; the
@@ -232,14 +225,11 @@ const groupByPack = player => {
   return groups
 }
 
-// /learn/:userId: the modules a person plays.
-export const LearnHome = () => {
+// LearnModules is the list of a person's modules, with the day's total. The
+// family screen shows it too, signed in as nobody: it gets the member and
+// where a module opens rather than reading them from the account.
+export const LearnModules = ({ isParent, member, playPath, userId }) => {
   const { t } = useTranslation('learn')
-  const { userId: param } = useParams()
-  const userId = Number(param)
-  const isParent = useIsParent()
-  const { data: me } = useUserProfile()
-  const members = useActiveMembers()
   const queryClient = useQueryClient()
   const { data: player, error, isLoading } = usePlayer(userId)
   const { byId, cards } = useCompiled(player)
@@ -253,12 +243,8 @@ export const LearnHome = () => {
     return () => window.removeEventListener('online', online)
   }, [queryClient, userId])
 
-  if (me && isParent === false && me.id !== userId) {
-    return <Navigate to={`/learn/${me.id}`} replace />
-  }
   if (isLoading) return <LoadingComponent />
 
-  const member = members.find(m => m.userId === userId)
   const waiting = queuedFor(userId)
   const groups = player ? groupByPack(player) : []
   const left = totalLeft(player)
@@ -386,7 +372,7 @@ export const LearnHome = () => {
                     compiledById={byId}
                     cards={cards}
                     dayFull={left === 0}
-                    userId={userId}
+                    to={playPath(module.id)}
                   />
                 ))}
             </Stack>
@@ -394,5 +380,33 @@ export const LearnHome = () => {
         ))}
       </Stack>
     </Container>
+  )
+}
+
+LearnModules.propTypes = {
+  isParent: PropTypes.bool,
+  member: PropTypes.object,
+  playPath: PropTypes.func.isRequired,
+  userId: PropTypes.number.isRequired,
+}
+
+// /learn/:userId: the modules a person plays.
+export const LearnHome = () => {
+  const { userId: param } = useParams()
+  const userId = Number(param)
+  const isParent = useIsParent()
+  const { data: me } = useUserProfile()
+  const members = useActiveMembers()
+
+  if (me && isParent === false && me.id !== userId) {
+    return <Navigate to={`/learn/${me.id}`} replace />
+  }
+  return (
+    <LearnModules
+      userId={userId}
+      member={members.find(m => m.userId === userId)}
+      isParent={!!isParent}
+      playPath={moduleId => `/learn/${userId}/play/${moduleId}`}
+    />
   )
 }

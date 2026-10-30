@@ -23,6 +23,9 @@ var changeRoutes = []struct {
 	{"/api/v1/games", EventTypeCircleUpdated},
 	{"/eapi/v1/games", EventTypeCircleUpdated},
 	{"/api/v1/users", EventTypeCircleUpdated},
+	// A learning game earns hops and can reach a quest or a challenge.
+	{"/api/v1/learn/games", EventTypeCircleUpdated},
+	{"/api/v1/learn/play/games", EventTypeCircleUpdated},
 }
 
 type changeBroadcaster interface {

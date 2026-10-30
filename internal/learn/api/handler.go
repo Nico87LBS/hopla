@@ -13,6 +13,7 @@ import (
 	auth "github.com/nico87lbs/hopla/internal/auth"
 	circle "github.com/nico87lbs/hopla/internal/circle/model"
 	cRepo "github.com/nico87lbs/hopla/internal/circle/repo"
+	"github.com/nico87lbs/hopla/internal/games"
 	"github.com/nico87lbs/hopla/internal/learn"
 	"github.com/nico87lbs/hopla/logging"
 	"gorm.io/gorm"
@@ -383,10 +384,15 @@ func (h *Handler) recordGame(c *gin.Context) {
 		c.JSON(403, gin.H{"error": "You can only play as yourself"})
 		return
 	}
-	result, err := learn.Record(h.db.WithContext(c), who.circleID, who.userID, game, time.Now().UTC())
+	now := time.Now().UTC()
+	result, err := learn.Record(h.db.WithContext(c), who.circleID, who.userID, game, now)
 	if err != nil {
 		answerError(c, err, "record the game")
 		return
+	}
+	// A game can reach a quest or a challenge on learning games.
+	if err := games.Settle(h.db.WithContext(c), who.circleID, []int{game.UserID}, now); err != nil {
+		logging.FromContext(c).Error("Failed to settle the quests after a game", "error", err)
 	}
 	c.JSON(200, gin.H{"res": result})
 }
@@ -405,6 +411,7 @@ func Routes(r *gin.Engine, h *Handler, auth *jwt.GinJWTMiddleware) {
 		routes.PUT("/settings", h.setSetting)
 		routes.GET("/stats/:key", h.getStats)
 		routes.GET("/players/:userId", h.getPlayer)
+		routes.POST("/play-links", h.newPlayLink)
 		routes.POST("/games", h.recordGame)
 		routes.PUT("/cards", h.editCard)
 		routes.POST("/reports", h.addReport)
