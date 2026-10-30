@@ -496,13 +496,13 @@ func TestTheDetailOfAPackShowsItsModulesInstalledOrNot(t *testing.T) {
 	detail, err := ModuleDetail(db, 1, "anglais-aero", now)
 	require.NoError(t, err)
 	require.False(t, detail.Installed)
-	require.Len(t, detail.Documents, 5, "the pack, then its four modules")
+	require.Len(t, detail.Documents, 10, "the pack, then its nine modules")
 
 	require.NoError(t, Install(db, 1, "anglais-aero", now))
 	detail, err = ModuleDetail(db, 1, "anglais-aero", now)
 	require.NoError(t, err)
 	require.True(t, detail.Installed)
-	require.Len(t, detail.Documents, 5)
+	require.Len(t, detail.Documents, 10)
 
 	_, err = ModuleDetail(db, 1, "nowhere", now)
 	require.ErrorIs(t, err, ErrNotFound)

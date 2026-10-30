@@ -306,6 +306,18 @@ test('a listening card is heard, read, or written down', () => {
   assert.equal(checkAnswer(written, 'dog').correct, false)
 })
 
+test('a clearance is heard and its figures typed to read it back', () => {
+  const compiled = compile(catalogue['anglais-aero-ecoute'])
+  const items = compiled.chapters.flatMap(c =>
+    c.sources.flatMap(source => source.list()),
+  )
+  const readback = items.find(i => i.key === 'en:atc:readback-40:chiffres')
+  assert.equal(readback.mode, 'number')
+  assert.match(readback.listen, /flight level two four zero/)
+  assert.equal(checkAnswer(readback, '2404512').correct, true)
+  assert.equal(checkAnswer(readback, '240').correct, false)
+})
+
 test('English is said by a British voice of the device when there is one', () => {
   const voices = [
     { lang: 'fr-FR', localService: true },

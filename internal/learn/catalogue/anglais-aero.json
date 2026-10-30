@@ -1,9 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "anglais-aero",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "nom": "Anglais aéronautique – niveau 6",
-  "description": "Pour préparer le niveau 6 OACI (FCL.055) : vocabulaire technique, météo, situations anormales et anglais idiomatique, avec des définitions en anglais.",
+  "description": "Pour préparer le niveau 6 OACI (FCL.055) : bases radio, phraséologie, vocabulaire technique, météo, aérodrome, situations anormales, anglais idiomatique, compréhension orale et oral, avec des définitions en anglais.",
   "matiere": "anglais",
   "niveaux": ["OACI 6"],
   "public": "adulte",
@@ -14,9 +14,14 @@
   "auteur": "Hopla",
   "sources": "D'après l'échelle de compétences linguistiques OACI (Doc 9835) et la partie FCL.055 du règlement Aircrew de l'EASA.",
   "modules": [
+    "anglais-aero-radio",
+    "anglais-aero-phraseo",
     "anglais-aero-systemes",
     "anglais-aero-meteo",
+    "anglais-aero-aerodrome",
     "anglais-aero-urgences",
-    "anglais-aero-idiomes"
+    "anglais-aero-idiomes",
+    "anglais-aero-ecoute",
+    "anglais-aero-oral"
   ]
 }

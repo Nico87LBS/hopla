@@ -34,7 +34,7 @@
     "next": "Continuer",
     "progress": "{{current}} / {{total}}",
     "listen": "Écouter encore",
-    "heard": "Le mot : {{word}}"
+    "heard": "Entendu : {{word}}"
   },
   "end": {
     "title0": "Continue, ça va venir !",

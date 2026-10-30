@@ -363,7 +363,7 @@ const Feedback = ({ feedback, onNext }) => {
           })}
         </Typography>
       )}
-      {item.listen && item.mode === 'choice' && (
+      {item.listen && item.mode !== 'text' && (
         <Typography level='body-md' sx={{ color: 'inherit', mt: 0.5 }}>
           {t('play.heard', { word: item.listen })}
         </Typography>
