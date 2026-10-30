@@ -27,7 +27,7 @@ func TestPlayLinkOpensOnePlaySession(t *testing.T) {
 
 	found, err := PlaySession(db, secret, now.Add(time.Hour))
 	require.NoError(t, err)
-	require.Equal(t, 1, found.CircleID)
+	require.Equal(t, 1, found.FamilyID)
 	_, err = PlaySession(db, secret, now.Add(PlaySessionTTL+time.Minute))
 	require.ErrorIs(t, err, ErrPlayExpired, "a session ends")
 

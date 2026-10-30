@@ -7,22 +7,22 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/nico87lbs/hopla/internal/auth"
 	chRepo "github.com/nico87lbs/hopla/internal/chore/repo"
-	cRepo "github.com/nico87lbs/hopla/internal/circle/repo"
+	fRepo "github.com/nico87lbs/hopla/internal/family/repo"
 	"github.com/nico87lbs/hopla/logging"
 )
 
-// SetMemberAway marks a member of the current user's circle away or back home, for
+// SetMemberAway marks a member of the current user's family away or back home, for
 // a parent, and answers the request.
-func SetMemberAway(c *gin.Context, circleRepo *cRepo.CircleRepository, choreRepo *chRepo.ChoreRepository, memberID int, away bool) {
+func SetMemberAway(c *gin.Context, familyRepo *fRepo.FamilyRepository, choreRepo *chRepo.ChoreRepository, memberID int, away bool) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
 		c.JSON(401, gin.H{"error": "Authentication failed"})
 		return
 	}
-	members, err := circleRepo.GetCircleUsers(c, currentUser.CircleID)
+	members, err := familyRepo.GetFamilyUsers(c, currentUser.FamilyID)
 	if err != nil {
-		logging.FromContext(c).Errorw("Error getting circle members", "error", err)
-		c.JSON(500, gin.H{"error": "Error getting circle members"})
+		logging.FromContext(c).Errorw("Error getting family members", "error", err)
+		c.JSON(500, gin.H{"error": "Error getting family members"})
 		return
 	}
 	if !currentUser.IsAdminOrManager(members) {
@@ -36,10 +36,10 @@ func SetMemberAway(c *gin.Context, circleRepo *cRepo.CircleRepository, choreRepo
 		}
 	}
 	if !found {
-		c.JSON(400, gin.H{"error": "User is not a member of this circle"})
+		c.JSON(400, gin.H{"error": "User is not a member of this family"})
 		return
 	}
-	changed, err := choreRepo.SetMemberAway(c, currentUser.CircleID, memberID, away, time.Now().UTC())
+	changed, err := choreRepo.SetMemberAway(c, currentUser.FamilyID, memberID, away, time.Now().UTC())
 	if err != nil {
 		logging.FromContext(c).Errorw("Error changing the member's presence", "error", err, "memberID", memberID)
 		c.JSON(500, gin.H{"error": "Error changing the member's presence"})
@@ -59,5 +59,5 @@ func (h *API) SetMemberAway(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "Invalid request"})
 		return
 	}
-	SetMemberAway(c, h.circleRepo, h.choreRepo, memberID, *req.Away)
+	SetMemberAway(c, h.familyRepo, h.choreRepo, memberID, *req.Away)
 }

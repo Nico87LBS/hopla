@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"time"
 
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	lModel "github.com/nico87lbs/hopla/internal/label/model"
 	storageModel "github.com/nico87lbs/hopla/internal/storage/model"
 	stModel "github.com/nico87lbs/hopla/internal/subtask/model"
@@ -69,7 +69,7 @@ type Chore struct {
 	Notification           bool                       `json:"notification" gorm:"column:notification"`                                                // Whether the chore has notification
 	NotificationMetadataV2 *NotificationMetadata      `json:"notificationMetadata" gorm:"column:notification_meta_v2;type:json"`                      // Additional notification information
 	LabelsV2               *[]lModel.Label            `json:"labelsV2" gorm:"many2many:chore_labels"`                                                 // Labels for the chore
-	CircleID               int                        `json:"circleId" gorm:"column:circle_id;index;index:idx_chores_circle_sync_version,priority:1"` // The circle this chore is in
+	FamilyID               int                        `json:"familyId" gorm:"column:family_id;index;index:idx_chores_family_sync_version,priority:1"` // The family this chore is in
 	CreatedAt              time.Time                  `json:"createdAt" gorm:"column:created_at"`                                                     // When the chore was created
 	UpdatedAt              time.Time                  `json:"updatedAt" gorm:"column:updated_at"`                                                     // When the chore was last updated
 	CreatedBy              int                        `json:"createdBy" gorm:"column:created_by"`                                                     // Who created the chore
@@ -84,7 +84,7 @@ type Chore struct {
 	SubTasks               *[]stModel.SubTask         `json:"subTasks,omitempty" gorm:"foreignkey:ChoreID;references:ID"`                             // Subtasks for the chore
 	RequireApproval        bool                       `json:"requireApproval" gorm:"column:require_approval"`                                         // Whether chore completion requires admin approval
 	IsPrivate              bool                       `json:"isPrivate" gorm:"column:is_private;default:false"`                                       // Whether the chore is private
-	SyncVersion            int64                      `json:"syncVersion" gorm:"column:sync_version;not null;default:0;index;index:idx_chores_circle_sync_version,priority:2"`
+	SyncVersion            int64                      `json:"syncVersion" gorm:"column:sync_version;not null;default:0;index;index:idx_chores_family_sync_version,priority:2"`
 	Attachments            []storageModel.StorageFile `json:"attachments,omitempty" gorm:"-"`
 	SlotsToday             []SlotStatus               `json:"slotsToday,omitempty" gorm:"-"` // Today's slots of a task done several times a day
 	Flash                  *FlashWindow               `json:"flash,omitempty" gorm:"-"`      // The flash bonus open now, if any
@@ -200,13 +200,11 @@ const (
 )
 
 type NotificationMetadata struct {
-	DueDate       bool                    `json:"dueDate,omitempty"`
-	Completion    bool                    `json:"completion,omitempty"`
-	Nagging       bool                    `json:"nagging,omitempty"`
-	PreDue        bool                    `json:"predue,omitempty"`
-	CircleGroup   bool                    `json:"circleGroup,omitempty"`
-	CircleGroupID *int64                  `json:"circleGroupID" binding:"required_with=CircleGroup,omitempty,gt=0"`
-	Templates     []*NotificationTemplate `json:"templates,omitempty" validate:"max=5"` // Template for notification
+	DueDate    bool                    `json:"dueDate,omitempty"`
+	Completion bool                    `json:"completion,omitempty"`
+	Nagging    bool                    `json:"nagging,omitempty"`
+	PreDue     bool                    `json:"predue,omitempty"`
+	Templates  []*NotificationTemplate `json:"templates,omitempty" validate:"max=5"` // Template for notification
 }
 
 type NotificationTemplate struct {
@@ -269,7 +267,7 @@ type ChoreLiteReq struct { // TODO: Remove this when api is removed.
 
 func (c *Chore) CanDeleteHistory(
 	userID int,
-	circleUsers []*cModel.UserCircleDetail,
+	familyUsers []*fModel.UserFamilyDetail,
 	history *ChoreHistory,
 ) bool {
 	if userID == c.CreatedBy {
@@ -284,7 +282,7 @@ func (c *Chore) CanDeleteHistory(
 	if userID == *history.AssignedTo {
 		return true
 	}
-	for _, cu := range circleUsers {
+	for _, cu := range familyUsers {
 		if cu.UserID == userID && cu.Role == "admin" {
 			return true
 		}
@@ -292,13 +290,13 @@ func (c *Chore) CanDeleteHistory(
 	return false
 }
 
-func (c *Chore) CanEdit(userID int, circleUsers []*cModel.UserCircleDetail, updatedAt *time.Time) error {
+func (c *Chore) CanEdit(userID int, familyUsers []*fModel.UserFamilyDetail, updatedAt *time.Time) error {
 	userHasPermission := false
 	choreCanModified := true
 	if c.CreatedBy == userID {
 		userHasPermission = true
 	}
-	for _, cu := range circleUsers {
+	for _, cu := range familyUsers {
 		if cu.UserID == userID && cu.Role == "admin" {
 			userHasPermission = true
 			break
@@ -329,18 +327,18 @@ func (c *Chore) CanEdit(userID int, circleUsers []*cModel.UserCircleDetail, upda
 }
 
 // CanDelegate reports whether userID may hand the chore to another assignee.
-// Unlike CanEdit, any active circle member may delegate, not only the creator
+// Unlike CanEdit, any active family member may delegate, not only the creator
 // or an admin; the stale updatedAt check is the same.
-func (c *Chore) CanDelegate(userID int, circleUsers []*cModel.UserCircleDetail, updatedAt *time.Time) error {
+func (c *Chore) CanDelegate(userID int, familyUsers []*fModel.UserFamilyDetail, updatedAt *time.Time) error {
 	isMember := false
-	for _, cu := range circleUsers {
+	for _, cu := range familyUsers {
 		if cu.UserID == userID && cu.IsActive {
 			isMember = true
 			break
 		}
 	}
 	if !isMember {
-		return errors.New("user is not a member of this circle")
+		return errors.New("user is not a member of this family")
 	}
 	if updatedAt != nil {
 		if c.UpdatedAt.After(*updatedAt) {
@@ -353,7 +351,7 @@ func (c *Chore) CanDelegate(userID int, circleUsers []*cModel.UserCircleDetail, 
 	return nil
 }
 
-func (c *Chore) CanView(userID int, circleUsers []*cModel.UserCircleDetail) bool {
+func (c *Chore) CanView(userID int, familyUsers []*fModel.UserFamilyDetail) bool {
 	// if private then only creator and assignees can view:
 	if c.IsPrivate {
 		if c.CreatedBy == userID {
@@ -367,20 +365,20 @@ func (c *Chore) CanView(userID int, circleUsers []*cModel.UserCircleDetail) bool
 		}
 		return false
 	}
-	// if public then anyone in the circle can view:
-	for _, cu := range circleUsers {
+	// if public then anyone in the family can view:
+	for _, cu := range familyUsers {
 		if cu.UserID == userID {
 			return true
 		}
 	}
 	return false
 }
-func (c *Chore) CanComplete(userID int, circleUsers []*cModel.UserCircleDetail) bool {
-	// If using no assignee strategy, allow any circle member to complete
+func (c *Chore) CanComplete(userID int, familyUsers []*fModel.UserFamilyDetail) bool {
+	// If using no assignee strategy, allow any family member to complete
 	if c.AssignStrategy == AssignmentStrategyNoAssignee && (c.AssignedTo == nil || *c.AssignedTo == 0) {
 		if !c.IsPrivate {
-			// For public chores with no assignee, any circle member can complete
-			for _, cu := range circleUsers {
+			// For public chores with no assignee, any family member can complete
+			for _, cu := range familyUsers {
 				if cu.UserID == userID {
 					return true
 				}
@@ -401,8 +399,8 @@ func (c *Chore) CanComplete(userID int, circleUsers []*cModel.UserCircleDetail) 
 				return true
 			}
 		}
-		// manager and admin can complete any chore in the circle:
-		for _, cu := range circleUsers {
+		// manager and admin can complete any chore in the family:
+		for _, cu := range familyUsers {
 			if cu.UserID == userID && cu.IsManagerOrAdmin() {
 				return true
 			}

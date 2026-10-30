@@ -36,7 +36,7 @@ type Config struct {
 	IsUserCreationDisabled bool           `mapstructure:"is_user_creation_disabled" yaml:"is_user_creation_disabled"`
 	MinVersion             string         `mapstructure:"min_version" yaml:"min_version"`
 	Storage                StorageConfig  `mapstructure:"storage" yaml:"storage"`
-	SingleCircleInstance   bool           `mapstructure:"single_circle_instance" yaml:"single_circle_instance"`
+	SingleFamilyInstance   bool           `mapstructure:"single_family_instance" yaml:"single_family_instance"`
 	DisablePasswordAuth    bool           `mapstructure:"disable_password_auth" yaml:"disable_password_auth"`
 	Info                   Info
 }

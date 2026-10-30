@@ -15,8 +15,8 @@ import (
 	"github.com/nico87lbs/hopla/internal/auth"
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
 	chRepo "github.com/nico87lbs/hopla/internal/chore/repo"
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
-	cRepo "github.com/nico87lbs/hopla/internal/circle/repo"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
+	fRepo "github.com/nico87lbs/hopla/internal/family/repo"
 	lModel "github.com/nico87lbs/hopla/internal/label/model"
 	storageModel "github.com/nico87lbs/hopla/internal/storage/model"
 	stModel "github.com/nico87lbs/hopla/internal/subtask/model"
@@ -39,7 +39,7 @@ func newAPIPermissionTest(t *testing.T) (*gin.Engine, *gorm.DB) {
 	t.Cleanup(func() { require.NoError(t, sqlDB.Close()) })
 	require.NoError(t, db.AutoMigrate(
 		&uModel.User{}, &uModel.APIToken{},
-		&cModel.Circle{}, &cModel.UserCircle{}, &chModel.Chore{}, &chModel.ChoreAssignees{},
+		&fModel.Family{}, &fModel.UserFamily{}, &chModel.Chore{}, &chModel.ChoreAssignees{},
 		&chModel.ChoreHistory{}, &chModel.TimeSession{}, &chModel.ChoreLabels{},
 		&stModel.SubTask{}, &lModel.Label{},
 		&storageModel.StorageFile{}, &syncModel.SyncCursor{}, &syncModel.Tombstone{},
@@ -48,34 +48,34 @@ func newAPIPermissionTest(t *testing.T) (*gin.Engine, *gorm.DB) {
 	cfg.Database.Type = "sqlite"
 	users := uRepo.NewUserRepository(db)
 	api := &API{choreRepo: chRepo.NewChoreRepository(db, cfg), userRepo: users,
-		circleRepo: cRepo.NewCircleRepository(db)}
+		familyRepo: fRepo.NewFamilyRepository(db)}
 	router := gin.New()
 	group := router.Group("/eapi/v1/chore", auth.APITokenMiddleware(users))
 	group.PUT("/:id", api.UpdateChore)
 	group.DELETE("/:id", api.DeleteChore)
 
 	for id := 1; id <= 6; id++ {
-		circleID := 1
+		familyID := 1
 		if id == 6 {
-			circleID = 2
+			familyID = 2
 		}
-		require.NoError(t, db.Create(&uModel.User{ID: id, Username: fmt.Sprintf("user%d", id), CircleID: circleID}).Error)
+		require.NoError(t, db.Create(&uModel.User{ID: id, Username: fmt.Sprintf("user%d", id), FamilyID: familyID}).Error)
 		require.NoError(t, db.Create(&uModel.APIToken{UserID: id, Name: fmt.Sprintf("token%d", id), Token: fmt.Sprintf("test-token-%d", id)}).Error)
-		// User 5 reproduces a valid token for an account missing circle membership.
+		// User 5 reproduces a valid token for an account missing family membership.
 		if id == 5 {
 			continue
 		}
-		role := cModel.UserRoleMember
+		role := fModel.UserRoleMember
 		if id == 2 || id == 6 {
-			role = cModel.UserRoleAdmin
+			role = fModel.UserRoleAdmin
 		} else if id == 3 {
-			role = cModel.UserRoleManager
+			role = fModel.UserRoleManager
 		}
-		require.NoError(t, db.Create(&cModel.UserCircle{UserID: id, CircleID: circleID, Role: role, IsActive: true}).Error)
+		require.NoError(t, db.Create(&fModel.UserFamily{UserID: id, FamilyID: familyID, Role: role, IsActive: true}).Error)
 	}
 	// A future stored timestamp must not fail a partial API update: this request
 	// format supplies no client timestamp for optimistic concurrency checking.
-	require.NoError(t, db.Create(&chModel.Chore{ID: 47, Name: "Original", CreatedBy: 1, CircleID: 1,
+	require.NoError(t, db.Create(&chModel.Chore{ID: 47, Name: "Original", CreatedBy: 1, FamilyID: 1,
 		UpdatedAt: time.Now().UTC().Add(time.Hour)}).Error)
 	require.NoError(t, db.Model(&chModel.Chore{}).Where("id = ?", 47).Update("is_active", false).Error)
 	return router, db
@@ -101,7 +101,7 @@ func TestExternalAPIUpdateAndDeletePermissions(t *testing.T) {
 		{"manager", 3, http.StatusOK},
 		{"ordinary member", 4, http.StatusForbidden},
 		{"token owner without membership", 5, http.StatusForbidden},
-		{"admin in another circle", 6, http.StatusNotFound},
+		{"admin in another family", 6, http.StatusNotFound},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			router, db := newAPIPermissionTest(t)

@@ -16,10 +16,10 @@ import (
 	calRepo "github.com/nico87lbs/hopla/internal/calendar/repo"
 	"github.com/nico87lbs/hopla/internal/chore"
 	chRepo "github.com/nico87lbs/hopla/internal/chore/repo"
-	"github.com/nico87lbs/hopla/internal/circle"
-	cRepo "github.com/nico87lbs/hopla/internal/circle/repo"
 	"github.com/nico87lbs/hopla/internal/database"
 	"github.com/nico87lbs/hopla/internal/email"
+	"github.com/nico87lbs/hopla/internal/family"
+	fRepo "github.com/nico87lbs/hopla/internal/family/repo"
 	gamesAPI "github.com/nico87lbs/hopla/internal/games/api"
 	label "github.com/nico87lbs/hopla/internal/label"
 	lRepo "github.com/nico87lbs/hopla/internal/label/repo"
@@ -82,8 +82,8 @@ func main() {
 		fx.Provide(uRepo.NewUserRepository),
 		fx.Provide(user.NewDeletionService),
 		fx.Provide(user.NewHandler),
-		fx.Provide(cRepo.NewCircleRepository),
-		fx.Provide(circle.NewHandler),
+		fx.Provide(fRepo.NewFamilyRepository),
+		fx.Provide(family.NewHandler),
 
 		// Rate limiter
 		fx.Provide(utils.NewRateLimiter),
@@ -154,7 +154,7 @@ func main() {
 			calendar.Routes,
 			chore.APIs,
 			user.Routes,
-			circle.Routes,
+			family.Routes,
 			label.Routes,
 			reward.Routes,
 			reward.APIs,
@@ -238,7 +238,9 @@ func newServer(lc fx.Lifecycle, cfg *config.Config, db *gorm.DB, mfaCleanup *mfa
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
 			if cfg.Database.Migration {
-				database.Migration(db)
+				if err := database.Migration(db); err != nil {
+					panic(err)
+				}
 				migrations.Run(context.Background(), db)
 				err := database.MigrationScripts(db, cfg)
 				if err != nil {

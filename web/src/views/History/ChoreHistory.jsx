@@ -64,7 +64,7 @@ import {
   useDeleteChoreHistory,
   useUpdateChoreHistory,
 } from '../../queries/ChoreQueries'
-import { useCircleMembers } from '../../queries/UserQueries'
+import { useFamilyMembers } from '../../queries/UserQueries'
 import { useNotification } from '../../service/NotificationProvider'
 import { ChoreHistoryStatus } from '../../utils/Chores'
 import LoadingComponent from '../components/Loading'
@@ -104,7 +104,7 @@ const ChoreHistory = () => {
 
   // React Query hooks
   const { data: choreHistoryData, isLoading } = useChoreHistory(choreId)
-  const { data: circleMembersData } = useCircleMembers()
+  const { data: familyMembersData } = useFamilyMembers()
   const updateChoreHistory = useUpdateChoreHistory()
   const deleteChoreHistory = useDeleteChoreHistory()
   const { data: pendingCmds } = usePendingCommands(choreId)
@@ -113,7 +113,7 @@ const ChoreHistory = () => {
     () => choreHistoryData?.res || [],
     [choreHistoryData],
   )
-  const performers = circleMembersData?.res || []
+  const performers = familyMembersData?.res || []
   const pendingByHistoryId = useMemo(() => {
     if (!pendingCmds?.length) return {}
     return pendingCmds.reduce((acc, cmd) => {

@@ -14,7 +14,7 @@ import (
 // Connection represents a WebSocket or SSE connection with metadata
 type Connection struct {
 	ID           string
-	CircleID     int
+	FamilyID     int
 	UserID       int
 	User         *uModel.User
 	Conn         *websocket.Conn // nil for SSE connections
@@ -26,10 +26,10 @@ type Connection struct {
 }
 
 // NewConnection creates a new WebSocket or SSE connection
-func NewConnection(id string, circleID, userID int, user *uModel.User, conn *websocket.Conn, logger *zap.SugaredLogger) *Connection {
+func NewConnection(id string, familyID, userID int, user *uModel.User, conn *websocket.Conn, logger *zap.SugaredLogger) *Connection {
 	return &Connection{
 		ID:           id,
-		CircleID:     circleID,
+		FamilyID:     familyID,
 		UserID:       userID,
 		User:         user,
 		Conn:         conn,
@@ -74,7 +74,7 @@ func (c *Connection) Close() {
 	c.logger.Debugw("Connection closed",
 		"connectionId", c.ID,
 		"userId", c.UserID,
-		"circleId", c.CircleID,
+		"familyId", c.FamilyID,
 		"connectionType", c.getConnectionType())
 }
 
@@ -111,7 +111,7 @@ func (c *Connection) SendEvent(event *Event) bool {
 		c.logger.Warnw("Connection send buffer full. Marking connection for closure.",
 			"connectionId", c.ID,
 			"userId", c.UserID,
-			"circleId", c.CircleID,
+			"familyId", c.FamilyID,
 			"bufferSize", cap(c.Send),
 			"eventTypeAttempted", event.Type)
 

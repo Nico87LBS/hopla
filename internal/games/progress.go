@@ -9,18 +9,18 @@ import (
 	"time"
 
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	ptModel "github.com/nico87lbs/hopla/internal/points"
 	"github.com/nico87lbs/hopla/internal/zone"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
 
-// RanksFor returns a circle's ranks from the lowest, or the defaults when its
+// RanksFor returns a family's ranks from the lowest, or the defaults when its
 // parents did not set their own.
-func RanksFor(db *gorm.DB, circleID int) ([]Rank, error) {
+func RanksFor(db *gorm.DB, familyID int) ([]Rank, error) {
 	var ranks []Rank
-	if err := db.Where("circle_id = ?", circleID).Order("min_points").Find(&ranks).Error; err != nil {
+	if err := db.Where("family_id = ?", familyID).Order("min_points").Find(&ranks).Error; err != nil {
 		return nil, err
 	}
 	if len(ranks) == 0 {
@@ -108,21 +108,21 @@ func eligible(userIDs []int, userID int) bool {
 
 // drawQuests gives a member this week's and this month's quests. The same
 // member, period and quests always give the same draw.
-func drawQuests(db *gorm.DB, circleID, userID int, now time.Time) error {
-	loc := zone.Of(circleID)
-	rules, err := RulesFor(db, circleID)
+func drawQuests(db *gorm.DB, familyID, userID int, now time.Time) error {
+	loc := zone.Of(familyID)
+	rules, err := RulesFor(db, familyID)
 	if err != nil {
 		return err
 	}
 	var quests []Quest
-	if err := db.Where("circle_id = ?", circleID).Order("id").Find(&quests).Error; err != nil {
+	if err := db.Where("family_id = ?", familyID).Order("id").Find(&quests).Error; err != nil {
 		return err
 	}
 	for _, period := range []string{QuestWeek, QuestMonth} {
 		_, _, key := periodBounds(period, now, loc)
 		var drawn []int
-		if err := db.Model(&QuestDraw{}).Where("circle_id = ? AND user_id = ? AND period_key = ? AND period = ?",
-			circleID, userID, key, period).Pluck("quest_id", &drawn).Error; err != nil {
+		if err := db.Model(&QuestDraw{}).Where("family_id = ? AND user_id = ? AND period_key = ? AND period = ?",
+			familyID, userID, key, period).Pluck("quest_id", &drawn).Error; err != nil {
 			return err
 		}
 		// Quests added during the period top the draw up.
@@ -136,14 +136,14 @@ func drawQuests(db *gorm.DB, circleID, userID int, now time.Time) error {
 			// Shuffle by a hash of the member, week and quest.
 			score := func(quest Quest) uint32 {
 				h := fnv.New32a()
-				fmt.Fprintf(h, "%d:%d:%s:%d", circleID, userID, key, quest.ID)
+				fmt.Fprintf(h, "%d:%d:%s:%d", familyID, userID, key, quest.ID)
 				return h.Sum32()
 			}
 			sort.SliceStable(pool, func(i, j int) bool { return score(pool[i]) < score(pool[j]) })
 			pool = pool[:min(len(pool), max(rules.QuestsPerWeek-len(drawn), 0))]
 		}
 		for _, quest := range pool {
-			draw := QuestDraw{CircleID: circleID, UserID: userID, PeriodKey: key, QuestID: quest.ID, Period: period,
+			draw := QuestDraw{FamilyID: familyID, UserID: userID, PeriodKey: key, QuestID: quest.ID, Period: period,
 				Name: quest.Name, Kind: quest.Kind, ChoreID: quest.ChoreID, Module: quest.Module, Target: quest.Target,
 				Reward: quest.Reward}
 			if err := db.Clauses(clause.OnConflict{DoNothing: true}).Create(&draw).Error; err != nil {
@@ -156,15 +156,15 @@ func drawQuests(db *gorm.DB, circleID, userID int, now time.Time) error {
 
 // tasksDone counts, per member, the tasks completed between from and to, or
 // only those of one task and its copies with the same name.
-func tasksDone(db *gorm.DB, circleID int, choreID *int, from, to time.Time) (map[int]int, error) {
+func tasksDone(db *gorm.DB, familyID int, choreID *int, from, to time.Time) (map[int]int, error) {
 	var rows []struct {
 		CompletedBy int
 		Count       int
 	}
 	query := db.Table("chore_histories AS h").Select("h.completed_by, COUNT(*) AS count").
 		Joins("JOIN chores AS c ON c.id = h.chore_id").
-		Where("c.circle_id = ? AND h.status = ? AND h.performed_at >= ? AND h.performed_at < ?",
-			circleID, chModel.ChoreHistoryStatusCompleted, from, to)
+		Where("c.family_id = ? AND h.status = ? AND h.performed_at >= ? AND h.performed_at < ?",
+			familyID, chModel.ChoreHistoryStatusCompleted, from, to)
 	if choreID != nil {
 		query = query.Where("LOWER(TRIM(c.name)) = (SELECT LOWER(TRIM(name)) FROM chores WHERE id = ?)", *choreID)
 	}
@@ -181,13 +181,13 @@ func tasksDone(db *gorm.DB, circleID int, choreID *int, from, to time.Time) (map
 // learnDone counts, per member, the learning games played between from and
 // to, or the stars they won, in every module or only in one module or pack
 // (a pack counts the games of its modules).
-func learnDone(db *gorm.DB, circleID int, kind, module string, from, to time.Time) (map[int]int, error) {
-	query := db.Table("learn_sessions").Where("circle_id = ? AND played_at >= ? AND played_at < ?", circleID, from, to)
+func learnDone(db *gorm.DB, familyID int, kind, module string, from, to time.Time) (map[int]int, error) {
+	query := db.Table("learn_sessions").Where("family_id = ? AND played_at >= ? AND played_at < ?", familyID, from, to)
 	if module != "" {
 		var pack struct {
 			Children []string `gorm:"column:children;serializer:json"`
 		}
-		if err := db.Table("learn_modules").Select("children").Where("circle_id = ? AND module_key = ?", circleID, module).
+		if err := db.Table("learn_modules").Select("children").Where("family_id = ? AND module_key = ?", familyID, module).
 			Limit(1).Scan(&pack).Error; err != nil {
 			return nil, err
 		}
@@ -214,14 +214,14 @@ func learnDone(db *gorm.DB, circleID int, kind, module string, from, to time.Tim
 // taskPointsEarned sums, per member, the points of tasks credited between from
 // and to, less the undone ones. Bonuses do not count, so a quest reward never
 // helps reach another goal.
-func taskPointsEarned(db *gorm.DB, circleID int, from, to time.Time) (map[int]int, error) {
+func taskPointsEarned(db *gorm.DB, familyID int, from, to time.Time) (map[int]int, error) {
 	var rows []struct {
 		UserID int
 		Action ptModel.PointsHistoryAction
 		Points int
 	}
 	if err := db.Model(&ptModel.PointsHistory{}).Select("user_id, action, points").
-		Where("circle_id = ? AND action IN ? AND created_at >= ? AND created_at < ?", circleID,
+		Where("family_id = ? AND action IN ? AND created_at >= ? AND created_at < ?", familyID,
 			[]ptModel.PointsHistoryAction{ptModel.PointsHistoryActionAdd, ptModel.PointsHistoryActionRemove}, from, to).
 		Scan(&rows).Error; err != nil {
 		return nil, err
@@ -235,17 +235,17 @@ func taskPointsEarned(db *gorm.DB, circleID int, from, to time.Time) (map[int]in
 
 // goalProgress returns, per member, how far they are on a goal between from
 // and to.
-func goalProgress(db *gorm.DB, circleID int, kind string, choreID *int, module string, from, to, now time.Time) (map[int]int, error) {
-	loc := zone.Of(circleID)
+func goalProgress(db *gorm.DB, familyID int, kind string, choreID *int, module string, from, to, now time.Time) (map[int]int, error) {
+	loc := zone.Of(familyID)
 	switch kind {
 	case GoalGames, GoalStars:
-		return learnDone(db, circleID, kind, module, from, to)
+		return learnDone(db, familyID, kind, module, from, to)
 	case GoalTasks:
-		return tasksDone(db, circleID, choreID, from, to)
+		return tasksDone(db, familyID, choreID, from, to)
 	case GoalPoints:
-		return taskPointsEarned(db, circleID, from, to)
+		return taskPointsEarned(db, familyID, from, to)
 	case GoalStreak:
-		days, away, err := streakDays(db, circleID, now)
+		days, away, err := streakDays(db, familyID, now)
 		if err != nil {
 			return nil, err
 		}
@@ -292,9 +292,9 @@ type QuestView struct {
 
 // Quests returns the running quests of the given members, drawing them first
 // when the week or month just started.
-func Quests(db *gorm.DB, circleID int, userIDs []int, now time.Time) (map[int][]QuestView, error) {
-	loc := zone.Of(circleID)
-	awayNow, err := AwayMembers(db, circleID)
+func Quests(db *gorm.DB, familyID int, userIDs []int, now time.Time) (map[int][]QuestView, error) {
+	loc := zone.Of(familyID)
+	awayNow, err := AwayMembers(db, familyID)
 	if err != nil {
 		return nil, err
 	}
@@ -302,7 +302,7 @@ func Quests(db *gorm.DB, circleID int, userIDs []int, now time.Time) (map[int][]
 	for _, userID := range userIDs {
 		// A member away gets their quests when they come back.
 		if !awayNow[userID] {
-			if err := drawQuests(db, circleID, userID, now); err != nil {
+			if err := drawQuests(db, familyID, userID, now); err != nil {
 				return nil, err
 			}
 		}
@@ -314,15 +314,15 @@ func Quests(db *gorm.DB, circleID int, userIDs []int, now time.Time) (map[int][]
 	if weekFrom.Before(since) {
 		since = weekFrom
 	}
-	away, err := absenceDays(db, circleID, since, now)
+	away, err := absenceDays(db, familyID, since, now)
 	if err != nil {
 		return nil, err
 	}
 	_, _, weekKey := periodBounds(QuestWeek, now, loc)
 	_, _, monthKey := periodBounds(QuestMonth, now, loc)
 	var draws []QuestDraw
-	if err := db.Where("circle_id = ? AND user_id IN ? AND ((period = ? AND period_key = ?) OR (period = ? AND period_key = ?))",
-		circleID, userIDs, QuestWeek, weekKey, QuestMonth, monthKey).Order("period desc, id").Find(&draws).Error; err != nil {
+	if err := db.Where("family_id = ? AND user_id IN ? AND ((period = ? AND period_key = ?) OR (period = ? AND period_key = ?))",
+		familyID, userIDs, QuestWeek, weekKey, QuestMonth, monthKey).Order("period desc, id").Find(&draws).Error; err != nil {
 		return nil, err
 	}
 	cache := map[string]map[int]int{}
@@ -335,7 +335,7 @@ func Quests(db *gorm.DB, circleID int, userIDs []int, now time.Time) (map[int][]
 		progress, ok := cache[key]
 		if !ok {
 			var err error
-			if progress, err = goalProgress(db, circleID, draw.Kind, draw.ChoreID, draw.Module, from, to, now); err != nil {
+			if progress, err = goalProgress(db, familyID, draw.Kind, draw.ChoreID, draw.Module, from, to, now); err != nil {
 				return nil, err
 			}
 			cache[key] = progress
@@ -373,11 +373,11 @@ func (v ChallengeView) TargetOf(userID int) int {
 }
 
 // Challenges returns the challenges running at now or ended since the given
-// time, with their progress. members are the circle's active members, who
+// time, with their progress. members are the family's active members, who
 // take part in a challenge naming none.
-func Challenges(db *gorm.DB, circleID int, members []int, endedSince, now time.Time) ([]ChallengeView, error) {
+func Challenges(db *gorm.DB, familyID int, members []int, endedSince, now time.Time) ([]ChallengeView, error) {
 	var challenges []Challenge
-	if err := db.Where("circle_id = ? AND starts_at <= ? AND ends_at > ?", circleID, now, endedSince).
+	if err := db.Where("family_id = ? AND starts_at <= ? AND ends_at > ?", familyID, now, endedSince).
 		Order("ends_at, id").Find(&challenges).Error; err != nil {
 		return nil, err
 	}
@@ -402,7 +402,7 @@ func challengeView(db *gorm.DB, challenge Challenge, members []int, now time.Tim
 	if now.Before(to) {
 		to = now.Add(time.Second)
 	}
-	progress, err := goalProgress(db, challenge.CircleID, challenge.Kind, challenge.ChoreID, challenge.Module,
+	progress, err := goalProgress(db, challenge.FamilyID, challenge.Kind, challenge.ChoreID, challenge.Module,
 		challenge.StartsAt, to, now)
 	if err != nil {
 		return view, err
@@ -413,11 +413,11 @@ func challengeView(db *gorm.DB, challenge Challenge, members []int, now time.Tim
 	}
 	if !challenge.Shared {
 		// Only the days already gone by count: an absence ahead is not known.
-		away, err := absenceDays(db, challenge.CircleID, challenge.StartsAt, to)
+		away, err := absenceDays(db, challenge.FamilyID, challenge.StartsAt, to)
 		if err != nil {
 			return view, err
 		}
-		loc := zone.Of(challenge.CircleID)
+		loc := zone.Of(challenge.FamilyID)
 		for _, userID := range view.Members {
 			_, days := periodDays(challenge.StartsAt, challenge.EndsAt, away[userID], loc)
 			if days == 0 {
@@ -436,13 +436,13 @@ func challengeView(db *gorm.DB, challenge Challenge, members []int, now time.Tim
 
 // giveBonus credits points a game awards, as a game row in the ledger. Game
 // bonuses are never multiplied.
-func giveBonus(tx *gorm.DB, circleID, userID, points int, reason string) (*ptModel.PointsHistory, error) {
+func giveBonus(tx *gorm.DB, familyID, userID, points int, reason string) (*ptModel.PointsHistory, error) {
 	if points <= 0 {
 		return nil, nil
 	}
 	entry := ptModel.PointsHistory{Action: ptModel.PointsHistoryActionGame, Points: points, UserID: userID,
-		CircleID: circleID, CreatedBy: userID, Reason: &reason, CreatedAt: time.Now().UTC()}
-	if err := tx.Model(&cModel.UserCircle{}).Where("user_id = ? AND circle_id = ?", userID, circleID).
+		FamilyID: familyID, CreatedBy: userID, Reason: &reason, CreatedAt: time.Now().UTC()}
+	if err := tx.Model(&fModel.UserFamily{}).Where("user_id = ? AND family_id = ?", userID, familyID).
 		Update("points", gorm.Expr("points + ?", points)).Error; err != nil {
 		return nil, err
 	}
@@ -454,8 +454,8 @@ func giveBonus(tx *gorm.DB, circleID, userID, points int, reason string) (*ptMod
 
 // awardQuests completes the member's running quests that are now reached and
 // pays their rewards.
-func awardQuests(tx *gorm.DB, circleID, userID int, now time.Time) error {
-	views, err := Quests(tx, circleID, []int{userID}, now)
+func awardQuests(tx *gorm.DB, familyID, userID int, now time.Time) error {
+	views, err := Quests(tx, familyID, []int{userID}, now)
 	if err != nil {
 		return err
 	}
@@ -471,7 +471,7 @@ func awardQuests(tx *gorm.DB, circleID, userID int, now time.Time) error {
 		if result.RowsAffected == 0 {
 			continue
 		}
-		if _, err := giveBonus(tx, circleID, userID, quest.Reward, "Quête : "+quest.Name); err != nil {
+		if _, err := giveBonus(tx, familyID, userID, quest.Reward, "Quête : "+quest.Name); err != nil {
 			return err
 		}
 	}
@@ -480,14 +480,14 @@ func awardQuests(tx *gorm.DB, circleID, userID int, now time.Time) error {
 
 // awardChallenges records the challenges the member just won, or the shared
 // ones the family just reached, and pays their rewards.
-func awardChallenges(tx *gorm.DB, circleID, userID int, now time.Time) error {
+func awardChallenges(tx *gorm.DB, familyID, userID int, now time.Time) error {
 	var members []int
-	if err := tx.Model(&cModel.UserCircle{}).Where("circle_id = ? AND is_active = ?", circleID, true).
+	if err := tx.Model(&fModel.UserFamily{}).Where("family_id = ? AND is_active = ?", familyID, true).
 		Pluck("user_id", &members).Error; err != nil {
 		return err
 	}
 	var challenges []Challenge
-	if err := tx.Where("circle_id = ? AND starts_at <= ? AND ends_at > ? AND completed_at IS NULL", circleID, now, now).
+	if err := tx.Where("family_id = ? AND starts_at <= ? AND ends_at > ? AND completed_at IS NULL", familyID, now, now).
 		Find(&challenges).Error; err != nil {
 		return err
 	}
@@ -524,7 +524,7 @@ func awardChallenges(tx *gorm.DB, circleID, userID int, now time.Time) error {
 			if result.RowsAffected == 0 {
 				continue
 			}
-			if _, err := giveBonus(tx, circleID, winner, challenge.Reward, "Défi : "+challenge.Name); err != nil {
+			if _, err := giveBonus(tx, familyID, winner, challenge.Reward, "Défi : "+challenge.Name); err != nil {
 				return err
 			}
 		}
@@ -535,29 +535,29 @@ func awardChallenges(tx *gorm.DB, circleID, userID int, now time.Time) error {
 // AfterTask runs the games that follow a credited task: the streak bonus,
 // the routines it finishes, then the quests and challenges it completes. Call it after the completion
 // and its points are saved, in the same transaction.
-func AfterTask(tx *gorm.DB, circleID, userID int, performedAt, now time.Time) error {
-	if _, err := AwardStreakBonus(tx, circleID, userID, performedAt, now); err != nil {
+func AfterTask(tx *gorm.DB, familyID, userID int, performedAt, now time.Time) error {
+	if _, err := AwardStreakBonus(tx, familyID, userID, performedAt, now); err != nil {
 		return err
 	}
-	if err := awardRoutines(tx, circleID, userID, performedAt, now); err != nil {
+	if err := awardRoutines(tx, familyID, userID, performedAt, now); err != nil {
 		return err
 	}
-	if err := awardQuests(tx, circleID, userID, now); err != nil {
+	if err := awardQuests(tx, familyID, userID, now); err != nil {
 		return err
 	}
-	return awardChallenges(tx, circleID, userID, now)
+	return awardChallenges(tx, familyID, userID, now)
 }
 
 // Settle pays the quests and challenges the given members reached without a
 // task to trigger it, such as a quest drawn already reached, or a challenge
 // created after the points were earned.
-func Settle(db *gorm.DB, circleID int, userIDs []int, now time.Time) error {
+func Settle(db *gorm.DB, familyID int, userIDs []int, now time.Time) error {
 	return db.Transaction(func(tx *gorm.DB) error {
 		for _, userID := range userIDs {
-			if err := awardQuests(tx, circleID, userID, now); err != nil {
+			if err := awardQuests(tx, familyID, userID, now); err != nil {
 				return err
 			}
-			if err := awardChallenges(tx, circleID, userID, now); err != nil {
+			if err := awardChallenges(tx, familyID, userID, now); err != nil {
 				return err
 			}
 		}
@@ -565,22 +565,22 @@ func Settle(db *gorm.DB, circleID int, userIDs []int, now time.Time) error {
 	})
 }
 
-var errNoRanks = errors.New("a circle needs at least one rank")
+var errNoRanks = errors.New("a family needs at least one rank")
 
-// SaveRanks replaces a circle's ranks. The first rank starts at 0 points.
-func SaveRanks(db *gorm.DB, circleID int, ranks []Rank) ([]Rank, error) {
+// SaveRanks replaces a family's ranks. The first rank starts at 0 points.
+func SaveRanks(db *gorm.DB, familyID int, ranks []Rank) ([]Rank, error) {
 	if len(ranks) == 0 {
 		return nil, errNoRanks
 	}
 	sort.SliceStable(ranks, func(i, j int) bool { return ranks[i].MinPoints < ranks[j].MinPoints })
 	ranks[0].MinPoints = 0
 	err := db.Transaction(func(tx *gorm.DB) error {
-		if err := tx.Where("circle_id = ?", circleID).Delete(&Rank{}).Error; err != nil {
+		if err := tx.Where("family_id = ?", familyID).Delete(&Rank{}).Error; err != nil {
 			return err
 		}
 		for i := range ranks {
 			ranks[i].ID = 0
-			ranks[i].CircleID = circleID
+			ranks[i].FamilyID = familyID
 		}
 		return tx.Create(&ranks).Error
 	})

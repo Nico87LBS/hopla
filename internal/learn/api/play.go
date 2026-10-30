@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/nico87lbs/hopla/config"
 	auth "github.com/nico87lbs/hopla/internal/auth"
-	circleModel "github.com/nico87lbs/hopla/internal/circle/model"
+	familyModel "github.com/nico87lbs/hopla/internal/family/model"
 	"github.com/nico87lbs/hopla/internal/learn"
 	uModel "github.com/nico87lbs/hopla/internal/user/model"
 	uRepo "github.com/nico87lbs/hopla/internal/user/repo"
@@ -37,7 +37,7 @@ func (h *Handler) newPlayLink(c *gin.Context) {
 		c.JSON(403, gin.H{"error": "You can only play as yourself"})
 		return
 	}
-	members, err := h.circleRepo.GetCircleUsers(c, who.circleID)
+	members, err := h.familyRepo.GetFamilyUsers(c, who.familyID)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Error checking the member"})
 		return
@@ -50,7 +50,7 @@ func (h *Handler) newPlayLink(c *gin.Context) {
 		c.JSON(404, gin.H{"error": "Member not found"})
 		return
 	}
-	code, expires, err := learn.NewPlayLink(h.db.WithContext(c), who.circleID, req.UserID, who.userID, time.Now().UTC())
+	code, expires, err := learn.NewPlayLink(h.db.WithContext(c), who.familyID, req.UserID, who.userID, time.Now().UTC())
 	if err != nil {
 		answerError(c, err, "make the play link")
 		return
@@ -83,11 +83,11 @@ func (h *Handler) startPlay(c *gin.Context) {
 		Image       string
 	}
 	h.db.WithContext(c).Table("users").Select("display_name, image").Where("id = ?", session.UserID).Scan(&member)
-	var family circleModel.Circle
-	h.db.WithContext(c).Select("currency").First(&family, session.CircleID)
+	var family familyModel.Family
+	h.db.WithContext(c).Select("currency").First(&family, session.FamilyID)
 	c.JSON(200, gin.H{"res": gin.H{"token": secret, "expiresAt": session.ExpiresAt,
 		"member":   gin.H{"userId": session.UserID, "displayName": member.DisplayName, "image": member.Image},
-		"currency": circleModel.CurrencyOf(family.Currency)}})
+		"currency": familyModel.CurrencyOf(family.Currency)}})
 }
 
 // playAuth lets a play session in, as the child it is for, and nothing else.
@@ -99,7 +99,7 @@ func (h *Handler) playAuth(c *gin.Context) {
 	}
 	var user uModel.UserDetails
 	if err := h.db.WithContext(c).Table("users").Where("id = ?", session.UserID).First(&user).Error; err != nil ||
-		user.CircleID != session.CircleID || user.Disabled {
+		user.FamilyID != session.FamilyID || user.Disabled {
 		c.AbortWithStatusJSON(401, gin.H{"error": "The games have closed, open them again"})
 		return
 	}
@@ -113,7 +113,7 @@ func (h *Handler) getPlaySelf(c *gin.Context) {
 	if !ok {
 		return
 	}
-	player, err := learn.PlayerFor(h.db.WithContext(c), who.circleID, who.userID, time.Now().UTC())
+	player, err := learn.PlayerFor(h.db.WithContext(c), who.familyID, who.userID, time.Now().UTC())
 	if err != nil {
 		answerError(c, err, "get the player")
 		return

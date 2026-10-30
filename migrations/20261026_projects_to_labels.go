@@ -32,7 +32,7 @@ type oldProject struct {
 	ID        int
 	Name      string
 	Color     *string
-	CircleID  int
+	FamilyID  int
 	CreatedBy int
 	IsPrivate bool
 }
@@ -41,7 +41,7 @@ type projectLabel struct {
 	ID        int    `gorm:"primary_key"`
 	Name      string `gorm:"column:name"`
 	Color     string `gorm:"column:color"`
-	CircleID  *int   `gorm:"column:circle_id"`
+	FamilyID  *int   `gorm:"column:family_id"`
 	CreatedBy int    `gorm:"column:created_by"`
 }
 
@@ -64,7 +64,7 @@ func (m ProjectsToLabels20261026) Up(ctx context.Context, db *gorm.DB) error {
 	log := logging.FromContext(ctx)
 	return db.Transaction(func(tx *gorm.DB) error {
 		var projects []oldProject
-		if err := tx.Table("projects").Select("id, name, color, circle_id, created_by, is_private").
+		if err := tx.Table("projects").Select("id, name, color, family_id, created_by, is_private").
 			Order("id").Scan(&projects).Error; err != nil {
 			return err
 		}
@@ -125,13 +125,13 @@ func (m ProjectsToLabels20261026) Up(ctx context.Context, db *gorm.DB) error {
 
 // labelForProject returns the label of the project's name the owner already
 // has, or creates it with the project's colour. A private project's label
-// stays the owner's own; the others are the circle's.
+// stays the owner's own; the others are the family's.
 func labelForProject(tx *gorm.DB, p oldProject) (*projectLabel, error) {
 	q := tx.Where("LOWER(name) = ?", strings.ToLower(strings.TrimSpace(p.Name)))
 	if p.IsPrivate {
 		q = q.Where("created_by = ?", p.CreatedBy)
 	} else {
-		q = q.Where("circle_id = ? OR created_by = ?", p.CircleID, p.CreatedBy)
+		q = q.Where("family_id = ? OR created_by = ?", p.FamilyID, p.CreatedBy)
 	}
 	var found []projectLabel
 	if err := q.Order("id").Limit(1).Find(&found).Error; err != nil {
@@ -145,8 +145,8 @@ func labelForProject(tx *gorm.DB, p oldProject) (*projectLabel, error) {
 		label.Color = *p.Color
 	}
 	if !p.IsPrivate {
-		circleID := p.CircleID
-		label.CircleID = &circleID
+		familyID := p.FamilyID
+		label.FamilyID = &familyID
 	}
 	if err := tx.Create(&label).Error; err != nil {
 		return nil, err

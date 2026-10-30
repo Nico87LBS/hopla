@@ -19,9 +19,9 @@ import (
 	"github.com/nico87lbs/hopla/config"
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
 	chRepo "github.com/nico87lbs/hopla/internal/chore/repo"
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
-	cRepo "github.com/nico87lbs/hopla/internal/circle/repo"
 	"github.com/nico87lbs/hopla/internal/database"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
+	fRepo "github.com/nico87lbs/hopla/internal/family/repo"
 	uModel "github.com/nico87lbs/hopla/internal/user/model"
 	"github.com/nico87lbs/hopla/internal/zone"
 )
@@ -34,14 +34,14 @@ func teethChore(slots ...string) *chModel.Chore {
 	return &chModel.Chore{ID: 1, FrequencyType: chModel.FrequencyTypeDaily, FrequencyMetadataV2: metadata, IsActive: true}
 }
 
-// familyIn runs a test with the family (circles 0 and 1) in the given zone.
+// familyIn runs a test with the family (families 0 and 1) in the given zone.
 func familyIn(t *testing.T, name string) {
 	t.Helper()
 	loc, err := time.LoadLocation(name)
 	require.NoError(t, err)
-	for _, circleID := range []int{0, 1} {
-		zone.Set(circleID, loc)
-		t.Cleanup(func() { zone.Forget(circleID) })
+	for _, familyID := range []int{0, 1} {
+		zone.Set(familyID, loc)
+		t.Cleanup(func() { zone.Forget(familyID) })
 	}
 }
 
@@ -161,8 +161,8 @@ func newSlotTestRouter(t *testing.T) (*gin.Engine, *gorm.DB, *chModel.Chore) {
 	require.NoError(t, err)
 	sqlDB.SetMaxOpenConns(1)
 	require.NoError(t, database.Migration(db))
-	require.NoError(t, db.Create(&cModel.UserCircle{UserID: 1, CircleID: 1, Role: cModel.UserRoleAdmin, IsActive: true}).Error)
-	require.NoError(t, db.Create(&cModel.UserCircle{UserID: 2, CircleID: 1, Role: cModel.UserRoleMember, IsActive: true}).Error)
+	require.NoError(t, db.Create(&fModel.UserFamily{UserID: 1, FamilyID: 1, Role: fModel.UserRoleAdmin, IsActive: true}).Error)
+	require.NoError(t, db.Create(&fModel.UserFamily{UserID: 2, FamilyID: 1, Role: fModel.UserRoleMember, IsActive: true}).Error)
 
 	now := time.Now().UTC()
 	tz := middayZone(now)
@@ -172,7 +172,7 @@ func newSlotTestRouter(t *testing.T) (*gin.Engine, *gorm.DB, *chModel.Chore) {
 	local := now.In(loc)
 	points, child := 3, 2
 	chore := &chModel.Chore{
-		Name: "Dents", FrequencyType: chModel.FrequencyTypeDaily, Frequency: 1, IsActive: true, CircleID: 1, CreatedBy: 1,
+		Name: "Dents", FrequencyType: chModel.FrequencyTypeDaily, Frequency: 1, IsActive: true, FamilyID: 1, CreatedBy: 1,
 		Points: &points, RequireApproval: true, AssignedTo: &child,
 		FrequencyMetadataV2: &chModel.FrequencyMetadata{Timezone: tz, Slots: []chModel.Slot{
 			{Name: "Matin", Time: local.Add(-5 * time.Hour).Format("15:04")},
@@ -185,11 +185,11 @@ func newSlotTestRouter(t *testing.T) (*gin.Engine, *gorm.DB, *chModel.Chore) {
 
 	cfg := &config.Config{}
 	cfg.Database.Type = "sqlite"
-	h := &Handler{choreRepo: chRepo.NewChoreRepository(db, cfg), circleRepo: cRepo.NewCircleRepository(db)}
+	h := &Handler{choreRepo: chRepo.NewChoreRepository(db, cfg), familyRepo: fRepo.NewFamilyRepository(db)}
 	router := gin.New()
 	router.Use(func(c *gin.Context) {
 		id, _ := strconv.Atoi(c.GetHeader("X-User"))
-		c.Set("id", &uModel.UserDetails{User: uModel.User{ID: id, CircleID: 1}})
+		c.Set("id", &uModel.UserDetails{User: uModel.User{ID: id, FamilyID: 1}})
 		c.Next()
 	})
 	router.GET("/chores/slots", h.GetSlotsToday)
@@ -235,8 +235,8 @@ func todayStates(t *testing.T, router *gin.Engine, choreID int) []chModel.SlotSt
 }
 
 func earned(t *testing.T, db *gorm.DB, user int) int {
-	var member cModel.UserCircle
-	require.NoError(t, db.Where("user_id = ? AND circle_id = 1", user).First(&member).Error)
+	var member fModel.UserFamily
+	require.NoError(t, db.Where("user_id = ? AND family_id = 1", user).First(&member).Error)
 	return member.Points
 }
 

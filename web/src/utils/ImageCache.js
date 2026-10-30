@@ -132,15 +132,15 @@ const clearImageCache = async () => {
   objectUrlByPath.clear()
 }
 
-// Extracts (path, src) pairs for every dt-data-path image embedded in a
+// Extracts (path, src) pairs for every data-hopla-path image embedded in a
 // description HTML string. Attribute values are HTML-escaped in the raw
 // string ("&amp;"), so src is decoded for fetching while rawSrc keeps the
 // exact attribute text for string replacement.
 const extractDescriptionImages = html => {
-  if (!html || !html.includes('dt-data-path')) return []
+  if (!html || !html.includes('data-hopla-path')) return []
   const results = []
   const imgReg = /<img[^>]+>/g
-  const pathReg = /dt-data-path="([^"]+)"/
+  const pathReg = /data-hopla-path="([^"]+)"/
   const srcReg = /src="([^"]*)"/
   const decodeAttr = value => (value ? value.replaceAll('&amp;', '&') : value)
   for (const tag of html.match(imgReg) || []) {
@@ -266,7 +266,7 @@ const getImageSrc = async (path, signedSrc = null, meta = {}) => {
   return fresh
 }
 
-// Rewrites dt-data-path images in a description HTML string so every img has
+// Rewrites data-hopla-path images in a description HTML string so every img has
 // a usable src: valid signed srcs are kept (and stored for offline), expired
 // ones are swapped for the cached blob or a freshly signed URL.
 const patchDescriptionHtml = async (html, meta = {}) => {

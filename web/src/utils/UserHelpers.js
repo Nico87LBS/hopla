@@ -24,8 +24,8 @@ export const canCreateChores = user => {
   return user && (isParentUser(user) || isChildUser(user))
 }
 
-export const canManageCircle = user => {
-  // Only parent users can manage circle settings
+export const canManageFamily = user => {
+  // Only parent users can manage family settings
   return isParentUser(user)
 }
 
@@ -46,7 +46,7 @@ export const getUserDisplayInfo = user => {
         ? 'child'
         : 'unknown',
     parentUserId: user.parentUserId,
-    circleID: user.circleID,
+    familyID: user.familyID,
   }
 }
 

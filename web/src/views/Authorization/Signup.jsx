@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth.jsx'
 import { useNotification } from '../../service/NotificationProvider'
 import { signUp } from '../../utils/Fetcher'
-import { getPendingInvite, joinCirclePath } from '../../utils/PendingInvite'
+import { getPendingInvite, joinFamilyPath } from '../../utils/PendingInvite'
 import {
   AuthPasswordField,
   AuthSubmitButton,
@@ -47,16 +47,16 @@ const SignupView = () => {
     // Invalidate user profile queries to ensure fresh data
     queryClient.invalidateQueries({ queryKey: ['userProfile'] })
 
-    // Someone who signed up from a circle invite is joining an existing
-    // circle, so sending them through "name your circle" is both a dead
+    // Someone who signed up from a family invite is joining an existing
+    // family, so sending them through "name your family" is both a dead
     // end for the invite and the wrong question.
     const pendingInvite = getPendingInvite()
     if (pendingInvite) {
-      Navigate(joinCirclePath(pendingInvite), { replace: true })
+      Navigate(joinFamilyPath(pendingInvite), { replace: true })
       return
     }
 
-    Navigate('/circle-setup', { replace: true })
+    Navigate('/family-setup', { replace: true })
   }
   const handleSignUpValidation = () => {
     // Reset errors before validation

@@ -4,27 +4,27 @@ import imageCompression from 'browser-image-compression'
 import Quill from 'quill'
 import QuillMarkdown from 'quilljs-markdown'
 
-// Extend the built-in Image blot to preserve dt-data-path
+// Extend the built-in Image blot to preserve data-hopla-path
 const ImageBlot = Quill.import('formats/image')
 class DtImageBlot extends ImageBlot {
   static create(value) {
     const node = super.create(typeof value === 'string' ? value : value.src)
-    if (value?.path) node.setAttribute('dt-data-path', value.path)
+    if (value?.path) node.setAttribute('data-hopla-path', value.path)
     return node
   }
   static value(node) {
     return {
       src: node.getAttribute('src'),
-      path: node.getAttribute('dt-data-path'),
+      path: node.getAttribute('data-hopla-path'),
     }
   }
   static formats(node) {
-    return { 'dt-data-path': node.getAttribute('dt-data-path') }
+    return { 'data-hopla-path': node.getAttribute('data-hopla-path') }
   }
   format(name, value) {
-    if (name === 'dt-data-path') {
-      if (value) this.domNode.setAttribute('dt-data-path', value)
-      else this.domNode.removeAttribute('dt-data-path')
+    if (name === 'data-hopla-path') {
+      if (value) this.domNode.setAttribute('data-hopla-path', value)
+      else this.domNode.removeAttribute('data-hopla-path')
     } else {
       super.format(name, value)
     }
@@ -176,11 +176,11 @@ const RichTextEditor = forwardRef(
           }
           const data = await response.json()
           // data.sign is a fetchable signed URL; data.path is the stable
-          // storage key kept in dt-data-path so the src can be re-signed
+          // storage key kept in data-hopla-path so the src can be re-signed
           // after the URL expires.
           const path = data.path
           const url = resolvePhotoURL(data.sign || data.url)
-          // Insert image into Quill with dt-data-path tracked by the custom blot
+          // Insert image into Quill with data-hopla-path tracked by the custom blot
           const quill = editorRef.current
           const range = quill.getSelection()
           const insertIndex = range ? range.index : 0

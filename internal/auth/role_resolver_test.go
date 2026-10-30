@@ -3,7 +3,7 @@ package auth
 import (
 	"testing"
 
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
 )
 
 func TestResolveRoleFromGroups(t *testing.T) {
@@ -12,7 +12,7 @@ func TestResolveRoleFromGroups(t *testing.T) {
 		userGroups    []string
 		adminGroups   []string
 		managerGroups []string
-		wantRole      cModel.Role
+		wantRole      fModel.Role
 		wantActive    bool
 	}{
 		{
@@ -36,7 +36,7 @@ func TestResolveRoleFromGroups(t *testing.T) {
 			userGroups:    []string{"household-admins", "users"},
 			adminGroups:   []string{"household-admins"},
 			managerGroups: []string{"household-managers"},
-			wantRole:      cModel.RoleAdmin,
+			wantRole:      fModel.RoleAdmin,
 			wantActive:    true,
 		},
 		{
@@ -44,7 +44,7 @@ func TestResolveRoleFromGroups(t *testing.T) {
 			userGroups:    []string{"household-managers", "users"},
 			adminGroups:   []string{"household-admins"},
 			managerGroups: []string{"household-managers"},
-			wantRole:      cModel.RoleManager,
+			wantRole:      fModel.RoleManager,
 			wantActive:    true,
 		},
 		{
@@ -52,7 +52,7 @@ func TestResolveRoleFromGroups(t *testing.T) {
 			userGroups:    []string{"household-admins", "household-managers"},
 			adminGroups:   []string{"household-admins"},
 			managerGroups: []string{"household-managers"},
-			wantRole:      cModel.RoleAdmin,
+			wantRole:      fModel.RoleAdmin,
 			wantActive:    true,
 		},
 		{
@@ -60,7 +60,7 @@ func TestResolveRoleFromGroups(t *testing.T) {
 			userGroups:    []string{"unrelated-group"},
 			adminGroups:   []string{"household-admins"},
 			managerGroups: []string{"household-managers"},
-			wantRole:      cModel.RoleMember,
+			wantRole:      fModel.RoleMember,
 			wantActive:    true,
 		},
 		{
@@ -68,7 +68,7 @@ func TestResolveRoleFromGroups(t *testing.T) {
 			userGroups:    nil,
 			adminGroups:   []string{"household-admins"},
 			managerGroups: []string{},
-			wantRole:      cModel.RoleMember,
+			wantRole:      fModel.RoleMember,
 			wantActive:    true,
 		},
 		{
@@ -76,7 +76,7 @@ func TestResolveRoleFromGroups(t *testing.T) {
 			userGroups:    []string{"Household-Admins"},
 			adminGroups:   []string{"household-admins"},
 			managerGroups: nil,
-			wantRole:      cModel.RoleMember,
+			wantRole:      fModel.RoleMember,
 			wantActive:    true,
 		},
 		{
@@ -84,7 +84,7 @@ func TestResolveRoleFromGroups(t *testing.T) {
 			userGroups:    []string{"users"},
 			adminGroups:   []string{"admins"},
 			managerGroups: nil,
-			wantRole:      cModel.RoleMember,
+			wantRole:      fModel.RoleMember,
 			wantActive:    true,
 		},
 		{
@@ -92,7 +92,7 @@ func TestResolveRoleFromGroups(t *testing.T) {
 			userGroups:    []string{"managers"},
 			adminGroups:   nil,
 			managerGroups: []string{"managers"},
-			wantRole:      cModel.RoleManager,
+			wantRole:      fModel.RoleManager,
 			wantActive:    true,
 		},
 		{
@@ -100,7 +100,7 @@ func TestResolveRoleFromGroups(t *testing.T) {
 			userGroups:    []string{"super-admins"},
 			adminGroups:   []string{"admins", "super-admins"},
 			managerGroups: nil,
-			wantRole:      cModel.RoleAdmin,
+			wantRole:      fModel.RoleAdmin,
 			wantActive:    true,
 		},
 	}

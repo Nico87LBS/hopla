@@ -20,9 +20,9 @@ const (
 	EventTypeChoreSkipped   EventType = "chore.skipped"
 
 	// Change events tell clients to refresh data that has no detailed event:
-	// rewards and redemptions, and the circle's members.
+	// rewards and redemptions, and the family's members.
 	EventTypeRewardsUpdated EventType = "rewards.updated"
-	EventTypeCircleUpdated  EventType = "circle.updated"
+	EventTypeFamilyUpdated  EventType = "family.updated"
 
 	// Subtask events
 	EventTypeSubtaskUpdated   EventType = "subtask.updated"
@@ -38,7 +38,7 @@ const (
 type Event struct {
 	Type        EventType   `json:"type"`
 	Timestamp   time.Time   `json:"timestamp"`
-	CircleID    int         `json:"circleId"`
+	FamilyID    int         `json:"familyId"`
 	SyncVersion int64       `json:"syncVersion"`
 	Data        interface{} `json:"data"`
 	ID          string      `json:"id,omitempty"`
@@ -63,7 +63,7 @@ type ChoreCreatedData struct {
 type ChoreDeletedData struct {
 	ChoreID   int          `json:"choreId"`
 	ChoreName string       `json:"choreName"`
-	CircleID  int          `json:"circleId"`
+	FamilyID  int          `json:"familyId"`
 	User      *uModel.User `json:"user"`
 }
 
@@ -83,7 +83,7 @@ type ChangeEventData struct {
 // ConnectionEstablishedData contains data sent when connection is established
 type ConnectionEstablishedData struct {
 	ConnectionID string    `json:"connectionId"`
-	CircleID     int       `json:"circleId"`
+	FamilyID     int       `json:"familyId"`
 	UserID       int       `json:"userId"`
 	Timestamp    time.Time `json:"timestamp"`
 }
@@ -106,18 +106,18 @@ func (e *Event) ToJSON() ([]byte, error) {
 }
 
 // NewEvent creates a new event with current timestamp
-func NewEvent(eventType EventType, circleID int, data interface{}) *Event {
+func NewEvent(eventType EventType, familyID int, data interface{}) *Event {
 	return &Event{
 		Type:      eventType,
 		Timestamp: time.Now().UTC(),
-		CircleID:  circleID,
+		FamilyID:  familyID,
 		Data:      data,
 	}
 }
 
 // NewChoreCreatedEvent creates a chore creation event
 func NewChoreCreatedEvent(chore *chModel.Chore, user *uModel.User) *Event {
-	return NewEvent(EventTypeChoreCreated, chore.CircleID, &ChoreCreatedData{
+	return NewEvent(EventTypeChoreCreated, chore.FamilyID, &ChoreCreatedData{
 		Chore: chore,
 		User:  user,
 	})
@@ -125,7 +125,7 @@ func NewChoreCreatedEvent(chore *chModel.Chore, user *uModel.User) *Event {
 
 // NewChoreUpdatedEvent creates a chore update event
 func NewChoreUpdatedEvent(chore *chModel.Chore, user *uModel.User, changes map[string]interface{}, note *string) *Event {
-	return NewEvent(EventTypeChoreUpdated, chore.CircleID, &ChoreEventData{
+	return NewEvent(EventTypeChoreUpdated, chore.FamilyID, &ChoreEventData{
 		Chore:   chore,
 		User:    user,
 		Changes: changes,
@@ -134,18 +134,18 @@ func NewChoreUpdatedEvent(chore *chModel.Chore, user *uModel.User, changes map[s
 }
 
 // NewChoreDeletedEvent creates a chore deletion event
-func NewChoreDeletedEvent(choreID int, choreName string, circleID int, user *uModel.User) *Event {
-	return NewEvent(EventTypeChoreDeleted, circleID, &ChoreDeletedData{
+func NewChoreDeletedEvent(choreID int, choreName string, familyID int, user *uModel.User) *Event {
+	return NewEvent(EventTypeChoreDeleted, familyID, &ChoreDeletedData{
 		ChoreID:   choreID,
 		ChoreName: choreName,
-		CircleID:  circleID,
+		FamilyID:  familyID,
 		User:      user,
 	})
 }
 
 // NewChoreCompletedEvent creates a chore completion event
 func NewChoreCompletedEvent(chore *chModel.Chore, user *uModel.User, history *chModel.ChoreHistory, note *string) *Event {
-	return NewEvent(EventTypeChoreCompleted, chore.CircleID, &ChoreEventData{
+	return NewEvent(EventTypeChoreCompleted, chore.FamilyID, &ChoreEventData{
 		Chore:   chore,
 		User:    user,
 		History: history,
@@ -155,7 +155,7 @@ func NewChoreCompletedEvent(chore *chModel.Chore, user *uModel.User, history *ch
 
 // NewChoreSkippedEvent creates a chore skip event
 func NewChoreSkippedEvent(chore *chModel.Chore, user *uModel.User, history *chModel.ChoreHistory, note *string) *Event {
-	return NewEvent(EventTypeChoreSkipped, chore.CircleID, &ChoreEventData{
+	return NewEvent(EventTypeChoreSkipped, chore.FamilyID, &ChoreEventData{
 		Chore:   chore,
 		User:    user,
 		History: history,
@@ -164,8 +164,8 @@ func NewChoreSkippedEvent(chore *chModel.Chore, user *uModel.User, history *chMo
 }
 
 // NewSubtaskUpdatedEvent creates a subtask update event
-func NewSubtaskUpdatedEvent(choreID, subtaskID int, completedAt *time.Time, user *uModel.User, circleID int) *Event {
-	return NewEvent(EventTypeSubtaskUpdated, circleID, &SubtaskEventData{
+func NewSubtaskUpdatedEvent(choreID, subtaskID int, completedAt *time.Time, user *uModel.User, familyID int) *Event {
+	return NewEvent(EventTypeSubtaskUpdated, familyID, &SubtaskEventData{
 		ChoreID:     choreID,
 		SubtaskID:   subtaskID,
 		CompletedAt: completedAt,
@@ -174,8 +174,8 @@ func NewSubtaskUpdatedEvent(choreID, subtaskID int, completedAt *time.Time, user
 }
 
 // NewSubtaskCompletedEvent creates a subtask completion event
-func NewSubtaskCompletedEvent(choreID, subtaskID int, completedAt *time.Time, user *uModel.User, circleID int) *Event {
-	return NewEvent(EventTypeSubtaskCompleted, circleID, &SubtaskEventData{
+func NewSubtaskCompletedEvent(choreID, subtaskID int, completedAt *time.Time, user *uModel.User, familyID int) *Event {
+	return NewEvent(EventTypeSubtaskCompleted, familyID, &SubtaskEventData{
 		ChoreID:     choreID,
 		SubtaskID:   subtaskID,
 		CompletedAt: completedAt,
@@ -184,25 +184,25 @@ func NewSubtaskCompletedEvent(choreID, subtaskID int, completedAt *time.Time, us
 }
 
 // NewConnectionEstablishedEvent creates a connection established event
-func NewConnectionEstablishedEvent(connectionID string, circleID, userID int) *Event {
-	return NewEvent(EventTypeConnectionEstablished, circleID, &ConnectionEstablishedData{
+func NewConnectionEstablishedEvent(connectionID string, familyID, userID int) *Event {
+	return NewEvent(EventTypeConnectionEstablished, familyID, &ConnectionEstablishedData{
 		ConnectionID: connectionID,
-		CircleID:     circleID,
+		FamilyID:     familyID,
 		UserID:       userID,
 		Timestamp:    time.Now().UTC(),
 	})
 }
 
 // NewHeartbeatEvent creates a heartbeat event
-func NewHeartbeatEvent(circleID int) *Event {
-	return NewEvent(EventTypeHeartbeat, circleID, &HeartbeatData{
+func NewHeartbeatEvent(familyID int) *Event {
+	return NewEvent(EventTypeHeartbeat, familyID, &HeartbeatData{
 		Timestamp: time.Now().UTC(),
 	})
 }
 
 // NewErrorEvent creates an error event
-func NewErrorEvent(circleID int, code, message string) *Event {
-	return NewEvent(EventTypeError, circleID, &ErrorData{
+func NewErrorEvent(familyID int, code, message string) *Event {
+	return NewEvent(EventTypeError, familyID, &ErrorData{
 		Code:    code,
 		Message: message,
 	})

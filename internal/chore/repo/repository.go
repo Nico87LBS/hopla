@@ -9,7 +9,7 @@ import (
 
 	config "github.com/nico87lbs/hopla/config"
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	"github.com/nico87lbs/hopla/internal/games"
 	ptModel "github.com/nico87lbs/hopla/internal/points"
 	ptRepo "github.com/nico87lbs/hopla/internal/points/repo"
@@ -60,44 +60,44 @@ func privacyPredicate(userID int) clause.Expr {
 	}
 }
 
-func (r *ChoreRepository) nextSyncVersionWithDB(ctx context.Context, db *gorm.DB, circleID int) (int64, error) {
+func (r *ChoreRepository) nextSyncVersionWithDB(ctx context.Context, db *gorm.DB, familyID int) (int64, error) {
 	var version int64
 	err := db.WithContext(ctx).Raw(`
-		INSERT INTO sync_cursors (circle_id, entity_type, max_version)
+		INSERT INTO sync_cursors (family_id, entity_type, max_version)
 		VALUES (?, ?, 1)
-		ON CONFLICT (circle_id, entity_type) DO UPDATE SET max_version = sync_cursors.max_version + 1
+		ON CONFLICT (family_id, entity_type) DO UPDATE SET max_version = sync_cursors.max_version + 1
 		RETURNING max_version`,
-		circleID, syncModel.EntityTypeChore,
+		familyID, syncModel.EntityTypeChore,
 	).Scan(&version).Error
 	return version, err
 }
 
-func (r *ChoreRepository) nextSyncVersion(ctx context.Context, circleID int) (int64, error) {
-	return r.nextSyncVersionWithDB(ctx, r.db, circleID)
+func (r *ChoreRepository) nextSyncVersion(ctx context.Context, familyID int) (int64, error) {
+	return r.nextSyncVersionWithDB(ctx, r.db, familyID)
 }
 
 // nextSyncVersionRangeWithDB atomically reserves count contiguous sync versions
 // and returns the first (lowest) version in the range.
-func (r *ChoreRepository) nextSyncVersionRangeWithDB(ctx context.Context, db *gorm.DB, circleID int, count int) (int64, error) {
+func (r *ChoreRepository) nextSyncVersionRangeWithDB(ctx context.Context, db *gorm.DB, familyID int, count int) (int64, error) {
 	var endVersion int64
 	err := db.WithContext(ctx).Raw(`
-		INSERT INTO sync_cursors (circle_id, entity_type, max_version)
+		INSERT INTO sync_cursors (family_id, entity_type, max_version)
 		VALUES (?, ?, ?)
-		ON CONFLICT (circle_id, entity_type) DO UPDATE SET max_version = sync_cursors.max_version + ?
+		ON CONFLICT (family_id, entity_type) DO UPDATE SET max_version = sync_cursors.max_version + ?
 		RETURNING max_version`,
-		circleID, syncModel.EntityTypeChore, count, count,
+		familyID, syncModel.EntityTypeChore, count, count,
 	).Scan(&endVersion).Error
 	return endVersion - int64(count) + 1, err
 }
 
-func (r *ChoreRepository) insertTombstone(ctx context.Context, tx *gorm.DB, circleID int, entityID int) (int64, error) {
+func (r *ChoreRepository) insertTombstone(ctx context.Context, tx *gorm.DB, familyID int, entityID int) (int64, error) {
 	// Use tx (not r.db) so the version increment and tombstone insert are atomic.
-	version, err := r.nextSyncVersionWithDB(ctx, tx, circleID)
+	version, err := r.nextSyncVersionWithDB(ctx, tx, familyID)
 	if err != nil {
 		return 0, err
 	}
 	if err := tx.WithContext(ctx).Create(&syncModel.Tombstone{
-		CircleID:    circleID,
+		FamilyID:    familyID,
 		EntityType:  syncModel.EntityTypeChore,
 		EntityID:    entityID,
 		SyncVersion: version,
@@ -107,10 +107,10 @@ func (r *ChoreRepository) insertTombstone(ctx context.Context, tx *gorm.DB, circ
 	return version, nil
 }
 
-func choreViewerSet(chore *chModel.Chore, assigneeIDs []int, circleUserIDs []int) map[int]struct{} {
+func choreViewerSet(chore *chModel.Chore, assigneeIDs []int, familyUserIDs []int) map[int]struct{} {
 	viewers := make(map[int]struct{})
 	if !chore.IsPrivate {
-		for _, userID := range circleUserIDs {
+		for _, userID := range familyUserIDs {
 			viewers[userID] = struct{}{}
 		}
 		return viewers
@@ -124,7 +124,7 @@ func choreViewerSet(chore *chModel.Chore, assigneeIDs []int, circleUserIDs []int
 }
 
 // UpdateChoreVisibility atomically updates a chore and its complete assignee set,
-// recording a user-scoped tombstone for each circle member who loses visibility.
+// recording a user-scoped tombstone for each family member who loses visibility.
 func (r *ChoreRepository) UpdateChoreVisibility(ctx context.Context, chore *chModel.Chore, assigneeIDs []int) error {
 	return r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		lockedQuery := func() *gorm.DB {
@@ -136,7 +136,7 @@ func (r *ChoreRepository) UpdateChoreVisibility(ctx context.Context, chore *chMo
 		}
 
 		var previousChore chModel.Chore
-		if err := lockedQuery().Where("id = ? AND circle_id = ?", chore.ID, chore.CircleID).First(&previousChore).Error; err != nil {
+		if err := lockedQuery().Where("id = ? AND family_id = ?", chore.ID, chore.FamilyID).First(&previousChore).Error; err != nil {
 			return err
 		}
 		var previousAssignees []chModel.ChoreAssignees
@@ -148,13 +148,13 @@ func (r *ChoreRepository) UpdateChoreVisibility(ctx context.Context, chore *chMo
 			previousAssigneeIDs = append(previousAssigneeIDs, assignee.UserID)
 		}
 
-		var circleUserIDs []int
-		if err := tx.WithContext(ctx).Table("user_circles").Where("circle_id = ? AND is_active = ?", chore.CircleID, true).Pluck("user_id", &circleUserIDs).Error; err != nil {
+		var familyUserIDs []int
+		if err := tx.WithContext(ctx).Table("user_families").Where("family_id = ? AND is_active = ?", chore.FamilyID, true).Pluck("user_id", &familyUserIDs).Error; err != nil {
 			return err
 		}
 
-		previousViewers := choreViewerSet(&previousChore, previousAssigneeIDs, circleUserIDs)
-		newViewers := choreViewerSet(chore, assigneeIDs, circleUserIDs)
+		previousViewers := choreViewerSet(&previousChore, previousAssigneeIDs, familyUserIDs)
+		newViewers := choreViewerSet(chore, assigneeIDs, familyUserIDs)
 		revokedUserIDs := make([]int, 0)
 		for userID := range previousViewers {
 			if _, stillVisible := newViewers[userID]; !stillVisible {
@@ -169,7 +169,7 @@ func (r *ChoreRepository) UpdateChoreVisibility(ctx context.Context, chore *chMo
 			}
 		}
 		sort.Ints(grantedUserIDs)
-		firstVersion, err := r.nextSyncVersionRangeWithDB(ctx, tx, chore.CircleID, 1)
+		firstVersion, err := r.nextSyncVersionRangeWithDB(ctx, tx, chore.FamilyID, 1)
 		if err != nil {
 			return err
 		}
@@ -197,7 +197,7 @@ func (r *ChoreRepository) UpdateChoreVisibility(ctx context.Context, chore *chMo
 		}
 
 		if len(revokedUserIDs) > 0 || len(grantedUserIDs) > 0 {
-			if _, err := r.applyVisibilityDeltas(ctx, tx, chore.CircleID, []visibilityDelta{{
+			if _, err := r.applyVisibilityDeltas(ctx, tx, chore.FamilyID, []visibilityDelta{{
 				choreID: chore.ID,
 				revoked: revokedUserIDs,
 				granted: grantedUserIDs,
@@ -211,10 +211,10 @@ func (r *ChoreRepository) UpdateChoreVisibility(ctx context.Context, chore *chMo
 
 func (r *ChoreRepository) UpdateChoreFields(ctx context.Context, choreID int, fields map[string]interface{}) error {
 	var chore chModel.Chore
-	if err := r.db.WithContext(ctx).Select("circle_id").First(&chore, choreID).Error; err != nil {
+	if err := r.db.WithContext(ctx).Select("family_id").First(&chore, choreID).Error; err != nil {
 		return err
 	}
-	nextVersion, err := r.nextSyncVersion(ctx, chore.CircleID)
+	nextVersion, err := r.nextSyncVersion(ctx, chore.FamilyID)
 	if err != nil {
 		return err
 	}
@@ -222,19 +222,19 @@ func (r *ChoreRepository) UpdateChoreFields(ctx context.Context, choreID int, fi
 	return r.db.WithContext(ctx).Model(&chModel.Chore{}).Where("id = ?", choreID).Updates(fields).Error
 }
 
-func (r *ChoreRepository) nextSyncVersionRange(ctx context.Context, circleID int, count int) (int64, error) {
-	return r.nextSyncVersionRangeWithDB(ctx, r.db, circleID, count)
+func (r *ChoreRepository) nextSyncVersionRange(ctx context.Context, familyID int, count int) (int64, error) {
+	return r.nextSyncVersionRangeWithDB(ctx, r.db, familyID, count)
 }
 
 func (r *ChoreRepository) UpdateChores(c context.Context, chores []*chModel.Chore) error {
 	if len(chores) > 0 {
-		circleIndexes := make(map[int][]int)
+		familyIndexes := make(map[int][]int)
 		for i, ch := range chores {
-			circleIndexes[ch.CircleID] = append(circleIndexes[ch.CircleID], i)
+			familyIndexes[ch.FamilyID] = append(familyIndexes[ch.FamilyID], i)
 		}
 
-		for circleID, indexes := range circleIndexes {
-			startVersion, err := r.nextSyncVersionRange(c, circleID, len(indexes))
+		for familyID, indexes := range familyIndexes {
+			startVersion, err := r.nextSyncVersionRange(c, familyID, len(indexes))
 			if err != nil {
 				return err
 			}
@@ -246,7 +246,7 @@ func (r *ChoreRepository) UpdateChores(c context.Context, chores []*chModel.Chor
 	return r.db.WithContext(c).Save(&chores).Error
 }
 func (r *ChoreRepository) CreateChore(c context.Context, chore *chModel.Chore) (int, error) {
-	nextVersion, err := r.nextSyncVersion(c, chore.CircleID)
+	nextVersion, err := r.nextSyncVersion(c, chore.FamilyID)
 	if err != nil {
 		return 0, err
 	}
@@ -260,7 +260,7 @@ func (r *ChoreRepository) CreateChore(c context.Context, chore *chModel.Chore) (
 // CreateChoreWithAssignees atomically creates a chore and its assignees.
 func (r *ChoreRepository) CreateChoreWithAssignees(ctx context.Context, chore *chModel.Chore, assigneeIDs []int) (int, error) {
 	err := r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		nextVersion, err := r.nextSyncVersionWithDB(ctx, tx, chore.CircleID)
+		nextVersion, err := r.nextSyncVersionWithDB(ctx, tx, chore.FamilyID)
 		if err != nil {
 			return err
 		}
@@ -291,13 +291,13 @@ func (r *ChoreRepository) CreateChoreWithAssignees(ctx context.Context, chore *c
 	return chore.ID, nil
 }
 
-func (r *ChoreRepository) GetChore(c context.Context, choreID int, userID int, circleID int) (*chModel.Chore, error) {
+func (r *ChoreRepository) GetChore(c context.Context, choreID int, userID int, familyID int) (*chModel.Chore, error) {
 	var chore chModel.Chore
 	query := privacyJoins(r.db.WithContext(c).Model(&chModel.Chore{}), userID).
 		Preload("SubTasks", "chore_id = ?", choreID).
 		Preload("Assignees").
 		Preload("LabelsV2").
-		Where("chores.id = ? AND chores.circle_id = ?", choreID, circleID).
+		Where("chores.id = ? AND chores.family_id = ?", choreID, familyID).
 		Where(privacyPredicate(userID))
 
 	if err := query.First(&chore).Error; err != nil {
@@ -318,16 +318,16 @@ func (r *ChoreRepository) GetChoreForSystem(c context.Context, choreID int) (*ch
 	return &chore, nil
 }
 
-// GetChores retrieves chores for a user in a circle, respecting privacy and optionally filtered by sync version.
+// GetChores retrieves chores for a user in a family, respecting privacy and optionally filtered by sync version.
 // If syncOptions is nil or syncOptions.SyncVersion is nil, returns all visible chores ordered by next_due_date.
 // If syncOptions.SyncVersion is set, returns only chores with sync_version > *SyncVersion, ordered by sync_version.
-func (r *ChoreRepository) GetChores(c context.Context, circleID int, userID int, includeArchived bool, syncOptions *SyncOptions, includeSubtasks bool) ([]*chModel.Chore, error) {
+func (r *ChoreRepository) GetChores(c context.Context, familyID int, userID int, includeArchived bool, syncOptions *SyncOptions, includeSubtasks bool) ([]*chModel.Chore, error) {
 	var chores []*chModel.Chore
 
 	query := privacyJoins(r.db.WithContext(c).Model(&chModel.Chore{}), userID).
 		Preload("Assignees").
 		Preload("LabelsV2").
-		Where("chores.circle_id = ?", circleID).
+		Where("chores.family_id = ?", familyID).
 		Where(privacyPredicate(userID)).
 		Group("chores.id")
 
@@ -354,12 +354,12 @@ func (r *ChoreRepository) GetChores(c context.Context, circleID int, userID int,
 	return chores, nil
 }
 
-func (r *ChoreRepository) GetArchivedChores(c context.Context, circleID int, userID int) ([]*chModel.Chore, error) {
+func (r *ChoreRepository) GetArchivedChores(c context.Context, familyID int, userID int) ([]*chModel.Chore, error) {
 	var chores []*chModel.Chore
 	if err := privacyJoins(r.db.WithContext(c).Model(&chModel.Chore{}), userID).
 		Preload("Assignees").
 		Preload("LabelsV2").
-		Where("chores.circle_id = ?", circleID).
+		Where("chores.family_id = ?", familyID).
 		Where(privacyPredicate(userID)).
 		Where("is_active = ?", false).
 		Group("chores.id").
@@ -378,7 +378,7 @@ func (r *ChoreRepository) DeleteChore(c context.Context, id int) (int64, error) 
 			query = query.Clauses(clause.Locking{Strength: "UPDATE"})
 		}
 		var chore chModel.Chore
-		if err := query.Select("id, circle_id").First(&chore, id).Error; err != nil {
+		if err := query.Select("id, family_id").First(&chore, id).Error; err != nil {
 			return err
 		}
 
@@ -414,7 +414,7 @@ func (r *ChoreRepository) DeleteChore(c context.Context, id int) (int64, error) 
 			return err
 		}
 		// Record tombstone so clients can remove it during sync
-		version, err := r.insertTombstone(c, tx, chore.CircleID, id)
+		version, err := r.insertTombstone(c, tx, chore.FamilyID, id)
 		if err != nil {
 			return err
 		}
@@ -428,7 +428,7 @@ func (r *ChoreRepository) DeleteChore(c context.Context, id int) (int64, error) 
 }
 
 func (r *ChoreRepository) SetChorePendingApproval(c context.Context, chore *chModel.Chore, note *string, userID int, completedDate *time.Time) error {
-	nextVersion, err := r.nextSyncVersion(c, chore.CircleID)
+	nextVersion, err := r.nextSyncVersion(c, chore.FamilyID)
 	if err != nil {
 		return err
 	}
@@ -493,7 +493,7 @@ func (r *ChoreRepository) SetChorePendingApproval(c context.Context, chore *chMo
 }
 
 func (r *ChoreRepository) ApproveChore(c context.Context, chore *chModel.Chore, adminUserID int, dueDate *time.Time, nextAssignedTo *int, applyPoints bool) error {
-	nextVersion, err := r.nextSyncVersion(c, chore.CircleID)
+	nextVersion, err := r.nextSyncVersion(c, chore.FamilyID)
 	if err != nil {
 		return err
 	}
@@ -523,7 +523,7 @@ func (r *ChoreRepository) ApproveChore(c context.Context, chore *chModel.Chore, 
 		history.Status = chModel.ChoreHistoryStatusCompleted
 		history.SyncVersion = nextVersion
 
-		// Update UserCircle Points if applicable
+		// Update UserFamily Points if applicable
 		performedAt := time.Now().UTC()
 		if history.PerformedAt != nil {
 			performedAt = *history.PerformedAt
@@ -539,7 +539,7 @@ func (r *ChoreRepository) ApproveChore(c context.Context, chore *chModel.Chore, 
 			return err
 		}
 		if applyPoints {
-			if err := games.AfterTask(tx, chore.CircleID, history.CompletedBy, performedAt, time.Now().UTC()); err != nil {
+			if err := games.AfterTask(tx, chore.FamilyID, history.CompletedBy, performedAt, time.Now().UTC()); err != nil {
 				return err
 			}
 		}
@@ -554,14 +554,14 @@ func (r *ChoreRepository) ApproveChore(c context.Context, chore *chModel.Chore, 
 	return err
 }
 
-func (r *ChoreRepository) RejectChore(c context.Context, choreID int, circleID int, rejectionNote *string) error {
-	nextVersion, err := r.nextSyncVersion(c, circleID)
+func (r *ChoreRepository) RejectChore(c context.Context, choreID int, familyID int, rejectionNote *string) error {
+	nextVersion, err := r.nextSyncVersion(c, familyID)
 	if err != nil {
 		return err
 	}
 	return r.db.WithContext(c).Transaction(func(tx *gorm.DB) error {
 		// Reset chore status to normal
-		if err := tx.Model(&chModel.Chore{}).Where("id = ? AND circle_id = ?", choreID, circleID).Updates(map[string]interface{}{
+		if err := tx.Model(&chModel.Chore{}).Where("id = ? AND family_id = ?", choreID, familyID).Updates(map[string]interface{}{
 			"status":       chModel.ChoreStatusNoStatus,
 			"sync_version": nextVersion,
 		}).Error; err != nil {
@@ -591,7 +591,7 @@ func (r *ChoreRepository) RejectChore(c context.Context, choreID int, circleID i
 }
 
 func (r *ChoreRepository) CompleteChore(c context.Context, chore *chModel.Chore, note *string, userID int, dueDate *time.Time, completedDate *time.Time, nextAssignedTo *int, applyPoints bool) error {
-	nextVersion, err := r.nextSyncVersion(c, chore.CircleID)
+	nextVersion, err := r.nextSyncVersion(c, chore.FamilyID)
 	if err != nil {
 		return err
 	}
@@ -646,7 +646,7 @@ func (r *ChoreRepository) CompleteChore(c context.Context, chore *chModel.Chore,
 			return err
 		}
 
-		// Update UserCirclee Points :
+		// Update UserFamilye Points :
 		performedAt := time.Now().UTC()
 		if completedDate != nil {
 			performedAt = *completedDate
@@ -666,7 +666,7 @@ func (r *ChoreRepository) CompleteChore(c context.Context, chore *chModel.Chore,
 			return err
 		}
 		if applyPoints {
-			if err := games.AfterTask(tx, chore.CircleID, userID, performedAt, time.Now().UTC()); err != nil {
+			if err := games.AfterTask(tx, chore.FamilyID, userID, performedAt, time.Now().UTC()); err != nil {
 				return err
 			}
 		}
@@ -688,7 +688,7 @@ func (r *ChoreRepository) CompleteChore(c context.Context, chore *chModel.Chore,
 }
 
 func (r *ChoreRepository) SkipChore(c context.Context, chore *chModel.Chore, userID int, dueDate *time.Time, nextAssignedTo *int, skippedAt *time.Time) error {
-	nextVersion, err := r.nextSyncVersion(c, chore.CircleID)
+	nextVersion, err := r.nextSyncVersion(c, chore.FamilyID)
 	if err != nil {
 		return err
 	}
@@ -803,14 +803,14 @@ func (r *ChoreRepository) GetChoreHistoryByID(c context.Context, choreID int, hi
 }
 
 func (r *ChoreRepository) CreateChoreHistory(c context.Context, history *chModel.ChoreHistory) error {
-	// Get the circle_id from the associated chore
+	// Get the family_id from the associated chore
 	var chore chModel.Chore
-	if err := r.db.WithContext(c).Select("circle_id").First(&chore, history.ChoreID).Error; err != nil {
+	if err := r.db.WithContext(c).Select("family_id").First(&chore, history.ChoreID).Error; err != nil {
 		return fmt.Errorf("failed to get chore for history creation: %w", err)
 	}
 
 	// Allocate sync version for this history
-	nextVersion, err := r.nextSyncVersion(c, chore.CircleID)
+	nextVersion, err := r.nextSyncVersion(c, chore.FamilyID)
 	if err != nil {
 		return fmt.Errorf("failed to allocate sync version: %w", err)
 	}
@@ -820,14 +820,14 @@ func (r *ChoreRepository) CreateChoreHistory(c context.Context, history *chModel
 }
 
 func (r *ChoreRepository) UpdateChoreHistory(c context.Context, history *chModel.ChoreHistory) error {
-	// Get the circle_id from the associated chore
+	// Get the family_id from the associated chore
 	var chore chModel.Chore
-	if err := r.db.WithContext(c).Select("circle_id").First(&chore, history.ChoreID).Error; err != nil {
+	if err := r.db.WithContext(c).Select("family_id").First(&chore, history.ChoreID).Error; err != nil {
 		return fmt.Errorf("failed to get chore for history update: %w", err)
 	}
 
 	// Every history update must get a fresh sync version so it is visible to sync clients.
-	nextVersion, err := r.nextSyncVersion(c, chore.CircleID)
+	nextVersion, err := r.nextSyncVersion(c, chore.FamilyID)
 	if err != nil {
 		return fmt.Errorf("failed to allocate sync version: %w", err)
 	}
@@ -836,11 +836,11 @@ func (r *ChoreRepository) UpdateChoreHistory(c context.Context, history *chModel
 	return r.db.WithContext(c).Save(history).Error
 }
 
-func (r *ChoreRepository) DeleteChoreHistory(c context.Context, historyID int, circleID int) error {
+func (r *ChoreRepository) DeleteChoreHistory(c context.Context, historyID int, familyID int) error {
 	// create transaction and delete all the chore timer associated with the chore history then delete the chore history
 	return r.db.WithContext(c).Transaction(func(tx *gorm.DB) error {
 		// Allocate next sync version within the transaction for atomicity
-		nextVersion, err := r.nextSyncVersionWithDB(c, tx, circleID)
+		nextVersion, err := r.nextSyncVersionWithDB(c, tx, familyID)
 		if err != nil {
 			return err
 		}
@@ -854,7 +854,7 @@ func (r *ChoreRepository) DeleteChoreHistory(c context.Context, historyID int, c
 		}
 		// Record tombstone so clients can remove it during sync
 		return tx.WithContext(c).Create(&syncModel.Tombstone{
-			CircleID:    circleID,
+			FamilyID:    familyID,
 			EntityType:  syncModel.EntityTypeChoreHistory,
 			EntityID:    historyID,
 			SyncVersion: nextVersion,
@@ -862,15 +862,15 @@ func (r *ChoreRepository) DeleteChoreHistory(c context.Context, historyID int, c
 	})
 }
 
-// ClearHistory deletes the task history of a circle, or only what the given
+// ClearHistory deletes the task history of a family, or only what the given
 // members did, with its timer sessions, and leaves tombstones so synced
 // clients drop it too. The tasks done go back to do with the due date they
 // had before. It returns how many entries were deleted.
-func (r *ChoreRepository) ClearHistory(c context.Context, circleID int, userIDs []int) (int, error) {
+func (r *ChoreRepository) ClearHistory(c context.Context, familyID int, userIDs []int) (int, error) {
 	deleted := 0
 	err := r.db.WithContext(c).Transaction(func(tx *gorm.DB) error {
 		query := tx.Model(&chModel.ChoreHistory{}).
-			Where("chore_id IN (?)", tx.Model(&chModel.Chore{}).Select("id").Where("circle_id = ?", circleID))
+			Where("chore_id IN (?)", tx.Model(&chModel.Chore{}).Select("id").Where("family_id = ?", familyID))
 		if userIDs != nil {
 			query = query.Where("completed_by IN ?", userIDs)
 		}
@@ -903,7 +903,7 @@ func (r *ChoreRepository) ClearHistory(c context.Context, circleID int, userIDs 
 				delete(first, choreID)
 			}
 		}
-		next, err := r.nextSyncVersionRangeWithDB(c, tx, circleID, len(ids)+len(first))
+		next, err := r.nextSyncVersionRangeWithDB(c, tx, familyID, len(ids)+len(first))
 		if err != nil {
 			return err
 		}
@@ -918,7 +918,7 @@ func (r *ChoreRepository) ClearHistory(c context.Context, circleID int, userIDs 
 			}
 		}
 		for _, id := range ids {
-			tombstones = append(tombstones, syncModel.Tombstone{CircleID: circleID, EntityType: syncModel.EntityTypeChoreHistory,
+			tombstones = append(tombstones, syncModel.Tombstone{FamilyID: familyID, EntityType: syncModel.EntityTypeChoreHistory,
 				EntityID: id, SyncVersion: next})
 			next++
 		}
@@ -948,11 +948,11 @@ func (r *ChoreRepository) ClearHistory(c context.Context, circleID int, userIDs 
 	return deleted, err
 }
 
-func (r *ChoreRepository) RemoveChoreAssigneeByCircleID(c context.Context, userID int, circleID int) error {
-	return r.db.WithContext(c).Where("user_id = ? AND chore_id IN (SELECT id FROM chores WHERE circle_id = ? and created_by != ?)", userID, circleID, userID).Delete(&chModel.ChoreAssignees{}).Error
+func (r *ChoreRepository) RemoveChoreAssigneeByFamilyID(c context.Context, userID int, familyID int) error {
+	return r.db.WithContext(c).Where("user_id = ? AND chore_id IN (SELECT id FROM chores WHERE family_id = ? and created_by != ?)", userID, familyID, userID).Delete(&chModel.ChoreAssignees{}).Error
 }
 
-func (r *ChoreRepository) GetChoreDetailByID(c context.Context, choreID int, circleID int, userID int) (*chModel.ChoreDetail, error) {
+func (r *ChoreRepository) GetChoreDetailByID(c context.Context, choreID int, familyID int, userID int) (*chModel.ChoreDetail, error) {
 	var choreDetail chModel.ChoreDetail
 	if err := privacyJoins(r.db.WithContext(c).Table("chores"), userID).
 		Preload("Subtasks").
@@ -997,7 +997,7 @@ func (r *ChoreRepository) GetChoreDetailByID(c context.Context, choreID int, cir
         AND status IN (1, 2, 3, 4)
     ) AS recent_history ON chores.id = recent_history.chore_id`).
 		Joins("LEFT JOIN time_sessions ON chores.id = time_sessions.chore_id AND time_sessions.status < ?", chModel.TimeSessionStatusCompleted).
-		Where("chores.id = ? AND chores.circle_id = ?", choreID, circleID).
+		Where("chores.id = ? AND chores.family_id = ?", choreID, familyID).
 		Where(privacyPredicate(userID)).
 		Group("chores.id, recent_history.last_completed_date, recent_history.last_assigned_to, recent_history.last_completed_by, recent_history.notes, time_sessions.start_time, time_sessions.updated_at").
 		First(&choreDetail).Error; err != nil {
@@ -1007,12 +1007,12 @@ func (r *ChoreRepository) GetChoreDetailByID(c context.Context, choreID int, cir
 	return &choreDetail, nil
 }
 
-func (r *ChoreRepository) ArchiveChore(c context.Context, choreID int, userID int, circleID int) error {
-	nextVersion, err := r.nextSyncVersion(c, circleID)
+func (r *ChoreRepository) ArchiveChore(c context.Context, choreID int, userID int, familyID int) error {
+	nextVersion, err := r.nextSyncVersion(c, familyID)
 	if err != nil {
 		return err
 	}
-	result := r.db.WithContext(c).Model(&chModel.Chore{}).Where("id = ? AND created_by = ? AND circle_id = ?", choreID, userID, circleID).Updates(map[string]interface{}{
+	result := r.db.WithContext(c).Model(&chModel.Chore{}).Where("id = ? AND created_by = ? AND family_id = ?", choreID, userID, familyID).Updates(map[string]interface{}{
 		"is_active":    false,
 		"sync_version": nextVersion,
 	})
@@ -1022,12 +1022,12 @@ func (r *ChoreRepository) ArchiveChore(c context.Context, choreID int, userID in
 	return result.Error
 }
 
-func (r *ChoreRepository) UnarchiveChore(c context.Context, choreID int, userID int, circleID int) error {
-	nextVersion, err := r.nextSyncVersion(c, circleID)
+func (r *ChoreRepository) UnarchiveChore(c context.Context, choreID int, userID int, familyID int) error {
+	nextVersion, err := r.nextSyncVersion(c, familyID)
 	if err != nil {
 		return err
 	}
-	result := r.db.WithContext(c).Model(&chModel.Chore{}).Where("id = ? AND created_by = ? AND circle_id = ?", choreID, userID, circleID).Updates(map[string]interface{}{
+	result := r.db.WithContext(c).Model(&chModel.Chore{}).Where("id = ? AND created_by = ? AND family_id = ?", choreID, userID, familyID).Updates(map[string]interface{}{
 		"is_active":    true,
 		"sync_version": nextVersion,
 	})
@@ -1037,22 +1037,22 @@ func (r *ChoreRepository) UnarchiveChore(c context.Context, choreID int, userID 
 	return result.Error
 }
 
-func (r *ChoreRepository) GetChoresHistoryByUserID(c context.Context, userID int, circleID int, days int, includeCircle bool) ([]*chModel.ChoreHistory, error) {
+func (r *ChoreRepository) GetChoresHistoryByUserID(c context.Context, userID int, familyID int, days int, includeFamily bool) ([]*chModel.ChoreHistory, error) {
 
 	var chores []*chModel.ChoreHistory
 	since := time.Now().UTC().AddDate(0, 0, days*-1)
 	query := r.db.WithContext(c).
 		Table("chore_histories").
-		Select("chore_histories.*, circles.id as circle_id, time_sessions.duration, time_sessions.start_time, time_sessions.updated_at as timer_updated_at").
+		Select("chore_histories.*, families.id as family_id, time_sessions.duration, time_sessions.start_time, time_sessions.updated_at as timer_updated_at").
 		Joins("LEFT JOIN chores ON chore_histories.chore_id = chores.id").
-		Joins("LEFT JOIN circles ON chores.circle_id = circles.id").
+		Joins("LEFT JOIN families ON chores.family_id = families.id").
 		Joins("LEFT JOIN time_sessions ON chore_histories.id = time_sessions.chore_history_id")
 	query = privacyJoins(query, userID).
-		Where("circles.id = ? AND chore_histories.updated_at > ?", circleID, since).
+		Where("families.id = ? AND chore_histories.updated_at > ?", familyID, since).
 		Where(privacyPredicate(userID)).
 		Order("chore_histories.performed_at desc, chore_histories.updated_at desc")
 
-	if !includeCircle {
+	if !includeFamily {
 		query = query.Where("chore_histories.completed_by = ?", userID)
 	}
 
@@ -1063,10 +1063,10 @@ func (r *ChoreRepository) GetChoresHistoryByUserID(c context.Context, userID int
 }
 
 // GetTombstonesSince returns global tombstones and tombstones scoped to userID.
-func (r *ChoreRepository) GetTombstonesSince(c context.Context, circleID int, entityType syncModel.EntityType, userID int, since int64, limit int) ([]*syncModel.Tombstone, error) {
+func (r *ChoreRepository) GetTombstonesSince(c context.Context, familyID int, entityType syncModel.EntityType, userID int, since int64, limit int) ([]*syncModel.Tombstone, error) {
 	var tombstones []*syncModel.Tombstone
 	query := r.db.WithContext(c).
-		Where("circle_id = ? AND entity_type = ? AND sync_version > ? AND (user_id IS NULL OR user_id = ?)", circleID, entityType, since, userID).
+		Where("family_id = ? AND entity_type = ? AND sync_version > ? AND (user_id IS NULL OR user_id = ?)", familyID, entityType, since, userID).
 		Order("sync_version asc")
 	if limit > 0 {
 		query = query.Limit(limit)
@@ -1077,11 +1077,11 @@ func (r *ChoreRepository) GetTombstonesSince(c context.Context, circleID int, en
 	return tombstones, nil
 }
 
-// GetChoresHistoryByCircle retrieves chore histories for a circle, respecting privacy and optionally filtered by sync version.
+// GetChoresHistoryByFamily retrieves chore histories for a family, respecting privacy and optionally filtered by sync version.
 // A history is visible if the user can see the associated chore (privacy rules apply).
 // If syncOptions is nil or syncOptions.SyncVersion is nil, returns all visible histories ordered by performed_at DESC.
 // If syncOptions.SyncVersion is set, returns only histories with sync_version > *SyncVersion, ordered by sync_version ASC.
-func (r *ChoreRepository) GetChoresHistoryByCircle(c context.Context, circleID int, userID int, syncOptions *SyncOptions) ([]*chModel.ChoreHistory, error) {
+func (r *ChoreRepository) GetChoresHistoryByFamily(c context.Context, familyID int, userID int, syncOptions *SyncOptions) ([]*chModel.ChoreHistory, error) {
 	var histories []*chModel.ChoreHistory
 
 	query := r.db.WithContext(c).
@@ -1090,7 +1090,7 @@ func (r *ChoreRepository) GetChoresHistoryByCircle(c context.Context, circleID i
 		Joins("JOIN chores ON chores.id = chore_histories.chore_id").
 		Joins("LEFT JOIN time_sessions ON time_sessions.chore_history_id = chore_histories.id")
 	query = privacyJoins(query, userID).
-		Where("chores.circle_id = ?", circleID).
+		Where("chores.family_id = ?", familyID).
 		Where(privacyPredicate(userID))
 
 	// Sync-specific filtering if provided.
@@ -1132,8 +1132,8 @@ func (r *ChoreRepository) GetUserLastChoreAction(c context.Context, choreID int,
 }
 
 // UndoChoreAction undoes a chore action by restoring previous state and removing the history entry
-func (r *ChoreRepository) UndoChoreAction(c context.Context, choreID int, historyID int, circleID int, previousAssignedTo *int, previousDueDate *time.Time) error {
-	nextVersion, err := r.nextSyncVersion(c, circleID)
+func (r *ChoreRepository) UndoChoreAction(c context.Context, choreID int, historyID int, familyID int, previousAssignedTo *int, previousDueDate *time.Time) error {
+	nextVersion, err := r.nextSyncVersion(c, familyID)
 	if err != nil {
 		return err
 	}
@@ -1180,14 +1180,14 @@ func (r *ChoreRepository) UndoChoreAction(c context.Context, choreID int, histor
 		// Remove points if they were added during completion/approval
 		if historyToUndo.Points != nil && *historyToUndo.Points > 0 &&
 			(historyToUndo.Status == chModel.ChoreHistoryStatusCompleted) {
-			// Get the chore to find circle ID
+			// Get the chore to find family ID
 			var chore chModel.Chore
-			if err := tx.Select("id", "name", "circle_id").First(&chore, choreID).Error; err != nil {
+			if err := tx.Select("id", "name", "family_id").First(&chore, choreID).Error; err != nil {
 				return err
 			}
 			// Subtract points from user
-			if err := tx.Model(&cModel.UserCircle{}).
-				Where("user_id = ? AND circle_id = ?", historyToUndo.CompletedBy, chore.CircleID).
+			if err := tx.Model(&fModel.UserFamily{}).
+				Where("user_id = ? AND family_id = ?", historyToUndo.CompletedBy, chore.FamilyID).
 				Update("points", gorm.Expr("points - ?", *historyToUndo.Points)).Error; err != nil {
 				return err
 			}

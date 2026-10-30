@@ -4,10 +4,10 @@ package games
 
 import "time"
 
-// Rules are a circle's game settings. A circle without a row plays with
+// Rules are a family's game settings. A family without a row plays with
 // DefaultRules.
 type Rules struct {
-	CircleID int `json:"-" gorm:"primaryKey;autoIncrement:false"`
+	FamilyID int `json:"-" gorm:"primaryKey;autoIncrement:false"`
 	// A member who completes at least one task every day for StreakEvery days
 	// in a row gets StreakBonus points, then again every StreakEvery days.
 	// 0 turns streak bonuses off; streaks are still counted.
@@ -24,16 +24,16 @@ type Rules struct {
 
 func (Rules) TableName() string { return "game_rules" }
 
-// DefaultRules are what a circle plays with until a parent changes them.
-func DefaultRules(circleID int) Rules {
-	return Rules{CircleID: circleID, StreakEvery: 7, StreakBonus: 10, SurpriseEnabled: true, SurpriseBonus: 5, QuestsPerWeek: 3}
+// DefaultRules are what a family plays with until a parent changes them.
+func DefaultRules(familyID int) Rules {
+	return Rules{FamilyID: familyID, StreakEvery: 7, StreakBonus: 10, SurpriseEnabled: true, SurpriseBonus: 5, QuestsPerWeek: 3}
 }
 
 // BonusPeriod multiplies the points of every task completed between StartsAt
 // and EndsAt, such as a double-points weekend.
 type BonusPeriod struct {
 	ID         int       `json:"id" gorm:"primaryKey"`
-	CircleID   int       `json:"-" gorm:"column:circle_id;index;not null"`
+	FamilyID   int       `json:"-" gorm:"column:family_id;index;not null"`
 	Name       string    `json:"name" gorm:"column:name;not null"`
 	StartsAt   time.Time `json:"startsAt" gorm:"column:starts_at;not null"`
 	EndsAt     time.Time `json:"endsAt" gorm:"column:ends_at;not null"`
@@ -44,10 +44,10 @@ type BonusPeriod struct {
 
 func (BonusPeriod) TableName() string { return "bonus_periods" }
 
-// Surprise is the task picked as a circle's surprise for one day. It is kept
+// Surprise is the task picked as a family's surprise for one day. It is kept
 // so the pick does not move as tasks are completed during the day.
 type Surprise struct {
-	CircleID int    `json:"-" gorm:"primaryKey;autoIncrement:false"`
+	FamilyID int    `json:"-" gorm:"primaryKey;autoIncrement:false"`
 	Day      string `json:"day" gorm:"primaryKey;size:10"`
 	ChoreID  int    `json:"choreId" gorm:"column:chore_id;not null"`
 	Points   int    `json:"points" gorm:"column:points;not null"`
@@ -69,7 +69,7 @@ type Streak struct {
 // never takes a rank away; a penalty can.
 type Rank struct {
 	ID       int    `json:"-" gorm:"primaryKey"`
-	CircleID int    `json:"-" gorm:"column:circle_id;index;not null"`
+	FamilyID int    `json:"-" gorm:"column:family_id;index;not null"`
 	Name     string `json:"name" gorm:"column:name;not null"`
 	Icon     string `json:"icon" gorm:"column:icon"`
 	// Image is one of the drawn rank badges, "hopla-1" to "hopla-7", shown
@@ -83,7 +83,7 @@ func (Rank) TableName() string { return "game_ranks" }
 // RankImages are the drawn rank badges a rank can show.
 var RankImages = []string{"hopla-1", "hopla-2", "hopla-3", "hopla-4", "hopla-5", "hopla-6", "hopla-7"}
 
-// DefaultRanks are the ranks of a circle whose parents did not set their own.
+// DefaultRanks are the ranks of a family whose parents did not set their own.
 func DefaultRanks() []Rank {
 	return []Rank{
 		{Name: "Lapineau", Icon: "🐣", Image: "hopla-1", MinPoints: 0},
@@ -120,7 +120,7 @@ const (
 // all given on the first of the month.
 type Quest struct {
 	ID       int    `json:"id" gorm:"primaryKey"`
-	CircleID int    `json:"-" gorm:"column:circle_id;index;not null"`
+	FamilyID int    `json:"-" gorm:"column:family_id;index;not null"`
 	Name     string `json:"name" gorm:"column:name;not null"`
 	Kind     string `json:"kind" gorm:"column:kind;not null"`
 	ChoreID  *int   `json:"choreId" gorm:"column:chore_id"`
@@ -142,7 +142,7 @@ func (Quest) TableName() string { return "quests" }
 // quest, so editing or deleting the quest does not change a running one.
 type QuestDraw struct {
 	ID          int        `json:"id" gorm:"primaryKey"`
-	CircleID    int        `json:"-" gorm:"column:circle_id;not null;uniqueIndex:idx_quest_draw"`
+	FamilyID    int        `json:"-" gorm:"column:family_id;not null;uniqueIndex:idx_quest_draw"`
 	UserID      int        `json:"userId" gorm:"column:user_id;not null;uniqueIndex:idx_quest_draw"`
 	PeriodKey   string     `json:"periodKey" gorm:"column:period_key;size:10;not null;uniqueIndex:idx_quest_draw"`
 	QuestID     int        `json:"questId" gorm:"column:quest_id;not null;uniqueIndex:idx_quest_draw"`
@@ -163,7 +163,7 @@ func (QuestDraw) TableName() string { return "quest_draws" }
 // family outing; otherwise each member plays alone.
 type Challenge struct {
 	ID       int    `json:"id" gorm:"primaryKey"`
-	CircleID int    `json:"-" gorm:"column:circle_id;index;not null"`
+	FamilyID int    `json:"-" gorm:"column:family_id;index;not null"`
 	Name     string `json:"name" gorm:"column:name;not null"`
 	Kind     string `json:"kind" gorm:"column:kind;not null"`
 	ChoreID  *int   `json:"choreId" gorm:"column:chore_id"`

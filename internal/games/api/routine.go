@@ -55,7 +55,7 @@ func (h *Handler) getRoutines(c *gin.Context) {
 		c.JSON(401, gin.H{"error": "Authentication failed"})
 		return
 	}
-	routines, err := games.Routines(h.db.WithContext(c), currentUser.CircleID)
+	routines, err := games.Routines(h.db.WithContext(c), currentUser.FamilyID)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Error getting the routines"})
 		return
@@ -64,7 +64,7 @@ func (h *Handler) getRoutines(c *gin.Context) {
 }
 
 func (h *Handler) createRoutine(c *gin.Context) {
-	parentID, circleID, ok := h.requireParent(c)
+	parentID, familyID, ok := h.requireParent(c)
 	if !ok {
 		return
 	}
@@ -73,7 +73,7 @@ func (h *Handler) createRoutine(c *gin.Context) {
 		return
 	}
 	now := time.Now().UTC()
-	routine := games.Routine{CircleID: circleID, Name: req.Name, Bonus: req.Bonus, ChoreIDs: req.ChoreIDs,
+	routine := games.Routine{FamilyID: familyID, Name: req.Name, Bonus: req.Bonus, ChoreIDs: req.ChoreIDs,
 		CreatedBy: parentID, CreatedAt: now, UpdatedAt: now}
 	if err := games.SaveRoutine(h.db.WithContext(c), &routine); err != nil {
 		answerRoutineError(c, err)
@@ -83,12 +83,12 @@ func (h *Handler) createRoutine(c *gin.Context) {
 }
 
 func (h *Handler) updateRoutine(c *gin.Context) {
-	_, circleID, ok := h.requireParent(c)
+	_, familyID, ok := h.requireParent(c)
 	if !ok {
 		return
 	}
 	var routine games.Routine
-	if err := h.findInCircle(c, circleID, &routine); err != nil {
+	if err := h.findInFamily(c, familyID, &routine); err != nil {
 		answerFindError(c, err, "Routine")
 		return
 	}
@@ -105,13 +105,13 @@ func (h *Handler) updateRoutine(c *gin.Context) {
 }
 
 func (h *Handler) deleteRoutine(c *gin.Context) {
-	_, circleID, ok := h.requireParent(c)
+	_, familyID, ok := h.requireParent(c)
 	if !ok {
 		return
 	}
 	id, err := idParam(c)
 	if err == nil {
-		err = games.DeleteRoutine(h.db.WithContext(c), circleID, id)
+		err = games.DeleteRoutine(h.db.WithContext(c), familyID, id)
 	}
 	if errors.Is(err, errNotFound) || errors.Is(err, gorm.ErrRecordNotFound) {
 		c.JSON(404, gin.H{"error": "Routine not found"})

@@ -12,12 +12,12 @@ import (
 	"github.com/nico87lbs/hopla/config"
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
 	chRepo "github.com/nico87lbs/hopla/internal/chore/repo"
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
 	"github.com/nico87lbs/hopla/internal/database"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	uModel "github.com/nico87lbs/hopla/internal/user/model"
 )
 
-const guardTestCircleID = 1
+const guardTestFamilyID = 1
 
 func newGuardTestHandler(t *testing.T) (*Handler, *gorm.DB) {
 	t.Helper()
@@ -29,7 +29,7 @@ func newGuardTestHandler(t *testing.T) (*Handler, *gorm.DB) {
 	return &Handler{choreRepo: chRepo.NewChoreRepository(db, cfg)}, db
 }
 
-// A circle admin or manager may impersonate any member. That must not open a
+// A family admin or manager may impersonate any member. That must not open a
 // private task the admin cannot see: acting as the member on it is refused unless
 // the member is the admin's own sub-account.
 func TestImpersonationGuardKeepsPrivateTasksClosed(t *testing.T) {
@@ -37,23 +37,23 @@ func TestImpersonationGuardKeepsPrivateTasksClosed(t *testing.T) {
 	h, db := newGuardTestHandler(t)
 	const adminID, memberID, childID = 1, 2, 3
 	for _, id := range []int{adminID, memberID, childID} {
-		role := cModel.UserRoleMember
+		role := fModel.UserRoleMember
 		if id == adminID {
-			role = cModel.UserRoleAdmin
+			role = fModel.UserRoleAdmin
 		}
-		require.NoError(t, db.Create(&cModel.UserCircle{UserID: id, CircleID: guardTestCircleID, IsActive: true, Role: role}).Error)
+		require.NoError(t, db.Create(&fModel.UserFamily{UserID: id, FamilyID: guardTestFamilyID, IsActive: true, Role: role}).Error)
 	}
-	memberChore := &chModel.Chore{Name: "secret", CircleID: guardTestCircleID, CreatedBy: memberID, IsPrivate: true, IsActive: true}
+	memberChore := &chModel.Chore{Name: "secret", FamilyID: guardTestFamilyID, CreatedBy: memberID, IsPrivate: true, IsActive: true}
 	require.NoError(t, db.Create(memberChore).Error)
-	childChore := &chModel.Chore{Name: "homework", CircleID: guardTestCircleID, CreatedBy: childID, IsPrivate: true, IsActive: true}
+	childChore := &chModel.Chore{Name: "homework", FamilyID: guardTestFamilyID, CreatedBy: childID, IsPrivate: true, IsActive: true}
 	require.NoError(t, db.Create(childChore).Error)
-	publicChore := &chModel.Chore{Name: "trash", CircleID: guardTestCircleID, CreatedBy: memberID, IsActive: true}
+	publicChore := &chModel.Chore{Name: "trash", FamilyID: guardTestFamilyID, CreatedBy: memberID, IsActive: true}
 	require.NoError(t, db.Create(publicChore).Error)
 
-	admin := &uModel.UserDetails{User: uModel.User{ID: adminID, CircleID: guardTestCircleID}}
-	member := &uModel.UserDetails{User: uModel.User{ID: memberID, CircleID: guardTestCircleID}}
+	admin := &uModel.UserDetails{User: uModel.User{ID: adminID, FamilyID: guardTestFamilyID}}
+	member := &uModel.UserDetails{User: uModel.User{ID: memberID, FamilyID: guardTestFamilyID}}
 	parent := adminID
-	child := &uModel.UserDetails{User: uModel.User{ID: childID, CircleID: guardTestCircleID, ParentUserID: &parent}}
+	child := &uModel.UserDetails{User: uModel.User{ID: childID, FamilyID: guardTestFamilyID, ParentUserID: &parent}}
 
 	newCtx := func() *gin.Context {
 		c, _ := gin.CreateTestContext(httptest.NewRecorder())
@@ -61,7 +61,7 @@ func TestImpersonationGuardKeepsPrivateTasksClosed(t *testing.T) {
 		return c
 	}
 	loaded := func(id int, as int) *chModel.Chore {
-		ch, err := h.choreRepo.GetChore(t.Context(), id, as, guardTestCircleID)
+		ch, err := h.choreRepo.GetChore(t.Context(), id, as, guardTestFamilyID)
 		require.NoError(t, err)
 		return ch
 	}

@@ -3,7 +3,7 @@
 // locales/settings.json under `overview.sections.<id>`, keyed off the same ids.
 export const SETTINGS_SECTIONS = [
   { id: 'profile', to: '/manage/account' },
-  { id: 'circle', to: '/manage/family', parentOnly: true },
+  { id: 'family', to: '/manage/family', parentOnly: true },
   { id: 'account', to: '/manage/account/security', parentOnly: true },
   { id: 'subaccounts', to: '/manage/family/children', parentOnly: true },
   { id: 'mfa', to: '/manage/account/security', parentOnly: true },

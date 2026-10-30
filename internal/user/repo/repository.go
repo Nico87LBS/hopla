@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"strings"
 	"time"
 
 	storageModel "github.com/nico87lbs/hopla/internal/storage/model"
@@ -22,7 +21,7 @@ type IUserRepository interface {
 	GetAllUsers() ([]*uModel.User, error)
 	CreateUser(user *uModel.User) error
 	UpdateUser(user *uModel.User) error
-	UpdateUserCircle(userID, circleID int) error
+	UpdateUserFamily(userID, familyID int) error
 	FindByEmail(email string) (*uModel.User, error)
 	// MFA-related methods
 	EnableMFA(c context.Context, userID int, secret string, backupCodes []string) error
@@ -39,7 +38,7 @@ type IUserRepository interface {
 	GetUserSessionByTokenHash(c context.Context, tokenHash string) (*uModel.UserSession, error)
 	MarkSessionUsed(c context.Context, sessionID string) error
 	RevokeSession(c context.Context, sessionID string) error
-	RevokeSessionFamily(c context.Context, familyID string) error
+	RevokeTokenFamily(c context.Context, tokenFamily string) error
 	RevokeAllUserSessions(c context.Context, userID int) error
 	CleanupExpiredSessions(c context.Context) error
 }
@@ -52,9 +51,9 @@ func NewUserRepository(db *gorm.DB) *UserRepository {
 	return &UserRepository{db}
 }
 
-func (r *UserRepository) GetAllUsers(c context.Context, circleID int) ([]*uModel.User, error) {
+func (r *UserRepository) GetAllUsers(c context.Context, familyID int) ([]*uModel.User, error) {
 	var users []*uModel.User
-	if err := r.db.WithContext(c).Where("circle_id = ?", circleID).Find(&users).Error; err != nil {
+	if err := r.db.WithContext(c).Where("family_id = ?", familyID).Find(&users).Error; err != nil {
 		return nil, err
 	}
 	return users, nil
@@ -95,10 +94,10 @@ func (r *UserRepository) UpdateUser(c context.Context, user *uModel.User) error 
 		if err := tx.Save(user).Error; err != nil {
 			return err
 		}
-		if user.CircleID != 0 {
+		if user.FamilyID != 0 {
 			if err := tx.Model(&storageModel.StorageUsage{}).
-				Where("user_id = ? AND circle_id = 0", user.ID).
-				Update("circle_id", user.CircleID).Error; err != nil {
+				Where("user_id = ? AND family_id = 0", user.ID).
+				Update("family_id", user.FamilyID).Error; err != nil {
 				return err
 			}
 		}
@@ -106,8 +105,8 @@ func (r *UserRepository) UpdateUser(c context.Context, user *uModel.User) error 
 	})
 }
 
-func (r *UserRepository) UpdateUserCircle(c context.Context, userID, circleID int) error {
-	return r.db.WithContext(c).Model(&uModel.User{}).Where("id = ?", userID).Update("circle_id", circleID).Error
+func (r *UserRepository) UpdateUserFamily(c context.Context, userID, familyID int) error {
+	return r.db.WithContext(c).Model(&uModel.User{}).Where("id = ?", userID).Update("family_id", familyID).Error
 }
 
 func (r *UserRepository) FindByEmail(c context.Context, email string) (*uModel.UserDetails, error) {
@@ -189,11 +188,17 @@ func (r *UserRepository) StoreAPIToken(c context.Context, userID int, name strin
 func (r *UserRepository) GetUserByToken(c context.Context, token string) (*uModel.UserDetails, error) {
 	var user *uModel.UserDetails
 
-	if strings.HasPrefix(token, uModel.APITokenPrefix) {
-		token = hashAPIToken(token)
+	// Tokens with a prefix are stored hashed, whatever the prefix: older
+	// ones carry another one than APITokenPrefix and still work. The oldest,
+	// without prefix, are stored as they are.
+	withUser := func() *gorm.DB {
+		return r.db.WithContext(c).Table("users u").Select("u.*").Joins("left join api_tokens at on at.user_id = u.id")
 	}
-
-	if err := r.db.WithContext(c).Table("users u").Select("u.*").Joins("left join api_tokens at on at.user_id = u.id").Where("at.token = ?", token).First(&user).Error; err != nil {
+	err := withUser().Where("at.token = ? AND at.prefix IS NOT NULL", hashAPIToken(token)).First(&user).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		err = withUser().Where("at.token = ? AND at.prefix IS NULL", token).First(&user).Error
+	}
+	if err != nil {
 		return nil, err
 	}
 
@@ -316,10 +321,10 @@ func (r *UserRepository) RevokeSession(c context.Context, sessionID string) erro
 	return r.db.WithContext(c).Model(&uModel.UserSession{}).Where("id = ?", sessionID).Update("revoked_at", now).Error
 }
 
-// RevokeSessionFamily revokes all sessions in a token family (security measure)
-func (r *UserRepository) RevokeSessionFamily(c context.Context, familyID string) error {
+// RevokeTokenFamily revokes all sessions in a token family (security measure)
+func (r *UserRepository) RevokeTokenFamily(c context.Context, tokenFamily string) error {
 	now := time.Now().UTC()
-	return r.db.WithContext(c).Model(&uModel.UserSession{}).Where("family_id = ? AND revoked_at IS NULL", familyID).Update("revoked_at", now).Error
+	return r.db.WithContext(c).Model(&uModel.UserSession{}).Where("token_family = ? AND revoked_at IS NULL", tokenFamily).Update("revoked_at", now).Error
 }
 
 // RevokeAllUserSessions revokes all sessions for a user (logout from all devices)

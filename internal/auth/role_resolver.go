@@ -1,10 +1,10 @@
 package auth
 
 import (
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
 )
 
-// ResolveRoleFromGroups determines a user's circle role based on their OIDC group
+// ResolveRoleFromGroups determines a user's family role based on their OIDC group
 // membership. Group matching is exact-string and case-sensitive.
 //
 // Returns (role, true) when group-based role resolution is active (at least one of
@@ -15,7 +15,7 @@ import (
 //
 // Returns ("", false) when neither adminGroups nor managerGroups is configured,
 // meaning the caller should skip role sync entirely.
-func ResolveRoleFromGroups(userGroups, adminGroups, managerGroups []string) (cModel.Role, bool) {
+func ResolveRoleFromGroups(userGroups, adminGroups, managerGroups []string) (fModel.Role, bool) {
 	if len(adminGroups) == 0 && len(managerGroups) == 0 {
 		return "", false
 	}
@@ -27,14 +27,14 @@ func ResolveRoleFromGroups(userGroups, adminGroups, managerGroups []string) (cMo
 
 	for _, ag := range adminGroups {
 		if _, ok := groupSet[ag]; ok {
-			return cModel.RoleAdmin, true
+			return fModel.RoleAdmin, true
 		}
 	}
 	for _, mg := range managerGroups {
 		if _, ok := groupSet[mg]; ok {
-			return cModel.RoleManager, true
+			return fModel.RoleManager, true
 		}
 	}
 
-	return cModel.RoleMember, true
+	return fModel.RoleMember, true
 }

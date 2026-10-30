@@ -27,24 +27,24 @@ type DeletionResult struct {
 	Success          bool                   `json:"success"`
 	Message          string                 `json:"message"`
 	DeletedData      map[string]int         `json:"deletedData"`
-	CirclesLeft      []CircleTransferInfo   `json:"circlesLeft,omitempty"`
+	FamiliesLeft     []FamilyTransferInfo   `json:"familiesLeft,omitempty"`
 	RequiresTransfer bool                   `json:"requiresTransfer"`
-	TransferOptions  []CircleTransferOption `json:"transferOptions,omitempty"`
+	TransferOptions  []FamilyTransferOption `json:"transferOptions,omitempty"`
 }
 
-type CircleTransferInfo struct {
-	CircleID    int    `json:"circleId"`
-	CircleName  string `json:"circleName"`
+type FamilyTransferInfo struct {
+	FamilyID    int    `json:"familyId"`
+	FamilyName  string `json:"familyName"`
 	MemberCount int    `json:"memberCount"`
 }
 
-type CircleTransferOption struct {
-	CircleID     int    `json:"circleId"`
+type FamilyTransferOption struct {
+	FamilyID     int    `json:"familyId"`
 	NewOwnerID   int    `json:"newOwnerId"`
 	NewOwnerName string `json:"newOwnerName"`
 }
 
-func (s *DeletionService) DeleteUserAccount(ctx context.Context, userID int, transferOptions []CircleTransferOption) (*DeletionResult, error) {
+func (s *DeletionService) DeleteUserAccount(ctx context.Context, userID int, transferOptions []FamilyTransferOption) (*DeletionResult, error) {
 	return s.deleteUserAccount(ctx, userID, transferOptions, false)
 }
 
@@ -52,7 +52,7 @@ func (s *DeletionService) CheckUserAccountDeletion(ctx context.Context, userID i
 	return s.deleteUserAccount(ctx, userID, nil, true)
 }
 
-func (s *DeletionService) deleteUserAccount(ctx context.Context, userID int, transferOptions []CircleTransferOption, dryRun bool) (*DeletionResult, error) {
+func (s *DeletionService) deleteUserAccount(ctx context.Context, userID int, transferOptions []FamilyTransferOption, dryRun bool) (*DeletionResult, error) {
 	// Start transaction
 	tx := s.db.Begin()
 	if tx.Error != nil {
@@ -70,24 +70,24 @@ func (s *DeletionService) deleteUserAccount(ctx context.Context, userID int, tra
 		return nil, fmt.Errorf("failed to get child users: %w", err)
 	}
 
-	// Check if user owns circles that need transfer
-	circlesOwned, err := s.getOwnedCircles(tx, userID)
+	// Check if user owns families that need transfer
+	familiesOwned, err := s.getOwnedFamilies(tx, userID)
 	if err != nil {
-		return nil, fmt.Errorf("failed to check owned circles: %w", err)
+		return nil, fmt.Errorf("failed to check owned families: %w", err)
 	}
 
-	// Handle circle ownership transfer
-	if len(circlesOwned) > 0 && len(transferOptions) == 0 {
-		// User owns circles but hasn't provided transfer options
-		transferOpts, err := s.getTransferOptions(tx, circlesOwned)
+	// Handle family ownership transfer
+	if len(familiesOwned) > 0 && len(transferOptions) == 0 {
+		// User owns families but hasn't provided transfer options
+		transferOpts, err := s.getTransferOptions(tx, familiesOwned)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get transfer options: %w", err)
 		}
 
 		result.RequiresTransfer = true
 		result.TransferOptions = transferOpts
-		result.CirclesLeft = circlesOwned
-		result.Message = "Account deletion requires circle ownership transfer"
+		result.FamiliesLeft = familiesOwned
+		result.Message = "Account deletion requires family ownership transfer"
 		return result, nil
 	}
 
@@ -118,7 +118,7 @@ func (s *DeletionService) deleteUserAccount(ctx context.Context, userID int, tra
 			{"learning", s.countLearning},
 			{"storage_files", s.countStorageFiles},
 			{"storage_usage", s.countStorageUsage},
-			{"user_circles", s.countUserCircles},
+			{"user_families", s.countUserFamilies},
 			{"labels", s.countUserLabels},
 			{"things", s.countUserThings},
 		}
@@ -139,11 +139,11 @@ func (s *DeletionService) deleteUserAccount(ctx context.Context, userID int, tra
 		return result, nil
 	}
 
-	// Transfer circle ownership if needed
-	if len(circlesOwned) > 0 {
-		err = s.transferCircleOwnership(tx, transferOptions)
+	// Transfer family ownership if needed
+	if len(familiesOwned) > 0 {
+		err = s.transferFamilyOwnership(tx, transferOptions)
 		if err != nil {
-			return nil, fmt.Errorf("failed to transfer circle ownership: %w", err)
+			return nil, fmt.Errorf("failed to transfer family ownership: %w", err)
 		}
 	}
 
@@ -196,7 +196,7 @@ func (s *DeletionService) deleteUserAccount(ctx context.Context, userID int, tra
 		{"learning", s.deleteLearning},
 		{"storage_files", s.deleteStorageFiles},
 		{"storage_usage", s.deleteStorageUsage},
-		{"user_circles", s.deleteUserCircles},
+		{"user_families", s.deleteUserFamilies},
 		{"labels", s.deleteUserLabels},
 		{"things", s.deleteUserThings},
 	}
@@ -244,14 +244,14 @@ func (s *DeletionService) getChildUsers(tx *gorm.DB, userID int) ([]int, error) 
 	return childUserIDs, nil
 }
 
-func (s *DeletionService) getOwnedCircles(tx *gorm.DB, userID int) ([]CircleTransferInfo, error) {
-	var circles []CircleTransferInfo
+func (s *DeletionService) getOwnedFamilies(tx *gorm.DB, userID int) ([]FamilyTransferInfo, error) {
+	var families []FamilyTransferInfo
 
 	query := `
-		SELECT c.id as circle_id, c.name as circle_name, 
+		SELECT c.id as family_id, c.name as family_name, 
 		       COUNT(uc.user_id) as member_count
-		FROM circles c
-		LEFT JOIN user_circles uc ON c.id = uc.circle_id AND uc.is_active = true
+		FROM families c
+		LEFT JOIN user_families uc ON c.id = uc.family_id AND uc.is_active = true
 		WHERE c.created_by = ?
 		GROUP BY c.id, c.name
 	`
@@ -263,40 +263,40 @@ func (s *DeletionService) getOwnedCircles(tx *gorm.DB, userID int) ([]CircleTran
 	defer rows.Close()
 
 	for rows.Next() {
-		var circle CircleTransferInfo
-		if err := rows.Scan(&circle.CircleID, &circle.CircleName, &circle.MemberCount); err != nil {
+		var family FamilyTransferInfo
+		if err := rows.Scan(&family.FamilyID, &family.FamilyName, &family.MemberCount); err != nil {
 			return nil, err
 		}
-		circles = append(circles, circle)
+		families = append(families, family)
 	}
 
-	return circles, nil
+	return families, nil
 }
 
-func (s *DeletionService) getTransferOptions(tx *gorm.DB, circles []CircleTransferInfo) ([]CircleTransferOption, error) {
-	var options []CircleTransferOption
+func (s *DeletionService) getTransferOptions(tx *gorm.DB, families []FamilyTransferInfo) ([]FamilyTransferOption, error) {
+	var options []FamilyTransferOption
 
-	for _, circle := range circles {
-		// Get admin members of the circle who can take ownership
+	for _, family := range families {
+		// Get admin members of the family who can take ownership
 		query := `
 			SELECT uc.user_id, u.display_name
-			FROM user_circles uc
+			FROM user_families uc
 			JOIN users u ON uc.user_id = u.id
-			WHERE uc.circle_id = ? AND uc.role = 'admin' AND uc.is_active = true
+			WHERE uc.family_id = ? AND uc.role = 'admin' AND uc.is_active = true
 		`
 
-		rows, err := tx.Raw(query, circle.CircleID).Rows()
+		rows, err := tx.Raw(query, family.FamilyID).Rows()
 		if err != nil {
 			return nil, err
 		}
 
 		for rows.Next() {
-			var option CircleTransferOption
+			var option FamilyTransferOption
 			if err := rows.Scan(&option.NewOwnerID, &option.NewOwnerName); err != nil {
 				rows.Close()
 				return nil, err
 			}
-			option.CircleID = circle.CircleID
+			option.FamilyID = family.FamilyID
 			options = append(options, option)
 		}
 		rows.Close()
@@ -305,14 +305,14 @@ func (s *DeletionService) getTransferOptions(tx *gorm.DB, circles []CircleTransf
 	return options, nil
 }
 
-func (s *DeletionService) transferCircleOwnership(tx *gorm.DB, options []CircleTransferOption) error {
+func (s *DeletionService) transferFamilyOwnership(tx *gorm.DB, options []FamilyTransferOption) error {
 	for _, option := range options {
 		result := tx.Model(&struct {
 			ID        int `gorm:"column:id"`
 			CreatedBy int `gorm:"column:created_by"`
 		}{}).
-			Table("circles").
-			Where("id = ?", option.CircleID).
+			Table("families").
+			Where("id = ?", option.FamilyID).
 			Update("created_by", option.NewOwnerID)
 
 		if result.Error != nil {
@@ -356,7 +356,7 @@ func (s *DeletionService) deleteChoreAssignees(tx *gorm.DB, userID int) (int, er
 }
 
 // deleteUserTombstones drops the sync tombstones addressed to the deleted user
-// only (revocations). Nobody can sync as that user any more; circle-wide
+// only (revocations). Nobody can sync as that user any more; family-wide
 // tombstones (user_id NULL) are kept.
 func (s *DeletionService) deleteUserTombstones(tx *gorm.DB, userID int) (int, error) {
 	return s.safeDelete(tx, "DELETE FROM tombstones WHERE user_id = ?", userID)
@@ -399,8 +399,8 @@ func (s *DeletionService) deleteStorageUsage(tx *gorm.DB, userID int) (int, erro
 	return s.safeDelete(tx, "DELETE FROM storage_usages WHERE user_id = ?", userID)
 }
 
-func (s *DeletionService) deleteUserCircles(tx *gorm.DB, userID int) (int, error) {
-	return s.safeDelete(tx, "DELETE FROM user_circles WHERE user_id = ?", userID)
+func (s *DeletionService) deleteUserFamilies(tx *gorm.DB, userID int) (int, error) {
+	return s.safeDelete(tx, "DELETE FROM user_families WHERE user_id = ?", userID)
 }
 
 func (s *DeletionService) deleteUserLabels(tx *gorm.DB, userID int) (int, error) {
@@ -516,8 +516,8 @@ func (s *DeletionService) countStorageUsage(tx *gorm.DB, userID int) (int, error
 	return s.safeCount(tx, "SELECT COUNT(*) FROM storage_usages WHERE user_id = ?", userID)
 }
 
-func (s *DeletionService) countUserCircles(tx *gorm.DB, userID int) (int, error) {
-	return s.safeCount(tx, "SELECT COUNT(*) FROM user_circles WHERE user_id = ?", userID)
+func (s *DeletionService) countUserFamilies(tx *gorm.DB, userID int) (int, error) {
+	return s.safeCount(tx, "SELECT COUNT(*) FROM user_families WHERE user_id = ?", userID)
 }
 
 func (s *DeletionService) countUserLabels(tx *gorm.DB, userID int) (int, error) {

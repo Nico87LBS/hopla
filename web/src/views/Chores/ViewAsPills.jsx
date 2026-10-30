@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 
 import { HOPLA } from '../../constants/theme'
 import { useImpersonateUser } from '../../contexts/ImpersonateUserContext'
-import { useCircleMembers, useUserProfile } from '../../queries/UserQueries'
+import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries'
 import { membersOfDay } from '../../utils/todayPanel'
 import { MemberAvatar } from '../Games/GameParts'
 
@@ -55,7 +55,7 @@ const ViewAsPills = ({ onPick }) => {
   const { t } = useTranslation('chores')
   const isLargeScreen = useMediaQuery(theme => theme.breakpoints.up('lg'))
   const { data: userProfile } = useUserProfile()
-  const { data: membersData } = useCircleMembers()
+  const { data: membersData } = useFamilyMembers()
   const {
     canImpersonate,
     impersonatedUser,

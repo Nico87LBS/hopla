@@ -12,7 +12,7 @@ import (
 func TestClearHistoryForgetsTasksDone(t *testing.T) {
 	repo, db := newTestChoreRepo(t)
 	chore := createChore(t, db, "Chambre", testOwnerID, false)
-	other := &chModel.Chore{Name: "Other circle", CircleID: 2, CreatedBy: testOwnerID}
+	other := &chModel.Chore{Name: "Other family", FamilyID: 2, CreatedBy: testOwnerID}
 	if err := db.Create(other).Error; err != nil {
 		t.Fatal(err)
 	}
@@ -31,16 +31,16 @@ func TestClearHistoryForgetsTasksDone(t *testing.T) {
 		db.Model(&chModel.ChoreHistory{}).Where("chore_id = ?", choreID).Count(&n)
 		return n
 	}
-	deleted, err := repo.ClearHistory(context.Background(), testCircleID, []int{testOtherID})
+	deleted, err := repo.ClearHistory(context.Background(), testFamilyID, []int{testOtherID})
 	if err != nil || deleted != 1 || count(chore.ID) != 1 {
 		t.Fatalf("one member: deleted %d, left %d, err %v", deleted, count(chore.ID), err)
 	}
-	deleted, err = repo.ClearHistory(context.Background(), testCircleID, nil)
+	deleted, err = repo.ClearHistory(context.Background(), testFamilyID, nil)
 	if err != nil || deleted != 1 || count(chore.ID) != 0 {
 		t.Fatalf("everyone: deleted %d, left %d, err %v", deleted, count(chore.ID), err)
 	}
 	if count(other.ID) != 1 {
-		t.Fatal("another circle's history must stay")
+		t.Fatal("another family's history must stay")
 	}
 	var tombstones int64
 	db.Model(&syncModel.Tombstone{}).Where("entity_type = ?", syncModel.EntityTypeChoreHistory).Count(&tombstones)
@@ -79,7 +79,7 @@ func TestClearHistoryPutsTasksBackToDo(t *testing.T) {
 		}
 	}
 
-	if _, err := repo.ClearHistory(context.Background(), testCircleID, []int{testOtherID}); err != nil {
+	if _, err := repo.ClearHistory(context.Background(), testFamilyID, []int{testOtherID}); err != nil {
 		t.Fatal(err)
 	}
 	load := func(id int) (c chModel.Chore) {

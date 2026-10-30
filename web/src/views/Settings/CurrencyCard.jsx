@@ -21,7 +21,7 @@ const CurrencyCard = () => {
   const change = currency => {
     if (!currency || currency === data.currency) return
     setCurrency.mutate(currency, {
-      onError: () => showError({ title: t('circleSettings.currency.failed') }),
+      onError: () => showError({ title: t('familySettings.currency.failed') }),
     })
   }
 
@@ -60,10 +60,10 @@ const CurrencyCard = () => {
           level='title-lg'
           sx={{ fontWeight: 650 }}
         >
-          {t('circleSettings.currency.title')}
+          {t('familySettings.currency.title')}
         </Typography>
         <Typography level='body-sm' textColor='text.secondary'>
-          {t('circleSettings.currency.help')}
+          {t('familySettings.currency.help')}
         </Typography>
       </Box>
       <Select

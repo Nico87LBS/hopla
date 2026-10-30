@@ -42,7 +42,7 @@ import { useNavigate } from 'react-router-dom'
 
 import AppModal from '../../components/common/AppModal'
 import { useImpersonateUser } from '../../contexts/ImpersonateUserContext.jsx'
-import { useCircleMembers, useUserProfile } from '../../queries/UserQueries.jsx'
+import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries.jsx'
 import ChronoModal from './ChronoModal'
 
 // Popper's default tethering keeps a popup close to its trigger even when that
@@ -118,10 +118,10 @@ const ChoreActionMenu = ({
   const [submenuAnchorEl, setSubmenuAnchorEl] = useState(null)
   const [showChrono, setShowChrono] = useState(false)
   const { data: userProfile } = useUserProfile()
-  const { data: circleMembersData } = useCircleMembers()
+  const { data: familyMembersData } = useFamilyMembers()
   const { impersonatedUser } = useImpersonateUser()
   const actingUserId = impersonatedUser?.userId || userProfile?.id
-  const actingRole = circleMembersData?.res?.find(
+  const actingRole = familyMembersData?.res?.find(
     member => member.userId === actingUserId,
   )?.role
   const isParent = actingRole === 'admin' || actingRole === 'manager'

@@ -29,6 +29,6 @@ func Routes(
 	adminGroup.Use(jwtAuth.MiddlewareFunc())
 	{
 		// adminGroup.GET("/stats", wsHandler.HandleHealthCheck)
-		// adminGroup.GET("/connections/:circleId", wsHandler.HandleConnectionStats)
+		// adminGroup.GET("/connections/:familyId", wsHandler.HandleConnectionStats)
 	}
 }

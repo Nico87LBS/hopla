@@ -66,7 +66,7 @@ func (s *TokenService) GenerateTokens(ctx context.Context, user *uModel.UserDeta
 	}
 
 	// Create token family ID for rotation tracking
-	familyID := uuid.New().String()
+	tokenFamily := uuid.New().String()
 
 	// Hash refresh token for storage
 	tokenHash := s.hashToken(refreshToken)
@@ -77,12 +77,12 @@ func (s *TokenService) GenerateTokens(ctx context.Context, user *uModel.UserDeta
 
 	// Store refresh token in database
 	userSession := &uModel.UserSession{
-		ID:        uuid.New().String(),
-		UserID:    user.ID,
-		TokenHash: tokenHash,
-		FamilyID:  familyID,
-		CreatedAt: time.Now().UTC(),
-		ExpiresAt: refreshTokenExpiry,
+		ID:          uuid.New().String(),
+		UserID:      user.ID,
+		TokenHash:   tokenHash,
+		TokenFamily: tokenFamily,
+		CreatedAt:   time.Now().UTC(),
+		ExpiresAt:   refreshTokenExpiry,
 	}
 
 	if err := s.userRepo.CreateUserSession(ctx, userSession); err != nil {
@@ -115,7 +115,7 @@ func (s *TokenService) RefreshTokens(ctx context.Context, refreshToken string) (
 	// Check if token was already used (reuse detection)
 	if session.UsedAt != nil {
 		// Token reuse detected - revoke entire family
-		_ = s.userRepo.RevokeSessionFamily(ctx, session.FamilyID)
+		_ = s.userRepo.RevokeTokenFamily(ctx, session.TokenFamily)
 		return nil, fmt.Errorf("token reuse detected - please login again")
 	}
 
@@ -154,12 +154,12 @@ func (s *TokenService) RefreshTokens(ctx context.Context, refreshToken string) (
 	// Create new session with same family ID
 	newTokenHash := s.hashToken(newRefreshToken)
 	newSession := &uModel.UserSession{
-		ID:        uuid.New().String(),
-		UserID:    session.UserID,
-		TokenHash: newTokenHash,
-		FamilyID:  session.FamilyID, // Keep same family ID for rotation tracking
-		CreatedAt: time.Now().UTC(),
-		ExpiresAt: refreshTokenExpiry,
+		ID:          uuid.New().String(),
+		UserID:      session.UserID,
+		TokenHash:   newTokenHash,
+		TokenFamily: session.TokenFamily, // Keep the same token family for rotation tracking
+		CreatedAt:   time.Now().UTC(),
+		ExpiresAt:   refreshTokenExpiry,
 	}
 
 	if err := s.userRepo.CreateUserSession(ctx, newSession); err != nil {

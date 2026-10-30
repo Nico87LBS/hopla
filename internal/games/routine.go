@@ -16,7 +16,7 @@ import (
 // Bonus extra points the first time in a day all their steps are done.
 type Routine struct {
 	ID       int    `json:"id" gorm:"primaryKey"`
-	CircleID int    `json:"-" gorm:"column:circle_id;index;not null"`
+	FamilyID int    `json:"-" gorm:"column:family_id;index;not null"`
 	Name     string `json:"name" gorm:"column:name;not null"`
 	Bonus    int    `json:"bonus" gorm:"column:bonus;not null;default:0"`
 	// ChoreIDs are the steps in order. A step stands for every task with the
@@ -83,10 +83,10 @@ var (
 	ErrRoutineTask      = errors.New("a task of the routine is not in the family")
 )
 
-// Routines returns a circle's routines with their steps, oldest first.
-func Routines(db *gorm.DB, circleID int) ([]Routine, error) {
+// Routines returns a family's routines with their steps, oldest first.
+func Routines(db *gorm.DB, familyID int) ([]Routine, error) {
 	var routines []Routine
-	err := db.Where("circle_id = ?", circleID).
+	err := db.Where("family_id = ?", familyID).
 		Preload("Steps", func(db *gorm.DB) *gorm.DB { return db.Order("position") }).
 		Order("id").Find(&routines).Error
 	for i := range routines {
@@ -98,14 +98,14 @@ func Routines(db *gorm.DB, circleID int) ([]Routine, error) {
 	return routines, err
 }
 
-// stepTasks returns, for each step, the circle's tasks with the step's name.
-func stepTasks(db *gorm.DB, circleID int, choreIDs []int) (map[int][]int, error) {
+// stepTasks returns, for each step, the family's tasks with the step's name.
+func stepTasks(db *gorm.DB, familyID int, choreIDs []int) (map[int][]int, error) {
 	tasks := map[int][]int{}
 	for _, choreID := range choreIDs {
 		if _, ok := tasks[choreID]; ok {
 			continue
 		}
-		ids, err := SameTaskIDs(db, circleID, choreID)
+		ids, err := SameTaskIDs(db, familyID, choreID)
 		if err != nil {
 			return nil, err
 		}
@@ -124,7 +124,7 @@ func SaveRoutine(db *gorm.DB, routine *Routine) error {
 		return ErrRoutineTooLong
 	}
 	return db.Transaction(func(tx *gorm.DB) error {
-		tasks, err := stepTasks(tx, routine.CircleID, routine.ChoreIDs)
+		tasks, err := stepTasks(tx, routine.FamilyID, routine.ChoreIDs)
 		if err != nil {
 			return err
 		}
@@ -140,7 +140,7 @@ func SaveRoutine(db *gorm.DB, routine *Routine) error {
 				mine[id] = true
 			}
 		}
-		others, err := Routines(tx, routine.CircleID)
+		others, err := Routines(tx, routine.FamilyID)
 		if err != nil {
 			return err
 		}
@@ -148,7 +148,7 @@ func SaveRoutine(db *gorm.DB, routine *Routine) error {
 			if other.ID == routine.ID {
 				continue
 			}
-			theirs, err := stepTasks(tx, routine.CircleID, other.ChoreIDs)
+			theirs, err := stepTasks(tx, routine.FamilyID, other.ChoreIDs)
 			if err != nil {
 				return err
 			}
@@ -165,7 +165,7 @@ func SaveRoutine(db *gorm.DB, routine *Routine) error {
 				return err
 			}
 		} else {
-			if err := tx.Model(&Routine{}).Where("id = ? AND circle_id = ?", routine.ID, routine.CircleID).
+			if err := tx.Model(&Routine{}).Where("id = ? AND family_id = ?", routine.ID, routine.FamilyID).
 				Updates(map[string]any{"name": routine.Name, "bonus": routine.Bonus, "updated_at": time.Now().UTC()}).Error; err != nil {
 				return err
 			}
@@ -182,9 +182,9 @@ func SaveRoutine(db *gorm.DB, routine *Routine) error {
 }
 
 // DeleteRoutine removes a routine; its tasks stay.
-func DeleteRoutine(db *gorm.DB, circleID, routineID int) error {
+func DeleteRoutine(db *gorm.DB, familyID, routineID int) error {
 	return db.Transaction(func(tx *gorm.DB) error {
-		result := tx.Where("id = ? AND circle_id = ?", routineID, circleID).Delete(&Routine{})
+		result := tx.Where("id = ? AND family_id = ?", routineID, familyID).Delete(&Routine{})
 		if result.Error != nil {
 			return result.Error
 		}
@@ -214,7 +214,7 @@ func membersNow(chore *chModel.Chore) []int {
 	return nil
 }
 
-// routineDay is what the routines need to know about a circle's day.
+// routineDay is what the routines need to know about a family's day.
 type routineDay struct {
 	chores map[int]*chModel.Chore
 	// doneBy holds, per member, the tasks they completed today.
@@ -223,8 +223,8 @@ type routineDay struct {
 	end    time.Time
 }
 
-func loadRoutineDay(db *gorm.DB, circleID int, taskIDs []int, now time.Time) (*routineDay, error) {
-	loc := zone.Of(circleID)
+func loadRoutineDay(db *gorm.DB, familyID int, taskIDs []int, now time.Time) (*routineDay, error) {
+	loc := zone.Of(familyID)
 	day := &routineDay{chores: map[int]*chModel.Chore{}, doneBy: map[int]map[int]bool{}, end: endOfDay(now, loc)}
 	if len(taskIDs) == 0 {
 		return day, nil
@@ -249,7 +249,7 @@ func loadRoutineDay(db *gorm.DB, circleID int, taskIDs []int, now time.Time) (*r
 		}
 		day.doneBy[row.CompletedBy][row.ChoreID] = true
 	}
-	away, err := AwayMembers(db, circleID)
+	away, err := AwayMembers(db, familyID)
 	day.away = away
 	return day, err
 }
@@ -306,17 +306,17 @@ func (day *routineDay) progressOf(userID int, steps [][]int) RoutineProgress {
 	return progress
 }
 
-// RoutineViews returns the circle's routines with the given members'
+// RoutineViews returns the family's routines with the given members'
 // progress today.
-func RoutineViews(db *gorm.DB, circleID int, userIDs []int, now time.Time) ([]RoutineView, error) {
-	routines, err := Routines(db, circleID)
+func RoutineViews(db *gorm.DB, familyID int, userIDs []int, now time.Time) ([]RoutineView, error) {
+	routines, err := Routines(db, familyID)
 	if err != nil || len(routines) == 0 {
 		return []RoutineView{}, err
 	}
 	steps := make([][][]int, len(routines))
 	all := []int{}
 	for i, routine := range routines {
-		tasks, err := stepTasks(db, circleID, routine.ChoreIDs)
+		tasks, err := stepTasks(db, familyID, routine.ChoreIDs)
 		if err != nil {
 			return nil, err
 		}
@@ -325,7 +325,7 @@ func RoutineViews(db *gorm.DB, circleID int, userIDs []int, now time.Time) ([]Ro
 			all = append(all, tasks[choreID]...)
 		}
 	}
-	day, err := loadRoutineDay(db, circleID, all, now)
+	day, err := loadRoutineDay(db, familyID, all, now)
 	if err != nil {
 		return nil, err
 	}
@@ -347,12 +347,12 @@ func RoutineViews(db *gorm.DB, circleID int, userIDs []int, now time.Time) ([]Ro
 
 // awardRoutines pays the bonus of each routine the member finished today,
 // once a day.
-func awardRoutines(tx *gorm.DB, circleID, userID int, performedAt, now time.Time) error {
-	loc := zone.Of(circleID)
+func awardRoutines(tx *gorm.DB, familyID, userID int, performedAt, now time.Time) error {
+	loc := zone.Of(familyID)
 	if dayKey(performedAt, loc) != dayKey(now, loc) {
 		return nil
 	}
-	views, err := RoutineViews(tx, circleID, []int{userID}, now)
+	views, err := RoutineViews(tx, familyID, []int{userID}, now)
 	if err != nil {
 		return err
 	}
@@ -368,7 +368,7 @@ func awardRoutines(tx *gorm.DB, circleID, userID int, performedAt, now time.Time
 		if result.RowsAffected == 0 {
 			continue
 		}
-		if _, err := giveBonus(tx, circleID, userID, view.Bonus, "Routine : "+view.Name); err != nil {
+		if _, err := giveBonus(tx, familyID, userID, view.Bonus, "Routine : "+view.Name); err != nil {
 			return err
 		}
 	}

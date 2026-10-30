@@ -19,7 +19,7 @@ import { useImpersonateUser } from '../../contexts/ImpersonateUserContext.jsx'
 import { useLocalization } from '../../contexts/LocalizationContext'
 import { usePendingCommands } from '../../hooks/usePendingCommands'
 import { useFlashes } from '../../queries/ChoreQueries'
-import { useCircleMembers, useUserProfile } from '../../queries/UserQueries.jsx'
+import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries.jsx'
 import {
   getDueDateChipColor,
   getDueDateChipText,
@@ -185,13 +185,13 @@ const TaskRow = ({
   const { t } = useTranslation('chores')
   const { timeFormat } = useLocalization()
   const { data: userProfile } = useUserProfile()
-  const { data: circleMembersData } = useCircleMembers()
+  const { data: familyMembersData } = useFamilyMembers()
   const { data: pendingCmds } = usePendingCommands(chore.id)
   const { data: flashes } = useFlashes()
   const { impersonatedUser } = useImpersonateUser()
 
   const actingUserId = impersonatedUser?.userId || userProfile?.id
-  const actingMember = circleMembersData?.res?.find(
+  const actingMember = familyMembersData?.res?.find(
     member => member.userId === actingUserId,
   )
   const canApprove =

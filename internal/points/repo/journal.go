@@ -47,11 +47,11 @@ var journalActions = map[JournalKind][]pModel.PointsHistoryAction{
 // package depends on this one.
 const choreHistoryCompleted = 1
 
-// Journal returns what happened in a circle, newest first: every change to
+// Journal returns what happened in a family, newest first: every change to
 // the points, and the tasks done that earned none. A private task only shows
 // to its creator and to whoever did it. The second value tells whether older
 // rows remain.
-func (r *PointsRepository) Journal(c context.Context, circleID, viewerID int, filter JournalFilter) ([]JournalRow, bool, error) {
+func (r *PointsRepository) Journal(c context.Context, familyID, viewerID int, filter JournalFilter) ([]JournalRow, bool, error) {
 	limit := filter.Limit
 	if limit <= 0 || limit > 100 {
 		limit = 30
@@ -60,7 +60,7 @@ func (r *PointsRepository) Journal(c context.Context, circleID, viewerID int, fi
 
 	rows := []JournalRow{}
 	if filter.Kind == JournalAll || journalActions[filter.Kind] != nil {
-		ledger := db.Where("circle_id = ?", circleID)
+		ledger := db.Where("family_id = ?", familyID)
 		if filter.Kind != JournalAll {
 			ledger = ledger.Where("action IN ?", journalActions[filter.Kind])
 		}
@@ -83,7 +83,7 @@ func (r *PointsRepository) Journal(c context.Context, circleID, viewerID int, fi
 		tasks := db.Table("chore_histories AS h").
 			Select("h.id, h.chore_id, h.completed_by, h.performed_at, c.name").
 			Joins("JOIN chores AS c ON c.id = h.chore_id").
-			Where("c.circle_id = ? AND h.status = ? AND h.performed_at IS NOT NULL", circleID, choreHistoryCompleted).
+			Where("c.family_id = ? AND h.status = ? AND h.performed_at IS NOT NULL", familyID, choreHistoryCompleted).
 			Where("h.points IS NULL OR h.points = 0").
 			Where("c.is_private = ? OR c.created_by = ? OR h.completed_by = ?", false, viewerID, viewerID)
 		if filter.UserID != nil {
@@ -106,7 +106,7 @@ func (r *PointsRepository) Journal(c context.Context, circleID, viewerID int, fi
 			choreID, name := d.ChoreID, d.Name
 			rows = append(rows, JournalRow{ChoreName: &name, PointsHistory: pModel.PointsHistory{
 				ID: d.ID, Action: pModel.PointsHistoryActionAdd, ChoreID: &choreID, UserID: d.CompletedBy,
-				CreatedBy: d.CompletedBy, CircleID: circleID, CreatedAt: d.PerformedAt}})
+				CreatedBy: d.CompletedBy, FamilyID: familyID, CreatedAt: d.PerformedAt}})
 		}
 	}
 

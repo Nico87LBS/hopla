@@ -13,7 +13,7 @@ import (
 // holiday; an empty name brings it back to the server's. The tasks keep their
 // time of day: one due at 07:00 at home is due at 07:00 where the family is.
 // It returns false when the family already was in that zone.
-func (r *ChoreRepository) SetFamilyTimezone(ctx context.Context, circleID int, name string) (bool, error) {
+func (r *ChoreRepository) SetFamilyTimezone(ctx context.Context, familyID int, name string) (bool, error) {
 	to, err := zone.Load(name)
 	if err != nil {
 		return false, err
@@ -24,7 +24,7 @@ func (r *ChoreRepository) SetFamilyTimezone(ctx context.Context, circleID int, n
 	changed := false
 	err = r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var saved string
-		if err := tx.Table("circles").Select("timezone").Where("id = ?", circleID).Scan(&saved).Error; err != nil {
+		if err := tx.Table("families").Select("timezone").Where("id = ?", familyID).Scan(&saved).Error; err != nil {
 			return err
 		}
 		if saved == name {
@@ -35,17 +35,17 @@ func (r *ChoreRepository) SetFamilyTimezone(ctx context.Context, circleID int, n
 		if loc, err := zone.Load(saved); err == nil && loc != nil {
 			from = loc
 		}
-		if err := tx.Table("circles").Where("id = ?", circleID).Update("timezone", name).Error; err != nil {
+		if err := tx.Table("families").Where("id = ?", familyID).Update("timezone", name).Error; err != nil {
 			return err
 		}
 		var chores []*chModel.Chore
-		if err := tx.Where("circle_id = ? AND is_active = ?", circleID, true).Find(&chores).Error; err != nil {
+		if err := tx.Where("family_id = ? AND is_active = ?", familyID, true).Find(&chores).Error; err != nil {
 			return err
 		}
 		if len(chores) == 0 {
 			return nil
 		}
-		version, err := r.nextSyncVersionRangeWithDB(ctx, tx, circleID, len(chores))
+		version, err := r.nextSyncVersionRangeWithDB(ctx, tx, familyID, len(chores))
 		if err != nil {
 			return err
 		}
@@ -61,7 +61,7 @@ func (r *ChoreRepository) SetFamilyTimezone(ctx context.Context, circleID int, n
 		return nil
 	})
 	if err == nil && changed {
-		zone.Set(circleID, to)
+		zone.Set(familyID, to)
 	}
 	return changed, err
 }

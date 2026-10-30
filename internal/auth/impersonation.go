@@ -4,8 +4,8 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
-	cRepo "github.com/nico87lbs/hopla/internal/circle/repo"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
+	fRepo "github.com/nico87lbs/hopla/internal/family/repo"
 	uModel "github.com/nico87lbs/hopla/internal/user/model"
 	uRepo "github.com/nico87lbs/hopla/internal/user/repo"
 	"github.com/nico87lbs/hopla/logging"
@@ -18,7 +18,7 @@ const (
 )
 
 // ImpersonationMiddleware handles user impersonation for admin/manager users
-func ImpersonationMiddleware(userRepo *uRepo.UserRepository, circleRepo *cRepo.CircleRepository) gin.HandlerFunc {
+func ImpersonationMiddleware(userRepo *uRepo.UserRepository, familyRepo *fRepo.FamilyRepository) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		logger := logging.FromContext(c)
 
@@ -45,30 +45,30 @@ func ImpersonationMiddleware(userRepo *uRepo.UserRepository, circleRepo *cRepo.C
 			return
 		}
 
-		// Get circle users to validate permissions and membership
-		circleUsers, err := circleRepo.GetCircleUsers(c, currentUser.CircleID)
+		// Get family users to validate permissions and membership
+		familyUsers, err := familyRepo.GetFamilyUsers(c, currentUser.FamilyID)
 		if err != nil {
-			logger.Error("Failed to get circle users", "error", err, "circleID", currentUser.CircleID)
+			logger.Error("Failed to get family users", "error", err, "familyID", currentUser.FamilyID)
 			c.JSON(500, gin.H{"error": "Failed to validate permissions"})
 			c.Abort()
 			return
 		}
 
 		// Check if current user has permission to impersonate (admin or manager)
-		var currentUserRole cModel.UserRole
-		var impersonateUserInCircle bool
+		var currentUserRole fModel.UserRole
+		var impersonateUserInFamily bool
 
-		for _, circleUser := range circleUsers {
-			if circleUser.UserID == currentUser.ID {
-				currentUserRole = circleUser.Role
+		for _, familyUser := range familyUsers {
+			if familyUser.UserID == currentUser.ID {
+				currentUserRole = familyUser.Role
 			}
-			if circleUser.UserID == impersonateUserID {
-				impersonateUserInCircle = true
+			if familyUser.UserID == impersonateUserID {
+				impersonateUserInFamily = true
 			}
 		}
 
 		// Validate current user has admin or manager role
-		if currentUserRole != cModel.UserRoleAdmin && currentUserRole != cModel.UserRoleManager {
+		if currentUserRole != fModel.UserRoleAdmin && currentUserRole != fModel.UserRoleManager {
 			logger.Warn("User attempted impersonation without permission",
 				"userID", currentUser.ID, "role", currentUserRole, "impersonateUserID", impersonateUserID)
 			c.JSON(403, gin.H{"error": "Insufficient permissions for impersonation"})
@@ -76,11 +76,11 @@ func ImpersonationMiddleware(userRepo *uRepo.UserRepository, circleRepo *cRepo.C
 			return
 		}
 
-		// Validate impersonate user is in the same circle
-		if !impersonateUserInCircle {
-			logger.Warn("User attempted to impersonate user outside circle",
-				"userID", currentUser.ID, "impersonateUserID", impersonateUserID, "circleID", currentUser.CircleID)
-			c.JSON(403, gin.H{"error": "Cannot impersonate user outside your circle"})
+		// Validate impersonate user is in the same family
+		if !impersonateUserInFamily {
+			logger.Warn("User attempted to impersonate user outside family",
+				"userID", currentUser.ID, "impersonateUserID", impersonateUserID, "familyID", currentUser.FamilyID)
+			c.JSON(403, gin.H{"error": "Cannot impersonate user outside your family"})
 			c.Abort()
 			return
 		}

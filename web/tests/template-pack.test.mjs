@@ -49,7 +49,7 @@ const instance = {
   labels: [{ id: 3, name: 'Chambre', color: '#f00' }],
   rewards: [{ id: 9, name: 'Glace', pointsCost: 20, createdBy: 7 }],
   presets: [{ id: 1, name: 'Oubli', points: -5 }],
-  rules: { streakEvery: 7, streakBonus: 10, circleId: 12 },
+  rules: { streakEvery: 7, streakBonus: 10, familyId: 12 },
   ranks: [{ name: 'Petit Hop', icon: '🐣', minPoints: 0 }],
   quests: [
     {
@@ -81,7 +81,7 @@ test('a template keeps no people, ids or dates', () => {
   ])
   assert.equal(template.games.quests[0].task, 'Ranger la chambre')
   const text = JSON.stringify(template)
-  for (const leak of ['assignees', 'userIds', 'choreId', 'circleId', '2026']) {
+  for (const leak of ['assignees', 'userIds', 'choreId', 'familyId', '2026']) {
     assert.ok(!text.includes(leak), leak)
   }
 })

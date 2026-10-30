@@ -18,7 +18,7 @@ import {
   sendWaitingGames,
   usePlayer,
 } from '../../queries/LearnQueries'
-import { useCircleMembers, useUserProfile } from '../../queries/UserQueries'
+import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries'
 import { moduleLocked, openChapters, totalLeft } from '../../utils/learn/engine'
 import { queuedFor } from '../../utils/learn/store'
 import LoadingComponent from '../components/Loading'
@@ -28,7 +28,7 @@ import { Progress, subjectColor, useCompiled } from './LearnParts'
 const pageSx = { px: { xs: 2, sm: 3 }, pb: 6, pt: { xs: 1, sm: 3 } }
 
 const useActiveMembers = () => {
-  const { data } = useCircleMembers()
+  const { data } = useFamilyMembers()
   return useMemo(
     () => (data?.res || []).filter(m => m.isActive !== false),
     [data?.res],

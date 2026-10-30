@@ -29,7 +29,7 @@ function UserDeletionModal({ isOpen, onClose }) {
   const [password, setPassword] = useState('')
   const [confirmation, setConfirmation] = useState('')
   const [transferOptions, setTransferOptions] = useState([])
-  const [circlesRequiringTransfer, setCirclesRequiringTransfer] = useState([])
+  const [familiesRequiringTransfer, setFamiliesRequiringTransfer] = useState([])
   const [availableMembers, setAvailableMembers] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -39,7 +39,7 @@ function UserDeletionModal({ isOpen, onClose }) {
     setPassword('')
     setConfirmation('')
     setTransferOptions([])
-    setCirclesRequiringTransfer([])
+    setFamiliesRequiringTransfer([])
     setAvailableMembers([])
     setError('')
   }, [])
@@ -65,8 +65,8 @@ function UserDeletionModal({ isOpen, onClose }) {
       const data = await response.json()
 
       if (response.ok) {
-        if (data.requiresTransfer && data.circles) {
-          setCirclesRequiringTransfer(data.circles)
+        if (data.requiresTransfer && data.families) {
+          setFamiliesRequiringTransfer(data.families)
           setAvailableMembers(data.availableMembers || [])
           setStep(2)
         } else {
@@ -83,21 +83,21 @@ function UserDeletionModal({ isOpen, onClose }) {
     }
   }
 
-  const handleTransferSelection = (circleId, newOwnerId, newOwnerName) => {
+  const handleTransferSelection = (familyId, newOwnerId, newOwnerName) => {
     setTransferOptions(prev => {
-      const existing = prev.find(t => t.circleId === circleId)
+      const existing = prev.find(t => t.familyId === familyId)
       if (existing) {
         return prev.map(t =>
-          t.circleId === circleId ? { ...t, newOwnerId, newOwnerName } : t,
+          t.familyId === familyId ? { ...t, newOwnerId, newOwnerName } : t,
         )
       } else {
-        return [...prev, { circleId, newOwnerId, newOwnerName }]
+        return [...prev, { familyId, newOwnerId, newOwnerName }]
       }
     })
   }
 
   const proceedToConfirmation = () => {
-    if (circlesRequiringTransfer.length === transferOptions.length) {
+    if (familiesRequiringTransfer.length === transferOptions.length) {
       setStep(3)
     }
   }
@@ -168,7 +168,7 @@ function UserDeletionModal({ isOpen, onClose }) {
           'removesTokens',
           'removesStorage',
           'removesPoints',
-          'removesCircles',
+          'removesFamilies',
         ].map(key => (
           <Typography key={key} level='body-sm' mb={1}>
             • {t(`deletion.${key}`)}
@@ -200,28 +200,28 @@ function UserDeletionModal({ isOpen, onClose }) {
         {t('deletion.transferIntro')}
       </Typography>
 
-      {circlesRequiringTransfer.map(circle => (
-        <Card key={circle.id} sx={{ mb: 2, p: 2 }}>
+      {familiesRequiringTransfer.map(family => (
+        <Card key={family.id} sx={{ mb: 2, p: 2 }}>
           <Typography level='title-sm' mb={1}>
-            {t('deletion.circleLabel', { name: circle.name })}
+            {t('deletion.familyLabel', { name: family.name })}
           </Typography>
           <FormControl>
             <FormLabel>{t('deletion.newOwner')}</FormLabel>
             <Select
               placeholder={t('deletion.selectOwner')}
               value={
-                transferOptions.find(t => t.circleId === circle.id)
+                transferOptions.find(t => t.familyId === family.id)
                   ?.newOwnerId || ''
               }
               onChange={(_, value) => {
                 const member = availableMembers.find(m => m.id === value)
                 if (member) {
-                  handleTransferSelection(circle.id, value, member.displayName)
+                  handleTransferSelection(family.id, value, member.displayName)
                 }
               }}
             >
               {availableMembers
-                .filter(member => circle.members.includes(member.id))
+                .filter(member => family.members.includes(member.id))
                 .map(member => (
                   <Option key={member.id} value={member.id}>
                     {member.displayName}
@@ -323,7 +323,8 @@ function UserDeletionModal({ isOpen, onClose }) {
                 step === 1
                   ? !password
                   : step === 2
-                    ? circlesRequiringTransfer.length !== transferOptions.length
+                    ? familiesRequiringTransfer.length !==
+                      transferOptions.length
                     : !password || confirmation !== CONFIRMATION_WORD,
             }}
           />

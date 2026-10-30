@@ -8,8 +8,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/nico87lbs/hopla/config"
 	auth "github.com/nico87lbs/hopla/internal/auth"
-	circle "github.com/nico87lbs/hopla/internal/circle/model"
-	cRepo "github.com/nico87lbs/hopla/internal/circle/repo"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
+	fRepo "github.com/nico87lbs/hopla/internal/family/repo"
 	rModel "github.com/nico87lbs/hopla/internal/reward/model"
 	rRepo "github.com/nico87lbs/hopla/internal/reward/repo"
 	uRepo "github.com/nico87lbs/hopla/internal/user/repo"
@@ -53,7 +53,7 @@ func redemptionError(c *gin.Context, err error) bool {
 
 type RedeemReq struct {
 	Note *string `json:"note"`
-	// UserID lets an admin or manager redeem for another circle member, such
+	// UserID lets an admin or manager redeem for another family member, such
 	// as a child without a login. That redemption is approved at once.
 	UserID *int `json:"userId"`
 	// Request keeps a redemption for another member pending, for a parent to
@@ -67,23 +67,23 @@ type ResolveReq struct {
 
 type Handler struct {
 	rRepo      *rRepo.RewardRepository
-	circleRepo *cRepo.CircleRepository
+	familyRepo *fRepo.FamilyRepository
 }
 
-func NewHandler(rRepo *rRepo.RewardRepository, circleRepo *cRepo.CircleRepository) *Handler {
+func NewHandler(rRepo *rRepo.RewardRepository, familyRepo *fRepo.FamilyRepository) *Handler {
 	return &Handler{
 		rRepo:      rRepo,
-		circleRepo: circleRepo,
+		familyRepo: familyRepo,
 	}
 }
 
-func (h *Handler) isAdminOrManager(c *gin.Context, userID int, circleID int) (bool, error) {
-	circleUsers, err := h.circleRepo.GetCircleUsers(c, circleID)
+func (h *Handler) isAdminOrManager(c *gin.Context, userID int, familyID int) (bool, error) {
+	familyUsers, err := h.familyRepo.GetFamilyUsers(c, familyID)
 	if err != nil {
 		return false, err
 	}
-	for _, u := range circleUsers {
-		if u.UserID == userID && (u.Role == circle.UserRoleAdmin || u.Role == circle.UserRoleManager) {
+	for _, u := range familyUsers {
+		if u.UserID == userID && (u.Role == fModel.UserRoleAdmin || u.Role == fModel.UserRoleManager) {
 			return true, nil
 		}
 	}
@@ -96,9 +96,9 @@ func (h *Handler) getRewards(c *gin.Context) {
 		c.JSON(401, gin.H{"error": "Authentication failed"})
 		return
 	}
-	rewards, err := h.rRepo.GetRewardsByCircle(c, currentUser.CircleID)
+	rewards, err := h.rRepo.GetRewardsByFamily(c, currentUser.FamilyID)
 	if err == nil {
-		err = h.rRepo.FillQuotaUsage(c, currentUser.CircleID, rewards, time.Now().UTC())
+		err = h.rRepo.FillQuotaUsage(c, currentUser.FamilyID, rewards, time.Now().UTC())
 	}
 	if err != nil {
 		logging.FromContext(c).Error("Failed to fetch rewards", "error", err)
@@ -115,7 +115,7 @@ func (h *Handler) createReward(c *gin.Context) {
 		return
 	}
 
-	isAdmin, err := h.isAdminOrManager(c, currentUser.ID, currentUser.CircleID)
+	isAdmin, err := h.isAdminOrManager(c, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Error checking permissions"})
 		return
@@ -143,7 +143,7 @@ func (h *Handler) createReward(c *gin.Context) {
 	}
 
 	reward := &rModel.Reward{
-		CircleID:      currentUser.CircleID,
+		FamilyID:      currentUser.FamilyID,
 		Name:          req.Name,
 		Description:   req.Description,
 		PointsCost:    req.PointsCost,
@@ -167,7 +167,7 @@ func (h *Handler) updateReward(c *gin.Context) {
 		return
 	}
 
-	isAdmin, err := h.isAdminOrManager(c, currentUser.ID, currentUser.CircleID)
+	isAdmin, err := h.isAdminOrManager(c, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Error checking permissions"})
 		return
@@ -202,7 +202,7 @@ func (h *Handler) updateReward(c *gin.Context) {
 
 	reward := &rModel.Reward{
 		ID:            id,
-		CircleID:      currentUser.CircleID,
+		FamilyID:      currentUser.FamilyID,
 		Name:          req.Name,
 		Description:   req.Description,
 		PointsCost:    req.PointsCost,
@@ -225,7 +225,7 @@ func (h *Handler) deleteReward(c *gin.Context) {
 		return
 	}
 
-	isAdmin, err := h.isAdminOrManager(c, currentUser.ID, currentUser.CircleID)
+	isAdmin, err := h.isAdminOrManager(c, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Error checking permissions"})
 		return
@@ -241,7 +241,7 @@ func (h *Handler) deleteReward(c *gin.Context) {
 		return
 	}
 
-	if err := h.rRepo.DeleteReward(c, id, currentUser.CircleID); err != nil {
+	if err := h.rRepo.DeleteReward(c, id, currentUser.FamilyID); err != nil {
 		c.JSON(500, gin.H{"error": "Error deleting reward"})
 		return
 	}
@@ -266,11 +266,11 @@ func (h *Handler) redeemReward(c *gin.Context) {
 	_ = c.ShouldBindJSON(&req)
 
 	if req.UserID != nil && *req.UserID != currentUser.ID {
-		h.redeemForMember(c, id, *req.UserID, currentUser.ID, currentUser.CircleID, req.Note, req.Request)
+		h.redeemForMember(c, id, *req.UserID, currentUser.ID, currentUser.FamilyID, req.Note, req.Request)
 		return
 	}
 
-	redemption, err := h.rRepo.RequestRedemption(c, id, currentUser.ID, currentUser.CircleID, req.Note)
+	redemption, err := h.rRepo.RequestRedemption(c, id, currentUser.ID, currentUser.FamilyID, req.Note)
 	if err != nil {
 		if redemptionError(c, err) {
 			return
@@ -286,8 +286,8 @@ func (h *Handler) redeemReward(c *gin.Context) {
 // redeemForMember spends a member's points on their behalf. Only an admin or
 // manager may do it, and since they would approve the request anyway, it is
 // recorded and approved in one go, unless it is only a request.
-func (h *Handler) redeemForMember(c *gin.Context, rewardID int, memberID int, adminID int, circleID int, note *string, requestOnly bool) {
-	isAdmin, err := h.isAdminOrManager(c, adminID, circleID)
+func (h *Handler) redeemForMember(c *gin.Context, rewardID int, memberID int, adminID int, familyID int, note *string, requestOnly bool) {
+	isAdmin, err := h.isAdminOrManager(c, adminID, familyID)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Error checking permissions"})
 		return
@@ -297,7 +297,7 @@ func (h *Handler) redeemForMember(c *gin.Context, rewardID int, memberID int, ad
 		return
 	}
 
-	redemption, err := h.rRepo.RequestRedemption(c, rewardID, memberID, circleID, note)
+	redemption, err := h.rRepo.RequestRedemption(c, rewardID, memberID, familyID, note)
 	if err != nil {
 		if redemptionError(c, err) {
 			return
@@ -311,7 +311,7 @@ func (h *Handler) redeemForMember(c *gin.Context, rewardID int, memberID int, ad
 		return
 	}
 
-	if err := h.rRepo.ApproveRedemption(c, redemption.ID, circleID, adminID); err != nil {
+	if err := h.rRepo.ApproveRedemption(c, redemption.ID, familyID, adminID); err != nil {
 		if err == rRepo.ErrInsufficientPoints {
 			c.JSON(400, gin.H{"error": "Not enough points to redeem this reward"})
 			return
@@ -334,7 +334,7 @@ func (h *Handler) getRedemptions(c *gin.Context) {
 		return
 	}
 
-	isAdmin, err := h.isAdminOrManager(c, currentUser.ID, currentUser.CircleID)
+	isAdmin, err := h.isAdminOrManager(c, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Error checking permissions"})
 		return
@@ -342,7 +342,7 @@ func (h *Handler) getRedemptions(c *gin.Context) {
 
 	// Non-admins only ever see their own redemption history.
 	if !isAdmin {
-		redemptions, err := h.rRepo.GetRedemptionsByUser(c, currentUser.ID, currentUser.CircleID)
+		redemptions, err := h.rRepo.GetRedemptionsByUser(c, currentUser.ID, currentUser.FamilyID)
 		if err != nil {
 			c.JSON(500, gin.H{"error": "Error getting redemptions"})
 			return
@@ -364,7 +364,7 @@ func (h *Handler) getRedemptions(c *gin.Context) {
 		status = &s
 	}
 
-	redemptions, err := h.rRepo.GetRedemptionsByCircle(c, currentUser.CircleID, status)
+	redemptions, err := h.rRepo.GetRedemptionsByFamily(c, currentUser.FamilyID, status)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Error getting redemptions"})
 		return
@@ -379,7 +379,7 @@ func (h *Handler) approveRedemption(c *gin.Context) {
 		return
 	}
 
-	isAdmin, err := h.isAdminOrManager(c, currentUser.ID, currentUser.CircleID)
+	isAdmin, err := h.isAdminOrManager(c, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Error checking permissions"})
 		return
@@ -395,7 +395,7 @@ func (h *Handler) approveRedemption(c *gin.Context) {
 		return
 	}
 
-	if err := h.rRepo.ApproveRedemption(c, id, currentUser.CircleID, currentUser.ID); err != nil {
+	if err := h.rRepo.ApproveRedemption(c, id, currentUser.FamilyID, currentUser.ID); err != nil {
 		if err == rRepo.ErrInsufficientPoints {
 			c.JSON(400, gin.H{"error": "User no longer has enough points for this redemption"})
 			return
@@ -418,7 +418,7 @@ func (h *Handler) rejectRedemption(c *gin.Context) {
 		return
 	}
 
-	isAdmin, err := h.isAdminOrManager(c, currentUser.ID, currentUser.CircleID)
+	isAdmin, err := h.isAdminOrManager(c, currentUser.ID, currentUser.FamilyID)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Error checking permissions"})
 		return
@@ -437,7 +437,7 @@ func (h *Handler) rejectRedemption(c *gin.Context) {
 	var req ResolveReq
 	_ = c.ShouldBindJSON(&req)
 
-	if err := h.rRepo.RejectRedemption(c, id, currentUser.CircleID, currentUser.ID, req.Note); err != nil {
+	if err := h.rRepo.RejectRedemption(c, id, currentUser.FamilyID, currentUser.ID, req.Note); err != nil {
 		if err == rRepo.ErrRedemptionNotPending {
 			c.JSON(400, gin.H{"error": "Redemption is not pending"})
 			return

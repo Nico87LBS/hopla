@@ -26,7 +26,7 @@ import (
 
 const (
 	testUserID   = 7
-	testCircleID = 1
+	testFamilyID = 1
 )
 
 // newTestHandler builds a handler backed by a real sqlite database, plus a
@@ -62,11 +62,11 @@ func newTestHandlerWithConfig(t *testing.T, customize func(*config.Config)) (*Ha
 		cfg,
 	)
 
-	if err := db.Create(&uModel.User{ID: testUserID, DisplayName: "Test User", Username: "test", CircleID: testCircleID}).Error; err != nil {
+	if err := db.Create(&uModel.User{ID: testUserID, DisplayName: "Test User", Username: "test", FamilyID: testFamilyID}).Error; err != nil {
 		t.Fatalf("failed to seed user: %v", err)
 	}
 
-	identity := &uModel.UserDetails{User: uModel.User{ID: testUserID, CircleID: testCircleID}}
+	identity := &uModel.UserDetails{User: uModel.User{ID: testUserID, FamilyID: testFamilyID}}
 
 	router := gin.New()
 	authed := router.Group("")
@@ -910,7 +910,7 @@ func TestServeCalendar_ValidTokenServesFeed(t *testing.T) {
 	dueDate := time.Now().UTC().Add(24 * time.Hour)
 	chore := &chModel.Chore{
 		Name:        "Water the plants",
-		CircleID:    testCircleID,
+		FamilyID:    testFamilyID,
 		CreatedBy:   testUserID,
 		IsActive:    true,
 		NextDueDate: &dueDate,

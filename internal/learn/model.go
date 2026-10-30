@@ -9,11 +9,11 @@ package learn
 
 import "time"
 
-// Module is a module installed in a circle. Content is the whole document;
+// Module is a module installed in a family. Content is the whole document;
 // the other fields repeat its header for lists.
 type Module struct {
 	ID       int      `json:"-" gorm:"primaryKey"`
-	CircleID int      `json:"-" gorm:"column:circle_id;not null;uniqueIndex:idx_learn_module"`
+	FamilyID int      `json:"-" gorm:"column:family_id;not null;uniqueIndex:idx_learn_module"`
 	Key      string   `json:"id" gorm:"column:module_key;size:80;not null;uniqueIndex:idx_learn_module"`
 	Version  string   `json:"version" gorm:"column:version;not null"`
 	Name     string   `json:"name" gorm:"column:name;not null"`
@@ -38,7 +38,7 @@ func (m Module) IsPack() bool { return len(m.Children) > 0 }
 // Activation turns a module on for a person. Empty settings take the
 // module's own.
 type Activation struct {
-	CircleID  int    `json:"-" gorm:"primaryKey;autoIncrement:false"`
+	FamilyID  int    `json:"-" gorm:"primaryKey;autoIncrement:false"`
 	UserID    int    `json:"userId" gorm:"primaryKey;autoIncrement:false"`
 	ModuleKey string `json:"module" gorm:"column:module_key;primaryKey;size:80"`
 	// DailyCap is the most hops the person earns with this module in a day.
@@ -73,7 +73,7 @@ const Family = 0
 // module's activation, then its pack), then what the family set (the
 // module, then its pack), then the module itself.
 type PersonSetting struct {
-	CircleID int    `json:"-" gorm:"primaryKey;autoIncrement:false"`
+	FamilyID int    `json:"-" gorm:"primaryKey;autoIncrement:false"`
 	UserID   int    `json:"userId" gorm:"primaryKey;autoIncrement:false"`
 	Scope    string `json:"scope" gorm:"column:scope;primaryKey;size:80"`
 	// DailyCap is the most hops earned with each module in a day.
@@ -92,7 +92,7 @@ func (PersonSetting) TableName() string { return "learn_person_settings" }
 // sent twice, such as after being offline, counts once.
 type Session struct {
 	ID        int    `json:"id" gorm:"primaryKey"`
-	CircleID  int    `json:"-" gorm:"column:circle_id;not null;uniqueIndex:idx_learn_session"`
+	FamilyID  int    `json:"-" gorm:"column:family_id;not null;uniqueIndex:idx_learn_session"`
 	ClientID  string `json:"clientId" gorm:"column:client_id;size:64;not null;uniqueIndex:idx_learn_session"`
 	UserID    int    `json:"userId" gorm:"column:user_id;not null;index"`
 	ModuleKey string `json:"module" gorm:"column:module_key;size:80;not null"`
@@ -114,7 +114,7 @@ func (Session) TableName() string { return "learn_sessions" }
 // repetition. Key names the knowledge itself, such as "mul:7x8", not the
 // module that asked it, so two modules asking the same thing share it.
 type Card struct {
-	CircleID int    `json:"-" gorm:"primaryKey;autoIncrement:false"`
+	FamilyID int    `json:"-" gorm:"primaryKey;autoIncrement:false"`
 	UserID   int    `json:"-" gorm:"primaryKey;autoIncrement:false"`
 	Key      string `json:"key" gorm:"column:card_key;primaryKey;size:160"`
 	// Box goes from 1 to 5: each right answer moves the card up and spaces

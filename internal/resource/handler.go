@@ -13,7 +13,7 @@ type Resource struct {
 	APIVersion             string           `json:"api_version" binding:"omitempty"`
 	APICommit              string           `json:"api_commit" binding:"omitempty"`
 	IsUserCreationDisabled bool             `json:"is_user_creation_disabled"`
-	SingleCircleInstance   bool             `json:"single_circle_instance"`
+	SingleFamilyInstance   bool             `json:"single_family_instance"`
 	// DisablePasswordAuth tells the client to hide username/password login and
 	// signup, leaving only SSO (#438).
 	DisablePasswordAuth bool `json:"disable_password_auth"`
@@ -49,7 +49,7 @@ func (h *Handler) getResource(c *gin.Context) {
 		APIVersion:             h.config.Info.Version,
 		APICommit:              h.config.Info.Commit,
 		IsUserCreationDisabled: h.config.IsUserCreationDisabled,
-		SingleCircleInstance:   h.config.SingleCircleInstance,
+		SingleFamilyInstance:   h.config.SingleFamilyInstance,
 		DisablePasswordAuth:    h.config.DisablePasswordAuth,
 	})
 }

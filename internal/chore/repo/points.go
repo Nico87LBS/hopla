@@ -4,7 +4,7 @@ import (
 	"time"
 
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	"github.com/nico87lbs/hopla/internal/games"
 	ptModel "github.com/nico87lbs/hopla/internal/points"
 	ptRepo "github.com/nico87lbs/hopla/internal/points/repo"
@@ -20,7 +20,7 @@ func taskPoints(chore *chModel.Chore, userID, byUserID, points int) ptModel.Poin
 		Points:    points,
 		UserID:    userID,
 		CreatedBy: byUserID,
-		CircleID:  chore.CircleID,
+		FamilyID:  chore.FamilyID,
 		ChoreID:   &choreID,
 		Reason:    &name,
 	}
@@ -44,7 +44,7 @@ func awardTask(tx *gorm.DB, chore *chModel.Chore, entry *chModel.ChoreHistory, u
 	}
 	entry.Points = &points
 	entry.FlashID = flash.FlashID
-	if err := tx.Model(&cModel.UserCircle{}).Where("user_id = ? AND circle_id = ?", userID, chore.CircleID).
+	if err := tx.Model(&fModel.UserFamily{}).Where("user_id = ? AND family_id = ?", userID, chore.FamilyID).
 		Update("points", gorm.Expr("points + ?", points)).Error; err != nil {
 		return err
 	}

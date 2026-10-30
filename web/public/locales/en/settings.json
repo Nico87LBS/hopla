@@ -22,7 +22,7 @@
         "title": "Profile Settings",
         "description": "Update your profile information, photo, display name, and timezone preferences."
       },
-      "circle": {
+      "family": {
         "title": "Family Settings",
         "description": "Manage your family, invite members, and handle join requests."
       },
@@ -91,11 +91,11 @@
     "save": "Save",
     "cancel": "Cancel"
   },
-  "circleSettings": {
+  "familySettings": {
     "title": "Family",
     "description": "Your account is automatically connected to a Family when you create or join one. You can easily invite friends by sharing the unique Family code or link below. You'll receive a notification below when someone requests to join your Family.",
     "memberOf": "You are part of {{name}}",
-    "yourCircleCode": "Your family code is:",
+    "yourFamilyCode": "Your family code is:",
     "pendingApprovalMessage": "Your request to join {{name}} is pending approval from a family admin.",
     "cancelRequest": "Cancel Request",
     "cancelRequestTitle": "Cancel Join Request",
@@ -107,16 +107,16 @@
     "shareInvite": "Share Invite",
     "codeCopied": "Code copied to clipboard",
     "linkCopied": "Invite link copied to clipboard",
-    "myCircle": "my Family",
+    "myFamily": "my Family",
     "shareTitle": "Join {{name}} on Hopla",
     "shareText": "I'd like to invite you to join {{name}} on Hopla.",
     "leave": "Leave Family",
     "leaveConfirmTitle": "Leave Family",
     "leaveConfirmMessage": "Are you sure you want to leave your family?",
     "leaveConfirmButton": "Leave",
-    "leftCircle": "Left family successfully",
+    "leftFamily": "Left family successfully",
     "leaveFailed": "Failed to leave family",
-    "circleMembers": "Family Members",
+    "familyMembers": "Family Members",
     "you": "(You)",
     "pendingApproval": "Pending Approval",
     "joinedOn": "Joined on {{date}}",
@@ -133,7 +133,7 @@
     "removeMemberTitle": "Remove Member",
     "removeMemberMessage": "Are you sure you want to remove {{name}} from your family?",
     "memberRemoved": "Removed member successfully",
-    "circleMemberRequests": "Family Member Requests",
+    "familyMemberRequests": "Family Member Requests",
     "lastUpdated": "Last updated: {{time}}",
     "refreshing": "Refreshing...",
     "refreshFailed": "Failed to refresh member requests",
@@ -150,9 +150,9 @@
     "declineRequestFailed": "Failed to decline request",
     "or": "or",
     "joinOtherDescription": "Want to join someone else's Family? Ask them for their unique Family code or join link. Enter the code below to join their Family.",
-    "enterCircleCode": "Enter Family code:",
+    "enterFamilyCode": "Enter Family code:",
     "enterCodePlaceholder": "Enter code",
-    "joinCircle": "Join Family",
+    "joinFamily": "Join Family",
     "joinedPending": "Joined family successfully, wait for the family owner to accept your request.",
     "alreadyMember": "You are already a member of this family",
     "joinFailed": "Failed to join family",
@@ -392,7 +392,7 @@
         "name": "At a Glance",
         "description": "Overdue / due today / needs review / unplanned counts"
       },
-      "circle": {
+      "family": {
         "name": "Your Family",
         "description": "Shows what everyone in your family is carrying this week"
       },
@@ -536,9 +536,9 @@
     "removesTokens": "API tokens, MFA sessions, and password reset tokens",
     "removesStorage": "Storage files and usage data",
     "removesPoints": "{{Units}} history and notifications",
-    "removesCircles": "Family memberships and relationships",
+    "removesFamilies": "Family memberships and relationships",
     "passwordToContinue": "Enter your password to continue",
-    "circleLabel": "Family: {{name}}",
+    "familyLabel": "Family: {{name}}",
     "newOwner": "New Owner",
     "logoutNotice": "On successful deletion, you will be logged out and redirected to the login page.",
     "passwordLabel": "Password",

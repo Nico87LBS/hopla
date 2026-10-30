@@ -15,39 +15,39 @@ import (
 // are due today instead of piling up late. Today's surprise is drawn again
 // among the tasks of the members who are here. It returns false when the
 // member already was in that state.
-func (r *ChoreRepository) SetMemberAway(ctx context.Context, circleID, userID int, away bool, now time.Time) (bool, error) {
+func (r *ChoreRepository) SetMemberAway(ctx context.Context, familyID, userID int, away bool, now time.Time) (bool, error) {
 	changed := false
 	err := r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		awayBefore, err := games.AwayMembers(tx, circleID)
+		awayBefore, err := games.AwayMembers(tx, familyID)
 		if err != nil {
 			return err
 		}
-		if changed, err = games.SetAway(tx, circleID, userID, away, now); err != nil || !changed {
+		if changed, err = games.SetAway(tx, familyID, userID, away, now); err != nil || !changed {
 			return err
 		}
 		if !away {
-			if err := r.bringBackTasks(ctx, tx, circleID, awayBefore, now); err != nil {
+			if err := r.bringBackTasks(ctx, tx, familyID, awayBefore, now); err != nil {
 				return err
 			}
 		}
-		return games.ForgetSurprise(tx, circleID, now)
+		return games.ForgetSurprise(tx, familyID, now)
 	})
 	return changed, err
 }
 
 // bringBackTasks moves the tasks that waited for the members away before to
 // today, at the time of day they were due.
-func (r *ChoreRepository) bringBackTasks(ctx context.Context, tx *gorm.DB, circleID int, awayBefore map[int]bool, now time.Time) error {
-	awayNow, err := games.AwayMembers(tx, circleID)
+func (r *ChoreRepository) bringBackTasks(ctx context.Context, tx *gorm.DB, familyID int, awayBefore map[int]bool, now time.Time) error {
+	awayNow, err := games.AwayMembers(tx, familyID)
 	if err != nil {
 		return err
 	}
-	loc := zone.Of(circleID)
+	loc := zone.Of(familyID)
 	today := zone.StartOfDay(now, loc)
 	var chores []*chModel.Chore
 	if err := tx.Preload("Assignees").
-		Where("circle_id = ? AND is_active = ? AND next_due_date IS NOT NULL AND next_due_date < ? AND status <> ?",
-			circleID, true, today.UTC(), chModel.ChoreStatusPendingApproval).
+		Where("family_id = ? AND is_active = ? AND next_due_date IS NOT NULL AND next_due_date < ? AND status <> ?",
+			familyID, true, today.UTC(), chModel.ChoreStatusPendingApproval).
 		Find(&chores).Error; err != nil {
 		return err
 	}
@@ -61,7 +61,7 @@ func (r *ChoreRepository) bringBackTasks(ctx context.Context, tx *gorm.DB, circl
 	if len(back) == 0 {
 		return nil
 	}
-	version, err := r.nextSyncVersionRangeWithDB(ctx, tx, circleID, len(back))
+	version, err := r.nextSyncVersionRangeWithDB(ctx, tx, familyID, len(back))
 	if err != nil {
 		return err
 	}

@@ -2,10 +2,10 @@ package model
 
 import "time"
 
-// Reward is a circle-scoped catalog item that members can redeem points for.
+// Reward is a family-scoped catalog item that members can redeem points for.
 type Reward struct {
 	ID          int       `json:"id" gorm:"primary_key"`
-	CircleID    int       `json:"circleId" gorm:"column:circle_id;index"`
+	FamilyID    int       `json:"familyId" gorm:"column:family_id;index"`
 	Name        string    `json:"name" gorm:"column:name"`
 	Description string    `json:"description" gorm:"column:description"`
 	PointsCost  int       `json:"pointsCost" gorm:"column:points_cost;not null"`
@@ -39,7 +39,7 @@ const (
 type RewardRedemption struct {
 	ID          int              `json:"id" gorm:"primary_key"`
 	RewardID    int              `json:"rewardId" gorm:"column:reward_id;index"`
-	CircleID    int              `json:"circleId" gorm:"column:circle_id;index"`
+	FamilyID    int              `json:"familyId" gorm:"column:family_id;index"`
 	UserID      int              `json:"userId" gorm:"column:user_id;index"`
 	RewardName  string           `json:"rewardName" gorm:"column:reward_name"` // snapshot, survives reward edits/deletes
 	PointsCost  int              `json:"pointsCost" gorm:"column:points_cost"` // snapshot at request time

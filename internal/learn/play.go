@@ -31,7 +31,7 @@ var ErrPlayExpired = errors.New("play link or session expired")
 type PlayToken struct {
 	Hash      string    `gorm:"column:hash;primaryKey;size:64"`
 	Kind      string    `gorm:"column:kind;size:10;not null"`
-	CircleID  int       `gorm:"column:circle_id;not null"`
+	FamilyID  int       `gorm:"column:family_id;not null"`
 	UserID    int       `gorm:"column:user_id;not null"`
 	CreatedBy int       `gorm:"column:created_by"`
 	ExpiresAt time.Time `gorm:"column:expires_at;not null;index"`
@@ -53,7 +53,7 @@ func newSecret() (string, error) {
 	return base64.RawURLEncoding.EncodeToString(raw), nil
 }
 
-func newToken(db *gorm.DB, kind string, circleID, userID, createdBy int, ttl time.Duration, now time.Time) (string, time.Time, error) {
+func newToken(db *gorm.DB, kind string, familyID, userID, createdBy int, ttl time.Duration, now time.Time) (string, time.Time, error) {
 	secret, err := newSecret()
 	if err != nil {
 		return "", time.Time{}, err
@@ -62,14 +62,14 @@ func newToken(db *gorm.DB, kind string, circleID, userID, createdBy int, ttl tim
 	if err := db.Where("expires_at < ?", now).Delete(&PlayToken{}).Error; err != nil {
 		return "", time.Time{}, err
 	}
-	token := PlayToken{Hash: hashOf(secret), Kind: kind, CircleID: circleID, UserID: userID, CreatedBy: createdBy,
+	token := PlayToken{Hash: hashOf(secret), Kind: kind, FamilyID: familyID, UserID: userID, CreatedBy: createdBy,
 		ExpiresAt: now.Add(ttl), CreatedAt: now}
 	return secret, token.ExpiresAt, db.Create(&token).Error
 }
 
 // NewPlayLink gives a link for userID to play, good once and for PlayLinkTTL.
-func NewPlayLink(db *gorm.DB, circleID, userID, createdBy int, now time.Time) (string, time.Time, error) {
-	return newToken(db, playLink, circleID, userID, createdBy, PlayLinkTTL, now)
+func NewPlayLink(db *gorm.DB, familyID, userID, createdBy int, now time.Time) (string, time.Time, error) {
+	return newToken(db, playLink, familyID, userID, createdBy, PlayLinkTTL, now)
 }
 
 // StartPlay trades a play link for a play session, and the link is gone.
@@ -92,7 +92,7 @@ func StartPlay(db *gorm.DB, code string, now time.Time) (string, PlayToken, erro
 	if err != nil {
 		return "", link, err
 	}
-	secret, expires, err := newToken(db, playSession, link.CircleID, link.UserID, link.CreatedBy, PlaySessionTTL, now)
+	secret, expires, err := newToken(db, playSession, link.FamilyID, link.UserID, link.CreatedBy, PlaySessionTTL, now)
 	link.Kind, link.ExpiresAt = playSession, expires
 	return secret, link, err
 }

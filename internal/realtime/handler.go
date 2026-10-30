@@ -47,7 +47,7 @@ func (h *WebSocketHandler) HandleWebSocket(c *gin.Context) {
 		return
 	}
 
-	// Get authenticated user and circle ID from middleware
+	// Get authenticated user and family ID from middleware
 	userInterface, exists := c.Get("user")
 	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{
@@ -57,17 +57,17 @@ func (h *WebSocketHandler) HandleWebSocket(c *gin.Context) {
 		return
 	}
 
-	circleIDInterface, exists := c.Get("circleId")
+	familyIDInterface, exists := c.Get("familyId")
 	if !exists {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Circle ID required",
-			"code":  "CIRCLE_ID_REQUIRED",
+			"error": "Family ID required",
+			"code":  "FAMILY_ID_REQUIRED",
 		})
 		return
 	}
 
 	user := userInterface.(*uModel.User)
-	circleID := circleIDInterface.(int)
+	familyID := familyIDInterface.(int)
 
 	// Upgrade HTTP connection to WebSocket
 	conn, err := WebSocketUpgrader.Upgrade(c.Writer, c.Request, nil)
@@ -75,7 +75,7 @@ func (h *WebSocketHandler) HandleWebSocket(c *gin.Context) {
 		h.logger.Errorw("Failed to upgrade WebSocket connection",
 			"error", err,
 			"userId", user.ID,
-			"circleId", circleID)
+			"familyId", familyID)
 		return
 	}
 
@@ -83,7 +83,7 @@ func (h *WebSocketHandler) HandleWebSocket(c *gin.Context) {
 	connectionID := h.generateConnectionID()
 
 	// Create connection object
-	wsConn := NewConnection(connectionID, circleID, user.ID, user, conn, h.logger)
+	wsConn := NewConnection(connectionID, familyID, user.ID, user, conn, h.logger)
 
 	// Add connection to the real-time service
 	if err := h.realTimeService.AddConnection(wsConn); err != nil {
@@ -91,9 +91,9 @@ func (h *WebSocketHandler) HandleWebSocket(c *gin.Context) {
 			"error", err,
 			"connectionId", connectionID,
 			"userId", user.ID,
-			"circleId", circleID)
+			"familyId", familyID)
 
-		conn.WriteJSON(NewErrorEvent(circleID, "CONNECTION_FAILED", err.Error()))
+		conn.WriteJSON(NewErrorEvent(familyID, "CONNECTION_FAILED", err.Error()))
 		conn.Close()
 		return
 	}
@@ -102,14 +102,14 @@ func (h *WebSocketHandler) HandleWebSocket(c *gin.Context) {
 		"connectionId", connectionID,
 		"userId", user.ID,
 		"username", user.Username,
-		"circleId", circleID)
+		"familyId", familyID)
 
 	// Send connection established event
-	establishedEvent := NewConnectionEstablishedEvent(connectionID, circleID, user.ID)
+	establishedEvent := NewConnectionEstablishedEvent(connectionID, familyID, user.ID)
 	wsConn.SendEvent(establishedEvent)
 
-	// Get connection pool for this circle
-	pool := h.realTimeService.GetConnectionPool(circleID)
+	// Get connection pool for this family
+	pool := h.realTimeService.GetConnectionPool(familyID)
 
 	// Start read and write pumps in separate goroutines
 	go wsConn.StartWritePump()
@@ -137,28 +137,28 @@ func (h *WebSocketHandler) HandleHealthCheck(c *gin.Context) {
 			"activeConnections": stats.ActiveConnections,
 			"eventsPublished":   stats.EventsPublished,
 			"eventsDelivered":   stats.EventsDelivered,
-			"circlesActive":     stats.CirclesActive,
+			"familiesActive":    stats.FamiliesActive,
 		},
 	})
 }
 
-// HandleConnectionStats provides connection statistics for a specific circle
+// HandleConnectionStats provides connection statistics for a specific family
 func (h *WebSocketHandler) HandleConnectionStats(c *gin.Context) {
-	circleIDStr := c.Param("circleId")
-	if circleIDStr == "" {
+	familyIDStr := c.Param("familyId")
+	if familyIDStr == "" {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Circle ID required",
-			"code":  "CIRCLE_ID_REQUIRED",
+			"error": "Family ID required",
+			"code":  "FAMILY_ID_REQUIRED",
 		})
 		return
 	}
 
-	// Parse circle ID
-	var circleID int
-	if _, err := fmt.Sscanf(circleIDStr, "%d", &circleID); err != nil {
+	// Parse family ID
+	var familyID int
+	if _, err := fmt.Sscanf(familyIDStr, "%d", &familyID); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Invalid circle ID",
-			"code":  "INVALID_CIRCLE_ID",
+			"error": "Invalid family ID",
+			"code":  "INVALID_FAMILY_ID",
 		})
 		return
 	}
@@ -175,21 +175,21 @@ func (h *WebSocketHandler) HandleConnectionStats(c *gin.Context) {
 
 	user := userInterface.(*uModel.User)
 
-	// Verify user has access to this circle
-	if user.CircleID != circleID {
+	// Verify user has access to this family
+	if user.FamilyID != familyID {
 		c.JSON(http.StatusForbidden, gin.H{
-			"error": "Access denied to circle",
+			"error": "Access denied to family",
 			"code":  "ACCESS_DENIED",
 		})
 		return
 	}
 
 	// Get connection pool stats
-	pool := h.realTimeService.GetConnectionPool(circleID)
+	pool := h.realTimeService.GetConnectionPool(familyID)
 	poolStats := pool.GetStats()
 
 	c.JSON(http.StatusOK, gin.H{
-		"circleId": circleID,
+		"familyId": familyID,
 		"connections": gin.H{
 			"active":        poolStats.ActiveConnections,
 			"totalMessages": poolStats.TotalMessages,

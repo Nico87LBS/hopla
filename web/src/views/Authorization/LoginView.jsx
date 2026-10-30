@@ -103,7 +103,7 @@ const LoginView = () => {
   const Navigate = useNavigate()
   useEffect(() => {
     if (isAuthenticated && user) {
-      // An already-signed-in visitor who lands here from a deep link (a circle
+      // An already-signed-in visitor who lands here from a deep link (a family
       // invite, for example) still has to end up where they were headed.
       const redirectUrl = Cookies.get('ca_redirect')
       if (redirectUrl && redirectUrl !== '/') {

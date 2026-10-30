@@ -17,7 +17,7 @@ import (
 // when the catalogue brings a new version, and the card keeps its key, so
 // what everyone learned of it stays too.
 type CardEdit struct {
-	CircleID  int    `json:"-" gorm:"primaryKey;autoIncrement:false"`
+	FamilyID  int    `json:"-" gorm:"primaryKey;autoIncrement:false"`
 	ModuleKey string `json:"module" gorm:"column:module_key;primaryKey;size:80"`
 	CardID    string `json:"card" gorm:"column:card_id;primaryKey;size:80"`
 	// Fields are the card's fields the family changed, as the module
@@ -44,7 +44,7 @@ var ReportReasons = []string{"pas-claire", "reponse-fausse", "faute", "autre"}
 // as after being offline, counts once.
 type Report struct {
 	ID        int    `json:"id" gorm:"primaryKey"`
-	CircleID  int    `json:"-" gorm:"column:circle_id;not null;uniqueIndex:idx_learn_report"`
+	FamilyID  int    `json:"-" gorm:"column:family_id;not null;uniqueIndex:idx_learn_report"`
 	ClientID  string `json:"clientId" gorm:"column:client_id;size:64;not null;uniqueIndex:idx_learn_report"`
 	ModuleKey string `json:"module" gorm:"column:module_key;size:80;not null;index"`
 	// Card is the written card or the generator that asked the question.
@@ -122,10 +122,10 @@ func applyEdits(content string, edits []CardEdit) (string, error) {
 	return string(out), err
 }
 
-// editsOf reads a circle's card corrections, by module.
-func editsOf(tx *gorm.DB, circleID int) (map[string][]CardEdit, error) {
+// editsOf reads a family's card corrections, by module.
+func editsOf(tx *gorm.DB, familyID int) (map[string][]CardEdit, error) {
 	var rows []CardEdit
-	if err := tx.Where("circle_id = ?", circleID).Order("module_key, card_id").Find(&rows).Error; err != nil {
+	if err := tx.Where("family_id = ?", familyID).Order("module_key, card_id").Find(&rows).Error; err != nil {
 		return nil, err
 	}
 	out := map[string][]CardEdit{}
@@ -136,8 +136,8 @@ func editsOf(tx *gorm.DB, circleID int) (map[string][]CardEdit, error) {
 }
 
 // withEdits lays each module's corrections over its content.
-func withEdits(tx *gorm.DB, circleID int, modules []Module) error {
-	edits, err := editsOf(tx, circleID)
+func withEdits(tx *gorm.DB, familyID int, modules []Module) error {
+	edits, err := editsOf(tx, familyID)
 	if err != nil {
 		return err
 	}
@@ -165,14 +165,14 @@ type CardChange struct {
 
 // SetCardEdit saves the family's correction of a card, once the module
 // with it still holds together.
-func SetCardEdit(db *gorm.DB, circleID, userID int, change CardChange, now time.Time) error {
+func SetCardEdit(db *gorm.DB, familyID, userID int, change CardChange, now time.Time) error {
 	for field := range change.Fields {
 		if !contains(EditableFields, field) {
 			return invalid("le champ %s d'une fiche ne se modifie pas", field)
 		}
 	}
 	return db.Transaction(func(tx *gorm.DB) error {
-		modules, err := freshModules(tx, circleID, now)
+		modules, err := freshModules(tx, familyID, now)
 		if err != nil {
 			return err
 		}
@@ -198,7 +198,7 @@ func SetCardEdit(db *gorm.DB, circleID, userID int, change CardChange, now time.
 		if card == nil {
 			return ErrNotFound
 		}
-		where := tx.Where("circle_id = ? AND module_key = ? AND card_id = ?", circleID, change.Module, change.Card)
+		where := tx.Where("family_id = ? AND module_key = ? AND card_id = ?", familyID, change.Module, change.Card)
 		var edit CardEdit
 		if err := where.First(&edit).Error; err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 			return err
@@ -217,14 +217,14 @@ func SetCardEdit(db *gorm.DB, circleID, userID int, change CardChange, now time.
 			}
 		}
 		if len(fields) == 0 {
-			return tx.Where("circle_id = ? AND module_key = ? AND card_id = ?", circleID, change.Module, change.Card).
+			return tx.Where("family_id = ? AND module_key = ? AND card_id = ?", familyID, change.Module, change.Card).
 				Delete(&CardEdit{}).Error
 		}
-		edits, err := editsOf(tx, circleID)
+		edits, err := editsOf(tx, familyID)
 		if err != nil {
 			return err
 		}
-		next := CardEdit{CircleID: circleID, ModuleKey: change.Module, CardID: change.Card, Fields: fields,
+		next := CardEdit{FamilyID: familyID, ModuleKey: change.Module, CardID: change.Card, Fields: fields,
 			UpdatedBy: userID, UpdatedAt: now}
 		list := []CardEdit{next}
 		for _, other := range edits[change.Module] {
@@ -244,7 +244,7 @@ func SetCardEdit(db *gorm.DB, circleID, userID int, change CardChange, now time.
 		if err != nil {
 			return err
 		}
-		if err := checkKeys(tx, circleID, doc, entries); err != nil {
+		if err := checkKeys(tx, familyID, doc, entries); err != nil {
 			return err
 		}
 		return tx.Clauses(clause.OnConflict{UpdateAll: true}).Create(&next).Error
@@ -253,7 +253,7 @@ func SetCardEdit(db *gorm.DB, circleID, userID int, change CardChange, now time.
 
 // AddReport keeps a question reported during a game. The same report sent
 // again is kept once.
-func AddReport(db *gorm.DB, circleID, reportedBy int, report Report, now time.Time) error {
+func AddReport(db *gorm.DB, familyID, reportedBy int, report Report, now time.Time) error {
 	report.Comment = strings.TrimSpace(report.Comment)
 	switch {
 	case report.ClientID == "" || len(report.ClientID) > 64:
@@ -266,14 +266,14 @@ func AddReport(db *gorm.DB, circleID, reportedBy int, report Report, now time.Ti
 		return invalid("signalement sans fiche")
 	}
 	var module Module
-	err := db.Where("circle_id = ? AND module_key = ?", circleID, report.ModuleKey).First(&module).Error
+	err := db.Where("family_id = ? AND module_key = ?", familyID, report.ModuleKey).First(&module).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return ErrNotFound
 	}
 	if err != nil {
 		return err
 	}
-	report.ID, report.CircleID, report.ReportedBy, report.ResolvedAt, report.ResolvedBy = 0, circleID, reportedBy, nil, 0
+	report.ID, report.FamilyID, report.ReportedBy, report.ResolvedAt, report.ResolvedBy = 0, familyID, reportedBy, nil, 0
 	report.Prompt, report.Expected, report.Given = cut(report.Prompt, 500), cut(report.Expected, 300), cut(report.Given, 120)
 	if report.ReportedAt.IsZero() || report.ReportedAt.After(now) {
 		report.ReportedAt = now
@@ -290,8 +290,8 @@ func cut(text string, n int) string {
 }
 
 // ResolveReport marks a report as looked at.
-func ResolveReport(db *gorm.DB, circleID, userID, id int, now time.Time) error {
-	result := db.Model(&Report{}).Where("circle_id = ? AND id = ? AND resolved_at IS NULL", circleID, id).
+func ResolveReport(db *gorm.DB, familyID, userID, id int, now time.Time) error {
+	result := db.Model(&Report{}).Where("family_id = ? AND id = ? AND resolved_at IS NULL", familyID, id).
 		Updates(map[string]any{"resolved_at": now, "resolved_by": userID})
 	if result.Error != nil {
 		return result.Error
@@ -304,8 +304,8 @@ func ResolveReport(db *gorm.DB, circleID, userID, id int, now time.Time) error {
 
 // OpenReports lists the reports not looked at yet, for the modules given or
 // all of them.
-func OpenReports(db *gorm.DB, circleID int, modules []string) ([]Report, error) {
-	query := db.Where("circle_id = ? AND resolved_at IS NULL", circleID)
+func OpenReports(db *gorm.DB, familyID int, modules []string) ([]Report, error) {
+	query := db.Where("family_id = ? AND resolved_at IS NULL", familyID)
 	if modules != nil {
 		query = query.Where("module_key IN ?", modules)
 	}

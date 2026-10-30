@@ -29,7 +29,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 
 import { HOPLA, selectedTabSx } from '../../constants/theme'
 import { useIsParent } from '../../hooks/useIsParent'
-import { useCircleMembers, useSetMemberAway } from '../../queries/UserQueries'
+import { useFamilyMembers, useSetMemberAway } from '../../queries/UserQueries'
 import { TodayCard, useGamesToday, useGamesWeek } from '../Games/DailyGames'
 import { AwayPill, MemberAvatar, memberShape } from '../Games/GameParts'
 import { AdjustCard, usePointsPresets } from '../Games/PointsCards'
@@ -458,7 +458,7 @@ const FamilyView = () => {
     : 'progress'
   const { data: pending = [] } = useRedemptions('pending')
   const [adjusting, setAdjusting] = useState(null)
-  const { data: membersData } = useCircleMembers()
+  const { data: membersData } = useFamilyMembers()
   const { data: today } = useGamesToday()
   const { data: week } = useGamesWeek()
   const setAway = useSetMemberAway()

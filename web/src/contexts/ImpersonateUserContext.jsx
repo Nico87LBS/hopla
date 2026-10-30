@@ -76,13 +76,13 @@ export const ImpersonateUserProvider = ({ children }) => {
   }, [impersonationState])
 
   // Check if user can impersonate (admin or manager)
-  // Note: This is a basic check. The component using this should also check circle membership
-  const canImpersonate = useCallback((user, circleMembers = []) => {
+  // Note: This is a basic check. The component using this should also check family membership
+  const canImpersonate = useCallback((user, familyMembers = []) => {
     if (!user?.id) return false
 
-    // If circleMembers is provided, check role from there
-    if (circleMembers.length > 0) {
-      const member = circleMembers.find(m => m.userId === user.id)
+    // If familyMembers is provided, check role from there
+    if (familyMembers.length > 0) {
+      const member = familyMembers.find(m => m.userId === user.id)
       return member?.role === 'admin' || member?.role === 'manager'
     }
 

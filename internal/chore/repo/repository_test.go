@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	testCircleID = 1
+	testFamilyID = 1
 	testOwnerID  = 1
 	testOtherID  = 2
 )
@@ -42,7 +42,7 @@ func createChore(t *testing.T, db *gorm.DB, name string, createdBy int, isPrivat
 
 	chore := &chModel.Chore{
 		Name:      name,
-		CircleID:  testCircleID,
+		FamilyID:  testFamilyID,
 		CreatedBy: createdBy,
 		IsPrivate: isPrivate,
 		IsActive:  true,
@@ -61,7 +61,7 @@ func createChore(t *testing.T, db *gorm.DB, name string, createdBy int, isPrivat
 func visibleChoreNames(t *testing.T, r *ChoreRepository, userID int) []string {
 	t.Helper()
 
-	chores, err := r.GetChores(context.Background(), testCircleID, userID, false, nil, false)
+	chores, err := r.GetChores(context.Background(), testFamilyID, userID, false, nil, false)
 	if err != nil {
 		t.Fatalf("GetChores failed: %v", err)
 	}
@@ -127,7 +127,7 @@ func TestGetChoreDetailByIDIncludesAssignees(t *testing.T) {
 	r, db := newTestChoreRepo(t)
 	chore := createChore(t, db, "shared", testOwnerID, false, testOwnerID, testOtherID)
 
-	detail, err := r.GetChoreDetailByID(context.Background(), chore.ID, testCircleID, testOwnerID)
+	detail, err := r.GetChoreDetailByID(context.Background(), chore.ID, testFamilyID, testOwnerID)
 	if err != nil {
 		t.Fatalf("GetChoreDetailByID failed: %v", err)
 	}

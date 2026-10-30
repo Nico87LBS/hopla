@@ -16,9 +16,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/nico87lbs/hopla/config"
 	auth "github.com/nico87lbs/hopla/internal/auth"
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
-	cRepo "github.com/nico87lbs/hopla/internal/circle/repo"
 	"github.com/nico87lbs/hopla/internal/email"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
+	fRepo "github.com/nico87lbs/hopla/internal/family/repo"
 	"github.com/nico87lbs/hopla/internal/mfa"
 	storage "github.com/nico87lbs/hopla/internal/storage"
 	storageRepo "github.com/nico87lbs/hopla/internal/storage/repo"
@@ -31,7 +31,7 @@ import (
 
 type Handler struct {
 	userRepo               *uRepo.UserRepository
-	circleRepo             *cRepo.CircleRepository
+	familyRepo             *fRepo.FamilyRepository
 	jwtAuth                *jwt.GinJWTMiddleware
 	tokenService           *auth.TokenService
 	email                  email.Sender
@@ -43,10 +43,10 @@ type Handler struct {
 	deletionService        *DeletionService
 	mfaService             *mfa.MFAService
 	oauth2Config           config.OAuth2Config
-	singleCircleInstance   bool
+	singleFamilyInstance   bool
 }
 
-func NewHandler(ur *uRepo.UserRepository, cr *cRepo.CircleRepository,
+func NewHandler(ur *uRepo.UserRepository, cr *fRepo.FamilyRepository,
 	jwtAuth *jwt.GinJWTMiddleware, tokenService *auth.TokenService,
 	email email.Sender,
 	idp *auth.IdentityProvider, storage storage.Storage,
@@ -54,7 +54,7 @@ func NewHandler(ur *uRepo.UserRepository, cr *cRepo.CircleRepository,
 	deletionService *DeletionService, mfaService *mfa.MFAService, config *config.Config) *Handler {
 	return &Handler{
 		userRepo:               ur,
-		circleRepo:             cr,
+		familyRepo:             cr,
 		jwtAuth:                jwtAuth,
 		tokenService:           tokenService,
 		email:                  email,
@@ -66,7 +66,7 @@ func NewHandler(ur *uRepo.UserRepository, cr *cRepo.CircleRepository,
 		deletionService:        deletionService,
 		mfaService:             mfaService,
 		oauth2Config:           config.OAuth2Config,
-		singleCircleInstance:   config.SingleCircleInstance,
+		singleFamilyInstance:   config.SingleFamilyInstance,
 	}
 }
 
@@ -80,7 +80,7 @@ func (h *Handler) GetAllUsers() gin.HandlerFunc {
 			return
 		}
 
-		users, err := h.userRepo.GetAllUsers(c, currentUser.CircleID)
+		users, err := h.userRepo.GetAllUsers(c, currentUser.FamilyID)
 		if err != nil {
 			c.JSON(500, gin.H{
 				"error": "Error getting users",
@@ -155,24 +155,24 @@ func (h *Handler) signUp(c *gin.Context) {
 		})
 		return
 	}
-	var userCircle *cModel.Circle
-	role := cModel.UserRoleAdmin
-	if h.singleCircleInstance {
-		// In single-circle mode, every signup joins the shared household circle
+	var userFamily *fModel.Family
+	role := fModel.UserRoleAdmin
+	if h.singleFamilyInstance {
+		// In single-family mode, every signup joins the shared household family
 		// (ID 1) instead of getting its own. The first signup bootstraps it.
-		userCircle, err = h.circleRepo.GetCircleByID(c, 1)
+		userFamily, err = h.familyRepo.GetFamilyByID(c, 1)
 		if err != nil {
-			userCircle, err = h.circleRepo.CreateCircle(c, &cModel.Circle{
+			userFamily, err = h.familyRepo.CreateFamily(c, &fModel.Family{
 				Name:       "Home",
 				CreatedAt:  time.Now().UTC(),
 				UpdatedAt:  time.Now().UTC(),
 				InviteCode: utils.GenerateInviteCode(c),
 			})
 		} else {
-			role = cModel.UserRoleMember
+			role = fModel.UserRoleMember
 		}
 	} else {
-		userCircle, err = h.circleRepo.CreateCircle(c, &cModel.Circle{
+		userFamily, err = h.familyRepo.CreateFamily(c, &fModel.Family{
 			Name:       "Famille " + signupReq.DisplayName,
 			CreatedAt:  time.Now().UTC(),
 			UpdatedAt:  time.Now().UTC(),
@@ -182,32 +182,32 @@ func (h *Handler) signUp(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(500, gin.H{
-			"error": "Error creating circle",
+			"error": "Error creating family",
 		})
 		return
 	}
 
-	if err := h.circleRepo.AddUserToCircle(c, &cModel.UserCircle{
+	if err := h.familyRepo.AddUserToFamily(c, &fModel.UserFamily{
 		UserID:    insertedUser.ID,
-		CircleID:  userCircle.ID,
+		FamilyID:  userFamily.ID,
 		Role:      role,
 		IsActive:  true,
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
 	}); err != nil {
 		c.JSON(500, gin.H{
-			"error": "Error adding user to circle",
+			"error": "Error adding user to family",
 		})
 		return
 	}
-	insertedUser.CircleID = userCircle.ID
+	insertedUser.FamilyID = userFamily.ID
 	if err := h.userRepo.UpdateUser(c, insertedUser); err != nil {
 		c.JSON(500, gin.H{
 			"error": "Error updating user",
 		})
 		return
 	}
-	if err := h.storageRepo.CreateStorageUsage(c, insertedUser.ID, userCircle.ID); err != nil {
+	if err := h.storageRepo.CreateStorageUsage(c, insertedUser.ID, userFamily.ID); err != nil {
 		c.JSON(500, gin.H{
 			"error": "Error initializing storage",
 		})
@@ -231,28 +231,28 @@ func (h *Handler) GetUserProfile(c *gin.Context) {
 	})
 }
 
-func (h *Handler) syncOIDCRole(c *gin.Context, userID, circleID int, groups []string) {
+func (h *Handler) syncOIDCRole(c *gin.Context, userID, familyID int, groups []string) {
 	logger := logging.FromContext(c)
 	resolvedRole, active := auth.ResolveRoleFromGroups(groups, h.oauth2Config.AdminGroups, h.oauth2Config.ManagerGroups)
 	if !active {
 		return
 	}
 
-	currentRole, err := h.circleRepo.GetUserCircleRole(c, circleID, userID)
+	currentRole, err := h.familyRepo.GetUserFamilyRole(c, familyID, userID)
 	if err != nil {
-		logger.Warnw("OIDC role sync: failed to get current role", "userID", userID, "circleID", circleID, "err", err)
+		logger.Warnw("OIDC role sync: failed to get current role", "userID", userID, "familyID", familyID, "err", err)
 		return
 	}
 
-	if currentRole == cModel.Role(resolvedRole) {
+	if currentRole == fModel.Role(resolvedRole) {
 		return
 	}
 
-	if err := h.circleRepo.ChangeUserRole(c, circleID, userID, resolvedRole); err != nil {
-		logger.Errorw("OIDC role sync: failed to update role", "userID", userID, "circleID", circleID, "resolvedRole", resolvedRole, "err", err)
+	if err := h.familyRepo.ChangeUserRole(c, familyID, userID, resolvedRole); err != nil {
+		logger.Errorw("OIDC role sync: failed to update role", "userID", userID, "familyID", familyID, "resolvedRole", resolvedRole, "err", err)
 		return
 	}
-	logger.Infow("OIDC role sync", "userID", userID, "circleID", circleID, "oldRole", currentRole, "newRole", resolvedRole, "groups", groups)
+	logger.Infow("OIDC role sync", "userID", userID, "familyID", familyID, "oldRole", currentRole, "newRole", resolvedRole, "groups", groups)
 }
 
 func (h *Handler) thirdPartyAuthCallback(c *gin.Context) {
@@ -343,80 +343,80 @@ func (h *Handler) thirdPartyAuthCallback(c *gin.Context) {
 				return
 
 			}
-			var circleID int
-			if h.singleCircleInstance {
-				// In single-circle mode, add user to the shared household circle (ID 1).
-				// Create it if it doesn't exist yet (first user bootstraps the circle).
-				sharedCircle, err := h.circleRepo.GetCircleByID(c, 1)
+			var familyID int
+			if h.singleFamilyInstance {
+				// In single-family mode, add user to the shared household family (ID 1).
+				// Create it if it doesn't exist yet (first user bootstraps the family).
+				sharedFamily, err := h.familyRepo.GetFamilyByID(c, 1)
 				if err != nil {
-					sharedCircle, err = h.circleRepo.CreateCircle(c, &cModel.Circle{
+					sharedFamily, err = h.familyRepo.CreateFamily(c, &fModel.Family{
 						Name:       "Home",
 						CreatedAt:  time.Now().UTC(),
 						UpdatedAt:  time.Now().UTC(),
 						InviteCode: utils.GenerateInviteCode(c),
 					})
 					if err != nil {
-						c.JSON(500, gin.H{"error": "Error creating shared circle"})
+						c.JSON(500, gin.H{"error": "Error creating shared family"})
 						return
 					}
 				}
-				circleID = sharedCircle.ID
+				familyID = sharedFamily.ID
 
 				// Resolve role from OIDC groups; default to member if no match or no config.
-				role := cModel.UserRole(cModel.RoleMember)
+				role := fModel.UserRole(fModel.RoleMember)
 				if resolvedRole, active := auth.ResolveRoleFromGroups(claims.Groups, h.oauth2Config.AdminGroups, h.oauth2Config.ManagerGroups); active {
-					role = cModel.UserRole(resolvedRole)
+					role = fModel.UserRole(resolvedRole)
 				}
 
-				if err := h.circleRepo.AddUserToCircle(c, &cModel.UserCircle{
+				if err := h.familyRepo.AddUserToFamily(c, &fModel.UserFamily{
 					UserID:    createdUser.ID,
-					CircleID:  circleID,
+					FamilyID:  familyID,
 					Role:      role,
 					IsActive:  true,
 					CreatedAt: time.Now().UTC(),
 					UpdatedAt: time.Now().UTC(),
 				}); err != nil {
-					c.JSON(500, gin.H{"error": "Error adding user to circle"})
+					c.JSON(500, gin.H{"error": "Error adding user to family"})
 					return
 				}
 			} else {
-				// Default: create a personal circle for the new user.
-				userCircle, err := h.circleRepo.CreateCircle(c, &cModel.Circle{
-					Name:       claims.DisplayName + "'s circle",
+				// Default: create a personal family for the new user.
+				userFamily, err := h.familyRepo.CreateFamily(c, &fModel.Family{
+					Name:       claims.DisplayName + "'s family",
 					CreatedAt:  time.Now().UTC(),
 					UpdatedAt:  time.Now().UTC(),
 					InviteCode: utils.GenerateInviteCode(c),
 				})
 				if err != nil {
-					c.JSON(500, gin.H{"error": "Error creating circle"})
+					c.JSON(500, gin.H{"error": "Error creating family"})
 					return
 				}
-				circleID = userCircle.ID
+				familyID = userFamily.ID
 
-				if err := h.circleRepo.AddUserToCircle(c, &cModel.UserCircle{
+				if err := h.familyRepo.AddUserToFamily(c, &fModel.UserFamily{
 					UserID:    createdUser.ID,
-					CircleID:  circleID,
+					FamilyID:  familyID,
 					Role:      "admin",
 					IsActive:  true,
 					CreatedAt: time.Now().UTC(),
 					UpdatedAt: time.Now().UTC(),
 				}); err != nil {
-					c.JSON(500, gin.H{"error": "Error adding user to circle"})
+					c.JSON(500, gin.H{"error": "Error adding user to family"})
 					return
 				}
 
 				// Sync role from OIDC groups if configured (may demote from admin).
-				h.syncOIDCRole(c, createdUser.ID, circleID, claims.Groups)
+				h.syncOIDCRole(c, createdUser.ID, familyID, claims.Groups)
 			}
 
-			createdUser.CircleID = circleID
+			createdUser.FamilyID = familyID
 			if err := h.userRepo.UpdateUser(c, createdUser); err != nil {
 				c.JSON(500, gin.H{
 					"error": "Error updating user",
 				})
 				return
 			}
-			if err := h.storageRepo.CreateStorageUsage(c, createdUser.ID, circleID); err != nil {
+			if err := h.storageRepo.CreateStorageUsage(c, createdUser.ID, familyID); err != nil {
 				c.JSON(500, gin.H{
 					"error": "Error initializing storage",
 				})
@@ -464,7 +464,7 @@ func (h *Handler) thirdPartyAuthCallback(c *gin.Context) {
 			}
 		}
 		// Sync role from OIDC groups on every login (IdP is source of truth).
-		h.syncOIDCRole(c, acc.ID, acc.CircleID, claims.Groups)
+		h.syncOIDCRole(c, acc.ID, acc.FamilyID, claims.Groups)
 		// Generate tokens including refresh token:
 		tokenResponse, err := h.tokenService.GenerateTokens(c.Request.Context(), acc)
 		if err != nil {
@@ -593,7 +593,6 @@ func (h *Handler) updateUserPassword(c *gin.Context) {
 func (h *Handler) UpdateUserDetails(c *gin.Context) {
 	type UpdateUserReq struct {
 		DisplayName *string `json:"displayName" binding:"omitempty"`
-		ChatID      *int64  `json:"chatID" binding:"omitempty"`
 		Image       *string `json:"image" binding:"omitempty"`
 		Timezone    *string `json:"timezone" binding:"omitempty"`
 	}
@@ -614,9 +613,6 @@ func (h *Handler) UpdateUserDetails(c *gin.Context) {
 	// update non-nil fields:
 	if req.DisplayName != nil {
 		user.DisplayName = html.EscapeString(*req.DisplayName)
-	}
-	if req.ChatID != nil {
-		user.ChatID = *req.ChatID
 	}
 	if req.Image != nil {
 		user.Image = *req.Image
@@ -970,7 +966,7 @@ func (h *Handler) getStorageUsage(c *gin.Context) {
 // Account deletion request/response types
 type AccountDeletionRequest struct {
 	Password        string                 `json:"password" binding:"required"`
-	TransferOptions []CircleTransferOption `json:"transferOptions,omitempty"`
+	TransferOptions []FamilyTransferOption `json:"transferOptions,omitempty"`
 	Confirmation    string                 `json:"confirmation" binding:"required"` // Must be "DELETE"
 }
 
@@ -1125,7 +1121,7 @@ func (h *Handler) createChildUser(c *gin.Context) {
 		Username:     childUsername,
 		DisplayName:  html.EscapeString(req.DisplayName),
 		Password:     encodedPassword,
-		CircleID:     currentUser.CircleID,
+		FamilyID:     currentUser.FamilyID,
 		ParentUserID: &currentUser.ID,
 		UserType:     uModel.UserTypeChild,
 		Provider:     uModel.AuthProviderLocal,
@@ -1145,16 +1141,16 @@ func (h *Handler) createChildUser(c *gin.Context) {
 		return
 	}
 
-	// Add child user to the same circle as parent
-	if err := h.circleRepo.AddUserToCircle(c, &cModel.UserCircle{
+	// Add child user to the same family as parent
+	if err := h.familyRepo.AddUserToFamily(c, &fModel.UserFamily{
 		UserID:    createdUser.ID,
-		CircleID:  currentUser.CircleID,
+		FamilyID:  currentUser.FamilyID,
 		Role:      "member", // Child users are members, not admins
 		IsActive:  true,
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
 	}); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to add child user to circle"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to add child user to family"})
 		return
 	}
 

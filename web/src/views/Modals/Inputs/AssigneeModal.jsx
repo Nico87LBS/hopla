@@ -11,7 +11,7 @@ import {
 import AppModal from '../../../components/common/AppModal'
 
 /**
- * Assignee picker used by the "delegate" action. Lists every circle member —
+ * Assignee picker used by the "delegate" action. Lists every family member —
  * not just the chore's current assignee pool — because from the user's
  * perspective picking anyone should just work, the same way assignee pickers
  * behave in most task trackers. Selecting someone outside the pool is handled

@@ -10,7 +10,7 @@ import (
 )
 
 type recordedChange struct {
-	circleID   int
+	familyID   int
 	recipients []int
 	event      EventType
 	userID     int
@@ -18,8 +18,8 @@ type recordedChange struct {
 
 type fakeChangeBroadcaster struct{ changes []recordedChange }
 
-func (f *fakeChangeBroadcaster) BroadcastChange(circleID int, recipients []int, eventType EventType, userID int) {
-	f.changes = append(f.changes, recordedChange{circleID, recipients, eventType, userID})
+func (f *fakeChangeBroadcaster) BroadcastChange(familyID int, recipients []int, eventType EventType, userID int) {
+	f.changes = append(f.changes, recordedChange{familyID, recipients, eventType, userID})
 }
 
 func newNotifierRouter(f *fakeChangeBroadcaster, status int) *gin.Engine {
@@ -27,7 +27,7 @@ func newNotifierRouter(f *fakeChangeBroadcaster, status int) *gin.Engine {
 	r := gin.New()
 	r.Use(changeNotifier(func() changeBroadcaster { return f }))
 	withUser := func(c *gin.Context) {
-		c.Set("id", &uModel.UserDetails{User: uModel.User{ID: 7, CircleID: 3}})
+		c.Set("id", &uModel.UserDetails{User: uModel.User{ID: 7, FamilyID: 3}})
 		c.Status(status)
 	}
 	r.Any("/api/v1/rewards/*rest", withUser)
@@ -43,7 +43,7 @@ func TestChangeNotifierBroadcastsSuccessfulWrites(t *testing.T) {
 		want         *recordedChange
 	}{
 		{http.MethodPost, "/api/v1/rewards/1/redeem", &recordedChange{3, nil, EventTypeRewardsUpdated, 7}},
-		{http.MethodPut, "/api/v1/users/profile", &recordedChange{3, nil, EventTypeCircleUpdated, 7}},
+		{http.MethodPut, "/api/v1/users/profile", &recordedChange{3, nil, EventTypeFamilyUpdated, 7}},
 		{http.MethodGet, "/api/v1/rewards/", nil},
 		{http.MethodPost, "/api/v1/chores/1/do", nil},
 		{http.MethodPost, "/api/v1/rewardsx", nil},
@@ -62,7 +62,7 @@ func TestChangeNotifierBroadcastsSuccessfulWrites(t *testing.T) {
 			t.Fatalf("%s %s: got %d changes, want 1", tc.method, tc.path, len(f.changes))
 		}
 		got := f.changes[0]
-		if got.circleID != tc.want.circleID || got.event != tc.want.event || got.userID != tc.want.userID ||
+		if got.familyID != tc.want.familyID || got.event != tc.want.event || got.userID != tc.want.userID ||
 			len(got.recipients) != len(tc.want.recipients) {
 			t.Errorf("%s %s: got %+v, want %+v", tc.method, tc.path, got, *tc.want)
 		}

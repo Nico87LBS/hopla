@@ -24,7 +24,7 @@ func TestAuthenticateConnectionAcceptsAPIToken(t *testing.T) {
 	}
 	users := uRepo.NewUserRepository(db)
 	ctx := context.Background()
-	user := &uModel.User{Username: "ha", CircleID: 4, CreatedAt: time.Now().UTC(), UpdatedAt: time.Now().UTC()}
+	user := &uModel.User{Username: "ha", FamilyID: 4, CreatedAt: time.Now().UTC(), UpdatedAt: time.Now().UTC()}
 	if _, err := users.CreateUser(ctx, user); err != nil {
 		t.Fatal(err)
 	}
@@ -40,12 +40,19 @@ func TestAuthenticateConnectionAcceptsAPIToken(t *testing.T) {
 		return am.AuthenticateConnection(c)
 	}
 
-	got, circleID, err := authenticate(uModel.APITokenPrefix + "secretbody")
-	if err != nil || got.ID != user.ID || circleID != 4 {
-		t.Fatalf("valid token: user=%v circle=%d err=%v", got, circleID, err)
+	got, familyID, err := authenticate(uModel.APITokenPrefix + "secretbody")
+	if err != nil || got.ID != user.ID || familyID != 4 {
+		t.Fatalf("valid token: user=%v family=%d err=%v", got, familyID, err)
 	}
 	if _, _, err := authenticate(uModel.APITokenPrefix + "wrong"); err != ErrInvalidToken {
 		t.Fatalf("wrong token: err=%v", err)
+	}
+	// A token given before the prefix changed keeps working.
+	if _, err := users.StoreAPIToken(ctx, user.ID, "Old", "oldbody1", "xx_"); err != nil {
+		t.Fatal(err)
+	}
+	if got, _, err := authenticate("xx_oldbody1"); err != nil || got.ID != user.ID {
+		t.Fatalf("older prefix: user=%v err=%v", got, err)
 	}
 
 	if err := db.Model(&uModel.User{}).Where("id = ?", user.ID).Update("disabled", true).Error; err != nil {

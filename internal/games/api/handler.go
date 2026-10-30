@@ -13,8 +13,8 @@ import (
 	"github.com/nico87lbs/hopla/config"
 	auth "github.com/nico87lbs/hopla/internal/auth"
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
-	circle "github.com/nico87lbs/hopla/internal/circle/model"
-	cRepo "github.com/nico87lbs/hopla/internal/circle/repo"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
+	fRepo "github.com/nico87lbs/hopla/internal/family/repo"
 	"github.com/nico87lbs/hopla/internal/games"
 	uRepo "github.com/nico87lbs/hopla/internal/user/repo"
 	"github.com/nico87lbs/hopla/internal/utils"
@@ -35,11 +35,11 @@ const (
 
 type Handler struct {
 	db         *gorm.DB
-	circleRepo *cRepo.CircleRepository
+	familyRepo *fRepo.FamilyRepository
 }
 
-func NewHandler(db *gorm.DB, circleRepo *cRepo.CircleRepository) *Handler {
-	return &Handler{db: db, circleRepo: circleRepo}
+func NewHandler(db *gorm.DB, familyRepo *fRepo.FamilyRepository) *Handler {
+	return &Handler{db: db, familyRepo: familyRepo}
 }
 
 // requireParent answers 403 unless the current user is an admin or manager.
@@ -49,14 +49,14 @@ func (h *Handler) requireParent(c *gin.Context) (int, int, bool) {
 		c.JSON(401, gin.H{"error": "Authentication failed"})
 		return 0, 0, false
 	}
-	members, err := h.circleRepo.GetCircleUsers(c, currentUser.CircleID)
+	members, err := h.familyRepo.GetFamilyUsers(c, currentUser.FamilyID)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Error checking permissions"})
 		return 0, 0, false
 	}
 	for _, m := range members {
-		if m.UserID == currentUser.ID && (m.Role == circle.UserRoleAdmin || m.Role == circle.UserRoleManager) {
-			return currentUser.ID, currentUser.CircleID, true
+		if m.UserID == currentUser.ID && (m.Role == fModel.UserRoleAdmin || m.Role == fModel.UserRoleManager) {
+			return currentUser.ID, currentUser.FamilyID, true
 		}
 	}
 	c.JSON(403, gin.H{"error": "Only admins or managers can change the games"})
@@ -85,7 +85,7 @@ type Today struct {
 	Routines []games.RoutineView `json:"routines"`
 	// ParentsOnPodium puts the parents on the podium with the children.
 	ParentsOnPodium bool `json:"parentsOnPodium"`
-	// Currency names what the family earns, see circle.Currencies.
+	// Currency names what the family earns, see fModel.Currencies.
 	Currency string `json:"currency"`
 	// NextChangeAt is when the games change on their own (midnight, a bonus
 	// period starting or ending), so boards know when to refresh.
@@ -109,28 +109,28 @@ func (h *Handler) getToday(c *gin.Context) {
 		c.JSON(401, gin.H{"error": "Authentication failed"})
 		return
 	}
-	circleID := currentUser.CircleID
+	familyID := currentUser.FamilyID
 	now := time.Now().UTC()
 	db := h.db.WithContext(c)
 	fail := func(err error) {
 		logging.FromContext(c).Error("Failed to get the games of the day", "error", err)
 		c.JSON(500, gin.H{"error": "Error getting the games of the day"})
 	}
-	rules, err := games.RulesFor(db, circleID)
+	rules, err := games.RulesFor(db, familyID)
 	if err != nil {
 		fail(err)
 		return
 	}
 	today := Today{Rules: rules}
-	if today.Period, err = games.ActivePeriod(db, circleID, now); err != nil {
+	if today.Period, err = games.ActivePeriod(db, familyID, now); err != nil {
 		fail(err)
 		return
 	}
-	if today.NextChangeAt, err = games.NextChange(db, circleID, now); err != nil {
+	if today.NextChangeAt, err = games.NextChange(db, familyID, now); err != nil {
 		fail(err)
 		return
 	}
-	surprise, err := games.TodaySurprise(db, circleID, now)
+	surprise, err := games.TodaySurprise(db, familyID, now)
 	if err != nil {
 		fail(err)
 		return
@@ -139,13 +139,13 @@ func (h *Handler) getToday(c *gin.Context) {
 		var chore chModel.Chore
 		if err := db.Select("id", "name").First(&chore, surprise.ChoreID).Error; err == nil {
 			today.Surprise = &SurpriseInfo{Surprise: *surprise, Name: chore.Name}
-			if today.Surprise.ChoreIDs, err = games.SameTaskIDs(db, circleID, surprise.ChoreID); err != nil {
+			if today.Surprise.ChoreIDs, err = games.SameTaskIDs(db, familyID, surprise.ChoreID); err != nil {
 				fail(err)
 				return
 			}
 		}
 	}
-	members, err := h.circleRepo.GetCircleUsers(c, circleID)
+	members, err := h.familyRepo.GetFamilyUsers(c, familyID)
 	if err != nil {
 		fail(err)
 		return
@@ -156,28 +156,28 @@ func (h *Handler) getToday(c *gin.Context) {
 			userIDs = append(userIDs, m.UserID)
 		}
 	}
-	if today.Streaks, err = games.Streaks(db, circleID, userIDs, now); err != nil {
+	if today.Streaks, err = games.Streaks(db, familyID, userIDs, now); err != nil {
 		fail(err)
 		return
 	}
-	if err := games.Settle(db, circleID, userIDs, now); err != nil {
+	if err := games.Settle(db, familyID, userIDs, now); err != nil {
 		fail(err)
 		return
 	}
-	if members, err = h.circleRepo.GetCircleUsers(c, circleID); err != nil { // with the rewards just paid
+	if members, err = h.familyRepo.GetFamilyUsers(c, familyID); err != nil { // with the rewards just paid
 		fail(err)
 		return
 	}
-	if today.Ranks, err = games.RanksFor(db, circleID); err != nil {
+	if today.Ranks, err = games.RanksFor(db, familyID); err != nil {
 		fail(err)
 		return
 	}
-	quests, err := games.Quests(db, circleID, userIDs, now)
+	quests, err := games.Quests(db, familyID, userIDs, now)
 	if err != nil {
 		fail(err)
 		return
 	}
-	tallies, err := games.TodayTallies(db, circleID, now)
+	tallies, err := games.TodayTallies(db, familyID, now)
 	if err != nil {
 		fail(err)
 		return
@@ -189,21 +189,21 @@ func (h *Handler) getToday(c *gin.Context) {
 				RankLevel: games.RankOf(today.Ranks, m.Points), Quests: quests[m.UserID], Today: tallies[m.UserID]})
 		}
 	}
-	if today.Challenges, err = games.Challenges(db, circleID, userIDs, now.Add(-endedChallengesKept), now); err != nil {
+	if today.Challenges, err = games.Challenges(db, familyID, userIDs, now.Add(-endedChallengesKept), now); err != nil {
 		fail(err)
 		return
 	}
-	if today.Routines, err = games.RoutineViews(db, circleID, userIDs, now); err != nil {
+	if today.Routines, err = games.RoutineViews(db, familyID, userIDs, now); err != nil {
 		fail(err)
 		return
 	}
-	family, err := h.circleRepo.GetCircleByID(c, circleID)
+	family, err := h.familyRepo.GetFamilyByID(c, familyID)
 	if err != nil {
 		fail(err)
 		return
 	}
 	today.ParentsOnPodium = family.ParentsOnPodium
-	today.Currency = circle.CurrencyOf(family.Currency)
+	today.Currency = fModel.CurrencyOf(family.Currency)
 	c.JSON(200, gin.H{"res": today})
 }
 
@@ -214,7 +214,7 @@ func (h *Handler) getWeek(c *gin.Context) {
 		c.JSON(401, gin.H{"error": "Authentication failed"})
 		return
 	}
-	members, err := h.circleRepo.GetCircleUsers(c, currentUser.CircleID)
+	members, err := h.familyRepo.GetFamilyUsers(c, currentUser.FamilyID)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Error getting the week"})
 		return
@@ -225,7 +225,7 @@ func (h *Handler) getWeek(c *gin.Context) {
 			userIDs = append(userIDs, m.UserID)
 		}
 	}
-	stats, from, err := games.Week(h.db.WithContext(c), currentUser.CircleID, userIDs, time.Now().UTC())
+	stats, from, err := games.Week(h.db.WithContext(c), currentUser.FamilyID, userIDs, time.Now().UTC())
 	if err != nil {
 		logging.FromContext(c).Error("Failed to get the week", "error", err)
 		c.JSON(500, gin.H{"error": "Error getting the week"})
@@ -236,7 +236,7 @@ func (h *Handler) getWeek(c *gin.Context) {
 
 // updatePodium chooses whether the parents stand on the podium.
 func (h *Handler) updatePodium(c *gin.Context) {
-	_, circleID, ok := h.requireParent(c)
+	_, familyID, ok := h.requireParent(c)
 	if !ok {
 		return
 	}
@@ -247,7 +247,7 @@ func (h *Handler) updatePodium(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "Invalid request"})
 		return
 	}
-	if err := h.db.WithContext(c).Model(&circle.Circle{}).Where("id = ?", circleID).
+	if err := h.db.WithContext(c).Model(&fModel.Family{}).Where("id = ?", familyID).
 		Update("parents_on_podium", *req.ParentsOnPodium).Error; err != nil {
 		c.JSON(500, gin.H{"error": "Error saving the podium"})
 		return
@@ -261,7 +261,7 @@ func (h *Handler) getRules(c *gin.Context) {
 		c.JSON(401, gin.H{"error": "Authentication failed"})
 		return
 	}
-	rules, err := games.RulesFor(h.db.WithContext(c), currentUser.CircleID)
+	rules, err := games.RulesFor(h.db.WithContext(c), currentUser.FamilyID)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Error getting the rules"})
 		return
@@ -270,7 +270,7 @@ func (h *Handler) getRules(c *gin.Context) {
 }
 
 func (h *Handler) updateRules(c *gin.Context) {
-	_, circleID, ok := h.requireParent(c)
+	_, familyID, ok := h.requireParent(c)
 	if !ok {
 		return
 	}
@@ -284,7 +284,7 @@ func (h *Handler) updateRules(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "streakEvery must be 0 to 60 days, questsPerWeek 0 to 5, and bonuses 0 to 1000 points"})
 		return
 	}
-	rules.CircleID = circleID
+	rules.FamilyID = familyID
 	rules.UpdatedAt = time.Now().UTC()
 	if err := h.db.WithContext(c).Save(&rules).Error; err != nil {
 		c.JSON(500, gin.H{"error": "Error saving the rules"})
@@ -300,7 +300,7 @@ func (h *Handler) getPeriods(c *gin.Context) {
 		return
 	}
 	periods := []games.BonusPeriod{}
-	if err := h.db.WithContext(c).Where("circle_id = ? AND ends_at > ?", currentUser.CircleID, time.Now().UTC().Add(-endedPeriodsKept)).
+	if err := h.db.WithContext(c).Where("family_id = ? AND ends_at > ?", currentUser.FamilyID, time.Now().UTC().Add(-endedPeriodsKept)).
 		Order("starts_at").Find(&periods).Error; err != nil {
 		c.JSON(500, gin.H{"error": "Error getting bonus periods"})
 		return
@@ -341,7 +341,7 @@ func (h *Handler) bindPeriod(c *gin.Context) (PeriodReq, bool) {
 }
 
 func (h *Handler) createPeriod(c *gin.Context) {
-	parentID, circleID, ok := h.requireParent(c)
+	parentID, familyID, ok := h.requireParent(c)
 	if !ok {
 		return
 	}
@@ -349,7 +349,7 @@ func (h *Handler) createPeriod(c *gin.Context) {
 	if !ok {
 		return
 	}
-	period := games.BonusPeriod{CircleID: circleID, Name: strings.TrimSpace(req.Name), StartsAt: req.StartsAt.UTC(),
+	period := games.BonusPeriod{FamilyID: familyID, Name: strings.TrimSpace(req.Name), StartsAt: req.StartsAt.UTC(),
 		EndsAt: req.EndsAt.UTC(), Multiplier: req.Multiplier, CreatedBy: parentID, CreatedAt: time.Now().UTC()}
 	if err := h.db.WithContext(c).Create(&period).Error; err != nil {
 		c.JSON(500, gin.H{"error": "Error creating the bonus period"})
@@ -360,13 +360,13 @@ func (h *Handler) createPeriod(c *gin.Context) {
 
 var errPeriodMissing = errors.New("bonus period not found")
 
-func (h *Handler) findPeriod(c *gin.Context, circleID int) (*games.BonusPeriod, error) {
+func (h *Handler) findPeriod(c *gin.Context, familyID int) (*games.BonusPeriod, error) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return nil, errPeriodMissing
 	}
 	var period games.BonusPeriod
-	if err := h.db.WithContext(c).Where("id = ? AND circle_id = ?", id, circleID).First(&period).Error; err != nil {
+	if err := h.db.WithContext(c).Where("id = ? AND family_id = ?", id, familyID).First(&period).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, errPeriodMissing
 		}
@@ -376,11 +376,11 @@ func (h *Handler) findPeriod(c *gin.Context, circleID int) (*games.BonusPeriod, 
 }
 
 func (h *Handler) updatePeriod(c *gin.Context) {
-	_, circleID, ok := h.requireParent(c)
+	_, familyID, ok := h.requireParent(c)
 	if !ok {
 		return
 	}
-	period, err := h.findPeriod(c, circleID)
+	period, err := h.findPeriod(c, familyID)
 	if errors.Is(err, errPeriodMissing) {
 		c.JSON(404, gin.H{"error": "Bonus period not found"})
 		return
@@ -403,11 +403,11 @@ func (h *Handler) updatePeriod(c *gin.Context) {
 }
 
 func (h *Handler) deletePeriod(c *gin.Context) {
-	_, circleID, ok := h.requireParent(c)
+	_, familyID, ok := h.requireParent(c)
 	if !ok {
 		return
 	}
-	period, err := h.findPeriod(c, circleID)
+	period, err := h.findPeriod(c, familyID)
 	if errors.Is(err, errPeriodMissing) {
 		c.JSON(404, gin.H{"error": "Bonus period not found"})
 		return
@@ -427,7 +427,7 @@ func (h *Handler) getFlashes(c *gin.Context) {
 	}
 	flashes := []games.Flash{}
 	now := time.Now().UTC()
-	if err := h.db.WithContext(c).Where("circle_id = ? AND starts_at <= ? AND ends_at > ?", currentUser.CircleID, now, now).
+	if err := h.db.WithContext(c).Where("family_id = ? AND starts_at <= ? AND ends_at > ?", currentUser.FamilyID, now, now).
 		Order("ends_at").Find(&flashes).Error; err != nil {
 		c.JSON(500, gin.H{"error": "Error getting the flash bonuses"})
 		return
@@ -443,7 +443,7 @@ type FlashReq struct {
 
 // launchFlash starts a flash bonus on a task now, for its copies too.
 func (h *Handler) launchFlash(c *gin.Context) {
-	parentID, circleID, ok := h.requireParent(c)
+	parentID, familyID, ok := h.requireParent(c)
 	if !ok {
 		return
 	}
@@ -459,7 +459,7 @@ func (h *Handler) launchFlash(c *gin.Context) {
 	var flash *games.Flash
 	err := h.db.WithContext(c).Transaction(func(tx *gorm.DB) error {
 		var err error
-		flash, err = games.LaunchFlash(tx, circleID, req.ChoreID, req.Points, req.Minutes, parentID, time.Now().UTC())
+		flash, err = games.LaunchFlash(tx, familyID, req.ChoreID, req.Points, req.Minutes, parentID, time.Now().UTC())
 		return err
 	})
 	if errors.Is(err, games.ErrNoTask) {
@@ -475,7 +475,7 @@ func (h *Handler) launchFlash(c *gin.Context) {
 
 // stopFlash ends a flash bonus before its time.
 func (h *Handler) stopFlash(c *gin.Context) {
-	_, circleID, ok := h.requireParent(c)
+	_, familyID, ok := h.requireParent(c)
 	if !ok {
 		return
 	}
@@ -486,7 +486,7 @@ func (h *Handler) stopFlash(c *gin.Context) {
 	}
 	var flash games.Flash
 	db := h.db.WithContext(c)
-	if err := db.Where("id = ? AND circle_id = ?", id, circleID).First(&flash).Error; err != nil {
+	if err := db.Where("id = ? AND family_id = ?", id, familyID).First(&flash).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			c.JSON(404, gin.H{"error": "Flash bonus not found"})
 			return

@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	"github.com/nico87lbs/hopla/internal/games"
 )
 
@@ -16,13 +16,13 @@ func TestComingBackMakesTheTasksDueToday(t *testing.T) {
 	repo, db := newTestChoreRepo(t)
 	ctx := context.Background()
 	for _, id := range []int{testOwnerID, testOtherID, 3} {
-		require.NoError(t, db.Create(&cModel.UserCircle{UserID: id, CircleID: testCircleID, IsActive: true}).Error)
+		require.NoError(t, db.Create(&fModel.UserFamily{UserID: id, FamilyID: testFamilyID, IsActive: true}).Error)
 	}
 	local := time.Now()
 	weekAgo := time.Date(local.Year(), local.Month(), local.Day(), 8, 30, 0, 0, time.Local).AddDate(0, 0, -7)
 	nextWeek := weekAgo.AddDate(0, 0, 14)
 	task := func(name string, due time.Time, assignedTo int, strategy chModel.AssignmentStrategy, assignees ...int) *chModel.Chore {
-		chore := &chModel.Chore{Name: name, CircleID: testCircleID, IsActive: true, FrequencyType: "daily",
+		chore := &chModel.Chore{Name: name, FamilyID: testFamilyID, IsActive: true, FrequencyType: "daily",
 			NextDueDate: &due, AssignedTo: &assignedTo, AssignStrategy: strategy}
 		for _, id := range assignees {
 			chore.Assignees = append(chore.Assignees, chModel.ChoreAssignees{UserID: id})
@@ -36,17 +36,17 @@ func TestComingBackMakesTheTasksDueToday(t *testing.T) {
 	together := task("Ranger le salon", weekAgo, 0, chModel.AssignmentStrategyTogether, testOtherID, 3)
 	mine := task("Vaisselle", weekAgo, testOwnerID, chModel.AssignmentStrategyRoundRobin, testOwnerID)
 
-	changed, err := repo.SetMemberAway(ctx, testCircleID, testOtherID, true, time.Now())
+	changed, err := repo.SetMemberAway(ctx, testFamilyID, testOtherID, true, time.Now())
 	require.NoError(t, err)
 	require.True(t, changed)
-	changed, err = repo.SetMemberAway(ctx, testCircleID, testOtherID, true, time.Now())
+	changed, err = repo.SetMemberAway(ctx, testFamilyID, testOtherID, true, time.Now())
 	require.NoError(t, err)
 	require.False(t, changed, "already away")
-	away, err := games.AwayMembers(db, testCircleID)
+	away, err := games.AwayMembers(db, testFamilyID)
 	require.NoError(t, err)
 	require.Equal(t, map[int]bool{testOtherID: true}, away)
 
-	_, err = repo.SetMemberAway(ctx, testCircleID, testOtherID, false, time.Now())
+	_, err = repo.SetMemberAway(ctx, testFamilyID, testOtherID, false, time.Now())
 	require.NoError(t, err)
 	dueOf := func(chore *chModel.Chore) time.Time {
 		var saved chModel.Chore

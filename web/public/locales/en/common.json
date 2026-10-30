@@ -302,7 +302,7 @@
       "done": "Done",
       "next": "Next"
     },
-    "circle": {
+    "family": {
       "kitchenTitle": "Kitchen deep clean",
       "kitchenDue": "Due Sat",
       "kitchenRepeat": "Every week",
@@ -349,7 +349,7 @@
       "subtitle": "Your server, your data. Both of these are off from this point unless you turn them on."
     }
   },
-  "circleSetup": {
+  "familySetup": {
     "inviteTitle": "Bring your squad in",
     "inviteSubtitle": "Everyone who joins your Family sees the same chores, takes their own turn, and stays in sync automatically.",
     "joinTitle": "Join a family",
@@ -369,7 +369,7 @@
     "alreadyMember": "You are already a member of this family",
     "joinFailed": "Failed to join family"
   },
-  "joinCircle": {
+  "joinFamily": {
     "title": "You're invited to join a family",
     "incompleteTitle": "Invite link is incomplete",
     "incompleteSubtitle": "This invite link is missing a code. Ask the person who invited you to send a new link.",

@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	cModel "github.com/nico87lbs/hopla/internal/circle/model"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	ptModel "github.com/nico87lbs/hopla/internal/points"
 	"github.com/nico87lbs/hopla/internal/zone"
 	"gorm.io/gorm"
@@ -30,9 +30,9 @@ func invalid(format string, args ...any) error {
 	return InvalidError{Reason: fmt.Sprintf(format, args...)}
 }
 
-func moduleFrom(circleID int, doc Document, raw []byte, builtin bool, now time.Time) Module {
+func moduleFrom(familyID int, doc Document, raw []byte, builtin bool, now time.Time) Module {
 	return Module{
-		CircleID: circleID, Key: doc.ID, Version: doc.Version, Name: doc.Name, Author: doc.Author, Subject: doc.Subject,
+		FamilyID: familyID, Key: doc.ID, Version: doc.Version, Name: doc.Name, Author: doc.Author, Subject: doc.Subject,
 		Levels: doc.Levels, Audience: doc.Audience, Children: doc.Modules, Builtin: builtin,
 		Content: string(raw), InstalledAt: now, UpdatedAt: now,
 	}
@@ -42,25 +42,25 @@ func moduleFrom(circleID int, doc Document, raw []byte, builtin bool, now time.T
 // keeping its installation date.
 func save(tx *gorm.DB, module Module) error {
 	return tx.Clauses(clause.OnConflict{
-		Columns: []clause.Column{{Name: "circle_id"}, {Name: "module_key"}},
+		Columns: []clause.Column{{Name: "family_id"}, {Name: "module_key"}},
 		DoUpdates: clause.AssignmentColumns([]string{"version", "name", "author", "subject", "levels", "audience",
 			"children", "builtin", "content", "updated_at"}),
 	}).Create(&module).Error
 }
 
-// Install adds a catalogue module to a circle, with every module of a pack.
+// Install adds a catalogue module to a family, with every module of a pack.
 // Installing it again brings it up to date.
-func Install(db *gorm.DB, circleID int, id string, now time.Time) error {
+func Install(db *gorm.DB, familyID int, id string, now time.Time) error {
 	entries, err := Catalogue()
 	if err != nil {
 		return err
 	}
 	return db.Transaction(func(tx *gorm.DB) error {
-		return install(tx, entries, circleID, id, now, map[string]bool{})
+		return install(tx, entries, familyID, id, now, map[string]bool{})
 	})
 }
 
-func install(tx *gorm.DB, entries map[string]Entry, circleID int, id string, now time.Time, done map[string]bool) error {
+func install(tx *gorm.DB, entries map[string]Entry, familyID int, id string, now time.Time, done map[string]bool) error {
 	if done[id] {
 		return nil
 	}
@@ -70,16 +70,16 @@ func install(tx *gorm.DB, entries map[string]Entry, circleID int, id string, now
 		return ErrNotFound
 	}
 	for _, child := range entry.Doc.Modules {
-		if err := install(tx, entries, circleID, child, now, done); err != nil {
+		if err := install(tx, entries, familyID, child, now, done); err != nil {
 			return err
 		}
 	}
-	return save(tx, moduleFrom(circleID, entry.Doc, entry.Raw, true, now))
+	return save(tx, moduleFrom(familyID, entry.Doc, entry.Raw, true, now))
 }
 
 // Import adds or replaces a module written by the family. A pack may gather
 // catalogue modules, which are installed with it, or modules already there.
-func Import(db *gorm.DB, circleID int, raw []byte, now time.Time) (Module, error) {
+func Import(db *gorm.DB, familyID int, raw []byte, now time.Time) (Module, error) {
 	doc, err := Parse(raw)
 	if err != nil {
 		return Module{}, InvalidError{Reason: err.Error()}
@@ -91,20 +91,20 @@ func Import(db *gorm.DB, circleID int, raw []byte, now time.Time) (Module, error
 	if _, ok := entries[doc.ID]; ok {
 		return Module{}, ErrCatalogueID
 	}
-	module := moduleFrom(circleID, doc, raw, false, now)
+	module := moduleFrom(familyID, doc, raw, false, now)
 	err = db.Transaction(func(tx *gorm.DB) error {
-		if err := checkKeys(tx, circleID, doc, entries); err != nil {
+		if err := checkKeys(tx, familyID, doc, entries); err != nil {
 			return err
 		}
 		for _, child := range doc.Modules {
 			if _, ok := entries[child]; ok {
-				if err := install(tx, entries, circleID, child, now, map[string]bool{}); err != nil {
+				if err := install(tx, entries, familyID, child, now, map[string]bool{}); err != nil {
 					return err
 				}
 				continue
 			}
 			var count int64
-			if err := tx.Model(&Module{}).Where("circle_id = ? AND module_key = ?", circleID, child).
+			if err := tx.Model(&Module{}).Where("family_id = ? AND module_key = ?", familyID, child).
 				Count(&count).Error; err != nil {
 				return err
 			}
@@ -118,8 +118,8 @@ func Import(db *gorm.DB, circleID int, raw []byte, now time.Time) (Module, error
 }
 
 // checkKeys refuses a module whose shared keys clash with the catalogue's or
-// with a module already in the circle.
-func checkKeys(tx *gorm.DB, circleID int, doc Document, entries map[string]Entry) error {
+// with a module already in the family.
+func checkKeys(tx *gorm.DB, familyID int, doc Document, entries map[string]Entry) error {
 	if len(doc.SharedKeys()) == 0 {
 		return nil
 	}
@@ -128,7 +128,7 @@ func checkKeys(tx *gorm.DB, circleID int, doc Document, entries map[string]Entry
 		others = append(others, entry.Doc)
 	}
 	var installed []Module
-	if err := tx.Where("circle_id = ? AND builtin = ?", circleID, false).Find(&installed).Error; err != nil {
+	if err := tx.Where("family_id = ? AND builtin = ?", familyID, false).Find(&installed).Error; err != nil {
 		return err
 	}
 	for _, module := range installed {
@@ -142,22 +142,22 @@ func checkKeys(tx *gorm.DB, circleID int, doc Document, entries map[string]Entry
 	return nil
 }
 
-// Modules lists the modules of a circle. Catalogue modules are brought up to
+// Modules lists the modules of a family. Catalogue modules are brought up to
 // date with the catalogue on the way: their ids do not change, so what each
 // person knows stays.
-func Modules(db *gorm.DB, circleID int, now time.Time) ([]Module, error) {
-	modules, err := freshModules(db, circleID, now)
+func Modules(db *gorm.DB, familyID int, now time.Time) ([]Module, error) {
+	modules, err := freshModules(db, familyID, now)
 	if err != nil {
 		return nil, err
 	}
-	return modules, withEdits(db, circleID, modules)
+	return modules, withEdits(db, familyID, modules)
 }
 
-// freshModules lists the modules of a circle as installed, up to date with
+// freshModules lists the modules of a family as installed, up to date with
 // the catalogue, without the family's corrections.
-func freshModules(db *gorm.DB, circleID int, now time.Time) ([]Module, error) {
+func freshModules(db *gorm.DB, familyID int, now time.Time) ([]Module, error) {
 	var modules []Module
-	if err := db.Where("circle_id = ?", circleID).Order("name").Find(&modules).Error; err != nil {
+	if err := db.Where("family_id = ?", familyID).Order("name").Find(&modules).Error; err != nil {
 		return nil, err
 	}
 	entries, err := Catalogue()
@@ -169,7 +169,7 @@ func freshModules(db *gorm.DB, circleID int, now time.Time) ([]Module, error) {
 		if !module.Builtin || !ok || entry.Doc.Version == module.Version {
 			continue
 		}
-		fresh := moduleFrom(circleID, entry.Doc, entry.Raw, true, now)
+		fresh := moduleFrom(familyID, entry.Doc, entry.Raw, true, now)
 		if err := save(db, fresh); err != nil {
 			return nil, err
 		}
@@ -199,10 +199,10 @@ type EditDetail struct {
 	Original json.RawMessage `json:"original"`
 }
 
-// ModuleDetail reads a module of the circle or of the catalogue, and, for a
+// ModuleDetail reads a module of the family or of the catalogue, and, for a
 // pack, its modules.
-func ModuleDetail(db *gorm.DB, circleID int, key string, now time.Time) (Detail, error) {
-	modules, err := freshModules(db, circleID, now)
+func ModuleDetail(db *gorm.DB, familyID int, key string, now time.Time) (Detail, error) {
+	modules, err := freshModules(db, familyID, now)
 	if err != nil {
 		return Detail{}, err
 	}
@@ -214,7 +214,7 @@ func ModuleDetail(db *gorm.DB, circleID int, key string, now time.Time) (Detail,
 	if err != nil {
 		return Detail{}, err
 	}
-	edits, err := editsOf(db, circleID)
+	edits, err := editsOf(db, familyID)
 	if err != nil {
 		return Detail{}, err
 	}
@@ -271,34 +271,34 @@ func ModuleDetail(db *gorm.DB, circleID int, key string, now time.Time) (Detail,
 	for _, child := range doc.Modules {
 		add(child)
 	}
-	if out.Reports, err = OpenReports(db, circleID, keys); err != nil {
+	if out.Reports, err = OpenReports(db, familyID, keys); err != nil {
 		return Detail{}, err
 	}
 	return out, nil
 }
 
-// Remove takes a module out of a circle with its activations. The modules of
+// Remove takes a module out of a family with its activations. The modules of
 // a pack stay; what people know stays too, should it come back.
-func Remove(db *gorm.DB, circleID int, key string) error {
+func Remove(db *gorm.DB, familyID int, key string) error {
 	return db.Transaction(func(tx *gorm.DB) error {
-		result := tx.Where("circle_id = ? AND module_key = ?", circleID, key).Delete(&Module{})
+		result := tx.Where("family_id = ? AND module_key = ?", familyID, key).Delete(&Module{})
 		if result.Error != nil {
 			return result.Error
 		}
 		if result.RowsAffected == 0 {
 			return ErrNotFound
 		}
-		if err := tx.Where("circle_id = ? AND module_key = ?", circleID, key).Delete(&Activation{}).Error; err != nil {
+		if err := tx.Where("family_id = ? AND module_key = ?", familyID, key).Delete(&Activation{}).Error; err != nil {
 			return err
 		}
-		return tx.Where("circle_id = ? AND scope = ?", circleID, key).Delete(&PersonSetting{}).Error
+		return tx.Where("family_id = ? AND scope = ?", familyID, key).Delete(&PersonSetting{}).Error
 	})
 }
 
-// Activations lists who plays which module in a circle.
-func Activations(db *gorm.DB, circleID int) ([]Activation, error) {
+// Activations lists who plays which module in a family.
+func Activations(db *gorm.DB, familyID int) ([]Activation, error) {
 	var rows []Activation
-	err := db.Where("circle_id = ?", circleID).Order("user_id, module_key").Find(&rows).Error
+	err := db.Where("family_id = ?", familyID).Order("user_id, module_key").Find(&rows).Error
 	return rows, err
 }
 
@@ -315,7 +315,7 @@ type ActivationChange struct {
 
 // SetActivation applies a change. A pack is not played itself: turning it on
 // turns on its modules.
-func SetActivation(db *gorm.DB, circleID int, change ActivationChange, now time.Time) error {
+func SetActivation(db *gorm.DB, familyID int, change ActivationChange, now time.Time) error {
 	if change.DailyCap != nil && (*change.DailyCap < -1 || *change.DailyCap > 200) {
 		return invalid("plafond entre 0 et 200 hops")
 	}
@@ -329,31 +329,31 @@ func SetActivation(db *gorm.DB, circleID int, change ActivationChange, now time.
 	var game GameSettings
 	game.apply(change.GameSettings)
 	return db.Transaction(func(tx *gorm.DB) error {
-		var member cModel.UserCircle
-		if err := tx.Where("user_id = ? AND circle_id = ?", change.UserID, circleID).First(&member).Error; err != nil {
+		var member fModel.UserFamily
+		if err := tx.Where("user_id = ? AND family_id = ?", change.UserID, familyID).First(&member).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return invalid("cette personne n'est pas de la famille")
 			}
 			return err
 		}
-		keys, err := leaves(tx, circleID, change.Modules)
+		keys, err := leaves(tx, familyID, change.Modules)
 		if err != nil {
 			return err
 		}
 		for _, key := range keys {
-			where := tx.Where("circle_id = ? AND user_id = ? AND module_key = ?", circleID, change.UserID, key)
+			where := tx.Where("family_id = ? AND user_id = ? AND module_key = ?", familyID, change.UserID, key)
 			if !change.Active {
 				if err := where.Delete(&Activation{}).Error; err != nil {
 					return err
 				}
 				continue
 			}
-			row := Activation{CircleID: circleID, UserID: change.UserID, ModuleKey: key,
+			row := Activation{FamilyID: familyID, UserID: change.UserID, ModuleKey: key,
 				DailyCap: dailyCap, UnlockPercent: unlockPercent, GameSettings: game, CreatedAt: now}
 			// Turning a module on again keeps the settings it had; only the
 			// settings sent change.
 			conflict := clause.OnConflict{
-				Columns: []clause.Column{{Name: "circle_id"}, {Name: "user_id"}, {Name: "module_key"}},
+				Columns: []clause.Column{{Name: "family_id"}, {Name: "user_id"}, {Name: "module_key"}},
 			}
 			var columns []string
 			if change.DailyCap != nil {
@@ -423,18 +423,18 @@ func ownSetting(value *int) *int {
 	return value
 }
 
-// Members lists the active members of a circle.
-func Members(db *gorm.DB, circleID int) ([]int, error) {
+// Members lists the active members of a family.
+func Members(db *gorm.DB, familyID int) ([]int, error) {
 	var ids []int
-	err := db.Model(&cModel.UserCircle{}).Where("circle_id = ? AND is_active = ?", circleID, true).
+	err := db.Model(&fModel.UserFamily{}).Where("family_id = ? AND is_active = ?", familyID, true).
 		Order("user_id").Pluck("user_id", &ids).Error
 	return ids, err
 }
 
-// PersonSettings lists the settings of everyone in a circle.
-func PersonSettings(db *gorm.DB, circleID int) ([]PersonSetting, error) {
+// PersonSettings lists the settings of everyone in a family.
+func PersonSettings(db *gorm.DB, familyID int) ([]PersonSetting, error) {
 	var rows []PersonSetting
-	err := db.Where("circle_id = ?", circleID).Order("user_id, scope").Find(&rows).Error
+	err := db.Where("family_id = ?", familyID).Order("user_id, scope").Find(&rows).Error
 	return rows, err
 }
 
@@ -452,7 +452,7 @@ type SettingChange struct {
 }
 
 // SetPersonSetting applies a change of a person's or of the family's settings.
-func SetPersonSetting(db *gorm.DB, circleID int, change SettingChange, now time.Time) error {
+func SetPersonSetting(db *gorm.DB, familyID int, change SettingChange, now time.Time) error {
 	if change.DailyCap != nil && (*change.DailyCap < -1 || *change.DailyCap > 200) {
 		return invalid("plafond entre 0 et 200 hops")
 	}
@@ -477,8 +477,8 @@ func SetPersonSetting(db *gorm.DB, circleID int, change SettingChange, now time.
 	}
 	return db.Transaction(func(tx *gorm.DB) error {
 		if !change.Family {
-			var member cModel.UserCircle
-			if err := tx.Where("user_id = ? AND circle_id = ?", change.UserID, circleID).First(&member).Error; err != nil {
+			var member fModel.UserFamily
+			if err := tx.Where("user_id = ? AND family_id = ?", change.UserID, familyID).First(&member).Error; err != nil {
 				if errors.Is(err, gorm.ErrRecordNotFound) {
 					return invalid("cette personne n'est pas de la famille")
 				}
@@ -487,7 +487,7 @@ func SetPersonSetting(db *gorm.DB, circleID int, change SettingChange, now time.
 		}
 		if change.Scope != AllPacks {
 			var module Module
-			if err := tx.Where("circle_id = ? AND module_key = ?", circleID, change.Scope).First(&module).Error; err != nil {
+			if err := tx.Where("family_id = ? AND module_key = ?", familyID, change.Scope).First(&module).Error; err != nil {
 				if errors.Is(err, gorm.ErrRecordNotFound) {
 					return ErrNotFound
 				}
@@ -497,8 +497,8 @@ func SetPersonSetting(db *gorm.DB, circleID int, change SettingChange, now time.
 				return invalid("ce module n'est pas un paquet")
 			}
 		}
-		row := PersonSetting{CircleID: circleID, UserID: change.UserID, Scope: change.Scope}
-		err := tx.Where("circle_id = ? AND user_id = ? AND scope = ?", circleID, change.UserID, change.Scope).
+		row := PersonSetting{FamilyID: familyID, UserID: change.UserID, Scope: change.Scope}
+		err := tx.Where("family_id = ? AND user_id = ? AND scope = ?", familyID, change.UserID, change.Scope).
 			First(&row).Error
 		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 			return err
@@ -515,7 +515,7 @@ func SetPersonSetting(db *gorm.DB, circleID int, change SettingChange, now time.
 		row.GameSettings.apply(change.GameSettings)
 		row.UpdatedAt = now
 		if row.DailyCap == nil && row.UnlockPercent == nil && row.TotalCap == nil && row.GameSettings.empty() {
-			return tx.Where("circle_id = ? AND user_id = ? AND scope = ?", circleID, change.UserID, change.Scope).
+			return tx.Where("family_id = ? AND user_id = ? AND scope = ?", familyID, change.UserID, change.Scope).
 				Delete(&PersonSetting{}).Error
 		}
 		return tx.Save(&row).Error
@@ -535,7 +535,7 @@ func FoldAllPacks(db *gorm.DB) error {
 	for _, all := range rows {
 		err := db.Transaction(func(tx *gorm.DB) error {
 			var modules []Module
-			if err := tx.Where("circle_id = ?", all.CircleID).Find(&modules).Error; err != nil {
+			if err := tx.Where("family_id = ?", all.FamilyID).Find(&modules).Error; err != nil {
 				return err
 			}
 			inPack := map[string]bool{}
@@ -557,7 +557,7 @@ func FoldAllPacks(db *gorm.DB) error {
 			for _, module := range modules {
 				switch {
 				case module.IsPack():
-					row := PersonSetting{CircleID: all.CircleID, UserID: all.UserID, Scope: module.Key}
+					row := PersonSetting{FamilyID: all.FamilyID, UserID: all.UserID, Scope: module.Key}
 					if err := tx.Where(&row).Attrs(PersonSetting{UpdatedAt: all.UpdatedAt}).FirstOrInit(&row).Error; err != nil {
 						return err
 					}
@@ -567,7 +567,7 @@ func FoldAllPacks(db *gorm.DB) error {
 					}
 				case !inPack[module.Key]:
 					var activation Activation
-					err := tx.Where("circle_id = ? AND user_id = ? AND module_key = ?", all.CircleID, all.UserID, module.Key).
+					err := tx.Where("family_id = ? AND user_id = ? AND module_key = ?", all.FamilyID, all.UserID, module.Key).
 						First(&activation).Error
 					if errors.Is(err, gorm.ErrRecordNotFound) {
 						continue
@@ -581,7 +581,7 @@ func FoldAllPacks(db *gorm.DB) error {
 					}
 				}
 			}
-			where := tx.Where("circle_id = ? AND user_id = ? AND scope = ?", all.CircleID, all.UserID, AllPacks)
+			where := tx.Where("family_id = ? AND user_id = ? AND scope = ?", all.FamilyID, all.UserID, AllPacks)
 			if all.TotalCap == nil {
 				return where.Delete(&PersonSetting{}).Error
 			}
@@ -605,10 +605,10 @@ type limits struct {
 
 // loadLimits reads a person's settings and the family's. For Family, only
 // the family's apply.
-func loadLimits(tx *gorm.DB, circleID, userID int, modules []Module) (limits, error) {
+func loadLimits(tx *gorm.DB, familyID, userID int, modules []Module) (limits, error) {
 	l := limits{byScope: map[string]PersonSetting{}, family: map[string]PersonSetting{}, packsOf: map[string][]string{}}
 	var rows []PersonSetting
-	if err := tx.Where("circle_id = ? AND user_id IN ?", circleID, []int{userID, Family}).Find(&rows).Error; err != nil {
+	if err := tx.Where("family_id = ? AND user_id IN ?", familyID, []int{userID, Family}).Find(&rows).Error; err != nil {
 		return l, err
 	}
 	for _, row := range rows {
@@ -702,13 +702,13 @@ type Applied struct {
 
 // AppliedSettings tells, for each person given (Family for the family alone)
 // and each module, the settings that apply and where they come from.
-func AppliedSettings(db *gorm.DB, circleID int, userIDs []int) (map[int]map[string]Applied, error) {
+func AppliedSettings(db *gorm.DB, familyID int, userIDs []int) (map[int]map[string]Applied, error) {
 	var modules []Module
-	if err := db.Where("circle_id = ?", circleID).Find(&modules).Error; err != nil {
+	if err := db.Where("family_id = ?", familyID).Find(&modules).Error; err != nil {
 		return nil, err
 	}
 	var activations []Activation
-	if err := db.Where("circle_id = ?", circleID).Find(&activations).Error; err != nil {
+	if err := db.Where("family_id = ?", familyID).Find(&activations).Error; err != nil {
 		return nil, err
 	}
 	active := map[string]Activation{}
@@ -723,7 +723,7 @@ func AppliedSettings(db *gorm.DB, circleID int, userIDs []int) (map[int]map[stri
 	}
 	out := map[int]map[string]Applied{}
 	for _, userID := range userIDs {
-		l, err := loadLimits(db, circleID, userID, modules)
+		l, err := loadLimits(db, familyID, userID, modules)
 		if err != nil {
 			return nil, err
 		}
@@ -753,18 +753,18 @@ func AppliedSettings(db *gorm.DB, circleID int, userIDs []int) (map[int]map[stri
 }
 
 // earnedToday is what a person earned with the learning games on a day.
-func earnedToday(tx *gorm.DB, circleID, userID int, day string) (int, error) {
+func earnedToday(tx *gorm.DB, familyID, userID int, day string) (int, error) {
 	var earned int
 	err := tx.Model(&Session{}).Select("COALESCE(SUM(points), 0)").
-		Where("circle_id = ? AND user_id = ? AND day = ?", circleID, userID, day).Scan(&earned).Error
+		Where("family_id = ? AND user_id = ? AND day = ?", familyID, userID, day).Scan(&earned).Error
 	return earned, err
 }
 
 // leaves turns module ids into the playable modules they stand for, packs
 // opened up.
-func leaves(tx *gorm.DB, circleID int, keys []string) ([]string, error) {
+func leaves(tx *gorm.DB, familyID int, keys []string) ([]string, error) {
 	var modules []Module
-	if err := tx.Where("circle_id = ?", circleID).Find(&modules).Error; err != nil {
+	if err := tx.Where("family_id = ?", familyID).Find(&modules).Error; err != nil {
 		return nil, err
 	}
 	byKey := map[string]Module{}
@@ -802,8 +802,8 @@ func leaves(tx *gorm.DB, circleID int, keys []string) ([]string, error) {
 }
 
 // Day is the family's day of t, as the sessions and cards count them.
-func Day(circleID int, t time.Time) string {
-	return t.In(zone.Of(circleID)).Format(time.DateOnly)
+func Day(familyID int, t time.Time) string {
+	return t.In(zone.Of(familyID)).Format(time.DateOnly)
 }
 
 func addDays(day string, days int) string {
@@ -844,14 +844,14 @@ type Player struct {
 }
 
 // PlayerFor gathers what a person plays.
-func PlayerFor(db *gorm.DB, circleID, userID int, now time.Time) (Player, error) {
-	player := Player{UserID: userID, Day: Day(circleID, now), Modules: []PlayerModule{}, Packs: []Module{}}
-	modules, err := Modules(db, circleID, now)
+func PlayerFor(db *gorm.DB, familyID, userID int, now time.Time) (Player, error) {
+	player := Player{UserID: userID, Day: Day(familyID, now), Modules: []PlayerModule{}, Packs: []Module{}}
+	modules, err := Modules(db, familyID, now)
 	if err != nil {
 		return player, err
 	}
 	var activations []Activation
-	if err := db.Where("circle_id = ? AND user_id = ?", circleID, userID).Find(&activations).Error; err != nil {
+	if err := db.Where("family_id = ? AND user_id = ?", familyID, userID).Find(&activations).Error; err != nil {
 		return player, err
 	}
 	active := map[string]Activation{}
@@ -865,7 +865,7 @@ func PlayerFor(db *gorm.DB, circleID, userID int, now time.Time) (Player, error)
 	}
 	var totals []total
 	if err := db.Model(&Session{}).Select("module_key, SUM(points) AS points, COUNT(*) AS games").
-		Where("circle_id = ? AND user_id = ? AND day = ?", circleID, userID, player.Day).
+		Where("family_id = ? AND user_id = ? AND day = ?", familyID, userID, player.Day).
 		Group("module_key").Scan(&totals).Error; err != nil {
 		return player, err
 	}
@@ -874,7 +874,7 @@ func PlayerFor(db *gorm.DB, circleID, userID int, now time.Time) (Player, error)
 		earned[t.ModuleKey] = t
 		player.EarnedToday += t.Points
 	}
-	limits, err := loadLimits(db, circleID, userID, modules)
+	limits, err := loadLimits(db, familyID, userID, modules)
 	if err != nil {
 		return player, err
 	}
@@ -899,7 +899,7 @@ func PlayerFor(db *gorm.DB, circleID, userID int, now time.Time) (Player, error)
 		pm.DailyCap = limits.dailyCap(module.Key, activation, pm.Settings)
 		player.Modules = append(player.Modules, pm)
 	}
-	if err := db.Where("circle_id = ? AND user_id = ?", circleID, userID).Find(&player.Cards).Error; err != nil {
+	if err := db.Where("family_id = ? AND user_id = ?", familyID, userID).Find(&player.Cards).Error; err != nil {
 		return player, err
 	}
 	return player, nil
@@ -929,9 +929,9 @@ type ModuleStats struct {
 
 // Stats gathers the statistics of a module, for every member who plays it
 // or played it.
-func Stats(db *gorm.DB, circleID int, key string, now time.Time) (ModuleStats, error) {
-	stats := ModuleStats{Day: Day(circleID, now), People: []PersonStats{}}
-	modules, err := Modules(db, circleID, now)
+func Stats(db *gorm.DB, familyID int, key string, now time.Time) (ModuleStats, error) {
+	stats := ModuleStats{Day: Day(familyID, now), People: []PersonStats{}}
+	modules, err := Modules(db, familyID, now)
 	if err != nil {
 		return stats, err
 	}
@@ -949,33 +949,33 @@ func Stats(db *gorm.DB, circleID int, key string, now time.Time) (ModuleStats, e
 	if err != nil {
 		return stats, err
 	}
-	var members []cModel.UserCircle
-	if err := db.Where("circle_id = ? AND is_active = ?", circleID, true).Order("user_id").Find(&members).Error; err != nil {
+	var members []fModel.UserFamily
+	if err := db.Where("family_id = ? AND is_active = ?", familyID, true).Order("user_id").Find(&members).Error; err != nil {
 		return stats, err
 	}
 	since := addDays(stats.Day, -StatsDays)
 	for _, member := range members {
 		person := PersonStats{UserID: member.UserID, Cards: []Card{}, Sessions: []Session{}}
 		var activation Activation
-		err := db.Where("circle_id = ? AND user_id = ? AND module_key = ?", circleID, member.UserID, key).First(&activation).Error
+		err := db.Where("family_id = ? AND user_id = ? AND module_key = ?", familyID, member.UserID, key).First(&activation).Error
 		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 			return stats, err
 		}
 		person.Active = err == nil
-		if err := db.Where("circle_id = ? AND user_id = ? AND module_key = ? AND day >= ?", circleID, member.UserID, key, since).
+		if err := db.Where("family_id = ? AND user_id = ? AND module_key = ? AND day >= ?", familyID, member.UserID, key, since).
 			Order("played_at").Find(&person.Sessions).Error; err != nil {
 			return stats, err
 		}
 		if !person.Active && len(person.Sessions) == 0 {
 			continue
 		}
-		limits, err := loadLimits(db, circleID, member.UserID, modules)
+		limits, err := loadLimits(db, familyID, member.UserID, modules)
 		if err != nil {
 			return stats, err
 		}
 		person.DailyCap = limits.dailyCap(key, activation, doc.Settings.WithDefaults())
 		person.UnlockPercent = limits.unlockPercent(key, activation)
-		if err := db.Where("circle_id = ? AND user_id = ?", circleID, member.UserID).Find(&person.Cards).Error; err != nil {
+		if err := db.Where("family_id = ? AND user_id = ?", familyID, member.UserID).Find(&person.Cards).Error; err != nil {
 			return stats, err
 		}
 		stats.People = append(stats.People, person)
@@ -1050,7 +1050,7 @@ func Stars(correct, total, threshold int) int {
 // Record keeps a game, moves the cards it asked and pays its hops within the
 // day's cap. A game already received is answered again without counting
 // twice.
-func Record(db *gorm.DB, circleID, playedBy int, game Game, now time.Time) (Result, error) {
+func Record(db *gorm.DB, familyID, playedBy int, game Game, now time.Time) (Result, error) {
 	var result Result
 	game.ClientID = strings.TrimSpace(game.ClientID)
 	if len(game.ClientID) < 8 || len(game.ClientID) > 64 {
@@ -1074,16 +1074,16 @@ func Record(db *gorm.DB, circleID, playedBy int, game Game, now time.Time) (Resu
 
 	err := db.Transaction(func(tx *gorm.DB) error {
 		var existing Session
-		err := tx.Where("circle_id = ? AND client_id = ?", circleID, game.ClientID).First(&existing).Error
+		err := tx.Where("family_id = ? AND client_id = ?", familyID, game.ClientID).First(&existing).Error
 		if err == nil {
 			result.Session = existing
-			return fillDay(tx, circleID, &result)
+			return fillDay(tx, familyID, &result)
 		}
 		if !errors.Is(err, gorm.ErrRecordNotFound) {
 			return err
 		}
 		var activation Activation
-		if err := tx.Where("circle_id = ? AND user_id = ? AND module_key = ?", circleID, game.UserID, game.Module).
+		if err := tx.Where("family_id = ? AND user_id = ? AND module_key = ?", familyID, game.UserID, game.Module).
 			First(&activation).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return ErrNotActive
@@ -1091,7 +1091,7 @@ func Record(db *gorm.DB, circleID, playedBy int, game Game, now time.Time) (Resu
 			return err
 		}
 		var module Module
-		if err := tx.Where("circle_id = ? AND module_key = ?", circleID, game.Module).First(&module).Error; err != nil {
+		if err := tx.Where("family_id = ? AND module_key = ?", familyID, game.Module).First(&module).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return ErrNotActive
 			}
@@ -1103,10 +1103,10 @@ func Record(db *gorm.DB, circleID, playedBy int, game Game, now time.Time) (Resu
 		}
 		settings := doc.Settings.WithDefaults()
 		var modules []Module
-		if err := tx.Where("circle_id = ?", circleID).Find(&modules).Error; err != nil {
+		if err := tx.Where("family_id = ?", familyID).Find(&modules).Error; err != nil {
 			return err
 		}
-		limits, err := loadLimits(tx, circleID, game.UserID, modules)
+		limits, err := loadLimits(tx, familyID, game.UserID, modules)
 		if err != nil {
 			return err
 		}
@@ -1114,8 +1114,8 @@ func Record(db *gorm.DB, circleID, playedBy int, game Game, now time.Time) (Resu
 		result.TotalCap = limits.totalCap()
 		settings = limits.settings(game.Module, activation, settings)
 
-		day := Day(circleID, game.PlayedAt)
-		session := Session{CircleID: circleID, ClientID: game.ClientID, UserID: game.UserID, ModuleKey: game.Module,
+		day := Day(familyID, game.PlayedAt)
+		session := Session{FamilyID: familyID, ClientID: game.ClientID, UserID: game.UserID, ModuleKey: game.Module,
 			Day: day, Total: len(game.Answers), DurationSec: game.DurationSec, PlayedAt: game.PlayedAt.UTC(),
 			PlayedBy: playedBy, CreatedAt: now}
 		for _, answer := range game.Answers {
@@ -1130,11 +1130,11 @@ func Record(db *gorm.DB, circleID, playedBy int, game Game, now time.Time) (Resu
 
 		var earned int
 		if err := tx.Model(&Session{}).Select("COALESCE(SUM(points), 0)").
-			Where("circle_id = ? AND user_id = ? AND module_key = ? AND day = ?", circleID, game.UserID, game.Module, day).
+			Where("family_id = ? AND user_id = ? AND module_key = ? AND day = ?", familyID, game.UserID, game.Module, day).
 			Scan(&earned).Error; err != nil {
 			return err
 		}
-		total, err := earnedToday(tx, circleID, game.UserID, day)
+		total, err := earnedToday(tx, familyID, game.UserID, day)
 		if err != nil {
 			return err
 		}
@@ -1149,16 +1149,16 @@ func Record(db *gorm.DB, circleID, playedBy int, game Game, now time.Time) (Resu
 		}
 		if session.Points > 0 {
 			reason := fmt.Sprintf("Apprendre : %s %s", module.Name, strings.Repeat("★", session.Stars)+strings.Repeat("☆", 3-session.Stars))
-			if err := tx.Model(&cModel.UserCircle{}).Where("user_id = ? AND circle_id = ?", game.UserID, circleID).
+			if err := tx.Model(&fModel.UserFamily{}).Where("user_id = ? AND family_id = ?", game.UserID, familyID).
 				Update("points", gorm.Expr("points + ?", session.Points)).Error; err != nil {
 				return err
 			}
 			if err := tx.Create(&ptModel.PointsHistory{Action: ptModel.PointsHistoryActionGame, Points: session.Points,
-				UserID: game.UserID, CircleID: circleID, CreatedBy: playedBy, Reason: &reason, CreatedAt: now}).Error; err != nil {
+				UserID: game.UserID, FamilyID: familyID, CreatedBy: playedBy, Reason: &reason, CreatedAt: now}).Error; err != nil {
 				return err
 			}
 		}
-		cards, err := moveCards(tx, circleID, game, day)
+		cards, err := moveCards(tx, familyID, game, day)
 		if err != nil {
 			return err
 		}
@@ -1171,27 +1171,27 @@ func Record(db *gorm.DB, circleID, playedBy int, game Game, now time.Time) (Resu
 }
 
 // fillDay answers a game sent again with the day as it stands.
-func fillDay(tx *gorm.DB, circleID int, result *Result) error {
+func fillDay(tx *gorm.DB, familyID int, result *Result) error {
 	s := result.Session
 	if err := tx.Model(&Session{}).Select("COALESCE(SUM(points), 0)").
-		Where("circle_id = ? AND user_id = ? AND module_key = ? AND day = ?", circleID, s.UserID, s.ModuleKey, s.Day).
+		Where("family_id = ? AND user_id = ? AND module_key = ? AND day = ?", familyID, s.UserID, s.ModuleKey, s.Day).
 		Scan(&result.EarnedToday).Error; err != nil {
 		return err
 	}
-	total, err := earnedToday(tx, circleID, s.UserID, s.Day)
+	total, err := earnedToday(tx, familyID, s.UserID, s.Day)
 	result.TotalEarned = total
 	return err
 }
 
 // moveCards applies the answers to the cards, in the order they were given.
-func moveCards(tx *gorm.DB, circleID int, game Game, day string) ([]Card, error) {
+func moveCards(tx *gorm.DB, familyID int, game Game, day string) ([]Card, error) {
 	cards := map[string]*Card{}
 	var order []string
 	for _, answer := range game.Answers {
 		card, ok := cards[answer.Key]
 		if !ok {
-			card = &Card{CircleID: circleID, UserID: game.UserID, Key: answer.Key}
-			err := tx.Where("circle_id = ? AND user_id = ? AND card_key = ?", circleID, game.UserID, answer.Key).
+			card = &Card{FamilyID: familyID, UserID: game.UserID, Key: answer.Key}
+			err := tx.Where("family_id = ? AND user_id = ? AND card_key = ?", familyID, game.UserID, answer.Key).
 				First(card).Error
 			if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 				return nil, err

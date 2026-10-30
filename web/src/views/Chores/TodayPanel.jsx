@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next'
 
 import { HOPLA } from '../../constants/theme'
 import { useFlashes } from '../../queries/ChoreQueries'
-import { useCircleMembers } from '../../queries/UserQueries'
+import { useFamilyMembers } from '../../queries/UserQueries'
 import { isTaskFor } from '../../utils/Chores.jsx'
 import { dayTotals, membersOfDay } from '../../utils/todayPanel'
 import { useGamesToday } from '../Games/DailyGames'
@@ -199,7 +199,7 @@ const TodayPanel = ({ chores }) => {
   const { i18n, t } = useTranslation('chores')
   const isLargeScreen = useMediaQuery(theme => theme.breakpoints.up('lg'))
   const { data: today } = useGamesToday()
-  const { data: membersData } = useCircleMembers()
+  const { data: membersData } = useFamilyMembers()
   const { data: flashes } = useFlashes()
 
   const now = moment()

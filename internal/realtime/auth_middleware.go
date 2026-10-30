@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/nico87lbs/hopla/config"
-	cRepo "github.com/nico87lbs/hopla/internal/circle/repo"
+	fRepo "github.com/nico87lbs/hopla/internal/family/repo"
 	uModel "github.com/nico87lbs/hopla/internal/user/model"
 	uRepo "github.com/nico87lbs/hopla/internal/user/repo"
 	"github.com/nico87lbs/hopla/logging"
@@ -19,7 +19,7 @@ import (
 // AuthMiddleware handles WebSocket authentication
 type AuthMiddleware struct {
 	userRepo    *uRepo.UserRepository
-	circleRepo  *cRepo.CircleRepository
+	familyRepo  *fRepo.FamilyRepository
 	jwtAuth     *ginJWT.GinJWTMiddleware
 	config      *config.Config
 	ticketStore *TicketStore
@@ -28,14 +28,14 @@ type AuthMiddleware struct {
 // NewAuthMiddleware creates a new WebSocket auth middleware
 func NewAuthMiddleware(
 	userRepo *uRepo.UserRepository,
-	circleRepo *cRepo.CircleRepository,
+	familyRepo *fRepo.FamilyRepository,
 	jwtAuth *ginJWT.GinJWTMiddleware,
 	config *config.Config,
 	ticketStore *TicketStore,
 ) *AuthMiddleware {
 	return &AuthMiddleware{
 		userRepo:    userRepo,
-		circleRepo:  circleRepo,
+		familyRepo:  familyRepo,
 		jwtAuth:     jwtAuth,
 		config:      config,
 		ticketStore: ticketStore,
@@ -62,7 +62,7 @@ func (am *AuthMiddleware) AuthenticateConnection(c *gin.Context) (*uModel.User, 
 			return nil, 0, ErrInvalidToken
 		}
 
-		return user, user.CircleID, nil
+		return user, user.FamilyID, nil
 	}
 
 	// Integrations such as Home Assistant authenticate with the same long-lived
@@ -72,7 +72,7 @@ func (am *AuthMiddleware) AuthenticateConnection(c *gin.Context) (*uModel.User, 
 		if err != nil || user.Disabled {
 			return nil, 0, ErrInvalidToken
 		}
-		return &user.User, user.CircleID, nil
+		return &user.User, user.FamilyID, nil
 	}
 
 	// Extract token from query parameter or header
@@ -108,7 +108,7 @@ func (am *AuthMiddleware) AuthenticateConnection(c *gin.Context) (*uModel.User, 
 		return nil, 0, ErrInvalidToken
 	}
 
-	return user, user.CircleID, nil
+	return user, user.FamilyID, nil
 }
 
 // extractToken extracts the JWT token from the request
@@ -195,15 +195,15 @@ func (am *AuthMiddleware) extractUserIDFromClaims(c *gin.Context, claims jwt.Map
 	return user.ID, nil
 }
 
-// CheckCircleAccess verifies if a user has access to a specific circle
-func (am *AuthMiddleware) CheckCircleAccess(ctx context.Context, userID, circleID int) error {
+// CheckFamilyAccess verifies if a user has access to a specific family
+func (am *AuthMiddleware) CheckFamilyAccess(ctx context.Context, userID, familyID int) error {
 	user, err := am.userRepo.GetUserByID(ctx, userID)
 	if err != nil {
 		return err
 	}
 
-	if user.CircleID != circleID {
-		return ErrUnauthorizedCircle
+	if user.FamilyID != familyID {
+		return ErrUnauthorizedFamily
 	}
 
 	return nil
@@ -213,7 +213,7 @@ func (am *AuthMiddleware) CheckCircleAccess(ctx context.Context, userID, circleI
 func (am *AuthMiddleware) WebSocketAuthHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		logger := logging.FromContext(c.Request.Context())
-		user, circleID, err := am.AuthenticateConnection(c)
+		user, familyID, err := am.AuthenticateConnection(c)
 		if err != nil {
 			logger.Warnw("WebSocket authentication failed",
 				"error", err,
@@ -226,9 +226,9 @@ func (am *AuthMiddleware) WebSocketAuthHandler() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		// Store user and circle ID in context for the WebSocket handler
+		// Store user and family ID in context for the WebSocket handler
 		c.Set("user", user)
-		c.Set("circleId", circleID)
+		c.Set("familyId", familyID)
 		c.Next()
 	}
 }

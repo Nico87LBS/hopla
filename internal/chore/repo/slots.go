@@ -37,7 +37,7 @@ func (r *ChoreRepository) GetSlotHistory(ctx context.Context, choreIDs []int, fr
 // the task's due date. A done slot earns the task's points, credited by
 // byUserID.
 func (r *ChoreRepository) RecordSlot(ctx context.Context, chore *chModel.Chore, entry *chModel.ChoreHistory, nextDueDate *time.Time, byUserID int) error {
-	nextVersion, err := r.nextSyncVersion(ctx, chore.CircleID)
+	nextVersion, err := r.nextSyncVersion(ctx, chore.FamilyID)
 	if err != nil {
 		return err
 	}
@@ -56,7 +56,7 @@ func (r *ChoreRepository) RecordSlot(ctx context.Context, chore *chModel.Chore, 
 			return err
 		}
 		if done {
-			return games.AfterTask(tx, chore.CircleID, entry.CompletedBy, *entry.PerformedAt, time.Now().UTC())
+			return games.AfterTask(tx, chore.FamilyID, entry.CompletedBy, *entry.PerformedAt, time.Now().UTC())
 		}
 		return nil
 	})
@@ -65,7 +65,7 @@ func (r *ChoreRepository) RecordSlot(ctx context.Context, chore *chModel.Chore, 
 // ApproveSlot marks a slot completion waiting for a parent as done and
 // credits its points. The time the child ticked it stays its time.
 func (r *ChoreRepository) ApproveSlot(ctx context.Context, chore *chModel.Chore, historyID int, adminUserID int, nextDueDate *time.Time) error {
-	nextVersion, err := r.nextSyncVersion(ctx, chore.CircleID)
+	nextVersion, err := r.nextSyncVersion(ctx, chore.FamilyID)
 	if err != nil {
 		return err
 	}
@@ -92,14 +92,14 @@ func (r *ChoreRepository) ApproveSlot(ctx context.Context, chore *chModel.Chore,
 		if err := r.updateSlotChore(tx, chore.ID, nextDueDate, nextVersion); err != nil {
 			return err
 		}
-		return games.AfterTask(tx, chore.CircleID, entry.CompletedBy, performedAt, time.Now().UTC())
+		return games.AfterTask(tx, chore.FamilyID, entry.CompletedBy, performedAt, time.Now().UTC())
 	})
 }
 
 // RejectSlot turns down a slot completion waiting for a parent: the slot is to
 // do again while it is open.
 func (r *ChoreRepository) RejectSlot(ctx context.Context, chore *chModel.Chore, historyID int, note *string, nextDueDate *time.Time) error {
-	nextVersion, err := r.nextSyncVersion(ctx, chore.CircleID)
+	nextVersion, err := r.nextSyncVersion(ctx, chore.FamilyID)
 	if err != nil {
 		return err
 	}
@@ -126,7 +126,7 @@ func (r *ChoreRepository) RejectSlot(ctx context.Context, chore *chModel.Chore, 
 // SetSlotDueDate moves a task with slots to its next slot once the one it was
 // due at has closed, without touching anything else.
 func (r *ChoreRepository) SetSlotDueDate(ctx context.Context, chore *chModel.Chore, nextDueDate *time.Time) error {
-	nextVersion, err := r.nextSyncVersion(ctx, chore.CircleID)
+	nextVersion, err := r.nextSyncVersion(ctx, chore.FamilyID)
 	if err != nil {
 		return err
 	}
@@ -148,5 +148,5 @@ func (r *ChoreRepository) FillFlashes(ctx context.Context, chores []*chModel.Cho
 	if len(chores) == 0 {
 		return nil
 	}
-	return games.FillFlashes(r.db.WithContext(ctx), chores[0].CircleID, chores, now)
+	return games.FillFlashes(r.db.WithContext(ctx), chores[0].FamilyID, chores, now)
 }

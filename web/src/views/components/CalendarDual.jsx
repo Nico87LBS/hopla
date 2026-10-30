@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import { useLocalization } from '../../contexts/LocalizationContext'
-import { useCircleMembers, useUserProfile } from '../../queries/UserQueries'
+import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries'
 import { TASK_COLOR } from '../../utils/Colors'
 import { familyDay, fromPickedDay, pickedDay } from '../../utils/familyTime'
 import styles from './CalendarDual.module.css'
@@ -35,9 +35,9 @@ const CalendarDual = ({ chores, onDateChange }) => {
   })
   const Navigate = useNavigate()
 
-  // Fetch circle members data to get assignee names
-  const { data: circleMembersData } = useCircleMembers()
-  const circleMembers = circleMembersData?.res || []
+  // Fetch family members data to get assignee names
+  const { data: familyMembersData } = useFamilyMembers()
+  const familyMembers = familyMembersData?.res || []
 
   // Update next month whenever current date changes
   useEffect(() => {
@@ -51,7 +51,7 @@ const CalendarDual = ({ chores, onDateChange }) => {
     if (assignedTo === userProfile.id) {
       return userProfile.displayName
     }
-    const assignee = circleMembers.find(member => member.userId === assignedTo)
+    const assignee = familyMembers.find(member => member.userId === assignedTo)
     return assignee
       ? `${assignee.displayName}`
       : t('calendarCard.assignedToOther')

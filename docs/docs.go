@@ -25,7 +25,7 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Retrieves all chores for the current user's circle with optional archived chores",
+                "description": "Retrieves all chores for the current user's family with optional archived chores",
                 "consumes": [
                     "application/json"
                 ],
@@ -125,7 +125,7 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "error: Invalid request format | Invalid date | Assignee not found in circle | Assigned to not found in assignees",
+                        "description": "error: Invalid request format | Invalid date | Assignee not found in family | Assigned to not found in assignees",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -204,7 +204,7 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "error: Invalid request format | Assignee not found in circle | Invalid date",
+                        "description": "error: Invalid request format | Assignee not found in family | Invalid date",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -243,7 +243,7 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Retrieves all archived chores for the current user's circle",
+                "description": "Retrieves all archived chores for the current user's family",
                 "consumes": [
                     "application/json"
                 ],
@@ -543,7 +543,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "boolean",
-                        "description": "Include other circle members' history",
+                        "description": "Include other family members' history",
                         "name": "members",
                         "in": "query"
                     }
@@ -1483,171 +1483,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/chores/{id}/pause": {
-            "put": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Pauses an active chore timer session (supports impersonation)",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "chores"
-                ],
-                "summary": "Pause a chore timer",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Chore ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "res: {duration, status, timerUpdatedAt}",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid ID | No active time session found for this chore",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: You are not allowed to pause this chore",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to retrieve chore | Error getting active time session",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/chores/{id}/priority": {
-            "put": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Updates the priority level of a chore (0-4)",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "chores"
-                ],
-                "summary": "Update chore priority",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Chore ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Priority value (0-4)",
-                        "name": "priority",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/chore.PriorityReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "message: Priority updated successfully",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid ID | Invalid request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: You are not allowed to edit this chore",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to retrieve chore | Error updating priority",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/chores/{id}/reject": {
             "post": {
                 "security": [
@@ -1901,171 +1736,6 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/chores/{id}/start": {
-            "put": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Starts or resumes a chore timer session (supports impersonation)",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "chores"
-                ],
-                "summary": "Start a chore timer",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Chore ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "res: {timerUpdatedAt, status, duration}",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid ID | Chore is not in a state that can be started",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: You are not allowed to start this chore",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to retrieve chore | Error creating time session",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/chores/{id}/status": {
-            "put": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Updates the status of a chore (e.g., no status, in progress, paused)",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "chores"
-                ],
-                "summary": "Update chore status",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Chore ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Status update request",
-                        "name": "status",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/chore.StatusUpdateReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "message: Chore status updated successfully",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid ID | Invalid request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: You cannot update the status of this chore",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to retrieve chore | Error updating chore status",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/chores/{id}/subtask": {
             "put": {
                 "security": [
@@ -2133,445 +1803,6 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "error: Failed to retrieve chore | Error getting subtask",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/chores/{id}/timer": {
-            "get": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Retrieves all time tracking sessions for a chore",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "chores"
-                ],
-                "summary": "Get chore time sessions",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Chore ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Filter by specific history ID",
-                        "name": "choreHistoryId",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "res: array of time sessions",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/definitions/model.TimeSession"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid ID | Invalid choreHistoryId parameter",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: You are not allowed to view time sessions for this chore",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "error: No time session found",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to retrieve chore | Error getting chore time session",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            },
-            "put": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Manually updates the timer duration for a chore",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "chores"
-                ],
-                "summary": "Update chore timer duration",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Chore ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Timer update request",
-                        "name": "timer",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/chore.TimerUpdateReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "message: Chore timer updated successfully",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid ID | Invalid request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: You cannot update the timer of this chore",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to retrieve chore | Error updating chore timer",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/chores/{id}/timer/reset": {
-            "put": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Resets the chore timer to zero and starts a new session",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "chores"
-                ],
-                "summary": "Reset chore timer",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Chore ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "res: {timerUpdatedAt, status, duration}",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid ID | No active time session found for this chore",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: You are not allowed to reset timer for this chore",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to retrieve chore | Error updating time session",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/chores/{id}/timer/{session_id}": {
-            "put": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Updates start time, end time, or pause log for a time session",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "chores"
-                ],
-                "summary": "Update a time session",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Chore ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Session ID",
-                        "name": "session_id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Time session update request",
-                        "name": "session",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/chore.UpdateTimeSessionReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "res: updated time session",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "$ref": "#/definitions/model.TimeSession"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid chore ID | Invalid session ID | Invalid request body | Time session does not belong to the specified chore",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: You are not allowed to modify time sessions for this chore",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to retrieve chore | Error getting time session | Error updating time session",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Deletes a specific time tracking session",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "chores"
-                ],
-                "summary": "Delete a time session",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Chore ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Session ID",
-                        "name": "session_id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "message: Time session deleted successfully",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid chore ID | Invalid session ID | Time session does not belong to the specified chore",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: You are not allowed to delete time sessions for this chore",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to retrieve chore | Error getting time session | Error deleting time session",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -2720,7 +1951,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/circles": {
+        "/families": {
             "get": {
                 "security": [
                     {
@@ -2730,7 +1961,7 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Retrieves all circles the current user belongs to",
+                "description": "Retrieves all families the current user belongs to",
                 "consumes": [
                     "application/json"
                 ],
@@ -2738,18 +1969,18 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "circles"
+                    "families"
                 ],
-                "summary": "Get user circles",
+                "summary": "Get user families",
                 "responses": {
                     "200": {
-                        "description": "res: array of circles",
+                        "description": "res: array of families",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
                                 "type": "array",
                                 "items": {
-                                    "$ref": "#/definitions/circle.Circle"
+                                    "$ref": "#/definitions/family.Family"
                                 }
                             }
                         }
@@ -2764,7 +1995,7 @@ const docTemplate = `{
                         }
                     },
                     "500": {
-                        "description": "error: Error getting user circles",
+                        "description": "error: Error getting user families",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -2775,7 +2006,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/circles/join": {
+        "/families/join": {
             "post": {
                 "security": [
                     {
@@ -2785,7 +2016,7 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Requests to join a circle using an invite code",
+                "description": "Requests to join a family using an invite code",
                 "consumes": [
                     "application/json"
                 ],
@@ -2793,9 +2024,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "circles"
+                    "families"
                 ],
-                "summary": "Request to join a circle",
+                "summary": "Request to join a family",
                 "parameters": [
                     {
                         "type": "string",
@@ -2807,7 +2038,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "res: User Requested to join circle successfully",
+                        "description": "res: User Requested to join family successfully",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -2834,7 +2065,7 @@ const docTemplate = `{
                         }
                     },
                     "409": {
-                        "description": "error: You are already a member of this circle",
+                        "description": "error: You are already a member of this family",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -2843,7 +2074,7 @@ const docTemplate = `{
                         }
                     },
                     "500": {
-                        "description": "error: Error adding user to circle",
+                        "description": "error: Error adding user to family",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -2854,7 +2085,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/circles/leave": {
+        "/families/leave": {
             "delete": {
                 "security": [
                     {
@@ -2864,7 +2095,7 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Removes the current user from a circle and restores their original circle",
+                "description": "Removes the current user from a family and restores their original family",
                 "consumes": [
                     "application/json"
                 ],
@@ -2872,21 +2103,21 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "circles"
+                    "families"
                 ],
-                "summary": "Leave a circle",
+                "summary": "Leave a family",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Circle ID",
-                        "name": "circle_id",
+                        "description": "Family ID",
+                        "name": "family_id",
                         "in": "query",
                         "required": true
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "res: User left circle successfully",
+                        "description": "res: User left family successfully",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -2913,7 +2144,7 @@ const docTemplate = `{
                         }
                     },
                     "500": {
-                        "description": "error: Error leaving circle",
+                        "description": "error: Error leaving family",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -2924,7 +2155,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/circles/members": {
+        "/families/members": {
             "get": {
                 "security": [
                     {
@@ -2934,7 +2165,7 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Retrieves all members of the current user's circle",
+                "description": "Retrieves all members of the current user's family",
                 "consumes": [
                     "application/json"
                 ],
@@ -2942,24 +2173,24 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "circles"
+                    "families"
                 ],
-                "summary": "Get circle members",
+                "summary": "Get family members",
                 "responses": {
                     "200": {
-                        "description": "res: array of circle members",
+                        "description": "res: array of family members",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
                                 "type": "array",
                                 "items": {
-                                    "$ref": "#/definitions/circle.UserCircleDetail"
+                                    "$ref": "#/definitions/family.UserFamilyDetail"
                                 }
                             }
                         }
                     },
                     "500": {
-                        "description": "error: Error getting circle members",
+                        "description": "error: Error getting family members",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -2970,7 +2201,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/circles/members/away": {
+        "/families/members/away": {
             "put": {
                 "security": [
                     {
@@ -2988,7 +2219,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "circles"
+                    "families"
                 ],
                 "summary": "Mark a member away or back home",
                 "parameters": [
@@ -3021,7 +2252,7 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "error: Invalid request / User is not a member of this circle",
+                        "description": "error: Invalid request / User is not a member of this family",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -3050,7 +2281,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/circles/members/requests": {
+        "/families/members/requests": {
             "get": {
                 "security": [
                     {
@@ -3060,7 +2291,7 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Retrieves pending circle join requests (admin only)",
+                "description": "Retrieves pending family join requests (admin only)",
                 "consumes": [
                     "application/json"
                 ],
@@ -3068,7 +2299,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "circles"
+                    "families"
                 ],
                 "summary": "Get pending join requests",
                 "responses": {
@@ -3079,7 +2310,7 @@ const docTemplate = `{
                             "additionalProperties": {
                                 "type": "array",
                                 "items": {
-                                    "$ref": "#/definitions/circle.UserCircleDetail"
+                                    "$ref": "#/definitions/family.UserFamilyDetail"
                                 }
                             }
                         }
@@ -3094,7 +2325,7 @@ const docTemplate = `{
                         }
                     },
                     "403": {
-                        "description": "error: You are not an admin of this circle",
+                        "description": "error: You are not an admin of this family",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -3103,7 +2334,7 @@ const docTemplate = `{
                         }
                     },
                     "500": {
-                        "description": "error: Error getting pending circle members",
+                        "description": "error: Error getting pending family members",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -3114,7 +2345,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/circles/members/requests/accept": {
+        "/families/members/requests/accept": {
             "put": {
                 "security": [
                     {
@@ -3124,7 +2355,7 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Accepts a pending circle join request (admin only)",
+                "description": "Accepts a pending family join request (admin only)",
                 "consumes": [
                     "application/json"
                 ],
@@ -3132,7 +2363,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "circles"
+                    "families"
                 ],
                 "summary": "Accept a join request",
                 "parameters": [
@@ -3155,7 +2386,7 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "error: Invalid request / Circle is full",
+                        "description": "error: Invalid request / Family is full",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -3173,7 +2404,7 @@ const docTemplate = `{
                         }
                     },
                     "403": {
-                        "description": "error: You are not an admin of this circle",
+                        "description": "error: You are not an admin of this family",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -3193,7 +2424,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/circles/members/requests/decline": {
+        "/families/members/requests/decline": {
             "delete": {
                 "security": [
                     {
@@ -3203,7 +2434,7 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Declines a pending circle join request (admin only). The request is removed, so the user may request to join again later.",
+                "description": "Declines a pending family join request (admin only). The request is removed, so the user may request to join again later.",
                 "consumes": [
                     "application/json"
                 ],
@@ -3211,7 +2442,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "circles"
+                    "families"
                 ],
                 "summary": "Decline a join request",
                 "parameters": [
@@ -3252,7 +2483,7 @@ const docTemplate = `{
                         }
                     },
                     "403": {
-                        "description": "error: You are not an admin of this circle",
+                        "description": "error: You are not an admin of this family",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -3272,7 +2503,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/circles/members/role": {
+        "/families/members/role": {
             "put": {
                 "security": [
                     {
@@ -3282,7 +2513,7 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Changes the role of a circle member (admin only)",
+                "description": "Changes the role of a family member (admin only)",
                 "consumes": [
                     "application/json"
                 ],
@@ -3290,7 +2521,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "circles"
+                    "families"
                 ],
                 "summary": "Change member role",
                 "parameters": [
@@ -3306,7 +2537,7 @@ const docTemplate = `{
                                     "type": "integer"
                                 },
                                 "role": {
-                                    "$ref": "#/definitions/circle.Role"
+                                    "$ref": "#/definitions/family.Role"
                                 }
                             }
                         }
@@ -3323,7 +2554,7 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "error: Invalid request / Invalid role / User is not a member of this circle",
+                        "description": "error: Invalid request / Invalid role / User is not a member of this family",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -3341,7 +2572,7 @@ const docTemplate = `{
                         }
                     },
                     "403": {
-                        "description": "error: You are not an admin of this circle",
+                        "description": "error: You are not an admin of this family",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -3361,7 +2592,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/circles/timezone": {
+        "/families/timezone": {
             "get": {
                 "security": [
                     {
@@ -3376,7 +2607,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "circles"
+                    "families"
                 ],
                 "summary": "Get the family's time zone",
                 "responses": {
@@ -3408,7 +2639,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "circles"
+                    "families"
                 ],
                 "summary": "Move the family to another time zone",
                 "parameters": [
@@ -3458,7 +2689,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/circles/{id}/members/delete": {
+        "/families/{id}/members/delete": {
             "delete": {
                 "security": [
                     {
@@ -3468,7 +2699,7 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Removes a member from a circle (admin only)",
+                "description": "Removes a member from a family (admin only)",
                 "consumes": [
                     "application/json"
                 ],
@@ -3476,13 +2707,13 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "circles"
+                    "families"
                 ],
-                "summary": "Delete a circle member",
+                "summary": "Delete a family member",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Circle ID",
+                        "description": "Family ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -3497,7 +2728,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "res: User deleted from circle successfully",
+                        "description": "res: User deleted from family successfully",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -3524,7 +2755,7 @@ const docTemplate = `{
                         }
                     },
                     "403": {
-                        "description": "error: You are not an admin of this circle",
+                        "description": "error: You are not an admin of this family",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -3533,7 +2764,7 @@ const docTemplate = `{
                         }
                     },
                     "500": {
-                        "description": "error: Error deleting circle member",
+                        "description": "error: Error deleting family member",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -3544,7 +2775,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/circles/{id}/members/points/redeem": {
+        "/families/{id}/members/points/redeem": {
             "post": {
                 "security": [
                     {
@@ -3554,7 +2785,7 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Redeems points for a circle member (admin only)",
+                "description": "Redeems points for a family member (admin only)",
                 "consumes": [
                     "application/json"
                 ],
@@ -3562,13 +2793,13 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "circles"
+                    "families"
                 ],
                 "summary": "Redeem member points",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Circle ID",
+                        "description": "Family ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -3602,7 +2833,7 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "error: Invalid request / User does not have enough points / User is not a member of this circle",
+                        "description": "error: Invalid request / User does not have enough points / User is not a member of this family",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -3620,7 +2851,7 @@ const docTemplate = `{
                         }
                     },
                     "403": {
-                        "description": "error: You are not an admin of this circle",
+                        "description": "error: You are not an admin of this family",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -3950,17 +3181,6 @@ const docTemplate = `{
                 }
             }
         },
-        "chore.PriorityReq": {
-            "type": "object",
-            "required": [
-                "priority"
-            ],
-            "properties": {
-                "priority": {
-                    "type": "integer"
-                }
-            }
-        },
         "chore.RejectChoreReq": {
             "type": "object",
             "properties": {
@@ -3978,21 +3198,6 @@ const docTemplate = `{
                 }
             }
         },
-        "chore.StatusUpdateReq": {
-            "type": "object",
-            "required": [
-                "status",
-                "updatedAt"
-            ],
-            "properties": {
-                "status": {
-                    "$ref": "#/definitions/model.Status"
-                },
-                "updatedAt": {
-                    "type": "string"
-                }
-            }
-        },
         "chore.SubtaskReq": {
             "type": "object",
             "properties": {
@@ -4007,39 +3212,7 @@ const docTemplate = `{
                 }
             }
         },
-        "chore.TimerUpdateReq": {
-            "type": "object",
-            "required": [
-                "duration",
-                "updatedAt"
-            ],
-            "properties": {
-                "duration": {
-                    "type": "integer"
-                },
-                "updatedAt": {
-                    "type": "string"
-                }
-            }
-        },
-        "chore.UpdateTimeSessionReq": {
-            "type": "object",
-            "properties": {
-                "endTime": {
-                    "type": "string"
-                },
-                "pauseLog": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/model.PauseLogEntry"
-                    }
-                },
-                "startTime": {
-                    "type": "string"
-                }
-            }
-        },
-        "circle.Circle": {
+        "family.Family": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -4050,13 +3223,13 @@ const docTemplate = `{
                     "description": "Created by",
                     "type": "integer"
                 },
+                "currency": {
+                    "description": "Currency names what the family earns, one of Currencies.",
+                    "type": "string"
+                },
                 "disabled": {
                     "description": "Disabled",
                     "type": "boolean"
-                },
-                "expiredAt": {
-                    "description": "read one column",
-                    "type": "string"
                 },
                 "id": {
                     "description": "Unique identifier",
@@ -4074,10 +3247,6 @@ const docTemplate = `{
                     "description": "ParentsOnPodium puts the parents on the podium with the children.\nWithout children, the parents are always on it.",
                     "type": "boolean"
                 },
-                "subscriptionStatus": {
-                    "description": "read one column",
-                    "type": "string"
-                },
                 "timezone": {
                     "description": "Timezone is the family's IANA zone, empty for the server's (TZ). See\npackage zone.",
                     "type": "string"
@@ -4088,7 +3257,7 @@ const docTemplate = `{
                 }
             }
         },
-        "circle.Role": {
+        "family.Role": {
             "type": "string",
             "enum": [
                 "admin",
@@ -4101,16 +3270,12 @@ const docTemplate = `{
                 "RoleManager"
             ]
         },
-        "circle.UserCircleDetail": {
+        "family.UserFamilyDetail": {
             "type": "object",
             "properties": {
                 "away": {
                     "description": "Away pauses the member's tasks and games, such as a child staying at\nthe other parent's home.",
                     "type": "boolean"
-                },
-                "circleId": {
-                    "description": "Circle ID",
-                    "type": "integer"
                 },
                 "createdAt": {
                     "description": "Created at",
@@ -4118,6 +3283,10 @@ const docTemplate = `{
                 },
                 "displayName": {
                     "type": "string"
+                },
+                "familyId": {
+                    "description": "Family ID",
+                    "type": "integer"
                 },
                 "id": {
                     "description": "Unique identifier",
@@ -4142,7 +3311,7 @@ const docTemplate = `{
                     "description": "Role",
                     "allOf": [
                         {
-                            "$ref": "#/definitions/circle.UserRole"
+                            "$ref": "#/definitions/family.UserRole"
                         }
                     ]
                 },
@@ -4159,7 +3328,7 @@ const docTemplate = `{
                 }
             }
         },
-        "circle.UserRole": {
+        "family.UserRole": {
             "type": "string",
             "enum": [
                 "admin",
@@ -4256,10 +3425,6 @@ const docTemplate = `{
                         "$ref": "#/definitions/model.StorageFile"
                     }
                 },
-                "circleId": {
-                    "description": "The circle this chore is in",
-                    "type": "integer"
-                },
                 "completionWindow": {
                     "description": "Number seconds before the chore is due that it can be completed",
                     "type": "integer"
@@ -4275,6 +3440,10 @@ const docTemplate = `{
                 "description": {
                     "description": "Description of the chore",
                     "type": "string"
+                },
+                "familyId": {
+                    "description": "The family this chore is in",
+                    "type": "integer"
                 },
                 "flash": {
                     "description": "The flash bonus open now, if any",
@@ -4636,12 +3805,6 @@ const docTemplate = `{
         "model.NotificationMetadata": {
             "type": "object",
             "properties": {
-                "circleGroup": {
-                    "type": "boolean"
-                },
-                "circleGroupID": {
-                    "type": "integer"
-                },
                 "completion": {
                     "type": "boolean"
                 },
@@ -4687,23 +3850,6 @@ const docTemplate = `{
                 "NotificationTemplateUnitHour",
                 "NotificationTemplateUnitDay"
             ]
-        },
-        "model.PauseLogEntry": {
-            "type": "object",
-            "properties": {
-                "duration": {
-                    "type": "integer"
-                },
-                "end": {
-                    "type": "string"
-                },
-                "start": {
-                    "type": "string"
-                },
-                "updatedBy": {
-                    "type": "integer"
-                }
-            }
         },
         "model.Slot": {
             "type": "object",
@@ -4850,62 +3996,6 @@ const docTemplate = `{
                     "type": "integer"
                 }
             }
-        },
-        "model.TimeSession": {
-            "type": "object",
-            "properties": {
-                "choreHistoryId": {
-                    "description": "The chore history this session is for",
-                    "type": "integer"
-                },
-                "choreId": {
-                    "type": "integer"
-                },
-                "duration": {
-                    "type": "integer"
-                },
-                "endTime": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "pauseLog": {
-                    "description": "Track pause/resume times",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/model.PauseLogEntry"
-                    }
-                },
-                "startTime": {
-                    "type": "string"
-                },
-                "status": {
-                    "$ref": "#/definitions/model.TimeSessionStatus"
-                },
-                "updatedAt": {
-                    "description": "When the session was last updated",
-                    "type": "string"
-                },
-                "updatedBy": {
-                    "description": "Who last updated the session",
-                    "type": "integer"
-                }
-            }
-        },
-        "model.TimeSessionStatus": {
-            "type": "integer",
-            "format": "int32",
-            "enum": [
-                0,
-                1,
-                2
-            ],
-            "x-enum-varnames": [
-                "TimeSessionStatusActive",
-                "TimeSessionStatusPaused",
-                "TimeSessionStatusCompleted"
-            ]
         },
         "model.Weekpattern": {
             "type": "string",

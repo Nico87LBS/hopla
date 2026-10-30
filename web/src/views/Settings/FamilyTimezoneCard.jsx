@@ -45,11 +45,11 @@ const FamilyTimezoneCard = ({ sx }) => {
       onSuccess: () => {
         setChoice(null)
         showSuccess({
-          title: t('circleSettings.timezone.saved', { city: zoneCity(zone) }),
-          message: t('circleSettings.timezone.savedMessage'),
+          title: t('familySettings.timezone.saved', { city: zoneCity(zone) }),
+          message: t('familySettings.timezone.savedMessage'),
         })
       },
-      onError: () => showError({ title: t('circleSettings.timezone.failed') }),
+      onError: () => showError({ title: t('familySettings.timezone.failed') }),
     })
 
   return (
@@ -80,15 +80,15 @@ const FamilyTimezoneCard = ({ sx }) => {
         </Box>
         <Box sx={{ minWidth: 0 }}>
           <Typography level='title-lg' sx={{ fontWeight: 650 }}>
-            {t('circleSettings.timezone.title')}
+            {t('familySettings.timezone.title')}
           </Typography>
           <Typography level='body-sm' textColor='text.secondary'>
             {data.custom
-              ? t('circleSettings.timezone.away', {
+              ? t('familySettings.timezone.away', {
                   city: zoneCity(data.timezone),
                   home: zoneCity(data.server),
                 })
-              : t('circleSettings.timezone.home', {
+              : t('familySettings.timezone.home', {
                   city: zoneCity(data.timezone),
                 })}
           </Typography>
@@ -96,7 +96,7 @@ const FamilyTimezoneCard = ({ sx }) => {
       </Box>
 
       <FormControl>
-        <FormLabel>{t('circleSettings.timezone.label')}</FormLabel>
+        <FormLabel>{t('familySettings.timezone.label')}</FormLabel>
         <Autocomplete
           disabled={!isParent}
           disableClearable
@@ -104,7 +104,7 @@ const FamilyTimezoneCard = ({ sx }) => {
           value={selected}
           getOptionLabel={zone =>
             zone === data.server
-              ? t('circleSettings.timezone.serverOption', {
+              ? t('familySettings.timezone.serverOption', {
                   zone: zoneLabel(zone),
                 })
               : zoneLabel(zone)
@@ -120,8 +120,8 @@ const FamilyTimezoneCard = ({ sx }) => {
         />
         <FormHelperText>
           {isParent
-            ? t('circleSettings.timezone.help')
-            : t('circleSettings.timezone.parentsOnly')}
+            ? t('familySettings.timezone.help')
+            : t('familySettings.timezone.parentsOnly')}
         </FormHelperText>
       </FormControl>
 
@@ -132,7 +132,7 @@ const FamilyTimezoneCard = ({ sx }) => {
             loading={setTimezone.isPending && selected !== data.server}
             onClick={() => save(selected)}
           >
-            {t('circleSettings.timezone.save')}
+            {t('familySettings.timezone.save')}
           </Button>
           {data.custom && (
             <Button
@@ -140,7 +140,7 @@ const FamilyTimezoneCard = ({ sx }) => {
               loading={setTimezone.isPending && selected === data.server}
               onClick={() => save(data.server)}
             >
-              {t('circleSettings.timezone.backHome', {
+              {t('familySettings.timezone.backHome', {
                 city: zoneCity(data.server),
               })}
             </Button>

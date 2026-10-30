@@ -17,7 +17,7 @@ type StorageFile struct {
 
 type StorageUsage struct {
 	UserID    int       `gorm:"column:user_id;primaryKey;index:idx_storage_usage_user_id"`
-	CircleID  int       `gorm:"column:circle_id;primaryKey;index:idx_circle"`
+	FamilyID  int       `gorm:"column:family_id;primaryKey;index:idx_family"`
 	UsedBytes int       `gorm:"column:used_bytes"`
 	UpdatedAt time.Time `gorm:"column:updated_at"`
 }

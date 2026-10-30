@@ -302,7 +302,7 @@
       "done": "Terminé",
       "next": "Suivante"
     },
-    "circle": {
+    "family": {
       "kitchenTitle": "Grand ménage de la cuisine",
       "kitchenDue": "Échéance sam.",
       "kitchenRepeat": "Toutes les semaines",
@@ -349,7 +349,7 @@
       "subtitle": "Ton serveur, tes données. Ces deux options restent désactivées tant que tu ne les actives pas."
     }
   },
-  "circleSetup": {
+  "familySetup": {
     "inviteTitle": "Invite ta famille",
     "inviteSubtitle": "Toutes les personnes qui rejoignent ta famille voient les mêmes tâches, prennent leur tour et restent synchronisées automatiquement.",
     "joinTitle": "Rejoindre une famille",
@@ -369,7 +369,7 @@
     "alreadyMember": "Tu fais déjà partie de cette famille",
     "joinFailed": "Impossible de rejoindre la famille"
   },
-  "joinCircle": {
+  "joinFamily": {
     "title": "Invitation à rejoindre une famille",
     "incompleteTitle": "Lien d'invitation incomplet",
     "incompleteSubtitle": "Il manque un code à ce lien d'invitation. Demande un nouveau lien à la personne qui te l'a transmis.",

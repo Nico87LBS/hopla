@@ -31,7 +31,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { useImpersonateUser } from '../contexts/ImpersonateUserContext'
 import useStickyState from '../hooks/useStickyState'
-import { useCircleMembers, useUserProfile } from '../queries/UserQueries'
+import { useFamilyMembers, useUserProfile } from '../queries/UserQueries'
 import { apiClient } from '../utils/ApiClient'
 import { resolvePhotoURL } from '../utils/Helpers'
 import UserModal from '../views/Modals/Inputs/UserModal'
@@ -48,7 +48,7 @@ const UserProfileAvatar = ({ showDetails = false }) => {
     startImpersonation,
     stopImpersonation,
   } = useImpersonateUser()
-  const { data: circleMembersData } = useCircleMembers()
+  const { data: familyMembersData } = useFamilyMembers()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [themeMode, setThemeMode] = useStickyState(mode, 'themeMode')
   const isLargeScreen = useMediaQuery(theme => theme.breakpoints.up('lg'))
@@ -56,7 +56,7 @@ const UserProfileAvatar = ({ showDetails = false }) => {
   if (!userProfile) return null
 
   const currentUser = getEffectiveUser(userProfile)
-  const isAdmin = canImpersonate(userProfile, circleMembersData?.res)
+  const isAdmin = canImpersonate(userProfile, familyMembersData?.res)
 
   const handleLogout = () => {
     apiClient.handleLogout()
@@ -477,7 +477,7 @@ const UserProfileAvatar = ({ showDetails = false }) => {
 
       <UserModal
         isOpen={isModalOpen}
-        performers={circleMembersData?.res}
+        performers={familyMembersData?.res}
         onSelect={user => {
           startImpersonation(user, userProfile)
           setIsModalOpen(false)

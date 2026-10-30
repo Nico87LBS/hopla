@@ -31,7 +31,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import EmptyState from '../../components/common/EmptyState'
 import { useNavBarTitle } from '../../contexts/NavBarTitleContext'
 import { useChores } from '../../queries/ChoreQueries'
-import { useCircleMembers, useUserProfile } from '../../queries/UserQueries'
+import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries'
 import { DeleteLabel } from '../../utils/Fetcher'
 import ChoreListView from '../Chores/ChoreListView'
 import LoadingComponent from '../components/Loading'
@@ -49,7 +49,7 @@ const LabelDetailView = () => {
 
   const { data: labels, isLoading: isLabelsLoading } = useLabels()
   const { data: choresData, isLoading: isChoresLoading } = useChores(false)
-  const { data: membersData, isLoading: isMembersLoading } = useCircleMembers()
+  const { data: membersData, isLoading: isMembersLoading } = useFamilyMembers()
   const { data: userProfile } = useUserProfile()
 
   const [searchTerm, setSearchTerm] = useState('')

@@ -21,7 +21,7 @@ import ModalActions from '../../components/common/ModalActions'
 import { useModalShortcutScope } from '../../contexts/KeyboardShortcutScopeContext'
 import { useResponsiveModal } from '../../hooks/useResponsiveModal'
 import { useCreateChore } from '../../queries/ChoreQueries'
-import { useCircleMembers, useUserProfile } from '../../queries/UserQueries'
+import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries'
 import LABEL_COLORS from '../../utils/Colors'
 import { currencyVariables } from '../../utils/currency'
 import { CreateLabel } from '../../utils/Fetcher'
@@ -128,8 +128,8 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
   const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm'))
   const pickerEmptyDisplay = isMobile ? 'icon' : 'icon-text'
   const { data: userLabels, isLoading: userLabelsLoading } = useLabels()
-  const { data: circleMembers, isLoading: isCircleMembersLoading } =
-    useCircleMembers()
+  const { data: familyMembers, isLoading: isFamilyMembersLoading } =
+    useFamilyMembers()
   const createChoreMutation = useCreateChore()
   const queryClient = useQueryClient()
 
@@ -231,8 +231,8 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
   const [draftId, setDraftId] = useState(() => generateUUID())
 
   const assignableMembers = useMemo(
-    () => circleMembers?.res || [],
-    [circleMembers],
+    () => familyMembers?.res || [],
+    [familyMembers],
   )
 
   const smartInputSuggestions = useMemo(
@@ -634,7 +634,7 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
     if (
       !isModalOpen ||
       userLabelsLoading ||
-      isCircleMembersLoading ||
+      isFamilyMembersLoading ||
       !userProfile
     ) {
       return
@@ -653,7 +653,7 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
   }, [
     taskText,
     userLabelsLoading,
-    isCircleMembersLoading,
+    isFamilyMembersLoading,
     isModalOpen,
     userProfile,
     processText,
@@ -863,7 +863,7 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
     handleCloseModal,
   }
 
-  if (isCircleMembersLoading) {
+  if (isFamilyMembersLoading) {
     return <></>
   }
 

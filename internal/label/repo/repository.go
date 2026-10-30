@@ -21,9 +21,9 @@ func NewLabelRepository(db *gorm.DB, cfg *config.Config) *LabelRepository {
 	return &LabelRepository{db: db}
 }
 
-func (r *LabelRepository) GetUserLabels(ctx context.Context, userID int, circleID int) ([]*lModel.Label, error) {
+func (r *LabelRepository) GetUserLabels(ctx context.Context, userID int, familyID int) ([]*lModel.Label, error) {
 	var labels []*lModel.Label
-	if err := r.db.WithContext(ctx).Where("created_by = ? OR circle_id = ? ", userID, circleID).Find(&labels).Error; err != nil {
+	if err := r.db.WithContext(ctx).Where("created_by = ? OR family_id = ? ", userID, familyID).Find(&labels).Error; err != nil {
 		return nil, err
 	}
 	return labels, nil
@@ -36,7 +36,7 @@ func (r *LabelRepository) CreateLabels(ctx context.Context, labels []*lModel.Lab
 	return nil
 }
 
-func (r *LabelRepository) isLabelsAssignableByUser(ctx context.Context, userID int, circleID int, toBeAdded []int, toBeRemoved []int) bool {
+func (r *LabelRepository) isLabelsAssignableByUser(ctx context.Context, userID int, familyID int, toBeAdded []int, toBeRemoved []int) bool {
 	// combine toBeAdded and toBeRemoved into a new slice
 	labelIDs := []int(nil)
 	labelIDs = append(labelIDs, toBeAdded...)
@@ -44,18 +44,18 @@ func (r *LabelRepository) isLabelsAssignableByUser(ctx context.Context, userID i
 
 	log := logging.FromContext(ctx)
 	var count int64
-	if err := r.db.WithContext(ctx).Model(&lModel.Label{}).Where("id IN (?) AND (created_by = ?  OR circle_id = ?) ", labelIDs, userID, circleID).Count(&count).Error; err != nil {
+	if err := r.db.WithContext(ctx).Model(&lModel.Label{}).Where("id IN (?) AND (created_by = ?  OR family_id = ?) ", labelIDs, userID, familyID).Count(&count).Error; err != nil {
 		log.Error(err)
 		return false
 	}
 	return count == int64(len(labelIDs))
 }
 
-func (r *LabelRepository) AssignLabelsToChore(ctx context.Context, choreID int, userID int, circleID int, toBeAdded []int, toBeRemoved []int) error {
+func (r *LabelRepository) AssignLabelsToChore(ctx context.Context, choreID int, userID int, familyID int, toBeAdded []int, toBeRemoved []int) error {
 	if len(toBeAdded) < 1 && len(toBeRemoved) < 1 {
 		return nil
 	}
-	if !r.isLabelsAssignableByUser(ctx, userID, circleID, toBeAdded, toBeRemoved) {
+	if !r.isLabelsAssignableByUser(ctx, userID, familyID, toBeAdded, toBeRemoved) {
 		return errors.New("labels are not assignable by user")
 	}
 
@@ -87,7 +87,7 @@ func (r *LabelRepository) AssignLabelsToChore(ctx context.Context, choreID int, 
 
 // bumpChoreSyncVersions assigns a fresh sync version to every chore in choreIDs so
 // clients syncing on sync_version pick up the label change. Versions are reserved as a
-// contiguous range per circle and applied one per chore, so no two chores share a
+// contiguous range per family and applied one per chore, so no two chores share a
 // version (sharing one would let sync pagination skip records). Must run inside tx.
 func (r *LabelRepository) bumpChoreSyncVersions(ctx context.Context, tx *gorm.DB, choreIDs []int) error {
 	if len(choreIDs) < 1 {
@@ -96,25 +96,25 @@ func (r *LabelRepository) bumpChoreSyncVersions(ctx context.Context, tx *gorm.DB
 
 	var chores []struct {
 		ID       int
-		CircleID int
+		FamilyID int
 	}
-	if err := tx.WithContext(ctx).Model(&chModel.Chore{}).Select("id, circle_id").Where("id IN (?)", choreIDs).Find(&chores).Error; err != nil {
+	if err := tx.WithContext(ctx).Model(&chModel.Chore{}).Select("id, family_id").Where("id IN (?)", choreIDs).Find(&chores).Error; err != nil {
 		return err
 	}
 
-	choresByCircle := make(map[int][]int)
+	choresByFamily := make(map[int][]int)
 	for _, chore := range chores {
-		choresByCircle[chore.CircleID] = append(choresByCircle[chore.CircleID], chore.ID)
+		choresByFamily[chore.FamilyID] = append(choresByFamily[chore.FamilyID], chore.ID)
 	}
 
-	for circleID, ids := range choresByCircle {
+	for familyID, ids := range choresByFamily {
 		var endVersion int64
 		if err := tx.WithContext(ctx).Raw(`
-			INSERT INTO sync_cursors (circle_id, entity_type, max_version)
+			INSERT INTO sync_cursors (family_id, entity_type, max_version)
 			VALUES (?, ?, ?)
-			ON CONFLICT (circle_id, entity_type) DO UPDATE SET max_version = sync_cursors.max_version + ?
+			ON CONFLICT (family_id, entity_type) DO UPDATE SET max_version = sync_cursors.max_version + ?
 			RETURNING max_version`,
-			circleID, syncModel.EntityTypeChore, len(ids), len(ids),
+			familyID, syncModel.EntityTypeChore, len(ids), len(ids),
 		).Scan(&endVersion).Error; err != nil {
 			return err
 		}

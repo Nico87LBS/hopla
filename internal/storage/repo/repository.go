@@ -23,15 +23,15 @@ func NewStorageRepository(db *gorm.DB, config *config.Config) *StorageRepository
 
 func (r *StorageRepository) AddMediaRecord(ctx context.Context, media *st.StorageFile, user *uModel.UserDetails) error {
 	return r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		// Check total circle-wide usage against quota (all members share the same pool).
-		var circleUsed int64
+		// Check total family-wide usage against quota (all members share the same pool).
+		var familyUsed int64
 		if err := tx.Model(&st.StorageUsage{}).
 			Select("COALESCE(SUM(used_bytes), 0)").
-			Where("circle_id = ?", user.CircleID).
-			Scan(&circleUsed).Error; err != nil {
+			Where("family_id = ?", user.FamilyID).
+			Scan(&familyUsed).Error; err != nil {
 			return err
 		}
-		if int(circleUsed)+media.SizeBytes > r.maxUserStorage {
+		if int(familyUsed)+media.SizeBytes > r.maxUserStorage {
 			return errorx.ErrNotEnoughSpace
 		}
 
@@ -100,7 +100,7 @@ func (r *StorageRepository) GetStorageStats(ctx context.Context, currentUser *uM
 	var totalUsedBytes int64
 	if err := r.db.WithContext(ctx).Model(&st.StorageUsage{}).
 		Select("COALESCE(SUM(used_bytes), 0)").
-		Where("circle_id = ?", currentUser.CircleID).
+		Where("family_id = ?", currentUser.FamilyID).
 		Scan(&totalUsedBytes).Error; err != nil {
 		return 0, 0, err
 	}
@@ -143,10 +143,10 @@ func (r *StorageRepository) ReassignDraftAttachments(ctx context.Context, draftI
 }
 
 // GetExpiredDraftFiles returns draft attachment files older than the given unix timestamp.
-func (r *StorageRepository) CreateStorageUsage(ctx context.Context, userID, circleID int) error {
+func (r *StorageRepository) CreateStorageUsage(ctx context.Context, userID, familyID int) error {
 	return r.db.WithContext(ctx).Create(&st.StorageUsage{
 		UserID:    userID,
-		CircleID:  circleID,
+		FamilyID:  familyID,
 		UsedBytes: 0,
 		UpdatedAt: time.Now().UTC(),
 	}).Error

@@ -16,20 +16,20 @@ var changeRoutes = []struct {
 }{
 	{"/api/v1/rewards", EventTypeRewardsUpdated},
 	{"/eapi/v1/rewards", EventTypeRewardsUpdated},
-	{"/api/v1/circles", EventTypeCircleUpdated},
-	{"/eapi/v1/circle", EventTypeCircleUpdated},
-	{"/api/v1/points", EventTypeCircleUpdated},
-	{"/eapi/v1/points", EventTypeCircleUpdated},
-	{"/api/v1/games", EventTypeCircleUpdated},
-	{"/eapi/v1/games", EventTypeCircleUpdated},
-	{"/api/v1/users", EventTypeCircleUpdated},
+	{"/api/v1/families", EventTypeFamilyUpdated},
+	{"/eapi/v1/family", EventTypeFamilyUpdated},
+	{"/api/v1/points", EventTypeFamilyUpdated},
+	{"/eapi/v1/points", EventTypeFamilyUpdated},
+	{"/api/v1/games", EventTypeFamilyUpdated},
+	{"/eapi/v1/games", EventTypeFamilyUpdated},
+	{"/api/v1/users", EventTypeFamilyUpdated},
 	// A learning game earns hops and can reach a quest or a challenge.
-	{"/api/v1/learn/games", EventTypeCircleUpdated},
-	{"/api/v1/learn/play/games", EventTypeCircleUpdated},
+	{"/api/v1/learn/games", EventTypeFamilyUpdated},
+	{"/api/v1/learn/play/games", EventTypeFamilyUpdated},
 }
 
 type changeBroadcaster interface {
-	BroadcastChange(circleID int, recipients []int, eventType EventType, userID int)
+	BroadcastChange(familyID int, recipients []int, eventType EventType, userID int)
 }
 
 // ChangeNotifier broadcasts a change event after each successful write to one
@@ -64,7 +64,7 @@ func changeNotifier(broadcaster func() changeBroadcaster) gin.HandlerFunc {
 				continue
 			}
 			if b := broadcaster(); b != nil {
-				b.BroadcastChange(user.CircleID, nil, route.event, user.ID)
+				b.BroadcastChange(user.FamilyID, nil, route.event, user.ID)
 			}
 			return
 		}

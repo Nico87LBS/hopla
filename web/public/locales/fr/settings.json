@@ -22,7 +22,7 @@
         "title": "Paramètres du profil",
         "description": "Mets à jour ton profil, ta photo et ton nom affiché."
       },
-      "circle": {
+      "family": {
         "title": "Famille",
         "description": "Invite des membres, accepte les demandes et règle le fuseau de la famille."
       },
@@ -91,11 +91,11 @@
     "save": "Enregistrer",
     "cancel": "Annuler"
   },
-  "circleSettings": {
+  "familySettings": {
     "title": "Famille",
     "description": "Ton compte fait partie d'une famille, celle que tu as créée ou rejointe. Invite tes proches en partageant le code ou le lien ci-dessous. Les demandes pour rejoindre la famille apparaissent ici.",
     "memberOf": "Tu fais partie de {{name}}",
-    "yourCircleCode": "Ton code d'invitation :",
+    "yourFamilyCode": "Ton code d'invitation :",
     "pendingApprovalMessage": "Ta demande pour rejoindre {{name}} attend la validation d'un parent.",
     "cancelRequest": "Annuler la demande",
     "cancelRequestTitle": "Annuler la demande",
@@ -107,16 +107,16 @@
     "shareInvite": "Partager l'invitation",
     "codeCopied": "Code copié dans le presse-papiers",
     "linkCopied": "Lien d'invitation copié dans le presse-papiers",
-    "myCircle": "ma famille",
+    "myFamily": "ma famille",
     "shareTitle": "Rejoins {{name}} sur Hopla",
     "shareText": "Je t'invite à rejoindre {{name}} sur Hopla.",
     "leave": "Quitter la famille",
     "leaveConfirmTitle": "Quitter la famille",
     "leaveConfirmMessage": "Veux-tu vraiment quitter ta famille ?",
     "leaveConfirmButton": "Quitter",
-    "leftCircle": "Tu as quitté la famille",
+    "leftFamily": "Tu as quitté la famille",
     "leaveFailed": "Impossible de quitter la famille",
-    "circleMembers": "Membres de la famille",
+    "familyMembers": "Membres de la famille",
     "you": "(toi)",
     "pendingApproval": "En attente d'approbation",
     "joinedOn": "A rejoint le {{date}}",
@@ -133,7 +133,7 @@
     "removeMemberTitle": "Retirer le membre",
     "removeMemberMessage": "Veux-tu vraiment retirer {{name}} de ta famille ?",
     "memberRemoved": "Membre retiré avec succès",
-    "circleMemberRequests": "Demandes pour rejoindre la famille",
+    "familyMemberRequests": "Demandes pour rejoindre la famille",
     "lastUpdated": "Dernière mise à jour : {{time}}",
     "refreshing": "Actualisation...",
     "refreshFailed": "Impossible d'actualiser les demandes d'adhésion",
@@ -150,9 +150,9 @@
     "declineRequestFailed": "La demande n'a pas pu être refusée",
     "or": "ou",
     "joinOtherDescription": "Tu veux rejoindre la famille de quelqu'un d'autre ? Demande-lui son code ou son lien d'invitation, puis saisis le code ci-dessous.",
-    "enterCircleCode": "Saisis le code d'invitation :",
+    "enterFamilyCode": "Saisis le code d'invitation :",
     "enterCodePlaceholder": "Saisir le code",
-    "joinCircle": "Rejoindre la famille",
+    "joinFamily": "Rejoindre la famille",
     "joinedPending": "Demande envoyée, attends qu'un parent de cette famille l'accepte.",
     "alreadyMember": "Tu fais déjà partie de cette famille",
     "joinFailed": "Impossible de rejoindre la famille",
@@ -392,7 +392,7 @@
         "name": "En un coup d'œil",
         "description": "Nombre de tâches en retard, à échéance aujourd'hui, à approuver et sans échéance"
       },
-      "circle": {
+      "family": {
         "name": "Ta famille",
         "description": "Montre ce dont chaque membre de ta famille s'occupe cette semaine"
       },
@@ -536,9 +536,9 @@
     "removesTokens": "Les jetons d'API, les sessions MFA et les jetons de réinitialisation du mot de passe",
     "removesStorage": "Les fichiers stockés et les données d'utilisation",
     "removesPoints": "L'historique des {{units}} et les notifications",
-    "removesCircles": "Ta place dans la famille et ce qui s'y rattache",
+    "removesFamilies": "Ta place dans la famille et ce qui s'y rattache",
     "passwordToContinue": "Saisis ton mot de passe pour continuer",
-    "circleLabel": "Famille : {{name}}",
+    "familyLabel": "Famille : {{name}}",
     "newOwner": "Nouveau propriétaire",
     "logoutNotice": "Une fois la suppression réussie, la déconnexion sera effectuée et la page de connexion s'affichera.",
     "passwordLabel": "Mot de passe",

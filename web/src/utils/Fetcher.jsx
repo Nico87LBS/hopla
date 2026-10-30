@@ -292,8 +292,8 @@ const UpdateChoreHistory = (choreId, id, choreHistory) => {
   })
 }
 
-const GetAllCircleMembers = async () => {
-  const resp = await Fetch(`/circles/members`, {
+const GetAllFamilyMembers = async () => {
+  const resp = await Fetch(`/families/members`, {
     method: 'GET',
     headers: HEADERS(),
   })
@@ -301,7 +301,7 @@ const GetAllCircleMembers = async () => {
 }
 
 const UpdateMemberRole = async (memberId, role) => {
-  return Fetch(`/circles/members/role`, {
+  return Fetch(`/families/members/role`, {
     method: 'PUT',
     headers: HEADERS(),
     body: JSON.stringify({ role, memberId }),
@@ -309,7 +309,7 @@ const UpdateMemberRole = async (memberId, role) => {
 }
 
 const SetMemberAway = async (memberId, away) => {
-  const resp = await Fetch(`/circles/members/away`, {
+  const resp = await Fetch(`/families/members/away`, {
     method: 'PUT',
     headers: HEADERS(),
     body: JSON.stringify({ memberId, away }),
@@ -319,7 +319,7 @@ const SetMemberAway = async (memberId, away) => {
 }
 
 const GetFamilyTimezone = async () => {
-  const resp = await Fetch(`/circles/timezone`, {
+  const resp = await Fetch(`/families/timezone`, {
     method: 'GET',
     headers: HEADERS(),
   })
@@ -328,7 +328,7 @@ const GetFamilyTimezone = async () => {
 }
 
 const GetFamilyCurrency = async () => {
-  const resp = await Fetch(`/circles/currency`, {
+  const resp = await Fetch(`/families/currency`, {
     method: 'GET',
     headers: HEADERS(),
   })
@@ -337,7 +337,7 @@ const GetFamilyCurrency = async () => {
 }
 
 const SetFamilyCurrency = async currency => {
-  const resp = await Fetch(`/circles/currency`, {
+  const resp = await Fetch(`/families/currency`, {
     method: 'PUT',
     headers: HEADERS(),
     body: JSON.stringify({ currency }),
@@ -347,7 +347,7 @@ const SetFamilyCurrency = async currency => {
 }
 
 const SetFamilyTimezone = async timezone => {
-  const resp = await Fetch(`/circles/timezone`, {
+  const resp = await Fetch(`/families/timezone`, {
     method: 'PUT',
     headers: HEADERS(),
     body: JSON.stringify({ timezone }),
@@ -363,50 +363,50 @@ const GetUserProfile = () => {
   })
 }
 
-const GetUserCircle = () => {
-  return Fetch(`/circles/`, {
+const GetUserFamily = () => {
+  return Fetch(`/families/`, {
     method: 'GET',
     headers: HEADERS(),
   })
 }
 
-const JoinCircle = inviteCode => {
-  return Fetch(`/circles/join?invite_code=${inviteCode}`, {
+const JoinFamily = inviteCode => {
+  return Fetch(`/families/join?invite_code=${inviteCode}`, {
     method: 'POST',
     headers: HEADERS(),
   })
 }
 
-const GetCircleMemberRequests = () => {
-  return Fetch(`/circles/members/requests`, {
+const GetFamilyMemberRequests = () => {
+  return Fetch(`/families/members/requests`, {
     method: 'GET',
     headers: HEADERS(),
   })
 }
 
-const AcceptCircleMemberRequest = id => {
-  return Fetch(`/circles/members/requests/accept?requestId=${id}`, {
+const AcceptFamilyMemberRequest = id => {
+  return Fetch(`/families/members/requests/accept?requestId=${id}`, {
     method: 'PUT',
     headers: HEADERS(),
   })
 }
 
-const DeclineCircleMemberRequest = id => {
-  return Fetch(`/circles/members/requests/decline?requestId=${id}`, {
+const DeclineFamilyMemberRequest = id => {
+  return Fetch(`/families/members/requests/decline?requestId=${id}`, {
     method: 'DELETE',
     headers: HEADERS(),
   })
 }
 
-const LeaveCircle = id => {
-  return Fetch(`/circles/leave?circle_id=${id}`, {
+const LeaveFamily = id => {
+  return Fetch(`/families/leave?family_id=${id}`, {
     method: 'DELETE',
     headers: HEADERS(),
   })
 }
 
-const DeleteCircleMember = (circleID, memberID) => {
-  return Fetch(`/circles/${circleID}/members/delete?member_id=${memberID}`, {
+const DeleteFamilyMember = (familyID, memberID) => {
+  return Fetch(`/families/${familyID}/members/delete?member_id=${memberID}`, {
     method: 'DELETE',
     headers: HEADERS(),
   })
@@ -574,8 +574,8 @@ const UpdateDueDate = (id, dueDate) => {
   })
 }
 
-const RedeemPoints = (userId, points, circleID) => {
-  return Fetch(`/circles/${circleID}/members/points/redeem`, {
+const RedeemPoints = (userId, points, familyID) => {
+  return Fetch(`/families/${familyID}/members/points/redeem`, {
     method: 'POST',
     headers: HEADERS(),
     body: JSON.stringify({ points, userId }),
@@ -1217,7 +1217,7 @@ const SendLearnGame = async game =>
   )
 
 export {
-  AcceptCircleMemberRequest,
+  AcceptFamilyMemberRequest,
   AdjustPoints,
   ApproveChore,
   ApproveRedemption,
@@ -1234,15 +1234,15 @@ export {
   CreateLabel,
   CreateLongLiveToken,
   CreateReward,
-  DeclineCircleMemberRequest,
+  DeclineFamilyMemberRequest,
   DeleteBonusPeriod,
   DeleteChallenge,
   DeleteChildUser,
   DeleteChore,
   DeleteChoreAttachment,
   DeleteChoreHistory,
-  DeleteCircleMember,
   DeleteDraftAttachment,
+  DeleteFamilyMember,
   DeleteLabel,
   DeleteLongLiveToken,
   DeletePointsPreset,
@@ -1252,7 +1252,7 @@ export {
   DeleteUser,
   DisableMFA,
   EditLearnCard,
-  GetAllCircleMembers,
+  GetAllFamilyMembers,
   GetAllUsers,
   GetArchivedChores,
   GetBonusPeriods,
@@ -1267,9 +1267,9 @@ export {
   GetChoresHistory,
   GetChoresNew,
   GetChoresWithSubtasks,
-  GetCircleMemberRequests,
   GetDefaultRanks,
   GetFamilyCurrency,
+  GetFamilyMemberRequests,
   GetFamilyTimezone,
   GetFlashes,
   GetGameRules,
@@ -1293,13 +1293,13 @@ export {
   GetRoutines,
   GetSlotsToday,
   GetStorageUsage,
-  GetUserCircle,
+  GetUserFamily,
   GetUserProfile,
   ImportLearnModule,
   InstallLearnModule,
-  JoinCircle,
+  JoinFamily,
   LaunchFlash,
-  LeaveCircle,
+  LeaveFamily,
   login,
   logout,
   MarkChoreComplete,

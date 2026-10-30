@@ -30,7 +30,7 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import EmptyState from '../../components/common/EmptyState'
-import { useCircleMembers, useUserProfile } from '../../queries/UserQueries'
+import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries'
 import {
   ApproveRedemption,
   DeleteReward,
@@ -305,7 +305,7 @@ const RewardsView = ({ embedded = false, view = 'store' }) => {
 
   const { data: rewards = [], isLoading: rewardsLoading } = useRewards()
   const { data: userProfile } = useUserProfile()
-  const { data: circleMembersData } = useCircleMembers()
+  const { data: familyMembersData } = useFamilyMembers()
   const { data: pendingRedemptions = [], isLoading: redemptionsLoading } =
     useRedemptions('pending')
 
@@ -314,8 +314,8 @@ const RewardsView = ({ embedded = false, view = 'store' }) => {
   const [confirmationModel, setConfirmationModel] = useState({})
 
   const currentMember = useMemo(
-    () => circleMembersData?.res?.find(m => m.userId === userProfile?.id),
-    [circleMembersData, userProfile],
+    () => familyMembersData?.res?.find(m => m.userId === userProfile?.id),
+    [familyMembersData, userProfile],
   )
   const isAdmin =
     currentMember?.role === 'admin' || currentMember?.role === 'manager'
@@ -337,7 +337,7 @@ const RewardsView = ({ embedded = false, view = 'store' }) => {
   const invalidateAll = () => {
     queryClient.invalidateQueries({ queryKey: ['rewards'] })
     queryClient.invalidateQueries({ queryKey: ['redemptions'] })
-    queryClient.invalidateQueries({ queryKey: ['allCircleMembers'] })
+    queryClient.invalidateQueries({ queryKey: ['allFamilyMembers'] })
   }
 
   const handleAdd = () => {

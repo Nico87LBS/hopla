@@ -10,18 +10,18 @@ import { useNavigate } from 'react-router-dom'
 
 import useAcknowledgmentModal from '../../hooks/useAcknowledgmentModal'
 import { useNotification } from '../../service/NotificationProvider'
-import { GetUserCircle, JoinCircle } from '../../utils/Fetcher'
+import { GetUserFamily, JoinFamily } from '../../utils/Fetcher'
 import { hapticLight } from '../../utils/Haptics'
 import { clearPendingInvite, getPendingInvite } from '../../utils/PendingInvite'
 import { authButtonSx } from '../Authorization/authStyles'
 import AcknowledgmentModal from '../Modals/Inputs/AcknowledgmentModal'
-import { CircleVignette } from './CircleVignette'
+import { FamilyVignette } from './FamilyVignette'
 
 const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)'
 
 const enter = (delay = 0) => ({
-  animation: `circleSetupIn 520ms ${EASE} ${delay}ms both`,
-  '@keyframes circleSetupIn': {
+  animation: `familySetupIn 520ms ${EASE} ${delay}ms both`,
+  '@keyframes familySetupIn': {
     from: { opacity: 0, transform: 'translateY(12px)' },
     to: { opacity: 1, transform: 'none' },
   },
@@ -31,7 +31,7 @@ const enter = (delay = 0) => ({
 /**
  * A halo'd icon standing in for the vignette on the join path — that side has
  * no living preview to show (there's nothing to illustrate about someone
- * else's circle yet), so it borrows the same glow treatment WorkspaceReadyView
+ * else's family yet), so it borrows the same glow treatment WorkspaceReadyView
  * puts behind its logo instead of inventing a third visual language.
  */
 const IconHalo = ({ icon }) => (
@@ -75,12 +75,12 @@ const IconHalo = ({ icon }) => (
 )
 
 /**
- * Right after the account (and its solo Circle) is created: the moment to
+ * Right after the account (and its solo Family) is created: the moment to
  * either bring the household in or hop into one that already exists. Skipping
  * via Continue is always valid — chores work fine solo, this is an offer, not
  * a gate.
  */
-const CircleSetupView = () => {
+const FamilySetupView = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { showNotification } = useNotification()
@@ -93,7 +93,7 @@ const CircleSetupView = () => {
   const [isJoining, setIsJoining] = useState(false)
 
   useEffect(() => {
-    GetUserCircle()
+    GetUserFamily()
       .then(resp => resp.json())
       .then(data => setInviteCode(data.res?.[0]?.invite_code ?? null))
       .catch(() => setInviteCode(null))
@@ -105,31 +105,31 @@ const CircleSetupView = () => {
     navigator.clipboard.writeText(inviteCode)
     showNotification({
       type: 'success',
-      message: t('circleSetup.codeCopied'),
+      message: t('familySetup.codeCopied'),
     })
   }
 
   const copyLink = () => {
     navigator.clipboard.writeText(
-      `${window.location.protocol}//${window.location.host}/circle/join?code=${inviteCode}`,
+      `${window.location.protocol}//${window.location.host}/family/join?code=${inviteCode}`,
     )
     showNotification({
       type: 'success',
-      message: t('circleSetup.linkCopied'),
+      message: t('familySetup.linkCopied'),
     })
   }
 
-  const joinCircle = async () => {
+  const joinFamily = async () => {
     if (!joinCode.trim()) return
     setIsJoining(true)
     hapticLight()
     try {
-      const resp = await JoinCircle(joinCode.trim())
+      const resp = await JoinFamily(joinCode.trim())
       if (resp.ok) {
         clearPendingInvite()
         showAcknowledgment(
-          t('circleSetup.requestSentBody'),
-          t('circleSetup.requestSentTitle'),
+          t('familySetup.requestSentBody'),
+          t('familySetup.requestSentTitle'),
           finish,
         )
       } else {
@@ -137,8 +137,8 @@ const CircleSetupView = () => {
           type: 'error',
           message:
             resp.status === 409
-              ? t('circleSetup.alreadyMember')
-              : t('circleSetup.joinFailed'),
+              ? t('familySetup.alreadyMember')
+              : t('familySetup.joinFailed'),
         })
       }
     } finally {
@@ -170,7 +170,7 @@ const CircleSetupView = () => {
       >
         <Box sx={{ mb: 2, ...enter(0) }}>
           {mode === 'invite' ? (
-            <CircleVignette />
+            <FamilyVignette />
           ) : (
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <IconHalo icon={<GroupAddRounded />} />
@@ -199,8 +199,8 @@ const CircleSetupView = () => {
             }}
           >
             {mode === 'invite'
-              ? t('circleSetup.inviteTitle')
-              : t('circleSetup.joinTitle')}
+              ? t('familySetup.inviteTitle')
+              : t('familySetup.joinTitle')}
           </Typography>
           <Typography
             level='body-md'
@@ -211,8 +211,8 @@ const CircleSetupView = () => {
             }}
           >
             {mode === 'invite'
-              ? t('circleSetup.inviteSubtitle')
-              : t('circleSetup.joinSubtitle')}
+              ? t('familySetup.inviteSubtitle')
+              : t('familySetup.joinSubtitle')}
           </Typography>
         </Box>
 
@@ -243,14 +243,14 @@ const CircleSetupView = () => {
                   color: inviteCode ? 'text.primary' : 'text.tertiary',
                 }}
               >
-                {inviteCode ?? t('circleSetup.loadingCode')}
+                {inviteCode ?? t('familySetup.loadingCode')}
               </Typography>
               <IconButton
                 variant='soft'
                 color='primary'
                 disabled={!inviteCode}
                 onClick={copyCode}
-                aria-label={t('circleSetup.copyCodeAria')}
+                aria-label={t('familySetup.copyCodeAria')}
               >
                 <ContentCopyRounded />
               </IconButton>
@@ -267,13 +267,13 @@ const CircleSetupView = () => {
                 disabled={!inviteCode}
                 onClick={copyLink}
               >
-                {t('circleSetup.copyLinkInstead')}
+                {t('familySetup.copyLinkInstead')}
               </Link>
             </Box>
 
             <Box sx={{ mt: 1, ...enter(190) }}>
               <Button size='lg' fullWidth onClick={finish} sx={authButtonSx}>
-                {t('circleSetup.continue')}
+                {t('familySetup.continue')}
               </Button>
             </Box>
 
@@ -287,7 +287,7 @@ const CircleSetupView = () => {
                 startDecorator={<GroupAddRounded fontSize='small' />}
                 onClick={() => setMode('join')}
               >
-                {t('circleSetup.joinInstead')}
+                {t('familySetup.joinInstead')}
               </Link>
             </Box>
           </Box>
@@ -295,7 +295,7 @@ const CircleSetupView = () => {
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
             <Box sx={{ ...enter(120) }}>
               <Input
-                placeholder={t('circleSetup.codePlaceholder')}
+                placeholder={t('familySetup.codePlaceholder')}
                 value={joinCode}
                 onChange={e => setJoinCode(e.target.value)}
                 size='lg'
@@ -309,10 +309,10 @@ const CircleSetupView = () => {
                 fullWidth
                 loading={isJoining}
                 disabled={!joinCode.trim()}
-                onClick={joinCircle}
+                onClick={joinFamily}
                 sx={authButtonSx}
               >
-                {t('circleSetup.joinButton')}
+                {t('familySetup.joinButton')}
               </Button>
             </Box>
             <Box sx={{ textAlign: 'center', ...enter(200) }}>
@@ -328,7 +328,7 @@ const CircleSetupView = () => {
                   setMode('invite')
                 }}
               >
-                {t('circleSetup.back')}
+                {t('familySetup.back')}
               </Link>
             </Box>
           </Box>
@@ -340,4 +340,4 @@ const CircleSetupView = () => {
   )
 }
 
-export default CircleSetupView
+export default FamilySetupView
