@@ -16,6 +16,7 @@ import {
   RankSettingsCard,
 } from '../Games/Progression'
 import ResetCard from '../Games/ResetCard'
+import { RoutinesCard } from '../Games/Routines'
 import RewardsView from '../Rewards/RewardsView'
 import AccountSettings from '../Settings/AccountSettings'
 import AdvancedSettings from '../Settings/AdvancedSettings'
@@ -144,6 +145,13 @@ export const ManageMissions = ({ tab }) => {
 ManageMissions.propTypes = {
   tab: PropTypes.oneOf(['quests', 'challenges', 'periods']).isRequired,
 }
+
+// Tâches › Routines: the tasks chained in order, for parents.
+export const ManageRoutines = () => (
+  <TabPage page='tasks' current='routines'>
+    <RoutinesCard />
+  </TabPage>
+)
 
 export const ManageRanks = ({ tab }) => (
   <TabPage page='ranks' current={tab}>

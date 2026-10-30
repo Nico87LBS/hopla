@@ -210,5 +210,22 @@
     "confirmTasks": "Les tâches faites redeviennent à faire, avec l'échéance qu'elles avaient avant, et leur historique est effacé.",
     "clearGames": "Effacer aussi les jeux et leurs statistiques",
     "confirmGames": "Les parties jouées, leurs statistiques et ce qui a été appris sont effacés ; les jeux repartent de zéro. Les réglages des jeux restent."
+  },
+  "routines": {
+    "title": "Routines",
+    "subtitle": "Des tâches à faire dans l’ordre, une étape à la fois",
+    "name": "Nom de la routine (ex. Matin)",
+    "addTask": "Ajouter une tâche",
+    "noTask": "Plus de tâche à ajouter",
+    "bonus": "Bonus de fin",
+    "help": "Chaque enfant ne voit que l’étape à faire. Les tâches qui ne sont pas les siennes ce jour-là sont sautées. Le bonus est donné une fois par jour, quand toutes ses étapes sont faites.",
+    "up": "Monter",
+    "down": "Descendre",
+    "remove": "Retirer",
+    "edit": "Modifier",
+    "empty": "Aucune routine. Une routine enchaîne des tâches existantes, comme habillage, dents puis cartable.",
+    "failed": "Impossible d’enregistrer la routine",
+    "deleteTitle": "Supprimer la routine ?",
+    "deleteMessage": "« {{name}} » sera supprimée. Ses tâches restent."
   }
 }

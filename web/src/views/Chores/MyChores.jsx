@@ -20,6 +20,7 @@ import {
 } from '@mui/joy'
 import { useMediaQuery } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
+import moment from 'moment'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useSearchParams } from 'react-router-dom'
@@ -28,7 +29,7 @@ import EmptyState from '../../components/common/EmptyState'
 import { useImpersonateUser } from '../../contexts/ImpersonateUserContext.jsx'
 import { useNavBarTitle } from '../../contexts/NavBarTitleContext'
 import { useFilter } from '../../hooks/useFilter'
-import { useChores } from '../../queries/ChoreQueries'
+import { useChores, useRoutinesToday } from '../../queries/ChoreQueries'
 import { useCircleMembers, useUserProfile } from '../../queries/UserQueries'
 import { useNotification } from '../../service/NotificationProvider'
 import {
@@ -39,6 +40,7 @@ import {
 } from '../../utils/Chores'
 import { familyDay, fromPickedDay, pickedDay } from '../../utils/familyTime'
 import { awayMemberIds, waitsForAbsent } from '../../utils/presence.js'
+import { withoutWaitingSteps } from '../../utils/routines.js'
 import { pullCopiesTogether } from '../../utils/taskSlots'
 import TaskInput from '../components/AddTaskModal'
 import CalendarDual from '../components/CalendarDual'
@@ -118,6 +120,7 @@ const MyChores = () => {
     isLoading: choresLoading,
     refetch: refetchChores,
   } = useChores(false)
+  const { data: routines } = useRoutinesToday()
   const {
     data: membersData,
     isError: membersError,
@@ -338,9 +341,12 @@ const MyChores = () => {
 
     // The tasks of a child who is away wait until she is back.
     const awayIds = awayMemberIds(membersData?.res)
-    let sortedChores = [...choresData.res]
-      .filter(chore => !waitsForAbsent(chore, awayIds))
-      .sort(ChoreSorter)
+    // The steps of a routine show one at a time.
+    let sortedChores = withoutWaitingSteps(
+      choresData.res.filter(chore => !waitsForAbsent(chore, awayIds)),
+      routines,
+      moment().endOf('day').toDate(),
+    ).sort(ChoreSorter)
 
     if (impersonatedUser) {
       sortedChores = sortedChores.filter(
@@ -352,7 +358,7 @@ const MyChores = () => {
     }
 
     return sortedChores
-  }, [choresData?.res, membersData?.res, impersonatedUser])
+  }, [choresData?.res, membersData?.res, impersonatedUser, routines])
 
   const choreSections = useMemo(() => {
     if (!chores.length || !userProfile?.id) {

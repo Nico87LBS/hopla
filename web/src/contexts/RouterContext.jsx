@@ -34,6 +34,7 @@ import {
   ManageMissions,
   ManageRanks,
   ManageRewards,
+  ManageRoutines,
 } from '../views/Manage/ParentPages'
 import CircleSetupView from '../views/Onboarding/CircleSetupView'
 const PointsRedirect = () => {
@@ -140,6 +141,10 @@ const Router = createBrowserRouter([
       {
         path: '/manage/points',
         element: <Navigate to='/manage/rewards/presets' replace />,
+      },
+      {
+        path: '/manage/routines',
+        element: <ManageRoutines />,
       },
       {
         path: '/manage/missions',

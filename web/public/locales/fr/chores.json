@@ -1381,5 +1381,9 @@
     "separator": "(?:,|\\s|\\set\\s|&)+",
     "anyone": "tout le monde|tous",
     "preceding": "à partir du|à partir de|à partir d'|dès le|dès|depuis le|depuis"
+  },
+  "routines": {
+    "step": "{{step}}/{{total}}",
+    "stepTitle": "Routine « {{name}} » : étape {{step}} sur {{total}}"
   }
 }

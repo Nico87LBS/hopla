@@ -1025,6 +1025,32 @@ const DeleteQuest = id => {
   })
 }
 
+const GetRoutines = async () => {
+  const resp = await Fetch(`/games/routines`, {
+    method: 'GET',
+    headers: HEADERS(),
+  })
+  return resp.json()
+}
+
+const SaveRoutine = routine => {
+  return Fetch(
+    routine.id ? `/games/routines/${routine.id}` : `/games/routines`,
+    {
+      method: routine.id ? 'PUT' : 'POST',
+      headers: HEADERS(),
+      body: JSON.stringify(routine),
+    },
+  )
+}
+
+const DeleteRoutine = id => {
+  return Fetch(`/games/routines/${id}`, {
+    method: 'DELETE',
+    headers: HEADERS(),
+  })
+}
+
 const GetChallenges = async () => {
   const resp = await Fetch(`/games/challenges`, {
     method: 'GET',
@@ -1221,6 +1247,7 @@ export {
   DeleteLongLiveToken,
   DeletePointsPreset,
   DeleteQuest,
+  DeleteRoutine,
   DeleteReward,
   DeleteUser,
   DisableMFA,
@@ -1259,6 +1286,7 @@ export {
   GetMFAStatus,
   GetPointsPresets,
   GetQuests,
+  GetRoutines,
   GetRanks,
   GetRedemptions,
   GetResource,
@@ -1295,6 +1323,7 @@ export {
   SaveParentsOnPodium,
   SavePointsPreset,
   SaveQuest,
+  SaveRoutine,
   SaveRanks,
   SendLearnGame,
   SendLearnReport,

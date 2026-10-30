@@ -13,10 +13,15 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import ChronoChip from '../../components/common/ChronoChip'
+import RoutineChip from '../../components/common/RoutineChip'
 import TaskMode from '../../components/common/TaskMode'
 import { HOPLA, memberColor } from '../../constants/theme'
 import { useImpersonateUser } from '../../contexts/ImpersonateUserContext.jsx'
-import { useFlashes, useSlotsToday } from '../../queries/ChoreQueries'
+import {
+  useFlashes,
+  useRoutinesToday,
+  useSlotsToday,
+} from '../../queries/ChoreQueries'
 import { useCircleMembers, useUserProfile } from '../../queries/UserQueries'
 import { useNotification } from '../../service/NotificationProvider'
 import { isTogether, taskMemberIds } from '../../utils/Chores.jsx'
@@ -25,6 +30,7 @@ import {
   MarkChoreComplete,
   SlotAction,
 } from '../../utils/Fetcher'
+import { routineStepOf } from '../../utils/routines'
 import { taskModeOf } from '../../utils/taskMode'
 import { doneCopies, hasSlots, todaySlots } from '../../utils/taskSlots'
 import { MemberAvatar } from '../Games/GameParts'
@@ -378,6 +384,7 @@ CopyFace.propTypes = {
 const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
   const { t } = useTranslation('chores')
   const queryClient = useQueryClient()
+  const { data: routines } = useRoutinesToday()
   const { showError } = useNotification()
   const [busy, setBusy] = useState(false)
   const first = chores[0]
@@ -485,6 +492,7 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
   // Several slots to approve get a footer with the count and one button.
   const footer = slotted && canApprove && pendingCount > 1
   const mode = taskModeOf(first, chores.length)
+  const inRoutine = chores.some(chore => routineStepOf(routines, chore))
   const meta = []
   if (slotted)
     meta.push(t('slots.summary', { done: doneCount, total: all.length }))
@@ -503,12 +511,13 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
           >
             {first.name}
           </Typography>
-          {(mode || meta.length > 0 || flash) && (
+          {(mode || meta.length > 0 || flash || inRoutine) && (
             <Typography
               level='body-xs'
               sx={{ color: 'text.secondary', mt: 0.25 }}
             >
               <ChronoChip flash={flash} sx={{ mr: 0.75 }} />
+              <RoutineChip chores={chores} sx={{ mr: 0.75 }} />
               <TaskMode mode={mode} />
               {mode && meta.length > 0 && ' · '}
               {meta.join(' · ')}

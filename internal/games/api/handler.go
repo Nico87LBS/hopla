@@ -81,6 +81,8 @@ type Today struct {
 	// Members is each active member's rank and running quests.
 	Members    []MemberProgress      `json:"members"`
 	Challenges []games.ChallengeView `json:"challenges"`
+	// Routines are the tasks chained in order, with where each member stands.
+	Routines []games.RoutineView `json:"routines"`
 	// ParentsOnPodium puts the parents on the podium with the children.
 	ParentsOnPodium bool `json:"parentsOnPodium"`
 	// Currency names what the family earns, see circle.Currencies.
@@ -181,6 +183,10 @@ func (h *Handler) getToday(c *gin.Context) {
 		}
 	}
 	if today.Challenges, err = games.Challenges(db, circleID, userIDs, now.Add(-endedChallengesKept), now); err != nil {
+		fail(err)
+		return
+	}
+	if today.Routines, err = games.RoutineViews(db, circleID, userIDs, now); err != nil {
 		fail(err)
 		return
 	}
@@ -515,6 +521,10 @@ func Routes(r *gin.Engine, h *Handler, auth *jwt.GinJWTMiddleware) {
 		routes.POST("/challenges", h.createChallenge)
 		routes.PUT("/challenges/:id", h.updateChallenge)
 		routes.DELETE("/challenges/:id", h.deleteChallenge)
+		routes.GET("/routines", h.getRoutines)
+		routes.POST("/routines", h.createRoutine)
+		routes.PUT("/routines/:id", h.updateRoutine)
+		routes.DELETE("/routines/:id", h.deleteRoutine)
 	}
 }
 
@@ -536,5 +546,6 @@ func APIs(cfg *config.Config, h *Handler, r *gin.Engine, limiter *limiter.Limite
 		routes.GET("/ranks", h.getRanks)
 		routes.GET("/quests", h.getQuests)
 		routes.GET("/challenges", h.getChallenges)
+		routes.GET("/routines", h.getRoutines)
 	}
 }

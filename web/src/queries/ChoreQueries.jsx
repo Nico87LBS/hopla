@@ -16,6 +16,7 @@ import {
   GetChoresHistory,
   GetChoresNew,
   GetFlashes,
+  GetGamesToday,
   GetSlotsToday,
   MarkChoreComplete,
   RejectChore,
@@ -135,6 +136,16 @@ export const useSlotsToday = ({ enabled = true } = {}) =>
 
 // The speed bonus open now on each task, by task id. Refreshed every minute,
 // so a task's own speed bonus shows once its day comes.
+// The routines with each child's step to do now. It shares the games of the
+// day's query, refreshed when a task is done.
+export const useRoutinesToday = () =>
+  useQuery({
+    queryKey: ['games', 'today'],
+    queryFn: async () => (await GetGamesToday())?.res || null,
+    refetchInterval: 10 * 60 * 1000,
+    select: today => today?.routines || [],
+  })
+
 export const useFlashes = () =>
   useQuery({
     queryKey: ['flashes'],
