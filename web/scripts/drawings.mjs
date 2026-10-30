@@ -309,31 +309,53 @@ const DRAWINGS = {
       '#8D5A3B',
     ),
   baby:
-    shape('M22 92 C22 72 36 66 50 66 C64 66 78 72 78 92Z', '#BFE3FF') +
-    line('M36 74 q14 8 28 0', 1.6) +
-    rabbit({ y: 4, size: 0.72 }) +
-    circle(50, 60, 4.2, '#FDE68A') +
-    rect(46, 57.5, 8, 3, 1.5, '#F59E0B') +
-    line('M50 28 q-3 -4 0 -6', 1.6),
+    // A baby rabbit peeking out of its pram, with a dummy.
+    circle(32, 84, 7, '#4B4458') +
+    circle(68, 84, 7, '#4B4458') +
+    circle(32, 84, 2.4, '#D9D9E3', false) +
+    circle(68, 84, 2.4, '#D9D9E3', false) +
+    `<g transform="translate(10 2)">${rabbit({ y: -2, size: 0.6 })}</g>` +
+    circle(60, 58.5, 3.4, '#FDE68A') +
+    oval(60, 58.5, 5.6, 2.4, '#F59E0B') +
+    shape('M12 62 L88 62 C88 74 76 80 50 80 C24 80 12 74 12 62Z', '#60A5FA') +
+    shape('M12 62 C12 42 22 30 40 28 L44 62Z', '#3B82F6') +
+    line('M18 54 L38 34 M26 60 L42 44', 1.4) +
+    line('M88 62 C90 54 94 50 96 50', 2.4) +
+    line('M18 68 H82', 1.4),
   grandma:
-    shape('M24 92 C24 76 34 70 50 70 C66 70 76 76 76 92Z', '#8E4EC6') +
-    rabbit({ y: -6, size: 0.9 }) +
-    circle(50, 32, 7, '#D4D4DE') +
-    circle(42, 44, 5.4, 'none') +
-    circle(58, 44, 5.4, 'none') +
-    line('M47.4 44 h5.2', 1.8) +
-    line('M40 74 l10 6 l10 -6', 1.6),
-  grandpa:
-    shape('M24 92 C24 76 34 70 50 70 C66 70 76 76 76 92Z', '#30A46C') +
-    rabbit({ y: -6, size: 0.9, ears: true }) +
-    shape('M28 34 C30 22 70 22 72 34 C66 32 34 32 28 34Z', '#6B7280') +
-    circle(42, 44, 5.4, 'none') +
-    circle(58, 44, 5.4, 'none') +
-    line('M47.4 44 h5.2', 1.8) +
+    shape('M22 92 C22 76 34 70 50 70 C66 70 78 76 78 92Z', '#8E4EC6') +
+    shape('M30 72 C40 84 60 84 70 72 C66 90 34 90 30 72Z', '#C4B5FD') +
+    rabbit({ y: -2, size: 0.86 }) +
+    circle(50, 20, 8, '#E5E7EB') +
+    line('M44 18 q6 4 12 0', 1.4) +
     shape(
-      'M38 56 C42 52 48 54 50 56 C52 54 58 52 62 56 C58 60 54 60 50 58 C46 60 42 60 38 56Z',
+      'M34 40 C34 30 42 30 44 34 C46 28 54 28 56 34 C58 30 66 30 66 40 C60 36 40 36 34 40Z',
       '#E5E7EB',
-    ),
+    ) +
+    circle(42, 49, 5.6, '#fff') +
+    circle(58, 49, 5.6, '#fff') +
+    eyes(42, 58, 49, 2.2) +
+    line('M47.6 49 h4.8', 1.8) +
+    [38, 44, 50, 56, 62]
+      .map(x => circle(x, 76 + Math.abs(x - 50) * -0.15, 2.2, '#fff'))
+      .join(''),
+  grandpa:
+    shape('M22 92 C22 76 34 70 50 70 C66 70 78 76 78 92Z', '#30A46C') +
+    shape('M42 70 L50 82 L58 70Z', '#fff') +
+    rabbit({ y: -2, size: 0.86 }) +
+    // A flat cap with its peak, the ears poking out of it.
+    shape('M30 40 C30 26 70 26 70 40 C60 37 40 37 30 40Z', '#8D5A3B') +
+    shape('M30 40 C24 40 20 42 22 44 C30 44 40 42 44 39Z', '#5B3A29') +
+    line('M38 32 h24', 1.2) +
+    circle(42, 49, 5.6, '#fff') +
+    circle(58, 49, 5.6, '#fff') +
+    eyes(42, 58, 49, 2.2) +
+    line('M47.6 49 h4.8', 1.8) +
+    shape(
+      'M36 60 C40 55 47 56 50 59 C53 56 60 55 64 60 C58 64 54 64 50 62 C46 64 42 64 36 60Z',
+      '#E5E7EB',
+    ) +
+    line('M80 92 V64 C80 58 88 58 88 64', 3),
   sister:
     shape('M30 92 L36 74 C40 70 60 70 64 74 L70 92Z', '#FB923C') +
     rabbit({ y: 2, size: 0.78 }) +
@@ -375,12 +397,19 @@ const DRAWINGS = {
     oval(60, 66, 4, 2.6, '#B86B4B', false, 20) +
     flat('M50 24 C50 34 48 44 46 50 C50 46 52 36 50 24Z', '#fff', 0.7),
   mouth:
+    // A big smile: lips, teeth and tongue.
     shape(
-      'M18 46 C28 40 40 42 50 46 C60 42 72 40 82 46 C74 64 26 64 18 46Z',
+      'M14 42 C30 34 40 40 50 38 C60 40 70 34 86 42 C82 68 66 80 50 80 C34 80 18 68 14 42Z',
       '#E5484D',
     ) +
-    shape('M24 48 C40 52 60 52 76 48 C70 56 30 56 24 48Z', '#fff') +
-    line('M18 46 C40 50 60 50 82 46', 1.6),
+    shape(
+      'M22 46 C36 50 64 50 78 46 C76 60 66 72 50 72 C34 72 24 60 22 46Z',
+      '#7F1D3A',
+    ) +
+    shape('M22 46 C36 50 64 50 78 46 L76 54 C62 57 38 57 24 54Z', '#fff') +
+    line('M36 49 v6 M44 50 v6 M50 50 v6 M56 50 v6 M64 49 v6', 1) +
+    shape('M36 70 C38 62 62 62 64 70 C58 74 42 74 36 70Z', '#F472B6') +
+    flat('M28 40 C36 38 42 40 46 40 C40 42 34 42 28 42Z', '#fff', 0.5),
   ear:
     shape(
       'M38 22 C58 12 78 28 72 50 C68 64 58 64 56 74 C54 84 44 88 38 80 C34 74 40 70 40 64 C40 52 26 34 38 22Z',
@@ -416,11 +445,16 @@ const DRAWINGS = {
     flat('M30 44 C30 36 36 32 40 34 C36 38 34 42 34 48Z', '#fff', 0.55),
   banana:
     shape(
-      'M22 30 C20 56 38 78 66 78 C76 78 82 74 82 70 C70 72 50 68 38 52 C32 44 30 36 30 28Z',
+      'M20 26 C14 54 34 82 70 80 C80 79 86 74 84 70 C76 72 56 70 42 56 C32 46 28 36 28 24Z',
       '#FFD23F',
     ) +
-    shape('M22 30 L22 22 L30 22 L30 28Z', '#8D5A3B') +
-    line('M34 40 C38 56 50 66 68 72', 1.4),
+    shape(
+      'M28 24 C30 40 38 52 50 60 C62 68 76 70 84 70 C72 76 50 74 36 60 C26 50 22 38 24 24Z',
+      '#F5B800',
+    ) +
+    shape('M20 26 L19 16 L27 15 L28 24Z', '#8D5A3B') +
+    shape('M84 70 C88 70 90 72 88 74 C86 76 84 74 84 70Z', '#5B3A29') +
+    flat('M24 34 C24 48 30 60 40 68 C32 58 28 46 28 34Z', '#fff', 0.55),
   orange:
     circle(50, 54, 28, '#F97316') +
     shape('M50 26 C54 18 64 16 70 20 C64 26 56 28 50 26Z', '#30A46C') +
@@ -550,16 +584,23 @@ const DRAWINGS = {
 
   // toys
   ball:
+    // A football: white with black patches.
+    `<clipPath id="ballclip"><circle cx="50" cy="50" r="32"/></clipPath>` +
     circle(50, 50, 32, '#fff') +
-    shape(
-      'M50 18 C66 30 66 70 50 82 C60 82 82 70 82 50 C82 30 62 18 50 18Z',
-      '#E5484D',
+    `<g clip-path="url(#ballclip)">` +
+    flat('M50 38 L61 46 L57 59 L43 59 L39 46Z', INK) +
+    line(
+      'M50 38 V22 M61 46 L76 41 M57 59 L66 72 M43 59 L34 72 M39 46 L24 41',
+      1.8,
     ) +
-    shape(
-      'M50 18 C34 30 34 70 50 82 C40 82 18 70 18 50 C18 30 38 18 50 18Z',
-      '#3B82F6',
-    ) +
-    shape('M18 50 C30 44 70 44 82 50 C70 56 30 56 18 50Z', '#FFD23F'),
+    flat('M44 14 L56 14 L60 22 L50 28 L40 22Z', INK) +
+    flat('M80 32 L88 40 L86 54 L78 50 L74 40Z', INK) +
+    flat('M70 74 L78 66 L84 74 L76 86 L66 82Z', INK) +
+    flat('M30 74 L22 66 L16 74 L24 86 L34 82Z', INK) +
+    flat('M20 32 L12 40 L14 54 L22 50 L26 40Z', INK) +
+    `</g>` +
+    circle(50, 50, 32, 'none') +
+    flat('M30 34 C34 26 42 22 48 22 C42 26 36 30 32 38Z', '#fff', 0.7),
   doll:
     shape('M32 88 L38 62 L62 62 L68 88Z', '#F472B6') +
     circle(50, 42, 18, '#F8D5B8') +
@@ -843,7 +884,9 @@ const groupOf = id => {
 
 mkdirSync(out, { recursive: true })
 for (const [id, body] of Object.entries(DRAWINGS)) {
-  const background = BACKGROUNDS[groupOf(id)] || '#F4F1FA'
+  // White paint needs a darker ground to show.
+  const background =
+    id === 'colour-white' ? '#CFC8E3' : BACKGROUNDS[groupOf(id)] || '#F4F1FA'
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="256" height="256"><circle cx="50" cy="50" r="49" fill="${background}"/>${body}</svg>\n`
   writeFileSync(new URL(`${id}.svg`, out), svg)
 }
