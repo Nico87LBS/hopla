@@ -19,6 +19,7 @@ import { evaluate } from '../src/utils/learn/expression.js'
 import { generatorSource } from '../src/utils/learn/generators.js'
 import { formatNumber, frenchWords } from '../src/utils/learn/numbers.js'
 import { learnParent } from '../src/utils/learn/routes.js'
+import { pickVoice } from '../src/utils/learn/speech.js'
 
 const dir = new URL('../../internal/learn/catalogue/', import.meta.url)
 const catalogue = Object.fromEntries(
@@ -256,6 +257,65 @@ test('a card without traps of its own draws them from its chapter, game after ga
     }
   }
   assert.ok(drawn.size > 3, `${drawn.size} different traps`)
+})
+
+test('the youngest hear a word and pick one drawing among three', () => {
+  const compiled = compile(catalogue['anglais-gs'])
+  const questions = pickQuestions(compiled, new Map(), {
+    rng: seededRandom(3),
+  })
+  assert.equal(questions.length, 6)
+  for (const q of questions) {
+    assert.equal(q.mode, 'choice')
+    assert.equal(q.lang, 'en')
+    assert.equal(q.listen, q.prompt, 'the English word is said')
+    assert.equal(q.choices.length, 3)
+    assert.ok(q.choices.includes(q.answer))
+    q.choices.forEach(c => assert.ok(q.images[c], `${q.key}: ${c}`))
+  }
+})
+
+test('every drawing a card names is in the app', () => {
+  const drawings = new URL('../public/drawings/', import.meta.url)
+  const have = new Set(readdirSync(drawings).map(n => n.replace('.svg', '')))
+  for (const doc of modules) {
+    for (const card of doc.fiches || []) {
+      if (card.image) assert.ok(have.has(card.image), `${doc.id} ${card.id}`)
+    }
+  }
+})
+
+test('a listening card is heard, read, or written down', () => {
+  const compiled = compile(catalogue['anglais-ce2'])
+  const items = compiled.chapters.flatMap(c =>
+    c.sources.flatMap(source => source.list()),
+  )
+  const heard = items.find(i => i.key === 'en:mot:cat')
+  assert.deepEqual([heard.listen, heard.answer], ['cat', 'chat'])
+  assert.equal(heard.images, undefined, 'words, not drawings, in CE2')
+  assert.equal(heard.choices.length, 4)
+  const read = items.find(i => i.key === 'en:mot:cat:lire')
+  assert.equal(read.prompt, 'cat')
+  assert.equal(read.listen, undefined, 'read, not heard')
+  assert.equal(read.said.listen, 'cat', 'but said once answered')
+  const written = items.find(i => i.key === 'en:ecrire:cat:dictee')
+  assert.equal(written.mode, 'text')
+  assert.equal(written.listen, 'cat')
+  assert.equal(checkAnswer(written, 'Cat').correct, true)
+  assert.equal(checkAnswer(written, 'kat').correct, true, 'one slip is fine')
+  assert.equal(checkAnswer(written, 'dog').correct, false)
+})
+
+test('English is said by a British voice of the device when there is one', () => {
+  const voices = [
+    { lang: 'fr-FR', localService: true },
+    { lang: 'en-US', localService: true },
+    { lang: 'en-GB', localService: false },
+    { lang: 'en_GB', localService: true },
+  ]
+  assert.equal(pickVoice(voices, 'en'), voices[3])
+  assert.equal(pickVoice(voices.slice(0, 3), 'en'), voices[1])
+  assert.equal(pickVoice(voices.slice(0, 1), 'en'), null)
 })
 
 test('the back arrow of the games goes one page up, never into a game', () => {

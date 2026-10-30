@@ -32,7 +32,9 @@
     "wrong": "Not quite",
     "answerWas": "The answer: {{answer}}",
     "next": "Continue",
-    "progress": "{{current}} / {{total}}"
+    "progress": "{{current}} / {{total}}",
+    "listen": "Listen again",
+    "heard": "The word: {{word}}"
   },
   "end": {
     "title0": "Keep going, you'll get there!",
