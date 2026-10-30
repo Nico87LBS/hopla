@@ -31,7 +31,6 @@ import MFASettings from '../Settings/MFASettings'
 import PodiumCard from '../Settings/PodiumCard'
 import ProfileSettings from '../Settings/ProfileSettings'
 import { SettingsEmbedContext } from '../Settings/settingsEmbed'
-import SidepanelSettings from '../Settings/SidepanelSettings'
 import StorageSettings from '../Settings/StorageSettings'
 import TemplateSettings from '../Settings/TemplateSettings'
 import ThemeSettings from '../Settings/ThemeSettings'
@@ -185,8 +184,6 @@ ManageFamily.propTypes = {
 // parents' (the children's passwords are set from their parent's account).
 export const ManageAccount = ({ tab }) => {
   const isParent = useIsParent()
-  // The sidepanel only renders from `lg` up, so it is set up where it exists.
-  const hasSidepanel = useMediaQuery(theme => theme.breakpoints.up('lg'))
   const { t } = useTranslation('settings')
   if (tab === 'security' && isParent === false) {
     return <Navigate to='/manage/account' replace />
@@ -208,14 +205,6 @@ export const ManageAccount = ({ tab }) => {
         <Embedded mode='section'>
           <ThemeSettings />
           <LocalizationSettings />
-          {hasSidepanel && (
-            <Box component='section'>
-              <Typography level='title-lg' sx={{ mb: 1.5 }}>
-                {t('layout.sidepanel.title')}
-              </Typography>
-              <SidepanelSettings />
-            </Box>
-          )}
         </Embedded>
       )}
     </TabPage>

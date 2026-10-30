@@ -44,7 +44,6 @@
     }
   },
   "summary": {
-    "selectUser": "Select member to view {{units}} for",
-    "unknownUser": "Unknown User"
+    "selectUser": "Select member to view {{units}} for"
   }
 }

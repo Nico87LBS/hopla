@@ -44,3 +44,24 @@ func TestWeekSplitsTasksGamesAndBonuses(t *testing.T) {
 }
 
 func ptr[T any](v T) *T { return &v }
+
+func TestTodayTalliesCountTheDayOnly(t *testing.T) {
+	db := setup(t)
+	now := noon(0)
+	task := chore(t, db, "Chambre", 3, now, nil)
+	done(t, db, task.ID, 2, now)
+	done(t, db, task.ID, 2, now.AddDate(0, 0, -1))
+	for _, row := range []ptModel.PointsHistory{
+		{UserID: 2, CircleID: 1, Action: ptModel.PointsHistoryActionAdd, Points: 3, CreatedAt: now},
+		{UserID: 2, CircleID: 1, Action: ptModel.PointsHistoryActionBonus, Points: 5, CreatedAt: now},
+		{UserID: 2, CircleID: 1, Action: ptModel.PointsHistoryActionPenalty, Points: 2, CreatedAt: now},
+		{UserID: 2, CircleID: 1, Action: ptModel.PointsHistoryActionRedeem, Points: 10, CreatedAt: now},
+		{UserID: 2, CircleID: 1, Action: ptModel.PointsHistoryActionAdd, Points: 3, CreatedAt: now.AddDate(0, 0, -1)},
+	} {
+		require.NoError(t, db.Create(&row).Error)
+	}
+	tallies, err := TodayTallies(db, 1, now)
+	require.NoError(t, err)
+	require.Equal(t, DayTally{Done: 1, Earned: 6}, tallies[2])
+	require.Zero(t, tallies[3])
+}

@@ -3,6 +3,7 @@ package games
 import (
 	"time"
 
+	chModel "github.com/nico87lbs/hopla/internal/chore/model"
 	ptModel "github.com/nico87lbs/hopla/internal/points"
 	"github.com/nico87lbs/hopla/internal/zone"
 	"gorm.io/gorm"
@@ -77,4 +78,44 @@ func Week(db *gorm.DB, circleID int, userIDs []int, now time.Time) ([]WeekStats,
 			GamePoints: gamePoints[id], BonusPoints: bonus[id] - gamePoints[id], Games: played[id], DaysAway: len(away[id])})
 	}
 	return stats, from, nil
+}
+
+// DayTally is what a member did today: tasks completed and the points the
+// day brought, bonuses and penalties included, rewards bought left out.
+type DayTally struct {
+	Done   int `json:"done"`
+	Earned int `json:"earned"`
+}
+
+// TodayTallies returns each member's tally of the family's day so far.
+func TodayTallies(db *gorm.DB, circleID int, now time.Time) (map[int]DayTally, error) {
+	start := endOfDay(now, zone.Of(circleID)).Add(-24*time.Hour + time.Second)
+	tallies := map[int]DayTally{}
+	var done []struct {
+		CompletedBy int
+		N           int
+	}
+	if err := db.Table("chore_histories AS h").Joins("JOIN chores AS c ON c.id = h.chore_id").
+		Select("h.completed_by, COUNT(*) AS n").
+		Where("c.circle_id = ? AND h.status = ? AND h.performed_at >= ?", circleID, chModel.ChoreHistoryStatusCompleted, start).
+		Group("h.completed_by").Scan(&done).Error; err != nil {
+		return nil, err
+	}
+	for _, row := range done {
+		tally := tallies[row.CompletedBy]
+		tally.Done = row.N
+		tallies[row.CompletedBy] = tally
+	}
+	var rows []ptModel.PointsHistory
+	if err := db.Where("circle_id = ? AND created_at >= ? AND action NOT IN ?", circleID, start,
+		[]ptModel.PointsHistoryAction{ptModel.PointsHistoryActionRedeem, ptModel.PointsHistoryActionReset}).
+		Find(&rows).Error; err != nil {
+		return nil, err
+	}
+	for _, row := range rows {
+		tally := tallies[row.UserID]
+		tally.Earned += row.Delta()
+		tallies[row.UserID] = tally
+	}
+	return tallies, nil
 }

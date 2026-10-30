@@ -2,6 +2,8 @@ import { Tab, TabList, Tabs } from '@mui/joy'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
+import { selectedTabSx } from '../../constants/theme'
+
 // PageTabs are the tabs at the top of a Gérer page: one address per tab,
 // so the back button and a shared link land on the right one.
 const PageTabs = ({ current, tabs }) => (
@@ -19,16 +21,15 @@ const PageTabs = ({ current, tabs }) => (
           to={tab.to}
           replace
           disableIndicator
-          sx={{
-            flex: 1,
-            borderRadius: 'md',
-            minHeight: 40,
-            px: 1,
-            '&.Mui-selected': {
-              bgcolor: 'background.surface',
-              boxShadow: 'sm',
+          sx={[
+            {
+              flex: 1,
+              borderRadius: 'md',
+              minHeight: 40,
+              px: 1,
             },
-          }}
+            selectedTabSx,
+          ]}
         >
           {tab.label}
         </Tab>
