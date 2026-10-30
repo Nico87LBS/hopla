@@ -139,20 +139,9 @@
     "highPriority": "High Priority",
     "title": "Smart Insights",
     "active": "Active",
-    "clickToClear": "Click active filter to clear",
     "quickActions": "Quick actions based on your tasks",
-    "overdueDesc_one": "{{count}} task is overdue",
-    "overdueDesc_other": "{{count}} tasks are overdue",
-    "dueTodayDesc_one": "{{count}} task due by end of day",
-    "dueTodayDesc_other": "{{count}} tasks due by end of day",
-    "pendingApprovalDesc_one": "{{count}} task awaits approval",
-    "pendingApprovalDesc_other": "{{count}} tasks await approval",
-    "dueThisWeekDesc_one": "{{count}} task due in the next 7 days",
-    "dueThisWeekDesc_other": "{{count}} tasks due in the next 7 days",
     "highPriorityDesc_one": "{{count}} task requires immediate attention",
     "highPriorityDesc_other": "{{count}} tasks require immediate attention",
-    "noDueDateDesc_one": "{{count}} task needs a deadline",
-    "noDueDateDesc_other": "{{count}} tasks need a deadline",
     "filters": {
       "overdue": "Overdue",
       "due-today": "Due today",
@@ -450,7 +439,6 @@
     "loading": "Loading tasks by assignee...",
     "title": "Tasks by Assignee",
     "scheduled": "Scheduled",
-    "pendingReview": "Pending Review",
     "emptyTitle": "No one has tasks yet",
     "emptyDescription": "Assign a task to someone in your family and their workload shows up here."
   },
@@ -460,11 +448,7 @@
     }
   },
   "impersonate": {
-    "viewAs": "View tasks as",
-    "switchTitle": "Switch to user view",
-    "switchHint": "Tasks will be filtered to show only assignments for selected user",
-    "chooseUser": "Choose User",
-    "changeUser": "Change User"
+    "viewAs": "View tasks as"
   },
   "modals": {
     "changeDueDate": "Change due date",
@@ -890,30 +874,14 @@
     "lowPriority": "Low Priority",
     "lowestPriority": "Lowest Priority",
     "noPriority": "No Priority",
-    "assignedToOther": "Assigned to other",
-    "tasksCount": "{{count}} Tasks"
+    "assignedToOther": "Assigned to other"
   },
   "activitiesCard": {
     "justNow": "Just now",
     "hoursAgo": "{{count}}h ago",
     "daysAgo": "{{count}}d ago",
-    "statusStarted": "Started",
-    "statusDone": "Done",
-    "statusLate": "Late",
-    "statusSkipped": "Skipped",
-    "statusPendingApproval": "Pending Approval",
-    "statusRejected": "Rejected",
-    "statusMissed": "Missed",
-    "statusRescheduled": "Rescheduled",
-    "statusCompleted": "Completed",
-    "byUser": "by {{name}}",
-    "unknownUser": "Unknown",
-    "unknownChore": "Unknown Chore",
-    "pointsShort": "{{count}} pts",
-    "noRecentActivities": "No recent activities",
     "today": "Today",
-    "yesterday": "Yesterday",
-    "noteTitle": "Note - {{choreName}}"
+    "yesterday": "Yesterday"
   },
   "taskEditor": {
     "unsaved": "Unsaved",
@@ -1385,5 +1353,25 @@
   "routines": {
     "step": "{{step}}/{{total}}",
     "stepTitle": "Routine “{{name}}”: step {{step}} of {{total}}"
+  },
+  "todayPanel": {
+    "label": "Today at a glance",
+    "away": "Away",
+    "doneOf": "{{done}} of {{total}}",
+    "earned_one": "+{{count}} {{unit}}",
+    "earned_other": "+{{count}} {{units}}",
+    "routineDone": "{{name}} done",
+    "kids": "The kids today",
+    "games": "Today’s games",
+    "surprise": "Surprise task: {{name}}",
+    "chrono": "Chrono bonus: {{name}}",
+    "period": "{{Units}} multiplied: {{name}}",
+    "noGames": "No game running today.",
+    "week": "This week",
+    "weekHelp": "Tasks planned each day (late ones count for today)."
+  },
+  "viewAs": {
+    "label": "Show the tasks of",
+    "everyone": "Everyone"
   }
 }

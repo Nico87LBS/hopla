@@ -382,43 +382,9 @@
       "loadFailed": "Impossible de lire les données actuelles. Réessaie."
     }
   },
-  "sidepanel": {
-    "title": "Personnalisation du panneau latéral",
-    "description": "Choisis les cartes du panneau latéral et leur ordre. Fais-les glisser pour les réorganiser ou affiche-les et masque-les.",
-    "resetToDefaults": "Rétablir les valeurs par défaut",
-    "resetHelper": "La visibilité et l'ordre par défaut de toutes les cartes seront rétablis.",
-    "cards": {
-      "welcome": {
-        "name": "Changement d'utilisateur",
-        "description": "Permet aux administrateurs et gestionnaires de voir les tâches d'autres personnes"
-      },
-      "smartInsights": {
-        "name": "Aperçus intelligents",
-        "description": "Actions rapides selon tes tâches"
-      },
-      "assignees": {
-        "name": "Tâches par personne assignée",
-        "description": "Regroupe les tâches selon la personne à qui elles sont assignées"
-      },
-      "calendar": {
-        "name": "Vue calendrier",
-        "description": "Affiche les tâches au format calendrier"
-      },
-      "activities": {
-        "name": "Activités récentes",
-        "description": "Affiche les tâches récemment terminées et les activités"
-      },
-      "weeklyGoals": {
-        "name": "Objectifs hebdomadaires",
-        "description": "Affiche la progression hebdomadaire et les statistiques de la famille"
-      }
-    }
-  },
   "homeSections": {
     "title": "Personnalisation de l'aperçu",
     "description": "Choisis les sections de l'écran Aperçu et leur ordre. Fais-les glisser pour les réorganiser, ou affiche-les et masque-les.",
-    "resetToDefaults": "Rétablir les valeurs par défaut",
-    "resetHelper": "Toutes les sections retrouveront leur visibilité et leur ordre par défaut.",
     "sections": {
       "greeting": {
         "name": "Message d'accueil",
@@ -451,10 +417,7 @@
     }
   },
   "layout": {
-    "title": "Disposition et navigation",
-    "sidepanel": {
-      "title": "Panneau latéral"
-    }
+    "title": "Disposition et navigation"
   },
   "theme": {
     "title": "Thème",

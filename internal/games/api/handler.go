@@ -99,6 +99,8 @@ type MemberProgress struct {
 	Earned int `json:"earned"`
 	games.RankLevel
 	Quests []games.QuestView `json:"quests"`
+	// Today is what they did today, for the summary of the family's day.
+	Today games.DayTally `json:"today"`
 }
 
 func (h *Handler) getToday(c *gin.Context) {
@@ -175,11 +177,16 @@ func (h *Handler) getToday(c *gin.Context) {
 		fail(err)
 		return
 	}
+	tallies, err := games.TodayTallies(db, circleID, now)
+	if err != nil {
+		fail(err)
+		return
+	}
 	today.Members = []MemberProgress{}
 	for _, m := range members {
 		if m.IsActive {
 			today.Members = append(today.Members, MemberProgress{UserID: m.UserID, Earned: m.Points,
-				RankLevel: games.RankOf(today.Ranks, m.Points), Quests: quests[m.UserID]})
+				RankLevel: games.RankOf(today.Ranks, m.Points), Quests: quests[m.UserID], Today: tallies[m.UserID]})
 		}
 	}
 	if today.Challenges, err = games.Challenges(db, circleID, userIDs, now.Add(-endedChallengesKept), now); err != nil {

@@ -44,7 +44,6 @@
     }
   },
   "summary": {
-    "selectUser": "Choisis le membre dont tu veux voir les {{units}}",
-    "unknownUser": "Utilisateur inconnu"
+    "selectUser": "Choisis le membre dont tu veux voir les {{units}}"
   }
 }

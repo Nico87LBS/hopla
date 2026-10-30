@@ -27,7 +27,7 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useSearchParams } from 'react-router-dom'
 
-import { HOPLA } from '../../constants/theme'
+import { HOPLA, selectedTabSx } from '../../constants/theme'
 import { useIsParent } from '../../hooks/useIsParent'
 import { useCircleMembers, useSetMemberAway } from '../../queries/UserQueries'
 import { TodayCard, useGamesToday, useGamesWeek } from '../Games/DailyGames'
@@ -532,17 +532,16 @@ const FamilyView = () => {
                 key={value}
                 value={value}
                 disableIndicator
-                sx={{
-                  borderRadius: 'md',
-                  flex: 1,
-                  fontWeight: 600,
-                  minHeight: 36,
-                  px: 2,
-                  '&.Mui-selected': {
-                    bgcolor: 'background.surface',
-                    boxShadow: 'sm',
+                sx={[
+                  {
+                    borderRadius: 'md',
+                    flex: 1,
+                    fontWeight: 600,
+                    minHeight: 36,
+                    px: 2,
                   },
-                }}
+                  selectedTabSx,
+                ]}
               >
                 {t(`family.tabs.${value}`)}
                 {value === 'shop' && isParent && pending.length > 0 && (

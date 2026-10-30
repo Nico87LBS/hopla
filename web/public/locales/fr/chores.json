@@ -139,20 +139,9 @@
     "highPriority": "Priorité élevée",
     "title": "Aperçus intelligents",
     "active": "Actif",
-    "clickToClear": "Touche le filtre actif pour le désactiver",
     "quickActions": "Actions rapides selon tes tâches",
-    "overdueDesc_one": "{{count}} tâche en retard",
-    "overdueDesc_other": "{{count}} tâches en retard",
-    "dueTodayDesc_one": "{{count}} tâche à échéance aujourd'hui",
-    "dueTodayDesc_other": "{{count}} tâches à échéance aujourd'hui",
-    "pendingApprovalDesc_one": "{{count}} tâche en attente d'approbation",
-    "pendingApprovalDesc_other": "{{count}} tâches en attente d'approbation",
-    "dueThisWeekDesc_one": "{{count}} tâche à échéance dans les 7 prochains jours",
-    "dueThisWeekDesc_other": "{{count}} tâches à échéance dans les 7 prochains jours",
     "highPriorityDesc_one": "{{count}} tâche requiert une attention immédiate",
     "highPriorityDesc_other": "{{count}} tâches requièrent une attention immédiate",
-    "noDueDateDesc_one": "{{count}} tâche sans échéance",
-    "noDueDateDesc_other": "{{count}} tâches sans échéance",
     "filters": {
       "overdue": "En retard",
       "due-today": "À faire aujourd'hui",
@@ -450,7 +439,6 @@
     "loading": "Chargement des tâches par personne assignée...",
     "title": "Tâches par personne assignée",
     "scheduled": "Planifié",
-    "pendingReview": "En attente d'approbation",
     "emptyTitle": "Personne n'a encore de tâches",
     "emptyDescription": "Assigne une tâche à un membre de ta famille : sa charge de travail apparaîtra ici."
   },
@@ -460,11 +448,7 @@
     }
   },
   "impersonate": {
-    "viewAs": "Voir les tâches en tant que",
-    "switchTitle": "Basculer vers la vue utilisateur",
-    "switchHint": "Les tâches seront filtrées pour n'afficher que les assignations de la personne sélectionnée",
-    "chooseUser": "Choisir un utilisateur",
-    "changeUser": "Changer d'utilisateur"
+    "viewAs": "Voir les tâches en tant que"
   },
   "modals": {
     "changeDueDate": "Changer la date d'échéance",
@@ -890,30 +874,14 @@
     "lowPriority": "Priorité basse",
     "lowestPriority": "Priorité la plus basse",
     "noPriority": "Aucune priorité",
-    "assignedToOther": "Assignée à quelqu'un d'autre",
-    "tasksCount": "Tâches : {{count}}"
+    "assignedToOther": "Assignée à quelqu'un d'autre"
   },
   "activitiesCard": {
     "justNow": "À l'instant",
     "hoursAgo": "il y a {{count}} h",
     "daysAgo": "il y a {{count}} j",
-    "statusStarted": "Démarrée",
-    "statusDone": "Terminée",
-    "statusLate": "En retard",
-    "statusSkipped": "Passée",
-    "statusPendingApproval": "En attente d'approbation",
-    "statusRejected": "Rejetée",
-    "statusMissed": "Manquée",
-    "statusRescheduled": "Replanifiée",
-    "statusCompleted": "Terminée",
-    "byUser": "par {{name}}",
-    "unknownUser": "Inconnu",
-    "unknownChore": "Tâche inconnue",
-    "pointsShort": "{{count}} pts",
-    "noRecentActivities": "Aucune activité récente",
     "today": "Aujourd'hui",
-    "yesterday": "Hier",
-    "noteTitle": "Note - {{choreName}}"
+    "yesterday": "Hier"
   },
   "taskEditor": {
     "unsaved": "Non enregistré",
@@ -1385,5 +1353,25 @@
   "routines": {
     "step": "{{step}}/{{total}}",
     "stepTitle": "Routine « {{name}} » : étape {{step}} sur {{total}}"
+  },
+  "todayPanel": {
+    "label": "Résumé du jour",
+    "away": "Pas là",
+    "doneOf": "{{done}} sur {{total}}",
+    "earned_one": "+{{count}} {{unit}}",
+    "earned_other": "+{{count}} {{units}}",
+    "routineDone": "{{name}} finie",
+    "kids": "Les enfants aujourd’hui",
+    "games": "Jeux du jour",
+    "surprise": "Tâche surprise : {{name}}",
+    "chrono": "Bonus chrono : {{name}}",
+    "period": "{{Units}} multipliés : {{name}}",
+    "noGames": "Pas de jeu en cours aujourd’hui.",
+    "week": "Cette semaine",
+    "weekHelp": "Nombre de tâches prévues chaque jour (les retards comptent pour aujourd’hui)."
+  },
+  "viewAs": {
+    "label": "Voir les tâches de",
+    "everyone": "Tout le monde"
   }
 }

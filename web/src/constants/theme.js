@@ -46,3 +46,19 @@ export const MEMBER_COLORS = [
 
 export const memberColor = userId =>
   MEMBER_COLORS[Math.abs(Number(userId) || 0) % MEMBER_COLORS.length]
+
+// The chosen tab of a tab bar. In the dark the surface is darker than the bar,
+// which made the chosen tab look switched off, so there it gets lighter, with
+// white bold text and a violet line underneath.
+export const selectedTabSx = theme => ({
+  '&.Mui-selected': {
+    bgcolor: 'background.surface',
+    boxShadow: 'sm',
+    [theme.getColorSchemeSelector('dark')]: {
+      bgcolor: 'background.level3',
+      boxShadow: `0 1px 3px rgba(0, 0, 0, 0.4), inset 0 -2px 0 #8F84FF`,
+      color: '#fff',
+      fontWeight: 700,
+    },
+  },
+})

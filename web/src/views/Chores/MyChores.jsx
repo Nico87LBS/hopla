@@ -39,6 +39,7 @@ import {
   isTaskFor,
 } from '../../utils/Chores'
 import { familyDay, fromPickedDay, pickedDay } from '../../utils/familyTime'
+import { INSIGHT_FILTER_DEFS } from '../../utils/insightFilters'
 import { awayMemberIds, waitsForAbsent } from '../../utils/presence.js'
 import { withoutWaitingSteps } from '../../utils/routines.js'
 import { pullCopiesTogether } from '../../utils/taskSlots'
@@ -63,8 +64,8 @@ import { useChoreModals } from './hooks/useChoreModals'
 import { useCustomFilters } from './hooks/useCustomFilters'
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
 import { useMultiSelect } from './hooks/useMultiSelect'
-import Sidepanel from './Sidepanel'
-import { INSIGHT_FILTER_DEFS } from './SmartInsightsCard'
+import TodayPanel from './TodayPanel'
+import ViewAsPills from './ViewAsPills'
 
 // Mirrors the assignee options in the toolbar, phrased to drop into a
 // sentence ("none of them are assigned to you").
@@ -961,6 +962,11 @@ const MyChores = () => {
         maxWidth='md'
         sx={{ px: 1, pt: { xs: 1, md: 3 }, minWidth: 0 }}
       >
+        <ViewAsPills
+          onPick={child =>
+            setSelectedChoreFilterWithCache(child ? 'assigned_to_me' : 'anyone')
+          }
+        />
         <ChoreToolbar
           members={membersData?.res || []}
           labels={userLabels || []}
@@ -1367,14 +1373,7 @@ const MyChores = () => {
         )}
       </Container>
 
-      <Sidepanel
-        chores={customFilteredChores}
-        allChores={chores}
-        performers={membersData?.res || []}
-        applyTempFilter={applyTempFilter}
-        clearTempFilter={clearTempFilterAndUrl}
-        tempFilter={tempFilter}
-      />
+      <TodayPanel chores={choresData?.res || []} />
 
       {/* Confirmation Modal for bulk operations */}
       {confirmModelConfig?.isOpen && (
