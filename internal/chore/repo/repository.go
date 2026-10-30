@@ -16,7 +16,6 @@ import (
 	storageModel "github.com/nico87lbs/hopla/internal/storage/model"
 	stModel "github.com/nico87lbs/hopla/internal/subtask/model"
 	syncModel "github.com/nico87lbs/hopla/internal/sync/model"
-	"github.com/nico87lbs/hopla/logging"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -217,21 +216,6 @@ func (r *ChoreRepository) UpdateChoreVisibility(ctx context.Context, chore *chMo
 		}
 		return nil
 	})
-}
-
-func (r *ChoreRepository) UpdateChorePriority(c context.Context, userID int, choreID int, priority int, circleID int) error {
-	nextVersion, err := r.nextSyncVersion(c, circleID)
-	if err != nil {
-		return err
-	}
-	result := r.db.WithContext(c).Model(&chModel.Chore{}).Where("id = ? AND circle_id = ?", choreID, circleID).Updates(map[string]interface{}{
-		"priority":     priority,
-		"sync_version": nextVersion,
-	})
-	if result.RowsAffected == 0 {
-		return errors.New("no rows affected")
-	}
-	return result.Error
 }
 
 func (r *ChoreRepository) UpdateChoreFields(ctx context.Context, choreID int, fields map[string]interface{}) error {
@@ -1181,150 +1165,6 @@ func (r *ChoreRepository) GetChoresHistoryByUserID(c context.Context, userID int
 		return nil, err
 	}
 	return chores, nil
-}
-
-func (r *ChoreRepository) UpdateChoreStatus(c context.Context, choreID int, status chModel.Status, circleID int) (int64, error) {
-	nextVersion, err := r.nextSyncVersion(c, circleID)
-	if err != nil {
-		return 0, err
-	}
-	result := r.db.WithContext(c).Model(&chModel.Chore{}).Where("id = ? AND circle_id = ?", choreID, circleID).Updates(map[string]interface{}{
-		"status":       status,
-		"sync_version": nextVersion,
-	})
-	return nextVersion, result.Error
-}
-
-func (r *ChoreRepository) GetActiveTimeSession(c context.Context, choreID int) (*chModel.TimeSession, error) {
-	var session chModel.TimeSession
-	if err := r.db.WithContext(c).Where("chore_id = ? AND status < 2", choreID).First(&session).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, nil // No active session found
-		}
-		return nil, err
-	}
-	return &session, nil
-}
-
-func (r *ChoreRepository) CreateTimeSession(c context.Context, chore *chModel.Chore, userID int) (*chModel.TimeSession, error) {
-	log := logging.FromContext(c)
-	var timeSession *chModel.TimeSession
-	err := r.db.WithContext(c).Transaction(func(tx *gorm.DB) error {
-		syncVersion, err := r.nextSyncVersionWithDB(c, tx, chore.CircleID)
-		if err != nil {
-			return fmt.Errorf("failed to allocate sync version: %w", err)
-		}
-		ch := &chModel.ChoreHistory{
-			ChoreID:     chore.ID,
-			CompletedBy: userID,
-			AssignedTo:  chore.AssignedTo,
-			DueDate:     chore.NextDueDate,
-			Status:      chModel.ChoreHistoryStatusStarted,
-			SyncVersion: syncVersion,
-		}
-
-		if err := tx.Create(ch).Error; err != nil {
-			log.Errorf("Failed to create chore history: %v", err)
-			return err
-		}
-
-		ts := &chModel.TimeSession{
-			ChoreID:        chore.ID,
-			ChoreHistoryID: ch.ID,
-		}
-		ts.Start(userID)
-		if err := tx.Create(ts).Error; err != nil {
-			log.Errorf("Failed to create time session: %v", err)
-			return err
-		}
-		timeSession = ts
-		return nil
-	})
-	return timeSession, err
-}
-
-func (r *ChoreRepository) UpdateTimeSession(c context.Context, session *chModel.TimeSession) error {
-	return r.db.WithContext(c).Save(session).Error
-}
-
-func (r *ChoreRepository) CompleteTimeSession(c context.Context, session *chModel.TimeSession, chore *chModel.Chore, userID int) error {
-	log := logging.FromContext(c)
-	return r.db.WithContext(c).Transaction(func(tx *gorm.DB) error {
-		session.Finish(userID)
-		if err := tx.Save(session).Error; err != nil {
-			log.Errorf("Failed to complete time session: %v", err)
-			return err
-		}
-		return nil
-	})
-
-}
-
-func (r *ChoreRepository) GetTimeSessionsByChoreID(c context.Context, choreID int, choreHistoryId *int) (*chModel.TimeSession, error) {
-	var session *chModel.TimeSession
-
-	if choreHistoryId != nil {
-		// Get sessions for specific chore history ID
-		if err := r.db.WithContext(c).Where("chore_id = ? AND chore_history_id = ?", choreID, *choreHistoryId).Find(&session).Error; err != nil {
-			return nil, err
-		}
-	} else {
-		// Get sessions for the most recent chore history (based on due_date)
-		query := r.db.WithContext(c).
-			Table("time_sessions").
-			Select("time_sessions.*").
-			Joins("LEFT JOIN chore_histories ON time_sessions.chore_history_id = chore_histories.id").
-			Where("time_sessions.chore_id = ?", choreID).
-			Order("chore_histories.due_date DESC")
-
-		if err := query.Find(&session).Error; err != nil {
-			return nil, err
-		}
-	}
-
-	return session, nil
-}
-
-func (r *ChoreRepository) GetTimeSessionByID(c context.Context, sessionID int) (*chModel.TimeSession, error) {
-	var session chModel.TimeSession
-	if err := r.db.WithContext(c).First(&session, sessionID).Error; err != nil {
-		return nil, err
-	}
-	return &session, nil
-}
-
-func (r *ChoreRepository) UpdateTimeSessionData(c context.Context, session *chModel.TimeSession) error {
-	// Recalculate duration based on pause log
-	session.Duration = 0
-	for _, entry := range session.PauseLog {
-		if entry.Duration > 0 {
-			session.Duration += entry.Duration
-		}
-	}
-
-	session.UpdateAt = time.Now().UTC()
-	return r.db.WithContext(c).Save(session).Error
-}
-
-func (r *ChoreRepository) DeleteTimeSession(c context.Context, sessionID int, choreID int) error {
-	return r.db.WithContext(c).Transaction(func(tx *gorm.DB) error {
-		// delete existing choreHistory linked to the time session:
-		if err := tx.Where(
-			"chore_id = ? and status = ?", choreID, chModel.ChoreHistoryStatusStarted,
-		).Delete(&chModel.ChoreHistory{}).Error; err != nil {
-			logging.FromContext(c).Errorf("Failed to delete chore history for session %d and chore %d: %v", sessionID, choreID, err)
-			return err
-		}
-		// delete the time session itself:
-		if err := tx.Where("id = ?", sessionID).Delete(&chModel.TimeSession{}).Error; err != nil {
-			logging.FromContext(c).Errorf("Failed to delete time session %d for chore %d: %v", sessionID, choreID, err)
-			return err
-		}
-		return nil
-
-	})
-	// delete where session ID matches and chore ID matches
-
 }
 
 // GetTombstonesSince returns global tombstones and tombstones scoped to userID.

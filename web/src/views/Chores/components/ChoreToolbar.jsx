@@ -1,7 +1,7 @@
 /**
  * The task list's toolbar: search, filter sheet, sort and group,
  * display and multi-select. Active filter chips show below it; the filter
- * sheet holds every condition (assignee, created by, status, priority, due
+ * sheet holds every condition (assignee, created by, status, due
  * date, labels, points). Filters are not saved.
  */
 
@@ -32,7 +32,6 @@ import AppModal from '../../../components/common/AppModal'
 import ActiveFilterChips from '../../../components/common/filter/ActiveFilterChips'
 import KeyboardShortcutHint from '../../../components/common/KeyboardShortcutHint'
 import SortAndFilterMenu from '../../../components/common/SortAndFilterMenu'
-import Priorities from '../../../utils/Priorities'
 import FilterBuilderContent, {
   CHORE_STATUSES,
   conditionsToSelections,
@@ -132,9 +131,9 @@ const OptionChips = ({ multi, onToggle, options, selected }) => (
  *  -- Display sheet --
  *  selectedAssigneeFilter – 'anyone' | 'assigned_to_me' | 'available_for_me' | 'assigned_to_others'
  *  onAssigneeFilterChange – (key) => void
- *  selectedGroupBy   – 'default' | 'due_date' | 'priority' | 'labels'
+ *  selectedGroupBy   – 'default' | 'due_date' | 'labels'
  *  onGroupBySelect   – (value) => void
- *  selectedSort      – 'smart' | 'due_date' | 'priority' | 'created_date' | 'updated_date'
+ *  selectedSort      – 'smart' | 'due_date' | 'created_date' | 'updated_date'
  *  onSortChange      – (value) => void
  *  sortDirection     – 'asc' | 'desc'
  *  onSortDirectionChange – (value) => void
@@ -208,7 +207,6 @@ const ChoreToolbar = ({
       assignee: t('filterBuilder.assignee'),
       createdBy: t('filterBuilder.createdBy'),
       status: t('filterBuilder.statusHeading'),
-      priority: t('filterBuilder.priority'),
       label: t('labels.label'),
       dueDate: t('filterBuilder.dueDate'),
       points: t('filterBuilder.points'),
@@ -268,9 +266,6 @@ const ChoreToolbar = ({
         return CHORE_STATUSES.some(s => s.value === value)
           ? t(`filterBuilder.status.${value}`)
           : String(value)
-      }
-      if (condition.type === 'priority') {
-        return Priorities.find(p => p.value === value)?.name || String(value)
       }
       if (condition.type === 'label') {
         return labels.find(l => l.id === value)?.name || String(value)
@@ -353,7 +348,6 @@ const ChoreToolbar = ({
   const sortOptions = [
     { value: 'smart', name: t('sort.smart') },
     { value: 'due_date', name: t('dueDate') },
-    { value: 'priority', name: t('priority') },
     { value: 'created_date', name: t('sort.createdDate') },
     { value: 'updated_date', name: t('sort.updatedDate') },
   ]
@@ -361,7 +355,6 @@ const ChoreToolbar = ({
   const groupByOptions = [
     { value: 'default', name: t('sort.smart') },
     { value: 'due_date', name: t('dueDate') },
-    { value: 'priority', name: t('priority') },
     { value: 'labels', name: t('labels.label') },
     { value: 'created_date', name: t('sort.createdDate') },
     { value: 'updated_date', name: t('sort.updatedDate') },

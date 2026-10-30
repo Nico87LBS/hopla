@@ -4,7 +4,6 @@ import {
   HowToReg,
   Label,
   Person,
-  PriorityHigh,
   Stars,
   TaskAlt,
 } from '@mui/icons-material'
@@ -12,10 +11,9 @@ import { Avatar, Box, Chip, Divider, Typography } from '@mui/joy'
 import { useTranslation } from 'react-i18next'
 
 import NumberInput from '../../../components/common/NumberInput'
-import Priorities from '../../../utils/Priorities'
 
 // `labelKey` resolves against `chores:filterBuilder.dueDateOption.*` — these
-// are also read by ChoreToolbarPrototype, which translates them the same way.
+// are also read by ChoreToolbar, which translates them the same way.
 export const DUE_DATE_OPTIONS = [
   { value: 'isOverdue', color: 'danger' },
   { value: 'isDueToday', color: 'warning' },
@@ -45,7 +43,6 @@ export const defaultSelections = () => ({
   assignee: { operator: 'is', values: [] },
   createdBy: { operator: 'is', values: [] },
   status: { operator: 'is', values: [] },
-  priority: { operator: 'is', values: [] },
   label: { operator: 'is', values: [] },
   dueDate: { operators: [] },
   points: { operator: 'greaterThan', value: 0, active: false },
@@ -83,7 +80,7 @@ export const conditionsToSelections = conditions => {
 
 export const selectionsToConditions = selections => {
   const conditions = []
-  ;['assignee', 'createdBy', 'status', 'priority', 'label'].forEach(type => {
+  ;['assignee', 'createdBy', 'status', 'label'].forEach(type => {
     if (selections[type].values?.length > 0) {
       conditions.push({
         type,
@@ -363,30 +360,6 @@ const FilterBuilderContent = ({
           value: st.value,
           label: t(`filterBuilder.status.${st.value}`),
         })),
-      )}
-      <Divider sx={{ my: 2.5 }} />
-
-      {/* Priority */}
-      <SectionHeader
-        icon={<PriorityHigh />}
-        label={t('filterBuilder.priority')}
-      >
-        <IncludeExcludeToggle
-          value={selections.priority.operator}
-          onChange={op => setOperator('priority', op)}
-        />
-      </SectionHeader>
-      {chipRow(
-        'priority',
-        Priorities.map(p => ({ value: p.value, label: p.name })),
-        (opt, isSelected) => ({
-          color: isSelected
-            ? Priorities.find(p => p.value === opt.value)?.color || 'primary'
-            : 'neutral',
-          startDecorator: !isSelected
-            ? Priorities.find(p => p.value === opt.value)?.icon
-            : null,
-        }),
       )}
       <Divider sx={{ my: 2.5 }} />
 

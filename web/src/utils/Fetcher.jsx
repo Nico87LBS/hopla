@@ -168,20 +168,6 @@ const MarkChoreComplete = (id, body, completedDate, performer) => {
   })
 }
 
-const StartChore = id => {
-  return Fetch(`/chores/${id}/start`, {
-    method: 'PUT',
-    headers: HEADERS(),
-  })
-}
-
-const PauseChore = id => {
-  return Fetch(`/chores/${id}/pause`, {
-    method: 'PUT',
-    headers: HEADERS(),
-  })
-}
-
 const CompleteSubTask = (id, choreId, completedAt) => {
   var markChoreURL = `/chores/${choreId}/subtask`
   return Fetch(markChoreURL, {
@@ -283,13 +269,6 @@ const SaveChore = chore => {
   })
 }
 
-const UpdateChorePriority = (id, priority) => {
-  return Fetch(`/chores/${id}/priority `, {
-    method: 'PUT',
-    headers: HEADERS(),
-    body: JSON.stringify({ priority: priority }),
-  })
-}
 const GetChoreHistory = choreId => {
   return Fetch(`/chores/${choreId}/history`, {
     method: 'GET',
@@ -700,43 +679,6 @@ const RotateCalendarURL = () => {
 
 const RevokeCalendarURL = () => {
   return Fetch(`/chores/calendar/url`, {
-    method: 'DELETE',
-    headers: HEADERS(),
-  })
-}
-
-// Timer/TimeSession API functions
-const GetChoreTimer = choreId => {
-  return Fetch(`/chores/${choreId}/timer`, {
-    method: 'GET',
-    headers: HEADERS(),
-  })
-}
-
-const UpdateTimeSession = (choreId, sessionId, sessionData) => {
-  return Fetch(`/chores/${choreId}/timer/${sessionId}`, {
-    method: 'PUT',
-    headers: HEADERS(),
-    body: JSON.stringify(sessionData),
-  })
-}
-
-const DeleteTimeSession = (choreId, sessionId) => {
-  return Fetch(`/chores/${choreId}/timer/${sessionId}`, {
-    method: 'DELETE',
-    headers: HEADERS(),
-  })
-}
-
-const ResetChoreTimer = choreId => {
-  return Fetch(`/chores/${choreId}/timer/reset`, {
-    method: 'PUT',
-    headers: HEADERS(),
-  })
-}
-
-const ClearChoreTimer = choreId => {
-  return Fetch(`/chores/${choreId}/timer`, {
     method: 'DELETE',
     headers: HEADERS(),
   })
@@ -1223,7 +1165,6 @@ export {
   ArchiveChore,
   ChangePassword,
   CheckUserDeletion,
-  ClearChoreTimer,
   CompleteSubTask,
   ConfirmMFA,
   CreateBackup,
@@ -1248,7 +1189,6 @@ export {
   DeletePointsPreset,
   DeleteQuest,
   DeleteReward,
-  DeleteTimeSession,
   DeleteUser,
   DisableMFA,
   EditLearnCard,
@@ -1267,7 +1207,6 @@ export {
   GetChoresHistory,
   GetChoresNew,
   GetChoresWithSubtasks,
-  GetChoreTimer,
   GetCircleMemberRequests,
   GetDefaultRanks,
   GetFamilyTimezone,
@@ -1302,7 +1241,6 @@ export {
   login,
   logout,
   MarkChoreComplete,
-  PauseChore,
   RedeemPoints,
   RedeemReward,
   RefreshToken,
@@ -1310,7 +1248,6 @@ export {
   RejectChore,
   RejectRedemption,
   RemoveLearnModule,
-  ResetChoreTimer,
   ResetPassword,
   ResetPoints,
   ResolveLearnReport,
@@ -1336,20 +1273,17 @@ export {
   signUp,
   SkipChore,
   SlotAction,
-  StartChore,
   StopFlash,
   UnArchiveChore,
   UndoChoreAction,
   UpdateChildPassword,
   UpdateChoreAssignee,
   UpdateChoreHistory,
-  UpdateChorePriority,
   UpdateDueDate,
   UpdateLabel,
   UpdateMemberRole,
   UpdatePassword,
   UpdateReward,
-  UpdateTimeSession,
   UpdateUserDetails,
   UploadChoreAttachment,
   VerifyMFA,

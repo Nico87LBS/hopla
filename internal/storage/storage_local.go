@@ -16,7 +16,20 @@ type LocalStorage struct {
 }
 
 func NewLocalStorage(config *config.Config) *LocalStorage {
-	return &LocalStorage{BasePath: config.Storage.BasePath}
+	return &LocalStorage{BasePath: storageBasePath(config.Storage.BasePath)}
+}
+
+// storageBasePath keeps the files next to the SQLite database when no folder
+// is set, so the volume that holds the database holds them too.
+func storageBasePath(basePath string) string {
+	if basePath != "" {
+		return basePath
+	}
+	dbPath := os.Getenv("HOPLA_SQLITE_PATH")
+	if dbPath == "" {
+		dbPath = "hopla.db"
+	}
+	return filepath.Join(filepath.Dir(dbPath), "files")
 }
 
 func sanitizePath(p string) (string, error) {

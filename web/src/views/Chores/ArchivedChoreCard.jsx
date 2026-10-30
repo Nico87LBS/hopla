@@ -1,10 +1,7 @@
 import { Archive } from '@mui/icons-material'
 import { Box, Checkbox, Chip, Typography } from '@mui/joy'
 
-import {
-  getPriorityColor,
-  getTextColorFromBackgroundColor,
-} from '../../utils/Colors.jsx'
+import { getTextColorFromBackgroundColor } from '../../utils/Colors.jsx'
 import { useDateFormatter } from '../../utils/DateFormatter'
 
 const ArchivedChoreCard = ({
@@ -55,16 +52,6 @@ const ArchivedChoreCard = ({
         transition: 'background-color 0.15s ease-in-out',
         '&:hover': {
           bgcolor: isSelected ? 'primary.softBg' : 'background.level1',
-        },
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          left: 0,
-          top: 0,
-          bottom: 0,
-          width: '3px',
-          backgroundColor: getPriorityColor(chore.priority),
-          borderRadius: '16px',
         },
       }}
     >

@@ -2,7 +2,6 @@ import {
   Checklist,
   Close,
   DescriptionOutlined,
-  FlagOutlined,
   LabelOutlined,
   MoreHoriz,
   NotificationsOutlined,
@@ -79,11 +78,7 @@ import LabelModal from '../Modals/Inputs/LabelModal'
 import AttachmentsField from './editor/AttachmentsField'
 import EditorPreview, { TaskSummary } from './editor/EditorPreview'
 import MoreOptions, { OptionRow } from './editor/MoreOptions'
-import {
-  LabelsField,
-  PriorityField,
-  priorityName,
-} from './editor/OrganizationFields'
+import { LabelsField } from './editor/OrganizationFields'
 import RewardCard from './editor/RewardCard'
 import { describeTask, nextSlot } from './editor/schedule'
 import WhenCard from './editor/WhenCard'
@@ -147,7 +142,6 @@ const ChoreEdit = () => {
   const [frequencyMetadata, setFrequencyMetadata] = useState({})
   const [labels, setLabels] = useState([])
   const [labelsV2, setLabelsV2] = useState([])
-  const [priority, setPriority] = useState(0)
   const [completionActionsValid, setCompletionActionsValid] = useState(true)
   const [points, setPoints] = useState(-1)
   const [requireApproval, setRequireApproval] = useState(false)
@@ -252,7 +246,6 @@ const ChoreEdit = () => {
   const snapshot = JSON.stringify({
     name,
     description,
-    priority,
     labelsV2,
     anyone,
     assignableTo,
@@ -599,7 +592,6 @@ const ChoreEdit = () => {
         // if completionWindow is -1 then set it to null or dueDate is null
         completionWindow < 0 || dueDate === null ? null : completionWindow,
       deadlineOffset: deadlineOffset < 0 ? null : deadlineOffset,
-      priority: priority,
       draftId: newChoreId > 0 ? undefined : draftId,
     }
     let SaveFunction = createChoreMutation.mutateAsync
@@ -805,7 +797,6 @@ const ChoreEdit = () => {
 
       setLabelsV2(data.res.labelsV2)
 
-      setPriority(data.res.priority)
       setAssignStrategy(
         data.res.assignStrategy
           ? data.res.assignStrategy
@@ -1379,13 +1370,6 @@ const ChoreEdit = () => {
           onLabelsChange={setLabelsV2}
           onAddLabel={() => setAddLabelModalOpen(true)}
         />
-      </OptionRow>
-      <OptionRow
-        icon={FlagOutlined}
-        title={t('choreEdit.priority')}
-        value={priorityName(priority, t)}
-      >
-        <PriorityField priority={priority} onChange={setPriority} />
       </OptionRow>
       <OptionRow
         icon={VisibilityOutlined}

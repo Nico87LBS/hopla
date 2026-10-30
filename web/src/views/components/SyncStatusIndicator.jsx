@@ -41,8 +41,6 @@ const COMMAND_LABEL_KEYS = {
   update_chore_history: 'updateChoreHistory',
   complete_chore: 'completeChore',
   skip_chore: 'skipChore',
-  start_chore: 'startChore',
-  pause_chore: 'pauseChore',
   delete_chore: 'deleteChore',
   delete_chore_history: 'deleteChoreHistory',
   reschedule_chore: 'rescheduleChore',

@@ -6,7 +6,6 @@ import {
   Delete,
   Label,
   Person,
-  PriorityHigh,
   SearchOff,
   SelectAll,
   Tune,
@@ -43,7 +42,6 @@ import { commandQueue, CommandType } from '../../utils/CommandQueue'
 import { DeleteChore, GetArchivedChores } from '../../utils/Fetcher'
 import { offlineDB } from '../../utils/OfflineDB'
 import { isOfflineFeatureEnabled } from '../../utils/OfflineFeatureToggle'
-import Priorities from '../../utils/Priorities'
 import LoadingComponent from '../components/Loading'
 import { TasksTabs } from '../Manage/ManageTabs'
 import ConfirmationModal from '../Modals/Inputs/ConfirmationModal'
@@ -144,19 +142,6 @@ const ArchivedTasks = () => {
         })),
         filterFn: (item, values) => values.includes(item.assignedTo),
       },
-      {
-        id: 'priority',
-        label: t('priority'),
-        type: 'multi-select',
-        icon: <PriorityHigh />,
-        options: Priorities.map(p => ({
-          value: p.value,
-          label: p.name,
-          color: p.color || 'neutral',
-          icon: p.icon,
-        })),
-        filterFn: (item, values) => values.includes(item.priority ?? 0),
-      },
       ...(availableLabels.length > 0
         ? [
             {
@@ -231,8 +216,6 @@ const ArchivedTasks = () => {
       switch (sortBy) {
         case 'name':
           return direction * (a.name || '').localeCompare(b.name || '')
-        case 'priority':
-          return direction * ((a.priority ?? 0) - (b.priority ?? 0))
         case 'dueDate': {
           const aDue = new Date(a.nextDueDate || 0).getTime()
           const bDue = new Date(b.nextDueDate || 0).getTime()
@@ -847,7 +830,6 @@ const ArchivedTasks = () => {
           sortOptions={[
             { name: t('archived.sortArchivedDate'), value: 'archivedAt' },
             { name: t('archived.sortName'), value: 'name' },
-            { name: t('archived.sortPriority'), value: 'priority' },
             { name: t('archived.sortDueDate'), value: 'dueDate' },
           ]}
           selectedSort={sortBy}

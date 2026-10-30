@@ -7,7 +7,6 @@ import {
   Check,
   Delete,
   Edit,
-  PlayArrow,
   Schedule,
   SkipNext,
   ThumbDown,
@@ -98,11 +97,11 @@ SwipeActionTile.propTypes = {
 // against white.
 
 /**
- * Leading (swipe-right) actions: complete/start (or approve on a row
+ * Leading (swipe-right) actions: complete (or approve on a row
  * awaiting review), then skip.
  *
  * Unlike TrailingActions, LeadingActions tags its *first* child as the
- * `fullSwipe` target, not its last — so complete/start/approve goes first to
+ * `fullSwipe` target, not its last — so complete/approve goes first to
  * stay a one-flick gesture with no aiming. Skip sits behind it, reachable
  * with a longer swipe or a tap once revealed.
  */
@@ -119,8 +118,8 @@ export const getChoreLeadingActions = ({
 
   const offsetTop = !usesCompactCard
 
-  // Awaiting approval: only reviewers get an action, and there is no useful
-  // "start" for a task that is already done.
+  // Awaiting approval: only reviewers get an action, a task already done
+  // cannot be completed again.
   if (chore.status === 3) {
     if (!canApproveReject(chore, userProfile)) return null
     return (
@@ -142,26 +141,18 @@ export const getChoreLeadingActions = ({
     )
   }
 
-  const isInProgress = chore.status === 1
-
   return (
     <LeadingActions>
       <SwipeAction
         onClick={() => {
           hapticMedium()
-          handleChoreAction(isInProgress ? 'complete' : 'start', chore)
+          handleChoreAction('complete', chore)
         }}
       >
         <SwipeActionTile
           bgcolor='success.500'
-          icon={
-            isInProgress ? (
-              <Check sx={{ color: 'white' }} />
-            ) : (
-              <PlayArrow sx={{ color: 'white' }} />
-            )
-          }
-          label={isInProgress ? t('list.complete') : t('choreView.start')}
+          icon={<Check sx={{ color: 'white' }} />}
+          label={t('list.complete')}
           offsetTop={offsetTop}
         />
       </SwipeAction>

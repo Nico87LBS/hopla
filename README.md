@@ -17,7 +17,7 @@ des notifications et de l'affichage sur une tablette murale.
 - Attribution par rotation, au hasard ou à tour de rôle.
 - Comptes enfants gérés par les parents.
 - Points, récompenses et demandes de récompense validées par un parent.
-- Pièces jointes et photos sur les tâches (stockage local ou S3).
+- Pièces jointes et photos sur les tâches, rangées sur le disque du serveur.
 - Tâches « déclenchées de l'extérieur » : sans échéance, elles attendent
   qu'une automatisation Home Assistant (`hopla.update_task`) les rende à faire.
 - Synchronisation en temps réel (SSE) entre tous les appareils.

@@ -15,7 +15,7 @@ import { hapticLight } from '../../utils/Haptics'
 import { clearPendingInvite, getPendingInvite } from '../../utils/PendingInvite'
 import { authButtonSx } from '../Authorization/authStyles'
 import AcknowledgmentModal from '../Modals/Inputs/AcknowledgmentModal'
-import { CircleVignette } from './OnboardingVignettes'
+import { CircleVignette } from './CircleVignette'
 
 const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)'
 

@@ -48,36 +48,11 @@ type Info struct {
 }
 
 type StorageConfig struct {
-	StorageType string `mapstructure:"storage_type" yaml:"storage_type"`
-	// CloudStorage:
-	BucketName     string `mapstructure:"bucket_name" yaml:"bucket_name"`
-	Region         string `mapstructure:"region" yaml:"region"`
+	// BasePath is the folder of attachments and photos. Empty keeps them in
+	// "files" next to the SQLite database.
 	BasePath       string `mapstructure:"base_path" yaml:"base_path"`
-	AccessKey      string `mapstructure:"access_key" yaml:"access_key"`
-	SecretKey      string `mapstructure:"secret_key" yaml:"secret_key"`
-	Endpoint       string `mapstructure:"endpoint" yaml:"endpoint"`
 	MaxUserStorage int    `mapstructure:"max_user_storage" yaml:"max_user_storage"`
 	MaxFileSize    int64  `mapstructure:"max_file_size" yaml:"max_file_size"`
-	PublicHost     string `mapstructure:"public_host" yaml:"public_host"`
-	// PublicRead returns unsigned URLs instead of SigV4 presigned URLs.
-	// The bucket/prefix must be configured for public anonymous reads
-	// (e.g. via a bucket policy). Intended for self-hosted deployments
-	// that don't want the 7-day presigned URL ceiling.
-	PublicRead bool `mapstructure:"public_read" yaml:"public_read"`
-	// PublicBucketName is an optional separate bucket for publicly readable
-	// assets (e.g. profile photos). If empty, public uploads fall back to the
-	// private bucket (BucketName).
-	PublicBucketName string `mapstructure:"public_bucket_name" yaml:"public_bucket_name"`
-	// PublicBucketHost is the CDN / custom-domain host used to construct bare
-	// (unsigned) URLs for objects in PublicBucketName. Example: "pub.example.com".
-	// If empty, GetPublicURL falls back to a presigned URL from the private bucket.
-	PublicBucketHost string `mapstructure:"public_bucket_host" yaml:"public_bucket_host"`
-	// PathStyle forces path-style S3 addressing (endpoint/bucket/key)
-	// instead of the default virtual-hosted style (bucket.endpoint/key).
-	// Required for S3-compatible backends like MinIO that don't expose
-	// a DNS wildcard at `*.<endpoint-host>`, as well as for plain HTTP
-	// endpoints without matching TLS wildcard certs.
-	PathStyle bool `mapstructure:"path_style" yaml:"path_style"`
 }
 type DatabaseConfig struct {
 	Type      string `mapstructure:"type" yaml:"type" default:"sqlite"`
@@ -118,13 +93,6 @@ type EmailConfig struct {
 	// see the legacy fallback in LoadConfig.
 	AppHost   string `mapstructure:"app_host" yaml:"app_host"`
 	LogRawURL bool   `mapstructure:"log_raw_url" yaml:"log_raw_url"`
-	// Provider selects which email sender implementation to use.
-	// "smtp" (default, empty also means smtp) uses host/port/user/key as SMTP creds.
-	// "smtp2go" uses the SMTP2Go HTTP API with `key` as the API key and the
-	// template IDs below.
-	Provider                string `mapstructure:"provider" yaml:"provider" default:"smtp"`
-	VerifyTemplateID        string `mapstructure:"verify_template_id" yaml:"verify_template_id"`
-	ResetPasswordTemplateID string `mapstructure:"reset_password_template_id" yaml:"reset_password_template_id"`
 }
 
 type OAuth2Config struct {

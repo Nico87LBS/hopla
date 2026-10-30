@@ -94,7 +94,6 @@ const SortAndGrouping = ({
       const groupByItems = [
         { name: t('sort.smart'), value: 'default' },
         { name: t('group.dueDate'), value: 'due_date' },
-        { name: t('priority'), value: 'priority' },
         { name: t('labels.label'), value: 'labels' },
         { name: t('sort.createdDate'), value: 'created_date' },
         { name: t('sort.updatedDate'), value: 'updated_date' },
@@ -347,7 +346,6 @@ const SortAndGrouping = ({
         {[
           { name: t('sort.smart'), value: 'default' },
           { name: t('group.dueDate'), value: 'due_date' },
-          { name: t('priority'), value: 'priority' },
           { name: t('labels.label'), value: 'labels' },
           { name: t('sort.createdDate'), value: 'created_date' },
           { name: t('sort.updatedDate'), value: 'updated_date' },

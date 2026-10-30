@@ -10,7 +10,7 @@ import { JoinCircle } from '../../utils/Fetcher'
 import { clearPendingInvite, setPendingInvite } from '../../utils/PendingInvite'
 import { authButtonSx } from '../Authorization/authStyles'
 import AcknowledgmentModal from '../Modals/Inputs/AcknowledgmentModal'
-import { CircleVignette } from '../Onboarding/OnboardingVignettes'
+import { CircleVignette } from '../Onboarding/CircleVignette'
 
 const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)'
 

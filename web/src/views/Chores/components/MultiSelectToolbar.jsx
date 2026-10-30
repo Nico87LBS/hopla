@@ -8,7 +8,6 @@ import {
   Delete,
   Done,
   EditCalendar,
-  Flag,
   Label as LabelIcon,
   MoreHoriz,
   Person,
@@ -35,7 +34,6 @@ import { useTranslation } from 'react-i18next'
 import AppModal from '../../../components/common/AppModal'
 import KeyboardShortcutHint from '../../../components/common/KeyboardShortcutHint'
 import { getTextColorFromBackgroundColor } from '../../../utils/Colors'
-import Priorities from '../../../utils/Priorities'
 import DueDatePickerModal, {
   splitDueDate,
 } from '../../components/DueDatePickerModal'
@@ -119,7 +117,6 @@ const MultiSelectToolbar = ({
   onSelectAll,
   onSetAssignee,
   onSetDueDate,
-  onSetPriority,
   onSkip,
   // Shape produced by useMultiSelect.getSelectionSummary — drives which value
   // each control shows as current, and which labels can be added vs removed.
@@ -163,11 +160,6 @@ const MultiSelectToolbar = ({
     : summary.dueDate?.value
       ? moment(summary.dueDate.value).format('MMM D')
       : null
-
-  const priorityValue = summary.priority?.isMixed
-    ? t('multiToolbar.mixed')
-    : Priorities.find(p => p.value === summary.priority?.value)?.name.trim() ||
-      null
 
   const assigneeValue = summary.assignee?.isMixed
     ? t('multiToolbar.mixed')
@@ -305,7 +297,7 @@ const MultiSelectToolbar = ({
         {/* The verbs a task can be done to — complete, reschedule, move,
             archive, delete — all keep permanent buttons and wrap to a second
             row when they need to. The sheet holds only the field editors
-            (priority, assignee, labels), so nothing appears in both places. */}
+            (assignee, labels), so nothing appears in both places. */}
         <Box
           sx={{
             gap: 1,
@@ -562,47 +554,6 @@ const MultiSelectToolbar = ({
           {/* Due date and the destructive actions are deliberately
               absent — each has its own button in the bar, and two entry points
               would just make them ambiguous. */}
-          {onSetPriority && (
-            <>
-              <SectionHeader
-                icon={<Flag />}
-                label={t('multiToolbar.priority')}
-                value={priorityValue}
-              />
-              <ChipRow>
-                {Priorities.map(priority => {
-                  const isCurrent =
-                    !summary.priority?.isMixed &&
-                    summary.priority?.value === priority.value
-                  return (
-                    <Chip
-                      key={priority.value}
-                      variant={isCurrent ? 'solid' : 'soft'}
-                      color={
-                        isCurrent ? priority.color || 'primary' : 'neutral'
-                      }
-                      startDecorator={
-                        isCurrent ? <Check sx={{ fontSize: 14 }} /> : undefined
-                      }
-                      onClick={runAndClose(() => onSetPriority(priority.value))}
-                      sx={selectableChipSx}
-                    >
-                      {priority.name.trim()}
-                    </Chip>
-                  )
-                })}
-                <Chip
-                  variant='soft'
-                  color='neutral'
-                  onClick={runAndClose(() => onSetPriority(0))}
-                  sx={selectableChipSx}
-                >
-                  {t('multiToolbar.noPriority')}
-                </Chip>
-              </ChipRow>
-            </>
-          )}
-
           {onSetAssignee && assignableMembers.length > 0 && (
             <>
               <Divider sx={{ my: 2.5 }} />

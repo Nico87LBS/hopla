@@ -3,12 +3,10 @@ import moment from 'moment'
 
 import { TASK_COLOR } from './Colors.jsx'
 
-export const priorityOrder = [1, 2, 3, 4, 0]
 // ChoreGrouperOptions enum:
 export const GROUPING_OPTIONS = Object.freeze({
   SMART: 'default',
   DUE_DATE: 'due_date',
-  PRIORITY: 'priority',
   LABELS: 'labels',
   CREATED_DATE: 'created_date',
   UPDATED_DATE: 'updated_date',
@@ -149,8 +147,11 @@ export const ChoresGrouper = (groupBy, chores, filter, direction = 'asc') => {
     chores = [...chores]
   }
 
-  // sort by priority then due date:
   chores.sort(ChoreSorter)
+  // A grouping saved before an option was retired falls back to the default.
+  if (!Object.values(GROUPING_OPTIONS).includes(groupBy)) {
+    groupBy = GROUPING_OPTIONS.SMART
+  }
   var groups = []
   switch (groupBy) {
     case 'default': {
@@ -300,61 +301,6 @@ export const ChoresGrouper = (groupBy, chores, filter, direction = 'asc') => {
       }
       break
     }
-    case 'priority':
-      groupRaw = {
-        p1: [],
-        p2: [],
-        p3: [],
-        p4: [],
-        no_priority: [],
-      }
-      chores.forEach(chore => {
-        switch (chore.priority) {
-          case 1:
-            groupRaw['p1'].push(chore)
-            break
-          case 2:
-            groupRaw['p2'].push(chore)
-            break
-          case 3:
-            groupRaw['p3'].push(chore)
-            break
-          case 4:
-            groupRaw['p4'].push(chore)
-            break
-          default:
-            groupRaw['no_priority'].push(chore)
-            break
-        }
-      })
-      groups = [
-        {
-          name: i18n.t('chores:sections.priority1'),
-          content: groupRaw['p1'],
-          color: TASK_COLOR.PRIORITY_1,
-        },
-        {
-          name: i18n.t('chores:sections.priority2'),
-          content: groupRaw['p2'],
-          color: TASK_COLOR.PRIORITY_2,
-        },
-        {
-          name: i18n.t('chores:sections.priority3'),
-          content: groupRaw['p3'],
-          color: TASK_COLOR.PRIORITY_3,
-        },
-        {
-          name: i18n.t('chores:sections.priority4'),
-          content: groupRaw['p4'],
-          color: TASK_COLOR.PRIORITY_4,
-        },
-        {
-          name: i18n.t('chores:sections.noPriority'),
-          content: groupRaw['no_priority'],
-          color: TASK_COLOR.NO_PRIORITY,
-        },
-      ]
-      break
     case 'labels':
       groupRaw = {}
       var labels = {}
@@ -383,12 +329,6 @@ export const ChoresGrouper = (groupBy, chores, filter, direction = 'asc') => {
   return groups
 }
 export const ChoreSorter = (a, b) => {
-  const priorityA = priorityOrder.indexOf(a.priority)
-  const priorityB = priorityOrder.indexOf(b.priority)
-  if (priorityA !== priorityB) {
-    return priorityA - priorityB
-  }
-
   // Status sorting (0 > 1 > ... ascending order)
   if (a.status !== b.status) {
     return a.status - b.status

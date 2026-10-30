@@ -50,6 +50,29 @@ func ActivePeriod(db *gorm.DB, circleID int, at time.Time) (*BonusPeriod, error)
 	return &period, nil
 }
 
+// NextChange returns when the games of the day change on their own: the next
+// midnight of the family, or a bonus period starting or ending before it.
+// Boards refresh then instead of waiting for their next poll.
+func NextChange(db *gorm.DB, circleID int, now time.Time) (time.Time, error) {
+	loc := zone.Of(circleID)
+	next := zone.StartOfDay(now, loc).AddDate(0, 0, 1)
+	var starts, ends []time.Time
+	if err := db.Model(&BonusPeriod{}).Where("circle_id = ? AND starts_at > ? AND starts_at < ?", circleID, now, next).
+		Pluck("starts_at", &starts).Error; err != nil {
+		return next, err
+	}
+	if err := db.Model(&BonusPeriod{}).Where("circle_id = ? AND ends_at > ? AND ends_at < ?", circleID, now, next).
+		Pluck("ends_at", &ends).Error; err != nil {
+		return next, err
+	}
+	for _, at := range append(starts, ends...) {
+		if at.Before(next) {
+			next = at
+		}
+	}
+	return next.UTC(), nil
+}
+
 // TodaySurprise returns today's surprise task, picking it on the first call of
 // the day among the tasks due today or late that everyone can see. It returns
 // nil when surprises are off or no task qualifies yet.

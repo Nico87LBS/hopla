@@ -90,7 +90,7 @@ const ChoreListView = ({
     userProfile,
   })
 
-  // fullSwipe makes the leading action (complete/start) a single flick with no
+  // fullSwipe makes the leading action (complete) a single flick with no
   // aiming. It also arms the last trailing action — delete — which is safe
   // because delete opens a confirmation modal rather than deleting outright.
   //
@@ -200,9 +200,6 @@ const ChoreListView = ({
         }
         onChangeDueDate={() =>
           handleChoreAction('changeDueDate', actionMenuChore)
-        }
-        onChangePriority={priority =>
-          handleChoreAction('changePriority', actionMenuChore, { priority })
         }
         onDelete={() => handleChoreAction('delete', actionMenuChore)}
       />

@@ -7,10 +7,8 @@ import {
   DeleteChore,
   DeleteChoreHistory,
   MarkChoreComplete,
-  PauseChore,
   SaveChore,
   SkipChore,
-  StartChore,
   UnArchiveChore,
   UpdateChoreHistory,
   UpdateDueDate,
@@ -231,14 +229,6 @@ class SyncEngine {
 
       case CommandType.SKIP_CHORE:
         response = await SkipChore(cmd.payload.id || cmd.entityId)
-        break
-
-      case CommandType.START_CHORE:
-        response = await StartChore(cmd.payload.id || cmd.entityId)
-        break
-
-      case CommandType.PAUSE_CHORE:
-        response = await PauseChore(cmd.payload.id || cmd.entityId)
         break
 
       case CommandType.DELETE_CHORE:

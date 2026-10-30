@@ -11,7 +11,6 @@ import {
   OpenInFull,
   PeopleAlt,
   Person,
-  PlayArrow,
   SwitchAccessShortcut,
   ThumbDown,
   ThumbUp,
@@ -47,18 +46,10 @@ import {
   useChoreDetails,
   useChoreHistory,
 } from '../../queries/ChoreQueries.jsx'
-import {
-  useChoreTimer,
-  useDeleteTimeSession,
-  usePauseChore,
-  useResetChoreTimer,
-  useStartChore,
-} from '../../queries/TimeQueries'
 import { useCircleMembers, useUserProfile } from '../../queries/UserQueries.jsx'
 import { useNotification } from '../../service/NotificationProvider'
 import {
   ChoreHistoryStatus,
-  ChoreStatus,
   notInCompletionWindow,
   taskMemberIds,
 } from '../../utils/Chores.jsx'
@@ -76,7 +67,6 @@ import {
   UnArchiveChore,
   UndoChoreAction,
   UpdateChoreAssignee,
-  UpdateChorePriority,
   UpdateDueDate,
 } from '../../utils/Fetcher'
 import { offlineDB } from '../../utils/OfflineDB'
@@ -95,8 +85,6 @@ import AssigneeModal from '../Modals/Inputs/AssigneeModal'
 import AttachmentBrowserModal from '../Modals/Inputs/AttachmentBrowserModal'
 import ConfirmationModal from '../Modals/Inputs/ConfirmationModal'
 import NoteViewerModal from '../Modals/Inputs/NoteViewerModal'
-import TimePassedCard from './TimePassedCard.jsx'
-import TimerSplitButton from './TimerSplitButton.jsx'
 
 const isNetworkError = err =>
   err instanceof TypeError && err.message === 'Failed to fetch'
@@ -134,7 +122,6 @@ const ChoreView = () => {
   })
   const [activeModal, setActiveModal] = useState(null)
   const [noteViewerConfig, setNoteViewerConfig] = useState({ isOpen: false })
-  const [timerActionConfig, setTimerActionConfig] = useState({ isOpen: false })
   const [attachmentBrowserOpen, setAttachmentBrowserOpen] = useState(false)
   const { data: circleMembersData, isLoading: isCircleMembersLoading } =
     useCircleMembers()
@@ -164,12 +151,6 @@ const ChoreView = () => {
   const completionCount = choreHistoryData
     ? historyCompletionCount
     : chore.totalCompletedCount || 0
-
-  const startChore = useStartChore()
-  const pauseChore = usePauseChore()
-  const deleteTimeSession = useDeleteTimeSession()
-  const resetChoreTimer = useResetChoreTimer()
-  const { data: choreTimer } = useChoreTimer(choreId)
 
   useEffect(() => {
     if (!choreData || !choreData.res || !circleMembersData) {
@@ -248,16 +229,6 @@ const ChoreView = () => {
       setInfoCards(cards)
     }
   }, [chore, performers, completionCount, t])
-  const handleUpdatePriority = priority => {
-    UpdateChorePriority(choreId, priority.value).then(response => {
-      if (response.ok) {
-        response.json().then(() => {
-          setChore(prev => ({ ...prev, priority: priority.value }))
-          queryClient.invalidateQueries({ queryKey: ['chores'] })
-        })
-      }
-    })
-  }
   const handleTaskCompletion = async () => {
     try {
       const resp = await MarkChoreComplete(
@@ -406,137 +377,6 @@ const ChoreView = () => {
       }
     }
   }
-  const handleChoreStart = () => {
-    const startedChore = { ...chore, status: ChoreStatus.ACTIVE }
-    startChore.mutate(choreId, {
-      onSuccess: data => {
-        const newChore = {
-          ...chore,
-          ...data.res,
-        }
-        setChore(newChore)
-      },
-      onError: async error => {
-        if (isNetworkError(error)) {
-          const previousStatus = chore.status
-          const cmdId = await commandQueue.enqueue(
-            CommandType.START_CHORE,
-            choreId,
-            { id: choreId },
-          )
-          setChore(startedChore)
-          queryClient.invalidateQueries({ queryKey: ['pendingCommands'] })
-          showSuccess({
-            message: t('choreView.offlineStart'),
-            undoAction: async () => {
-              await commandQueue.cancel(cmdId)
-              queryClient.invalidateQueries({ queryKey: ['pendingCommands'] })
-              setChore({ ...chore, status: previousStatus })
-            },
-          })
-          return
-        }
-
-        showError({
-          title: t('choreView.undoFailed'),
-          message: error?.message || t('choreView.unableStart'),
-        })
-      },
-    })
-  }
-
-  const handleChorePause = () => {
-    const pausedChore = { ...chore, status: ChoreStatus.PAUSED }
-    pauseChore.mutate(choreId, {
-      onSuccess: data => {
-        const newChore = {
-          ...chore,
-          ...data.res,
-        }
-        setChore(newChore)
-      },
-      onError: async error => {
-        if (isNetworkError(error)) {
-          const previousStatus = chore.status
-          const cmdId = await commandQueue.enqueue(
-            CommandType.PAUSE_CHORE,
-            choreId,
-            { id: choreId },
-          )
-          setChore(pausedChore)
-          queryClient.invalidateQueries({ queryKey: ['pendingCommands'] })
-          showSuccess({
-            message: t('choreView.offlinePause'),
-            undoAction: async () => {
-              await commandQueue.cancel(cmdId)
-              queryClient.invalidateQueries({ queryKey: ['pendingCommands'] })
-              setChore({ ...chore, status: previousStatus })
-            },
-          })
-          return
-        }
-
-        showError({
-          title: t('choreView.undoFailed'),
-          message: error?.message || t('choreView.unablePause'),
-        })
-      },
-    })
-  }
-
-  const handleResetTimer = () => {
-    setTimerActionConfig({
-      isOpen: true,
-      title: t('choreView.resetTimer'),
-      message: t('choreView.resetTimerConfirmation'),
-      confirmText: t('choreView.resetTimer'),
-      cancelText: t('common:cancel'),
-      onClose: confirmed => {
-        if (confirmed) {
-          resetChoreTimer.mutate(choreId, {
-            onSuccess: data => {
-              const newChore = {
-                ...chore,
-                ...data.res,
-              }
-              setChore(newChore)
-            },
-          })
-        }
-        setTimerActionConfig({})
-      },
-    })
-  }
-
-  const handleClearAllTime = () => {
-    setTimerActionConfig({
-      isOpen: true,
-      title: t('choreView.clearAllTimeRecords'),
-      message: t('choreView.clearAllTimeConfirmation'),
-      confirmText: t('choreView.clearAllTimeRecords'),
-      cancelText: t('common:cancel'),
-      onClose: async confirmed => {
-        if (confirmed) {
-          if (choreTimer?.res?.id) {
-            deleteTimeSession.mutate(
-              { choreId, sessionId: choreTimer.res.id },
-              {
-                onSuccess: data => {
-                  const newChore = {
-                    ...chore,
-                    ...data.res,
-                  }
-                  setChore(newChore)
-                },
-              },
-            )
-          }
-        }
-        setTimerActionConfig({})
-      },
-    })
-  }
-
   const handleApproveChore = () => {
     ApproveChore(choreId).then(response => {
       if (response.ok) {
@@ -862,24 +702,6 @@ const ChoreView = () => {
             mb: 1,
           }}
         >
-          {[ChoreStatus.ACTIVE, ChoreStatus.PAUSED].includes(chore.status) && (
-            <Grid xs={12}>
-              <TimePassedCard
-                chore={chore}
-                handleAction={action => {
-                  if (action === 'pause') {
-                    handleChorePause()
-                  } else if (
-                    action === 'resume' &&
-                    !notInCompletionWindow(chore)
-                  ) {
-                    handleChoreStart()
-                  }
-                }}
-                onShowDetails={() => navigate(`/chores/${choreId}/timer`)}
-              />
-            </Grid>
-          )}
           {infoCards.map((card, index) => (
             <Grid xs={6} sm={6} key={index}>
               <Card
@@ -1001,7 +823,6 @@ const ChoreView = () => {
             }
             onChangeAssignee={() => setActiveModal('changeAssignee')}
             onChangeDueDate={() => setActiveModal('changeDueDate')}
-            onChangePriority={handleUpdatePriority}
             onDelete={confirmDeleteChore}
             trigger={
               <Button
@@ -1419,53 +1240,10 @@ const ChoreView = () => {
                 })}
               </Typography>
             )}
-            {/* Timer Button - Show split button when timer is active, regular button otherwise */}
-            {[ChoreStatus.ACTIVE, ChoreStatus.PAUSED].includes(chore.status) ? (
-              <TimerSplitButton
-                disabled={
-                  (chore.status === ChoreStatus.PAUSED &&
-                    notInCompletionWindow(chore)) ||
-                  chore.isActive === false
-                }
-                chore={chore}
-                onAction={action => {
-                  if (action === 'pause') {
-                    handleChorePause()
-                  } else if (action === 'resume') {
-                    handleChoreStart()
-                  }
-                }}
-                onShowDetails={() => navigate(`/chores/${choreId}/timer`)}
-                onResetTimer={handleResetTimer}
-                onClearAllTime={handleClearAllTime}
-                fullWidth
-              />
-            ) : chore.status === ChoreStatus.PENDING_APPROVAL ? (
-              <></>
-            ) : (
-              <Button
-                size='lg'
-                onClick={() => {
-                  handleChoreStart()
-                }}
-                variant='soft'
-                color='success'
-                disabled={
-                  notInCompletionWindow(chore) || chore.isActive === false
-                }
-                startDecorator={<PlayArrow />}
-                sx={{
-                  flex: 1,
-                }}
-              >
-                {t('choreView.start')}
-              </Button>
-            )}
           </Box>
         )}
 
         <ConfirmationModal config={confirmModelConfig} />
-        <ConfirmationModal config={timerActionConfig} />
         <NoteViewerModal config={noteViewerConfig} />
         {activeModal === 'changeDueDate' && (
           <DueDatePickerModal

@@ -61,43 +61,6 @@ const isValidWordBoundary = (text, matchIndex, matchLength) => {
   )
 }
 
-export const parsePriority = inputSentence => {
-  let sentence = inputSentence.toLowerCase()
-  const priorityMap = {
-    1: ['!p1', 'priority 1', 'high priority', 'urgent', 'asap', 'important'],
-    2: ['!p2', 'priority 2', 'medium priority'],
-    3: ['!p3', 'priority 3', 'low priority'],
-    4: ['!p4', 'priority 4'],
-  }
-
-  for (const [priority, terms] of Object.entries(priorityMap)) {
-    if (terms.some(term => sentence.includes(term))) {
-      return {
-        result: priority,
-        highlight: terms
-          .map(term => {
-            const index = sentence.indexOf(term)
-            return {
-              text: term,
-              start: index,
-              end: index + term.length,
-            }
-          })
-          .filter(term => term.start !== -1),
-
-        cleanedSentence: sentence.replace(
-          new RegExp(`(${terms.join('|')})`, 'g'),
-          '',
-        ),
-      }
-    }
-  }
-  return {
-    result: 0,
-    highlight: [],
-    cleanedSentence: inputSentence,
-  }
-}
 export const parseLabels = (inputSentence, userLabels) => {
   const currentLabels = []
   const matchedRanges = []

@@ -24,9 +24,6 @@ export const evaluateCondition = (chore, condition, context = {}) => {
     case 'createdBy':
       return evaluateCreatedBy(chore, operator, value, context)
 
-    case 'priority':
-      return evaluatePriority(chore, operator, value)
-
     case 'status':
       return evaluateStatus(chore, operator, value)
 
@@ -111,27 +108,6 @@ const evaluateCreatedBy = (chore, operator, value, context) => {
   )
 
   return operator === 'is' ? isCreatedBy : !isCreatedBy
-}
-
-/**
- * Evaluate priority condition
- */
-const evaluatePriority = (chore, operator, value) => {
-  const priorities = Array.isArray(value) ? value : [value]
-  const chorePriority = chore.priority || 0
-
-  switch (operator) {
-    case 'is':
-      return priorities.some(p => Number(p) === Number(chorePriority))
-    case 'isNot':
-      return !priorities.some(p => Number(p) === Number(chorePriority))
-    case 'greaterThan':
-      return Number(chorePriority) > Number(value)
-    case 'lessThan':
-      return Number(chorePriority) < Number(value)
-    default:
-      return false
-  }
 }
 
 /**

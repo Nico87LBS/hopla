@@ -7,7 +7,6 @@ import {
   useArchiveChore,
   useUnArchiveChore,
 } from '../../../queries/ChoreQueries'
-import { usePauseChore, useStartChore } from '../../../queries/TimeQueries'
 import { commandQueue, CommandType } from '../../../utils/CommandQueue'
 import {
   ApproveChore,
@@ -18,7 +17,6 @@ import {
   SkipChore,
   UndoChoreAction,
   UpdateChoreAssignee,
-  UpdateChorePriority,
   UpdateDueDate,
 } from '../../../utils/Fetcher'
 import { offlineDB } from '../../../utils/OfflineDB'
@@ -71,8 +69,6 @@ export const useChoreActions = ({
   const queryClient = useQueryClient()
   const archiveChore = useArchiveChore()
   const unarchiveChore = useUnArchiveChore()
-  const startChore = useStartChore()
-  const pauseChore = usePauseChore()
 
   const updateChoreInState = useCallback(
     (updatedChore, event, { skipInvalidation = false } = {}) => {
@@ -284,112 +280,6 @@ export const useChoreActions = ({
             }
           }
           break
-
-        case 'start': {
-          const startedChore = { ...chore, status: 1 }
-          try {
-            await startChore.mutateAsync(chore.id)
-            queryClient.cancelQueries({ queryKey: ['chores'] })
-            queryClient.setQueryData(['chores', false], oldData => {
-              if (!oldData?.res) return oldData
-              return {
-                ...oldData,
-                res: oldData.res.map(c =>
-                  c.id === chore.id ? startedChore : c,
-                ),
-              }
-            })
-            updateChoreInState(startedChore, 'started', {
-              skipInvalidation: true,
-            })
-          } catch (error) {
-            if (isNetworkError(error)) {
-              const previousStatus = chore.status
-              const cmdId = await commandQueue.enqueue(
-                CommandType.START_CHORE,
-                chore.id,
-                { id: chore.id },
-              )
-              updateChoreInState(startedChore, 'started', {
-                skipInvalidation: true,
-              })
-              queryClient.invalidateQueries({ queryKey: ['pendingCommands'] })
-              showSuccess({
-                message: t('choreView.offlineStart'),
-                undoAction: async () => {
-                  await commandQueue.cancel(cmdId)
-                  queryClient.invalidateQueries({
-                    queryKey: ['pendingCommands'],
-                  })
-                  updateChoreInState(
-                    { ...chore, status: previousStatus },
-                    previousStatus === 2 ? 'paused' : 'started',
-                    { skipInvalidation: true },
-                  )
-                },
-              })
-            } else {
-              showError({
-                title: t('actions.failStartTitle'),
-                message: error?.message || t('actions.unableStart'),
-              })
-            }
-          }
-          break
-        }
-
-        case 'pause': {
-          const pausedChore = { ...chore, status: 2 }
-          try {
-            await pauseChore.mutateAsync(chore.id)
-            queryClient.cancelQueries({ queryKey: ['chores'] })
-            queryClient.setQueryData(['chores', false], oldData => {
-              if (!oldData?.res) return oldData
-              return {
-                ...oldData,
-                res: oldData.res.map(c =>
-                  c.id === chore.id ? pausedChore : c,
-                ),
-              }
-            })
-            updateChoreInState(pausedChore, 'paused', {
-              skipInvalidation: true,
-            })
-          } catch (error) {
-            if (isNetworkError(error)) {
-              const previousStatus = chore.status
-              const cmdId = await commandQueue.enqueue(
-                CommandType.PAUSE_CHORE,
-                chore.id,
-                { id: chore.id },
-              )
-              updateChoreInState(pausedChore, 'paused', {
-                skipInvalidation: true,
-              })
-              queryClient.invalidateQueries({ queryKey: ['pendingCommands'] })
-              showSuccess({
-                message: t('choreView.offlinePause'),
-                undoAction: async () => {
-                  await commandQueue.cancel(cmdId)
-                  queryClient.invalidateQueries({
-                    queryKey: ['pendingCommands'],
-                  })
-                  updateChoreInState(
-                    { ...chore, status: previousStatus },
-                    previousStatus === 2 ? 'paused' : 'started',
-                    { skipInvalidation: true },
-                  )
-                },
-              })
-            } else {
-              showError({
-                title: t('actions.failPauseTitle'),
-                message: error?.message || t('actions.unablePause'),
-              })
-            }
-          }
-          break
-        }
 
         case 'approve':
           try {
@@ -673,33 +563,6 @@ export const useChoreActions = ({
           }
           break
 
-        case 'changePriority': {
-          const priority = extraData?.priority?.value ?? extraData?.priority
-          if (priority === undefined || priority === null) break
-          const updatedChore = { ...chore, priority }
-          try {
-            const response = await UpdateChorePriority(chore.id, priority)
-            if (response.ok) {
-              updateChoreInState(updatedChore, 'priority-changed')
-              showSuccess({
-                title: t('actions.priorityUpdatedTitle'),
-                message: t('actions.priorityUpdatedMessage'),
-              })
-            } else {
-              showError({
-                title: t('actions.failPriorityTitle'),
-                message: t('actions.failPriorityMessage'),
-              })
-            }
-          } catch (error) {
-            showError({
-              title: t('actions.failPriorityTitle'),
-              message: error?.message || t('actions.failPriorityMessage'),
-            })
-          }
-          break
-        }
-
         case 'completeWithNote':
         case 'completeWithPastDate':
         case 'changeAssignee':
@@ -724,8 +587,6 @@ export const useChoreActions = ({
       openModal,
       archiveChore,
       unarchiveChore,
-      startChore,
-      pauseChore,
     ],
   )
 
@@ -1158,26 +1019,6 @@ export const useChoreActions = ({
     [getSelectedChoresData, chores, runBulk, patchLocalChores],
   )
 
-  const handleBulkPriority = useCallback(
-    async priority => {
-      runBulk({
-        targets: getSelectedChoresData(chores),
-        perChore: chore => expectOk(UpdateChorePriority(chore.id, priority)),
-        successTitle: t('actions.priorityUpdatedTitle'),
-        result: 'priority',
-        onSucceeded: succeeded =>
-          patchLocalChores(
-            succeeded.map(c => c.id),
-            { priority },
-          ),
-      })
-    },
-    [getSelectedChoresData, chores, runBulk, patchLocalChores],
-  )
-
-  // Add/remove rather than replace: a mixed selection has no single "current"
-  // label set, and replacing would silently drop labels the user never saw.
-  // There is no per-label endpoint, so this goes through a full chore save.
   const handleBulkLabels = useCallback(
     async (label, mode) => {
       if (!label) return
@@ -1249,7 +1090,6 @@ export const useChoreActions = ({
     handleBulkSkip,
     handleBulkDueDate,
     handleBulkAssignee,
-    handleBulkPriority,
     handleBulkLabels,
   }
 }
