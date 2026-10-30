@@ -1,0 +1,20 @@
+{
+  "format": "hopla-module/1",
+  "id": "anglais-ecole",
+  "version": "1.0.0",
+  "nom": "Anglais à l'école",
+  "description": "L'anglais de l'école, à l'oreille : les premiers mots en dessins pour la grande section, puis les mots et petites phrases du CE2.",
+  "matiere": "anglais",
+  "niveaux": ["GS", "CE2"],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "en",
+  "icone": "langue",
+  "couleur": "#E5484D",
+  "auteur": "Hopla",
+  "sources": "D'après les programmes de langues vivantes des cycles 1 et 2 (Éduscol).",
+  "modules": [
+    "anglais-gs",
+    "anglais-ce2"
+  ]
+}

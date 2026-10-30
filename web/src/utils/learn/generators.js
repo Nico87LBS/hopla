@@ -520,10 +520,15 @@ export const cardKey = (moduleId, card, direction = 'direct') =>
   `${card.cle || `${moduleId}:${card.id}`}${direction === 'direct' ? '' : `:${direction}`}`
 
 // cardItems lists the questions of a written card, one per direction asked.
-export const cardItems = (card, moduleId, siblings) => {
+// lang is the language the module teaches, which a listening card says.
+export const cardItems = (card, moduleId, siblings, lang) => {
+  const listening = card.type === 'ecoute'
+  const known = listening
+    ? ['direct', 'lire', 'inverse', 'dictee']
+    : ['direct', 'inverse']
   const directions = card.sens?.length ? card.sens : ['direct']
   return directions
-    .filter(d => d === 'direct' || d === 'inverse')
+    .filter(d => known.includes(d))
     .map(direction => {
       const inverse = direction === 'inverse'
       const prompt = inverse ? card.reponse : card.question
@@ -536,6 +541,7 @@ export const cardItems = (card, moduleId, siblings) => {
         answer,
         explanation: card.explication,
       }
+      if (listening) return listeningItem(card, base, direction, siblings, lang)
       if (card.type === 'choix') {
         const others = siblings
           .filter(s => s.id !== card.id)
@@ -565,4 +571,49 @@ export const cardItems = (card, moduleId, siblings) => {
       }
       return { ...base, mode: 'flip' }
     })
+}
+
+// A listening card says its question aloud, in the language taught:
+// - direct: hear the word, pick its meaning, as a drawing when it has one;
+// - lire: read the word, pick its meaning; the word is said once answered;
+// - inverse: see the meaning, pick the word, said once answered too;
+// - dictee: hear the word and write it.
+const listeningItem = (card, base, direction, siblings, lang) => {
+  const say = { listen: card.question, lang }
+  if (direction === 'dictee') {
+    return {
+      ...base,
+      ...say,
+      prompt: card.question,
+      answer: card.question,
+      mode: 'text',
+      accepted: [card.question, ...(card.autres_reponses || [])],
+      tolerance: card.tolerance || 'une_faute',
+    }
+  }
+  const inverse = direction === 'inverse'
+  const reading = direction === 'lire'
+  const others = siblings.filter(
+    s => s.id !== card.id && (inverse ? s.question : s.reponse) !== base.answer,
+  )
+  const traps = [
+    ...new Set(others.map(s => (inverse ? s.question : s.reponse))),
+  ]
+  const images = {}
+  if (direction === 'direct') {
+    for (const s of [card, ...others]) if (s.image) images[s.reponse] = s.image
+  }
+  // Three drawings are enough for the youngest, who cannot read yet.
+  const drawn = Object.keys(images).length > 0
+  const trapCount = drawn ? 2 : 3
+  return {
+    ...base,
+    ...(inverse || reading ? { said: say } : say),
+    ...(inverse && card.image && { image: card.image }),
+    mode: 'choice',
+    choices: [base.answer, ...traps.slice(0, trapCount)],
+    trapPool: traps,
+    trapCount,
+    ...(drawn && { images }),
+  }
 }

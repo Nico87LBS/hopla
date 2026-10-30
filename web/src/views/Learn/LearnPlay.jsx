@@ -5,6 +5,7 @@ import {
   CloudOffRounded,
   OutlinedFlagRounded,
   ReplayRounded,
+  VolumeUpRounded,
 } from '@mui/icons-material'
 import {
   Box,
@@ -34,6 +35,7 @@ import {
   stars,
   totalLeft,
 } from '../../utils/learn/engine'
+import { canSpeak, speak, stopSpeaking } from '../../utils/learn/speech'
 import { applyResult, playLocally, queueGame } from '../../utils/learn/store'
 import { generateUUID } from '../../utils/UUID'
 import LoadingComponent from '../components/Loading'
@@ -137,36 +139,90 @@ NumberPad.propTypes = {
   unit: PropTypes.string,
 }
 
-const Choices = ({ color, item, onAnswer }) => (
+// drawingURL is where a drawing of the catalogue lives, kept offline with the
+// rest of the app.
+const drawingURL = id => `/drawings/${id}.svg`
+
+const Drawing = ({ id, size = 120 }) => (
   <Box
-    sx={{
-      display: 'grid',
-      gap: 1.25,
-      gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
-      width: '100%',
-    }}
-  >
-    {item.choices.map(choice => (
-      <Button
-        key={choice}
-        variant='outlined'
-        color='neutral'
-        onClick={() => onAnswer(choice)}
+    component='img'
+    src={drawingURL(id)}
+    alt=''
+    draggable={false}
+    sx={{ display: 'block', height: size, width: size }}
+  />
+)
+
+Drawing.propTypes = { id: PropTypes.string.isRequired, size: PropTypes.number }
+
+const Choices = ({ color, item, onAnswer }) => {
+  // Drawings, for those who cannot read yet: one row of big pictures.
+  if (item.images) {
+    return (
+      <Box
         sx={{
-          borderRadius: 'lg',
-          borderWidth: 2,
-          fontSize: 18,
-          justifyContent: 'center',
-          minHeight: 56,
-          whiteSpace: 'normal',
-          '&:hover': { borderColor: color },
+          display: 'grid',
+          gap: 1.5,
+          gridTemplateColumns: `repeat(${item.choices.length}, 1fr)`,
+          width: '100%',
         }}
       >
-        {choice}
-      </Button>
-    ))}
-  </Box>
-)
+        {item.choices.map(choice => (
+          <Button
+            key={choice}
+            variant='outlined'
+            color='neutral'
+            aria-label={choice}
+            onClick={() => onAnswer(choice)}
+            sx={{
+              aspectRatio: '1',
+              borderRadius: 'xl',
+              borderWidth: 2,
+              p: 1,
+              '&:hover': { borderColor: color },
+            }}
+          >
+            {item.images[choice] ? (
+              <Drawing id={item.images[choice]} size={110} />
+            ) : (
+              choice
+            )}
+          </Button>
+        ))}
+      </Box>
+    )
+  }
+  return (
+    <Box
+      sx={{
+        display: 'grid',
+        gap: 1.25,
+        gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+        width: '100%',
+      }}
+    >
+      {item.choices.map(choice => (
+        <Button
+          key={choice}
+          variant='outlined'
+          color='neutral'
+          onClick={() => onAnswer(choice)}
+          sx={{
+            borderRadius: 'lg',
+            borderWidth: 2,
+            fontSize: 18,
+            justifyContent: 'center',
+            minHeight: 56,
+            whiteSpace: 'normal',
+            '&:hover': { borderColor: color },
+          }}
+        >
+          {choice}
+        </Button>
+      ))}
+    </Box>
+  )
+}
 
 Choices.propTypes = {
   color: PropTypes.string.isRequired,
@@ -307,6 +363,11 @@ const Feedback = ({ feedback, onNext }) => {
           })}
         </Typography>
       )}
+      {item.listen && item.mode === 'choice' && (
+        <Typography level='body-md' sx={{ color: 'inherit', mt: 0.5 }}>
+          {t('play.heard', { word: item.listen })}
+        </Typography>
+      )}
       {item.explanation && (
         <Typography level='body-sm' sx={{ color: 'inherit', mt: 0.5 }}>
           {item.explanation}
@@ -326,6 +387,53 @@ const Feedback = ({ feedback, onNext }) => {
 Feedback.propTypes = {
   feedback: PropTypes.object.isRequired,
   onNext: PropTypes.func.isRequired,
+}
+
+// Prompt is what a question asks: words to read, a drawing, or words said
+// aloud, said again with the speaker button. Without a voice on the device,
+// the words are shown instead.
+const Prompt = ({ color, item }) => {
+  const { t } = useTranslation('learn')
+  const voice = item.listen && canSpeak()
+  useEffect(() => {
+    if (voice) speak(item.listen, item.lang)
+    return stopSpeaking
+  }, [voice, item.key, item.listen, item.lang])
+  if (voice) {
+    return (
+      <IconButton
+        variant='solid'
+        aria-label={t('play.listen')}
+        title={t('play.listen')}
+        onClick={() => speak(item.listen, item.lang)}
+        sx={{
+          bgcolor: color,
+          borderRadius: '50%',
+          height: 96,
+          width: 96,
+          '&:hover': { bgcolor: color },
+        }}
+      >
+        <VolumeUpRounded sx={{ fontSize: 56 }} />
+      </IconButton>
+    )
+  }
+  return (
+    <Stack alignItems='center' gap={1}>
+      {item.image && <Drawing id={item.image} />}
+      <Typography
+        level={item.prompt.length > 40 ? 'h4' : 'h1'}
+        sx={{ fontVariantNumeric: 'tabular-nums' }}
+      >
+        {item.prompt}
+      </Typography>
+    </Stack>
+  )
+}
+
+Prompt.propTypes = {
+  color: PropTypes.string.isRequired,
+  item: PropTypes.object.isRequired,
 }
 
 const Question = ({ color, item, onAnswer }) => {
@@ -564,6 +672,8 @@ const LearnPlay = ({ playMode = false }) => {
 
   const answer = given => {
     const check = checkAnswer(item, given)
+    // A word picked from its meaning is said once answered.
+    if (item.said) speak(item.said.listen, item.said.lang)
     const answers = [
       ...game.answers,
       {
@@ -673,14 +783,7 @@ const LearnPlay = ({ playMode = false }) => {
                 width: '100%',
               }}
             >
-              <Typography
-                level={
-                  (feedback?.item || item).prompt.length > 40 ? 'h4' : 'h1'
-                }
-                sx={{ fontVariantNumeric: 'tabular-nums' }}
-              >
-                {(feedback?.item || item).prompt}
-              </Typography>
+              <Prompt item={feedback?.item || item} color={color} />
             </Sheet>
             {feedback ? (
               <Feedback feedback={feedback} onNext={next} />

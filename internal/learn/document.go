@@ -31,7 +31,7 @@ const (
 // The question types and generators the game knows. A module using another
 // one is refused, rather than shown with questions nobody can answer.
 var (
-	CardTypes      = []string{"choix", "saisie", "retourner"}
+	CardTypes      = []string{"choix", "saisie", "retourner", "ecoute"}
 	GeneratorKinds = []string{"addition", "soustraction", "multiplication", "division", "double", "moitie",
 		"complement", "comparaison", "position", "lettres", "modele"}
 	Audiences = []string{"enfant", "adulte", "tous"}

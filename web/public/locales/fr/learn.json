@@ -32,7 +32,9 @@
     "wrong": "Pas tout à fait",
     "answerWas": "La réponse : {{answer}}",
     "next": "Continuer",
-    "progress": "{{current}} / {{total}}"
+    "progress": "{{current}} / {{total}}",
+    "listen": "Écouter encore",
+    "heard": "Le mot : {{word}}"
   },
   "end": {
     "title0": "Continue, ça va venir !",

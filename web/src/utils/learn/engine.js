@@ -52,8 +52,9 @@ export const shuffle = (list, rng) => {
 }
 
 // cardSource gathers the written cards of a chapter as one listed source.
-const cardSource = (chapterId, cards, moduleId) => {
-  const items = cards.flatMap(card => cardItems(card, moduleId, cards))
+const cardSource = (chapterId, cards, doc) => {
+  const lang = doc.langue_apprise || doc.langue
+  const items = cards.flatMap(card => cardItems(card, doc.id, cards, lang))
   const byKey = new Map(items.map(item => [item.key, item]))
   return {
     id: `fiches:${chapterId}`,
@@ -84,8 +85,7 @@ export const compile = doc => {
     const cards = (doc.fiches || []).filter(
       card => card.chapitre === chapter.id,
     )
-    if (cards.length)
-      chapter.sources.push(cardSource(chapter.id, cards, doc.id))
+    if (cards.length) chapter.sources.push(cardSource(chapter.id, cards, doc))
   }
   return {
     id: doc.id,
@@ -216,7 +216,10 @@ const drawFrom = (chapter, rng) => {
 const prepare = (item, rng) => {
   if (item.mode !== 'choice' || item.keepOrder) return item
   const choices = item.trapPool?.length
-    ? [item.answer, ...shuffle(item.trapPool, rng).slice(0, 3)]
+    ? [
+        item.answer,
+        ...shuffle(item.trapPool, rng).slice(0, item.trapCount ?? 3),
+      ]
     : item.choices
   return { ...item, choices: shuffle(choices, rng) }
 }
