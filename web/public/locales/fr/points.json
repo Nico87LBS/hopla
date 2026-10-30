@@ -1,30 +1,30 @@
 {
-  "redeem": "Utiliser des points",
+  "redeem": "Utiliser des {{units}}",
   "sections": {
     "overview": "Résumé"
   },
   "redeemModal": {
     "redeemButton": "Utiliser",
     "pointsAvailable": "Disponibles : {{count}}",
-    "pointsToRedeem": "Points à utiliser",
-    "placeholder": "Saisis un nombre de points...",
-    "cannotExceed": "Le solde de points disponibles ne peut pas être dépassé",
+    "pointsToRedeem": "{{Units}} à utiliser",
+    "placeholder": "Saisis un nombre {{ofUnits}}...",
+    "cannotExceed": "Le solde {{ofUnits}} disponibles ne peut pas être dépassé",
     "quickAdd": "Ajout rapide :",
     "aboutToRedeem": "Tu vas utiliser",
-    "amount": "Points : {{count}}",
-    "remaining": "Points restants : {{count}}",
+    "amount": "{{Units}} : {{count}}",
+    "remaining": "{{Units}} restant{{e}}s : {{count}}",
     "user": "Membre",
-    "addPoints_one": "Ajouter {{count}} point",
-    "addPoints_other": "Ajouter {{count}} points"
+    "addPoints_one": "Ajouter {{count}} {{unit}}",
+    "addPoints_other": "Ajouter {{count}} {{units}}"
   },
   "leaderboard": {
-    "titlePoints": "Classement des points",
-    "subtitlePoints": "Qui a gagné le plus de points sur la période.",
+    "titlePoints": "Classement des {{units}}",
+    "subtitlePoints": "Qui a gagné le plus {{ofUnits}} sur la période.",
     "titleTasks": "Classement des tâches",
     "subtitleTasks": "Qui a terminé le plus de tâches sur la période."
   },
   "filter": {
-    "title": "Filtrer les points"
+    "title": "Filtrer les {{units}}"
   },
   "cards": {
     "available": {
@@ -40,11 +40,11 @@
       "subtext": "Gagnés sur toute la période"
     },
     "period": {
-      "title": "Points de la période"
+      "title": "{{Units}} de la période"
     }
   },
   "summary": {
-    "selectUser": "Choisis le membre dont tu veux voir les points",
+    "selectUser": "Choisis le membre dont tu veux voir les {{units}}",
     "unknownUser": "Utilisateur inconnu"
   }
 }

@@ -176,6 +176,11 @@
       "title": "Parents on the podium",
       "help": "Parents stand on the podium with the children, here and on the family screen. Without children, they always do.",
       "failed": "Could not save the podium"
+    },
+    "currency": {
+      "title": "What you earn",
+      "help": "The name of what everyone earns by doing tasks and playing, everywhere in Hopla.",
+      "failed": "The name could not be changed."
     }
   },
   "accountSettings": {
@@ -581,10 +586,10 @@
     "warningLead": "This action cannot be undone.",
     "warningIntro": "Deleting your account will permanently remove:",
     "removesProfile": "Your user profile and authentication data",
-    "removesChores": "All your chores, chore history, and time tracking sessions",
+    "removesChores": "All your tasks and their history",
     "removesTokens": "API tokens, MFA sessions, and password reset tokens",
     "removesStorage": "Storage files and usage data",
-    "removesPoints": "Points history and notifications",
+    "removesPoints": "{{Units}} history and notifications",
     "removesCircles": "Family memberships and relationships",
     "passwordToContinue": "Enter your password to continue",
     "circleLabel": "Family: {{name}}",

@@ -17,9 +17,25 @@ type Circle struct {
 	Timezone string `json:"timezone" gorm:"column:timezone"`
 	// ParentsOnPodium puts the parents on the podium with the children.
 	// Without children, the parents are always on it.
-	ParentsOnPodium    bool       `json:"parentsOnPodium" gorm:"column:parents_on_podium;not null;default:false"`
+	ParentsOnPodium bool `json:"parentsOnPodium" gorm:"column:parents_on_podium;not null;default:false"`
+	// Currency names what the family earns, one of Currencies.
+	Currency           string     `json:"currency" gorm:"column:currency;not null;default:hops"`
 	SubscriptionStatus *string    `gorm:"column:status;<-:false"`     // read one column
 	ExpiredAt          *time.Time `gorm:"column:expired_at;<-:false"` // read one column
+}
+
+// Currencies are the names a family can give to what it earns, the first
+// being the default. The clients translate them.
+var Currencies = []string{"hops", "points", "stars", "carrots", "coins", "tokens"}
+
+// CurrencyOf is the family's currency, the default for an unknown one.
+func CurrencyOf(name string) string {
+	for _, c := range Currencies {
+		if c == name {
+			return c
+		}
+	}
+	return Currencies[0]
 }
 
 type CircleDetail struct {

@@ -1,0 +1,9 @@
+{
+  "resetPassword": {
+    "subject": "Hopla : nouveau mot de passe",
+    "title": "Mot de passe oublié ?",
+    "body": "Nous avons reçu une demande de nouveau mot de passe pour cette adresse. Si elle vient de toi, choisis-en un nouveau avec le bouton ci-dessous. Le lien ne marche qu'une fois.",
+    "button": "Choisir un nouveau mot de passe",
+    "ignore": "Si tu n'as rien demandé, ignore ce message : ton mot de passe ne change pas."
+  }
+}

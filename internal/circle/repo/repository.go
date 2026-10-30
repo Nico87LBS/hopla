@@ -201,3 +201,8 @@ func (r *CircleRepository) RedeemPoints(c context.Context, circleID int, userID 
 	}
 	return nil
 }
+
+// SetCurrency renames what the family earns.
+func (r *CircleRepository) SetCurrency(c context.Context, circleID int, currency string) error {
+	return r.db.WithContext(c).Model(&cModel.Circle{}).Where("id = ?", circleID).Update("currency", currency).Error
+}

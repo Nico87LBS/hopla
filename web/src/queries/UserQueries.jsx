@@ -1,12 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
+import { setFamilyCurrency } from '../utils/currency'
 import { setFamilyTimezone } from '../utils/familyTime'
 import {
   GetAllCircleMembers,
   GetAllUsers,
   GetChildUsers,
+  GetFamilyCurrency,
   GetFamilyTimezone,
   GetUserProfile,
+  SetFamilyCurrency,
   SetFamilyTimezone,
   SetMemberAway,
 } from '../utils/Fetcher'
@@ -90,6 +93,30 @@ export const useFamilyTimezone = ({ enabled = true } = {}) =>
     staleTime: 10 * 60 * 1000,
     enabled: enabled && !!localStorage.getItem('token'),
   })
+
+// What the family earns: setting it gives its words to every text.
+export const useFamilyCurrency = ({ enabled = true } = {}) =>
+  useQuery({
+    queryKey: ['familyCurrency'],
+    queryFn: async () => {
+      const result = await GetFamilyCurrency()
+      setFamilyCurrency(result.res?.currency)
+      return result.res
+    },
+    staleTime: 10 * 60 * 1000,
+    enabled: enabled && !!localStorage.getItem('token'),
+  })
+
+export const useSetFamilyCurrency = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: currency => SetFamilyCurrency(currency),
+    onSuccess: result => {
+      setFamilyCurrency(result.res?.currency)
+      queryClient.setQueryData(['familyCurrency'], result.res)
+    },
+  })
+}
 
 // Moves the family to another time zone, such as on holiday; tasks keep
 // their time of day.

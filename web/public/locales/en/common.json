@@ -53,7 +53,7 @@
     "archived": "Archived",
     "labels": "Labels",
     "filters": "Filters",
-    "points": "Points",
+    "points": "{{Units}}",
     "rewards": "Rewards",
     "settings": "Settings",
     "primaryNavigation": "Primary navigation",
@@ -94,7 +94,7 @@
       "viewArchivedTasks": "View archived tasks",
       "viewLabels": "View labels",
       "viewJournal": "View the journal",
-      "viewPoints": "View points",
+      "viewPoints": "View {{units}}",
       "openSettings": "Open settings",
       "filterTasks": "Show tasks matching “{{query}}”",
       "filterTasksSubtitle": "Filter the task list"
@@ -303,9 +303,9 @@
       "listening": "Listening…"
     },
     "capture": {
-      "voiceCaption": "Dates, labels and points from your words",
+      "voiceCaption": "Dates, labels and {{units}} from your words",
       "deviceCaption": "Read on your device",
-      "typeCaption": "#labels @people *points as you type",
+      "typeCaption": "#labels @people *{{units}} as you type",
       "trashTitle": "♻️ Take out the trash",
       "trashDue": "Due tomorrow",
       "trashRepeat": "Every Monday",
@@ -322,21 +322,6 @@
       "due": "Due",
       "done": "Done",
       "next": "Next"
-    },
-    "nfc": {
-      "tagOnWasher": "Tag on the washer",
-      "tapToOpen": "Tap to open",
-      "swapFilter": "Swap the washer filter",
-      "done": "Done",
-      "skip": "Skip",
-      "startTimer": "Start timer",
-      "waitingApproval": "{{name}} marked it done · waiting on you",
-      "approve": "Approve",
-      "reject": "Reject",
-      "completed": "Completed",
-      "note": "Used the delicate cycle — filter needs a clean next time.",
-      "metaJustNow": "Just now · ★ 5 pts",
-      "metaLastWeek": "Last week · ★ 5 pts"
     },
     "circle": {
       "kitchenTitle": "Kitchen deep clean",
@@ -503,11 +488,11 @@
       "shop": "Shop",
       "journal": "Journal"
     },
-    "hops_one": "{{count}} hop",
-    "hops_other": "{{count}} hops",
+    "hops_one": "{{count}} {{unit}}",
+    "hops_other": "{{count}} {{units}}",
     "days_one": "{{count}} d",
     "days_other": "{{count}} d",
-    "earned": "hops earned",
+    "earned": "{{units}} earned",
     "earnedShort": "earned",
     "toNextRank": "To the next rank",
     "adjustFor": "Bonus or penalty for {{name}}",
@@ -525,7 +510,7 @@
       "fromTasks": "tasks",
       "fromGames": "games",
       "fromBonus": "bonus",
-      "label": "This week's hops: {{tasks}} from tasks, {{games}} from games, {{bonus}} from bonuses",
+      "label": "This week's {{units}}: {{tasks}} from tasks, {{games}} from games, {{bonus}} from bonuses",
       "away_one": "Away {{count}} day this week",
       "away_other": "Away {{count}} days this week"
     }
@@ -547,7 +532,7 @@
       },
       "rewards": {
         "title": "Rewards",
-        "description": "What hops can buy, and the ready-made bonuses"
+        "description": "What {{units}} can buy, and the ready-made bonuses"
       },
       "missions": {
         "title": "Missions",
@@ -559,7 +544,7 @@
       },
       "learn": {
         "title": "Learning modules",
-        "description": "Choose everyone’s games and their hops"
+        "description": "Choose everyone’s games and their {{units}}"
       },
       "family": {
         "title": "Family",
@@ -611,5 +596,49 @@
     "moved": "The family is now on {{city}} time",
     "movedMessage": "Tasks keep their time of day.",
     "moveFailed": "The time zone could not be changed"
+  },
+  "currency": {
+    "hops": {
+      "one": "hop",
+      "other": "hops",
+      "of": "hops",
+      "a": "one hop",
+      "e": ""
+    },
+    "points": {
+      "one": "point",
+      "other": "points",
+      "of": "points",
+      "a": "one point",
+      "e": ""
+    },
+    "stars": {
+      "one": "star",
+      "other": "stars",
+      "of": "stars",
+      "a": "one star",
+      "e": ""
+    },
+    "carrots": {
+      "one": "carrot",
+      "other": "carrots",
+      "of": "carrots",
+      "a": "one carrot",
+      "e": ""
+    },
+    "coins": {
+      "one": "coin",
+      "other": "coins",
+      "of": "coins",
+      "a": "one coin",
+      "e": ""
+    },
+    "tokens": {
+      "one": "token",
+      "other": "tokens",
+      "of": "tokens",
+      "a": "one token",
+      "e": ""
+    }
   }
 }

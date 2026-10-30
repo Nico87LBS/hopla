@@ -1015,6 +1015,8 @@ func Routes(router *gin.Engine, h *Handler, multiAuthMiddleware *auth.MultiAuthM
 		circleRoutes.PUT("/members/away", h.SetMemberAway)
 		circleRoutes.GET("/timezone", h.GetFamilyTimezone)
 		circleRoutes.PUT("/timezone", h.SetFamilyTimezone)
+		circleRoutes.GET("/currency", h.GetFamilyCurrency)
+		circleRoutes.PUT("/currency", h.SetFamilyCurrency)
 		circleRoutes.GET("/", h.GetUserCircles)
 		circleRoutes.POST("/:id/members/points/redeem", h.RedeemPoints)
 

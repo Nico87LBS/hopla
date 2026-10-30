@@ -11,8 +11,15 @@ import {
 } from '../src/views/ChoreEdit/editor/schedule.js'
 
 // A translator over the real locale files that fails on a missing key, with
-// i18next's plurals and {{placeholders}}.
+// i18next's plurals and {{placeholders}}, the family's words for what it
+// earns (hops here) given to every text as the app does.
 const translator = language => {
+  const hops = JSON.parse(
+    readFileSync(
+      new URL(`../public/locales/${language}/common.json`, import.meta.url),
+    ),
+  ).currency.hops
+  const defaults = { unit: hops.one, units: hops.other }
   const bundles = Object.fromEntries(
     ['chores'].map(ns => [
       ns,
@@ -37,7 +44,10 @@ const translator = language => {
       ])
     }
     assert.equal(typeof value, 'string', `missing ${language} key ${key}`)
-    return value.replace(/{{(\w+)}}/g, (_, name) => options[name])
+    return value.replace(
+      /{{(\w+)}}/g,
+      (_, name) => options[name] ?? defaults[name],
+    )
   }
 }
 
