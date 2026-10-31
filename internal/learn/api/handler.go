@@ -224,7 +224,7 @@ func (h *Handler) remove(c *gin.Context) {
 	if !ok {
 		return
 	}
-	if err := learn.Remove(h.db.WithContext(c), who.familyID, c.Param("key")); err != nil {
+	if err := learn.Remove(h.db.WithContext(c), who.familyID, c.Param("key"), c.Query("forget") == "1"); err != nil {
 		answerError(c, err, "remove the module")
 		return
 	}

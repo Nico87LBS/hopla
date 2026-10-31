@@ -33,9 +33,9 @@ import { compile, seededRandom } from '../../utils/learn/engine'
 import LoadingComponent from '../components/Loading'
 import { surfaceSx } from '../Games/GameParts'
 import { ParentPage } from '../Manage/ParentPages'
-import ConfirmationModal from '../Modals/Inputs/ConfirmationModal'
 import CardEditor, { ReportList } from './CardEditor'
 import { FAMILY, FamilySettings, OwnChips, useNotify } from './ManageLearn'
+import RemoveModal from './RemoveModal'
 
 // Toggle is a row that opens what is under it.
 const Toggle = ({ children, onClick, open }) => (
@@ -386,16 +386,12 @@ export const LearnDetail = () => {
   const askRemove = () =>
     setConfirm({
       isOpen: true,
-      title: t('manage.removeTitle', { name: view.main.nom }),
-      message: t('manage.removeMessage'),
-      confirmText: t('manage.remove'),
-      cancelText: t('manage.cancel'),
-      color: 'danger',
-      onClose: async ok => {
+      name: view.main.nom,
+      onClose: async (ok, forget) => {
         setConfirm({})
         if (!ok) return
         try {
-          await remove.mutateAsync(moduleId)
+          await remove.mutateAsync({ id: moduleId, forget })
           navigate('/manage/learn', { replace: true })
         } catch (err) {
           notify('error', err.message)
@@ -547,7 +543,9 @@ export const LearnDetail = () => {
             onClose={() => setEditing(null)}
           />
         )}
-        {confirm.isOpen && <ConfirmationModal config={confirm} />}
+        {confirm.isOpen && (
+          <RemoveModal name={confirm.name} onClose={confirm.onClose} />
+        )}
       </Fixes.Provider>
     </ParentPage>
   )
