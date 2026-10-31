@@ -42,7 +42,7 @@ import { useNotification } from '../../service/NotificationProvider'
 import LoadingComponent from '../components/Loading'
 import { MemberAvatar, surfaceSx } from '../Games/GameParts'
 import { ParentPage, useMembers } from '../Manage/ParentPages'
-import ConfirmationModal from '../Modals/Inputs/ConfirmationModal'
+import RemoveModal from './RemoveModal'
 
 const HEAD = 40
 
@@ -1149,16 +1149,12 @@ export const ManageLearn = () => {
   const askRemove = module =>
     setConfirm({
       isOpen: true,
-      title: t('manage.removeTitle', { name: module.name }),
-      message: t('manage.removeMessage'),
-      confirmText: t('manage.remove'),
-      cancelText: t('manage.cancel'),
-      color: 'danger',
-      onClose: async ok => {
+      name: module.name,
+      onClose: async (ok, forget) => {
         setConfirm({})
         if (!ok) return
         try {
-          await remove.mutateAsync(module.id)
+          await remove.mutateAsync({ id: module.id, forget })
         } catch (err) {
           notify('error', err.message)
         }
@@ -1210,7 +1206,9 @@ export const ManageLearn = () => {
         </Fragment>
       )}
       {modal()}
-      {confirm.isOpen && <ConfirmationModal config={confirm} />}
+      {confirm.isOpen && (
+        <RemoveModal name={confirm.name} onClose={confirm.onClose} />
+      )}
     </ParentPage>
   )
 }

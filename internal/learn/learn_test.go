@@ -286,8 +286,8 @@ func TestImportChecksTheDocumentAndKeepsCatalogueIds(t *testing.T) {
 	require.NoError(t, err)
 	require.Len(t, modules, 3)
 
-	require.NoError(t, Remove(db, 1, "mon-paquet"))
-	require.ErrorIs(t, Remove(db, 1, "mon-paquet"), ErrNotFound)
+	require.NoError(t, Remove(db, 1, "mon-paquet", false))
+	require.ErrorIs(t, Remove(db, 1, "mon-paquet", false), ErrNotFound)
 }
 
 func TestStars(t *testing.T) {
@@ -619,4 +619,40 @@ func TestAPackUpdateInstallsItsNewModulesTurnedOnForNobody(t *testing.T) {
 	require.NoError(t, err)
 	require.Len(t, activations, 1, "the new module is turned on for nobody, the others stay as they were")
 	require.Equal(t, "anglais-aero-meteo", activations[0].ModuleKey)
+}
+
+func TestRemovingAPackRemovesItsModulesAndForgetsOnlyWhenAsked(t *testing.T) {
+	db := setup(t)
+	now := time.Now().UTC()
+	require.NoError(t, Install(db, 1, "anglais-aero", now))
+	_, err := Import(db, 1, []byte(`{"format":"hopla-module/1","id":"mon-paquet","version":"1","nom":"Mon paquet","public":"tous",
+		"modules":["anglais-aero-meteo"]}`), now)
+	require.NoError(t, err)
+	require.NoError(t, SetActivation(db, 1, ActivationChange{UserID: anna,
+		Modules: []string{"anglais-aero-meteo", "anglais-aero-radio"}, Active: true}, now))
+	for _, key := range []string{"anglais-aero-meteo", "anglais-aero-radio"} {
+		require.NoError(t, db.Create(&Session{FamilyID: 1, ClientID: key, UserID: anna, ModuleKey: key, Day: "2026-10-31",
+			Total: 10, PlayedAt: now}).Error)
+		require.NoError(t, db.Create(&Card{FamilyID: 1, UserID: anna, Key: key + ":c", Box: 3, Due: "2026-11-01",
+			ModuleKey: key}).Error)
+	}
+	count := func(model any, key string) int64 {
+		var n int64
+		require.NoError(t, db.Model(model).Where("family_id = ? AND module_key = ?", 1, key).Count(&n).Error)
+		return n
+	}
+
+	require.NoError(t, Remove(db, 1, "anglais-aero", false))
+	require.Zero(t, count(&Module{}, "anglais-aero-radio"), "a module of the pack goes with it")
+	require.Zero(t, count(&Activation{}, "anglais-aero-radio"))
+	require.EqualValues(t, 1, count(&Module{}, "anglais-aero-meteo"), "another pack still gathers it")
+	require.EqualValues(t, 1, count(&Activation{}, "anglais-aero-meteo"))
+	require.EqualValues(t, 1, count(&Session{}, "anglais-aero-radio"), "the games stay")
+	require.EqualValues(t, 1, count(&Card{}, "anglais-aero-radio"), "what was learned stays")
+
+	require.NoError(t, Remove(db, 1, "mon-paquet", true))
+	require.Zero(t, count(&Module{}, "anglais-aero-meteo"))
+	require.Zero(t, count(&Session{}, "anglais-aero-meteo"), "asked to forget, the games go")
+	require.Zero(t, count(&Card{}, "anglais-aero-meteo"), "asked to forget, what was learned goes")
+	require.EqualValues(t, 1, count(&Session{}, "anglais-aero-radio"), "only the modules removed now are forgotten")
 }

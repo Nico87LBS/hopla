@@ -309,22 +309,74 @@ func ModuleDetail(db *gorm.DB, familyID int, key string, now time.Time) (Detail,
 	return out, nil
 }
 
-// Remove takes a module out of a family with its activations. The modules of
-// a pack stay; what people know stays too, should it come back.
-func Remove(db *gorm.DB, familyID int, key string) error {
+// Remove takes a module out of a family with its activations and settings.
+// A pack goes with its modules, except those another pack still gathers.
+// What people know and the games they played stay, should the module come
+// back, unless forget is set: then they go too.
+func Remove(db *gorm.DB, familyID int, key string, forget bool) error {
 	return db.Transaction(func(tx *gorm.DB) error {
-		result := tx.Where("family_id = ? AND module_key = ?", familyID, key).Delete(&Module{})
-		if result.Error != nil {
-			return result.Error
-		}
-		if result.RowsAffected == 0 {
-			return ErrNotFound
-		}
-		if err := tx.Where("family_id = ? AND module_key = ?", familyID, key).Delete(&Activation{}).Error; err != nil {
+		var modules []Module
+		if err := tx.Where("family_id = ?", familyID).Find(&modules).Error; err != nil {
 			return err
 		}
-		return tx.Where("family_id = ? AND scope = ?", familyID, key).Delete(&PersonSetting{}).Error
+		byKey := map[string]Module{}
+		for _, module := range modules {
+			byKey[module.Key] = module
+		}
+		if _, ok := byKey[key]; !ok {
+			return ErrNotFound
+		}
+		gone := map[string]bool{}
+		var mark func(string)
+		mark = func(k string) {
+			if gone[k] {
+				return
+			}
+			gone[k] = true
+			for _, child := range byKey[k].Children {
+				if _, ok := byKey[child]; ok && !keptBy(byKey, gone, child) {
+					mark(child)
+				}
+			}
+		}
+		mark(key)
+		keys := make([]string, 0, len(gone))
+		for k := range gone {
+			keys = append(keys, k)
+		}
+		scoped := tx.Where("family_id = ? AND module_key IN ?", familyID, keys)
+		if err := scoped.Delete(&Module{}).Error; err != nil {
+			return err
+		}
+		if err := tx.Where("family_id = ? AND module_key IN ?", familyID, keys).Delete(&Activation{}).Error; err != nil {
+			return err
+		}
+		if err := tx.Where("family_id = ? AND scope IN ?", familyID, keys).Delete(&PersonSetting{}).Error; err != nil {
+			return err
+		}
+		if !forget {
+			return nil
+		}
+		if err := tx.Where("family_id = ? AND module_key IN ?", familyID, keys).Delete(&Session{}).Error; err != nil {
+			return err
+		}
+		return tx.Where("family_id = ? AND module_key IN ?", familyID, keys).Delete(&Card{}).Error
 	})
+}
+
+// keptBy tells whether a pack that stays still gathers a module.
+func keptBy(modules map[string]Module, gone map[string]bool, key string) bool {
+	for k, module := range modules {
+		if gone[k] {
+			continue
+		}
+		for _, child := range module.Children {
+			if child == key {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 // Activations lists who plays which module in a family.

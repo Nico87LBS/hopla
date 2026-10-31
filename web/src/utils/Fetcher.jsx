@@ -1120,12 +1120,15 @@ const ImportLearnModule = async text =>
     }),
   )
 
-const RemoveLearnModule = async key =>
+const RemoveLearnModule = async ({ forget, id }) =>
   learnAnswer(
-    await Fetch(`/learn/modules/${encodeURIComponent(key)}`, {
-      method: 'DELETE',
-      headers: HEADERS(),
-    }),
+    await Fetch(
+      `/learn/modules/${encodeURIComponent(id)}${forget ? '?forget=1' : ''}`,
+      {
+        method: 'DELETE',
+        headers: HEADERS(),
+      },
+    ),
   )
 
 const SetLearnActivation = async change =>
