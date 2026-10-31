@@ -164,6 +164,10 @@ func freshModules(db *gorm.DB, familyID int, now time.Time) ([]Module, error) {
 	if err != nil {
 		return nil, err
 	}
+	have := map[string]bool{}
+	for _, module := range modules {
+		have[module.Key] = true
+	}
 	for i, module := range modules {
 		entry, ok := entries[module.Key]
 		if !module.Builtin || !ok || entry.Doc.Version == module.Version {
@@ -175,6 +179,34 @@ func freshModules(db *gorm.DB, familyID int, now time.Time) ([]Module, error) {
 		}
 		fresh.ID, fresh.InstalledAt = module.ID, module.InstalledAt
 		modules[i] = fresh
+	}
+	// A catalogue pack that gained modules in an update gets them installed,
+	// turned on for nobody: the parents choose who plays them.
+	var added bool
+	for _, module := range modules {
+		if !module.Builtin || !module.IsPack() {
+			continue
+		}
+		for _, child := range module.Children {
+			if have[child] {
+				continue
+			}
+			if _, ok := entries[child]; !ok {
+				continue
+			}
+			if err := db.Transaction(func(tx *gorm.DB) error {
+				return install(tx, entries, familyID, child, now, map[string]bool{})
+			}); err != nil {
+				return nil, err
+			}
+			have[child], added = true, true
+		}
+	}
+	if added {
+		modules = nil
+		if err := db.Where("family_id = ?", familyID).Order("name").Find(&modules).Error; err != nil {
+			return nil, err
+		}
 	}
 	return modules, nil
 }

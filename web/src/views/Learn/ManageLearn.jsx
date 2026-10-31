@@ -518,6 +518,12 @@ const ModuleGroup = ({
   const setActivation = useSetActivation()
   const notify = useNotify()
   const isOn = id => activations.has(`${person.userId}:${id}`)
+  // A module a pack gained in an update, which nobody plays yet.
+  const playedBy = new Set([...activations.keys()].map(k => k.split(':')[1]))
+  const isNew = module =>
+    group.pack &&
+    !playedBy.has(module.id) &&
+    new Date(module.installedAt) > new Date(group.pack.installedAt)
 
   const toggle = async (ids, active) => {
     try {
@@ -651,6 +657,13 @@ const ModuleGroup = ({
                 <Typography
                   level='body-md'
                   sx={{ flex: 1, minWidth: 0, pl: 4 }}
+                  endDecorator={
+                    isNew(module) && (
+                      <Chip size='sm' variant='soft' color='success'>
+                        {t('manage.new')}
+                      </Chip>
+                    )
+                  }
                 >
                   {module.name}
                 </Typography>
