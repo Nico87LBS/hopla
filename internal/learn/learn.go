@@ -602,7 +602,12 @@ func SetPersonSetting(db *gorm.DB, familyID int, change SettingChange, now time.
 			return tx.Where("family_id = ? AND user_id = ? AND scope = ?", familyID, change.UserID, change.Scope).
 				Delete(&PersonSetting{}).Error
 		}
-		return tx.Save(&row).Error
+		// Not Save: the family's row has user id 0, which Save takes for a new
+		// row and inserts a second time.
+		return tx.Clauses(clause.OnConflict{
+			Columns:   []clause.Column{{Name: "family_id"}, {Name: "user_id"}, {Name: "scope"}},
+			UpdateAll: true,
+		}).Create(&row).Error
 	})
 }
 

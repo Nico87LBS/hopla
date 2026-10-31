@@ -656,3 +656,19 @@ func TestRemovingAPackRemovesItsModulesAndForgetsOnlyWhenAsked(t *testing.T) {
 	require.Zero(t, count(&Card{}, "anglais-aero-meteo"), "asked to forget, what was learned goes")
 	require.EqualValues(t, 1, count(&Session{}, "anglais-aero-radio"), "only the modules removed now are forgotten")
 }
+
+func TestTheFamilyChangesAPackSettingTwice(t *testing.T) {
+	db := setup(t)
+	now := time.Now().UTC()
+	require.NoError(t, Install(db, 1, "anglais-aero", now))
+	questions, unlock := 20, 60
+	require.NoError(t, SetPersonSetting(db, 1, SettingChange{Family: true, Scope: "anglais-aero",
+		GameSettings: GameSettings{Questions: &questions}}, now))
+	require.NoError(t, SetPersonSetting(db, 1, SettingChange{Family: true, Scope: "anglais-aero", UnlockPercent: &unlock}, now),
+		"a second setting of the family on the same pack")
+	var rows []PersonSetting
+	require.NoError(t, db.Where("family_id = ? AND user_id = ? AND scope = ?", 1, Family, "anglais-aero").Find(&rows).Error)
+	require.Len(t, rows, 1)
+	require.Equal(t, 20, *rows[0].Questions)
+	require.Equal(t, 60, *rows[0].UnlockPercent)
+}
