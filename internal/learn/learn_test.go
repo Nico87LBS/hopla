@@ -591,3 +591,32 @@ func TestAReportSentTwiceCountsOnceUntilLookedAt(t *testing.T) {
 	require.NoError(t, err)
 	require.Empty(t, open)
 }
+
+func TestAPackUpdateInstallsItsNewModulesTurnedOnForNobody(t *testing.T) {
+	db := setup(t)
+	before := time.Now().UTC().Add(-time.Hour)
+	require.NoError(t, Install(db, 1, "anglais-aero", before))
+	require.NoError(t, SetActivation(db, 1, ActivationChange{UserID: anna, Modules: []string{"anglais-aero-meteo"}, Active: true}, before))
+	// The pack as it was before its update: an older version, without the
+	// radio module.
+	require.NoError(t, db.Where("family_id = ? AND module_key = ?", 1, "anglais-aero-radio").Delete(&Module{}).Error)
+	require.NoError(t, db.Model(&Module{}).Where("family_id = ? AND module_key = ?", 1, "anglais-aero").
+		Update("version", "1.0.0").Error)
+
+	now := time.Now().UTC()
+	modules, err := Modules(db, 1, now)
+	require.NoError(t, err)
+	var radio *Module
+	for i, module := range modules {
+		if module.Key == "anglais-aero-radio" {
+			radio = &modules[i]
+		}
+	}
+	require.NotNil(t, radio, "the new module of the pack is installed")
+	require.True(t, radio.InstalledAt.After(before), "installed after its pack, to show it as new")
+
+	activations, err := Activations(db, 1)
+	require.NoError(t, err)
+	require.Len(t, activations, 1, "the new module is turned on for nobody, the others stay as they were")
+	require.Equal(t, "anglais-aero-meteo", activations[0].ModuleKey)
+}
