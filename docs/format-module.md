@@ -106,6 +106,11 @@ Champs communs :
 | `explication` | Texte montré après la réponse (un exemple, une règle) |
 | `sens` | Sens posés, par défaut `["direct"]` (voir chaque type) |
 | `cle` | Clé partagée avec d'autres modules (voir plus bas) |
+| `image` | Pour `choix`, `saisie` et `retourner` : dessin montré au-dessus de la question (pas dans le sens `inverse`) |
+
+Dans le texte d'une fiche, `{prenom}` est remplacé par le prénom de la
+personne qui joue (réglage par personne de Gérer › Apprendre, sinon le premier
+mot de son nom dans Hopla, sinon « toi »).
 
 ### `choix` : choisir parmi quatre
 
@@ -252,6 +257,7 @@ Champs communs : `id`, `chapitre`, `operation`.
 | `position` | `a`, `rangs` (`unites`, `dizaines`, `centaines`, `milliers`), `formes` (`chiffre`, `nombre`) | Le chiffre des dizaines de 4 582 ; combien de dizaines en tout |
 | `lettres` | `a`, `formes` (`chiffres`, `mots`) | Écrire en chiffres « mille deux cent trois », ou choisir l'écriture en lettres |
 | `compter` | `a`, `objets` (dessins à compter, `carrot` par défaut), `formes` (`objets`, `de`) | Une collection dessinée, en rangées de cinq, ou les points d'un dé (1 à 6) : choisir le nombre parmi quatre jusqu'à 10, le taper au-delà |
+| `prenom` | `formes` (`premiere`, `reconnaitre`, `ordre`, `nombre`) | Le prénom de la personne qui joue : sa première lettre, le retrouver parmi des prénoms proches, remettre ses lettres dans l'ordre, compter ses lettres. Sans prénom (ou d'une seule lettre), le chapitre n'a pas de questions |
 | `modele` | `texte`, `variables`, `calculs`, `si`, `reponse`, `unite` | Un problème à trous (voir plus bas) |
 
 ### Problèmes : `modele`

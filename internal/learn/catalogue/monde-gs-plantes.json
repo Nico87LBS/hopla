@@ -1,0 +1,199 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-gs-plantes",
+  "version": "1.0.0",
+  "nom": "Les plantes",
+  "description": "Les parties d'une plante, de la graine à la fleur, et les fruits et légumes.",
+  "matiere": "monde",
+  "niveaux": [
+    "GS"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de l'école maternelle (cycle 1) et ses attendus de fin de GS (Éduscol).",
+  "chapitres": [
+    {
+      "id": "parties",
+      "nom": "Les parties de la plante"
+    },
+    {
+      "id": "graine",
+      "nom": "De la graine à la fleur",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "fruits",
+      "nom": "Fruit ou légume ?",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 6,
+    "nouvelles_par_partie": 2,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "zone-fleur",
+      "chapitre": "parties",
+      "type": "zones",
+      "image": "plante",
+      "question": "fleur",
+      "reponse": "la fleur",
+      "cle": "monde:plante:fleur"
+    },
+    {
+      "id": "zone-feuille",
+      "chapitre": "parties",
+      "type": "zones",
+      "image": "plante",
+      "question": "feuille",
+      "reponse": "la feuille",
+      "cle": "monde:plante:feuille"
+    },
+    {
+      "id": "zone-tige",
+      "chapitre": "parties",
+      "type": "zones",
+      "image": "plante",
+      "question": "tige",
+      "reponse": "la tige",
+      "cle": "monde:plante:tige"
+    },
+    {
+      "id": "zone-racines",
+      "chapitre": "parties",
+      "type": "zones",
+      "image": "plante",
+      "question": "racines",
+      "reponse": "les racines",
+      "cle": "monde:plante:racines"
+    },
+    {
+      "id": "pousse",
+      "chapitre": "graine",
+      "type": "ordre",
+      "question": "De la graine à la fleur : remets dans l’ordre.",
+      "elements": [
+        "la graine",
+        "la pousse",
+        "la plante",
+        "la fleur"
+      ]
+    },
+    {
+      "id": "planter",
+      "chapitre": "graine",
+      "type": "ordre",
+      "question": "Pour planter une graine : remets dans l’ordre.",
+      "elements": [
+        "faire un trou",
+        "mettre la graine",
+        "reboucher le trou",
+        "arroser"
+      ]
+    },
+    {
+      "id": "besoins",
+      "chapitre": "graine",
+      "type": "choix",
+      "question": "De quoi une plante a-t-elle besoin pour pousser ?",
+      "reponse": "d'eau et de lumière",
+      "pieges": [
+        "de lait et de sucre",
+        "de noir et de froid",
+        "de bruit"
+      ]
+    },
+    {
+      "id": "racines-eau",
+      "chapitre": "graine",
+      "type": "choix",
+      "question": "Par où la plante boit-elle l’eau de la terre ?",
+      "reponse": "par les racines",
+      "pieges": [
+        "par la fleur",
+        "par les feuilles",
+        "par la tige"
+      ]
+    },
+    {
+      "id": "fruit-legume",
+      "chapitre": "fruits",
+      "type": "classer",
+      "question": "Fruit ou légume ?",
+      "boites": [
+        {
+          "nom": "fruit",
+          "image": "cherry"
+        },
+        {
+          "nom": "légume",
+          "image": "leek"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "la pomme",
+          "boite": "fruit",
+          "image": "apple"
+        },
+        {
+          "texte": "la banane",
+          "boite": "fruit",
+          "image": "banana"
+        },
+        {
+          "texte": "l'orange",
+          "boite": "fruit",
+          "image": "orange"
+        },
+        {
+          "texte": "la fraise",
+          "boite": "fruit",
+          "image": "strawberry"
+        },
+        {
+          "texte": "la poire",
+          "boite": "fruit",
+          "image": "pear"
+        },
+        {
+          "texte": "le raisin",
+          "boite": "fruit",
+          "image": "grapes"
+        },
+        {
+          "texte": "le citron",
+          "boite": "fruit",
+          "image": "lemon"
+        },
+        {
+          "texte": "la carotte",
+          "boite": "légume",
+          "image": "carrot"
+        },
+        {
+          "texte": "la salade",
+          "boite": "légume",
+          "image": "salad"
+        },
+        {
+          "texte": "la pomme de terre",
+          "boite": "légume",
+          "image": "potato"
+        },
+        {
+          "texte": "les petits pois",
+          "boite": "légume",
+          "image": "peas"
+        }
+      ]
+    }
+  ]
+}

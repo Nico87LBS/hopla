@@ -153,15 +153,19 @@ const Choices = ({ color, item, onAnswer, say }) => {
   const [armed, touch] = useTwoTaps(say, onAnswer)
   const armedSx = choice =>
     armed === choice && { borderColor: color, bgcolor: `${color}1f` }
-  // Drawings, for those who cannot read yet: one row of big pictures.
+  // Drawings, for those who cannot read yet: big pictures, two by two
+  // when there are four of them, so that none leaves a phone's screen.
   if (item.images) {
+    const columns = item.choices.length === 4 ? 2 : item.choices.length
     return (
       <Box
         sx={{
           display: 'grid',
           gap: 1.5,
-          gridTemplateColumns: `repeat(${item.choices.length}, 1fr)`,
+          gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
           width: '100%',
+          maxWidth: columns === 2 ? 320 : undefined,
+          mx: 'auto',
         }}
       >
         {item.choices.map(choice => (
@@ -181,7 +185,9 @@ const Choices = ({ color, item, onAnswer, say }) => {
             }}
           >
             {item.images[choice] ? (
-              <Drawing id={item.images[choice]} size={110} />
+              <Box sx={{ width: '100%', maxWidth: 110, aspectRatio: '1' }}>
+                <Drawing id={item.images[choice]} size='100%' />
+              </Box>
             ) : (
               choice
             )}

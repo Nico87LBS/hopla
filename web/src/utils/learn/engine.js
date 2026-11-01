@@ -3,7 +3,7 @@
 // questions of a game and checks the answers. Moving the cards and counting
 // the stars follow the same rules as the server, which has the last word.
 
-import { cardItems, generatorSource } from './generators.js'
+import { cardItems, generatorSource, withName } from './generators.js'
 
 export const DEFAULT_SETTINGS = {
   questions_par_partie: 10,
@@ -67,7 +67,9 @@ const cardSource = (chapterId, cards, doc) => {
 }
 
 // compile reads a module document into its chapters and their sources.
-export const compile = doc => {
+// context.firstName is the player's first name, for the questions about it
+// and the cards that write {prenom}.
+export const compile = (doc, context = {}) => {
   const chapters = (doc.chapitres || []).map(c => ({
     id: c.id,
     name: c.nom,
@@ -77,13 +79,14 @@ export const compile = doc => {
   }))
   const byId = new Map(chapters.map(c => [c.id, c]))
   for (const gen of doc.generateurs || []) {
-    const source = generatorSource(gen, doc.id)
+    const source = generatorSource(gen, doc.id, context)
     if (source && byId.has(gen.chapitre))
       byId.get(gen.chapitre).sources.push(source)
   }
   for (const chapter of chapters) {
-    const cards = (doc.fiches || []).filter(
-      card => card.chapitre === chapter.id,
+    const cards = withName(
+      (doc.fiches || []).filter(card => card.chapitre === chapter.id),
+      context.firstName,
     )
     if (cards.length) chapter.sources.push(cardSource(chapter.id, cards, doc))
   }

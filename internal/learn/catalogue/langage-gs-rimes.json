@@ -1,0 +1,452 @@
+{
+  "format": "hopla-module/1",
+  "id": "langage-gs-rimes",
+  "version": "1.0.0",
+  "nom": "Les rimes",
+  "description": "Entendre que deux mots finissent pareil : classer, relier les dessins qui riment, trouver l'intrus.",
+  "matiere": "francais",
+  "niveaux": [
+    "GS"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de l'école maternelle (cycle 1) et ses attendus de fin de GS (Éduscol).",
+  "chapitres": [
+    {
+      "id": "o-on",
+      "nom": "Rime en -o ou en -on"
+    },
+    {
+      "id": "in-e",
+      "nom": "Rime en -in ou en -é",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "paires",
+      "nom": "Les paires qui riment",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "intrus",
+      "nom": "Trouver l'intrus",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 6,
+    "nouvelles_par_partie": 2,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "rime-o-on",
+      "chapitre": "o-on",
+      "type": "classer",
+      "question": "Ça rime avec bateau ou avec ballon ?",
+      "boites": [
+        {
+          "nom": "comme bateau",
+          "image": "boat"
+        },
+        {
+          "nom": "comme ballon",
+          "image": "ball"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le gâteau",
+          "boite": "comme bateau",
+          "image": "cake"
+        },
+        {
+          "texte": "le chapeau",
+          "boite": "comme bateau",
+          "image": "hat"
+        },
+        {
+          "texte": "le manteau",
+          "boite": "comme bateau",
+          "image": "coat"
+        },
+        {
+          "texte": "l'oiseau",
+          "boite": "comme bateau",
+          "image": "bird"
+        },
+        {
+          "texte": "le vélo",
+          "boite": "comme bateau",
+          "image": "bike"
+        },
+        {
+          "texte": "le seau",
+          "boite": "comme bateau",
+          "image": "bucket"
+        },
+        {
+          "texte": "le poisson",
+          "boite": "comme ballon",
+          "image": "fish"
+        },
+        {
+          "texte": "le cochon",
+          "boite": "comme ballon",
+          "image": "pig"
+        },
+        {
+          "texte": "le mouton",
+          "boite": "comme ballon",
+          "image": "sheep"
+        },
+        {
+          "texte": "le camion",
+          "boite": "comme ballon",
+          "image": "truck"
+        },
+        {
+          "texte": "la maison",
+          "boite": "comme ballon",
+          "image": "house"
+        },
+        {
+          "texte": "le bonbon",
+          "boite": "comme ballon",
+          "image": "candy"
+        }
+      ]
+    },
+    {
+      "id": "rime-in-e",
+      "chapitre": "in-e",
+      "type": "classer",
+      "question": "Ça rime avec lapin ou avec bébé ?",
+      "boites": [
+        {
+          "nom": "comme lapin",
+          "image": "rabbit"
+        },
+        {
+          "nom": "comme bébé",
+          "image": "baby"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le pain",
+          "boite": "comme lapin",
+          "image": "bread"
+        },
+        {
+          "texte": "la main",
+          "boite": "comme lapin",
+          "image": "hand"
+        },
+        {
+          "texte": "le sapin",
+          "boite": "comme lapin",
+          "image": "fir"
+        },
+        {
+          "texte": "le train",
+          "boite": "comme lapin",
+          "image": "train"
+        },
+        {
+          "texte": "le nez",
+          "boite": "comme bébé",
+          "image": "nose"
+        },
+        {
+          "texte": "le pied",
+          "boite": "comme bébé",
+          "image": "foot"
+        },
+        {
+          "texte": "la poupée",
+          "boite": "comme bébé",
+          "image": "doll"
+        },
+        {
+          "texte": "la clé",
+          "boite": "comme bébé",
+          "image": "key"
+        }
+      ]
+    },
+    {
+      "id": "paires-1",
+      "chapitre": "paires",
+      "type": "associer",
+      "question": "Relie les dessins qui riment.",
+      "paires": [
+        [
+          {
+            "texte": "le chat",
+            "image": "cat"
+          },
+          {
+            "texte": "le rat",
+            "image": "rat"
+          }
+        ],
+        [
+          {
+            "texte": "le bateau",
+            "image": "boat"
+          },
+          {
+            "texte": "le gâteau",
+            "image": "cake"
+          }
+        ],
+        [
+          {
+            "texte": "le lapin",
+            "image": "rabbit"
+          },
+          {
+            "texte": "le sapin",
+            "image": "fir"
+          }
+        ],
+        [
+          {
+            "texte": "le canard",
+            "image": "duck"
+          },
+          {
+            "texte": "le renard",
+            "image": "fox"
+          }
+        ],
+        [
+          {
+            "texte": "le bébé",
+            "image": "baby"
+          },
+          {
+            "texte": "la clé",
+            "image": "key"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "paires-2",
+      "chapitre": "paires",
+      "type": "associer",
+      "question": "Relie les dessins qui riment.",
+      "paires": [
+        [
+          {
+            "texte": "le poisson",
+            "image": "fish"
+          },
+          {
+            "texte": "le mouton",
+            "image": "sheep"
+          }
+        ],
+        [
+          {
+            "texte": "le chapeau",
+            "image": "hat"
+          },
+          {
+            "texte": "le manteau",
+            "image": "coat"
+          }
+        ],
+        [
+          {
+            "texte": "la main",
+            "image": "hand"
+          },
+          {
+            "texte": "le pain",
+            "image": "bread"
+          }
+        ],
+        [
+          {
+            "texte": "le nez",
+            "image": "nose"
+          },
+          {
+            "texte": "le pied",
+            "image": "foot"
+          }
+        ],
+        [
+          {
+            "texte": "le camion",
+            "image": "truck"
+          },
+          {
+            "texte": "la maison",
+            "image": "house"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "paires-3",
+      "chapitre": "paires",
+      "type": "associer",
+      "question": "Relie les dessins qui riment.",
+      "paires": [
+        [
+          {
+            "texte": "l'oiseau",
+            "image": "bird"
+          },
+          {
+            "texte": "le vélo",
+            "image": "bike"
+          }
+        ],
+        [
+          {
+            "texte": "la poupée",
+            "image": "doll"
+          },
+          {
+            "texte": "le bébé",
+            "image": "baby"
+          }
+        ],
+        [
+          {
+            "texte": "le train",
+            "image": "train"
+          },
+          {
+            "texte": "le lapin",
+            "image": "rabbit"
+          }
+        ],
+        [
+          {
+            "texte": "le cochon",
+            "image": "pig"
+          },
+          {
+            "texte": "le bonbon",
+            "image": "candy"
+          }
+        ],
+        [
+          {
+            "texte": "le seau",
+            "image": "bucket"
+          },
+          {
+            "texte": "le bateau",
+            "image": "boat"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "intrus-1",
+      "chapitre": "intrus",
+      "type": "choix",
+      "question": "Quel mot ne rime pas avec les autres ?",
+      "reponse": "le lapin",
+      "pieges": [
+        "le bateau",
+        "le gâteau",
+        "le chapeau"
+      ]
+    },
+    {
+      "id": "intrus-2",
+      "chapitre": "intrus",
+      "type": "choix",
+      "question": "Quel mot ne rime pas avec les autres ?",
+      "reponse": "la poire",
+      "pieges": [
+        "le poisson",
+        "le mouton",
+        "le cochon"
+      ]
+    },
+    {
+      "id": "intrus-3",
+      "chapitre": "intrus",
+      "type": "choix",
+      "question": "Quel mot ne rime pas avec les autres ?",
+      "reponse": "le chat",
+      "pieges": [
+        "le lapin",
+        "le pain",
+        "la main"
+      ]
+    },
+    {
+      "id": "intrus-4",
+      "chapitre": "intrus",
+      "type": "choix",
+      "question": "Quel mot ne rime pas avec les autres ?",
+      "reponse": "le ballon",
+      "pieges": [
+        "le nez",
+        "le pied",
+        "le bébé"
+      ]
+    },
+    {
+      "id": "intrus-5",
+      "chapitre": "intrus",
+      "type": "choix",
+      "question": "Quel mot ne rime pas avec les autres ?",
+      "reponse": "le vélo",
+      "pieges": [
+        "le chat",
+        "le rat",
+        "papa"
+      ]
+    },
+    {
+      "id": "intrus-6",
+      "chapitre": "intrus",
+      "type": "choix",
+      "question": "Quel mot ne rime pas avec les autres ?",
+      "reponse": "la souris",
+      "pieges": [
+        "le canard",
+        "le renard"
+      ]
+    },
+    {
+      "id": "intrus-7",
+      "chapitre": "intrus",
+      "type": "choix",
+      "question": "Quel mot ne rime pas avec les autres ?",
+      "reponse": "le train",
+      "pieges": [
+        "le manteau",
+        "le seau",
+        "l'oiseau"
+      ]
+    },
+    {
+      "id": "intrus-8",
+      "chapitre": "intrus",
+      "type": "choix",
+      "question": "Quel mot ne rime pas avec les autres ?",
+      "reponse": "la clé",
+      "pieges": [
+        "le camion",
+        "la maison",
+        "le bonbon"
+      ]
+    }
+  ]
+}

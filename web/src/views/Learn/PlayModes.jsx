@@ -23,7 +23,10 @@ export const Drawing = ({ id, size = 120 }) => (
   />
 )
 
-Drawing.propTypes = { id: PropTypes.string.isRequired, size: PropTypes.number }
+Drawing.propTypes = {
+  id: PropTypes.string.isRequired,
+  size: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+}
 
 const shake = {
   '@keyframes hopla-shake': {

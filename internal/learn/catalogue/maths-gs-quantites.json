@@ -1,0 +1,92 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-gs-quantites",
+  "version": "1.0.0",
+  "nom": "Compter des quantités",
+  "description": "Dire combien il y a d'objets dessinés, rangés par cinq, et lire les points d'un dé.",
+  "matiere": "maths",
+  "niveaux": [
+    "GS"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de l'école maternelle (cycle 1) et ses attendus de fin de GS (Éduscol).",
+  "chapitres": [
+    {
+      "id": "cinq",
+      "nom": "Jusqu'à 5"
+    },
+    {
+      "id": "dix",
+      "nom": "Jusqu'à 10",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "de",
+      "nom": "Le dé",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 6,
+    "nouvelles_par_partie": 2,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "generateurs": [
+    {
+      "id": "compter-5",
+      "chapitre": "cinq",
+      "operation": "compter",
+      "a": [
+        1,
+        5
+      ],
+      "objets": [
+        "carrot",
+        "apple",
+        "ball",
+        "duck",
+        "strawberry",
+        "fish",
+        "star",
+        "flower"
+      ]
+    },
+    {
+      "id": "compter-10",
+      "chapitre": "dix",
+      "operation": "compter",
+      "a": [
+        6,
+        10
+      ],
+      "objets": [
+        "carrot",
+        "apple",
+        "ball",
+        "duck",
+        "strawberry",
+        "fish",
+        "star",
+        "flower"
+      ]
+    },
+    {
+      "id": "de",
+      "chapitre": "de",
+      "operation": "compter",
+      "a": [
+        1,
+        6
+      ],
+      "formes": [
+        "de"
+      ]
+    }
+  ]
+}

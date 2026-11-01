@@ -131,3 +131,26 @@ func TestTheExampleOfTheNewGamesIsAValidModule(t *testing.T) {
 	require.NoError(t, err)
 	require.True(t, doc.ReadAloud)
 }
+
+func TestTheGamesCallAPersonByTheirFirstName(t *testing.T) {
+	db := setup(t)
+	now := time.Now().UTC()
+	require.NoError(t, db.Exec("INSERT INTO users (id, username, display_name) VALUES (?, ?, ?)",
+		anna, "anna", "Anna&#39;Lou Martin").Error)
+	player, err := PlayerFor(db, 1, anna, now)
+	require.NoError(t, err)
+	require.Equal(t, "Anna'Lou", player.FirstName, "the first word of their name in Hopla")
+
+	lou, blank, long := "  Lou ", "", "Abcdefghijklmnopqrstuvwxyz"
+	require.NoError(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: AllPacks, FirstName: &lou}, now))
+	player, err = PlayerFor(db, 1, anna, now)
+	require.NoError(t, err)
+	require.Equal(t, "Lou", player.FirstName)
+
+	require.Error(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: AllPacks, FirstName: &long}, now))
+	require.Error(t, SetPersonSetting(db, 1, SettingChange{Family: true, Scope: AllPacks, FirstName: &lou}, now))
+	require.NoError(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: AllPacks, FirstName: &blank}, now))
+	settings, err := PersonSettings(db, 1)
+	require.NoError(t, err)
+	require.Empty(t, settings)
+}

@@ -1,0 +1,143 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-gs-formes",
+  "version": "1.0.0",
+  "nom": "Formes et positions",
+  "description": "Reconnaître le rond, le carré, le triangle et le rectangle, et dire où est le lapin : dans, sur, sous, devant, derrière, à côté.",
+  "matiere": "maths",
+  "niveaux": [
+    "GS"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de l'école maternelle (cycle 1) et ses attendus de fin de GS (Éduscol).",
+  "chapitres": [
+    {
+      "id": "formes",
+      "nom": "Les formes"
+    },
+    {
+      "id": "positions",
+      "nom": "Où est le lapin ?",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 6,
+    "nouvelles_par_partie": 2,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "forme-rond",
+      "chapitre": "formes",
+      "type": "ecoute",
+      "cle": "fr:forme:rond",
+      "question": "le rond",
+      "reponse": "le rond",
+      "image": "shape-circle",
+      "sens": [
+        "direct",
+        "inverse"
+      ]
+    },
+    {
+      "id": "forme-carre",
+      "chapitre": "formes",
+      "type": "ecoute",
+      "cle": "fr:forme:carre",
+      "question": "le carré",
+      "reponse": "le carré",
+      "image": "shape-square",
+      "sens": [
+        "direct",
+        "inverse"
+      ]
+    },
+    {
+      "id": "forme-triangle",
+      "chapitre": "formes",
+      "type": "ecoute",
+      "cle": "fr:forme:triangle",
+      "question": "le triangle",
+      "reponse": "le triangle",
+      "image": "shape-triangle",
+      "sens": [
+        "direct",
+        "inverse"
+      ]
+    },
+    {
+      "id": "forme-rectangle",
+      "chapitre": "formes",
+      "type": "ecoute",
+      "cle": "fr:forme:rectangle",
+      "question": "le rectangle",
+      "reponse": "le rectangle",
+      "image": "shape-rectangle",
+      "sens": [
+        "direct",
+        "inverse"
+      ]
+    },
+    {
+      "id": "position-dans",
+      "chapitre": "positions",
+      "type": "ecoute",
+      "cle": "fr:position:dans",
+      "question": "Le lapin est dans la boîte.",
+      "reponse": "dans",
+      "image": "pos-in"
+    },
+    {
+      "id": "position-sur",
+      "chapitre": "positions",
+      "type": "ecoute",
+      "cle": "fr:position:sur",
+      "question": "Le lapin est sur la boîte.",
+      "reponse": "sur",
+      "image": "pos-on"
+    },
+    {
+      "id": "position-sous",
+      "chapitre": "positions",
+      "type": "ecoute",
+      "cle": "fr:position:sous",
+      "question": "Le lapin est sous la table.",
+      "reponse": "sous",
+      "image": "pos-under"
+    },
+    {
+      "id": "position-devant",
+      "chapitre": "positions",
+      "type": "ecoute",
+      "cle": "fr:position:devant",
+      "question": "Le lapin est devant la boîte.",
+      "reponse": "devant",
+      "image": "pos-in-front"
+    },
+    {
+      "id": "position-derriere",
+      "chapitre": "positions",
+      "type": "ecoute",
+      "cle": "fr:position:derriere",
+      "question": "Le lapin est derrière la boîte.",
+      "reponse": "derrière",
+      "image": "pos-behind"
+    },
+    {
+      "id": "position-a-cote",
+      "chapitre": "positions",
+      "type": "ecoute",
+      "cle": "fr:position:a-cote",
+      "question": "Le lapin est à côté de la boîte.",
+      "reponse": "à côté",
+      "image": "pos-next-to"
+    }
+  ]
+}

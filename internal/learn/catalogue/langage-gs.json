@@ -1,0 +1,22 @@
+{
+  "format": "hopla-module/1",
+  "id": "langage-gs",
+  "version": "1.0.0",
+  "nom": "Langage GS",
+  "description": "Préparer la lecture sans l'exiger : rimes, syllabes, premier son des mots, lettres capitales et vocabulaire en images. Les questions sont lues à voix haute.",
+  "matiere": "francais",
+  "niveaux": [
+    "GS"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "auteur": "Hopla",
+  "sources": "D'après le programme de l'école maternelle (cycle 1) et ses attendus de fin de GS (Éduscol).",
+  "modules": [
+    "langage-gs-rimes",
+    "langage-gs-syllabes",
+    "langage-gs-sons",
+    "langage-gs-lettres",
+    "langage-gs-mots"
+  ]
+}

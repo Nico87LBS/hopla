@@ -33,11 +33,11 @@ const (
 var (
 	CardTypes      = []string{"choix", "saisie", "retourner", "ecoute", "associer", "ordre", "classer", "zones"}
 	GeneratorKinds = []string{"addition", "soustraction", "multiplication", "division", "double", "moitie",
-		"complement", "comparaison", "position", "lettres", "modele", "compter"}
+		"complement", "comparaison", "position", "lettres", "modele", "compter", "prenom"}
 	Audiences = []string{"enfant", "adulte", "tous"}
 	// ReservedDomains begin the keys the generators make, such as "mul:7x8":
 	// a written card may not take them, nor a module its id.
-	ReservedDomains = []string{"add", "sub", "mul", "div", "cmp", "pos", "num", "pb", "dbl", "half", "cpl", "cnt"}
+	ReservedDomains = []string{"add", "sub", "mul", "div", "cmp", "pos", "num", "pb", "dbl", "half", "cpl", "cnt", "prenom"}
 )
 
 var (

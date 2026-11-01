@@ -1,0 +1,443 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-gs-animaux",
+  "version": "1.0.0",
+  "nom": "Les animaux",
+  "description": "Les animaux et leurs petits, où ils vivent et ce qu'ils mangent.",
+  "matiere": "monde",
+  "niveaux": [
+    "GS"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de l'école maternelle (cycle 1) et ses attendus de fin de GS (Éduscol).",
+  "chapitres": [
+    {
+      "id": "petits",
+      "nom": "Les animaux et leurs petits"
+    },
+    {
+      "id": "habitats",
+      "nom": "Où vivent-ils ?",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "repas",
+      "nom": "Que mangent-ils ?",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 6,
+    "nouvelles_par_partie": 2,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "petits-1",
+      "chapitre": "petits",
+      "type": "associer",
+      "question": "Relie chaque animal à son petit.",
+      "paires": [
+        [
+          {
+            "texte": "la vache",
+            "image": "cow"
+          },
+          {
+            "texte": "le veau",
+            "image": "calf"
+          }
+        ],
+        [
+          {
+            "texte": "la poule",
+            "image": "hen"
+          },
+          {
+            "texte": "le poussin",
+            "image": "chick"
+          }
+        ],
+        [
+          {
+            "texte": "le mouton",
+            "image": "sheep"
+          },
+          {
+            "texte": "l'agneau",
+            "image": "lamb"
+          }
+        ],
+        [
+          {
+            "texte": "le cheval",
+            "image": "horse"
+          },
+          {
+            "texte": "le poulain",
+            "image": "foal"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "petits-2",
+      "chapitre": "petits",
+      "type": "associer",
+      "question": "Relie chaque animal à son petit.",
+      "paires": [
+        [
+          {
+            "texte": "le chat",
+            "image": "cat"
+          },
+          {
+            "texte": "le chaton",
+            "image": "kitten"
+          }
+        ],
+        [
+          {
+            "texte": "le chien",
+            "image": "dog"
+          },
+          {
+            "texte": "le chiot",
+            "image": "puppy"
+          }
+        ],
+        [
+          {
+            "texte": "le cochon",
+            "image": "pig"
+          },
+          {
+            "texte": "le porcelet",
+            "image": "piglet"
+          }
+        ],
+        [
+          {
+            "texte": "le canard",
+            "image": "duck"
+          },
+          {
+            "texte": "le caneton",
+            "image": "duckling"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "petit-vache",
+      "chapitre": "petits",
+      "type": "ecoute",
+      "cle": "fr:petit:vache",
+      "question": "le veau",
+      "reponse": "le veau",
+      "image": "calf"
+    },
+    {
+      "id": "petit-poule",
+      "chapitre": "petits",
+      "type": "ecoute",
+      "cle": "fr:petit:poule",
+      "question": "le poussin",
+      "reponse": "le poussin",
+      "image": "chick"
+    },
+    {
+      "id": "petit-mouton",
+      "chapitre": "petits",
+      "type": "ecoute",
+      "cle": "fr:petit:mouton",
+      "question": "l'agneau",
+      "reponse": "l'agneau",
+      "image": "lamb"
+    },
+    {
+      "id": "petit-cheval",
+      "chapitre": "petits",
+      "type": "ecoute",
+      "cle": "fr:petit:cheval",
+      "question": "le poulain",
+      "reponse": "le poulain",
+      "image": "foal"
+    },
+    {
+      "id": "petit-chat",
+      "chapitre": "petits",
+      "type": "ecoute",
+      "cle": "fr:petit:chat",
+      "question": "le chaton",
+      "reponse": "le chaton",
+      "image": "kitten"
+    },
+    {
+      "id": "petit-chien",
+      "chapitre": "petits",
+      "type": "ecoute",
+      "cle": "fr:petit:chien",
+      "question": "le chiot",
+      "reponse": "le chiot",
+      "image": "puppy"
+    },
+    {
+      "id": "petit-cochon",
+      "chapitre": "petits",
+      "type": "ecoute",
+      "cle": "fr:petit:cochon",
+      "question": "le porcelet",
+      "reponse": "le porcelet",
+      "image": "piglet"
+    },
+    {
+      "id": "petit-canard",
+      "chapitre": "petits",
+      "type": "ecoute",
+      "cle": "fr:petit:canard",
+      "question": "le caneton",
+      "reponse": "le caneton",
+      "image": "duckling"
+    },
+    {
+      "id": "habitats",
+      "chapitre": "habitats",
+      "type": "classer",
+      "question": "Où vit cet animal : à la ferme, dans la forêt ou dans la mer ?",
+      "boites": [
+        {
+          "nom": "la ferme",
+          "image": "barn"
+        },
+        {
+          "nom": "la forêt",
+          "image": "fir"
+        },
+        {
+          "nom": "la mer",
+          "image": "wave"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "la vache",
+          "boite": "la ferme",
+          "image": "cow"
+        },
+        {
+          "texte": "le cochon",
+          "boite": "la ferme",
+          "image": "pig"
+        },
+        {
+          "texte": "le mouton",
+          "boite": "la ferme",
+          "image": "sheep"
+        },
+        {
+          "texte": "la poule",
+          "boite": "la ferme",
+          "image": "hen"
+        },
+        {
+          "texte": "le cheval",
+          "boite": "la ferme",
+          "image": "horse"
+        },
+        {
+          "texte": "l'ours",
+          "boite": "la forêt",
+          "image": "bear"
+        },
+        {
+          "texte": "le renard",
+          "boite": "la forêt",
+          "image": "fox"
+        },
+        {
+          "texte": "le hibou",
+          "boite": "la forêt",
+          "image": "owl"
+        },
+        {
+          "texte": "le hérisson",
+          "boite": "la forêt",
+          "image": "hedgehog"
+        },
+        {
+          "texte": "le poisson",
+          "boite": "la mer",
+          "image": "fish"
+        },
+        {
+          "texte": "la baleine",
+          "boite": "la mer",
+          "image": "whale"
+        },
+        {
+          "texte": "le crabe",
+          "boite": "la mer",
+          "image": "crab"
+        },
+        {
+          "texte": "la pieuvre",
+          "boite": "la mer",
+          "image": "octopus"
+        }
+      ]
+    },
+    {
+      "id": "repas",
+      "chapitre": "repas",
+      "type": "associer",
+      "question": "Relie chaque animal à ce qu’il aime manger.",
+      "paires": [
+        [
+          {
+            "texte": "le lapin",
+            "image": "rabbit"
+          },
+          {
+            "texte": "la carotte",
+            "image": "carrot"
+          }
+        ],
+        [
+          {
+            "texte": "la souris",
+            "image": "mouse"
+          },
+          {
+            "texte": "le fromage",
+            "image": "cheese"
+          }
+        ],
+        [
+          {
+            "texte": "l'ours",
+            "image": "bear"
+          },
+          {
+            "texte": "le miel",
+            "image": "honey"
+          }
+        ],
+        [
+          {
+            "texte": "la vache",
+            "image": "cow"
+          },
+          {
+            "texte": "l'herbe",
+            "image": "grass"
+          }
+        ],
+        [
+          {
+            "texte": "le chien",
+            "image": "dog"
+          },
+          {
+            "texte": "l'os",
+            "image": "bone"
+          }
+        ],
+        [
+          {
+            "texte": "l'oiseau",
+            "image": "bird"
+          },
+          {
+            "texte": "le ver de terre",
+            "image": "worm"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "mange-lapin",
+      "chapitre": "repas",
+      "type": "choix",
+      "image": "rabbit",
+      "question": "Qu’aime manger le lapin ?",
+      "reponse": "la carotte",
+      "pieges": [
+        "le fromage",
+        "le miel",
+        "l'herbe"
+      ]
+    },
+    {
+      "id": "mange-souris",
+      "chapitre": "repas",
+      "type": "choix",
+      "image": "mouse",
+      "question": "Qu’aime manger la souris ?",
+      "reponse": "le fromage",
+      "pieges": [
+        "la carotte",
+        "le miel",
+        "l'herbe"
+      ]
+    },
+    {
+      "id": "mange-ours",
+      "chapitre": "repas",
+      "type": "choix",
+      "image": "bear",
+      "question": "Qu’aime manger l'ours ?",
+      "reponse": "le miel",
+      "pieges": [
+        "la carotte",
+        "le fromage",
+        "l'herbe"
+      ]
+    },
+    {
+      "id": "mange-vache",
+      "chapitre": "repas",
+      "type": "choix",
+      "image": "cow",
+      "question": "Qu’aime manger la vache ?",
+      "reponse": "l'herbe",
+      "pieges": [
+        "la carotte",
+        "le fromage",
+        "le miel"
+      ]
+    },
+    {
+      "id": "mange-chien",
+      "chapitre": "repas",
+      "type": "choix",
+      "image": "dog",
+      "question": "Qu’aime manger le chien ?",
+      "reponse": "l'os",
+      "pieges": [
+        "la carotte",
+        "le fromage",
+        "le miel"
+      ]
+    },
+    {
+      "id": "mange-oiseau",
+      "chapitre": "repas",
+      "type": "choix",
+      "image": "bird",
+      "question": "Qu’aime manger l'oiseau ?",
+      "reponse": "le ver de terre",
+      "pieges": [
+        "la carotte",
+        "le fromage",
+        "le miel"
+      ]
+    }
+  ]
+}

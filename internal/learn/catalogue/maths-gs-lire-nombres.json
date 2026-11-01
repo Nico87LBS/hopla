@@ -1,0 +1,290 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-gs-lire-nombres",
+  "version": "1.0.0",
+  "nom": "Lire les nombres",
+  "description": "Entendre un nombre et toucher son écriture en chiffres, de 0 à 30.",
+  "matiere": "maths",
+  "niveaux": [
+    "GS"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de l'école maternelle (cycle 1) et ses attendus de fin de GS (Éduscol).",
+  "chapitres": [
+    {
+      "id": "dix",
+      "nom": "De 0 à 10"
+    },
+    {
+      "id": "vingt",
+      "nom": "De 11 à 20",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "trente",
+      "nom": "De 21 à 30",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 6,
+    "nouvelles_par_partie": 2,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "nombre-0",
+      "chapitre": "dix",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:0",
+      "question": "zéro",
+      "reponse": "0"
+    },
+    {
+      "id": "nombre-1",
+      "chapitre": "dix",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:1",
+      "question": "un",
+      "reponse": "1"
+    },
+    {
+      "id": "nombre-2",
+      "chapitre": "dix",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:2",
+      "question": "deux",
+      "reponse": "2"
+    },
+    {
+      "id": "nombre-3",
+      "chapitre": "dix",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:3",
+      "question": "trois",
+      "reponse": "3"
+    },
+    {
+      "id": "nombre-4",
+      "chapitre": "dix",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:4",
+      "question": "quatre",
+      "reponse": "4"
+    },
+    {
+      "id": "nombre-5",
+      "chapitre": "dix",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:5",
+      "question": "cinq",
+      "reponse": "5"
+    },
+    {
+      "id": "nombre-6",
+      "chapitre": "dix",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:6",
+      "question": "six",
+      "reponse": "6"
+    },
+    {
+      "id": "nombre-7",
+      "chapitre": "dix",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:7",
+      "question": "sept",
+      "reponse": "7"
+    },
+    {
+      "id": "nombre-8",
+      "chapitre": "dix",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:8",
+      "question": "huit",
+      "reponse": "8"
+    },
+    {
+      "id": "nombre-9",
+      "chapitre": "dix",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:9",
+      "question": "neuf",
+      "reponse": "9"
+    },
+    {
+      "id": "nombre-10",
+      "chapitre": "dix",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:10",
+      "question": "dix",
+      "reponse": "10"
+    },
+    {
+      "id": "nombre-11",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:11",
+      "question": "onze",
+      "reponse": "11"
+    },
+    {
+      "id": "nombre-12",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:12",
+      "question": "douze",
+      "reponse": "12"
+    },
+    {
+      "id": "nombre-13",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:13",
+      "question": "treize",
+      "reponse": "13"
+    },
+    {
+      "id": "nombre-14",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:14",
+      "question": "quatorze",
+      "reponse": "14"
+    },
+    {
+      "id": "nombre-15",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:15",
+      "question": "quinze",
+      "reponse": "15"
+    },
+    {
+      "id": "nombre-16",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:16",
+      "question": "seize",
+      "reponse": "16"
+    },
+    {
+      "id": "nombre-17",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:17",
+      "question": "dix-sept",
+      "reponse": "17"
+    },
+    {
+      "id": "nombre-18",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:18",
+      "question": "dix-huit",
+      "reponse": "18"
+    },
+    {
+      "id": "nombre-19",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:19",
+      "question": "dix-neuf",
+      "reponse": "19"
+    },
+    {
+      "id": "nombre-20",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:20",
+      "question": "vingt",
+      "reponse": "20"
+    },
+    {
+      "id": "nombre-21",
+      "chapitre": "trente",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:21",
+      "question": "vingt et un",
+      "reponse": "21"
+    },
+    {
+      "id": "nombre-22",
+      "chapitre": "trente",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:22",
+      "question": "vingt-deux",
+      "reponse": "22"
+    },
+    {
+      "id": "nombre-23",
+      "chapitre": "trente",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:23",
+      "question": "vingt-trois",
+      "reponse": "23"
+    },
+    {
+      "id": "nombre-24",
+      "chapitre": "trente",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:24",
+      "question": "vingt-quatre",
+      "reponse": "24"
+    },
+    {
+      "id": "nombre-25",
+      "chapitre": "trente",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:25",
+      "question": "vingt-cinq",
+      "reponse": "25"
+    },
+    {
+      "id": "nombre-26",
+      "chapitre": "trente",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:26",
+      "question": "vingt-six",
+      "reponse": "26"
+    },
+    {
+      "id": "nombre-27",
+      "chapitre": "trente",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:27",
+      "question": "vingt-sept",
+      "reponse": "27"
+    },
+    {
+      "id": "nombre-28",
+      "chapitre": "trente",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:28",
+      "question": "vingt-huit",
+      "reponse": "28"
+    },
+    {
+      "id": "nombre-29",
+      "chapitre": "trente",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:29",
+      "question": "vingt-neuf",
+      "reponse": "29"
+    },
+    {
+      "id": "nombre-30",
+      "chapitre": "trente",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:30",
+      "question": "trente",
+      "reponse": "30"
+    }
+  ]
+}

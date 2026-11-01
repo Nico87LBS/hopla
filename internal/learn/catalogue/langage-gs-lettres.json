@@ -1,0 +1,430 @@
+{
+  "format": "hopla-module/1",
+  "id": "langage-gs-lettres",
+  "version": "1.0.0",
+  "nom": "Les lettres",
+  "description": "Reconnaître les lettres en capitales quand on les entend, les relier à leur minuscule, et les lettres de son prénom.",
+  "matiere": "francais",
+  "niveaux": [
+    "GS"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de l'école maternelle (cycle 1) et ses attendus de fin de GS (Éduscol).",
+  "chapitres": [
+    {
+      "id": "a-m",
+      "nom": "Les capitales de A à M"
+    },
+    {
+      "id": "n-z",
+      "nom": "Les capitales de N à Z",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "script",
+      "nom": "Capitale et minuscule",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "prenom",
+      "nom": "Mon prénom",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 6,
+    "nouvelles_par_partie": 2,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "capitale-a",
+      "chapitre": "a-m",
+      "type": "ecoute",
+      "cle": "fr:lettre:a",
+      "question": "A",
+      "reponse": "A"
+    },
+    {
+      "id": "capitale-b",
+      "chapitre": "a-m",
+      "type": "ecoute",
+      "cle": "fr:lettre:b",
+      "question": "B",
+      "reponse": "B"
+    },
+    {
+      "id": "capitale-c",
+      "chapitre": "a-m",
+      "type": "ecoute",
+      "cle": "fr:lettre:c",
+      "question": "C",
+      "reponse": "C"
+    },
+    {
+      "id": "capitale-d",
+      "chapitre": "a-m",
+      "type": "ecoute",
+      "cle": "fr:lettre:d",
+      "question": "D",
+      "reponse": "D"
+    },
+    {
+      "id": "capitale-e",
+      "chapitre": "a-m",
+      "type": "ecoute",
+      "cle": "fr:lettre:e",
+      "question": "E",
+      "reponse": "E"
+    },
+    {
+      "id": "capitale-f",
+      "chapitre": "a-m",
+      "type": "ecoute",
+      "cle": "fr:lettre:f",
+      "question": "F",
+      "reponse": "F"
+    },
+    {
+      "id": "capitale-g",
+      "chapitre": "a-m",
+      "type": "ecoute",
+      "cle": "fr:lettre:g",
+      "question": "G",
+      "reponse": "G"
+    },
+    {
+      "id": "capitale-h",
+      "chapitre": "a-m",
+      "type": "ecoute",
+      "cle": "fr:lettre:h",
+      "question": "H",
+      "reponse": "H"
+    },
+    {
+      "id": "capitale-i",
+      "chapitre": "a-m",
+      "type": "ecoute",
+      "cle": "fr:lettre:i",
+      "question": "I",
+      "reponse": "I"
+    },
+    {
+      "id": "capitale-j",
+      "chapitre": "a-m",
+      "type": "ecoute",
+      "cle": "fr:lettre:j",
+      "question": "J",
+      "reponse": "J"
+    },
+    {
+      "id": "capitale-k",
+      "chapitre": "a-m",
+      "type": "ecoute",
+      "cle": "fr:lettre:k",
+      "question": "K",
+      "reponse": "K"
+    },
+    {
+      "id": "capitale-l",
+      "chapitre": "a-m",
+      "type": "ecoute",
+      "cle": "fr:lettre:l",
+      "question": "L",
+      "reponse": "L"
+    },
+    {
+      "id": "capitale-m",
+      "chapitre": "a-m",
+      "type": "ecoute",
+      "cle": "fr:lettre:m",
+      "question": "M",
+      "reponse": "M"
+    },
+    {
+      "id": "capitale-n",
+      "chapitre": "n-z",
+      "type": "ecoute",
+      "cle": "fr:lettre:n",
+      "question": "N",
+      "reponse": "N"
+    },
+    {
+      "id": "capitale-o",
+      "chapitre": "n-z",
+      "type": "ecoute",
+      "cle": "fr:lettre:o",
+      "question": "O",
+      "reponse": "O"
+    },
+    {
+      "id": "capitale-p",
+      "chapitre": "n-z",
+      "type": "ecoute",
+      "cle": "fr:lettre:p",
+      "question": "P",
+      "reponse": "P"
+    },
+    {
+      "id": "capitale-q",
+      "chapitre": "n-z",
+      "type": "ecoute",
+      "cle": "fr:lettre:q",
+      "question": "Q",
+      "reponse": "Q"
+    },
+    {
+      "id": "capitale-r",
+      "chapitre": "n-z",
+      "type": "ecoute",
+      "cle": "fr:lettre:r",
+      "question": "R",
+      "reponse": "R"
+    },
+    {
+      "id": "capitale-s",
+      "chapitre": "n-z",
+      "type": "ecoute",
+      "cle": "fr:lettre:s",
+      "question": "S",
+      "reponse": "S"
+    },
+    {
+      "id": "capitale-t",
+      "chapitre": "n-z",
+      "type": "ecoute",
+      "cle": "fr:lettre:t",
+      "question": "T",
+      "reponse": "T"
+    },
+    {
+      "id": "capitale-u",
+      "chapitre": "n-z",
+      "type": "ecoute",
+      "cle": "fr:lettre:u",
+      "question": "U",
+      "reponse": "U"
+    },
+    {
+      "id": "capitale-v",
+      "chapitre": "n-z",
+      "type": "ecoute",
+      "cle": "fr:lettre:v",
+      "question": "V",
+      "reponse": "V"
+    },
+    {
+      "id": "capitale-w",
+      "chapitre": "n-z",
+      "type": "ecoute",
+      "cle": "fr:lettre:w",
+      "question": "W",
+      "reponse": "W"
+    },
+    {
+      "id": "capitale-x",
+      "chapitre": "n-z",
+      "type": "ecoute",
+      "cle": "fr:lettre:x",
+      "question": "X",
+      "reponse": "X"
+    },
+    {
+      "id": "capitale-y",
+      "chapitre": "n-z",
+      "type": "ecoute",
+      "cle": "fr:lettre:y",
+      "question": "Y",
+      "reponse": "Y"
+    },
+    {
+      "id": "capitale-z",
+      "chapitre": "n-z",
+      "type": "ecoute",
+      "cle": "fr:lettre:z",
+      "question": "Z",
+      "reponse": "Z"
+    },
+    {
+      "id": "script-1",
+      "chapitre": "script",
+      "type": "associer",
+      "question": "Relie chaque capitale à sa minuscule.",
+      "paires": [
+        [
+          "A",
+          "a"
+        ],
+        [
+          "B",
+          "b"
+        ],
+        [
+          "D",
+          "d"
+        ],
+        [
+          "E",
+          "e"
+        ],
+        [
+          "R",
+          "r"
+        ]
+      ]
+    },
+    {
+      "id": "script-2",
+      "chapitre": "script",
+      "type": "associer",
+      "question": "Relie chaque capitale à sa minuscule.",
+      "paires": [
+        [
+          "M",
+          "m"
+        ],
+        [
+          "N",
+          "n"
+        ],
+        [
+          "O",
+          "o"
+        ],
+        [
+          "P",
+          "p"
+        ],
+        [
+          "S",
+          "s"
+        ]
+      ]
+    },
+    {
+      "id": "script-3",
+      "chapitre": "script",
+      "type": "associer",
+      "question": "Relie chaque capitale à sa minuscule.",
+      "paires": [
+        [
+          "C",
+          "c"
+        ],
+        [
+          "F",
+          "f"
+        ],
+        [
+          "G",
+          "g"
+        ],
+        [
+          "H",
+          "h"
+        ],
+        [
+          "T",
+          "t"
+        ]
+      ]
+    },
+    {
+      "id": "script-4",
+      "chapitre": "script",
+      "type": "associer",
+      "question": "Relie chaque capitale à sa minuscule.",
+      "paires": [
+        [
+          "I",
+          "i"
+        ],
+        [
+          "J",
+          "j"
+        ],
+        [
+          "K",
+          "k"
+        ],
+        [
+          "L",
+          "l"
+        ],
+        [
+          "U",
+          "u"
+        ]
+      ]
+    },
+    {
+      "id": "script-5",
+      "chapitre": "script",
+      "type": "associer",
+      "question": "Relie chaque capitale à sa minuscule.",
+      "paires": [
+        [
+          "V",
+          "v"
+        ],
+        [
+          "W",
+          "w"
+        ],
+        [
+          "X",
+          "x"
+        ],
+        [
+          "Y",
+          "y"
+        ],
+        [
+          "Z",
+          "z"
+        ]
+      ]
+    },
+    {
+      "id": "script-6",
+      "chapitre": "script",
+      "type": "associer",
+      "question": "Relie chaque capitale à sa minuscule.",
+      "paires": [
+        [
+          "B",
+          "b"
+        ],
+        [
+          "D",
+          "d"
+        ],
+        [
+          "P",
+          "p"
+        ],
+        [
+          "Q",
+          "q"
+        ],
+        [
+          "N",
+          "n"
+        ]
+      ]
+    }
+  ],
+  "generateurs": [
+    {
+      "id": "mon-prenom",
+      "chapitre": "prenom",
+      "operation": "prenom"
+    }
+  ]
+}

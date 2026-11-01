@@ -1,0 +1,23 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-gs",
+  "version": "1.0.0",
+  "nom": "Explorer le monde GS",
+  "description": "Le temps qui passe, les saisons, les animaux, le corps, les plantes, les objets et les matières. Les questions sont lues à voix haute.",
+  "matiere": "monde",
+  "niveaux": [
+    "GS"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "auteur": "Hopla",
+  "sources": "D'après le programme de l'école maternelle (cycle 1) et ses attendus de fin de GS (Éduscol).",
+  "modules": [
+    "monde-gs-temps",
+    "monde-gs-saisons",
+    "monde-gs-animaux",
+    "monde-gs-corps",
+    "monde-gs-plantes",
+    "monde-gs-matieres"
+  ]
+}

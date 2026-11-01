@@ -1,0 +1,304 @@
+{
+  "format": "hopla-module/1",
+  "id": "langage-gs-sons",
+  "version": "1.0.0",
+  "nom": "Le son du début",
+  "description": "Entendre le premier son d'un mot et trouver les mots qui commencent pareil.",
+  "matiere": "francais",
+  "niveaux": [
+    "GS"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de l'école maternelle (cycle 1) et ses attendus de fin de GS (Éduscol).",
+  "chapitres": [
+    {
+      "id": "m-l",
+      "nom": "Comme maman ou comme lapin"
+    },
+    {
+      "id": "s-v",
+      "nom": "Comme soleil ou comme vélo",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "p-b",
+      "nom": "Comme papa ou comme ballon",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "ch-r",
+      "nom": "Comme chat ou comme renard",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 6,
+    "nouvelles_par_partie": 2,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "m-l",
+      "chapitre": "m-l",
+      "type": "classer",
+      "question": "Ça commence comme maman ou comme lapin ?",
+      "boites": [
+        {
+          "nom": "comme maman",
+          "image": "mum"
+        },
+        {
+          "nom": "comme lapin",
+          "image": "rabbit"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "la main",
+          "boite": "comme maman",
+          "image": "hand"
+        },
+        {
+          "texte": "la maison",
+          "boite": "comme maman",
+          "image": "house"
+        },
+        {
+          "texte": "le mouton",
+          "boite": "comme maman",
+          "image": "sheep"
+        },
+        {
+          "texte": "le miel",
+          "boite": "comme maman",
+          "image": "honey"
+        },
+        {
+          "texte": "le lait",
+          "boite": "comme lapin",
+          "image": "milk"
+        },
+        {
+          "texte": "le lion",
+          "boite": "comme lapin",
+          "image": "lion"
+        },
+        {
+          "texte": "le livre",
+          "boite": "comme lapin",
+          "image": "book"
+        },
+        {
+          "texte": "la lune",
+          "boite": "comme lapin",
+          "image": "moon"
+        },
+        {
+          "texte": "le lit",
+          "boite": "comme lapin",
+          "image": "bed"
+        }
+      ]
+    },
+    {
+      "id": "s-v",
+      "chapitre": "s-v",
+      "type": "classer",
+      "question": "Ça commence comme soleil ou comme vélo ?",
+      "boites": [
+        {
+          "nom": "comme soleil",
+          "image": "sun"
+        },
+        {
+          "nom": "comme vélo",
+          "image": "bike"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "la souris",
+          "boite": "comme soleil",
+          "image": "mouse"
+        },
+        {
+          "texte": "le serpent",
+          "boite": "comme soleil",
+          "image": "snake"
+        },
+        {
+          "texte": "le sapin",
+          "boite": "comme soleil",
+          "image": "fir"
+        },
+        {
+          "texte": "le seau",
+          "boite": "comme soleil",
+          "image": "bucket"
+        },
+        {
+          "texte": "la salade",
+          "boite": "comme soleil",
+          "image": "salad"
+        },
+        {
+          "texte": "la vache",
+          "boite": "comme vélo",
+          "image": "cow"
+        },
+        {
+          "texte": "la voiture",
+          "boite": "comme vélo",
+          "image": "car"
+        },
+        {
+          "texte": "le vent",
+          "boite": "comme vélo",
+          "image": "wind"
+        },
+        {
+          "texte": "le ver de terre",
+          "boite": "comme vélo",
+          "image": "worm"
+        }
+      ]
+    },
+    {
+      "id": "p-b",
+      "chapitre": "p-b",
+      "type": "classer",
+      "question": "Ça commence comme papa ou comme ballon ?",
+      "boites": [
+        {
+          "nom": "comme papa",
+          "image": "dad"
+        },
+        {
+          "nom": "comme ballon",
+          "image": "ball"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le pain",
+          "boite": "comme papa",
+          "image": "bread"
+        },
+        {
+          "texte": "le poisson",
+          "boite": "comme papa",
+          "image": "fish"
+        },
+        {
+          "texte": "la poire",
+          "boite": "comme papa",
+          "image": "pear"
+        },
+        {
+          "texte": "le pied",
+          "boite": "comme papa",
+          "image": "foot"
+        },
+        {
+          "texte": "la poupée",
+          "boite": "comme papa",
+          "image": "doll"
+        },
+        {
+          "texte": "la pomme",
+          "boite": "comme papa",
+          "image": "apple"
+        },
+        {
+          "texte": "la banane",
+          "boite": "comme ballon",
+          "image": "banana"
+        },
+        {
+          "texte": "le bateau",
+          "boite": "comme ballon",
+          "image": "boat"
+        },
+        {
+          "texte": "le bébé",
+          "boite": "comme ballon",
+          "image": "baby"
+        },
+        {
+          "texte": "la bouche",
+          "boite": "comme ballon",
+          "image": "mouth"
+        },
+        {
+          "texte": "le bonbon",
+          "boite": "comme ballon",
+          "image": "candy"
+        }
+      ]
+    },
+    {
+      "id": "ch-r",
+      "chapitre": "ch-r",
+      "type": "classer",
+      "question": "Ça commence comme chat ou comme renard ?",
+      "boites": [
+        {
+          "nom": "comme chat",
+          "image": "cat"
+        },
+        {
+          "nom": "comme renard",
+          "image": "fox"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le chien",
+          "boite": "comme chat",
+          "image": "dog"
+        },
+        {
+          "texte": "le cheval",
+          "boite": "comme chat",
+          "image": "horse"
+        },
+        {
+          "texte": "le chapeau",
+          "boite": "comme chat",
+          "image": "hat"
+        },
+        {
+          "texte": "les chaussures",
+          "boite": "comme chat",
+          "image": "shoes"
+        },
+        {
+          "texte": "les chaussettes",
+          "boite": "comme chat",
+          "image": "socks"
+        },
+        {
+          "texte": "le rat",
+          "boite": "comme renard",
+          "image": "rat"
+        },
+        {
+          "texte": "la robe",
+          "boite": "comme renard",
+          "image": "dress"
+        },
+        {
+          "texte": "le raisin",
+          "boite": "comme renard",
+          "image": "grapes"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,718 @@
+{
+  "format": "hopla-module/1",
+  "id": "langage-gs-syllabes",
+  "version": "1.0.0",
+  "nom": "Les syllabes",
+  "description": "Découper les mots à l'oral : compter les syllabes d'un mot, trouver les mots qui commencent pareil.",
+  "matiere": "francais",
+  "niveaux": [
+    "GS"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de l'école maternelle (cycle 1) et ses attendus de fin de GS (Éduscol).",
+  "chapitres": [
+    {
+      "id": "une-deux",
+      "nom": "Une ou deux syllabes"
+    },
+    {
+      "id": "trois",
+      "nom": "Trois syllabes",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "debut",
+      "nom": "La syllabe du début",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 6,
+    "nouvelles_par_partie": 2,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "syl-chat",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "cat",
+      "question": "Combien de syllabes dans « chat » ?",
+      "reponse": "1",
+      "pieges": [
+        "2",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-chien",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "dog",
+      "question": "Combien de syllabes dans « chien » ?",
+      "reponse": "1",
+      "pieges": [
+        "2",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-pain",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "bread",
+      "question": "Combien de syllabes dans « pain » ?",
+      "reponse": "1",
+      "pieges": [
+        "2",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-lait",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "milk",
+      "question": "Combien de syllabes dans « lait » ?",
+      "reponse": "1",
+      "pieges": [
+        "2",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-main",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "hand",
+      "question": "Combien de syllabes dans « main » ?",
+      "reponse": "1",
+      "pieges": [
+        "2",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-pied",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "foot",
+      "question": "Combien de syllabes dans « pied » ?",
+      "reponse": "1",
+      "pieges": [
+        "2",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-nez",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "nose",
+      "question": "Combien de syllabes dans « nez » ?",
+      "reponse": "1",
+      "pieges": [
+        "2",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-ours",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "bear",
+      "question": "Combien de syllabes dans « ours » ?",
+      "reponse": "1",
+      "pieges": [
+        "2",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-train",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "train",
+      "question": "Combien de syllabes dans « train » ?",
+      "reponse": "1",
+      "pieges": [
+        "2",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-rat",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "rat",
+      "question": "Combien de syllabes dans « rat » ?",
+      "reponse": "1",
+      "pieges": [
+        "2",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-lapin",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "rabbit",
+      "question": "Combien de syllabes dans « lapin » ?",
+      "reponse": "2",
+      "pieges": [
+        "1",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-oiseau",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "bird",
+      "question": "Combien de syllabes dans « oiseau » ?",
+      "reponse": "2",
+      "pieges": [
+        "1",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-poisson",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "fish",
+      "question": "Combien de syllabes dans « poisson » ?",
+      "reponse": "2",
+      "pieges": [
+        "1",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-cheval",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "horse",
+      "question": "Combien de syllabes dans « cheval » ?",
+      "reponse": "2",
+      "pieges": [
+        "1",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-cochon",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "pig",
+      "question": "Combien de syllabes dans « cochon » ?",
+      "reponse": "2",
+      "pieges": [
+        "1",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-canard",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "duck",
+      "question": "Combien de syllabes dans « canard » ?",
+      "reponse": "2",
+      "pieges": [
+        "1",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-souris",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "mouse",
+      "question": "Combien de syllabes dans « souris » ?",
+      "reponse": "2",
+      "pieges": [
+        "1",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-mouton",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "sheep",
+      "question": "Combien de syllabes dans « mouton » ?",
+      "reponse": "2",
+      "pieges": [
+        "1",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-serpent",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "snake",
+      "question": "Combien de syllabes dans « serpent » ?",
+      "reponse": "2",
+      "pieges": [
+        "1",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-gateau",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "cake",
+      "question": "Combien de syllabes dans « gâteau » ?",
+      "reponse": "2",
+      "pieges": [
+        "1",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-ballon",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "ball",
+      "question": "Combien de syllabes dans « ballon » ?",
+      "reponse": "2",
+      "pieges": [
+        "1",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-nounours",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "teddy",
+      "question": "Combien de syllabes dans « nounours » ?",
+      "reponse": "2",
+      "pieges": [
+        "1",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-velo",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "bike",
+      "question": "Combien de syllabes dans « vélo » ?",
+      "reponse": "2",
+      "pieges": [
+        "1",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-bateau",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "boat",
+      "question": "Combien de syllabes dans « bateau » ?",
+      "reponse": "2",
+      "pieges": [
+        "1",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-soleil",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "sun",
+      "question": "Combien de syllabes dans « soleil » ?",
+      "reponse": "2",
+      "pieges": [
+        "1",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-chapeau",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "hat",
+      "question": "Combien de syllabes dans « chapeau » ?",
+      "reponse": "2",
+      "pieges": [
+        "1",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-manteau",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "coat",
+      "question": "Combien de syllabes dans « manteau » ?",
+      "reponse": "2",
+      "pieges": [
+        "1",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-bebe",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "baby",
+      "question": "Combien de syllabes dans « bébé » ?",
+      "reponse": "2",
+      "pieges": [
+        "1",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-papa",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "dad",
+      "question": "Combien de syllabes dans « papa » ?",
+      "reponse": "2",
+      "pieges": [
+        "1",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-maman",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "mum",
+      "question": "Combien de syllabes dans « maman » ?",
+      "reponse": "2",
+      "pieges": [
+        "1",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-camion",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "truck",
+      "question": "Combien de syllabes dans « camion » ?",
+      "reponse": "2",
+      "pieges": [
+        "1",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-crayon",
+      "chapitre": "une-deux",
+      "type": "choix",
+      "image": "pencil",
+      "question": "Combien de syllabes dans « crayon » ?",
+      "reponse": "2",
+      "pieges": [
+        "1",
+        "3",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-elephant",
+      "chapitre": "trois",
+      "type": "choix",
+      "image": "elephant",
+      "question": "Combien de syllabes dans « éléphant » ?",
+      "reponse": "3",
+      "pieges": [
+        "1",
+        "2",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-papillon",
+      "chapitre": "trois",
+      "type": "choix",
+      "image": "butterfly",
+      "question": "Combien de syllabes dans « papillon » ?",
+      "reponse": "3",
+      "pieges": [
+        "1",
+        "2",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-escargot",
+      "chapitre": "trois",
+      "type": "choix",
+      "image": "snail",
+      "question": "Combien de syllabes dans « escargot » ?",
+      "reponse": "3",
+      "pieges": [
+        "1",
+        "2",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-herisson",
+      "chapitre": "trois",
+      "type": "choix",
+      "image": "hedgehog",
+      "question": "Combien de syllabes dans « hérisson » ?",
+      "reponse": "3",
+      "pieges": [
+        "1",
+        "2",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-cerf-volant",
+      "chapitre": "trois",
+      "type": "choix",
+      "image": "kite",
+      "question": "Combien de syllabes dans « cerf-volant » ?",
+      "reponse": "3",
+      "pieges": [
+        "1",
+        "2",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-arc-en-ciel",
+      "chapitre": "trois",
+      "type": "choix",
+      "image": "rainbow",
+      "question": "Combien de syllabes dans « arc-en-ciel » ?",
+      "reponse": "3",
+      "pieges": [
+        "1",
+        "2",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-caneton",
+      "chapitre": "trois",
+      "type": "choix",
+      "image": "duckling",
+      "question": "Combien de syllabes dans « caneton » ?",
+      "reponse": "3",
+      "pieges": [
+        "1",
+        "2",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "syl-porcelet",
+      "chapitre": "trois",
+      "type": "choix",
+      "image": "piglet",
+      "question": "Combien de syllabes dans « porcelet » ?",
+      "reponse": "3",
+      "pieges": [
+        "1",
+        "2",
+        "4"
+      ],
+      "explication": "On tape dans ses mains à chaque syllabe."
+    },
+    {
+      "id": "debut-1",
+      "chapitre": "debut",
+      "type": "associer",
+      "question": "Relie les dessins qui commencent pareil.",
+      "paires": [
+        [
+          {
+            "texte": "le soleil",
+            "image": "sun"
+          },
+          {
+            "texte": "le seau",
+            "image": "bucket"
+          }
+        ],
+        [
+          {
+            "texte": "papa",
+            "image": "dad"
+          },
+          {
+            "texte": "le papillon",
+            "image": "butterfly"
+          }
+        ],
+        [
+          {
+            "texte": "le bateau",
+            "image": "boat"
+          },
+          {
+            "texte": "le ballon",
+            "image": "ball"
+          }
+        ],
+        [
+          {
+            "texte": "le canard",
+            "image": "duck"
+          },
+          {
+            "texte": "le camion",
+            "image": "truck"
+          }
+        ],
+        [
+          {
+            "texte": "le chapeau",
+            "image": "hat"
+          },
+          {
+            "texte": "le chat",
+            "image": "cat"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "debut-2",
+      "chapitre": "debut",
+      "type": "associer",
+      "question": "Relie les dessins qui commencent pareil.",
+      "paires": [
+        [
+          {
+            "texte": "le poisson",
+            "image": "fish"
+          },
+          {
+            "texte": "la poire",
+            "image": "pear"
+          }
+        ],
+        [
+          {
+            "texte": "la poupée",
+            "image": "doll"
+          },
+          {
+            "texte": "le poussin",
+            "image": "chick"
+          }
+        ],
+        [
+          {
+            "texte": "la banane",
+            "image": "banana"
+          },
+          {
+            "texte": "le bateau",
+            "image": "boat"
+          }
+        ],
+        [
+          {
+            "texte": "la carotte",
+            "image": "carrot"
+          },
+          {
+            "texte": "le canard",
+            "image": "duck"
+          }
+        ],
+        [
+          {
+            "texte": "le livre",
+            "image": "book"
+          },
+          {
+            "texte": "le lit",
+            "image": "bed"
+          }
+        ]
+      ]
+    }
+  ]
+}

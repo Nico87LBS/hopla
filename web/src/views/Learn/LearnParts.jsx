@@ -13,7 +13,9 @@ export const useCompiled = player =>
     const byId = {}
     for (const module of player?.modules || []) {
       try {
-        byId[module.id] = compile(module.document)
+        byId[module.id] = compile(module.document, {
+          firstName: player.firstName,
+        })
       } catch {
         // A module that cannot be read is left out rather than breaking the
         // page.

@@ -1,0 +1,430 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-gs-temps",
+  "version": "1.0.0",
+  "nom": "Le temps qui passe",
+  "description": "Les moments de la journée, les jours de la semaine, hier, aujourd'hui et demain.",
+  "matiere": "monde",
+  "niveaux": [
+    "GS"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de l'école maternelle (cycle 1) et ses attendus de fin de GS (Éduscol).",
+  "chapitres": [
+    {
+      "id": "journee",
+      "nom": "Le matin, le midi et le soir"
+    },
+    {
+      "id": "semaine",
+      "nom": "Les jours de la semaine",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "demain",
+      "nom": "Hier, aujourd'hui, demain",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 6,
+    "nouvelles_par_partie": 2,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "journee",
+      "chapitre": "journee",
+      "type": "ordre",
+      "question": "Remets la journée dans l’ordre.",
+      "elements": [
+        "le matin",
+        "le midi",
+        "l'après-midi",
+        "le soir",
+        "la nuit"
+      ]
+    },
+    {
+      "id": "reveil",
+      "chapitre": "journee",
+      "type": "ordre",
+      "question": "Remets le matin dans l’ordre.",
+      "elements": [
+        "se réveiller",
+        "s'habiller",
+        "prendre le petit-déjeuner",
+        "aller à l'école"
+      ]
+    },
+    {
+      "id": "jour-nuit",
+      "chapitre": "journee",
+      "type": "classer",
+      "question": "Le jour ou la nuit ?",
+      "boites": [
+        {
+          "nom": "le jour",
+          "image": "sun"
+        },
+        {
+          "nom": "la nuit",
+          "image": "moon"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "aller à l'école",
+          "boite": "le jour",
+          "image": "schoolbag"
+        },
+        {
+          "texte": "jouer au ballon",
+          "boite": "le jour",
+          "image": "ball"
+        },
+        {
+          "texte": "faire du vélo",
+          "boite": "le jour",
+          "image": "bike"
+        },
+        {
+          "texte": "dormir dans son lit",
+          "boite": "la nuit",
+          "image": "bed"
+        },
+        {
+          "texte": "les étoiles brillent",
+          "boite": "la nuit",
+          "image": "star"
+        },
+        {
+          "texte": "le hibou se réveille",
+          "boite": "la nuit",
+          "image": "owl"
+        }
+      ]
+    },
+    {
+      "id": "semaine",
+      "chapitre": "semaine",
+      "type": "ordre",
+      "question": "Remets les jours de la semaine dans l’ordre.",
+      "elements": [
+        "lundi",
+        "mardi",
+        "mercredi",
+        "jeudi",
+        "vendredi",
+        "samedi",
+        "dimanche"
+      ]
+    },
+    {
+      "id": "jours-1",
+      "chapitre": "semaine",
+      "type": "ordre",
+      "question": "Remets les jours dans l’ordre.",
+      "elements": [
+        "lundi",
+        "mardi",
+        "mercredi",
+        "jeudi"
+      ]
+    },
+    {
+      "id": "jours-2",
+      "chapitre": "semaine",
+      "type": "ordre",
+      "question": "Remets les jours dans l’ordre.",
+      "elements": [
+        "mardi",
+        "mercredi",
+        "jeudi",
+        "vendredi"
+      ]
+    },
+    {
+      "id": "jours-3",
+      "chapitre": "semaine",
+      "type": "ordre",
+      "question": "Remets les jours dans l’ordre.",
+      "elements": [
+        "mercredi",
+        "jeudi",
+        "vendredi",
+        "samedi"
+      ]
+    },
+    {
+      "id": "jours-4",
+      "chapitre": "semaine",
+      "type": "ordre",
+      "question": "Remets les jours dans l’ordre.",
+      "elements": [
+        "jeudi",
+        "vendredi",
+        "samedi",
+        "dimanche"
+      ]
+    },
+    {
+      "id": "apres-lundi",
+      "chapitre": "semaine",
+      "type": "choix",
+      "question": "Quel jour vient après lundi ?",
+      "reponse": "mardi",
+      "pieges": [
+        "mercredi",
+        "jeudi",
+        "samedi"
+      ]
+    },
+    {
+      "id": "demain-lundi",
+      "chapitre": "demain",
+      "type": "choix",
+      "question": "Aujourd’hui, c’est lundi. Demain, ce sera…",
+      "reponse": "mardi",
+      "pieges": [
+        "mercredi",
+        "jeudi",
+        "samedi"
+      ]
+    },
+    {
+      "id": "hier-lundi",
+      "chapitre": "demain",
+      "type": "choix",
+      "question": "Aujourd’hui, c’est lundi. Hier, c’était…",
+      "reponse": "dimanche",
+      "pieges": [
+        "lundi",
+        "mardi",
+        "jeudi"
+      ]
+    },
+    {
+      "id": "apres-mardi",
+      "chapitre": "semaine",
+      "type": "choix",
+      "question": "Quel jour vient après mardi ?",
+      "reponse": "mercredi",
+      "pieges": [
+        "jeudi",
+        "vendredi",
+        "dimanche"
+      ]
+    },
+    {
+      "id": "demain-mardi",
+      "chapitre": "demain",
+      "type": "choix",
+      "question": "Aujourd’hui, c’est mardi. Demain, ce sera…",
+      "reponse": "mercredi",
+      "pieges": [
+        "jeudi",
+        "vendredi",
+        "dimanche"
+      ]
+    },
+    {
+      "id": "hier-mardi",
+      "chapitre": "demain",
+      "type": "choix",
+      "question": "Aujourd’hui, c’est mardi. Hier, c’était…",
+      "reponse": "lundi",
+      "pieges": [
+        "mardi",
+        "mercredi",
+        "vendredi"
+      ]
+    },
+    {
+      "id": "apres-mercredi",
+      "chapitre": "semaine",
+      "type": "choix",
+      "question": "Quel jour vient après mercredi ?",
+      "reponse": "jeudi",
+      "pieges": [
+        "vendredi",
+        "samedi",
+        "lundi"
+      ]
+    },
+    {
+      "id": "demain-mercredi",
+      "chapitre": "demain",
+      "type": "choix",
+      "question": "Aujourd’hui, c’est mercredi. Demain, ce sera…",
+      "reponse": "jeudi",
+      "pieges": [
+        "vendredi",
+        "samedi",
+        "lundi"
+      ]
+    },
+    {
+      "id": "hier-mercredi",
+      "chapitre": "demain",
+      "type": "choix",
+      "question": "Aujourd’hui, c’est mercredi. Hier, c’était…",
+      "reponse": "mardi",
+      "pieges": [
+        "mercredi",
+        "jeudi",
+        "samedi"
+      ]
+    },
+    {
+      "id": "apres-jeudi",
+      "chapitre": "semaine",
+      "type": "choix",
+      "question": "Quel jour vient après jeudi ?",
+      "reponse": "vendredi",
+      "pieges": [
+        "samedi",
+        "dimanche",
+        "mardi"
+      ]
+    },
+    {
+      "id": "demain-jeudi",
+      "chapitre": "demain",
+      "type": "choix",
+      "question": "Aujourd’hui, c’est jeudi. Demain, ce sera…",
+      "reponse": "vendredi",
+      "pieges": [
+        "samedi",
+        "dimanche",
+        "mardi"
+      ]
+    },
+    {
+      "id": "hier-jeudi",
+      "chapitre": "demain",
+      "type": "choix",
+      "question": "Aujourd’hui, c’est jeudi. Hier, c’était…",
+      "reponse": "mercredi",
+      "pieges": [
+        "jeudi",
+        "vendredi",
+        "dimanche"
+      ]
+    },
+    {
+      "id": "apres-vendredi",
+      "chapitre": "semaine",
+      "type": "choix",
+      "question": "Quel jour vient après vendredi ?",
+      "reponse": "samedi",
+      "pieges": [
+        "dimanche",
+        "lundi",
+        "mercredi"
+      ]
+    },
+    {
+      "id": "demain-vendredi",
+      "chapitre": "demain",
+      "type": "choix",
+      "question": "Aujourd’hui, c’est vendredi. Demain, ce sera…",
+      "reponse": "samedi",
+      "pieges": [
+        "dimanche",
+        "lundi",
+        "mercredi"
+      ]
+    },
+    {
+      "id": "hier-vendredi",
+      "chapitre": "demain",
+      "type": "choix",
+      "question": "Aujourd’hui, c’est vendredi. Hier, c’était…",
+      "reponse": "jeudi",
+      "pieges": [
+        "vendredi",
+        "samedi",
+        "lundi"
+      ]
+    },
+    {
+      "id": "apres-samedi",
+      "chapitre": "semaine",
+      "type": "choix",
+      "question": "Quel jour vient après samedi ?",
+      "reponse": "dimanche",
+      "pieges": [
+        "lundi",
+        "mardi",
+        "jeudi"
+      ]
+    },
+    {
+      "id": "demain-samedi",
+      "chapitre": "demain",
+      "type": "choix",
+      "question": "Aujourd’hui, c’est samedi. Demain, ce sera…",
+      "reponse": "dimanche",
+      "pieges": [
+        "lundi",
+        "mardi",
+        "jeudi"
+      ]
+    },
+    {
+      "id": "hier-samedi",
+      "chapitre": "demain",
+      "type": "choix",
+      "question": "Aujourd’hui, c’est samedi. Hier, c’était…",
+      "reponse": "vendredi",
+      "pieges": [
+        "samedi",
+        "dimanche",
+        "mardi"
+      ]
+    },
+    {
+      "id": "apres-dimanche",
+      "chapitre": "semaine",
+      "type": "choix",
+      "question": "Quel jour vient après dimanche ?",
+      "reponse": "lundi",
+      "pieges": [
+        "mardi",
+        "mercredi",
+        "vendredi"
+      ]
+    },
+    {
+      "id": "demain-dimanche",
+      "chapitre": "demain",
+      "type": "choix",
+      "question": "Aujourd’hui, c’est dimanche. Demain, ce sera…",
+      "reponse": "lundi",
+      "pieges": [
+        "mardi",
+        "mercredi",
+        "vendredi"
+      ]
+    },
+    {
+      "id": "hier-dimanche",
+      "chapitre": "demain",
+      "type": "choix",
+      "question": "Aujourd’hui, c’est dimanche. Hier, c’était…",
+      "reponse": "samedi",
+      "pieges": [
+        "dimanche",
+        "lundi",
+        "mercredi"
+      ]
+    }
+  ]
+}

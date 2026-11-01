@@ -1,0 +1,90 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-gs-composer",
+  "version": "1.0.0",
+  "nom": "Composer 5 et 10",
+  "description": "Ce qui manque pour faire 5, puis 10, et un de plus, un de moins.",
+  "matiere": "maths",
+  "niveaux": [
+    "GS"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de l'école maternelle (cycle 1) et ses attendus de fin de GS (Éduscol).",
+  "chapitres": [
+    {
+      "id": "cinq",
+      "nom": "Faire 5"
+    },
+    {
+      "id": "dix",
+      "nom": "Faire 10",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "un",
+      "nom": "Un de plus, un de moins",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 6,
+    "nouvelles_par_partie": 2,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "generateurs": [
+    {
+      "id": "faire-5",
+      "chapitre": "cinq",
+      "operation": "complement",
+      "cible": "5",
+      "a": [
+        0,
+        4
+      ]
+    },
+    {
+      "id": "faire-10",
+      "chapitre": "dix",
+      "operation": "complement",
+      "cible": "10",
+      "a": [
+        1,
+        9
+      ]
+    },
+    {
+      "id": "plus-un",
+      "chapitre": "un",
+      "operation": "addition",
+      "a": [
+        0,
+        9
+      ],
+      "b": {
+        "valeurs": [
+          1
+        ]
+      }
+    },
+    {
+      "id": "moins-un",
+      "chapitre": "un",
+      "operation": "soustraction",
+      "a": [
+        1,
+        10
+      ],
+      "b": {
+        "valeurs": [
+          1
+        ]
+      }
+    }
+  ]
+}

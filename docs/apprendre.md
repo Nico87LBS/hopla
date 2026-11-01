@@ -23,6 +23,9 @@ peuvent aussi partager ce qui est appris grâce à leur clé (voir
 
 | Paquet | Modules | Public |
 | --- | --- | --- |
+| **Langage GS** | Les rimes, Les syllabes, Le son du début, Les lettres (avec « Mon prénom »), Les mots en images | Enfant, GS |
+| **Maths GS** | Compter des quantités, La suite des nombres, Lire les nombres, Comparer, Composer 5 et 10, Formes et positions | Enfant, GS |
+| **Explorer le monde GS** | Le temps qui passe, Les saisons, Les animaux, Mon corps, Les plantes, Objets et matières | Enfant, GS |
 | **Maths CE2** | Nombres jusqu'à 10 000, Calcul mental, Addition et soustraction, Multiplication, Division, Mesures, Problèmes, Géométrie | Enfant, CE2 |
 | **Anglais à l'école** | Anglais GS : mes premiers mots (à l'oreille, avec dessins, sans lire) ; Anglais CE2 | Enfant, GS et CE2 |
 | **Anglais aéronautique** | Bases radio, Phraséo et au-delà, Systèmes de l'avion, Météo, Aérodrome, Situations anormales, Anglais idiomatique, Compréhension orale, Oral | Adulte, niveau 6 OACI |
@@ -98,6 +101,15 @@ question à son ouverture, et chaque réponse au premier toucher ; un second
 toucher la choisit. Le haut-parleur de la question la redit. C'est activé
 pour tout le monde ; Gérer › Modules d'apprentissage › Par personne permet de
 l'éteindre pour une personne (« Lire à voix haute »).
+
+### Prénom
+
+Certains modules posent des questions sur le prénom de l'enfant (« Mon
+prénom » dans Langage GS : sa première lettre, le retrouver parmi d'autres,
+remettre ses lettres dans l'ordre, compter ses lettres). Par défaut, c'est le
+premier mot de son nom dans Hopla ; Gérer › Modules d'apprentissage › Par
+personne › « Prénom dans les jeux » permet d'en écrire un autre (20 lettres au
+plus), par exemple sans surnom ni nom de famille.
 
 Une question ratée est remontrée avec sa réponse, et revient en fin de partie
 dans « À revoir ».

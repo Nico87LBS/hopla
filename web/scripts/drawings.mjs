@@ -849,6 +849,472 @@ const DRAWINGS = {
     line('M60 82 v6 M65 82 v6 M70 82 v6 M74 82 v6', 1.8),
 }
 
+// ── the pictures of the GS packs ──
+
+const WOOD = '#C08457'
+const METAL = '#C9CED6'
+const LEAF = '#30A46C'
+
+// A rabbit face that shows a feeling, by its brows and mouth.
+const feeling = (mouth, brows = '', extra = '') =>
+  rabbit({ y: 4 }).replace(
+    /<path d="M[\d. ]+ Q[\d. ]+ [\d. ]+" fill="none"[^>]*\/>$/,
+    '',
+  ) +
+  mouth +
+  brows +
+  extra
+
+// A rabbit and a box, to say where the rabbit is.
+const box = (x, y, w = 34, h = 26) =>
+  rect(x, y, w, h, 2, '#F6C66B') + line(`M${x} ${y + 8} H${x + w}`, 1.6)
+const bunny = (x, y, s = 0.55) =>
+  `<g transform="translate(${x} ${y}) scale(${s}) translate(-50 -50)">${rabbit()}</g>`
+
+Object.assign(DRAWINGS, {
+  // home
+  house:
+    rect(26, 46, 48, 36, 2, '#FFE6B3') +
+    shape('M20 48 L50 20 L80 48Z', '#E5484D') +
+    rect(44, 62, 12, 20, 2, WOOD) +
+    rect(30, 54, 10, 10, 1, '#BFE3FF') +
+    rect(60, 54, 10, 10, 1, '#BFE3FF') +
+    rect(64, 24, 7, 14, 1, '#8D5A3B'),
+  bed:
+    rect(18, 38, 8, 40, 2, WOOD) +
+    rect(74, 52, 8, 26, 2, WOOD) +
+    rect(24, 56, 52, 12, 3, '#BFE3FF') +
+    oval(34, 52, 9, 5, '#fff') +
+    shape('M44 52 H74 V60 H44Z', '#8E4EC6'),
+  table:
+    rect(18, 40, 64, 8, 2, WOOD) +
+    rect(24, 48, 6, 32, 1, WOOD) +
+    rect(70, 48, 6, 32, 1, WOOD) +
+    oval(50, 36, 10, 3.5, '#fff') +
+    rect(44, 26, 12, 10, 3, '#E5484D'),
+  chair:
+    rect(32, 18, 6, 64, 1, WOOD) +
+    rect(32, 24, 34, 6, 1, WOOD) +
+    rect(32, 34, 34, 6, 1, WOOD) +
+    rect(30, 52, 40, 7, 1, WOOD) +
+    rect(62, 52, 6, 30, 1, WOOD),
+  door:
+    rect(32, 16, 36, 68, 3, WOOD) +
+    rect(37, 22, 26, 22, 2, '#D9A06E') +
+    rect(37, 50, 26, 26, 2, '#D9A06E') +
+    circle(61, 50, 2.8, '#FFD23F'),
+  window:
+    rect(24, 22, 52, 52, 3, '#BFE3FF') +
+    line('M50 22 V74 M24 48 H76', 3) +
+    shape('M20 22 C26 34 26 60 20 76 L20 22Z', '#F472B6') +
+    shape('M80 22 C74 34 74 60 80 76 L80 22Z', '#F472B6') +
+    rect(20, 74, 60, 6, 2, WOOD),
+  lamp:
+    shape('M34 46 L42 20 H58 L66 46Z', '#FFD23F') +
+    rect(47, 46, 6, 26, 1, METAL) +
+    oval(50, 78, 18, 5, '#8E4EC6'),
+  bathtub:
+    shape('M16 46 H84 C84 62 76 72 60 72 H40 C24 72 16 62 16 46Z', '#fff') +
+    rect(24, 72, 6, 8, 2, METAL) +
+    rect(70, 72, 6, 8, 2, METAL) +
+    line('M74 46 V26 C74 20 66 20 66 26', 3) +
+    circle(34, 42, 5, '#BFE3FF') +
+    circle(44, 40, 4, '#BFE3FF') +
+    circle(52, 42, 3.4, '#BFE3FF'),
+  // school
+  schoolbag:
+    rect(26, 30, 48, 50, 8, '#3B82F6') +
+    line('M38 30 C38 18 62 18 62 30', 3) +
+    shape('M26 46 C40 52 60 52 74 46 V58 H26Z', '#2F6FD6') +
+    rect(46, 52, 8, 8, 2, '#FFD23F'),
+  pencil:
+    shape('M24 76 L30 60 L68 22 L78 32 L40 70Z', '#FFD23F') +
+    shape('M24 76 L30 60 L40 70Z', '#F5D3AE') +
+    shape('M24 76 L27 68 L32 73Z', INK) +
+    shape(
+      'M68 22 L72 18 C74 16 78 16 80 18 L82 20 C84 22 84 26 82 28 L78 32Z',
+      '#F472B6',
+    ),
+  scissors:
+    circle(32, 70, 9, '#E5484D') +
+    circle(52, 76, 9, '#E5484D') +
+    circle(32, 70, 4, '#fff', false) +
+    circle(52, 76, 4, '#fff', false) +
+    shape('M38 63 L74 22 L78 26 L46 68Z', METAL) +
+    shape('M46 70 L80 34 L82 40 L52 72Z', METAL) +
+    circle(46, 66, 2, INK, false),
+  glue:
+    rect(36, 34, 28, 46, 6, '#fff') +
+    rect(36, 46, 28, 20, 2, '#3B82F6') +
+    rect(40, 20, 20, 14, 3, '#E5484D') +
+    line('M44 56 H56', 1.6),
+  notebook:
+    rect(26, 20, 46, 60, 3, '#30A46C') +
+    rect(26, 20, 8, 60, 2, '#1F7A4D') +
+    rect(40, 32, 26, 12, 2, '#fff') +
+    line('M44 38 H62', 1.4),
+  paintbrush:
+    shape(
+      'M28 80 C24 76 26 70 32 66 L40 62 L44 66 L40 74 C36 80 32 82 28 80Z',
+      '#E5484D',
+    ) +
+    rect(41, 52, 10, 12, 2, METAL) +
+    shape('M44 54 L72 18 C74 15 80 18 78 22 L50 60Z', WOOD),
+  board:
+    rect(16, 22, 68, 48, 3, '#2F6B4F') +
+    rect(12, 18, 76, 56, 4, 'none') +
+    line('M26 36 Q34 30 42 36 T58 36 M26 50 H52', 2.4).replace(INK, '#fff') +
+    rect(60, 70, 16, 5, 1, '#fff') +
+    line('M30 74 L24 86 M70 74 L76 86', 2.6),
+  // feelings
+  happy: feeling(shape('M42 60 Q50 70 58 60Z', '#F27B98')),
+  sad: feeling(
+    line('M43 66 Q50 58 57 66', 2),
+    line('M37 42 L45 45 M63 42 L55 45', 1.8),
+    shape('M38 54 C36 58 36 61 38 62 C40 61 40 58 38 54Z', '#7CC4FF'),
+  ),
+  angry: feeling(
+    line('M43 67 Q50 61 57 67', 2.2),
+    line('M35 41 L46 47 M65 41 L54 47', 3),
+    flat('M74 26 l4 -6 l2 7 l5 -3 l-3 7Z', '#E5484D'),
+  ),
+  scared: feeling(
+    oval(50, 63, 4, 6, INK, false),
+    line('M38 42 Q41 38 46 41 M62 42 Q59 38 54 41', 1.8),
+    line('M74 40 q3 4 0 8 M26 40 q-3 4 0 8', 1.6),
+  ),
+  surprised: feeling(
+    oval(50, 63, 5, 6, '#F27B98'),
+    line('M38 39 Q41 35 45 38 M62 39 Q59 35 55 38', 1.8),
+  ),
+  // shapes
+  'shape-circle': circle(50, 50, 26, '#3B82F6'),
+  'shape-square': rect(26, 26, 48, 48, 2, '#E5484D'),
+  'shape-triangle': shape('M50 22 L78 74 H22Z', '#FFD23F'),
+  'shape-rectangle': rect(18, 34, 64, 34, 2, '#30A46C'),
+  // where the rabbit is
+  'pos-in':
+    rect(30, 50, 40, 10, 2, '#B98235') +
+    bunny(50, 48, 0.42) +
+    rect(30, 58, 40, 24, 2, '#F6C66B'),
+  'pos-on': box(33, 58, 34, 24) + bunny(50, 40, 0.42),
+  'pos-under':
+    rect(22, 24, 56, 8, 2, WOOD) +
+    rect(26, 32, 5, 46, 1, WOOD) +
+    rect(69, 32, 5, 46, 1, WOOD) +
+    bunny(50, 62, 0.42),
+  'pos-in-front': box(34, 26, 32, 26) + bunny(50, 62, 0.62),
+  'pos-behind': bunny(50, 34, 0.5) + box(24, 46, 52, 36),
+  'pos-next-to': box(18, 52, 32, 30) + bunny(68, 62, 0.42),
+})
+
+// A little one is its parent drawn smaller, with a bow.
+const little = (id, x = 50, y = 56, s = 0.68) =>
+  `<g transform="translate(${x} ${y}) scale(${s}) translate(-50 -50)">${DRAWINGS[id]}</g>` +
+  shape('M44 22 L50 26 L44 30Z M56 22 L50 26 L56 30Z', '#F472B6') +
+  circle(50, 26, 2, '#F472B6')
+
+Object.assign(DRAWINGS, {
+  // sky and seasons
+  moon:
+    shape(
+      'M58 18 C40 22 30 40 34 58 C38 76 58 86 74 78 C56 76 44 62 46 44 C47 32 52 24 58 18Z',
+      '#FFD23F',
+    ) +
+    eye(48, 50, 2.2) +
+    smile(46, 60, 3),
+  star:
+    shape(
+      'M50 16 L59 38 L82 39 L64 54 L70 78 L50 64 L30 78 L36 54 L18 39 L41 38Z',
+      '#FFD23F',
+    ) +
+    eyes(44, 56, 46, 2.2) +
+    smile(50, 54, 3),
+  snowman:
+    circle(50, 64, 20, '#fff') +
+    circle(50, 34, 14, '#fff') +
+    rect(38, 14, 24, 8, 2, '#2B2B33') +
+    rect(34, 21, 32, 3, 1, '#2B2B33') +
+    eyes(45, 55, 32, 1.8) +
+    shape('M50 36 L60 39 L50 40Z', '#F97316') +
+    shape('M38 46 C44 50 56 50 62 46 L62 52 C56 56 44 56 38 52Z', '#E5484D') +
+    circle(50, 62, 2, INK, false) +
+    circle(50, 72, 2, INK, false),
+  flower:
+    line('M50 56 V86', 3) +
+    shape('M50 74 C40 66 32 70 30 74 C38 80 46 78 50 74Z', LEAF) +
+    [0, 72, 144, 216, 288]
+      .map(a => {
+        const r = ((a - 90) * Math.PI) / 180
+        return circle(
+          +(50 + Math.cos(r) * 13).toFixed(1),
+          +(38 + Math.sin(r) * 13).toFixed(1),
+          9,
+          '#F472B6',
+        )
+      })
+      .join('') +
+    circle(50, 38, 8, '#FFD23F'),
+  leaf:
+    shape('M24 76 C22 46 42 22 78 20 C80 56 58 78 24 76Z', '#F97316') +
+    line('M24 76 L70 28 M40 60 L38 44 M48 52 L60 54 M56 42 L56 32', 1.8),
+  fir:
+    rect(45, 70, 10, 14, 1, '#8D5A3B') +
+    shape(
+      'M50 14 L70 40 H60 L76 58 H62 L80 72 H20 L38 58 H24 L40 40 H30Z',
+      LEAF,
+    ),
+  grass: shape(
+    'M20 80 L26 48 L32 80 L38 40 L44 80 L50 34 L56 80 L62 42 L68 80 L74 50 L80 80Z',
+    LEAF,
+  ),
+  barn:
+    rect(26, 44, 48, 38, 1, '#E5484D') +
+    shape('M20 46 L50 20 L80 46Z', '#B42F34') +
+    rect(40, 58, 20, 24, 1, '#fff') +
+    line('M40 58 L60 82 M60 58 L40 82', 2) +
+    rect(44, 34, 12, 10, 1, '#fff'),
+  wave:
+    shape(
+      'M14 60 C24 50 32 50 40 58 C48 66 56 66 64 58 C72 50 80 50 86 58 V84 H14Z',
+      '#3B82F6',
+    ) +
+    line('M18 70 C26 64 32 64 38 70 M58 72 C64 66 72 66 78 72', 2).replace(
+      INK,
+      '#fff',
+    ) +
+    shape('M30 40 C36 34 44 36 46 42 C40 40 34 42 30 46Z', '#BFE3FF'),
+  // animals and their little ones
+  hen:
+    oval(48, 58, 24, 20, '#fff') +
+    circle(66, 38, 12, '#fff') +
+    shape('M62 26 C62 20 66 20 66 24 C68 18 72 20 70 26Z', '#E5484D') +
+    shape('M77 38 L84 41 L77 44Z', '#F97316') +
+    shape('M70 48 C70 52 72 54 74 52 C74 50 72 48 70 48Z', '#E5484D') +
+    eye(68, 36, 2) +
+    shape('M24 52 C18 44 20 38 26 40 C24 46 28 50 30 52Z', '#fff') +
+    line('M44 78 V86 M54 78 V86', 2.4),
+  chick:
+    circle(50, 56, 22, '#FFD23F') +
+    eyes(43, 57, 50, 2.4) +
+    shape('M46 58 L54 58 L50 64Z', '#F97316') +
+    shape('M28 58 C22 54 24 48 30 50Z M72 58 C78 54 76 48 70 50Z', '#FFD23F') +
+    shape('M46 34 C46 28 50 28 50 32 C50 28 54 28 54 34Z', '#FFD23F') +
+    line('M44 78 V84 M56 78 V84', 2.2),
+  calf: little('cow'),
+  lamb: little('sheep'),
+  foal: little('horse'),
+  kitten: little('cat'),
+  puppy: little('dog'),
+  piglet: little('pig'),
+  duckling: little('duck'),
+  rat:
+    oval(50, 58, 26, 18, '#A0A4AE') +
+    circle(30, 40, 9, '#A0A4AE') +
+    circle(30, 40, 5, PINK, false) +
+    shape('M26 54 L12 60 L26 62Z', '#A0A4AE') +
+    eye(22, 52, 2) +
+    circle(12, 60, 2.4, '#F27B98', false) +
+    line('M76 62 C88 62 90 74 80 78', 2.4),
+  fox:
+    shape('M28 40 L30 16 L44 30Z M72 40 L70 16 L56 30Z', '#F97316') +
+    shape(
+      'M24 40 C24 30 76 30 76 40 C76 56 62 72 50 76 C38 72 24 56 24 40Z',
+      '#F97316',
+    ) +
+    shape(
+      'M30 50 C38 52 44 60 50 76 C56 60 62 52 70 50 C64 64 56 74 50 76 C44 74 36 64 30 50Z',
+      '#fff',
+    ) +
+    eyes(40, 60, 46, 2.4) +
+    oval(50, 70, 3.4, 2.6, INK, false),
+  owl:
+    oval(50, 54, 26, 30, WOOD) +
+    shape('M26 30 L32 20 L40 30Z M74 30 L68 20 L60 30Z', WOOD) +
+    circle(40, 44, 10, '#fff') +
+    circle(60, 44, 10, '#fff') +
+    eyes(40, 60, 44, 3.4) +
+    shape('M46 52 L54 52 L50 60Z', '#F97316') +
+    oval(50, 70, 14, 10, '#F5D3AE', false) +
+    line('M44 68 l2 3 l2 -3 M52 68 l2 3 l2 -3', 1.4),
+  hedgehog:
+    shape(
+      'M20 66 C18 44 34 30 54 30 L58 22 L62 32 L68 26 L70 36 L78 34 L76 44 L84 46 L78 54 C80 62 76 68 70 70 H24Z',
+      '#8D5A3B',
+    ) +
+    shape('M20 66 C24 58 34 56 40 60 C40 66 34 70 24 70Z', '#F5D3AE') +
+    eye(28, 60, 2) +
+    circle(18, 66, 2.6, INK, false) +
+    line('M34 70 V76 M58 70 V76', 2.4),
+  whale:
+    shape(
+      'M14 56 C14 36 36 30 56 34 C70 36 78 46 78 56 C82 50 88 48 90 50 C88 56 86 62 80 64 C76 74 60 78 44 78 C26 78 14 70 14 56Z',
+      '#3B82F6',
+    ) +
+    shape(
+      'M18 62 C30 72 56 74 72 66 C66 74 56 78 44 78 C28 78 20 70 18 62Z',
+      '#BFE3FF',
+    ) +
+    eye(30, 50, 2.4) +
+    line('M44 30 C42 22 36 20 34 22 M44 30 C46 22 52 20 54 22', 2),
+  crab:
+    oval(50, 58, 24, 16, '#E5484D') +
+    line('M28 62 L16 70 M28 66 L18 76 M72 62 L84 70 M72 66 L82 76', 2.4) +
+    line('M36 46 L28 32 M64 46 L72 32', 2.4) +
+    shape('M20 30 C20 22 32 20 34 28 L28 32Z', '#E5484D') +
+    shape('M80 30 C80 22 68 20 66 28 L72 32Z', '#E5484D') +
+    eyes(44, 56, 54, 2.4) +
+    smile(50, 62, 4),
+  octopus:
+    shape('M28 46 C28 26 72 26 72 46 V58 H28Z', '#8E4EC6') +
+    [26, 36, 46, 56, 66]
+      .map(x =>
+        shape(
+          `M${x} 56 C${x - 4} 70 ${x + 2} 80 ${x + 8} 82 C${x + 4} 74 ${x + 6} 66 ${x + 10} 56Z`,
+          '#8E4EC6',
+        ),
+      )
+      .join('') +
+    eyes(42, 58, 44, 2.6) +
+    smile(50, 52, 4),
+  butterfly:
+    shape('M48 46 C36 24 18 26 20 42 C22 52 36 54 48 50Z', '#F472B6') +
+    shape('M52 46 C64 24 82 26 80 42 C78 52 64 54 52 50Z', '#F472B6') +
+    shape('M48 52 C36 56 26 66 32 74 C38 80 46 68 48 58Z', '#FFD23F') +
+    shape('M52 52 C64 56 74 66 68 74 C62 80 54 68 52 58Z', '#FFD23F') +
+    oval(50, 54, 3.4, 18, INK, false) +
+    line('M48 38 C46 30 42 26 40 24 M52 38 C54 30 58 26 60 24', 1.6),
+  snail:
+    shape(
+      'M14 76 C22 70 30 70 40 70 H80 C84 70 86 66 82 62 L76 60 C78 52 76 46 74 44 L72 60 H18Z',
+      '#F5D3AE',
+    ) +
+    circle(52, 50, 20, '#F97316') +
+    line('M52 50 m-4 0 a4 4 0 1 1 8 0 a9 9 0 1 1 -18 0 a14 14 0 1 1 28 0', 2) +
+    line('M78 46 L80 34 M74 46 L72 34', 1.8) +
+    circle(80, 33, 2.2, INK, false) +
+    circle(72, 33, 2.2, INK, false),
+  worm:
+    shape(
+      'M18 68 C22 52 34 50 40 60 C46 70 56 68 60 56 C64 44 78 42 82 52 C84 58 80 62 76 58 C74 52 68 52 66 60 C62 74 46 78 36 68 C30 62 26 66 24 72 C22 76 16 74 18 68Z',
+      '#F27B98',
+    ) + eye(78, 50, 1.8),
+})
+
+Object.assign(DRAWINGS, {
+  // food
+  honey:
+    shape('M30 40 C30 32 70 32 70 40 V74 C70 82 30 82 30 74Z', '#FFB020') +
+    rect(28, 28, 44, 10, 3, '#E5484D') +
+    rect(36, 50, 28, 14, 3, '#fff') +
+    shape('M44 38 C44 44 48 46 48 50 C48 46 52 44 52 38Z', '#FFB020'),
+  candy:
+    shape('M22 38 L36 46 L36 54 L22 62 C18 56 18 44 22 38Z', '#F472B6') +
+    shape('M78 38 L64 46 L64 54 L78 62 C82 56 82 44 78 38Z', '#F472B6') +
+    circle(50, 50, 16, '#E5484D') +
+    line('M40 42 C46 48 54 52 60 58 M42 56 C46 52 48 50 52 44', 1.6).replace(
+      INK,
+      '#fff',
+    ),
+  soda:
+    shape('M36 24 H64 L62 80 C62 84 38 84 38 80Z', '#E5484D') +
+    oval(50, 24, 14, 4, METAL) +
+    rect(38, 44, 24, 16, 2, '#fff') +
+    line('M60 24 L66 10', 3),
+  salad:
+    shape(
+      'M22 56 C18 38 34 26 50 28 C66 26 82 38 78 56 C74 72 26 72 22 56Z',
+      '#7BCB6A',
+    ) +
+    line(
+      'M50 70 V38 M50 52 L36 42 M50 52 L64 42 M50 62 L38 56 M50 62 L62 56',
+      2,
+    ),
+  leek:
+    shape('M42 84 V48 C42 40 58 40 58 48 V84 C58 88 42 88 42 84Z', '#fff') +
+    shape(
+      'M42 50 C38 34 30 22 24 14 C36 18 46 30 50 44 C54 30 64 18 76 14 C70 22 62 34 58 50Z',
+      LEAF,
+    ) +
+    line('M44 86 l-2 4 M50 86 v4 M56 86 l2 4', 1.4),
+  potato:
+    shape(
+      'M24 50 C22 34 40 26 56 30 C74 32 82 46 76 60 C70 74 46 78 32 70 C26 66 24 58 24 50Z',
+      '#D9A06E',
+    ) +
+    circle(40, 44, 1.8, INK, false) +
+    circle(60, 50, 1.8, INK, false) +
+    circle(48, 62, 1.8, INK, false),
+  peas:
+    shape('M16 60 C24 40 60 30 84 40 C70 60 40 70 16 60Z', LEAF) +
+    circle(34, 54, 6, '#7BCB6A') +
+    circle(48, 50, 6.4, '#7BCB6A') +
+    circle(62, 46, 6, '#7BCB6A') +
+    line('M84 40 C88 34 90 30 88 26', 2),
+  bone: shape(
+    'M30 40 C22 34 24 24 32 26 C34 20 44 22 40 32 L64 56 C72 52 80 56 76 64 C82 66 80 76 72 74 C70 80 60 78 62 70 L38 46 C32 50 24 48 30 40Z',
+    '#fff',
+  ),
+  // objects
+  spoon:
+    oval(36, 34, 12, 16, METAL, true, -40) +
+    shape('M44 44 L78 80 C80 82 76 86 74 84 L40 48Z', METAL),
+  key:
+    circle(32, 40, 14, '#FFD23F') +
+    circle(32, 40, 5, '#fff') +
+    shape(
+      'M44 46 L80 68 L76 74 L70 70 L66 76 L60 72 L64 66 L40 52Z',
+      '#FFD23F',
+    ),
+  bottle:
+    shape(
+      'M42 18 H58 V28 C58 32 66 34 66 44 V80 C66 84 34 84 34 80 V44 C34 34 42 32 42 28Z',
+      '#7CC4FF',
+    ) +
+    rect(41, 14, 18, 8, 2, '#3B82F6') +
+    rect(34, 50, 32, 14, 1, '#fff'),
+  bucket:
+    shape('M28 40 H72 L66 82 H34Z', '#E5484D') +
+    oval(50, 40, 22, 6, '#B42F34') +
+    line('M28 40 C28 18 72 18 72 40', 2.4) +
+    shape('M66 26 L82 20 L80 28Z', '#FFD23F'),
+  cork:
+    shape('M36 34 H64 L60 74 H40Z', '#D9A06E') +
+    oval(50, 34, 14, 5, '#E8B98A') +
+    circle(46, 50, 1.6, INK, false) +
+    circle(54, 60, 1.6, INK, false),
+  stone:
+    shape(
+      'M18 64 C16 48 30 36 48 36 C66 34 84 44 82 60 C80 74 60 78 44 76 C28 76 20 72 18 64Z',
+      '#A0A4AE',
+    ) + flat('M32 50 C38 44 48 44 52 46 C44 46 38 50 34 56Z', '#fff', 0.5),
+  coin:
+    circle(50, 50, 24, '#FFD23F') +
+    circle(50, 50, 17, '#FFE27A') +
+    `<text x="50" y="58" text-anchor="middle" font-family="Fredoka, 'Arial Rounded MT Bold', Arial, sans-serif" font-weight="700" font-size="24" fill="${INK}">1</text>`,
+  toothbrush:
+    shape(
+      'M20 72 L64 40 C68 38 70 42 66 44 L24 78 C20 80 18 76 20 72Z',
+      '#3B82F6',
+    ) +
+    rect(62, 22, 18, 14, 2, '#fff') +
+    line('M66 22 V18 M71 22 V17 M76 22 V18', 2) +
+    rect(62, 34, 18, 6, 1, '#3B82F6'),
+  truck:
+    rect(16, 36, 42, 32, 3, '#FFD23F') +
+    shape('M58 46 H74 L84 58 V68 H58Z', '#3B82F6') +
+    rect(62, 50, 10, 8, 1, '#BFE3FF') +
+    circle(30, 72, 8, '#2B2B33') +
+    circle(72, 72, 8, '#2B2B33') +
+    circle(30, 72, 3, METAL, false) +
+    circle(72, 72, 3, METAL, false),
+  log:
+    shape('M24 40 H72 V68 H24Z', WOOD) +
+    oval(24, 54, 8, 14, '#E8B98A') +
+    line('M24 54 m-3 0 a3 5 0 1 0 6 0 a3 5 0 1 0 -6 0', 1.4) +
+    line('M36 48 H60 M40 60 H66', 1.6),
+})
+
 for (const [name, colour] of Object.entries(COLOURS)) {
   DRAWINGS[`colour-${name}`] = splash(colour)
 }
@@ -865,16 +1331,29 @@ const BACKGROUNDS = {
   toy: '#E8F1FF',
   weather: '#E6F4FF',
   clothes: '#F3E8FF',
+  home: '#FFF1E6',
+  school: '#E8F1FF',
+  feeling: '#FFE6EC',
+  nature: '#E6F4FF',
+  object: '#F4F1FA',
 }
 const GROUPS = {
   animal:
-    'cat dog rabbit bird fish horse cow pig duck mouse sheep frog lion elephant bear snake',
+    'cat dog rabbit bird fish horse cow pig duck mouse sheep frog lion elephant bear snake ' +
+    'hen chick calf lamb foal kitten puppy piglet duckling rat fox owl hedgehog whale crab octopus butterfly snail worm',
   family: 'mum dad baby grandma grandpa sister brother',
   body: 'head eye nose mouth ear hand foot',
-  food: 'apple banana orange strawberry pear cherry grapes lemon carrot bread milk cake egg cheese ice-cream',
+  food:
+    'apple banana orange strawberry pear cherry grapes lemon carrot bread milk cake egg cheese ice-cream ' +
+    'honey candy soda salad leek potato peas bone',
   toy: 'ball doll teddy car kite book train bike boat',
   weather: 'sun rain snow wind cloud rainbow',
   clothes: 'hat shoes socks coat t-shirt dress scarf',
+  home: 'house bed table chair door window lamp bathtub',
+  school: 'schoolbag pencil scissors glue notebook paintbrush board',
+  feeling: 'happy sad angry scared surprised',
+  nature: 'moon star snowman flower leaf fir grass barn wave',
+  object: 'spoon key bottle bucket cork stone coin toothbrush truck log',
 }
 const groupOf = id => {
   const prefix = id.split('-')[0]
