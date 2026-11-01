@@ -1,0 +1,485 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-ce2-electricite",
+  "version": "1.0.0",
+  "nom": "L'électricité",
+  "description": "Les objets électriques, le circuit avec une pile et une ampoule, les conducteurs et les isolants, et les dangers.",
+  "matiere": "monde",
+  "niveaux": [
+    "CE2"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de Questionner le monde du cycle 2 et les repères de progression du CE2 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "objets",
+      "nom": "Pile, ampoule, interrupteur"
+    },
+    {
+      "id": "circuit",
+      "nom": "Circuit ouvert ou fermé",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "conducteurs",
+      "nom": "Conducteurs et isolants",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "dangers",
+      "nom": "Les dangers de l’électricité",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "appareils",
+      "chapitre": "objets",
+      "type": "classer",
+      "question": "Comment fonctionne cet objet ?",
+      "consigne": "Comment fonctionne cet objet ?",
+      "boites": [
+        {
+          "nom": "Avec une pile"
+        },
+        {
+          "nom": "Branché à une prise"
+        },
+        {
+          "nom": "Sans électricité"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "la lampe de poche",
+          "boite": "Avec une pile"
+        },
+        {
+          "texte": "la télécommande",
+          "boite": "Avec une pile"
+        },
+        {
+          "texte": "le réfrigérateur",
+          "boite": "Branché à une prise"
+        },
+        {
+          "texte": "le four",
+          "boite": "Branché à une prise"
+        },
+        {
+          "texte": "le vélo",
+          "boite": "Sans électricité",
+          "image": "bike"
+        },
+        {
+          "texte": "le livre",
+          "boite": "Sans électricité",
+          "image": "book"
+        },
+        {
+          "texte": "la machine à laver",
+          "boite": "Branché à une prise"
+        },
+        {
+          "texte": "les ciseaux",
+          "boite": "Sans électricité",
+          "image": "scissors"
+        },
+        {
+          "texte": "la montre",
+          "boite": "Avec une pile"
+        }
+      ]
+    },
+    {
+      "id": "pile-role",
+      "chapitre": "objets",
+      "type": "choix",
+      "question": "À quoi sert la pile ?",
+      "reponse": "à donner l’électricité",
+      "pieges": [
+        "à faire de la lumière",
+        "à couper le courant",
+        "à décorer"
+      ],
+      "consigne": "À quoi sert la pile ?",
+      "image": "battery"
+    },
+    {
+      "id": "ampoule-role",
+      "chapitre": "objets",
+      "type": "choix",
+      "question": "Que fait l’ampoule quand le courant passe ?",
+      "reponse": "elle s’allume",
+      "pieges": [
+        "elle chauffe l’eau",
+        "elle sonne",
+        "elle tourne"
+      ],
+      "consigne": "Que fait l’ampoule quand le courant passe ?",
+      "image": "bulb"
+    },
+    {
+      "id": "interrupteur",
+      "chapitre": "objets",
+      "type": "choix",
+      "question": "Avec quoi allume-t-on et éteint-on la lumière ?",
+      "reponse": "un interrupteur",
+      "pieges": [
+        "une pile",
+        "une ampoule",
+        "un fil"
+      ],
+      "consigne": "Avec quoi allume-t-on et éteint-on la lumière ?"
+    },
+    {
+      "id": "fils",
+      "chapitre": "objets",
+      "type": "choix",
+      "question": "Par où passe le courant entre la pile et l’ampoule ?",
+      "reponse": "par les fils",
+      "pieges": [
+        "par l’air",
+        "par la table",
+        "par la lumière"
+      ],
+      "consigne": "Par où passe le courant entre la pile et l’ampoule ?"
+    },
+    {
+      "id": "pile-bornes",
+      "chapitre": "objets",
+      "type": "choix",
+      "question": "Les deux bouts d’une pile s’appellent…",
+      "reponse": "les bornes + et –",
+      "pieges": [
+        "les pieds",
+        "les fils",
+        "les ampoules"
+      ],
+      "consigne": "Les deux bouts d’une pile s’appellent…"
+    },
+    {
+      "id": "c-ferme",
+      "chapitre": "circuit",
+      "type": "choix",
+      "question": "L’ampoule s’allume-t-elle ?",
+      "reponse": "Oui",
+      "pieges": [
+        "Non"
+      ],
+      "consigne": "L’ampoule s’allume-t-elle ?",
+      "explication": "Le circuit est fermé : le courant fait tout le tour.",
+      "image": "circuit-closed"
+    },
+    {
+      "id": "c-ouvert",
+      "chapitre": "circuit",
+      "type": "choix",
+      "question": "L’ampoule s’allume-t-elle ?",
+      "reponse": "Non",
+      "pieges": [
+        "Oui"
+      ],
+      "consigne": "L’ampoule s’allume-t-elle ?",
+      "explication": "L’interrupteur est ouvert : le courant ne passe pas.",
+      "image": "circuit-open"
+    },
+    {
+      "id": "c-coupe",
+      "chapitre": "circuit",
+      "type": "choix",
+      "question": "L’ampoule s’allume-t-elle ?",
+      "reponse": "Non",
+      "pieges": [
+        "Oui"
+      ],
+      "consigne": "L’ampoule s’allume-t-elle ?",
+      "explication": "Le fil est coupé : le circuit est ouvert.",
+      "image": "circuit-cut"
+    },
+    {
+      "id": "c-meme",
+      "chapitre": "circuit",
+      "type": "choix",
+      "question": "L’ampoule s’allume-t-elle ?",
+      "reponse": "Non",
+      "pieges": [
+        "Oui"
+      ],
+      "consigne": "L’ampoule s’allume-t-elle ?",
+      "explication": "Les deux fils partent de la même borne : le courant ne fait pas le tour.",
+      "image": "circuit-same"
+    },
+    {
+      "id": "ferme-def",
+      "chapitre": "circuit",
+      "type": "choix",
+      "question": "Pour que l’ampoule s’allume, le circuit doit être…",
+      "reponse": "fermé",
+      "pieges": [
+        "ouvert",
+        "coupé",
+        "mouillé"
+      ],
+      "consigne": "Pour que l’ampoule s’allume, le circuit doit être…"
+    },
+    {
+      "id": "ouvrir",
+      "chapitre": "circuit",
+      "type": "choix",
+      "question": "Quand on ouvre l’interrupteur, l’ampoule…",
+      "reponse": "s’éteint",
+      "pieges": [
+        "s’allume plus fort",
+        "clignote",
+        "change de couleur"
+      ],
+      "consigne": "Quand on ouvre l’interrupteur, l’ampoule…"
+    },
+    {
+      "id": "boucle",
+      "chapitre": "circuit",
+      "type": "choix",
+      "question": "Dans un circuit qui marche, le courant fait…",
+      "reponse": "une boucle sans coupure",
+      "pieges": [
+        "un aller simple",
+        "des sauts",
+        "rien"
+      ],
+      "consigne": "Dans un circuit qui marche, le courant fait…"
+    },
+    {
+      "id": "pile-usee",
+      "chapitre": "circuit",
+      "type": "choix",
+      "question": "Tout est bien branché mais l’ampoule ne s’allume pas. Peut-être que…",
+      "reponse": "la pile est usée",
+      "pieges": [
+        "le fil est trop beau",
+        "il fait jour",
+        "la table est en bois"
+      ],
+      "consigne": "Tout est bien branché mais l’ampoule ne s’allume pas. Peut-être que…"
+    },
+    {
+      "id": "conducteurs",
+      "chapitre": "conducteurs",
+      "type": "classer",
+      "question": "Le courant passe-t-il à travers ?",
+      "consigne": "Le courant passe-t-il à travers ?",
+      "boites": [
+        {
+          "nom": "Conducteur"
+        },
+        {
+          "nom": "Isolant"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "la clé",
+          "boite": "Conducteur",
+          "image": "key"
+        },
+        {
+          "texte": "la pièce de monnaie",
+          "boite": "Conducteur"
+        },
+        {
+          "texte": "le fil de cuivre",
+          "boite": "Conducteur"
+        },
+        {
+          "texte": "le papier aluminium",
+          "boite": "Conducteur"
+        },
+        {
+          "texte": "la cuillère en métal",
+          "boite": "Conducteur"
+        },
+        {
+          "texte": "la gomme",
+          "boite": "Isolant"
+        },
+        {
+          "texte": "la règle en plastique",
+          "boite": "Isolant"
+        },
+        {
+          "texte": "le crayon en bois",
+          "boite": "Isolant"
+        },
+        {
+          "texte": "le verre",
+          "boite": "Isolant"
+        },
+        {
+          "texte": "le bouchon",
+          "boite": "Isolant",
+          "image": "cork"
+        }
+      ]
+    },
+    {
+      "id": "metaux",
+      "chapitre": "conducteurs",
+      "type": "choix",
+      "question": "En général, les objets qui laissent passer le courant sont en…",
+      "reponse": "métal",
+      "pieges": [
+        "bois",
+        "plastique",
+        "tissu"
+      ],
+      "consigne": "En général, les objets qui laissent passer le courant sont en…"
+    },
+    {
+      "id": "gaine",
+      "chapitre": "conducteurs",
+      "type": "choix",
+      "question": "Pourquoi les fils électriques sont-ils entourés de plastique ?",
+      "reponse": "le plastique est isolant et nous protège",
+      "pieges": [
+        "pour faire joli",
+        "pour que le courant aille plus vite",
+        "pour qu’ils soient lourds"
+      ],
+      "consigne": "Pourquoi les fils électriques sont-ils entourés de plastique ?"
+    },
+    {
+      "id": "isolant-def",
+      "chapitre": "conducteurs",
+      "type": "choix",
+      "question": "Un matériau qui ne laisse pas passer le courant est…",
+      "reponse": "isolant",
+      "pieges": [
+        "conducteur",
+        "transparent",
+        "liquide"
+      ],
+      "consigne": "Un matériau qui ne laisse pas passer le courant est…"
+    },
+    {
+      "id": "conducteur-def",
+      "chapitre": "conducteurs",
+      "type": "choix",
+      "question": "Un matériau qui laisse passer le courant est…",
+      "reponse": "conducteur",
+      "pieges": [
+        "isolant",
+        "opaque",
+        "fragile"
+      ],
+      "consigne": "Un matériau qui laisse passer le courant est…"
+    },
+    {
+      "id": "vf-danger-prise",
+      "chapitre": "dangers",
+      "type": "choix",
+      "question": "On peut mettre un objet dans une prise de courant.",
+      "reponse": "Faux",
+      "pieges": [
+        "Vrai"
+      ],
+      "consigne": "Vrai ou faux ?",
+      "explication": "Jamais : la prise donne un courant dangereux."
+    },
+    {
+      "id": "vf-danger-mains",
+      "chapitre": "dangers",
+      "type": "choix",
+      "question": "On peut toucher un appareil électrique avec les mains mouillées.",
+      "reponse": "Faux",
+      "pieges": [
+        "Vrai"
+      ],
+      "consigne": "Vrai ou faux ?",
+      "explication": "L’eau conduit le courant : c’est très dangereux."
+    },
+    {
+      "id": "vf-danger-pile",
+      "chapitre": "dangers",
+      "type": "choix",
+      "question": "Une petite pile de 4,5 V permet de faire des expériences sans danger.",
+      "reponse": "Vrai",
+      "pieges": [
+        "Faux"
+      ],
+      "consigne": "Vrai ou faux ?"
+    },
+    {
+      "id": "vf-danger-cable",
+      "chapitre": "dangers",
+      "type": "choix",
+      "question": "On peut jouer près d’un câble électrique tombé par terre.",
+      "reponse": "Faux",
+      "pieges": [
+        "Vrai"
+      ],
+      "consigne": "Vrai ou faux ?",
+      "explication": "On s’éloigne et on prévient un adulte."
+    },
+    {
+      "id": "vf-danger-tirer",
+      "chapitre": "dangers",
+      "type": "choix",
+      "question": "Pour débrancher un appareil, on tire sur le fil.",
+      "reponse": "Faux",
+      "pieges": [
+        "Vrai"
+      ],
+      "consigne": "Vrai ou faux ?",
+      "explication": "On tient la prise, pas le fil."
+    },
+    {
+      "id": "vf-danger-pylone",
+      "chapitre": "dangers",
+      "type": "choix",
+      "question": "On ne grimpe jamais sur un pylône électrique.",
+      "reponse": "Vrai",
+      "pieges": [
+        "Faux"
+      ],
+      "consigne": "Vrai ou faux ?"
+    },
+    {
+      "id": "prise-volts",
+      "chapitre": "dangers",
+      "type": "choix",
+      "question": "Pourquoi la prise de la maison est-elle dangereuse ?",
+      "reponse": "son courant est très fort",
+      "pieges": [
+        "elle est trop petite",
+        "elle est en plastique",
+        "elle fait du bruit"
+      ],
+      "consigne": "Pourquoi la prise de la maison est-elle dangereuse ?",
+      "image": "socket"
+    },
+    {
+      "id": "panneau",
+      "chapitre": "dangers",
+      "type": "choix",
+      "question": "Un panneau avec un éclair jaune veut dire…",
+      "reponse": "danger, électricité",
+      "pieges": [
+        "attention, orage",
+        "sortie de secours",
+        "piscine"
+      ],
+      "consigne": "Un panneau avec un éclair jaune veut dire…"
+    }
+  ]
+}

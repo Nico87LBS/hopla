@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"html"
+	"slices"
 	"strings"
 	"time"
 	"unicode/utf8"
@@ -535,7 +536,11 @@ type SettingChange struct {
 	UnlockPercent *int   `json:"unlockPercent"`
 	TotalCap      *int   `json:"totalCap"`
 	// ReadAloud turns reading aloud on or off for a person (scope AllPacks).
+	// Voice says it more finely, and wins over it.
 	ReadAloud *bool `json:"readAloud"`
+	// Voice is what the device says for a person (scope AllPacks): one of
+	// Voices.
+	Voice *string `json:"voice"`
 	// FirstName sets the name the games use for a person (scope AllPacks);
 	// empty gives their name in Hopla back.
 	FirstName *string `json:"firstName"`
@@ -565,8 +570,10 @@ func SetPersonSetting(db *gorm.DB, familyID int, change SettingChange, now time.
 		return invalid("seul le plafond total se règle pour tous les jeux, personne par personne")
 	case change.TotalCap != nil && change.Scope != AllPacks:
 		return invalid("le plafond total se règle pour tous les jeux")
-	case change.ReadAloud != nil && (change.Scope != AllPacks || change.Family):
+	case (change.ReadAloud != nil || change.Voice != nil) && (change.Scope != AllPacks || change.Family):
 		return invalid("la lecture à voix haute se règle pour tous les jeux, personne par personne")
+	case change.Voice != nil && !slices.Contains(Voices, *change.Voice):
+		return invalid("la lecture à voix haute vaut tout, consigne ou rien")
 	case change.FirstName != nil && (change.Scope != AllPacks || change.Family):
 		return invalid("le prénom se règle pour tous les jeux, personne par personne")
 	case change.FirstName != nil && utf8.RuneCountInString(strings.TrimSpace(*change.FirstName)) > MaxFirstName:
@@ -609,11 +616,19 @@ func SetPersonSetting(db *gorm.DB, familyID int, change SettingChange, now time.
 		if change.TotalCap != nil {
 			row.TotalCap = ownSetting(change.TotalCap)
 		}
-		if change.ReadAloud != nil {
-			// On is the default, kept as nothing.
-			row.ReadAloud = nil
+		if change.ReadAloud != nil && change.Voice == nil {
+			voice := VoiceEverything
 			if !*change.ReadAloud {
-				row.ReadAloud = change.ReadAloud
+				voice = VoiceNothing
+			}
+			change.Voice = &voice
+		}
+		if change.Voice != nil {
+			// Everything is the default, kept as nothing.
+			row.ReadAloud = nil
+			row.Voice = *change.Voice
+			if row.Voice == VoiceEverything {
+				row.Voice = ""
 			}
 		}
 		if change.FirstName != nil {
@@ -622,7 +637,7 @@ func SetPersonSetting(db *gorm.DB, familyID int, change SettingChange, now time.
 		row.GameSettings.apply(change.GameSettings)
 		row.UpdatedAt = now
 		if row.DailyCap == nil && row.UnlockPercent == nil && row.TotalCap == nil && row.ReadAloud == nil &&
-			row.FirstName == "" && row.GameSettings.empty() {
+			row.Voice == "" && row.FirstName == "" && row.GameSettings.empty() {
 			return tx.Where("family_id = ? AND user_id = ? AND scope = ?", familyID, change.UserID, change.Scope).
 				Delete(&PersonSetting{}).Error
 		}
@@ -695,7 +710,7 @@ func FoldAllPacks(db *gorm.DB) error {
 				}
 			}
 			where := tx.Where("family_id = ? AND user_id = ? AND scope = ?", all.FamilyID, all.UserID, AllPacks)
-			if all.TotalCap == nil && all.ReadAloud == nil && all.FirstName == "" {
+			if all.TotalCap == nil && all.ReadAloud == nil && all.Voice == "" && all.FirstName == "" {
 				return where.Delete(&PersonSetting{}).Error
 			}
 			return where.Model(&PersonSetting{}).Updates(map[string]any{"daily_cap": nil, "unlock_percent": nil,
@@ -798,9 +813,25 @@ func (l limits) settings(module string, activation Activation, own Settings) Set
 
 func (l limits) totalCap() *int { return l.byScope[AllPacks].TotalCap }
 
-func (l limits) readAloud() bool {
-	off := l.byScope[AllPacks].ReadAloud
-	return off == nil || *off
+// What the device says aloud for a person, in the modules that read.
+const (
+	VoiceEverything  = "tout"
+	VoiceInstruction = "consigne"
+	VoiceNothing     = "rien"
+)
+
+// Voices are the values a person's reading aloud takes.
+var Voices = []string{VoiceEverything, VoiceInstruction, VoiceNothing}
+
+func (l limits) voice() string {
+	all := l.byScope[AllPacks]
+	switch {
+	case all.Voice != "":
+		return all.Voice
+	case all.ReadAloud != nil && !*all.ReadAloud:
+		return VoiceNothing
+	}
+	return VoiceEverything
 }
 
 // Value is a setting that applies and where it comes from.
@@ -960,8 +991,9 @@ type Player struct {
 	TotalCap    *int `json:"totalCap"`
 	EarnedToday int  `json:"earnedToday"`
 	// ReadAloud tells whether the device says the questions aloud, in the
-	// modules that ask for it.
-	ReadAloud bool `json:"readAloud"`
+	// modules that ask for it; Voice tells what it says (one of Voices).
+	ReadAloud bool   `json:"readAloud"`
+	Voice     string `json:"voice"`
 	// FirstName is what the questions about the person's name ask about.
 	FirstName string `json:"firstName"`
 }
@@ -1002,7 +1034,8 @@ func PlayerFor(db *gorm.DB, familyID, userID int, now time.Time) (Player, error)
 		return player, err
 	}
 	player.TotalCap = limits.totalCap()
-	player.ReadAloud = limits.readAloud()
+	player.Voice = limits.voice()
+	player.ReadAloud = player.Voice != VoiceNothing
 	player.FirstName = limits.byScope[AllPacks].FirstName
 	if player.FirstName == "" {
 		player.FirstName, err = nameInHopla(db, userID)

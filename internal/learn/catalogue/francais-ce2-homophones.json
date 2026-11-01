@@ -1,0 +1,777 @@
+{
+  "format": "hopla-module/1",
+  "id": "francais-ce2-homophones",
+  "version": "1.0.0",
+  "nom": "Les homophones",
+  "description": "Des mots qui se disent pareil mais s'écrivent autrement : a ou à, et ou est, son ou sont, on ou ont, ou ou où, ces ou ses.",
+  "matiere": "francais",
+  "niveaux": [
+    "CE2"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de français du cycle 2 (2024) et les repères annuels de progression du CE2 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "a-a",
+      "nom": "a ou à"
+    },
+    {
+      "id": "et-est",
+      "nom": "et ou est",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "son-sont",
+      "nom": "son ou sont",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "on-ont",
+      "nom": "on ou ont",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "ou-ou",
+      "nom": "ou ou où",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "ces-ses",
+      "nom": "ces ou ses",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "a-a-1",
+      "chapitre": "a-a",
+      "type": "choix",
+      "question": "Il ___ un vélo rouge.",
+      "reponse": "a",
+      "pieges": [
+        "à"
+      ],
+      "consigne": "Complète avec « a » ou « à ».",
+      "explication": "On écrit « a » quand on peut dire « avait »."
+    },
+    {
+      "id": "a-a-2",
+      "chapitre": "a-a",
+      "type": "choix",
+      "question": "Je vais ___ la piscine.",
+      "reponse": "à",
+      "pieges": [
+        "a"
+      ],
+      "consigne": "Complète avec « a » ou « à ».",
+      "explication": "On écrit « a » quand on peut dire « avait »."
+    },
+    {
+      "id": "a-a-3",
+      "chapitre": "a-a",
+      "type": "choix",
+      "question": "Elle ___ faim.",
+      "reponse": "a",
+      "pieges": [
+        "à"
+      ],
+      "consigne": "Complète avec « a » ou « à ».",
+      "explication": "On écrit « a » quand on peut dire « avait »."
+    },
+    {
+      "id": "a-a-4",
+      "chapitre": "a-a",
+      "type": "choix",
+      "question": "Nous jouons ___ cache-cache.",
+      "reponse": "à",
+      "pieges": [
+        "a"
+      ],
+      "consigne": "Complète avec « a » ou « à ».",
+      "explication": "On écrit « a » quand on peut dire « avait »."
+    },
+    {
+      "id": "a-a-5",
+      "chapitre": "a-a",
+      "type": "choix",
+      "question": "Mon chat ___ mangé.",
+      "reponse": "a",
+      "pieges": [
+        "à"
+      ],
+      "consigne": "Complète avec « a » ou « à ».",
+      "explication": "On écrit « a » quand on peut dire « avait »."
+    },
+    {
+      "id": "a-a-6",
+      "chapitre": "a-a",
+      "type": "choix",
+      "question": "Il habite ___ Lyon.",
+      "reponse": "à",
+      "pieges": [
+        "a"
+      ],
+      "consigne": "Complète avec « a » ou « à ».",
+      "explication": "On écrit « a » quand on peut dire « avait »."
+    },
+    {
+      "id": "a-a-7",
+      "chapitre": "a-a",
+      "type": "choix",
+      "question": "Léa ___ huit ans.",
+      "reponse": "a",
+      "pieges": [
+        "à"
+      ],
+      "consigne": "Complète avec « a » ou « à ».",
+      "explication": "On écrit « a » quand on peut dire « avait »."
+    },
+    {
+      "id": "a-a-8",
+      "chapitre": "a-a",
+      "type": "choix",
+      "question": "C’est ___ toi de jouer.",
+      "reponse": "à",
+      "pieges": [
+        "a"
+      ],
+      "consigne": "Complète avec « a » ou « à ».",
+      "explication": "On écrit « a » quand on peut dire « avait »."
+    },
+    {
+      "id": "a-a-9",
+      "chapitre": "a-a",
+      "type": "choix",
+      "question": "Tom ___ perdu sa clé.",
+      "reponse": "a",
+      "pieges": [
+        "à"
+      ],
+      "consigne": "Complète avec « a » ou « à ».",
+      "explication": "On écrit « a » quand on peut dire « avait »."
+    },
+    {
+      "id": "a-a-10",
+      "chapitre": "a-a",
+      "type": "choix",
+      "question": "Une tarte ___ la fraise.",
+      "reponse": "à",
+      "pieges": [
+        "a"
+      ],
+      "consigne": "Complète avec « a » ou « à ».",
+      "explication": "On écrit « a » quand on peut dire « avait »."
+    },
+    {
+      "id": "et-est-1",
+      "chapitre": "et-est",
+      "type": "choix",
+      "question": "Le ciel ___ bleu.",
+      "reponse": "est",
+      "pieges": [
+        "et"
+      ],
+      "consigne": "Complète avec « et » ou « est ».",
+      "explication": "On écrit « est » quand on peut dire « était »."
+    },
+    {
+      "id": "et-est-2",
+      "chapitre": "et-est",
+      "type": "choix",
+      "question": "Paul ___ Lou jouent.",
+      "reponse": "et",
+      "pieges": [
+        "est"
+      ],
+      "consigne": "Complète avec « et » ou « est ».",
+      "explication": "On écrit « est » quand on peut dire « était »."
+    },
+    {
+      "id": "et-est-3",
+      "chapitre": "et-est",
+      "type": "choix",
+      "question": "Ma sœur ___ malade.",
+      "reponse": "est",
+      "pieges": [
+        "et"
+      ],
+      "consigne": "Complète avec « et » ou « est ».",
+      "explication": "On écrit « est » quand on peut dire « était »."
+    },
+    {
+      "id": "et-est-4",
+      "chapitre": "et-est",
+      "type": "choix",
+      "question": "Du pain ___ du fromage.",
+      "reponse": "et",
+      "pieges": [
+        "est"
+      ],
+      "consigne": "Complète avec « et » ou « est ».",
+      "explication": "On écrit « est » quand on peut dire « était »."
+    },
+    {
+      "id": "et-est-5",
+      "chapitre": "et-est",
+      "type": "choix",
+      "question": "Il ___ à l’école.",
+      "reponse": "est",
+      "pieges": [
+        "et"
+      ],
+      "consigne": "Complète avec « et » ou « est ».",
+      "explication": "On écrit « est » quand on peut dire « était »."
+    },
+    {
+      "id": "et-est-6",
+      "chapitre": "et-est",
+      "type": "choix",
+      "question": "Je prends un crayon ___ une gomme.",
+      "reponse": "et",
+      "pieges": [
+        "est"
+      ],
+      "consigne": "Complète avec « et » ou « est ».",
+      "explication": "On écrit « est » quand on peut dire « était »."
+    },
+    {
+      "id": "et-est-7",
+      "chapitre": "et-est",
+      "type": "choix",
+      "question": "Cette histoire ___ drôle.",
+      "reponse": "est",
+      "pieges": [
+        "et"
+      ],
+      "consigne": "Complète avec « et » ou « est ».",
+      "explication": "On écrit « est » quand on peut dire « était »."
+    },
+    {
+      "id": "et-est-8",
+      "chapitre": "et-est",
+      "type": "choix",
+      "question": "Le chien ___ le chat dorment.",
+      "reponse": "et",
+      "pieges": [
+        "est"
+      ],
+      "consigne": "Complète avec « et » ou « est ».",
+      "explication": "On écrit « est » quand on peut dire « était »."
+    },
+    {
+      "id": "et-est-9",
+      "chapitre": "et-est",
+      "type": "choix",
+      "question": "Le gâteau ___ cuit.",
+      "reponse": "est",
+      "pieges": [
+        "et"
+      ],
+      "consigne": "Complète avec « et » ou « est ».",
+      "explication": "On écrit « est » quand on peut dire « était »."
+    },
+    {
+      "id": "et-est-10",
+      "chapitre": "et-est",
+      "type": "choix",
+      "question": "Rouge ___ jaune font orange.",
+      "reponse": "et",
+      "pieges": [
+        "est"
+      ],
+      "consigne": "Complète avec « et » ou « est ».",
+      "explication": "On écrit « est » quand on peut dire « était »."
+    },
+    {
+      "id": "son-sont-1",
+      "chapitre": "son-sont",
+      "type": "choix",
+      "question": "Les enfants ___ partis.",
+      "reponse": "sont",
+      "pieges": [
+        "son"
+      ],
+      "consigne": "Complète avec « son » ou « sont ».",
+      "explication": "On écrit « sont » quand on peut dire « étaient »."
+    },
+    {
+      "id": "son-sont-2",
+      "chapitre": "son-sont",
+      "type": "choix",
+      "question": "Léo range ___ cartable.",
+      "reponse": "son",
+      "pieges": [
+        "sont"
+      ],
+      "consigne": "Complète avec « son » ou « sont ».",
+      "explication": "On écrit « sont » quand on peut dire « étaient »."
+    },
+    {
+      "id": "son-sont-3",
+      "chapitre": "son-sont",
+      "type": "choix",
+      "question": "Mes amis ___ gentils.",
+      "reponse": "sont",
+      "pieges": [
+        "son"
+      ],
+      "consigne": "Complète avec « son » ou « sont ».",
+      "explication": "On écrit « sont » quand on peut dire « étaient »."
+    },
+    {
+      "id": "son-sont-4",
+      "chapitre": "son-sont",
+      "type": "choix",
+      "question": "Elle cherche ___ chat.",
+      "reponse": "son",
+      "pieges": [
+        "sont"
+      ],
+      "consigne": "Complète avec « son » ou « sont ».",
+      "explication": "On écrit « sont » quand on peut dire « étaient »."
+    },
+    {
+      "id": "son-sont-5",
+      "chapitre": "son-sont",
+      "type": "choix",
+      "question": "Les fleurs ___ belles.",
+      "reponse": "sont",
+      "pieges": [
+        "son"
+      ],
+      "consigne": "Complète avec « son » ou « sont ».",
+      "explication": "On écrit « sont » quand on peut dire « étaient »."
+    },
+    {
+      "id": "son-sont-6",
+      "chapitre": "son-sont",
+      "type": "choix",
+      "question": "Il lave ___ vélo.",
+      "reponse": "son",
+      "pieges": [
+        "sont"
+      ],
+      "consigne": "Complète avec « son » ou « sont ».",
+      "explication": "On écrit « sont » quand on peut dire « étaient »."
+    },
+    {
+      "id": "son-sont-7",
+      "chapitre": "son-sont",
+      "type": "choix",
+      "question": "Ils ___ en retard.",
+      "reponse": "sont",
+      "pieges": [
+        "son"
+      ],
+      "consigne": "Complète avec « son » ou « sont ».",
+      "explication": "On écrit « sont » quand on peut dire « étaient »."
+    },
+    {
+      "id": "son-sont-8",
+      "chapitre": "son-sont",
+      "type": "choix",
+      "question": "Tom prête ___ livre.",
+      "reponse": "son",
+      "pieges": [
+        "sont"
+      ],
+      "consigne": "Complète avec « son » ou « sont ».",
+      "explication": "On écrit « sont » quand on peut dire « étaient »."
+    },
+    {
+      "id": "son-sont-9",
+      "chapitre": "son-sont",
+      "type": "choix",
+      "question": "Les pommes ___ mûres.",
+      "reponse": "sont",
+      "pieges": [
+        "son"
+      ],
+      "consigne": "Complète avec « son » ou « sont ».",
+      "explication": "On écrit « sont » quand on peut dire « étaient »."
+    },
+    {
+      "id": "son-sont-10",
+      "chapitre": "son-sont",
+      "type": "choix",
+      "question": "Elle mange ___ goûter.",
+      "reponse": "son",
+      "pieges": [
+        "sont"
+      ],
+      "consigne": "Complète avec « son » ou « sont ».",
+      "explication": "On écrit « sont » quand on peut dire « étaient »."
+    },
+    {
+      "id": "on-ont-1",
+      "chapitre": "on-ont",
+      "type": "choix",
+      "question": "Ils ___ un chien.",
+      "reponse": "ont",
+      "pieges": [
+        "on"
+      ],
+      "consigne": "Complète avec « on » ou « ont ».",
+      "explication": "On écrit « ont » quand on peut dire « avaient »."
+    },
+    {
+      "id": "on-ont-2",
+      "chapitre": "on-ont",
+      "type": "choix",
+      "question": "___ va au cinéma.",
+      "reponse": "On",
+      "pieges": [
+        "Ont"
+      ],
+      "consigne": "Complète avec « on » ou « ont ».",
+      "explication": "On écrit « ont » quand on peut dire « avaient »."
+    },
+    {
+      "id": "on-ont-3",
+      "chapitre": "on-ont",
+      "type": "choix",
+      "question": "Mes cousins ___ gagné.",
+      "reponse": "ont",
+      "pieges": [
+        "on"
+      ],
+      "consigne": "Complète avec « on » ou « ont ».",
+      "explication": "On écrit « ont » quand on peut dire « avaient »."
+    },
+    {
+      "id": "on-ont-4",
+      "chapitre": "on-ont",
+      "type": "choix",
+      "question": "Demain, ___ partira tôt.",
+      "reponse": "on",
+      "pieges": [
+        "ont"
+      ],
+      "consigne": "Complète avec « on » ou « ont ».",
+      "explication": "On écrit « ont » quand on peut dire « avaient »."
+    },
+    {
+      "id": "on-ont-5",
+      "chapitre": "on-ont",
+      "type": "choix",
+      "question": "Elles ___ froid.",
+      "reponse": "ont",
+      "pieges": [
+        "on"
+      ],
+      "consigne": "Complète avec « on » ou « ont ».",
+      "explication": "On écrit « ont » quand on peut dire « avaient »."
+    },
+    {
+      "id": "on-ont-6",
+      "chapitre": "on-ont",
+      "type": "choix",
+      "question": "___ entend la pluie.",
+      "reponse": "On",
+      "pieges": [
+        "Ont"
+      ],
+      "consigne": "Complète avec « on » ou « ont ».",
+      "explication": "On écrit « ont » quand on peut dire « avaient »."
+    },
+    {
+      "id": "on-ont-7",
+      "chapitre": "on-ont",
+      "type": "choix",
+      "question": "Les élèves ___ fini.",
+      "reponse": "ont",
+      "pieges": [
+        "on"
+      ],
+      "consigne": "Complète avec « on » ou « ont ».",
+      "explication": "On écrit « ont » quand on peut dire « avaient »."
+    },
+    {
+      "id": "on-ont-8",
+      "chapitre": "on-ont",
+      "type": "choix",
+      "question": "Ici, ___ parle français.",
+      "reponse": "on",
+      "pieges": [
+        "ont"
+      ],
+      "consigne": "Complète avec « on » ou « ont ».",
+      "explication": "On écrit « ont » quand on peut dire « avaient »."
+    },
+    {
+      "id": "on-ont-9",
+      "chapitre": "on-ont",
+      "type": "choix",
+      "question": "Les oiseaux ___ faim.",
+      "reponse": "ont",
+      "pieges": [
+        "on"
+      ],
+      "consigne": "Complète avec « on » ou « ont ».",
+      "explication": "On écrit « ont » quand on peut dire « avaient »."
+    },
+    {
+      "id": "on-ont-10",
+      "chapitre": "on-ont",
+      "type": "choix",
+      "question": "Quand ___ joue, ___ rit.",
+      "reponse": "on",
+      "pieges": [
+        "ont"
+      ],
+      "consigne": "Complète avec « on » ou « ont ».",
+      "explication": "On écrit « ont » quand on peut dire « avaient »."
+    },
+    {
+      "id": "ou-ou-1",
+      "chapitre": "ou-ou",
+      "type": "choix",
+      "question": "Tu veux du lait ___ du jus ?",
+      "reponse": "ou",
+      "pieges": [
+        "où"
+      ],
+      "consigne": "Complète avec « ou » ou « où ».",
+      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu."
+    },
+    {
+      "id": "ou-ou-2",
+      "chapitre": "ou-ou",
+      "type": "choix",
+      "question": "___ est mon pull ?",
+      "reponse": "Où",
+      "pieges": [
+        "Ou"
+      ],
+      "consigne": "Complète avec « ou » ou « où ».",
+      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu."
+    },
+    {
+      "id": "ou-ou-3",
+      "chapitre": "ou-ou",
+      "type": "choix",
+      "question": "Rouge ___ bleu ?",
+      "reponse": "ou",
+      "pieges": [
+        "où"
+      ],
+      "consigne": "Complète avec « ou » ou « où ».",
+      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu."
+    },
+    {
+      "id": "ou-ou-4",
+      "chapitre": "ou-ou",
+      "type": "choix",
+      "question": "La ville ___ j’habite.",
+      "reponse": "où",
+      "pieges": [
+        "ou"
+      ],
+      "consigne": "Complète avec « ou » ou « où ».",
+      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu."
+    },
+    {
+      "id": "ou-ou-5",
+      "chapitre": "ou-ou",
+      "type": "choix",
+      "question": "Pile ___ face ?",
+      "reponse": "ou",
+      "pieges": [
+        "où"
+      ],
+      "consigne": "Complète avec « ou » ou « où ».",
+      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu."
+    },
+    {
+      "id": "ou-ou-6",
+      "chapitre": "ou-ou",
+      "type": "choix",
+      "question": "Je ne sais pas ___ il est.",
+      "reponse": "où",
+      "pieges": [
+        "ou"
+      ],
+      "consigne": "Complète avec « ou » ou « où ».",
+      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu."
+    },
+    {
+      "id": "ou-ou-7",
+      "chapitre": "ou-ou",
+      "type": "choix",
+      "question": "À pied ___ à vélo ?",
+      "reponse": "ou",
+      "pieges": [
+        "où"
+      ],
+      "consigne": "Complète avec « ou » ou « où ».",
+      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu."
+    },
+    {
+      "id": "ou-ou-8",
+      "chapitre": "ou-ou",
+      "type": "choix",
+      "question": "___ vas-tu ?",
+      "reponse": "Où",
+      "pieges": [
+        "Ou"
+      ],
+      "consigne": "Complète avec « ou » ou « où ».",
+      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu."
+    },
+    {
+      "id": "ou-ou-9",
+      "chapitre": "ou-ou",
+      "type": "choix",
+      "question": "Un chat ___ un chien ?",
+      "reponse": "ou",
+      "pieges": [
+        "où"
+      ],
+      "consigne": "Complète avec « ou » ou « où ».",
+      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu."
+    },
+    {
+      "id": "ou-ou-10",
+      "chapitre": "ou-ou",
+      "type": "choix",
+      "question": "Le jardin ___ nous jouons.",
+      "reponse": "où",
+      "pieges": [
+        "ou"
+      ],
+      "consigne": "Complète avec « ou » ou « où ».",
+      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu."
+    },
+    {
+      "id": "ces-ses-1",
+      "chapitre": "ces-ses",
+      "type": "choix",
+      "question": "Il range ___ jouets.",
+      "reponse": "ses",
+      "pieges": [
+        "ces"
+      ],
+      "consigne": "Complète avec « ces » ou « ses ».",
+      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là."
+    },
+    {
+      "id": "ces-ses-2",
+      "chapitre": "ces-ses",
+      "type": "choix",
+      "question": "Regarde ___ nuages !",
+      "reponse": "ces",
+      "pieges": [
+        "ses"
+      ],
+      "consigne": "Complète avec « ces » ou « ses ».",
+      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là."
+    },
+    {
+      "id": "ces-ses-3",
+      "chapitre": "ces-ses",
+      "type": "choix",
+      "question": "Elle aime ___ parents.",
+      "reponse": "ses",
+      "pieges": [
+        "ces"
+      ],
+      "consigne": "Complète avec « ces » ou « ses ».",
+      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là."
+    },
+    {
+      "id": "ces-ses-4",
+      "chapitre": "ces-ses",
+      "type": "choix",
+      "question": "___ pommes sont mûres.",
+      "reponse": "Ces",
+      "pieges": [
+        "Ses"
+      ],
+      "consigne": "Complète avec « ces » ou « ses ».",
+      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là."
+    },
+    {
+      "id": "ces-ses-5",
+      "chapitre": "ces-ses",
+      "type": "choix",
+      "question": "Léo a perdu ___ gants.",
+      "reponse": "ses",
+      "pieges": [
+        "ces"
+      ],
+      "consigne": "Complète avec « ces » ou « ses ».",
+      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là."
+    },
+    {
+      "id": "ces-ses-6",
+      "chapitre": "ces-ses",
+      "type": "choix",
+      "question": "Tu vois ___ oiseaux là-bas ?",
+      "reponse": "ces",
+      "pieges": [
+        "ses"
+      ],
+      "consigne": "Complète avec « ces » ou « ses ».",
+      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là."
+    },
+    {
+      "id": "ces-ses-7",
+      "chapitre": "ces-ses",
+      "type": "choix",
+      "question": "Lou prête ___ crayons.",
+      "reponse": "ses",
+      "pieges": [
+        "ces"
+      ],
+      "consigne": "Complète avec « ces » ou « ses ».",
+      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là."
+    },
+    {
+      "id": "ces-ses-8",
+      "chapitre": "ces-ses",
+      "type": "choix",
+      "question": "J’adore ___ chaussures-là.",
+      "reponse": "ces",
+      "pieges": [
+        "ses"
+      ],
+      "consigne": "Complète avec « ces » ou « ses ».",
+      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là."
+    },
+    {
+      "id": "ces-ses-9",
+      "chapitre": "ces-ses",
+      "type": "choix",
+      "question": "Le chat lèche ___ pattes.",
+      "reponse": "ses",
+      "pieges": [
+        "ces"
+      ],
+      "consigne": "Complète avec « ces » ou « ses ».",
+      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là."
+    },
+    {
+      "id": "ces-ses-10",
+      "chapitre": "ces-ses",
+      "type": "choix",
+      "question": "Qui a dessiné ___ maisons ?",
+      "reponse": "ces",
+      "pieges": [
+        "ses"
+      ],
+      "consigne": "Complète avec « ces » ou « ses ».",
+      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là."
+    }
+  ]
+}

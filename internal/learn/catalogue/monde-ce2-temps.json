@@ -1,0 +1,709 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-ce2-temps",
+  "version": "1.0.0",
+  "nom": "Se repérer dans le temps",
+  "description": "Les durées, la frise des grandes périodes de l'histoire, des repères, ce qui a changé depuis autrefois, et les générations.",
+  "matiere": "monde",
+  "niveaux": [
+    "CE2"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de Questionner le monde du cycle 2 et les repères de progression du CE2 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "unites",
+      "nom": "Du jour au siècle"
+    },
+    {
+      "id": "frise",
+      "nom": "La frise de l’histoire",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "reperes",
+      "nom": "Des repères",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "changements",
+      "nom": "Autrefois et aujourd’hui",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "familles",
+      "nom": "Les générations",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "durees",
+      "chapitre": "unites",
+      "type": "ordre",
+      "question": "Range du plus court au plus long.",
+      "consigne": "Range du plus court au plus long.",
+      "elements": [
+        "une heure",
+        "un jour",
+        "une semaine",
+        "un mois",
+        "une année",
+        "un siècle"
+      ]
+    },
+    {
+      "id": "siecle",
+      "chapitre": "unites",
+      "type": "choix",
+      "question": "Un siècle, c’est…",
+      "reponse": "100 ans",
+      "pieges": [
+        "10 ans",
+        "1 000 ans",
+        "12 mois"
+      ],
+      "consigne": "Un siècle, c’est…"
+    },
+    {
+      "id": "annee-mois",
+      "chapitre": "unites",
+      "type": "choix",
+      "question": "Combien de mois dans une année ?",
+      "reponse": "12",
+      "pieges": [
+        "10",
+        "7",
+        "52"
+      ],
+      "consigne": "Combien de mois dans une année ?"
+    },
+    {
+      "id": "annee-jours",
+      "chapitre": "unites",
+      "type": "choix",
+      "question": "Combien de jours dans une année ?",
+      "reponse": "365 (ou 366)",
+      "pieges": [
+        "100",
+        "30",
+        "52"
+      ],
+      "consigne": "Combien de jours dans une année ?"
+    },
+    {
+      "id": "jour-heures",
+      "chapitre": "unites",
+      "type": "choix",
+      "question": "Combien d’heures dans un jour ?",
+      "reponse": "24",
+      "pieges": [
+        "12",
+        "60",
+        "7"
+      ],
+      "consigne": "Combien d’heures dans un jour ?"
+    },
+    {
+      "id": "semaines",
+      "chapitre": "unites",
+      "type": "choix",
+      "question": "Combien de semaines dans une année, à peu près ?",
+      "reponse": "52",
+      "pieges": [
+        "12",
+        "30",
+        "365"
+      ],
+      "consigne": "Combien de semaines dans une année, à peu près ?"
+    },
+    {
+      "id": "millenaire",
+      "chapitre": "unites",
+      "type": "choix",
+      "question": "Mille ans, c’est…",
+      "reponse": "un millénaire",
+      "pieges": [
+        "un siècle",
+        "une décennie",
+        "une année"
+      ],
+      "consigne": "Mille ans, c’est…"
+    },
+    {
+      "id": "decennie",
+      "chapitre": "unites",
+      "type": "choix",
+      "question": "Dix ans, c’est…",
+      "reponse": "une décennie",
+      "pieges": [
+        "un siècle",
+        "un millénaire",
+        "un mois"
+      ],
+      "consigne": "Dix ans, c’est…"
+    },
+    {
+      "id": "siecle-actuel",
+      "chapitre": "unites",
+      "type": "choix",
+      "question": "En quel siècle vivons-nous ?",
+      "reponse": "le XXIe siècle",
+      "pieges": [
+        "le XIXe siècle",
+        "le XXe siècle",
+        "le Xe siècle"
+      ],
+      "consigne": "En quel siècle vivons-nous ?",
+      "explication": "Les années 2001 à 2100 forment le XXIe siècle."
+    },
+    {
+      "id": "frise",
+      "chapitre": "frise",
+      "type": "ordre",
+      "question": "Remets les grandes périodes de l’histoire dans l’ordre, de la plus ancienne à aujourd’hui.",
+      "consigne": "Remets les grandes périodes de l’histoire dans l’ordre, de la plus ancienne à aujourd’hui.",
+      "elements": [
+        "la Préhistoire",
+        "l’Antiquité",
+        "le Moyen Âge",
+        "les Temps modernes",
+        "l’époque contemporaine"
+      ]
+    },
+    {
+      "id": "frise-3",
+      "chapitre": "frise",
+      "type": "ordre",
+      "question": "Remets ces périodes dans l’ordre, de la plus ancienne à la plus récente.",
+      "consigne": "Remets ces périodes dans l’ordre, de la plus ancienne à la plus récente.",
+      "elements": [
+        "la Préhistoire",
+        "l’Antiquité",
+        "le Moyen Âge"
+      ]
+    },
+    {
+      "id": "frise-4",
+      "chapitre": "frise",
+      "type": "ordre",
+      "question": "Remets ces périodes dans l’ordre, de la plus ancienne à la plus récente.",
+      "consigne": "Remets ces périodes dans l’ordre, de la plus ancienne à la plus récente.",
+      "elements": [
+        "le Moyen Âge",
+        "les Temps modernes",
+        "l’époque contemporaine"
+      ]
+    },
+    {
+      "id": "apres-ma",
+      "chapitre": "frise",
+      "type": "choix",
+      "question": "Quelle période vient juste après le Moyen Âge ?",
+      "reponse": "les Temps modernes",
+      "pieges": [
+        "l’Antiquité",
+        "la Préhistoire",
+        "l’époque contemporaine"
+      ],
+      "consigne": "Quelle période vient juste après le Moyen Âge ?"
+    },
+    {
+      "id": "avant-ma",
+      "chapitre": "frise",
+      "type": "choix",
+      "question": "Quelle période vient juste avant le Moyen Âge ?",
+      "reponse": "l’Antiquité",
+      "pieges": [
+        "la Préhistoire",
+        "les Temps modernes",
+        "l’époque contemporaine"
+      ],
+      "consigne": "Quelle période vient juste avant le Moyen Âge ?"
+    },
+    {
+      "id": "premiere",
+      "chapitre": "frise",
+      "type": "choix",
+      "question": "Quelle est la plus ancienne période ?",
+      "reponse": "la Préhistoire",
+      "pieges": [
+        "l’Antiquité",
+        "le Moyen Âge",
+        "les Temps modernes"
+      ],
+      "consigne": "Quelle est la plus ancienne période ?"
+    },
+    {
+      "id": "aujourdhui",
+      "chapitre": "frise",
+      "type": "choix",
+      "question": "Dans quelle période vivons-nous ?",
+      "reponse": "l’époque contemporaine",
+      "pieges": [
+        "le Moyen Âge",
+        "l’Antiquité",
+        "la Préhistoire"
+      ],
+      "consigne": "Dans quelle période vivons-nous ?"
+    },
+    {
+      "id": "epoques-1",
+      "chapitre": "frise",
+      "type": "classer",
+      "question": "À quelle période ?",
+      "consigne": "À quelle période ?",
+      "boites": [
+        {
+          "nom": "la Préhistoire"
+        },
+        {
+          "nom": "l’Antiquité"
+        },
+        {
+          "nom": "le Moyen Âge"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le mammouth",
+          "boite": "la Préhistoire",
+          "image": "mammoth"
+        },
+        {
+          "texte": "les peintures dans les grottes",
+          "boite": "la Préhistoire"
+        },
+        {
+          "texte": "les outils en pierre taillée",
+          "boite": "la Préhistoire"
+        },
+        {
+          "texte": "le temple",
+          "boite": "l’Antiquité",
+          "image": "temple"
+        },
+        {
+          "texte": "les Gaulois et les Romains",
+          "boite": "l’Antiquité"
+        },
+        {
+          "texte": "les gladiateurs",
+          "boite": "l’Antiquité"
+        },
+        {
+          "texte": "le château fort",
+          "boite": "le Moyen Âge",
+          "image": "castle"
+        },
+        {
+          "texte": "les chevaliers",
+          "boite": "le Moyen Âge"
+        },
+        {
+          "texte": "les rois et les seigneurs",
+          "boite": "le Moyen Âge"
+        }
+      ]
+    },
+    {
+      "id": "epoques-2",
+      "chapitre": "frise",
+      "type": "classer",
+      "question": "Autrefois ou aujourd’hui ?",
+      "consigne": "Autrefois ou aujourd’hui ?",
+      "boites": [
+        {
+          "nom": "Autrefois"
+        },
+        {
+          "nom": "Aujourd’hui"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "la bougie",
+          "boite": "Autrefois",
+          "image": "candle"
+        },
+        {
+          "texte": "l’ordinateur",
+          "boite": "Aujourd’hui",
+          "image": "computer"
+        },
+        {
+          "texte": "le téléphone",
+          "boite": "Aujourd’hui",
+          "image": "phone"
+        },
+        {
+          "texte": "la plume et l’encrier",
+          "boite": "Autrefois"
+        },
+        {
+          "texte": "le lavoir",
+          "boite": "Autrefois"
+        },
+        {
+          "texte": "l’avion",
+          "boite": "Aujourd’hui",
+          "image": "plane"
+        },
+        {
+          "texte": "la diligence",
+          "boite": "Autrefois"
+        }
+      ]
+    },
+    {
+      "id": "ecriture",
+      "chapitre": "reperes",
+      "type": "choix",
+      "question": "Quelle invention marque la fin de la Préhistoire ?",
+      "reponse": "l’écriture",
+      "pieges": [
+        "la roue",
+        "le feu",
+        "l’électricité"
+      ],
+      "consigne": "Quelle invention marque la fin de la Préhistoire ?",
+      "explication": "Elle a été inventée il y a environ 5 000 ans."
+    },
+    {
+      "id": "feu",
+      "chapitre": "reperes",
+      "type": "choix",
+      "question": "Pendant la Préhistoire, les humains apprennent à faire…",
+      "reponse": "du feu",
+      "pieges": [
+        "de l’électricité",
+        "des voitures",
+        "des livres"
+      ],
+      "consigne": "Pendant la Préhistoire, les humains apprennent à faire…",
+      "image": "fire"
+    },
+    {
+      "id": "gaulois",
+      "chapitre": "reperes",
+      "type": "choix",
+      "question": "Les Gaulois et les Romains vivaient pendant…",
+      "reponse": "l’Antiquité",
+      "pieges": [
+        "le Moyen Âge",
+        "la Préhistoire",
+        "les Temps modernes"
+      ],
+      "consigne": "Les Gaulois et les Romains vivaient pendant…"
+    },
+    {
+      "id": "chateaux",
+      "chapitre": "reperes",
+      "type": "choix",
+      "question": "Les châteaux forts ont été construits pendant…",
+      "reponse": "le Moyen Âge",
+      "pieges": [
+        "l’Antiquité",
+        "la Préhistoire",
+        "l’époque contemporaine"
+      ],
+      "consigne": "Les châteaux forts ont été construits pendant…",
+      "image": "castle"
+    },
+    {
+      "id": "imprimerie",
+      "chapitre": "reperes",
+      "type": "choix",
+      "question": "L’imprimerie permet de fabriquer beaucoup de livres. Elle arrive au début…",
+      "reponse": "des Temps modernes",
+      "pieges": [
+        "de la Préhistoire",
+        "de l’Antiquité",
+        "du Moyen Âge"
+      ],
+      "consigne": "L’imprimerie permet de fabriquer beaucoup de livres. Elle arrive au début…",
+      "image": "book"
+    },
+    {
+      "id": "electricite",
+      "chapitre": "reperes",
+      "type": "choix",
+      "question": "Les maisons ont l’électricité et les gens roulent en voiture depuis…",
+      "reponse": "environ 100 ans",
+      "pieges": [
+        "environ 1 000 ans",
+        "environ 10 000 ans",
+        "toujours"
+      ],
+      "consigne": "Les maisons ont l’électricité et les gens roulent en voiture depuis…",
+      "image": "bulb"
+    },
+    {
+      "id": "mammouth",
+      "chapitre": "reperes",
+      "type": "choix",
+      "question": "Les hommes de la Préhistoire chassaient…",
+      "reponse": "le mammouth",
+      "pieges": [
+        "le dinosaure",
+        "le dragon",
+        "la licorne"
+      ],
+      "consigne": "Les hommes de la Préhistoire chassaient…",
+      "explication": "Les dinosaures avaient disparu bien avant les premiers humains.",
+      "image": "mammoth"
+    },
+    {
+      "id": "grottes",
+      "chapitre": "reperes",
+      "type": "choix",
+      "question": "Les peintures de la grotte de Lascaux datent de…",
+      "reponse": "la Préhistoire",
+      "pieges": [
+        "l’Antiquité",
+        "le Moyen Âge",
+        "l’époque contemporaine"
+      ],
+      "consigne": "Les peintures de la grotte de Lascaux datent de…"
+    },
+    {
+      "id": "revolution",
+      "chapitre": "reperes",
+      "type": "choix",
+      "question": "La Révolution française, en 1789, ouvre…",
+      "reponse": "l’époque contemporaine",
+      "pieges": [
+        "l’Antiquité",
+        "le Moyen Âge",
+        "la Préhistoire"
+      ],
+      "consigne": "La Révolution française, en 1789, ouvre…"
+    },
+    {
+      "id": "avant-apres",
+      "chapitre": "changements",
+      "type": "associer",
+      "question": "Relie chaque objet d’autrefois à celui d’aujourd’hui.",
+      "consigne": "Relie chaque objet d’autrefois à celui d’aujourd’hui.",
+      "paires": [
+        [
+          {
+            "texte": "la bougie",
+            "image": "candle"
+          },
+          {
+            "texte": "la lampe",
+            "image": "lamp"
+          }
+        ],
+        [
+          "la lettre",
+          {
+            "texte": "le téléphone",
+            "image": "phone"
+          }
+        ],
+        [
+          "la diligence",
+          {
+            "texte": "la voiture",
+            "image": "car"
+          }
+        ],
+        [
+          "le lavoir",
+          "la machine à laver"
+        ],
+        [
+          "la plume",
+          "le stylo"
+        ]
+      ]
+    },
+    {
+      "id": "lumiere-autrefois",
+      "chapitre": "changements",
+      "type": "choix",
+      "question": "Avant l’électricité, on s’éclairait avec…",
+      "reponse": "des bougies et des lampes à huile",
+      "pieges": [
+        "des ampoules",
+        "des écrans",
+        "des lampes de poche"
+      ],
+      "consigne": "Avant l’électricité, on s’éclairait avec…",
+      "image": "candle"
+    },
+    {
+      "id": "ecole-autrefois",
+      "chapitre": "changements",
+      "type": "choix",
+      "question": "Il y a 100 ans, à l’école, les élèves écrivaient avec…",
+      "reponse": "une plume et de l’encre",
+      "pieges": [
+        "un ordinateur",
+        "une tablette",
+        "un feutre"
+      ],
+      "consigne": "Il y a 100 ans, à l’école, les élèves écrivaient avec…",
+      "image": "notebook"
+    },
+    {
+      "id": "voyager",
+      "chapitre": "changements",
+      "type": "choix",
+      "question": "Il y a 200 ans, pour aller loin, on voyageait…",
+      "reponse": "à cheval ou en diligence",
+      "pieges": [
+        "en avion",
+        "en TGV",
+        "en voiture électrique"
+      ],
+      "consigne": "Il y a 200 ans, pour aller loin, on voyageait…",
+      "image": "horse"
+    },
+    {
+      "id": "telephone",
+      "chapitre": "changements",
+      "type": "choix",
+      "question": "Lequel de ces objets n’existait pas quand tes arrière-grands-parents étaient enfants ?",
+      "reponse": "le téléphone portable",
+      "pieges": [
+        "le vélo",
+        "le livre",
+        "la bougie"
+      ],
+      "consigne": "Lequel de ces objets n’existait pas quand tes arrière-grands-parents étaient enfants ?",
+      "image": "phone"
+    },
+    {
+      "id": "archives",
+      "chapitre": "changements",
+      "type": "choix",
+      "question": "Comment sait-on comment on vivait autrefois ?",
+      "reponse": "grâce aux objets, photos et écrits anciens",
+      "pieges": [
+        "on ne peut pas le savoir",
+        "grâce aux dessins animés",
+        "en devinant"
+      ],
+      "consigne": "Comment sait-on comment on vivait autrefois ?"
+    },
+    {
+      "id": "generations",
+      "chapitre": "familles",
+      "type": "ordre",
+      "question": "Range les générations de la plus ancienne à la plus jeune.",
+      "consigne": "Range les générations de la plus ancienne à la plus jeune.",
+      "elements": [
+        "les arrière-grands-parents",
+        "les grands-parents",
+        "les parents",
+        "les enfants"
+      ]
+    },
+    {
+      "id": "grand-pere",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Le père de ta mère est ton…",
+      "reponse": "grand-père",
+      "pieges": [
+        "oncle",
+        "cousin",
+        "frère"
+      ],
+      "consigne": "Le père de ta mère est ton…",
+      "image": "grandpa"
+    },
+    {
+      "id": "oncle",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Le frère de ton père est ton…",
+      "reponse": "oncle",
+      "pieges": [
+        "grand-père",
+        "cousin",
+        "neveu"
+      ],
+      "consigne": "Le frère de ton père est ton…"
+    },
+    {
+      "id": "tante",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "La sœur de ta mère est ta…",
+      "reponse": "tante",
+      "pieges": [
+        "cousine",
+        "grand-mère",
+        "nièce"
+      ],
+      "consigne": "La sœur de ta mère est ta…"
+    },
+    {
+      "id": "cousine",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "La fille de ta tante est ta…",
+      "reponse": "cousine",
+      "pieges": [
+        "sœur",
+        "tante",
+        "nièce"
+      ],
+      "consigne": "La fille de ta tante est ta…"
+    },
+    {
+      "id": "petits-enfants",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Pour tes grands-parents, tu es leur…",
+      "reponse": "petit-enfant",
+      "pieges": [
+        "neveu",
+        "cousin",
+        "parent"
+      ],
+      "consigne": "Pour tes grands-parents, tu es leur…"
+    },
+    {
+      "id": "generation-def",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Les personnes nées à peu près à la même époque forment…",
+      "reponse": "une génération",
+      "pieges": [
+        "un siècle",
+        "un village",
+        "une saison"
+      ],
+      "consigne": "Les personnes nées à peu près à la même époque forment…"
+    },
+    {
+      "id": "arbre",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Le dessin qui montre toute la famille et ses générations s’appelle…",
+      "reponse": "l’arbre généalogique",
+      "pieges": [
+        "la frise",
+        "la carte",
+        "le calendrier"
+      ],
+      "consigne": "Le dessin qui montre toute la famille et ses générations s’appelle…"
+    }
+  ]
+}

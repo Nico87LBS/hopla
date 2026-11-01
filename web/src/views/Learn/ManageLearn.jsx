@@ -15,9 +15,10 @@ import {
   Chip,
   IconButton,
   Input,
+  Option,
+  Select,
   Sheet,
   Stack,
-  Switch,
   Textarea,
   Typography,
 } from '@mui/joy'
@@ -500,51 +501,60 @@ TotalCard.propTypes = {
   total: PropTypes.number,
 }
 
-// ReadAloudCard turns off, for one person, the voice that says the
-// questions and answers of the modules made for those who do not read yet.
-const ReadAloudCard = ({ person, value }) => {
+// VOICES are what the device can say aloud for a person: everything, only
+// the instructions, or nothing.
+const VOICES = ['tout', 'consigne', 'rien']
+
+// ReadAloudCard chooses, for one person, what the voice of the device says
+// in the modules made to be read aloud.
+const ReadAloudCard = ({ person, setting }) => {
   const { t } = useTranslation('learn')
   const setSetting = useSetSetting()
   const notify = useNotify()
-  const on = value !== false
-  const change = async readAloud => {
+  const value =
+    setting?.voice || (setting?.readAloud === false ? 'rien' : 'tout')
+  const change = async voice => {
     try {
-      await setSetting.mutateAsync({
-        userId: person.userId,
-        scope: '*',
-        readAloud,
-      })
+      await setSetting.mutateAsync({ userId: person.userId, scope: '*', voice })
     } catch (err) {
       notify('error', err.message)
     }
   }
   return (
-    <Sheet sx={{ ...surfaceSx, display: 'flex', alignItems: 'center', gap: 1 }}>
-      <Box sx={{ flex: 1 }}>
+    <Sheet sx={{ ...surfaceSx }}>
+      <Box>
         <Typography level='title-md'>{t('manage.readAloud')}</Typography>
         <Typography level='body-xs' sx={{ color: 'text.secondary' }}>
           {t('manage.readAloudHelp')}
         </Typography>
       </Box>
-      <Switch
-        checked={on}
+      <Select
+        size='sm'
+        value={value}
         disabled={setSetting.isPending}
-        onChange={e => change(e.target.checked)}
+        onChange={(_, voice) => voice && voice !== value && change(voice)}
         slotProps={{
-          input: {
+          button: {
             'aria-label': t('manage.readAloudFor', {
               name: person.displayName,
             }),
           },
         }}
-      />
+        sx={{ mt: 1, width: 'fit-content' }}
+      >
+        {VOICES.map(voice => (
+          <Option key={voice} value={voice}>
+            {t(`manage.voice.${voice}`)}
+          </Option>
+        ))}
+      </Select>
     </Sheet>
   )
 }
 
 ReadAloudCard.propTypes = {
   person: PropTypes.object.isRequired,
-  value: PropTypes.bool,
+  setting: PropTypes.object,
 }
 
 // FirstNameCard sets the first name the games call a person by, in the
@@ -1293,7 +1303,7 @@ export const ManageLearn = () => {
           />
           <ReadAloudCard
             person={person}
-            value={settings.get(`${person.userId}:*`)?.readAloud}
+            setting={settings.get(`${person.userId}:*`)}
           />
           <FirstNameCard
             key={person.userId}

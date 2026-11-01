@@ -1,0 +1,23 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-ce2",
+  "version": "1.0.0",
+  "nom": "Questionner le monde CE2",
+  "description": "Le vivant, le corps, la matière, l'électricité, se repérer dans l'espace (France, monde) et dans le temps.",
+  "matiere": "monde",
+  "niveaux": [
+    "CE2"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "auteur": "Hopla",
+  "sources": "D'après le programme de Questionner le monde du cycle 2 et les repères de progression du CE2 (Éduscol).",
+  "modules": [
+    "monde-ce2-vivant",
+    "monde-ce2-corps",
+    "monde-ce2-matiere",
+    "monde-ce2-electricite",
+    "monde-ce2-espace",
+    "monde-ce2-temps"
+  ]
+}

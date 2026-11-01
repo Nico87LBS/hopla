@@ -121,8 +121,13 @@
       "catalogue": "Catalogue"
     },
     "readAloud": "Read aloud",
-    "readAloudHelp": "In the modules for those learning to read, the question is said, then each answer on the first tap; a second tap chooses it.",
+    "readAloudHelp": "What the device says in the modules made to be read aloud. Everything: the question, then each answer on the first tap (a second tap chooses it).",
     "readAloudFor": "Read aloud for {{name}}",
+    "voice": {
+      "tout": "Everything",
+      "consigne": "Instructions only",
+      "rien": "Nothing"
+    },
     "firstName": "First name in the games",
     "firstNameHelp": "For the questions about their first name (first letter, letters in order…). Empty: the first word of their name in Hopla.",
     "firstNameFor": "First name of {{name}} in the games"

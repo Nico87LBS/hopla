@@ -357,11 +357,14 @@ export const ZonePicture = ({ color, highlight, id, maxHeight, onTouch }) => {
       live = false
     }
   }, [id])
+  // A zone is filled, or a line (a river) coloured; the wide invisible
+  // edge of a line or a dot (.prise) only makes it easier to touch.
   const lit = zoneSafe(highlight)
     ? {
         [`& [data-zone="${highlight}"], & [data-zone="${highlight}"] *`]: {
           fill: color,
         },
+        [`& [data-zone="${highlight}"] .ligne`]: { stroke: color },
       }
     : {}
   return (
@@ -387,8 +390,10 @@ export const ZonePicture = ({ color, highlight, id, maxHeight, onTouch }) => {
           '& [data-zone]:hover, & [data-zone]:hover *': {
             fill: `${color}55`,
           },
+          '& [data-zone]:hover .ligne': { stroke: color },
         }),
         ...lit,
+        '& .ligne, & .prise': { fill: 'none !important' },
       }}
       // The picture comes from the app's own drawings, cleaned above.
       dangerouslySetInnerHTML={{ __html: svg }}

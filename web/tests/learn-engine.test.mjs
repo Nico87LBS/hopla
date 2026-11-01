@@ -410,6 +410,20 @@ test('a zone is touched by its id or named among the others', () => {
   assert.ok(!name.trapPool.includes('la tête'), 'traps of the same picture')
 })
 
+test('a zone is named among the zones of its chapter, not a river among cities', () => {
+  const doc = modules.find(m => m.id === 'monde-ce2-espace')
+  const name = itemsOf(doc, 'fleuves').find(
+    i => i.key === 'monde-ce2-espace:fleuve-loire:nommer',
+  )
+  assert.deepEqual([...name.trapPool].sort(), [
+    'la Garonne',
+    'la Seine',
+    'le Rhin',
+    'le Rhône',
+  ])
+  assert.ok(name.choices.every(c => !['Paris', 'les Alpes'].includes(c)))
+})
+
 test('labels to sort are one question each, keyed by their words', () => {
   const items = itemsOf(example, 'classer')
   assert.equal(items.length, 6)

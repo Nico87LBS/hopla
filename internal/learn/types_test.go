@@ -118,6 +118,47 @@ func TestReadingAloudIsOnUntilAParentTurnsItOff(t *testing.T) {
 	require.Error(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: "maths-ce2", ReadAloud: &off}, now))
 }
 
+func TestAParentChoosesWhatTheDeviceSaysForEachPerson(t *testing.T) {
+	db := setup(t)
+	now := time.Now().UTC()
+	player, err := PlayerFor(db, 1, anna, now)
+	require.NoError(t, err)
+	require.Equal(t, VoiceEverything, player.Voice)
+
+	say := func(voice string) error {
+		return SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: AllPacks, Voice: &voice}, now)
+	}
+	require.NoError(t, say(VoiceInstruction))
+	player, err = PlayerFor(db, 1, anna, now)
+	require.NoError(t, err)
+	require.Equal(t, VoiceInstruction, player.Voice)
+	require.True(t, player.ReadAloud, "the instructions are still said")
+
+	require.NoError(t, say(VoiceNothing))
+	player, err = PlayerFor(db, 1, anna, now)
+	require.NoError(t, err)
+	require.Equal(t, VoiceNothing, player.Voice)
+	require.False(t, player.ReadAloud)
+
+	require.Error(t, say("fort"))
+	require.NoError(t, say(VoiceEverything))
+	settings, err := PersonSettings(db, 1)
+	require.NoError(t, err)
+	require.Empty(t, settings, "everything is the default, nothing to keep")
+
+	// The old switch still works, and an old "off" still means nothing.
+	off := false
+	require.NoError(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: AllPacks, ReadAloud: &off}, now))
+	player, err = PlayerFor(db, 1, anna, now)
+	require.NoError(t, err)
+	require.Equal(t, VoiceNothing, player.Voice)
+	require.NoError(t, db.Model(&PersonSetting{}).Where("user_id = ?", anna).
+		Updates(map[string]any{"voice": "", "read_aloud": false}).Error)
+	player, err = PlayerFor(db, 1, anna, now)
+	require.NoError(t, err)
+	require.Equal(t, VoiceNothing, player.Voice)
+}
+
 func TestSlugNamesALabelToSort(t *testing.T) {
 	require.Equal(t, "le-cheval-a-bascule", Slug("  Le cheval à bascule !"))
 	require.Equal(t, "l-ete", Slug("L’été"))

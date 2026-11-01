@@ -1,0 +1,1026 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-ce2-vivant",
+  "version": "1.0.0",
+  "nom": "Le vivant",
+  "description": "Les familles d'animaux, ce qu'ils mangent, les chaînes alimentaires, les cycles de vie et les besoins des plantes.",
+  "matiere": "monde",
+  "niveaux": [
+    "CE2"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de Questionner le monde du cycle 2 et les repères de progression du CE2 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "familles",
+      "nom": "Les familles d’animaux"
+    },
+    {
+      "id": "regimes",
+      "nom": "Ce que mangent les animaux",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "chaines",
+      "nom": "Les chaînes alimentaires",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "cycles",
+      "nom": "Les cycles de vie",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "plantes",
+      "nom": "Les plantes",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "mammifere-oiseau",
+      "chapitre": "familles",
+      "type": "classer",
+      "question": "Mammifère ou oiseau ?",
+      "consigne": "Mammifère ou oiseau ?",
+      "boites": [
+        {
+          "nom": "Mammifère",
+          "image": "cat"
+        },
+        {
+          "nom": "Oiseau",
+          "image": "bird"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le dauphin",
+          "boite": "Mammifère",
+          "image": "dolphin"
+        },
+        {
+          "texte": "la chauve-souris",
+          "boite": "Mammifère",
+          "image": "bat"
+        },
+        {
+          "texte": "le manchot",
+          "boite": "Oiseau",
+          "image": "penguin"
+        },
+        {
+          "texte": "la poule",
+          "boite": "Oiseau",
+          "image": "hen"
+        },
+        {
+          "texte": "le hibou",
+          "boite": "Oiseau",
+          "image": "owl"
+        },
+        {
+          "texte": "la baleine",
+          "boite": "Mammifère",
+          "image": "whale"
+        },
+        {
+          "texte": "le canard",
+          "boite": "Oiseau",
+          "image": "duck"
+        },
+        {
+          "texte": "le lapin",
+          "boite": "Mammifère",
+          "image": "rabbit"
+        }
+      ]
+    },
+    {
+      "id": "poisson-mammifere",
+      "chapitre": "familles",
+      "type": "classer",
+      "question": "Poisson ou mammifère ?",
+      "consigne": "Poisson ou mammifère ?",
+      "boites": [
+        {
+          "nom": "Poisson",
+          "image": "fish"
+        },
+        {
+          "nom": "Mammifère",
+          "image": "dog"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le requin",
+          "boite": "Poisson",
+          "image": "shark"
+        },
+        {
+          "texte": "le dauphin",
+          "boite": "Mammifère",
+          "image": "dolphin"
+        },
+        {
+          "texte": "la baleine",
+          "boite": "Mammifère",
+          "image": "whale"
+        },
+        {
+          "texte": "le phoque",
+          "boite": "Mammifère",
+          "image": "seal"
+        },
+        {
+          "texte": "la truite",
+          "boite": "Poisson"
+        },
+        {
+          "texte": "le saumon",
+          "boite": "Poisson"
+        }
+      ]
+    },
+    {
+      "id": "reptile-amphibien",
+      "chapitre": "familles",
+      "type": "classer",
+      "question": "Reptile ou amphibien ?",
+      "consigne": "Reptile ou amphibien ?",
+      "boites": [
+        {
+          "nom": "Reptile",
+          "image": "snake"
+        },
+        {
+          "nom": "Amphibien",
+          "image": "frog"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le lézard",
+          "boite": "Reptile",
+          "image": "lizard"
+        },
+        {
+          "texte": "le crocodile",
+          "boite": "Reptile",
+          "image": "crocodile"
+        },
+        {
+          "texte": "la tortue",
+          "boite": "Reptile",
+          "image": "turtle"
+        },
+        {
+          "texte": "la grenouille",
+          "boite": "Amphibien",
+          "image": "frog"
+        },
+        {
+          "texte": "le crapaud",
+          "boite": "Amphibien"
+        },
+        {
+          "texte": "la salamandre",
+          "boite": "Amphibien"
+        },
+        {
+          "texte": "le serpent",
+          "boite": "Reptile",
+          "image": "snake"
+        }
+      ]
+    },
+    {
+      "id": "peau",
+      "chapitre": "familles",
+      "type": "associer",
+      "question": "Relie chaque famille à ce qui couvre son corps.",
+      "consigne": "Relie chaque famille à ce qui couvre son corps.",
+      "paires": [
+        [
+          "les mammifères",
+          "des poils"
+        ],
+        [
+          "les oiseaux",
+          "des plumes"
+        ],
+        [
+          "les poissons",
+          "des écailles et des nageoires"
+        ],
+        [
+          "les amphibiens",
+          "une peau nue et humide"
+        ],
+        [
+          "les reptiles",
+          "des écailles sèches"
+        ]
+      ]
+    },
+    {
+      "id": "dauphin",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Le dauphin vit dans la mer, mais c’est un…",
+      "reponse": "mammifère",
+      "pieges": [
+        "poisson",
+        "reptile",
+        "amphibien"
+      ],
+      "consigne": "Le dauphin vit dans la mer, mais c’est un…",
+      "explication": "Il respire de l’air à la surface et la mère allaite son petit.",
+      "image": "dolphin"
+    },
+    {
+      "id": "chauve-souris",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "La chauve-souris vole, mais c’est un…",
+      "reponse": "mammifère",
+      "pieges": [
+        "oiseau",
+        "insecte",
+        "reptile"
+      ],
+      "consigne": "La chauve-souris vole, mais c’est un…",
+      "explication": "Elle a des poils, pas de plumes, et allaite ses petits.",
+      "image": "bat"
+    },
+    {
+      "id": "manchot",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Le manchot ne vole pas, mais c’est un…",
+      "reponse": "oiseau",
+      "pieges": [
+        "mammifère",
+        "poisson",
+        "reptile"
+      ],
+      "consigne": "Le manchot ne vole pas, mais c’est un…",
+      "explication": "Il a des plumes, un bec, et pond des œufs.",
+      "image": "penguin"
+    },
+    {
+      "id": "vertebres",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Les mammifères, les oiseaux, les poissons, les reptiles et les amphibiens ont tous…",
+      "reponse": "un squelette avec une colonne vertébrale",
+      "pieges": [
+        "des plumes",
+        "six pattes",
+        "une coquille"
+      ],
+      "consigne": "Les mammifères, les oiseaux, les poissons, les reptiles et les amphibiens ont tous…",
+      "explication": "On les appelle les vertébrés."
+    },
+    {
+      "id": "insecte",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Combien de pattes a un insecte ?",
+      "reponse": "6",
+      "pieges": [
+        "4",
+        "8",
+        "10"
+      ],
+      "consigne": "Combien de pattes a un insecte ?",
+      "explication": "L’abeille, la fourmi et le papillon ont 6 pattes. L’araignée en a 8 : ce n’est pas un insecte.",
+      "image": "bee"
+    },
+    {
+      "id": "araignee",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "L’araignée a 8 pattes. Est-ce un insecte ?",
+      "reponse": "Non",
+      "pieges": [
+        "Oui"
+      ],
+      "consigne": "L’araignée a 8 pattes. Est-ce un insecte ?",
+      "explication": "Les insectes ont 6 pattes. L’araignée est un arachnide.",
+      "image": "spider"
+    },
+    {
+      "id": "allaiter",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Quels animaux nourrissent leurs petits avec leur lait ?",
+      "reponse": "les mammifères",
+      "pieges": [
+        "les oiseaux",
+        "les poissons",
+        "les reptiles"
+      ],
+      "consigne": "Quels animaux nourrissent leurs petits avec leur lait ?"
+    },
+    {
+      "id": "herbi-carni",
+      "chapitre": "regimes",
+      "type": "classer",
+      "question": "Herbivore ou carnivore ?",
+      "consigne": "Herbivore ou carnivore ?",
+      "boites": [
+        {
+          "nom": "Herbivore",
+          "image": "cow"
+        },
+        {
+          "nom": "Carnivore",
+          "image": "lion"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le lapin",
+          "boite": "Herbivore",
+          "image": "rabbit"
+        },
+        {
+          "texte": "le loup",
+          "boite": "Carnivore",
+          "image": "wolf"
+        },
+        {
+          "texte": "la girafe",
+          "boite": "Herbivore",
+          "image": "giraffe"
+        },
+        {
+          "texte": "le requin",
+          "boite": "Carnivore",
+          "image": "shark"
+        },
+        {
+          "texte": "le cheval",
+          "boite": "Herbivore",
+          "image": "horse"
+        },
+        {
+          "texte": "le hibou",
+          "boite": "Carnivore",
+          "image": "owl"
+        },
+        {
+          "texte": "le mouton",
+          "boite": "Herbivore",
+          "image": "sheep"
+        },
+        {
+          "texte": "le crocodile",
+          "boite": "Carnivore",
+          "image": "crocodile"
+        },
+        {
+          "texte": "le koala",
+          "boite": "Herbivore",
+          "image": "koala"
+        },
+        {
+          "texte": "le chat",
+          "boite": "Carnivore",
+          "image": "cat"
+        }
+      ]
+    },
+    {
+      "id": "omnivore",
+      "chapitre": "regimes",
+      "type": "classer",
+      "question": "Que mange-t-il ?",
+      "consigne": "Que mange-t-il ?",
+      "boites": [
+        {
+          "nom": "Que des plantes"
+        },
+        {
+          "nom": "Que des animaux"
+        },
+        {
+          "nom": "Des deux"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le zèbre",
+          "boite": "Que des plantes",
+          "image": "zebra"
+        },
+        {
+          "texte": "le cochon",
+          "boite": "Des deux",
+          "image": "pig"
+        },
+        {
+          "texte": "l’ours",
+          "boite": "Des deux",
+          "image": "bear"
+        },
+        {
+          "texte": "le lion",
+          "boite": "Que des animaux",
+          "image": "lion"
+        },
+        {
+          "texte": "la poule",
+          "boite": "Des deux",
+          "image": "hen"
+        },
+        {
+          "texte": "la chèvre",
+          "boite": "Que des plantes",
+          "image": "goat"
+        },
+        {
+          "texte": "le renard",
+          "boite": "Des deux",
+          "image": "fox"
+        },
+        {
+          "texte": "le serpent",
+          "boite": "Que des animaux",
+          "image": "snake"
+        }
+      ]
+    },
+    {
+      "id": "herbivore",
+      "chapitre": "regimes",
+      "type": "choix",
+      "question": "Un animal qui ne mange que des plantes est…",
+      "reponse": "herbivore",
+      "pieges": [
+        "carnivore",
+        "omnivore",
+        "insectivore"
+      ],
+      "consigne": "Un animal qui ne mange que des plantes est…"
+    },
+    {
+      "id": "carnivore",
+      "chapitre": "regimes",
+      "type": "choix",
+      "question": "Un animal qui mange d’autres animaux est…",
+      "reponse": "carnivore",
+      "pieges": [
+        "herbivore",
+        "omnivore",
+        "granivore"
+      ],
+      "consigne": "Un animal qui mange d’autres animaux est…"
+    },
+    {
+      "id": "omnivore-def",
+      "chapitre": "regimes",
+      "type": "choix",
+      "question": "Un animal qui mange des plantes et des animaux est…",
+      "reponse": "omnivore",
+      "pieges": [
+        "herbivore",
+        "carnivore",
+        "insectivore"
+      ],
+      "consigne": "Un animal qui mange des plantes et des animaux est…"
+    },
+    {
+      "id": "humain",
+      "chapitre": "regimes",
+      "type": "choix",
+      "question": "L’être humain mange des légumes, des fruits, de la viande et du poisson. Il est…",
+      "reponse": "omnivore",
+      "pieges": [
+        "herbivore",
+        "carnivore",
+        "insectivore"
+      ],
+      "consigne": "L’être humain mange des légumes, des fruits, de la viande et du poisson. Il est…"
+    },
+    {
+      "id": "dents-carni",
+      "chapitre": "regimes",
+      "type": "choix",
+      "question": "Quel animal a des crocs pointus pour déchirer la viande ?",
+      "reponse": "le loup",
+      "pieges": [
+        "la vache",
+        "le lapin",
+        "le cheval"
+      ],
+      "consigne": "Quel animal a des crocs pointus pour déchirer la viande ?",
+      "explication": "Les carnivores ont des crocs ; les herbivores ont des dents plates pour broyer l’herbe."
+    },
+    {
+      "id": "hibou-mange",
+      "chapitre": "regimes",
+      "type": "choix",
+      "question": "Que mange le hibou ?",
+      "reponse": "des souris",
+      "pieges": [
+        "de l’herbe",
+        "des glands",
+        "des fruits"
+      ],
+      "consigne": "Que mange le hibou ?",
+      "image": "owl"
+    },
+    {
+      "id": "escargot-mange",
+      "chapitre": "regimes",
+      "type": "choix",
+      "question": "Que mange l’escargot ?",
+      "reponse": "des feuilles",
+      "pieges": [
+        "des souris",
+        "des insectes",
+        "des poissons"
+      ],
+      "consigne": "Que mange l’escargot ?",
+      "image": "snail"
+    },
+    {
+      "id": "chaine-1",
+      "chapitre": "chaines",
+      "type": "ordre",
+      "question": "Remets la chaîne alimentaire dans l’ordre : qui est mangé par qui ?",
+      "consigne": "Remets la chaîne alimentaire dans l’ordre : qui est mangé par qui ?",
+      "elements": [
+        "l’herbe",
+        "le lapin",
+        "le renard"
+      ]
+    },
+    {
+      "id": "chaine-2",
+      "chapitre": "chaines",
+      "type": "ordre",
+      "question": "Remets la chaîne alimentaire dans l’ordre : qui est mangé par qui ?",
+      "consigne": "Remets la chaîne alimentaire dans l’ordre : qui est mangé par qui ?",
+      "elements": [
+        "la feuille",
+        "la chenille",
+        "l’oiseau"
+      ]
+    },
+    {
+      "id": "chaine-3",
+      "chapitre": "chaines",
+      "type": "ordre",
+      "question": "Remets la chaîne alimentaire dans l’ordre : qui est mangé par qui ?",
+      "consigne": "Remets la chaîne alimentaire dans l’ordre : qui est mangé par qui ?",
+      "elements": [
+        "les graines",
+        "la souris",
+        "le hibou"
+      ]
+    },
+    {
+      "id": "chaine-4",
+      "chapitre": "chaines",
+      "type": "ordre",
+      "question": "Remets la chaîne alimentaire dans l’ordre : qui est mangé par qui ?",
+      "consigne": "Remets la chaîne alimentaire dans l’ordre : qui est mangé par qui ?",
+      "elements": [
+        "l’herbe",
+        "le zèbre",
+        "le lion"
+      ]
+    },
+    {
+      "id": "chaine-5",
+      "chapitre": "chaines",
+      "type": "ordre",
+      "question": "Remets la chaîne alimentaire dans l’ordre : qui est mangé par qui ?",
+      "consigne": "Remets la chaîne alimentaire dans l’ordre : qui est mangé par qui ?",
+      "elements": [
+        "les algues",
+        "le petit poisson",
+        "le requin"
+      ]
+    },
+    {
+      "id": "chaine-6",
+      "chapitre": "chaines",
+      "type": "ordre",
+      "question": "Remets la chaîne alimentaire dans l’ordre : qui est mangé par qui ?",
+      "consigne": "Remets la chaîne alimentaire dans l’ordre : qui est mangé par qui ?",
+      "elements": [
+        "la feuille",
+        "l’escargot",
+        "le hérisson"
+      ]
+    },
+    {
+      "id": "chaine-7",
+      "chapitre": "chaines",
+      "type": "ordre",
+      "question": "Remets la chaîne alimentaire dans l’ordre : qui est mangé par qui ?",
+      "consigne": "Remets la chaîne alimentaire dans l’ordre : qui est mangé par qui ?",
+      "elements": [
+        "l’herbe",
+        "la sauterelle",
+        "la grenouille",
+        "le serpent"
+      ]
+    },
+    {
+      "id": "fleche",
+      "chapitre": "chaines",
+      "type": "choix",
+      "question": "Dans « l’herbe → le lapin », que veut dire la flèche ?",
+      "reponse": "est mangé par",
+      "pieges": [
+        "mange",
+        "a peur de",
+        "vit avec"
+      ],
+      "consigne": "Dans « l’herbe → le lapin », que veut dire la flèche ?"
+    },
+    {
+      "id": "debut-chaine",
+      "chapitre": "chaines",
+      "type": "choix",
+      "question": "Par quoi commence presque toujours une chaîne alimentaire ?",
+      "reponse": "une plante",
+      "pieges": [
+        "un carnivore",
+        "un oiseau",
+        "un insecte"
+      ],
+      "consigne": "Par quoi commence presque toujours une chaîne alimentaire ?"
+    },
+    {
+      "id": "qui-mange-lapin",
+      "chapitre": "chaines",
+      "type": "choix",
+      "question": "Dans « l’herbe → le lapin → le renard », qui mange le lapin ?",
+      "reponse": "le renard",
+      "pieges": [
+        "l’herbe",
+        "personne",
+        "le lapin"
+      ],
+      "consigne": "Dans « l’herbe → le lapin → le renard », qui mange le lapin ?"
+    },
+    {
+      "id": "si-plus-lapins",
+      "chapitre": "chaines",
+      "type": "choix",
+      "question": "S’il n’y a plus de lapins, que se passe-t-il pour les renards ?",
+      "reponse": "ils ont moins à manger",
+      "pieges": [
+        "ils ont plus à manger",
+        "rien ne change",
+        "ils deviennent herbivores"
+      ],
+      "consigne": "S’il n’y a plus de lapins, que se passe-t-il pour les renards ?"
+    },
+    {
+      "id": "cycle-grenouille",
+      "chapitre": "cycles",
+      "type": "ordre",
+      "question": "Remets dans l’ordre la vie de la grenouille.",
+      "consigne": "Remets dans l’ordre la vie de la grenouille.",
+      "elements": [
+        "les œufs de grenouille",
+        "le têtard",
+        "la grenouille"
+      ]
+    },
+    {
+      "id": "cycle-papillon",
+      "chapitre": "cycles",
+      "type": "ordre",
+      "question": "Remets dans l’ordre la vie du papillon.",
+      "consigne": "Remets dans l’ordre la vie du papillon.",
+      "elements": [
+        "les œufs",
+        "la chenille",
+        "la chrysalide",
+        "le papillon"
+      ]
+    },
+    {
+      "id": "cycle-poule",
+      "chapitre": "cycles",
+      "type": "ordre",
+      "question": "Remets dans l’ordre la vie de la poule.",
+      "consigne": "Remets dans l’ordre la vie de la poule.",
+      "elements": [
+        "l’œuf",
+        "le poussin",
+        "la poule"
+      ]
+    },
+    {
+      "id": "cycle-humain",
+      "chapitre": "cycles",
+      "type": "ordre",
+      "question": "Remets dans l’ordre la vie d’un être humain.",
+      "consigne": "Remets dans l’ordre la vie d’un être humain.",
+      "elements": [
+        "le bébé",
+        "l’enfant",
+        "l’adulte",
+        "la personne âgée"
+      ]
+    },
+    {
+      "id": "tetard",
+      "chapitre": "cycles",
+      "type": "choix",
+      "question": "Le petit de la grenouille, qui vit dans l’eau, s’appelle…",
+      "reponse": "le têtard",
+      "pieges": [
+        "le caneton",
+        "le poussin",
+        "la larve de mouche"
+      ],
+      "consigne": "Le petit de la grenouille, qui vit dans l’eau, s’appelle…",
+      "image": "tadpole"
+    },
+    {
+      "id": "chenille",
+      "chapitre": "cycles",
+      "type": "choix",
+      "question": "La chenille va devenir…",
+      "reponse": "un papillon",
+      "pieges": [
+        "une abeille",
+        "une araignée",
+        "un ver de terre"
+      ],
+      "consigne": "La chenille va devenir…",
+      "image": "caterpillar"
+    },
+    {
+      "id": "chrysalide",
+      "chapitre": "cycles",
+      "type": "choix",
+      "question": "Dans quoi la chenille se transforme-t-elle en papillon ?",
+      "reponse": "une chrysalide",
+      "pieges": [
+        "un œuf",
+        "un nid",
+        "une coquille"
+      ],
+      "consigne": "Dans quoi la chenille se transforme-t-elle en papillon ?",
+      "image": "chrysalis"
+    },
+    {
+      "id": "metamorphose",
+      "chapitre": "cycles",
+      "type": "choix",
+      "question": "Quand un animal change complètement de forme en grandissant, c’est une…",
+      "reponse": "métamorphose",
+      "pieges": [
+        "naissance",
+        "migration",
+        "hibernation"
+      ],
+      "consigne": "Quand un animal change complètement de forme en grandissant, c’est une…"
+    },
+    {
+      "id": "ovipare",
+      "chapitre": "cycles",
+      "type": "choix",
+      "question": "Un animal qui pond des œufs est…",
+      "reponse": "ovipare",
+      "pieges": [
+        "vivipare",
+        "carnivore",
+        "herbivore"
+      ],
+      "consigne": "Un animal qui pond des œufs est…"
+    },
+    {
+      "id": "vivipare",
+      "chapitre": "cycles",
+      "type": "choix",
+      "question": "Un animal dont le petit naît du ventre de sa mère est…",
+      "reponse": "vivipare",
+      "pieges": [
+        "ovipare",
+        "omnivore",
+        "insectivore"
+      ],
+      "consigne": "Un animal dont le petit naît du ventre de sa mère est…"
+    },
+    {
+      "id": "ovi-vivi",
+      "chapitre": "cycles",
+      "type": "classer",
+      "question": "Ovipare ou vivipare ?",
+      "consigne": "Ovipare ou vivipare ?",
+      "boites": [
+        {
+          "nom": "Ovipare",
+          "image": "hen"
+        },
+        {
+          "nom": "Vivipare",
+          "image": "cow"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le canard",
+          "boite": "Ovipare",
+          "image": "duck"
+        },
+        {
+          "texte": "le chat",
+          "boite": "Vivipare",
+          "image": "cat"
+        },
+        {
+          "texte": "le crocodile",
+          "boite": "Ovipare",
+          "image": "crocodile"
+        },
+        {
+          "texte": "le dauphin",
+          "boite": "Vivipare",
+          "image": "dolphin"
+        },
+        {
+          "texte": "la grenouille",
+          "boite": "Ovipare",
+          "image": "frog"
+        },
+        {
+          "texte": "le cheval",
+          "boite": "Vivipare",
+          "image": "horse"
+        },
+        {
+          "texte": "la tortue",
+          "boite": "Ovipare",
+          "image": "turtle"
+        },
+        {
+          "texte": "le lapin",
+          "boite": "Vivipare",
+          "image": "rabbit"
+        }
+      ]
+    },
+    {
+      "id": "cycle-fin",
+      "chapitre": "cycles",
+      "type": "choix",
+      "question": "Tous les êtres vivants naissent, grandissent, se reproduisent et…",
+      "reponse": "meurent",
+      "pieges": [
+        "volent",
+        "nagent",
+        "dorment toujours"
+      ],
+      "consigne": "Tous les êtres vivants naissent, grandissent, se reproduisent et…"
+    },
+    {
+      "id": "besoins",
+      "chapitre": "plantes",
+      "type": "classer",
+      "question": "De quoi la plante a-t-elle besoin pour vivre ?",
+      "consigne": "De quoi la plante a-t-elle besoin pour vivre ?",
+      "boites": [
+        {
+          "nom": "Elle en a besoin"
+        },
+        {
+          "nom": "Elle n’en a pas besoin"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "de l’eau",
+          "boite": "Elle en a besoin"
+        },
+        {
+          "texte": "de la lumière",
+          "boite": "Elle en a besoin"
+        },
+        {
+          "texte": "de l’air",
+          "boite": "Elle en a besoin"
+        },
+        {
+          "texte": "des sels minéraux du sol",
+          "boite": "Elle en a besoin"
+        },
+        {
+          "texte": "du sucre",
+          "boite": "Elle n’en a pas besoin"
+        },
+        {
+          "texte": "du lait",
+          "boite": "Elle n’en a pas besoin"
+        },
+        {
+          "texte": "de la musique",
+          "boite": "Elle n’en a pas besoin"
+        }
+      ]
+    },
+    {
+      "id": "germination",
+      "chapitre": "plantes",
+      "type": "ordre",
+      "question": "Remets dans l’ordre la vie d’un haricot.",
+      "consigne": "Remets dans l’ordre la vie d’un haricot.",
+      "elements": [
+        "la graine",
+        "la graine germe",
+        "la jeune pousse",
+        "la plante",
+        "la fleur",
+        "le fruit avec ses graines"
+      ]
+    },
+    {
+      "id": "racines",
+      "chapitre": "plantes",
+      "type": "choix",
+      "question": "Par où la plante prend-elle l’eau du sol ?",
+      "reponse": "les racines",
+      "pieges": [
+        "les fleurs",
+        "les feuilles",
+        "les fruits"
+      ],
+      "consigne": "Par où la plante prend-elle l’eau du sol ?"
+    },
+    {
+      "id": "graine-dans",
+      "chapitre": "plantes",
+      "type": "choix",
+      "question": "Où se trouvent les graines ?",
+      "reponse": "dans le fruit",
+      "pieges": [
+        "dans la racine",
+        "dans la tige",
+        "dans la feuille"
+      ],
+      "consigne": "Où se trouvent les graines ?"
+    },
+    {
+      "id": "noir",
+      "chapitre": "plantes",
+      "type": "choix",
+      "question": "Une plante laissée dans le noir pendant longtemps…",
+      "reponse": "jaunit et meurt",
+      "pieges": [
+        "pousse mieux",
+        "devient rouge",
+        "fait plus de fleurs"
+      ],
+      "consigne": "Une plante laissée dans le noir pendant longtemps…"
+    },
+    {
+      "id": "vivant-plante",
+      "chapitre": "plantes",
+      "type": "choix",
+      "question": "Une plante est-elle un être vivant ?",
+      "reponse": "Oui",
+      "pieges": [
+        "Non"
+      ],
+      "consigne": "Une plante est-elle un être vivant ?",
+      "explication": "Elle naît, se nourrit, grandit, se reproduit et meurt."
+    },
+    {
+      "id": "germer",
+      "chapitre": "plantes",
+      "type": "choix",
+      "question": "Quand une graine commence à pousser, on dit qu’elle…",
+      "reponse": "germe",
+      "pieges": [
+        "fond",
+        "gèle",
+        "fane"
+      ],
+      "consigne": "Quand une graine commence à pousser, on dit qu’elle…"
+    }
+  ]
+}

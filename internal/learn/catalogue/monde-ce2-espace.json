@@ -1,0 +1,1009 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-ce2-espace",
+  "version": "1.0.0",
+  "nom": "Se repérer dans l'espace",
+  "description": "Les points cardinaux, la France (régions, fleuves, montagnes, grandes villes), les paysages, les continents et les océans.",
+  "matiere": "monde",
+  "niveaux": [
+    "CE2"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de Questionner le monde du cycle 2 et les repères de progression du CE2 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "cardinaux",
+      "nom": "Les points cardinaux"
+    },
+    {
+      "id": "regions",
+      "nom": "Les régions de France",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "fleuves",
+      "nom": "Les fleuves de France",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "montagnes",
+      "nom": "Les montagnes de France",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "villes",
+      "nom": "Les grandes villes",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "paysages",
+      "nom": "Les paysages",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "continents",
+      "nom": "Les continents",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "oceans",
+      "nom": "Les océans",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "rose",
+      "chapitre": "cardinaux",
+      "type": "ordre",
+      "question": "Remets les points cardinaux dans l’ordre, en tournant à partir du nord.",
+      "consigne": "Remets les points cardinaux dans l’ordre, en tournant à partir du nord.",
+      "elements": [
+        "le nord",
+        "l’est",
+        "le sud",
+        "l’ouest"
+      ]
+    },
+    {
+      "id": "leve",
+      "chapitre": "cardinaux",
+      "type": "choix",
+      "question": "Le soleil se lève à…",
+      "reponse": "l’est",
+      "pieges": [
+        "l’ouest",
+        "le nord",
+        "le sud"
+      ],
+      "consigne": "Le soleil se lève à…",
+      "image": "sun"
+    },
+    {
+      "id": "couche",
+      "chapitre": "cardinaux",
+      "type": "choix",
+      "question": "Le soleil se couche à…",
+      "reponse": "l’ouest",
+      "pieges": [
+        "l’est",
+        "le nord",
+        "le sud"
+      ],
+      "consigne": "Le soleil se couche à…"
+    },
+    {
+      "id": "carte-nord",
+      "chapitre": "cardinaux",
+      "type": "choix",
+      "question": "Sur une carte, le nord est en général…",
+      "reponse": "en haut",
+      "pieges": [
+        "en bas",
+        "à gauche",
+        "à droite"
+      ],
+      "consigne": "Sur une carte, le nord est en général…"
+    },
+    {
+      "id": "contraire-nord",
+      "chapitre": "cardinaux",
+      "type": "choix",
+      "question": "Le contraire du nord, c’est…",
+      "reponse": "le sud",
+      "pieges": [
+        "l’est",
+        "l’ouest",
+        "le haut"
+      ],
+      "consigne": "Le contraire du nord, c’est…"
+    },
+    {
+      "id": "contraire-est",
+      "chapitre": "cardinaux",
+      "type": "choix",
+      "question": "Le contraire de l’est, c’est…",
+      "reponse": "l’ouest",
+      "pieges": [
+        "le nord",
+        "le sud",
+        "le bas"
+      ],
+      "consigne": "Le contraire de l’est, c’est…"
+    },
+    {
+      "id": "boussole",
+      "chapitre": "cardinaux",
+      "type": "choix",
+      "question": "Quel objet indique le nord ?",
+      "reponse": "la boussole",
+      "pieges": [
+        "la montre",
+        "la règle",
+        "le thermomètre"
+      ],
+      "consigne": "Quel objet indique le nord ?"
+    },
+    {
+      "id": "lille-nord",
+      "chapitre": "cardinaux",
+      "type": "choix",
+      "question": "Lille est en haut de la carte de France. Elle est au…",
+      "reponse": "nord",
+      "pieges": [
+        "sud",
+        "est",
+        "ouest"
+      ],
+      "consigne": "Lille est en haut de la carte de France. Elle est au…"
+    },
+    {
+      "id": "marseille-sud",
+      "chapitre": "cardinaux",
+      "type": "choix",
+      "question": "Marseille est en bas de la carte de France, au bord de la mer. Elle est au…",
+      "reponse": "sud",
+      "pieges": [
+        "nord",
+        "est",
+        "ouest"
+      ],
+      "consigne": "Marseille est en bas de la carte de France, au bord de la mer. Elle est au…"
+    },
+    {
+      "id": "brest-ouest",
+      "chapitre": "cardinaux",
+      "type": "choix",
+      "question": "Brest est tout à gauche de la carte de France. Elle est à…",
+      "reponse": "l’ouest",
+      "pieges": [
+        "l’est",
+        "le nord",
+        "le sud"
+      ],
+      "consigne": "Brest est tout à gauche de la carte de France. Elle est à…"
+    },
+    {
+      "id": "strasbourg-est",
+      "chapitre": "cardinaux",
+      "type": "choix",
+      "question": "Strasbourg est tout à droite de la carte de France. Elle est à…",
+      "reponse": "l’est",
+      "pieges": [
+        "l’ouest",
+        "le nord",
+        "le sud"
+      ],
+      "consigne": "Strasbourg est tout à droite de la carte de France. Elle est à…"
+    },
+    {
+      "id": "region-auvergne-rhone-alpes",
+      "chapitre": "regions",
+      "type": "zones",
+      "image": "carte-france",
+      "question": "auvergne-rhone-alpes",
+      "reponse": "Auvergne-Rhône-Alpes"
+    },
+    {
+      "id": "region-bourgogne-franche-comte",
+      "chapitre": "regions",
+      "type": "zones",
+      "image": "carte-france",
+      "question": "bourgogne-franche-comte",
+      "reponse": "Bourgogne-Franche-Comté"
+    },
+    {
+      "id": "region-bretagne",
+      "chapitre": "regions",
+      "type": "zones",
+      "image": "carte-france",
+      "question": "bretagne",
+      "reponse": "Bretagne"
+    },
+    {
+      "id": "region-centre-val-de-loire",
+      "chapitre": "regions",
+      "type": "zones",
+      "image": "carte-france",
+      "question": "centre-val-de-loire",
+      "reponse": "Centre-Val de Loire"
+    },
+    {
+      "id": "region-corse",
+      "chapitre": "regions",
+      "type": "zones",
+      "image": "carte-france",
+      "question": "corse",
+      "reponse": "Corse"
+    },
+    {
+      "id": "region-grand-est",
+      "chapitre": "regions",
+      "type": "zones",
+      "image": "carte-france",
+      "question": "grand-est",
+      "reponse": "Grand Est"
+    },
+    {
+      "id": "region-hauts-de-france",
+      "chapitre": "regions",
+      "type": "zones",
+      "image": "carte-france",
+      "question": "hauts-de-france",
+      "reponse": "Hauts-de-France"
+    },
+    {
+      "id": "region-ile-de-france",
+      "chapitre": "regions",
+      "type": "zones",
+      "image": "carte-france",
+      "question": "ile-de-france",
+      "reponse": "Île-de-France"
+    },
+    {
+      "id": "region-normandie",
+      "chapitre": "regions",
+      "type": "zones",
+      "image": "carte-france",
+      "question": "normandie",
+      "reponse": "Normandie"
+    },
+    {
+      "id": "region-nouvelle-aquitaine",
+      "chapitre": "regions",
+      "type": "zones",
+      "image": "carte-france",
+      "question": "nouvelle-aquitaine",
+      "reponse": "Nouvelle-Aquitaine"
+    },
+    {
+      "id": "region-occitanie",
+      "chapitre": "regions",
+      "type": "zones",
+      "image": "carte-france",
+      "question": "occitanie",
+      "reponse": "Occitanie"
+    },
+    {
+      "id": "region-pays-de-la-loire",
+      "chapitre": "regions",
+      "type": "zones",
+      "image": "carte-france",
+      "question": "pays-de-la-loire",
+      "reponse": "Pays de la Loire"
+    },
+    {
+      "id": "region-provence-alpes-cote-d-azur",
+      "chapitre": "regions",
+      "type": "zones",
+      "image": "carte-france",
+      "question": "provence-alpes-cote-d-azur",
+      "reponse": "Provence-Alpes-Côte d’Azur"
+    },
+    {
+      "id": "combien-regions",
+      "chapitre": "regions",
+      "type": "choix",
+      "question": "Combien de régions compte la France métropolitaine ?",
+      "reponse": "13",
+      "pieges": [
+        "5",
+        "22",
+        "101"
+      ],
+      "consigne": "Combien de régions compte la France métropolitaine ?"
+    },
+    {
+      "id": "ile",
+      "chapitre": "regions",
+      "type": "choix",
+      "question": "Quelle région est une île ?",
+      "reponse": "la Corse",
+      "pieges": [
+        "la Bretagne",
+        "la Normandie",
+        "l’Île-de-France"
+      ],
+      "consigne": "Quelle région est une île ?"
+    },
+    {
+      "id": "paris-region",
+      "chapitre": "regions",
+      "type": "choix",
+      "question": "Dans quelle région se trouve Paris ?",
+      "reponse": "l’Île-de-France",
+      "pieges": [
+        "la Normandie",
+        "le Grand Est",
+        "l’Occitanie"
+      ],
+      "consigne": "Dans quelle région se trouve Paris ?"
+    },
+    {
+      "id": "fleuve-seine",
+      "chapitre": "fleuves",
+      "type": "zones",
+      "image": "carte-france-relief",
+      "question": "seine",
+      "reponse": "la Seine"
+    },
+    {
+      "id": "fleuve-loire",
+      "chapitre": "fleuves",
+      "type": "zones",
+      "image": "carte-france-relief",
+      "question": "loire",
+      "reponse": "la Loire"
+    },
+    {
+      "id": "fleuve-garonne",
+      "chapitre": "fleuves",
+      "type": "zones",
+      "image": "carte-france-relief",
+      "question": "garonne",
+      "reponse": "la Garonne"
+    },
+    {
+      "id": "fleuve-rhone",
+      "chapitre": "fleuves",
+      "type": "zones",
+      "image": "carte-france-relief",
+      "question": "rhone",
+      "reponse": "le Rhône"
+    },
+    {
+      "id": "fleuve-rhin",
+      "chapitre": "fleuves",
+      "type": "zones",
+      "image": "carte-france-relief",
+      "question": "rhin",
+      "reponse": "le Rhin"
+    },
+    {
+      "id": "seine-paris",
+      "chapitre": "fleuves",
+      "type": "choix",
+      "question": "Quel fleuve traverse Paris ?",
+      "reponse": "la Seine",
+      "pieges": [
+        "la Loire",
+        "le Rhône",
+        "la Garonne"
+      ],
+      "consigne": "Quel fleuve traverse Paris ?"
+    },
+    {
+      "id": "plus-long",
+      "chapitre": "fleuves",
+      "type": "choix",
+      "question": "Quel est le plus long fleuve de France ?",
+      "reponse": "la Loire",
+      "pieges": [
+        "la Seine",
+        "le Rhin",
+        "la Garonne"
+      ],
+      "consigne": "Quel est le plus long fleuve de France ?"
+    },
+    {
+      "id": "rhone-mer",
+      "chapitre": "fleuves",
+      "type": "choix",
+      "question": "Dans quelle mer se jette le Rhône ?",
+      "reponse": "la Méditerranée",
+      "pieges": [
+        "la Manche",
+        "la mer du Nord",
+        "l’océan Atlantique"
+      ],
+      "consigne": "Dans quelle mer se jette le Rhône ?"
+    },
+    {
+      "id": "garonne-ville",
+      "chapitre": "fleuves",
+      "type": "choix",
+      "question": "Quel fleuve passe à Toulouse et à Bordeaux ?",
+      "reponse": "la Garonne",
+      "pieges": [
+        "la Seine",
+        "le Rhin",
+        "la Loire"
+      ],
+      "consigne": "Quel fleuve passe à Toulouse et à Bordeaux ?"
+    },
+    {
+      "id": "rhin-frontiere",
+      "chapitre": "fleuves",
+      "type": "choix",
+      "question": "Quel fleuve sépare la France de l’Allemagne ?",
+      "reponse": "le Rhin",
+      "pieges": [
+        "la Loire",
+        "la Seine",
+        "la Garonne"
+      ],
+      "consigne": "Quel fleuve sépare la France de l’Allemagne ?"
+    },
+    {
+      "id": "rhone-lyon",
+      "chapitre": "fleuves",
+      "type": "choix",
+      "question": "Quel fleuve passe à Lyon ?",
+      "reponse": "le Rhône",
+      "pieges": [
+        "la Seine",
+        "la Garonne",
+        "la Loire"
+      ],
+      "consigne": "Quel fleuve passe à Lyon ?"
+    },
+    {
+      "id": "fleuve-def",
+      "chapitre": "fleuves",
+      "type": "choix",
+      "question": "Un cours d’eau qui se jette dans la mer s’appelle…",
+      "reponse": "un fleuve",
+      "pieges": [
+        "une rivière",
+        "un lac",
+        "un étang"
+      ],
+      "consigne": "Un cours d’eau qui se jette dans la mer s’appelle…",
+      "explication": "Une rivière se jette dans un autre cours d’eau."
+    },
+    {
+      "id": "montagne-alpes",
+      "chapitre": "montagnes",
+      "type": "zones",
+      "image": "carte-france-relief",
+      "question": "alpes",
+      "reponse": "les Alpes"
+    },
+    {
+      "id": "montagne-pyrenees",
+      "chapitre": "montagnes",
+      "type": "zones",
+      "image": "carte-france-relief",
+      "question": "pyrenees",
+      "reponse": "les Pyrénées"
+    },
+    {
+      "id": "montagne-massif-central",
+      "chapitre": "montagnes",
+      "type": "zones",
+      "image": "carte-france-relief",
+      "question": "massif-central",
+      "reponse": "le Massif central"
+    },
+    {
+      "id": "montagne-jura",
+      "chapitre": "montagnes",
+      "type": "zones",
+      "image": "carte-france-relief",
+      "question": "jura",
+      "reponse": "le Jura"
+    },
+    {
+      "id": "montagne-vosges",
+      "chapitre": "montagnes",
+      "type": "zones",
+      "image": "carte-france-relief",
+      "question": "vosges",
+      "reponse": "les Vosges"
+    },
+    {
+      "id": "mont-blanc",
+      "chapitre": "montagnes",
+      "type": "choix",
+      "question": "Dans quelles montagnes est le mont Blanc, le plus haut sommet de France ?",
+      "reponse": "les Alpes",
+      "pieges": [
+        "les Pyrénées",
+        "les Vosges",
+        "le Jura"
+      ],
+      "consigne": "Dans quelles montagnes est le mont Blanc, le plus haut sommet de France ?",
+      "image": "mountain"
+    },
+    {
+      "id": "pyrenees-espagne",
+      "chapitre": "montagnes",
+      "type": "choix",
+      "question": "Quelles montagnes séparent la France de l’Espagne ?",
+      "reponse": "les Pyrénées",
+      "pieges": [
+        "les Alpes",
+        "les Vosges",
+        "le Massif central"
+      ],
+      "consigne": "Quelles montagnes séparent la France de l’Espagne ?"
+    },
+    {
+      "id": "volcans",
+      "chapitre": "montagnes",
+      "type": "choix",
+      "question": "Où trouve-t-on de vieux volcans éteints, comme le puy de Dôme ?",
+      "reponse": "dans le Massif central",
+      "pieges": [
+        "dans les Vosges",
+        "en Bretagne",
+        "dans le Jura"
+      ],
+      "consigne": "Où trouve-t-on de vieux volcans éteints, comme le puy de Dôme ?"
+    },
+    {
+      "id": "mont-blanc-haut",
+      "chapitre": "montagnes",
+      "type": "choix",
+      "question": "Le mont Blanc mesure environ…",
+      "reponse": "4 800 mètres",
+      "pieges": [
+        "48 mètres",
+        "480 mètres",
+        "48 000 mètres"
+      ],
+      "consigne": "Le mont Blanc mesure environ…"
+    },
+    {
+      "id": "ville-paris",
+      "chapitre": "villes",
+      "type": "zones",
+      "image": "carte-france-relief",
+      "question": "paris",
+      "reponse": "Paris"
+    },
+    {
+      "id": "ville-lyon",
+      "chapitre": "villes",
+      "type": "zones",
+      "image": "carte-france-relief",
+      "question": "lyon",
+      "reponse": "Lyon"
+    },
+    {
+      "id": "ville-marseille",
+      "chapitre": "villes",
+      "type": "zones",
+      "image": "carte-france-relief",
+      "question": "marseille",
+      "reponse": "Marseille"
+    },
+    {
+      "id": "ville-toulouse",
+      "chapitre": "villes",
+      "type": "zones",
+      "image": "carte-france-relief",
+      "question": "toulouse",
+      "reponse": "Toulouse"
+    },
+    {
+      "id": "ville-bordeaux",
+      "chapitre": "villes",
+      "type": "zones",
+      "image": "carte-france-relief",
+      "question": "bordeaux",
+      "reponse": "Bordeaux"
+    },
+    {
+      "id": "ville-lille",
+      "chapitre": "villes",
+      "type": "zones",
+      "image": "carte-france-relief",
+      "question": "lille",
+      "reponse": "Lille"
+    },
+    {
+      "id": "ville-nantes",
+      "chapitre": "villes",
+      "type": "zones",
+      "image": "carte-france-relief",
+      "question": "nantes",
+      "reponse": "Nantes"
+    },
+    {
+      "id": "ville-strasbourg",
+      "chapitre": "villes",
+      "type": "zones",
+      "image": "carte-france-relief",
+      "question": "strasbourg",
+      "reponse": "Strasbourg"
+    },
+    {
+      "id": "ville-nice",
+      "chapitre": "villes",
+      "type": "zones",
+      "image": "carte-france-relief",
+      "question": "nice",
+      "reponse": "Nice"
+    },
+    {
+      "id": "ville-brest",
+      "chapitre": "villes",
+      "type": "zones",
+      "image": "carte-france-relief",
+      "question": "brest",
+      "reponse": "Brest"
+    },
+    {
+      "id": "capitale",
+      "chapitre": "villes",
+      "type": "choix",
+      "question": "Quelle est la capitale de la France ?",
+      "reponse": "Paris",
+      "pieges": [
+        "Lyon",
+        "Marseille",
+        "Bordeaux"
+      ],
+      "consigne": "Quelle est la capitale de la France ?"
+    },
+    {
+      "id": "port-sud",
+      "chapitre": "villes",
+      "type": "choix",
+      "question": "Quel grand port est au bord de la Méditerranée ?",
+      "reponse": "Marseille",
+      "pieges": [
+        "Lille",
+        "Strasbourg",
+        "Paris"
+      ],
+      "consigne": "Quel grand port est au bord de la Méditerranée ?"
+    },
+    {
+      "id": "ville-rhin",
+      "chapitre": "villes",
+      "type": "choix",
+      "question": "Quelle grande ville est près du Rhin ?",
+      "reponse": "Strasbourg",
+      "pieges": [
+        "Brest",
+        "Bordeaux",
+        "Nantes"
+      ],
+      "consigne": "Quelle grande ville est près du Rhin ?"
+    },
+    {
+      "id": "paysages-1",
+      "chapitre": "paysages",
+      "type": "classer",
+      "question": "Où est-on ?",
+      "consigne": "Où est-on ?",
+      "boites": [
+        {
+          "nom": "En ville"
+        },
+        {
+          "nom": "À la campagne"
+        },
+        {
+          "nom": "À la montagne"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "des immeubles et des embouteillages",
+          "boite": "En ville"
+        },
+        {
+          "texte": "le métro",
+          "boite": "En ville"
+        },
+        {
+          "texte": "des champs et des fermes",
+          "boite": "À la campagne"
+        },
+        {
+          "texte": "des vaches dans un pré",
+          "boite": "À la campagne"
+        },
+        {
+          "texte": "des pistes de ski",
+          "boite": "À la montagne"
+        },
+        {
+          "texte": "des sommets enneigés",
+          "boite": "À la montagne"
+        },
+        {
+          "texte": "un tracteur dans un champ",
+          "boite": "À la campagne"
+        },
+        {
+          "texte": "un téléphérique",
+          "boite": "À la montagne"
+        },
+        {
+          "texte": "beaucoup de magasins",
+          "boite": "En ville"
+        }
+      ]
+    },
+    {
+      "id": "littoral",
+      "chapitre": "paysages",
+      "type": "choix",
+      "question": "Un paysage au bord de la mer s’appelle…",
+      "reponse": "le littoral",
+      "pieges": [
+        "la plaine",
+        "la vallée",
+        "le plateau"
+      ],
+      "consigne": "Un paysage au bord de la mer s’appelle…",
+      "image": "wave"
+    },
+    {
+      "id": "vallee",
+      "chapitre": "paysages",
+      "type": "choix",
+      "question": "Le creux entre deux montagnes, où coule souvent une rivière, est…",
+      "reponse": "une vallée",
+      "pieges": [
+        "un sommet",
+        "une plage",
+        "une île"
+      ],
+      "consigne": "Le creux entre deux montagnes, où coule souvent une rivière, est…"
+    },
+    {
+      "id": "ile-def",
+      "chapitre": "paysages",
+      "type": "choix",
+      "question": "Une terre entourée d’eau de tous les côtés, c’est…",
+      "reponse": "une île",
+      "pieges": [
+        "une plage",
+        "une vallée",
+        "une montagne"
+      ],
+      "consigne": "Une terre entourée d’eau de tous les côtés, c’est…"
+    },
+    {
+      "id": "plaine",
+      "chapitre": "paysages",
+      "type": "choix",
+      "question": "Un grand paysage plat, souvent cultivé, c’est…",
+      "reponse": "une plaine",
+      "pieges": [
+        "une montagne",
+        "une falaise",
+        "une vallée"
+      ],
+      "consigne": "Un grand paysage plat, souvent cultivé, c’est…"
+    },
+    {
+      "id": "port",
+      "chapitre": "paysages",
+      "type": "choix",
+      "question": "Où les bateaux s’abritent-ils sur le littoral ?",
+      "reponse": "dans le port",
+      "pieges": [
+        "dans la gare",
+        "dans l’aéroport",
+        "dans le champ"
+      ],
+      "consigne": "Où les bateaux s’abritent-ils sur le littoral ?",
+      "image": "boat"
+    },
+    {
+      "id": "continent-afrique",
+      "chapitre": "continents",
+      "type": "zones",
+      "image": "carte-monde",
+      "question": "afrique",
+      "reponse": "l’Afrique"
+    },
+    {
+      "id": "continent-europe",
+      "chapitre": "continents",
+      "type": "zones",
+      "image": "carte-monde",
+      "question": "europe",
+      "reponse": "l’Europe"
+    },
+    {
+      "id": "continent-asie",
+      "chapitre": "continents",
+      "type": "zones",
+      "image": "carte-monde",
+      "question": "asie",
+      "reponse": "l’Asie"
+    },
+    {
+      "id": "continent-amerique-du-nord",
+      "chapitre": "continents",
+      "type": "zones",
+      "image": "carte-monde",
+      "question": "amerique-du-nord",
+      "reponse": "l’Amérique du Nord"
+    },
+    {
+      "id": "continent-amerique-du-sud",
+      "chapitre": "continents",
+      "type": "zones",
+      "image": "carte-monde",
+      "question": "amerique-du-sud",
+      "reponse": "l’Amérique du Sud"
+    },
+    {
+      "id": "continent-oceanie",
+      "chapitre": "continents",
+      "type": "zones",
+      "image": "carte-monde",
+      "question": "oceanie",
+      "reponse": "l’Océanie"
+    },
+    {
+      "id": "continent-antarctique",
+      "chapitre": "continents",
+      "type": "zones",
+      "image": "carte-monde",
+      "question": "antarctique",
+      "reponse": "l’Antarctique"
+    },
+    {
+      "id": "ocean-pacifique",
+      "chapitre": "oceans",
+      "type": "zones",
+      "image": "carte-monde",
+      "question": "pacifique",
+      "reponse": "l’océan Pacifique"
+    },
+    {
+      "id": "ocean-atlantique",
+      "chapitre": "oceans",
+      "type": "zones",
+      "image": "carte-monde",
+      "question": "atlantique",
+      "reponse": "l’océan Atlantique"
+    },
+    {
+      "id": "ocean-indien",
+      "chapitre": "oceans",
+      "type": "zones",
+      "image": "carte-monde",
+      "question": "indien",
+      "reponse": "l’océan Indien"
+    },
+    {
+      "id": "ocean-arctique",
+      "chapitre": "oceans",
+      "type": "zones",
+      "image": "carte-monde",
+      "question": "arctique",
+      "reponse": "l’océan Arctique"
+    },
+    {
+      "id": "ocean-austral",
+      "chapitre": "oceans",
+      "type": "zones",
+      "image": "carte-monde",
+      "question": "austral",
+      "reponse": "l’océan Austral"
+    },
+    {
+      "id": "france-continent",
+      "chapitre": "continents",
+      "type": "choix",
+      "question": "Sur quel continent se trouve la France ?",
+      "reponse": "l’Europe",
+      "pieges": [
+        "l’Afrique",
+        "l’Asie",
+        "l’Amérique du Nord"
+      ],
+      "consigne": "Sur quel continent se trouve la France ?"
+    },
+    {
+      "id": "terre-ronde",
+      "chapitre": "continents",
+      "type": "choix",
+      "question": "Quelle est la forme de la Terre ?",
+      "reponse": "une boule",
+      "pieges": [
+        "un disque plat",
+        "un cube",
+        "un triangle"
+      ],
+      "consigne": "Quelle est la forme de la Terre ?"
+    },
+    {
+      "id": "globe",
+      "chapitre": "continents",
+      "type": "choix",
+      "question": "Comment s’appelle la maquette ronde de la Terre ?",
+      "reponse": "un globe",
+      "pieges": [
+        "un ballon",
+        "une carte",
+        "un plan"
+      ],
+      "consigne": "Comment s’appelle la maquette ronde de la Terre ?"
+    },
+    {
+      "id": "eau-terre",
+      "chapitre": "oceans",
+      "type": "choix",
+      "question": "La Terre est surtout couverte…",
+      "reponse": "d’eau",
+      "pieges": [
+        "de forêts",
+        "de villes",
+        "de sable"
+      ],
+      "consigne": "La Terre est surtout couverte…"
+    },
+    {
+      "id": "plus-grand-ocean",
+      "chapitre": "oceans",
+      "type": "choix",
+      "question": "Quel est le plus grand océan ?",
+      "reponse": "l’océan Pacifique",
+      "pieges": [
+        "l’océan Atlantique",
+        "l’océan Indien",
+        "l’océan Arctique"
+      ],
+      "consigne": "Quel est le plus grand océan ?"
+    },
+    {
+      "id": "ocean-france",
+      "chapitre": "oceans",
+      "type": "choix",
+      "question": "Quel océan borde la côte ouest de la France ?",
+      "reponse": "l’océan Atlantique",
+      "pieges": [
+        "l’océan Pacifique",
+        "l’océan Indien",
+        "l’océan Arctique"
+      ],
+      "consigne": "Quel océan borde la côte ouest de la France ?"
+    },
+    {
+      "id": "pole-sud",
+      "chapitre": "continents",
+      "type": "choix",
+      "question": "Quel continent glacé est au pôle Sud ?",
+      "reponse": "l’Antarctique",
+      "pieges": [
+        "l’Europe",
+        "l’Asie",
+        "l’Afrique"
+      ],
+      "consigne": "Quel continent glacé est au pôle Sud ?",
+      "image": "penguin"
+    }
+  ]
+}
