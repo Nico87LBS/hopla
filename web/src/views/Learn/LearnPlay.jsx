@@ -407,39 +407,70 @@ Feedback.propTypes = {
 
 // spoken is what is said of a question when it is read aloud.
 export const spoken = item =>
-  item.subject?.text ? `${item.prompt} ${item.subject.text}` : item.prompt
+  [
+    item.instruction !== item.prompt && item.instruction,
+    item.prompt,
+    item.subject?.text,
+  ]
+    .filter(Boolean)
+    .join(' ')
+
+// readBack is what is said once a question of a reading module is answered:
+// the words the child had to read, so that they hear them.
+export const readBack = item => {
+  if (item.subject?.text) return item.subject.text
+  if (item.mode === 'order') return item.answer.split(' → ').join(' ')
+  if (item.prompt === item.instruction) return item.answer
+  return item.prompt.includes('___')
+    ? item.prompt.replace('___', item.answer)
+    : item.prompt
+}
 
 // Prompt is what a question asks: words to read, a drawing, a collection to
 // count, a picture in zones, or words said aloud, said again with the
 // speaker button. Without a voice on the device, the words are shown
-// instead. Read aloud, the question is said as it opens.
-const Prompt = ({ color, item, say }) => {
+// instead. Read aloud, the question is said as it opens. In a module that
+// teaches reading, tell says only the instruction, written above it.
+const Prompt = ({ color, item, say, tell }) => {
   const { t } = useTranslation('learn')
   const voice = item.listen && canSpeak()
+  const instruction = item.instruction !== item.prompt && item.instruction
+  const telling = !say && tell && item.instruction
   useEffect(() => {
-    if (voice) speak(item.listen, item.lang)
-    else if (say) say(spoken(item))
+    if (voice) {
+      if (telling) tell(item.instruction)
+      speak(item.listen, item.lang, { queue: !!telling })
+    } else if (say) say(spoken(item))
+    else if (telling) tell(item.instruction)
     return stopSpeaking
     // Said once, as the question opens.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [voice, item.key, item.listen, item.lang])
+  const said = instruction && (
+    <Typography level='body-md' textColor='text.secondary'>
+      {instruction}
+    </Typography>
+  )
   if (voice) {
     return (
-      <IconButton
-        variant='solid'
-        aria-label={t('play.listen')}
-        title={t('play.listen')}
-        onClick={() => speak(item.listen, item.lang)}
-        sx={{
-          bgcolor: color,
-          borderRadius: '50%',
-          height: 96,
-          width: 96,
-          '&:hover': { bgcolor: color },
-        }}
-      >
-        <VolumeUpRounded sx={{ fontSize: 56 }} />
-      </IconButton>
+      <Stack alignItems='center' gap={1.5}>
+        {said}
+        <IconButton
+          variant='solid'
+          aria-label={t('play.listen')}
+          title={t('play.listen')}
+          onClick={() => speak(item.listen, item.lang)}
+          sx={{
+            bgcolor: color,
+            borderRadius: '50%',
+            height: 96,
+            width: 96,
+            '&:hover': { bgcolor: color },
+          }}
+        >
+          <VolumeUpRounded sx={{ fontSize: 56 }} />
+        </IconButton>
+      </Stack>
     )
   }
   const small =
@@ -450,17 +481,18 @@ const Prompt = ({ color, item, say }) => {
     item.mode === 'order'
   return (
     <Stack alignItems='center' gap={1} sx={{ width: '100%' }}>
-      {say && (
+      {(say || telling) && (
         <IconButton
           variant='soft'
           aria-label={t('play.readAgain')}
           title={t('play.readAgain')}
-          onClick={() => say(spoken(item))}
+          onClick={() => (say ? say(spoken(item)) : tell(item.instruction))}
           sx={{ alignSelf: 'flex-end', borderRadius: '50%', mb: -1 }}
         >
           <VolumeUpRounded />
         </IconButton>
       )}
+      {said}
       {item.image && <Drawing id={item.image} />}
       {item.count && <CountPicture count={item.count} />}
       {item.zones && item.mode === 'choice' && (
@@ -486,6 +518,7 @@ Prompt.propTypes = {
   color: PropTypes.string.isRequired,
   item: PropTypes.object.isRequired,
   say: PropTypes.func,
+  tell: PropTypes.func,
 }
 
 const Question = ({ color, item, onAnswer, say }) => {
@@ -688,12 +721,15 @@ const LearnPlay = ({ playMode = false }) => {
   // Read aloud, for the modules made for those who do not read yet, unless
   // a parent turned it off for this person.
   const doc = compiled.doc
-  const say =
-    player.readAloud && doc.lecture_voix_haute && canSpeak()
-      ? text => speak(text, doc.langue || 'fr')
-      : undefined
+  const voice = player.readAloud && canSpeak() && doc.lecture_voix_haute
+  const tell = voice ? text => speak(text, doc.langue || 'fr') : undefined
+  // In a module that teaches reading, a question with an instruction has
+  // only it said: its words and its choices would give the answer away.
+  const sayFor = shown =>
+    voice === 'consigne' && shown?.instruction ? undefined : tell
   const index = game.answers.length
   const item = game.questions[index]
+  const say = sayFor(item)
 
   const finish = async answers => {
     const correct = answers.filter(a => a.correct).length
@@ -748,6 +784,8 @@ const LearnPlay = ({ playMode = false }) => {
     const check = checkAnswer(item, given)
     // A word picked from its meaning is said once answered.
     if (item.said) speak(item.said.listen, item.said.lang)
+    else if (tell && !say && item.instruction && !item.listen)
+      tell(readBack(item))
     const answers = [
       ...game.answers,
       {
@@ -857,7 +895,12 @@ const LearnPlay = ({ playMode = false }) => {
                 width: '100%',
               }}
             >
-              <Prompt item={feedback?.item || item} color={color} say={say} />
+              <Prompt
+                item={feedback?.item || item}
+                color={color}
+                say={sayFor(feedback?.item || item)}
+                tell={tell}
+              />
             </Sheet>
             {feedback ? (
               <Feedback feedback={feedback} onNext={next} />

@@ -64,7 +64,7 @@ type Document struct {
 	Language    string   `json:"langue"`
 	// ReadAloud lets the device say the questions and answers aloud, for
 	// those who do not read yet, unless a parent turned it off for them.
-	ReadAloud     bool        `json:"lecture_voix_haute"`
+	ReadAloud     ReadAloud   `json:"lecture_voix_haute"`
 	Modules       []string    `json:"modules"`
 	Prerequisites []Prereq    `json:"prerequis"`
 	Chapters      []Chapter   `json:"chapitres"`
@@ -110,6 +110,41 @@ type CardDef struct {
 	// Boxes and ToSort, for classer: each label goes into one box.
 	Boxes  []SortBox  `json:"boites"`
 	ToSort []SortItem `json:"a_classer"`
+}
+
+// ReadAloud is what the device says aloud in a module: nothing, everything
+// (true in the file), or only the instructions ("consigne") in the modules
+// that teach reading, where saying the words would give the answers away.
+type ReadAloud string
+
+const (
+	ReadNothing      ReadAloud = ""
+	ReadEverything   ReadAloud = "tout"
+	ReadInstructions ReadAloud = "consigne"
+)
+
+func (r *ReadAloud) UnmarshalJSON(raw []byte) error {
+	switch string(raw) {
+	case "true":
+		*r = ReadEverything
+	case "false", "null":
+		*r = ReadNothing
+	case `"consigne"`:
+		*r = ReadInstructions
+	default:
+		return fmt.Errorf(`lecture_voix_haute vaut true, false ou "consigne", pas %s`, raw)
+	}
+	return nil
+}
+
+func (r ReadAloud) MarshalJSON() ([]byte, error) {
+	switch r {
+	case ReadEverything:
+		return []byte("true"), nil
+	case ReadInstructions:
+		return []byte(`"consigne"`), nil
+	}
+	return []byte("false"), nil
 }
 
 // Label is a word, a drawing or both. It is written as a plain string when

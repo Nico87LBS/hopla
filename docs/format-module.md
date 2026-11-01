@@ -70,7 +70,7 @@ Le fichier est contrôlé à l'import ; une erreur est expliquée en français
 | `public` | non | `enfant`, `adulte` ou `tous` |
 | `langue` | non | Langue des consignes (`fr`, `en`) |
 | `langue_apprise` | non | Langue enseignée, pour la voix des fiches Écoute (`en`) |
-| `lecture_voix_haute` | non | `true` pour les modules de ceux qui ne lisent pas encore : l'appareil dit la question, puis chaque réponse au premier toucher (un second toucher la choisit). Un parent peut l'éteindre pour une personne |
+| `lecture_voix_haute` | non | `true` pour les modules de ceux qui ne lisent pas encore : l'appareil dit la question, puis chaque réponse au premier toucher (un second toucher la choisit). `"consigne"` pour les modules qui apprennent à lire : l'appareil ne dit que la `consigne` des fiches qui en ont une, puis, une fois répondu, les mots à lire ; les réponses ne sont pas dites. Un parent peut l'éteindre pour une personne |
 | `couleur` | non | Couleur du module, en `#RRGGBB` |
 | `icone`, `sources` | non | Informations, pas encore affichées |
 | `modules` | paquet | Fait du fichier un **paquet** : la liste des `id` de ses modules (40 au plus). Un paquet n'a ni chapitres, ni fiches, ni générateurs. Ses modules sont ceux du catalogue (installés avec lui) ou des modules déjà importés |
@@ -103,6 +103,7 @@ Champs communs :
 | `type` | `choix`, `saisie`, `ecoute`, `retourner`, `associer`, `ordre`, `classer` ou `zones` |
 | `question` | Obligatoire. Pour `associer`, `ordre` et `classer`, c'est la consigne |
 | `reponse` | Obligatoire, sauf pour `associer`, `ordre` et `classer` |
+| `consigne` | Ce qu'il faut faire, écrit en petit au-dessus de la question. Dans un module `"lecture_voix_haute": "consigne"`, c'est le seul texte dit à l'ouverture |
 | `explication` | Texte montré après la réponse (un exemple, une règle) |
 | `sens` | Sens posés, par défaut `["direct"]` (voir chaque type) |
 | `cle` | Clé partagée avec d'autres modules (voir plus bas) |
@@ -135,7 +136,7 @@ La `question` est dite à voix haute par l'appareil, dans `langue_apprise`. La
 | Sens | L'enfant… |
 | --- | --- |
 | `direct` | entend le mot et touche son sens, ou son dessin si les fiches ont une `image` |
-| `lire` | lit le mot et touche son sens ; le mot est dit une fois répondu |
+| `lire` | lit le mot et touche son sens, ou son dessin si les fiches ont une `image` ; le mot est dit une fois répondu |
 | `inverse` | voit le sens (ou le dessin) et touche le mot |
 | `dictee` | entend le mot et l'écrit (`tolerance` par défaut : `une_faute`) |
 | `chiffres` | entend un message et tape ses chiffres (niveaux, codes à collationner) |

@@ -1,0 +1,617 @@
+{
+  "format": "hopla-module/1",
+  "id": "lire-mots-outils",
+  "version": "1.0.0",
+  "nom": "Mots outils",
+  "description": "Reconnaître d'un coup d'œil les petits mots qu'on lit partout (le, est, dans, avec…), puis compléter des phrases.",
+  "matiere": "francais",
+  "niveaux": [
+    "GS",
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": "consigne",
+  "auteur": "Hopla",
+  "sources": "D'après le programme du cycle 2 (CP) et les repères de progression en lecture d'Éduscol.",
+  "chapitres": [
+    {
+      "id": "petits",
+      "nom": "Les petits mots"
+    },
+    {
+      "id": "qui",
+      "nom": "Qui ?",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "ou-comment",
+      "nom": "Où ? Comment ?",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "phrases",
+      "nom": "Pour faire des phrases",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "trous",
+      "nom": "Le mot qui manque",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "mot-le",
+      "chapitre": "petits",
+      "type": "ecoute",
+      "question": "le",
+      "reponse": "le",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:le"
+    },
+    {
+      "id": "mot-la",
+      "chapitre": "petits",
+      "type": "ecoute",
+      "question": "la",
+      "reponse": "la",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:la"
+    },
+    {
+      "id": "mot-les",
+      "chapitre": "petits",
+      "type": "ecoute",
+      "question": "les",
+      "reponse": "les",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:les"
+    },
+    {
+      "id": "mot-un",
+      "chapitre": "petits",
+      "type": "ecoute",
+      "question": "un",
+      "reponse": "un",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:un"
+    },
+    {
+      "id": "mot-une",
+      "chapitre": "petits",
+      "type": "ecoute",
+      "question": "une",
+      "reponse": "une",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:une"
+    },
+    {
+      "id": "mot-des",
+      "chapitre": "petits",
+      "type": "ecoute",
+      "question": "des",
+      "reponse": "des",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:des"
+    },
+    {
+      "id": "mot-et",
+      "chapitre": "petits",
+      "type": "ecoute",
+      "question": "et",
+      "reponse": "et",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:et"
+    },
+    {
+      "id": "mot-est",
+      "chapitre": "petits",
+      "type": "ecoute",
+      "question": "est",
+      "reponse": "est",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:est"
+    },
+    {
+      "id": "mot-au",
+      "chapitre": "petits",
+      "type": "ecoute",
+      "question": "au",
+      "reponse": "au",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:au"
+    },
+    {
+      "id": "mot-du",
+      "chapitre": "petits",
+      "type": "ecoute",
+      "question": "du",
+      "reponse": "du",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:du"
+    },
+    {
+      "id": "mot-je",
+      "chapitre": "qui",
+      "type": "ecoute",
+      "question": "je",
+      "reponse": "je",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:je"
+    },
+    {
+      "id": "mot-tu",
+      "chapitre": "qui",
+      "type": "ecoute",
+      "question": "tu",
+      "reponse": "tu",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:tu"
+    },
+    {
+      "id": "mot-il",
+      "chapitre": "qui",
+      "type": "ecoute",
+      "question": "il",
+      "reponse": "il",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:il"
+    },
+    {
+      "id": "mot-elle",
+      "chapitre": "qui",
+      "type": "ecoute",
+      "question": "elle",
+      "reponse": "elle",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:elle"
+    },
+    {
+      "id": "mot-on",
+      "chapitre": "qui",
+      "type": "ecoute",
+      "question": "on",
+      "reponse": "on",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:on"
+    },
+    {
+      "id": "mot-nous",
+      "chapitre": "qui",
+      "type": "ecoute",
+      "question": "nous",
+      "reponse": "nous",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:nous"
+    },
+    {
+      "id": "mot-vous",
+      "chapitre": "qui",
+      "type": "ecoute",
+      "question": "vous",
+      "reponse": "vous",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:vous"
+    },
+    {
+      "id": "mot-moi",
+      "chapitre": "qui",
+      "type": "ecoute",
+      "question": "moi",
+      "reponse": "moi",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:moi"
+    },
+    {
+      "id": "mot-toi",
+      "chapitre": "qui",
+      "type": "ecoute",
+      "question": "toi",
+      "reponse": "toi",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:toi"
+    },
+    {
+      "id": "mot-lui",
+      "chapitre": "qui",
+      "type": "ecoute",
+      "question": "lui",
+      "reponse": "lui",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:lui"
+    },
+    {
+      "id": "mot-dans",
+      "chapitre": "ou-comment",
+      "type": "ecoute",
+      "question": "dans",
+      "reponse": "dans",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:dans"
+    },
+    {
+      "id": "mot-sur",
+      "chapitre": "ou-comment",
+      "type": "ecoute",
+      "question": "sur",
+      "reponse": "sur",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:sur"
+    },
+    {
+      "id": "mot-sous",
+      "chapitre": "ou-comment",
+      "type": "ecoute",
+      "question": "sous",
+      "reponse": "sous",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:sous"
+    },
+    {
+      "id": "mot-avec",
+      "chapitre": "ou-comment",
+      "type": "ecoute",
+      "question": "avec",
+      "reponse": "avec",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:avec"
+    },
+    {
+      "id": "mot-pour",
+      "chapitre": "ou-comment",
+      "type": "ecoute",
+      "question": "pour",
+      "reponse": "pour",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:pour"
+    },
+    {
+      "id": "mot-chez",
+      "chapitre": "ou-comment",
+      "type": "ecoute",
+      "question": "chez",
+      "reponse": "chez",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:chez"
+    },
+    {
+      "id": "mot-par",
+      "chapitre": "ou-comment",
+      "type": "ecoute",
+      "question": "par",
+      "reponse": "par",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:par"
+    },
+    {
+      "id": "mot-sans",
+      "chapitre": "ou-comment",
+      "type": "ecoute",
+      "question": "sans",
+      "reponse": "sans",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:sans"
+    },
+    {
+      "id": "mot-a",
+      "chapitre": "ou-comment",
+      "type": "ecoute",
+      "question": "à",
+      "reponse": "à",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:a"
+    },
+    {
+      "id": "mot-de",
+      "chapitre": "ou-comment",
+      "type": "ecoute",
+      "question": "de",
+      "reponse": "de",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:de"
+    },
+    {
+      "id": "mot-mon",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "mon",
+      "reponse": "mon",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:mon"
+    },
+    {
+      "id": "mot-ma",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "ma",
+      "reponse": "ma",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:ma"
+    },
+    {
+      "id": "mot-mes",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "mes",
+      "reponse": "mes",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:mes"
+    },
+    {
+      "id": "mot-c-est",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "c’est",
+      "reponse": "c’est",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:c-est"
+    },
+    {
+      "id": "mot-pas",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "pas",
+      "reponse": "pas",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:pas"
+    },
+    {
+      "id": "mot-oui",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "oui",
+      "reponse": "oui",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:oui"
+    },
+    {
+      "id": "mot-non",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "non",
+      "reponse": "non",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:non"
+    },
+    {
+      "id": "mot-tres",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "très",
+      "reponse": "très",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:tres"
+    },
+    {
+      "id": "mot-mais",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "mais",
+      "reponse": "mais",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:mais"
+    },
+    {
+      "id": "mot-aussi",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "aussi",
+      "reponse": "aussi",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:aussi"
+    },
+    {
+      "id": "mot-qui",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "qui",
+      "reponse": "qui",
+      "consigne": "Écoute, puis touche le mot que tu entends.",
+      "cle": "fr:mot-outil:qui"
+    },
+    {
+      "id": "trou-1",
+      "chapitre": "trous",
+      "type": "choix",
+      "question": "Le chat ___ noir.",
+      "reponse": "est",
+      "pieges": [
+        "et",
+        "es",
+        "ai"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "trou-2",
+      "chapitre": "trous",
+      "type": "choix",
+      "question": "Papa ___ maman.",
+      "reponse": "et",
+      "pieges": [
+        "est",
+        "es",
+        "en"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "trou-3",
+      "chapitre": "trous",
+      "type": "choix",
+      "question": "___ lapin mange une carotte.",
+      "reponse": "Le",
+      "pieges": [
+        "La",
+        "Les",
+        "Des"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "trou-4",
+      "chapitre": "trous",
+      "type": "choix",
+      "question": "Je mange ___ pomme.",
+      "reponse": "une",
+      "pieges": [
+        "un",
+        "des",
+        "les"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "trou-5",
+      "chapitre": "trous",
+      "type": "choix",
+      "question": "Le livre est ___ la table.",
+      "reponse": "sur",
+      "pieges": [
+        "sous",
+        "dans",
+        "avec"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "trou-6",
+      "chapitre": "trous",
+      "type": "choix",
+      "question": "Le poisson nage ___ l’eau.",
+      "reponse": "dans",
+      "pieges": [
+        "sur",
+        "sous",
+        "par"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "trou-7",
+      "chapitre": "trous",
+      "type": "choix",
+      "question": "Le chien dort ___ le lit.",
+      "reponse": "sous",
+      "pieges": [
+        "sur",
+        "dans",
+        "pour"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "trou-8",
+      "chapitre": "trous",
+      "type": "choix",
+      "question": "Je joue ___ mon ami.",
+      "reponse": "avec",
+      "pieges": [
+        "sans",
+        "sous",
+        "dans"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "trou-9",
+      "chapitre": "trous",
+      "type": "choix",
+      "question": "___ suis content.",
+      "reponse": "Je",
+      "pieges": [
+        "Tu",
+        "Il",
+        "Nous"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "trou-10",
+      "chapitre": "trous",
+      "type": "choix",
+      "question": "___ sommes à l’école.",
+      "reponse": "Nous",
+      "pieges": [
+        "Vous",
+        "Je",
+        "Tu"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "trou-11",
+      "chapitre": "trous",
+      "type": "choix",
+      "question": "Elle met ___ chapeau.",
+      "reponse": "son",
+      "pieges": [
+        "sa",
+        "ses",
+        "mon"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "trou-12",
+      "chapitre": "trous",
+      "type": "choix",
+      "question": "Il ne pleut ___.",
+      "reponse": "pas",
+      "pieges": [
+        "par",
+        "pour",
+        "plus"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "trou-13",
+      "chapitre": "trous",
+      "type": "choix",
+      "question": "Les enfants ___ dans la cour.",
+      "reponse": "sont",
+      "pieges": [
+        "son",
+        "est",
+        "et"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "trou-14",
+      "chapitre": "trous",
+      "type": "choix",
+      "question": "Il y ___ un oiseau dans l’arbre.",
+      "reponse": "a",
+      "pieges": [
+        "à",
+        "as",
+        "est"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "trou-15",
+      "chapitre": "trous",
+      "type": "choix",
+      "question": "Je vais ___ l’école.",
+      "reponse": "à",
+      "pieges": [
+        "a",
+        "as",
+        "est"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    }
+  ]
+}

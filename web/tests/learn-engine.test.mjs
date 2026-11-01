@@ -523,3 +523,19 @@ test('the questions about the first name use the player’s own', () => {
   assert.ok(!nameless.some(i => i.key.startsWith('prenom:')))
   assert.equal(nameless[0].prompt, 'Bonjour toi ! Combien font 1 + 1 ?')
 })
+
+test('a word to read is answered with drawings, its instruction apart', () => {
+  const compiled = compile(catalogue['lire-mots'])
+  const items = compiled.chapters.flatMap(ch =>
+    ch.sources.flatMap(s => s.list() || []),
+  )
+  const moto = items.find(item => item.prompt === 'la moto')
+  assert.equal(moto.instruction, 'Lis le mot, puis touche son dessin.')
+  assert.equal(moto.images['la moto'], 'motorbike')
+  assert.deepEqual(moto.said, { listen: 'la moto', lang: 'fr' })
+  assert.equal(catalogue['lire-mots'].lecture_voix_haute, 'consigne')
+  const order = compile(catalogue['lire-syllabes'])
+    .chapters.flatMap(ch => ch.sources.flatMap(s => s.list() || []))
+    .find(item => item.mode === 'order')
+  assert.ok(order.image, 'the drawing of the word to put back together')
+})

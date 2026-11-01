@@ -26,13 +26,14 @@ export const pickVoice = (voices, lang) => {
   return matching.find(v => v.localService) || matching[0] || null
 }
 
-// speak says a text slowly, cutting what was being said. A voice that fails
-// never stops the game: the speaker button is still there to try again.
-export const speak = (text, lang) => {
+// speak says a text slowly, cutting what was being said, or after it when
+// queued. A voice that fails never stops the game: the speaker button is
+// still there to try again.
+export const speak = (text, lang, { queue = false } = {}) => {
   const voice = synth()
   if (!voice || !text) return false
   try {
-    voice.cancel()
+    if (!queue) voice.cancel()
     const utterance = new SpeechSynthesisUtterance(text)
     const chosen = pickVoice(voice.getVoices(), lang)
     if (chosen) utterance.voice = chosen

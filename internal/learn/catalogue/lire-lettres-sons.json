@@ -1,0 +1,1140 @@
+{
+  "format": "hopla-module/1",
+  "id": "lire-lettres-sons",
+  "version": "1.0.0",
+  "nom": "Lettres et sons",
+  "description": "Entendre un son dans un mot et trouver la lettre qui l'écrit : voyelles, consonnes, majuscules.",
+  "matiere": "francais",
+  "niveaux": [
+    "GS",
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": "consigne",
+  "auteur": "Hopla",
+  "sources": "D'après le programme du cycle 2 (CP) et les repères de progression en lecture d'Éduscol.",
+  "chapitres": [
+    {
+      "id": "voyelles",
+      "nom": "Les voyelles"
+    },
+    {
+      "id": "durent",
+      "nom": "Les sons qui durent (l, m, r, s, f, ch, v, j, n)",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "claquent",
+      "nom": "Les sons qui claquent (p, t, d, b, c, g)",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "dernieres",
+      "nom": "Les dernières lettres (z, k, h)",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "majuscules",
+      "nom": "Petites lettres et majuscules",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "voy-chat",
+      "chapitre": "voyelles",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « chat » ?",
+      "consigne": "Quel son entends-tu dans « chat » ?",
+      "reponse": "a",
+      "image": "cat"
+    },
+    {
+      "id": "voy-rat",
+      "chapitre": "voyelles",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « rat » ?",
+      "consigne": "Quel son entends-tu dans « rat » ?",
+      "reponse": "a",
+      "image": "rat"
+    },
+    {
+      "id": "voy-sac",
+      "chapitre": "voyelles",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « sac » ?",
+      "consigne": "Quel son entends-tu dans « sac » ?",
+      "reponse": "a",
+      "image": "bag"
+    },
+    {
+      "id": "voy-lama",
+      "chapitre": "voyelles",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « lama » ?",
+      "consigne": "Quel son entends-tu dans « lama » ?",
+      "reponse": "a",
+      "image": "llama"
+    },
+    {
+      "id": "voy-lit",
+      "chapitre": "voyelles",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « lit » ?",
+      "consigne": "Quel son entends-tu dans « lit » ?",
+      "reponse": "i",
+      "image": "bed"
+    },
+    {
+      "id": "voy-kiwi",
+      "chapitre": "voyelles",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « kiwi » ?",
+      "consigne": "Quel son entends-tu dans « kiwi » ?",
+      "reponse": "i",
+      "image": "kiwi"
+    },
+    {
+      "id": "voy-os",
+      "chapitre": "voyelles",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « os » ?",
+      "consigne": "Quel son entends-tu dans « os » ?",
+      "reponse": "o",
+      "image": "bone"
+    },
+    {
+      "id": "voy-bol",
+      "chapitre": "voyelles",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « bol » ?",
+      "consigne": "Quel son entends-tu dans « bol » ?",
+      "reponse": "o",
+      "image": "bowl"
+    },
+    {
+      "id": "voy-moto",
+      "chapitre": "voyelles",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « moto » ?",
+      "consigne": "Quel son entends-tu dans « moto » ?",
+      "reponse": "o",
+      "image": "motorbike"
+    },
+    {
+      "id": "voy-robot",
+      "chapitre": "voyelles",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « robot » ?",
+      "consigne": "Quel son entends-tu dans « robot » ?",
+      "reponse": "o",
+      "image": "robot"
+    },
+    {
+      "id": "voy-lune",
+      "chapitre": "voyelles",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « lune » ?",
+      "consigne": "Quel son entends-tu dans « lune » ?",
+      "reponse": "u",
+      "image": "moon"
+    },
+    {
+      "id": "voy-jupe",
+      "chapitre": "voyelles",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « jupe » ?",
+      "consigne": "Quel son entends-tu dans « jupe » ?",
+      "reponse": "u",
+      "image": "skirt"
+    },
+    {
+      "id": "voy-bus",
+      "chapitre": "voyelles",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « bus » ?",
+      "consigne": "Quel son entends-tu dans « bus » ?",
+      "reponse": "u",
+      "image": "bus"
+    },
+    {
+      "id": "voy-jus",
+      "chapitre": "voyelles",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « jus » ?",
+      "consigne": "Quel son entends-tu dans « jus » ?",
+      "reponse": "u",
+      "image": "juice"
+    },
+    {
+      "id": "voy-bebe",
+      "chapitre": "voyelles",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « bébé » ?",
+      "consigne": "Quel son entends-tu dans « bébé » ?",
+      "reponse": "é",
+      "image": "baby"
+    },
+    {
+      "id": "voy-nez",
+      "chapitre": "voyelles",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « nez » ?",
+      "consigne": "Quel son entends-tu dans « nez » ?",
+      "reponse": "é",
+      "image": "nose"
+    },
+    {
+      "id": "voy-cle",
+      "chapitre": "voyelles",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « clé » ?",
+      "consigne": "Quel son entends-tu dans « clé » ?",
+      "reponse": "é",
+      "image": "key"
+    },
+    {
+      "id": "deb-l-lune",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « lune » ?",
+      "consigne": "Par quelle lettre commence « lune » ?",
+      "reponse": "l",
+      "image": "moon"
+    },
+    {
+      "id": "deb-l-lit",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « lit » ?",
+      "consigne": "Par quelle lettre commence « lit » ?",
+      "reponse": "l",
+      "image": "bed"
+    },
+    {
+      "id": "deb-l-lama",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « lama » ?",
+      "consigne": "Par quelle lettre commence « lama » ?",
+      "reponse": "l",
+      "image": "llama"
+    },
+    {
+      "id": "deb-l-lapin",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « lapin » ?",
+      "consigne": "Par quelle lettre commence « lapin » ?",
+      "reponse": "l",
+      "image": "rabbit"
+    },
+    {
+      "id": "deb-l-lion",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « lion » ?",
+      "consigne": "Par quelle lettre commence « lion » ?",
+      "reponse": "l",
+      "image": "lion"
+    },
+    {
+      "id": "deb-m-moto",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « moto » ?",
+      "consigne": "Par quelle lettre commence « moto » ?",
+      "reponse": "m",
+      "image": "motorbike"
+    },
+    {
+      "id": "deb-m-maison",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « maison » ?",
+      "consigne": "Par quelle lettre commence « maison » ?",
+      "reponse": "m",
+      "image": "house"
+    },
+    {
+      "id": "deb-m-mouton",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « mouton » ?",
+      "consigne": "Par quelle lettre commence « mouton » ?",
+      "reponse": "m",
+      "image": "sheep"
+    },
+    {
+      "id": "deb-m-main",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « main » ?",
+      "consigne": "Par quelle lettre commence « main » ?",
+      "reponse": "m",
+      "image": "hand"
+    },
+    {
+      "id": "deb-r-rat",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « rat » ?",
+      "consigne": "Par quelle lettre commence « rat » ?",
+      "reponse": "r",
+      "image": "rat"
+    },
+    {
+      "id": "deb-r-robot",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « robot » ?",
+      "consigne": "Par quelle lettre commence « robot » ?",
+      "reponse": "r",
+      "image": "robot"
+    },
+    {
+      "id": "deb-r-radis",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « radis » ?",
+      "consigne": "Par quelle lettre commence « radis » ?",
+      "reponse": "r",
+      "image": "radish"
+    },
+    {
+      "id": "deb-r-robe",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « robe » ?",
+      "consigne": "Par quelle lettre commence « robe » ?",
+      "reponse": "r",
+      "image": "dress"
+    },
+    {
+      "id": "deb-s-sac",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « sac » ?",
+      "consigne": "Par quelle lettre commence « sac » ?",
+      "reponse": "s",
+      "image": "bag"
+    },
+    {
+      "id": "deb-s-salade",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « salade » ?",
+      "consigne": "Par quelle lettre commence « salade » ?",
+      "reponse": "s",
+      "image": "salad"
+    },
+    {
+      "id": "deb-s-sapin",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « sapin » ?",
+      "consigne": "Par quelle lettre commence « sapin » ?",
+      "reponse": "s",
+      "image": "fir"
+    },
+    {
+      "id": "deb-s-soleil",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « soleil » ?",
+      "consigne": "Par quelle lettre commence « soleil » ?",
+      "reponse": "s",
+      "image": "sun"
+    },
+    {
+      "id": "deb-s-seau",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « seau » ?",
+      "consigne": "Par quelle lettre commence « seau » ?",
+      "reponse": "s",
+      "image": "bucket"
+    },
+    {
+      "id": "deb-f-fusee",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « fusée » ?",
+      "consigne": "Par quelle lettre commence « fusée » ?",
+      "reponse": "f",
+      "image": "rocket"
+    },
+    {
+      "id": "deb-f-fraise",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « fraise » ?",
+      "consigne": "Par quelle lettre commence « fraise » ?",
+      "reponse": "f",
+      "image": "strawberry"
+    },
+    {
+      "id": "deb-f-fleur",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « fleur » ?",
+      "consigne": "Par quelle lettre commence « fleur » ?",
+      "reponse": "f",
+      "image": "flower"
+    },
+    {
+      "id": "deb-f-feu",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « feu » ?",
+      "consigne": "Par quelle lettre commence « feu » ?",
+      "reponse": "f",
+      "image": "fire"
+    },
+    {
+      "id": "deb-ch-chat",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelles lettres commence « chat » ?",
+      "consigne": "Par quelles lettres commence « chat » ?",
+      "reponse": "ch",
+      "image": "cat"
+    },
+    {
+      "id": "deb-ch-cheval",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelles lettres commence « cheval » ?",
+      "consigne": "Par quelles lettres commence « cheval » ?",
+      "reponse": "ch",
+      "image": "horse"
+    },
+    {
+      "id": "deb-ch-chapeau",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelles lettres commence « chapeau » ?",
+      "consigne": "Par quelles lettres commence « chapeau » ?",
+      "reponse": "ch",
+      "image": "hat"
+    },
+    {
+      "id": "deb-ch-chaise",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelles lettres commence « chaise » ?",
+      "consigne": "Par quelles lettres commence « chaise » ?",
+      "reponse": "ch",
+      "image": "chair"
+    },
+    {
+      "id": "deb-ch-chevre",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelles lettres commence « chèvre » ?",
+      "consigne": "Par quelles lettres commence « chèvre » ?",
+      "reponse": "ch",
+      "image": "goat"
+    },
+    {
+      "id": "deb-v-velo",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « vélo » ?",
+      "consigne": "Par quelle lettre commence « vélo » ?",
+      "reponse": "v",
+      "image": "bike"
+    },
+    {
+      "id": "deb-v-vache",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « vache » ?",
+      "consigne": "Par quelle lettre commence « vache » ?",
+      "reponse": "v",
+      "image": "cow"
+    },
+    {
+      "id": "deb-v-valise",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « valise » ?",
+      "consigne": "Par quelle lettre commence « valise » ?",
+      "reponse": "v",
+      "image": "suitcase"
+    },
+    {
+      "id": "deb-v-voiture",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « voiture » ?",
+      "consigne": "Par quelle lettre commence « voiture » ?",
+      "reponse": "v",
+      "image": "car"
+    },
+    {
+      "id": "deb-j-jupe",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « jupe » ?",
+      "consigne": "Par quelle lettre commence « jupe » ?",
+      "reponse": "j",
+      "image": "skirt"
+    },
+    {
+      "id": "deb-j-jus",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « jus » ?",
+      "consigne": "Par quelle lettre commence « jus » ?",
+      "reponse": "j",
+      "image": "juice"
+    },
+    {
+      "id": "deb-n-nez",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « nez » ?",
+      "consigne": "Par quelle lettre commence « nez » ?",
+      "reponse": "n",
+      "image": "nose"
+    },
+    {
+      "id": "deb-n-nuage",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « nuage » ?",
+      "consigne": "Par quelle lettre commence « nuage » ?",
+      "reponse": "n",
+      "image": "cloud"
+    },
+    {
+      "id": "deb-n-nounours",
+      "chapitre": "durent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « nounours » ?",
+      "consigne": "Par quelle lettre commence « nounours » ?",
+      "reponse": "n",
+      "image": "teddy"
+    },
+    {
+      "id": "deb-p-poire",
+      "chapitre": "claquent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « poire » ?",
+      "consigne": "Par quelle lettre commence « poire » ?",
+      "reponse": "p",
+      "image": "pear"
+    },
+    {
+      "id": "deb-p-pomme",
+      "chapitre": "claquent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « pomme » ?",
+      "consigne": "Par quelle lettre commence « pomme » ?",
+      "reponse": "p",
+      "image": "apple"
+    },
+    {
+      "id": "deb-p-pied",
+      "chapitre": "claquent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « pied » ?",
+      "consigne": "Par quelle lettre commence « pied » ?",
+      "reponse": "p",
+      "image": "foot"
+    },
+    {
+      "id": "deb-p-poule",
+      "chapitre": "claquent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « poule » ?",
+      "consigne": "Par quelle lettre commence « poule » ?",
+      "reponse": "p",
+      "image": "hen"
+    },
+    {
+      "id": "deb-p-papa",
+      "chapitre": "claquent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « papa » ?",
+      "consigne": "Par quelle lettre commence « papa » ?",
+      "reponse": "p",
+      "image": "dad"
+    },
+    {
+      "id": "deb-t-tomate",
+      "chapitre": "claquent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « tomate » ?",
+      "consigne": "Par quelle lettre commence « tomate » ?",
+      "reponse": "t",
+      "image": "tomato"
+    },
+    {
+      "id": "deb-t-tapis",
+      "chapitre": "claquent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « tapis » ?",
+      "consigne": "Par quelle lettre commence « tapis » ?",
+      "reponse": "t",
+      "image": "rug"
+    },
+    {
+      "id": "deb-t-tortue",
+      "chapitre": "claquent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « tortue » ?",
+      "consigne": "Par quelle lettre commence « tortue » ?",
+      "reponse": "t",
+      "image": "turtle"
+    },
+    {
+      "id": "deb-t-table",
+      "chapitre": "claquent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « table » ?",
+      "consigne": "Par quelle lettre commence « table » ?",
+      "reponse": "t",
+      "image": "table"
+    },
+    {
+      "id": "deb-t-train",
+      "chapitre": "claquent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « train » ?",
+      "consigne": "Par quelle lettre commence « train » ?",
+      "reponse": "t",
+      "image": "train"
+    },
+    {
+      "id": "deb-d-domino",
+      "chapitre": "claquent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « domino » ?",
+      "consigne": "Par quelle lettre commence « domino » ?",
+      "reponse": "d",
+      "image": "domino"
+    },
+    {
+      "id": "deb-d-dent",
+      "chapitre": "claquent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « dent » ?",
+      "consigne": "Par quelle lettre commence « dent » ?",
+      "reponse": "d",
+      "image": "tooth"
+    },
+    {
+      "id": "deb-d-dauphin",
+      "chapitre": "claquent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « dauphin » ?",
+      "consigne": "Par quelle lettre commence « dauphin » ?",
+      "reponse": "d",
+      "image": "dolphin"
+    },
+    {
+      "id": "deb-b-bol",
+      "chapitre": "claquent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « bol » ?",
+      "consigne": "Par quelle lettre commence « bol » ?",
+      "reponse": "b",
+      "image": "bowl"
+    },
+    {
+      "id": "deb-b-banane",
+      "chapitre": "claquent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « banane » ?",
+      "consigne": "Par quelle lettre commence « banane » ?",
+      "reponse": "b",
+      "image": "banana"
+    },
+    {
+      "id": "deb-b-bateau",
+      "chapitre": "claquent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « bateau » ?",
+      "consigne": "Par quelle lettre commence « bateau » ?",
+      "reponse": "b",
+      "image": "boat"
+    },
+    {
+      "id": "deb-b-bebe",
+      "chapitre": "claquent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « bébé » ?",
+      "consigne": "Par quelle lettre commence « bébé » ?",
+      "reponse": "b",
+      "image": "baby"
+    },
+    {
+      "id": "deb-b-ballon",
+      "chapitre": "claquent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « ballon » ?",
+      "consigne": "Par quelle lettre commence « ballon » ?",
+      "reponse": "b",
+      "image": "ball"
+    },
+    {
+      "id": "deb-c-canape",
+      "chapitre": "claquent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « canapé » ?",
+      "consigne": "Par quelle lettre commence « canapé » ?",
+      "reponse": "c",
+      "image": "sofa",
+      "pieges": [
+        "g",
+        "t",
+        "d"
+      ],
+      "explication": "Devant a, o et u, le c chante [k]."
+    },
+    {
+      "id": "deb-c-canard",
+      "chapitre": "claquent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « canard » ?",
+      "consigne": "Par quelle lettre commence « canard » ?",
+      "reponse": "c",
+      "image": "duck",
+      "pieges": [
+        "g",
+        "t",
+        "d"
+      ],
+      "explication": "Devant a, o et u, le c chante [k]."
+    },
+    {
+      "id": "deb-c-camion",
+      "chapitre": "claquent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « camion » ?",
+      "consigne": "Par quelle lettre commence « camion » ?",
+      "reponse": "c",
+      "image": "truck",
+      "pieges": [
+        "g",
+        "t",
+        "d"
+      ],
+      "explication": "Devant a, o et u, le c chante [k]."
+    },
+    {
+      "id": "deb-c-cochon",
+      "chapitre": "claquent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « cochon » ?",
+      "consigne": "Par quelle lettre commence « cochon » ?",
+      "reponse": "c",
+      "image": "pig",
+      "pieges": [
+        "g",
+        "t",
+        "d"
+      ],
+      "explication": "Devant a, o et u, le c chante [k]."
+    },
+    {
+      "id": "deb-g-guitare",
+      "chapitre": "claquent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « guitare » ?",
+      "consigne": "Par quelle lettre commence « guitare » ?",
+      "reponse": "g",
+      "image": "guitar"
+    },
+    {
+      "id": "deb-g-gateau",
+      "chapitre": "claquent",
+      "type": "choix",
+      "question": "Par quelle lettre commence « gâteau » ?",
+      "consigne": "Par quelle lettre commence « gâteau » ?",
+      "reponse": "g",
+      "image": "cake"
+    },
+    {
+      "id": "deb-z-zebre",
+      "chapitre": "dernieres",
+      "type": "choix",
+      "question": "Par quelle lettre commence « zèbre » ?",
+      "consigne": "Par quelle lettre commence « zèbre » ?",
+      "reponse": "z",
+      "image": "zebra"
+    },
+    {
+      "id": "deb-k-kiwi",
+      "chapitre": "dernieres",
+      "type": "choix",
+      "question": "Par quelle lettre commence « kiwi » ?",
+      "consigne": "Par quelle lettre commence « kiwi » ?",
+      "reponse": "k",
+      "image": "kiwi"
+    },
+    {
+      "id": "deb-k-koala",
+      "chapitre": "dernieres",
+      "type": "choix",
+      "question": "Par quelle lettre commence « koala » ?",
+      "consigne": "Par quelle lettre commence « koala » ?",
+      "reponse": "k",
+      "image": "koala"
+    },
+    {
+      "id": "deb-h-hibou",
+      "chapitre": "dernieres",
+      "type": "choix",
+      "question": "Par quelle lettre commence « hibou » ?",
+      "consigne": "Par quelle lettre commence « hibou » ?",
+      "reponse": "h",
+      "image": "owl",
+      "explication": "Le h ne se dit pas : on entend tout de suite la lettre d’après."
+    },
+    {
+      "id": "deb-h-herisson",
+      "chapitre": "dernieres",
+      "type": "choix",
+      "question": "Par quelle lettre commence « hérisson » ?",
+      "consigne": "Par quelle lettre commence « hérisson » ?",
+      "reponse": "h",
+      "image": "hedgehog",
+      "explication": "Le h ne se dit pas : on entend tout de suite la lettre d’après."
+    },
+    {
+      "id": "relie-durent-1",
+      "chapitre": "durent",
+      "type": "associer",
+      "consigne": "Relie chaque lettre au dessin qui commence par son son.",
+      "question": "Relie chaque lettre au dessin qui commence par son son.",
+      "paires": [
+        [
+          "l",
+          {
+            "image": "moon"
+          }
+        ],
+        [
+          "m",
+          {
+            "image": "motorbike"
+          }
+        ],
+        [
+          "r",
+          {
+            "image": "rat"
+          }
+        ],
+        [
+          "s",
+          {
+            "image": "bag"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "relie-durent-2",
+      "chapitre": "durent",
+      "type": "associer",
+      "consigne": "Relie chaque lettre au dessin qui commence par son son.",
+      "question": "Relie chaque lettre au dessin qui commence par son son.",
+      "paires": [
+        [
+          "f",
+          {
+            "image": "rocket"
+          }
+        ],
+        [
+          "ch",
+          {
+            "image": "cat"
+          }
+        ],
+        [
+          "v",
+          {
+            "image": "bike"
+          }
+        ],
+        [
+          "n",
+          {
+            "image": "nose"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "relie-durent-3",
+      "chapitre": "durent",
+      "type": "associer",
+      "consigne": "Relie chaque lettre au dessin qui commence par son son.",
+      "question": "Relie chaque lettre au dessin qui commence par son son.",
+      "paires": [
+        [
+          "j",
+          {
+            "image": "skirt"
+          }
+        ],
+        [
+          "l",
+          {
+            "image": "lion"
+          }
+        ],
+        [
+          "m",
+          {
+            "image": "hand"
+          }
+        ],
+        [
+          "s",
+          {
+            "image": "sun"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "relie-claquent-1",
+      "chapitre": "claquent",
+      "type": "associer",
+      "consigne": "Relie chaque lettre au dessin qui commence par son son.",
+      "question": "Relie chaque lettre au dessin qui commence par son son.",
+      "paires": [
+        [
+          "p",
+          {
+            "image": "pear"
+          }
+        ],
+        [
+          "t",
+          {
+            "image": "tomato"
+          }
+        ],
+        [
+          "d",
+          {
+            "image": "tooth"
+          }
+        ],
+        [
+          "b",
+          {
+            "image": "bowl"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "relie-claquent-2",
+      "chapitre": "claquent",
+      "type": "associer",
+      "consigne": "Relie chaque lettre au dessin qui commence par son son.",
+      "question": "Relie chaque lettre au dessin qui commence par son son.",
+      "paires": [
+        [
+          "c",
+          {
+            "image": "duck"
+          }
+        ],
+        [
+          "g",
+          {
+            "image": "cake"
+          }
+        ],
+        [
+          "t",
+          {
+            "image": "train"
+          }
+        ],
+        [
+          "b",
+          {
+            "image": "boat"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "relie-voyelles",
+      "chapitre": "voyelles",
+      "type": "associer",
+      "consigne": "Relie chaque lettre au dessin qui commence par son son.",
+      "question": "Relie chaque lettre au dessin qui commence par son son.",
+      "paires": [
+        [
+          "a",
+          {
+            "image": "cat"
+          }
+        ],
+        [
+          "i",
+          {
+            "image": "bed"
+          }
+        ],
+        [
+          "o",
+          {
+            "image": "bone"
+          }
+        ],
+        [
+          "u",
+          {
+            "image": "moon"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "maj-1",
+      "chapitre": "majuscules",
+      "type": "associer",
+      "question": "Relie chaque petite lettre à sa majuscule.",
+      "consigne": "Relie chaque petite lettre à sa majuscule.",
+      "paires": [
+        [
+          "a",
+          "A"
+        ],
+        [
+          "e",
+          "E"
+        ],
+        [
+          "i",
+          "I"
+        ],
+        [
+          "o",
+          "O"
+        ]
+      ]
+    },
+    {
+      "id": "maj-2",
+      "chapitre": "majuscules",
+      "type": "associer",
+      "question": "Relie chaque petite lettre à sa majuscule.",
+      "consigne": "Relie chaque petite lettre à sa majuscule.",
+      "paires": [
+        [
+          "u",
+          "U"
+        ],
+        [
+          "l",
+          "L"
+        ],
+        [
+          "m",
+          "M"
+        ],
+        [
+          "r",
+          "R"
+        ]
+      ]
+    },
+    {
+      "id": "maj-3",
+      "chapitre": "majuscules",
+      "type": "associer",
+      "question": "Relie chaque petite lettre à sa majuscule.",
+      "consigne": "Relie chaque petite lettre à sa majuscule.",
+      "paires": [
+        [
+          "s",
+          "S"
+        ],
+        [
+          "f",
+          "F"
+        ],
+        [
+          "v",
+          "V"
+        ],
+        [
+          "n",
+          "N"
+        ]
+      ]
+    },
+    {
+      "id": "maj-4",
+      "chapitre": "majuscules",
+      "type": "associer",
+      "question": "Relie chaque petite lettre à sa majuscule.",
+      "consigne": "Relie chaque petite lettre à sa majuscule.",
+      "paires": [
+        [
+          "p",
+          "P"
+        ],
+        [
+          "t",
+          "T"
+        ],
+        [
+          "d",
+          "D"
+        ],
+        [
+          "b",
+          "B"
+        ]
+      ]
+    },
+    {
+      "id": "maj-5",
+      "chapitre": "majuscules",
+      "type": "associer",
+      "question": "Relie chaque petite lettre à sa majuscule.",
+      "consigne": "Relie chaque petite lettre à sa majuscule.",
+      "paires": [
+        [
+          "g",
+          "G"
+        ],
+        [
+          "h",
+          "H"
+        ],
+        [
+          "j",
+          "J"
+        ],
+        [
+          "q",
+          "Q"
+        ]
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1117 @@
+{
+  "format": "hopla-module/1",
+  "id": "lire-sons-complexes",
+  "version": "1.0.0",
+  "nom": "Sons complexes",
+  "description": "Les sons écrits avec plusieurs lettres (ou, on, an, in, oi, eu, au, ai, gn, ill, ph…) et les lettres c et g.",
+  "matiere": "francais",
+  "niveaux": [
+    "GS",
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": "consigne",
+  "auteur": "Hopla",
+  "sources": "D'après le programme du cycle 2 (CP) et les repères de progression en lecture d'Éduscol.",
+  "chapitres": [
+    {
+      "id": "ou-on",
+      "nom": "ou, on, an, in, oi"
+    },
+    {
+      "id": "eu-au-ai",
+      "nom": "eu, au et eau, ai, ei, è et ê",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "gn-ill",
+      "nom": "gn, ill, ph, qu, gu",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "c-g",
+      "nom": "c et ç, g et ge",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "son-ou-on-loup",
+      "chapitre": "ou-on",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « loup » ?",
+      "consigne": "Quel son entends-tu dans « loup » ?",
+      "reponse": "ou",
+      "image": "wolf",
+      "pieges": [
+        "on",
+        "an",
+        "in"
+      ]
+    },
+    {
+      "id": "son-ou-on-chou",
+      "chapitre": "ou-on",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « chou » ?",
+      "consigne": "Quel son entends-tu dans « chou » ?",
+      "reponse": "ou",
+      "image": "cabbage",
+      "pieges": [
+        "on",
+        "an",
+        "in"
+      ]
+    },
+    {
+      "id": "son-ou-on-roue",
+      "chapitre": "ou-on",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « roue » ?",
+      "consigne": "Quel son entends-tu dans « roue » ?",
+      "reponse": "ou",
+      "image": "wheel",
+      "pieges": [
+        "on",
+        "an",
+        "in"
+      ]
+    },
+    {
+      "id": "son-ou-on-soupe",
+      "chapitre": "ou-on",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « soupe » ?",
+      "consigne": "Quel son entends-tu dans « soupe » ?",
+      "reponse": "ou",
+      "image": "soup",
+      "pieges": [
+        "on",
+        "an",
+        "in"
+      ]
+    },
+    {
+      "id": "son-ou-on-poule",
+      "chapitre": "ou-on",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « poule » ?",
+      "consigne": "Quel son entends-tu dans « poule » ?",
+      "reponse": "ou",
+      "image": "hen",
+      "pieges": [
+        "on",
+        "an",
+        "in"
+      ]
+    },
+    {
+      "id": "son-ou-on-hibou",
+      "chapitre": "ou-on",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « hibou » ?",
+      "consigne": "Quel son entends-tu dans « hibou » ?",
+      "reponse": "ou",
+      "image": "owl",
+      "pieges": [
+        "on",
+        "an",
+        "in"
+      ]
+    },
+    {
+      "id": "son-ou-on-cochon",
+      "chapitre": "ou-on",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « cochon » ?",
+      "consigne": "Quel son entends-tu dans « cochon » ?",
+      "reponse": "on",
+      "image": "pig",
+      "pieges": [
+        "ou",
+        "an",
+        "in"
+      ]
+    },
+    {
+      "id": "son-ou-on-camion",
+      "chapitre": "ou-on",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « camion » ?",
+      "consigne": "Quel son entends-tu dans « camion » ?",
+      "reponse": "on",
+      "image": "truck",
+      "pieges": [
+        "ou",
+        "an",
+        "in"
+      ]
+    },
+    {
+      "id": "son-ou-on-bonbon",
+      "chapitre": "ou-on",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « bonbon » ?",
+      "consigne": "Quel son entends-tu dans « bonbon » ?",
+      "reponse": "on",
+      "image": "candy",
+      "pieges": [
+        "ou",
+        "an",
+        "in"
+      ]
+    },
+    {
+      "id": "son-ou-on-crayon",
+      "chapitre": "ou-on",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « crayon » ?",
+      "consigne": "Quel son entends-tu dans « crayon » ?",
+      "reponse": "on",
+      "image": "pencil",
+      "pieges": [
+        "ou",
+        "an",
+        "in"
+      ]
+    },
+    {
+      "id": "son-ou-on-citron",
+      "chapitre": "ou-on",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « citron » ?",
+      "consigne": "Quel son entends-tu dans « citron » ?",
+      "reponse": "on",
+      "image": "lemon",
+      "pieges": [
+        "ou",
+        "an",
+        "in"
+      ]
+    },
+    {
+      "id": "son-ou-on-panda",
+      "chapitre": "ou-on",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « panda » ?",
+      "consigne": "Quel son entends-tu dans « panda » ?",
+      "reponse": "an",
+      "image": "panda",
+      "pieges": [
+        "ou",
+        "on",
+        "in"
+      ]
+    },
+    {
+      "id": "son-ou-on-dent",
+      "chapitre": "ou-on",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « dent » ?",
+      "consigne": "Quel son entends-tu dans « dent » ?",
+      "reponse": "an",
+      "image": "tooth",
+      "pieges": [
+        "ou",
+        "on",
+        "in"
+      ]
+    },
+    {
+      "id": "son-ou-on-vent",
+      "chapitre": "ou-on",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « vent » ?",
+      "consigne": "Quel son entends-tu dans « vent » ?",
+      "reponse": "an",
+      "image": "wind",
+      "pieges": [
+        "ou",
+        "on",
+        "in"
+      ]
+    },
+    {
+      "id": "son-ou-on-maman",
+      "chapitre": "ou-on",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « maman » ?",
+      "consigne": "Quel son entends-tu dans « maman » ?",
+      "reponse": "an",
+      "image": "mum",
+      "pieges": [
+        "ou",
+        "on",
+        "in"
+      ]
+    },
+    {
+      "id": "son-ou-on-serpent",
+      "chapitre": "ou-on",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « serpent » ?",
+      "consigne": "Quel son entends-tu dans « serpent » ?",
+      "reponse": "an",
+      "image": "snake",
+      "pieges": [
+        "ou",
+        "on",
+        "in"
+      ]
+    },
+    {
+      "id": "son-ou-on-lapin",
+      "chapitre": "ou-on",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « lapin » ?",
+      "consigne": "Quel son entends-tu dans « lapin » ?",
+      "reponse": "in",
+      "image": "rabbit",
+      "pieges": [
+        "ou",
+        "on",
+        "an"
+      ]
+    },
+    {
+      "id": "son-ou-on-sapin",
+      "chapitre": "ou-on",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « sapin » ?",
+      "consigne": "Quel son entends-tu dans « sapin » ?",
+      "reponse": "in",
+      "image": "fir",
+      "pieges": [
+        "ou",
+        "on",
+        "an"
+      ]
+    },
+    {
+      "id": "son-ou-on-pain",
+      "chapitre": "ou-on",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « pain » ?",
+      "consigne": "Quel son entends-tu dans « pain » ?",
+      "reponse": "in",
+      "image": "bread",
+      "pieges": [
+        "ou",
+        "on",
+        "an"
+      ]
+    },
+    {
+      "id": "son-ou-on-main",
+      "chapitre": "ou-on",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « main » ?",
+      "consigne": "Quel son entends-tu dans « main » ?",
+      "reponse": "in",
+      "image": "hand",
+      "pieges": [
+        "ou",
+        "on",
+        "an"
+      ]
+    },
+    {
+      "id": "son-ou-on-train",
+      "chapitre": "ou-on",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « train » ?",
+      "consigne": "Quel son entends-tu dans « train » ?",
+      "reponse": "in",
+      "image": "train",
+      "pieges": [
+        "ou",
+        "on",
+        "an"
+      ]
+    },
+    {
+      "id": "son-ou-on-requin",
+      "chapitre": "ou-on",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « requin » ?",
+      "consigne": "Quel son entends-tu dans « requin » ?",
+      "reponse": "in",
+      "image": "shark",
+      "pieges": [
+        "ou",
+        "on",
+        "an"
+      ]
+    },
+    {
+      "id": "son-ou-on-roi",
+      "chapitre": "ou-on",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « roi » ?",
+      "consigne": "Quel son entends-tu dans « roi » ?",
+      "reponse": "oi",
+      "image": "king",
+      "pieges": [
+        "ou",
+        "on",
+        "an"
+      ]
+    },
+    {
+      "id": "son-ou-on-poire",
+      "chapitre": "ou-on",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « poire » ?",
+      "consigne": "Quel son entends-tu dans « poire » ?",
+      "reponse": "oi",
+      "image": "pear",
+      "pieges": [
+        "ou",
+        "on",
+        "an"
+      ]
+    },
+    {
+      "id": "son-ou-on-etoile",
+      "chapitre": "ou-on",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « étoile » ?",
+      "consigne": "Quel son entends-tu dans « étoile » ?",
+      "reponse": "oi",
+      "image": "star",
+      "pieges": [
+        "ou",
+        "on",
+        "an"
+      ]
+    },
+    {
+      "id": "son-eu-au-ai-feu",
+      "chapitre": "eu-au-ai",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « feu » ?",
+      "consigne": "Quel son entends-tu dans « feu » ?",
+      "reponse": "eu",
+      "image": "fire",
+      "pieges": [
+        "au",
+        "è",
+        "é"
+      ]
+    },
+    {
+      "id": "son-eu-au-ai-fleur",
+      "chapitre": "eu-au-ai",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « fleur » ?",
+      "consigne": "Quel son entends-tu dans « fleur » ?",
+      "reponse": "eu",
+      "image": "flower",
+      "pieges": [
+        "au",
+        "è",
+        "é"
+      ]
+    },
+    {
+      "id": "son-eu-au-ai-bateau",
+      "chapitre": "eu-au-ai",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « bateau » ?",
+      "consigne": "Quel son entends-tu dans « bateau » ?",
+      "reponse": "au",
+      "image": "boat",
+      "pieges": [
+        "eu",
+        "è",
+        "é"
+      ]
+    },
+    {
+      "id": "son-eu-au-ai-gateau",
+      "chapitre": "eu-au-ai",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « gâteau » ?",
+      "consigne": "Quel son entends-tu dans « gâteau » ?",
+      "reponse": "au",
+      "image": "cake",
+      "pieges": [
+        "eu",
+        "è",
+        "é"
+      ]
+    },
+    {
+      "id": "son-eu-au-ai-chapeau",
+      "chapitre": "eu-au-ai",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « chapeau » ?",
+      "consigne": "Quel son entends-tu dans « chapeau » ?",
+      "reponse": "au",
+      "image": "hat",
+      "pieges": [
+        "eu",
+        "è",
+        "é"
+      ]
+    },
+    {
+      "id": "son-eu-au-ai-seau",
+      "chapitre": "eu-au-ai",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « seau » ?",
+      "consigne": "Quel son entends-tu dans « seau » ?",
+      "reponse": "au",
+      "image": "bucket",
+      "pieges": [
+        "eu",
+        "è",
+        "é"
+      ]
+    },
+    {
+      "id": "son-eu-au-ai-veau",
+      "chapitre": "eu-au-ai",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « veau » ?",
+      "consigne": "Quel son entends-tu dans « veau » ?",
+      "reponse": "au",
+      "image": "calf",
+      "pieges": [
+        "eu",
+        "è",
+        "é"
+      ]
+    },
+    {
+      "id": "son-eu-au-ai-lait",
+      "chapitre": "eu-au-ai",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « lait » ?",
+      "consigne": "Quel son entends-tu dans « lait » ?",
+      "reponse": "è",
+      "image": "milk",
+      "pieges": [
+        "eu",
+        "au",
+        "é"
+      ]
+    },
+    {
+      "id": "son-eu-au-ai-fraise",
+      "chapitre": "eu-au-ai",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « fraise » ?",
+      "consigne": "Quel son entends-tu dans « fraise » ?",
+      "reponse": "è",
+      "image": "strawberry",
+      "pieges": [
+        "eu",
+        "au",
+        "é"
+      ]
+    },
+    {
+      "id": "son-eu-au-ai-baleine",
+      "chapitre": "eu-au-ai",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « baleine » ?",
+      "consigne": "Quel son entends-tu dans « baleine » ?",
+      "reponse": "è",
+      "image": "whale",
+      "pieges": [
+        "eu",
+        "au",
+        "é"
+      ]
+    },
+    {
+      "id": "son-eu-au-ai-neige",
+      "chapitre": "eu-au-ai",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « neige » ?",
+      "consigne": "Quel son entends-tu dans « neige » ?",
+      "reponse": "è",
+      "image": "snow",
+      "pieges": [
+        "eu",
+        "au",
+        "é"
+      ]
+    },
+    {
+      "id": "son-eu-au-ai-chevre",
+      "chapitre": "eu-au-ai",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « chèvre » ?",
+      "consigne": "Quel son entends-tu dans « chèvre » ?",
+      "reponse": "è",
+      "image": "goat",
+      "pieges": [
+        "eu",
+        "au",
+        "é"
+      ]
+    },
+    {
+      "id": "son-eu-au-ai-tete",
+      "chapitre": "eu-au-ai",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « tête » ?",
+      "consigne": "Quel son entends-tu dans « tête » ?",
+      "reponse": "è",
+      "image": "head",
+      "pieges": [
+        "eu",
+        "au",
+        "é"
+      ]
+    },
+    {
+      "id": "son-eu-au-ai-chaise",
+      "chapitre": "eu-au-ai",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « chaise » ?",
+      "consigne": "Quel son entends-tu dans « chaise » ?",
+      "reponse": "è",
+      "image": "chair",
+      "pieges": [
+        "eu",
+        "au",
+        "é"
+      ]
+    },
+    {
+      "id": "son-gn-ill-champignon",
+      "chapitre": "gn-ill",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « champignon » ?",
+      "consigne": "Quel son entends-tu dans « champignon » ?",
+      "reponse": "gn",
+      "image": "mushroom",
+      "pieges": [
+        "ill",
+        "ph",
+        "qu"
+      ]
+    },
+    {
+      "id": "son-gn-ill-montagne",
+      "chapitre": "gn-ill",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « montagne » ?",
+      "consigne": "Quel son entends-tu dans « montagne » ?",
+      "reponse": "gn",
+      "image": "mountain",
+      "pieges": [
+        "ill",
+        "ph",
+        "qu"
+      ]
+    },
+    {
+      "id": "son-gn-ill-araignee",
+      "chapitre": "gn-ill",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « araignée » ?",
+      "consigne": "Quel son entends-tu dans « araignée » ?",
+      "reponse": "gn",
+      "image": "spider",
+      "pieges": [
+        "ill",
+        "ph",
+        "qu"
+      ]
+    },
+    {
+      "id": "son-gn-ill-grenouille",
+      "chapitre": "gn-ill",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « grenouille » ?",
+      "consigne": "Quel son entends-tu dans « grenouille » ?",
+      "reponse": "ill",
+      "image": "frog",
+      "pieges": [
+        "gn",
+        "ph",
+        "qu"
+      ]
+    },
+    {
+      "id": "son-gn-ill-feuille",
+      "chapitre": "gn-ill",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « feuille » ?",
+      "consigne": "Quel son entends-tu dans « feuille » ?",
+      "reponse": "ill",
+      "image": "leaf",
+      "pieges": [
+        "gn",
+        "ph",
+        "qu"
+      ]
+    },
+    {
+      "id": "son-gn-ill-abeille",
+      "chapitre": "gn-ill",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « abeille » ?",
+      "consigne": "Quel son entends-tu dans « abeille » ?",
+      "reponse": "ill",
+      "image": "bee",
+      "pieges": [
+        "gn",
+        "ph",
+        "qu"
+      ]
+    },
+    {
+      "id": "son-gn-ill-bouteille",
+      "chapitre": "gn-ill",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « bouteille » ?",
+      "consigne": "Quel son entends-tu dans « bouteille » ?",
+      "reponse": "ill",
+      "image": "bottle",
+      "pieges": [
+        "gn",
+        "ph",
+        "qu"
+      ]
+    },
+    {
+      "id": "son-gn-ill-papillon",
+      "chapitre": "gn-ill",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « papillon » ?",
+      "consigne": "Quel son entends-tu dans « papillon » ?",
+      "reponse": "ill",
+      "image": "butterfly",
+      "pieges": [
+        "gn",
+        "ph",
+        "qu"
+      ]
+    },
+    {
+      "id": "son-gn-ill-phoque",
+      "chapitre": "gn-ill",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « phoque » ?",
+      "consigne": "Quel son entends-tu dans « phoque » ?",
+      "reponse": "ph",
+      "image": "seal",
+      "pieges": [
+        "gn",
+        "ill",
+        "qu"
+      ]
+    },
+    {
+      "id": "son-gn-ill-elephant",
+      "chapitre": "gn-ill",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « éléphant » ?",
+      "consigne": "Quel son entends-tu dans « éléphant » ?",
+      "reponse": "ph",
+      "image": "elephant",
+      "pieges": [
+        "gn",
+        "ill",
+        "qu"
+      ]
+    },
+    {
+      "id": "son-gn-ill-dauphin",
+      "chapitre": "gn-ill",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « dauphin » ?",
+      "consigne": "Quel son entends-tu dans « dauphin » ?",
+      "reponse": "ph",
+      "image": "dolphin",
+      "pieges": [
+        "gn",
+        "ill",
+        "qu"
+      ]
+    },
+    {
+      "id": "son-gn-ill-requin",
+      "chapitre": "gn-ill",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « requin » ?",
+      "consigne": "Quel son entends-tu dans « requin » ?",
+      "reponse": "qu",
+      "image": "shark",
+      "pieges": [
+        "gn",
+        "ill",
+        "ph"
+      ]
+    },
+    {
+      "id": "son-gn-ill-guitare",
+      "chapitre": "gn-ill",
+      "type": "choix",
+      "question": "Quel son entends-tu dans « guitare » ?",
+      "consigne": "Quel son entends-tu dans « guitare » ?",
+      "reponse": "gu",
+      "image": "guitar",
+      "pieges": [
+        "gn",
+        "ill",
+        "ph"
+      ]
+    },
+    {
+      "id": "range-ou-on",
+      "chapitre": "ou-on",
+      "type": "classer",
+      "question": "Lis le mot, puis range-le avec son son.",
+      "consigne": "Lis le mot, puis range-le avec son son.",
+      "boites": [
+        {
+          "nom": "ou",
+          "image": "wolf"
+        },
+        {
+          "nom": "on",
+          "image": "pig"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le chou",
+          "boite": "ou",
+          "image": "cabbage"
+        },
+        {
+          "texte": "la roue",
+          "boite": "ou",
+          "image": "wheel"
+        },
+        {
+          "texte": "la soupe",
+          "boite": "ou",
+          "image": "soup"
+        },
+        {
+          "texte": "le camion",
+          "boite": "on",
+          "image": "truck"
+        },
+        {
+          "texte": "le bonbon",
+          "boite": "on",
+          "image": "candy"
+        },
+        {
+          "texte": "le crayon",
+          "boite": "on",
+          "image": "pencil"
+        }
+      ]
+    },
+    {
+      "id": "range-an-in",
+      "chapitre": "ou-on",
+      "type": "classer",
+      "question": "Lis le mot, puis range-le avec son son.",
+      "consigne": "Lis le mot, puis range-le avec son son.",
+      "boites": [
+        {
+          "nom": "an",
+          "image": "panda"
+        },
+        {
+          "nom": "in",
+          "image": "rabbit"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "la dent",
+          "boite": "an",
+          "image": "tooth"
+        },
+        {
+          "texte": "le vent",
+          "boite": "an",
+          "image": "wind"
+        },
+        {
+          "texte": "maman",
+          "boite": "an",
+          "image": "mum"
+        },
+        {
+          "texte": "le sapin",
+          "boite": "in",
+          "image": "fir"
+        },
+        {
+          "texte": "le pain",
+          "boite": "in",
+          "image": "bread"
+        },
+        {
+          "texte": "le train",
+          "boite": "in",
+          "image": "train"
+        }
+      ]
+    },
+    {
+      "id": "range-eu-au",
+      "chapitre": "eu-au-ai",
+      "type": "classer",
+      "question": "Lis le mot, puis range-le avec son son.",
+      "consigne": "Lis le mot, puis range-le avec son son.",
+      "boites": [
+        {
+          "nom": "eu",
+          "image": "fire"
+        },
+        {
+          "nom": "au",
+          "image": "boat"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "la fleur",
+          "boite": "eu",
+          "image": "flower"
+        },
+        {
+          "texte": "le gâteau",
+          "boite": "au",
+          "image": "cake"
+        },
+        {
+          "texte": "le chapeau",
+          "boite": "au",
+          "image": "hat"
+        },
+        {
+          "texte": "le seau",
+          "boite": "au",
+          "image": "bucket"
+        },
+        {
+          "texte": "le veau",
+          "boite": "au",
+          "image": "calf"
+        }
+      ]
+    },
+    {
+      "id": "range-gn-ill",
+      "chapitre": "gn-ill",
+      "type": "classer",
+      "question": "Lis le mot, puis range-le avec son son.",
+      "consigne": "Lis le mot, puis range-le avec son son.",
+      "boites": [
+        {
+          "nom": "gn",
+          "image": "mountain"
+        },
+        {
+          "nom": "ill",
+          "image": "leaf"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le champignon",
+          "boite": "gn",
+          "image": "mushroom"
+        },
+        {
+          "texte": "l'araignée",
+          "boite": "gn",
+          "image": "spider"
+        },
+        {
+          "texte": "la grenouille",
+          "boite": "ill",
+          "image": "frog"
+        },
+        {
+          "texte": "l'abeille",
+          "boite": "ill",
+          "image": "bee"
+        },
+        {
+          "texte": "la bouteille",
+          "boite": "ill",
+          "image": "bottle"
+        }
+      ]
+    },
+    {
+      "id": "range-c",
+      "chapitre": "c-g",
+      "type": "classer",
+      "question": "Lis le mot : le c se dit comme dans canard ou dans citron ?",
+      "consigne": "Lis le mot : le c se dit comme dans canard ou dans citron ?",
+      "explication": "Devant e et i, le c se dit [s] et le g se dit [j]. Avec une cédille, ç se dit [s].",
+      "boites": [
+        {
+          "nom": "comme canard",
+          "image": "duck"
+        },
+        {
+          "nom": "comme citron",
+          "image": "lemon"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le cochon",
+          "boite": "comme canard",
+          "image": "pig"
+        },
+        {
+          "texte": "le camion",
+          "boite": "comme canard",
+          "image": "truck"
+        },
+        {
+          "texte": "le canapé",
+          "boite": "comme canard",
+          "image": "sofa"
+        },
+        {
+          "texte": "le glaçon",
+          "boite": "comme citron",
+          "image": "ice-cube"
+        },
+        {
+          "texte": "la cerise",
+          "boite": "comme citron",
+          "image": "cherry"
+        }
+      ]
+    },
+    {
+      "id": "range-g",
+      "chapitre": "c-g",
+      "type": "classer",
+      "question": "Lis le mot : le g se dit comme dans gâteau ou dans girafe ?",
+      "consigne": "Lis le mot : le g se dit comme dans gâteau ou dans girafe ?",
+      "explication": "Devant e et i, le c se dit [s] et le g se dit [j]. Avec une cédille, ç se dit [s].",
+      "boites": [
+        {
+          "nom": "comme gâteau",
+          "image": "cake"
+        },
+        {
+          "nom": "comme girafe",
+          "image": "giraffe"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "la guitare",
+          "boite": "comme gâteau",
+          "image": "guitar"
+        },
+        {
+          "texte": "la cage",
+          "boite": "comme girafe",
+          "image": "cage"
+        },
+        {
+          "texte": "l'orange",
+          "boite": "comme girafe",
+          "image": "orange"
+        },
+        {
+          "texte": "la neige",
+          "boite": "comme girafe",
+          "image": "snow"
+        }
+      ]
+    },
+    {
+      "id": "doux-glacon",
+      "chapitre": "c-g",
+      "type": "choix",
+      "question": "Dans « glaçon », quelle lettre chante « sss » ?",
+      "consigne": "Dans « glaçon », quelle lettre chante « sss » ?",
+      "reponse": "ç",
+      "image": "ice-cube",
+      "pieges": [
+        "c",
+        "g",
+        "s"
+      ]
+    },
+    {
+      "id": "doux-girafe",
+      "chapitre": "c-g",
+      "type": "choix",
+      "question": "Dans « girafe », quelle lettre chante « jjj » ?",
+      "consigne": "Dans « girafe », quelle lettre chante « jjj » ?",
+      "reponse": "g",
+      "image": "giraffe",
+      "pieges": [
+        "c",
+        "ç",
+        "s"
+      ]
+    },
+    {
+      "id": "doux-cerise",
+      "chapitre": "c-g",
+      "type": "choix",
+      "question": "Dans « cerise », quelle lettre chante « sss » ?",
+      "consigne": "Dans « cerise », quelle lettre chante « sss » ?",
+      "reponse": "c",
+      "image": "cherry",
+      "pieges": [
+        "ç",
+        "g",
+        "s"
+      ]
+    },
+    {
+      "id": "doux-citron",
+      "chapitre": "c-g",
+      "type": "choix",
+      "question": "Dans « citron », quelle lettre chante « sss » ?",
+      "consigne": "Dans « citron », quelle lettre chante « sss » ?",
+      "reponse": "c",
+      "image": "lemon",
+      "pieges": [
+        "ç",
+        "g",
+        "s"
+      ]
+    },
+    {
+      "id": "doux-cage",
+      "chapitre": "c-g",
+      "type": "choix",
+      "question": "Dans « cage », quelle lettre chante « jjj » ?",
+      "consigne": "Dans « cage », quelle lettre chante « jjj » ?",
+      "reponse": "g",
+      "image": "cage",
+      "pieges": [
+        "c",
+        "ç",
+        "s"
+      ]
+    }
+  ]
+}

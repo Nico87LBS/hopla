@@ -23,6 +23,7 @@ peuvent aussi partager ce qui est appris grâce à leur clé (voir
 
 | Paquet | Modules | Public |
 | --- | --- | --- |
+| **Apprendre à lire** | Lettres et sons, Syllabes simples, Sons complexes, Mots outils, Lire des mots, Comprendre une phrase (méthode syllabique) | Enfant, GS et CP |
 | **Langage GS** | Les rimes, Les syllabes, Le son du début, Les lettres (avec « Mon prénom »), Les mots en images | Enfant, GS |
 | **Maths GS** | Compter des quantités, La suite des nombres, Lire les nombres, Comparer, Composer 5 et 10, Formes et positions | Enfant, GS |
 | **Explorer le monde GS** | Le temps qui passe, Les saisons, Les animaux, Mon corps, Les plantes, Objets et matières | Enfant, GS |
@@ -101,6 +102,10 @@ question à son ouverture, et chaque réponse au premier toucher ; un second
 toucher la choisit. Le haut-parleur de la question la redit. C'est activé
 pour tout le monde ; Gérer › Modules d'apprentissage › Par personne permet de
 l'éteindre pour une personne (« Lire à voix haute »).
+
+Dans les modules d'Apprendre à lire, l'appareil ne dit que la consigne
+(« Lis le mot, puis touche son dessin »), jamais les mots à lire ni les
+réponses : il les dit une fois que l'enfant a répondu.
 
 ### Prénom
 
