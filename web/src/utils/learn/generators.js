@@ -923,9 +923,12 @@ const listeningItem = (card, base, direction, siblings, lang) => {
   const others = siblings.filter(
     s => s.id !== card.id && (inverse ? s.question : s.reponse) !== base.answer,
   )
-  const traps = [
-    ...new Set(others.map(s => (inverse ? s.question : s.reponse))),
-  ]
+  // Traps of its own, such as words that sound alike, stay the same from
+  // one game to the next; otherwise they are the chapter's other answers.
+  const own = !inverse && card.pieges?.length
+  const traps = own
+    ? [...new Set(card.pieges.filter(t => t !== base.answer))]
+    : [...new Set(others.map(s => (inverse ? s.question : s.reponse)))]
   const images = {}
   if (!inverse) {
     for (const s of [card, ...others]) if (s.image) images[s.reponse] = s.image
@@ -939,7 +942,7 @@ const listeningItem = (card, base, direction, siblings, lang) => {
     ...(inverse && card.image && { image: card.image }),
     mode: 'choice',
     choices: [base.answer, ...traps.slice(0, trapCount)],
-    trapPool: traps,
+    trapPool: own ? undefined : traps,
     trapCount,
     ...(drawn && { images }),
   }

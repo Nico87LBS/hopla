@@ -1,0 +1,1375 @@
+{
+  "format": "hopla-module/1",
+  "id": "lire-sans-dessin",
+  "version": "1.0.0",
+  "nom": "Mots sans dessin",
+  "description": "Lire des mots qu'on ne peut pas dessiner : les actions, les contraires, les mots du temps, ranger les mots, et les mots qui se ressemblent.",
+  "matiere": "francais",
+  "niveaux": [
+    "GS",
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": "consigne",
+  "auteur": "Hopla",
+  "sources": "D'après le programme du cycle 2 (CP) et les repères de progression en lecture d'Éduscol.",
+  "chapitres": [
+    {
+      "id": "actions",
+      "nom": "Les actions"
+    },
+    {
+      "id": "contraires",
+      "nom": "Comment c’est ? Les contraires",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "temps",
+      "nom": "Les mots du temps",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "ranger",
+      "nom": "Ranger les mots",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "ressemblent",
+      "nom": "Les mots qui se ressemblent",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "action-1",
+      "chapitre": "actions",
+      "type": "choix",
+      "question": "Avec un livre, on peut ___.",
+      "reponse": "lire",
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "action-2",
+      "chapitre": "actions",
+      "type": "choix",
+      "question": "Dans un lit, on va ___.",
+      "reponse": "dormir",
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "action-3",
+      "chapitre": "actions",
+      "type": "choix",
+      "question": "Avec une fourchette, on peut ___.",
+      "reponse": "manger",
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "action-4",
+      "chapitre": "actions",
+      "type": "choix",
+      "question": "Avec un ballon, on peut ___.",
+      "reponse": "jouer",
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "action-5",
+      "chapitre": "actions",
+      "type": "choix",
+      "question": "Dans la piscine, on peut ___.",
+      "reponse": "nager",
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "action-6",
+      "chapitre": "actions",
+      "type": "choix",
+      "question": "Avec ses ailes, l’oiseau peut ___.",
+      "reponse": "voler",
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "action-7",
+      "chapitre": "actions",
+      "type": "choix",
+      "question": "Avec ses jambes, on peut ___.",
+      "reponse": "courir",
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "action-8",
+      "chapitre": "actions",
+      "type": "choix",
+      "question": "Avec une chanson, on peut ___.",
+      "reponse": "chanter",
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "action-9",
+      "chapitre": "actions",
+      "type": "choix",
+      "question": "Avec un crayon, on peut ___.",
+      "reponse": "dessiner",
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "action-10",
+      "chapitre": "actions",
+      "type": "choix",
+      "question": "Avec un verre d’eau, on peut ___.",
+      "reponse": "boire",
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "action-11",
+      "chapitre": "actions",
+      "type": "choix",
+      "question": "Avec ses oreilles, on peut ___.",
+      "reponse": "écouter",
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "action-12",
+      "chapitre": "actions",
+      "type": "choix",
+      "question": "Avec ses yeux, on peut ___.",
+      "reponse": "regarder",
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "action-13",
+      "chapitre": "actions",
+      "type": "choix",
+      "question": "Avec du savon, on peut se ___.",
+      "reponse": "laver",
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "action-14",
+      "chapitre": "actions",
+      "type": "choix",
+      "question": "Avec des ciseaux, on peut ___.",
+      "reponse": "couper",
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "action-15",
+      "chapitre": "actions",
+      "type": "choix",
+      "question": "Avec une corde, on peut ___.",
+      "reponse": "sauter",
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "contraires-1",
+      "chapitre": "contraires",
+      "type": "associer",
+      "question": "Relie chaque mot à son contraire.",
+      "consigne": "Relie chaque mot à son contraire.",
+      "paires": [
+        [
+          "grand",
+          "petit"
+        ],
+        [
+          "chaud",
+          "froid"
+        ],
+        [
+          "rapide",
+          "lent"
+        ],
+        [
+          "le jour",
+          "la nuit"
+        ]
+      ]
+    },
+    {
+      "id": "contraires-2",
+      "chapitre": "contraires",
+      "type": "associer",
+      "question": "Relie chaque mot à son contraire.",
+      "consigne": "Relie chaque mot à son contraire.",
+      "paires": [
+        [
+          "haut",
+          "bas"
+        ],
+        [
+          "plein",
+          "vide"
+        ],
+        [
+          "ouvert",
+          "fermé"
+        ],
+        [
+          "propre",
+          "sale"
+        ]
+      ]
+    },
+    {
+      "id": "contraires-3",
+      "chapitre": "contraires",
+      "type": "associer",
+      "question": "Relie chaque mot à son contraire.",
+      "consigne": "Relie chaque mot à son contraire.",
+      "paires": [
+        [
+          "dur",
+          "mou"
+        ],
+        [
+          "sec",
+          "mouillé"
+        ],
+        [
+          "content",
+          "triste"
+        ],
+        [
+          "devant",
+          "derrière"
+        ]
+      ]
+    },
+    {
+      "id": "contraires-4",
+      "chapitre": "contraires",
+      "type": "associer",
+      "question": "Relie chaque mot à son contraire.",
+      "consigne": "Relie chaque mot à son contraire.",
+      "paires": [
+        [
+          "lourd",
+          "léger"
+        ],
+        [
+          "vieux",
+          "jeune"
+        ],
+        [
+          "gros",
+          "mince"
+        ],
+        [
+          "fort",
+          "faible"
+        ]
+      ]
+    },
+    {
+      "id": "contraire-1",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « grand », c’est ___.",
+      "reponse": "petit",
+      "pieges": [
+        "lent",
+        "la nuit",
+        "bas"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "contraire-2",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « chaud », c’est ___.",
+      "reponse": "froid",
+      "pieges": [
+        "la nuit",
+        "bas",
+        "vide"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "contraire-3",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « rapide », c’est ___.",
+      "reponse": "lent",
+      "pieges": [
+        "bas",
+        "vide",
+        "fermé"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "contraire-4",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « le jour », c’est ___.",
+      "reponse": "la nuit",
+      "pieges": [
+        "vide",
+        "fermé",
+        "sale"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "contraire-5",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « haut », c’est ___.",
+      "reponse": "bas",
+      "pieges": [
+        "fermé",
+        "sale",
+        "mou"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "contraire-6",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « plein », c’est ___.",
+      "reponse": "vide",
+      "pieges": [
+        "sale",
+        "mou",
+        "mouillé"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "contraire-7",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « ouvert », c’est ___.",
+      "reponse": "fermé",
+      "pieges": [
+        "mou",
+        "mouillé",
+        "triste"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "contraire-8",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « propre », c’est ___.",
+      "reponse": "sale",
+      "pieges": [
+        "mouillé",
+        "triste",
+        "derrière"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "contraire-9",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « dur », c’est ___.",
+      "reponse": "mou",
+      "pieges": [
+        "triste",
+        "derrière",
+        "léger"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "contraire-10",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « sec », c’est ___.",
+      "reponse": "mouillé",
+      "pieges": [
+        "derrière",
+        "léger",
+        "jeune"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "temps-ordre-1",
+      "chapitre": "temps",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre du temps.",
+      "consigne": "Remets les mots dans l’ordre du temps.",
+      "elements": [
+        "hier",
+        "aujourd’hui",
+        "demain"
+      ]
+    },
+    {
+      "id": "temps-ordre-2",
+      "chapitre": "temps",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre du temps.",
+      "consigne": "Remets les mots dans l’ordre du temps.",
+      "elements": [
+        "le matin",
+        "le midi",
+        "le soir"
+      ]
+    },
+    {
+      "id": "temps-ordre-3",
+      "chapitre": "temps",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre du temps.",
+      "consigne": "Remets les mots dans l’ordre du temps.",
+      "elements": [
+        "le matin",
+        "l’après-midi",
+        "le soir",
+        "la nuit"
+      ]
+    },
+    {
+      "id": "temps-ordre-4",
+      "chapitre": "temps",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre du temps.",
+      "consigne": "Remets les mots dans l’ordre du temps.",
+      "elements": [
+        "avant",
+        "maintenant",
+        "après"
+      ]
+    },
+    {
+      "id": "temps-ordre-5",
+      "chapitre": "temps",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre du temps.",
+      "consigne": "Remets les mots dans l’ordre du temps.",
+      "elements": [
+        "lundi",
+        "mardi",
+        "mercredi",
+        "jeudi"
+      ]
+    },
+    {
+      "id": "temps-ordre-6",
+      "chapitre": "temps",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre du temps.",
+      "consigne": "Remets les mots dans l’ordre du temps.",
+      "elements": [
+        "vendredi",
+        "samedi",
+        "dimanche"
+      ]
+    },
+    {
+      "id": "temps-ordre-7",
+      "chapitre": "temps",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre du temps.",
+      "consigne": "Remets les mots dans l’ordre du temps.",
+      "elements": [
+        "le printemps",
+        "l’été",
+        "l’automne",
+        "l’hiver"
+      ]
+    },
+    {
+      "id": "jour-1",
+      "chapitre": "temps",
+      "type": "choix",
+      "question": "Le jour après lundi, c’est ___.",
+      "reponse": "mardi",
+      "pieges": [
+        "mercredi",
+        "jeudi",
+        "vendredi"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "jour-2",
+      "chapitre": "temps",
+      "type": "choix",
+      "question": "Le jour avant vendredi, c’est ___.",
+      "reponse": "jeudi",
+      "pieges": [
+        "mercredi",
+        "vendredi",
+        "samedi"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "jour-3",
+      "chapitre": "temps",
+      "type": "choix",
+      "question": "Le jour après samedi, c’est ___.",
+      "reponse": "dimanche",
+      "pieges": [
+        "jeudi",
+        "vendredi",
+        "samedi"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "jour-4",
+      "chapitre": "temps",
+      "type": "choix",
+      "question": "Le jour avant mercredi, c’est ___.",
+      "reponse": "mardi",
+      "pieges": [
+        "samedi",
+        "dimanche"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "temps-1",
+      "chapitre": "temps",
+      "type": "choix",
+      "question": "On dort la ___.",
+      "reponse": "nuit",
+      "pieges": [
+        "matin",
+        "midi",
+        "semaine"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "temps-2",
+      "chapitre": "temps",
+      "type": "choix",
+      "question": "Le jour d’avant aujourd’hui, c’est ___.",
+      "reponse": "hier",
+      "pieges": [
+        "demain",
+        "après",
+        "ce soir"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "temps-3",
+      "chapitre": "temps",
+      "type": "choix",
+      "question": "Le jour d’après aujourd’hui, c’est ___.",
+      "reponse": "demain",
+      "pieges": [
+        "hier",
+        "avant",
+        "ce matin"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "temps-4",
+      "chapitre": "temps",
+      "type": "choix",
+      "question": "Une semaine a sept ___.",
+      "reponse": "jours",
+      "pieges": [
+        "mois",
+        "nuits",
+        "saisons"
+      ],
+      "consigne": "Lis la phrase et choisis le mot qui manque."
+    },
+    {
+      "id": "animal-fruit-habit",
+      "chapitre": "ranger",
+      "type": "classer",
+      "question": "Lis le mot, puis range-le dans la bonne boîte.",
+      "consigne": "Lis le mot, puis range-le dans la bonne boîte.",
+      "boites": [
+        {
+          "nom": "un animal"
+        },
+        {
+          "nom": "un fruit"
+        },
+        {
+          "nom": "un vêtement"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le loup",
+          "boite": "un animal"
+        },
+        {
+          "texte": "la poule",
+          "boite": "un animal"
+        },
+        {
+          "texte": "le zèbre",
+          "boite": "un animal"
+        },
+        {
+          "texte": "le singe",
+          "boite": "un animal"
+        },
+        {
+          "texte": "la pomme",
+          "boite": "un fruit"
+        },
+        {
+          "texte": "la poire",
+          "boite": "un fruit"
+        },
+        {
+          "texte": "la cerise",
+          "boite": "un fruit"
+        },
+        {
+          "texte": "le melon",
+          "boite": "un fruit"
+        },
+        {
+          "texte": "la robe",
+          "boite": "un vêtement"
+        },
+        {
+          "texte": "le pull",
+          "boite": "un vêtement"
+        },
+        {
+          "texte": "la jupe",
+          "boite": "un vêtement"
+        },
+        {
+          "texte": "le pantalon",
+          "boite": "un vêtement"
+        }
+      ]
+    },
+    {
+      "id": "couleur-nombre",
+      "chapitre": "ranger",
+      "type": "classer",
+      "question": "Lis le mot, puis range-le dans la bonne boîte.",
+      "consigne": "Lis le mot, puis range-le dans la bonne boîte.",
+      "boites": [
+        {
+          "nom": "une couleur"
+        },
+        {
+          "nom": "un nombre"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "rouge",
+          "boite": "une couleur"
+        },
+        {
+          "texte": "vert",
+          "boite": "une couleur"
+        },
+        {
+          "texte": "bleu",
+          "boite": "une couleur"
+        },
+        {
+          "texte": "jaune",
+          "boite": "une couleur"
+        },
+        {
+          "texte": "noir",
+          "boite": "une couleur"
+        },
+        {
+          "texte": "deux",
+          "boite": "un nombre"
+        },
+        {
+          "texte": "cinq",
+          "boite": "un nombre"
+        },
+        {
+          "texte": "sept",
+          "boite": "un nombre"
+        },
+        {
+          "texte": "dix",
+          "boite": "un nombre"
+        },
+        {
+          "texte": "trois",
+          "boite": "un nombre"
+        }
+      ]
+    },
+    {
+      "id": "jour-saison",
+      "chapitre": "ranger",
+      "type": "classer",
+      "question": "Lis le mot, puis range-le dans la bonne boîte.",
+      "consigne": "Lis le mot, puis range-le dans la bonne boîte.",
+      "boites": [
+        {
+          "nom": "un jour"
+        },
+        {
+          "nom": "une saison"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "lundi",
+          "boite": "un jour"
+        },
+        {
+          "texte": "mercredi",
+          "boite": "un jour"
+        },
+        {
+          "texte": "samedi",
+          "boite": "un jour"
+        },
+        {
+          "texte": "l’été",
+          "boite": "une saison"
+        },
+        {
+          "texte": "l’hiver",
+          "boite": "une saison"
+        },
+        {
+          "texte": "le printemps",
+          "boite": "une saison"
+        }
+      ]
+    },
+    {
+      "id": "jouet-meuble-legume",
+      "chapitre": "ranger",
+      "type": "classer",
+      "question": "Lis le mot, puis range-le dans la bonne boîte.",
+      "consigne": "Lis le mot, puis range-le dans la bonne boîte.",
+      "boites": [
+        {
+          "nom": "un jouet"
+        },
+        {
+          "nom": "un meuble"
+        },
+        {
+          "nom": "un légume"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "la poupée",
+          "boite": "un jouet"
+        },
+        {
+          "texte": "la toupie",
+          "boite": "un jouet"
+        },
+        {
+          "texte": "le ballon",
+          "boite": "un jouet"
+        },
+        {
+          "texte": "la table",
+          "boite": "un meuble"
+        },
+        {
+          "texte": "le lit",
+          "boite": "un meuble"
+        },
+        {
+          "texte": "l’armoire",
+          "boite": "un meuble"
+        },
+        {
+          "texte": "le chou",
+          "boite": "un légume"
+        },
+        {
+          "texte": "le radis",
+          "boite": "un légume"
+        },
+        {
+          "texte": "la tomate",
+          "boite": "un légume"
+        }
+      ]
+    },
+    {
+      "id": "pareil-lit",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "lit",
+      "reponse": "lit",
+      "pieges": [
+        "lait",
+        "loup",
+        "lune"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:lit"
+    },
+    {
+      "id": "pareil-lait",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "lait",
+      "reponse": "lait",
+      "pieges": [
+        "lit",
+        "loup",
+        "lune"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:lait"
+    },
+    {
+      "id": "pareil-loup",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "loup",
+      "reponse": "loup",
+      "pieges": [
+        "lit",
+        "lait",
+        "lune"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:loup"
+    },
+    {
+      "id": "pareil-lune",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "lune",
+      "reponse": "lune",
+      "pieges": [
+        "lit",
+        "lait",
+        "loup"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:lune"
+    },
+    {
+      "id": "pareil-poule",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "poule",
+      "reponse": "poule",
+      "pieges": [
+        "boule",
+        "moule",
+        "foule"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:poule"
+    },
+    {
+      "id": "pareil-boule",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "boule",
+      "reponse": "boule",
+      "pieges": [
+        "poule",
+        "moule",
+        "foule"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:boule"
+    },
+    {
+      "id": "pareil-moule",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "moule",
+      "reponse": "moule",
+      "pieges": [
+        "poule",
+        "boule",
+        "foule"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:moule"
+    },
+    {
+      "id": "pareil-foule",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "foule",
+      "reponse": "foule",
+      "pieges": [
+        "poule",
+        "boule",
+        "moule"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:foule"
+    },
+    {
+      "id": "pareil-chat",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "chat",
+      "reponse": "chat",
+      "pieges": [
+        "rat",
+        "sac",
+        "tas"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:chat"
+    },
+    {
+      "id": "pareil-rat",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "rat",
+      "reponse": "rat",
+      "pieges": [
+        "chat",
+        "sac",
+        "tas"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:rat"
+    },
+    {
+      "id": "pareil-sac",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "sac",
+      "reponse": "sac",
+      "pieges": [
+        "chat",
+        "rat",
+        "tas"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:sac"
+    },
+    {
+      "id": "pareil-tas",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "tas",
+      "reponse": "tas",
+      "pieges": [
+        "chat",
+        "rat",
+        "sac"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:tas"
+    },
+    {
+      "id": "pareil-pain",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "pain",
+      "reponse": "pain",
+      "pieges": [
+        "bain",
+        "main",
+        "nain"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:pain"
+    },
+    {
+      "id": "pareil-bain",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "bain",
+      "reponse": "bain",
+      "pieges": [
+        "pain",
+        "main",
+        "nain"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:bain"
+    },
+    {
+      "id": "pareil-main",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "main",
+      "reponse": "main",
+      "pieges": [
+        "pain",
+        "bain",
+        "nain"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:main"
+    },
+    {
+      "id": "pareil-nain",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "nain",
+      "reponse": "nain",
+      "pieges": [
+        "pain",
+        "bain",
+        "main"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:nain"
+    },
+    {
+      "id": "pareil-bateau",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "bateau",
+      "reponse": "bateau",
+      "pieges": [
+        "gâteau",
+        "râteau",
+        "château"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:bateau"
+    },
+    {
+      "id": "pareil-gateau",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "gâteau",
+      "reponse": "gâteau",
+      "pieges": [
+        "bateau",
+        "râteau",
+        "château"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:gateau"
+    },
+    {
+      "id": "pareil-rateau",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "râteau",
+      "reponse": "râteau",
+      "pieges": [
+        "bateau",
+        "gâteau",
+        "château"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:rateau"
+    },
+    {
+      "id": "pareil-chateau",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "château",
+      "reponse": "château",
+      "pieges": [
+        "bateau",
+        "gâteau",
+        "râteau"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:chateau"
+    },
+    {
+      "id": "pareil-roue",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "roue",
+      "reponse": "roue",
+      "pieges": [
+        "sous",
+        "fou",
+        "cou"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:roue"
+    },
+    {
+      "id": "pareil-sous",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "sous",
+      "reponse": "sous",
+      "pieges": [
+        "roue",
+        "fou",
+        "cou"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:sous"
+    },
+    {
+      "id": "pareil-fou",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "fou",
+      "reponse": "fou",
+      "pieges": [
+        "roue",
+        "sous",
+        "cou"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:fou"
+    },
+    {
+      "id": "pareil-cou",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "cou",
+      "reponse": "cou",
+      "pieges": [
+        "roue",
+        "sous",
+        "fou"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:cou"
+    },
+    {
+      "id": "pareil-vache",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "vache",
+      "reponse": "vache",
+      "pieges": [
+        "tache",
+        "cache",
+        "hache"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:vache"
+    },
+    {
+      "id": "pareil-tache",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "tache",
+      "reponse": "tache",
+      "pieges": [
+        "vache",
+        "cache",
+        "hache"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:tache"
+    },
+    {
+      "id": "pareil-cache",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "cache",
+      "reponse": "cache",
+      "pieges": [
+        "vache",
+        "tache",
+        "hache"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:cache"
+    },
+    {
+      "id": "pareil-hache",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "hache",
+      "reponse": "hache",
+      "pieges": [
+        "vache",
+        "tache",
+        "cache"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:hache"
+    },
+    {
+      "id": "pareil-table",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "table",
+      "reponse": "table",
+      "pieges": [
+        "sable",
+        "câble",
+        "fable"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:table"
+    },
+    {
+      "id": "pareil-sable",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "sable",
+      "reponse": "sable",
+      "pieges": [
+        "table",
+        "câble",
+        "fable"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:sable"
+    },
+    {
+      "id": "pareil-cable",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "câble",
+      "reponse": "câble",
+      "pieges": [
+        "table",
+        "sable",
+        "fable"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:cable"
+    },
+    {
+      "id": "pareil-fable",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "fable",
+      "reponse": "fable",
+      "pieges": [
+        "table",
+        "sable",
+        "câble"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:fable"
+    },
+    {
+      "id": "pareil-bonbon",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "bonbon",
+      "reponse": "bonbon",
+      "pieges": [
+        "bouchon",
+        "bouton",
+        "bâton"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:bonbon"
+    },
+    {
+      "id": "pareil-bouchon",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "bouchon",
+      "reponse": "bouchon",
+      "pieges": [
+        "bonbon",
+        "bouton",
+        "bâton"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:bouchon"
+    },
+    {
+      "id": "pareil-bouton",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "bouton",
+      "reponse": "bouton",
+      "pieges": [
+        "bonbon",
+        "bouchon",
+        "bâton"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:bouton"
+    },
+    {
+      "id": "pareil-baton",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "bâton",
+      "reponse": "bâton",
+      "pieges": [
+        "bonbon",
+        "bouchon",
+        "bouton"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:baton"
+    },
+    {
+      "id": "pareil-lapin",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "lapin",
+      "reponse": "lapin",
+      "pieges": [
+        "sapin",
+        "patin",
+        "matin"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:lapin"
+    },
+    {
+      "id": "pareil-sapin",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "sapin",
+      "reponse": "sapin",
+      "pieges": [
+        "lapin",
+        "patin",
+        "matin"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:sapin"
+    },
+    {
+      "id": "pareil-patin",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "patin",
+      "reponse": "patin",
+      "pieges": [
+        "lapin",
+        "sapin",
+        "matin"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:patin"
+    },
+    {
+      "id": "pareil-matin",
+      "chapitre": "ressemblent",
+      "type": "ecoute",
+      "question": "matin",
+      "reponse": "matin",
+      "pieges": [
+        "lapin",
+        "sapin",
+        "patin"
+      ],
+      "consigne": "Écoute bien, puis touche le mot que tu entends.",
+      "cle": "fr:entendu:matin"
+    }
+  ]
+}

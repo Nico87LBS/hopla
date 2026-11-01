@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "apprendre-a-lire",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "nom": "Apprendre à lire",
   "description": "Apprendre à lire pas à pas, avec la méthode syllabique : des lettres et des sons jusqu'aux phrases. Pour la fin de la grande section et le CP.",
   "matiere": "francais",
@@ -19,6 +19,7 @@
     "lire-sons-complexes",
     "lire-mots-outils",
     "lire-mots",
-    "lire-phrases"
+    "lire-phrases",
+    "lire-sans-dessin"
   ]
 }
