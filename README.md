@@ -50,8 +50,10 @@ tablette murale, envoie les notifications et fait les annonces.
 - Catalogue fourni : Maths CE2 (8 modules), Anglais GS et CE2 (avec dessins
   et voix), Anglais aéronautique niveau 6 OACI.
 - Calculs et problèmes tirés au hasard, questions à choix, à taper, à
-  écouter, cartes à retourner ; répétition espacée ; chapitres qui s'ouvrent
-  au fil des progrès.
+  écouter, cartes à retourner, collections à compter, paires à relier,
+  étiquettes à remettre dans l'ordre ou à classer, zones d'une carte ou d'une
+  image à toucher ; lecture à voix haute pour ceux qui ne lisent pas encore ;
+  répétition espacée ; chapitres qui s'ouvrent au fil des progrès.
 - Étoiles et hops par partie, avec plafonds par jour réglables par la famille,
   le paquet, le module ou la personne ; statistiques détaillées.
 - Signalement d'une question en jeu, correction des fiches par la famille,

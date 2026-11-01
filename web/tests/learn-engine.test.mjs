@@ -16,7 +16,7 @@ import {
   totalLeft,
 } from '../src/utils/learn/engine.js'
 import { evaluate } from '../src/utils/learn/expression.js'
-import { generatorSource } from '../src/utils/learn/generators.js'
+import { generatorSource, slug } from '../src/utils/learn/generators.js'
 import { formatNumber, frenchWords } from '../src/utils/learn/numbers.js'
 import { learnParent } from '../src/utils/learn/routes.js'
 import { pickVoice } from '../src/utils/learn/speech.js'
@@ -344,4 +344,125 @@ test('the back arrow of the games goes one page up, never into a game', () => {
   assert.equal(learnParent('/manage/learn/catalogue'), '/manage')
   assert.equal(learnParent('/manage/learn'), '/manage')
   assert.equal(learnParent('/chores'), null)
+})
+
+// ── the games of several labels ──
+
+const example = JSON.parse(
+  readFileSync(
+    new URL('../../docs/exemples/essai-nouveaux-jeux.json', import.meta.url),
+    'utf8',
+  ),
+)
+
+const itemsOf = (doc, chapter) => {
+  const compiled = compile(doc)
+  return compiled.chapters
+    .find(c => c.id === chapter)
+    .sources.flatMap(source => source.list() || [])
+}
+
+test('every zone asked is drawn in its picture', () => {
+  const zonesDir = new URL('../public/drawings/zones/', import.meta.url)
+  for (const doc of [example, ...modules]) {
+    for (const card of doc.fiches || []) {
+      if (card.type !== 'zones') continue
+      const svg = readFileSync(new URL(`${card.image}.svg`, zonesDir), 'utf8')
+      assert.ok(
+        svg.includes(`data-zone="${card.question}"`),
+        `${doc.id} ${card.id}: zone ${card.question}`,
+      )
+    }
+  }
+})
+
+test('a zone is touched by its id or named among the others', () => {
+  const items = itemsOf(example, 'zones')
+  const touch = items.find(i => i.key === 'essai-nouveaux-jeux:z-bretagne')
+  assert.equal(touch.mode, 'zone')
+  assert.equal(touch.prompt, 'Touche : Bretagne')
+  assert.ok(checkAnswer(touch, 'bretagne').correct)
+  assert.ok(!checkAnswer(touch, 'normandie').correct)
+  const name = items.find(
+    i => i.key === 'essai-nouveaux-jeux:z-bretagne:nommer',
+  )
+  assert.equal(name.mode, 'choice')
+  assert.equal(name.zone, 'bretagne')
+  assert.ok(name.trapPool.includes('Corse'))
+  assert.ok(!name.trapPool.includes('la tête'), 'traps of the same picture')
+})
+
+test('labels to sort are one question each, keyed by their words', () => {
+  const items = itemsOf(example, 'classer')
+  assert.equal(items.length, 6)
+  const bird = items.find(i => i.subject.text === "l'oiseau")
+  assert.equal(bird.key, 'essai-nouveaux-jeux:vivant:l-oiseau')
+  assert.deepEqual(bird.choices, ['Vivant', 'Non vivant'])
+  assert.ok(checkAnswer(bird, 'Vivant').correct)
+})
+
+test('pairs are drawn for a game and right only without a mistake', () => {
+  const compiled = compile({
+    ...example,
+    chapitres: [{ id: 'relier', nom: 'Relier' }],
+    generateurs: [],
+    fiches: example.fiches.filter(f => f.chapitre === 'relier'),
+  })
+  const [match] = pickQuestions(compiled, new Map(), { rng: seededRandom(3) })
+  assert.equal(match.mode, 'match')
+  assert.ok(match.pairs.length <= 5 && match.pairs.length >= 3)
+  assert.equal(match.left.length, match.pairs.length)
+  assert.equal(match.answer.split(', ').length, match.pairs.length)
+  assert.ok(checkAnswer(match, '').correct)
+  assert.ok(!checkAnswer(match, 'le chat – dog').correct)
+})
+
+test('labels to order come mixed and are right in their order', () => {
+  const compiled = compile({
+    ...example,
+    chapitres: [{ id: 'ordre', nom: 'Ordre' }],
+    generateurs: [],
+    fiches: example.fiches.filter(f => f.chapitre === 'ordre'),
+  })
+  const questions = pickQuestions(compiled, new Map(), {
+    rng: seededRandom(5),
+  })
+  const days = questions.find(q => q.key === 'essai-nouveaux-jeux:jours')
+  assert.notDeepEqual(days.mixed, days.elements)
+  assert.deepEqual([...days.mixed].sort(), [...days.elements].sort())
+  assert.ok(
+    checkAnswer(days, 'lundi → mardi → mercredi → jeudi → vendredi').correct,
+  )
+  assert.ok(
+    !checkAnswer(days, 'mardi → lundi → mercredi → jeudi → vendredi').correct,
+  )
+})
+
+test('a collection is counted by choosing up to ten, then typed', () => {
+  const source = generatorSource(example.generateurs[0], example.id)
+  const items = source.list()
+  const six = items.find(i => i.key === 'cnt:objets:6')
+  assert.equal(six.mode, 'choice')
+  assert.equal(six.choices.length, 4)
+  assert.ok(six.choices.includes('6'))
+  const twelve = items.find(i => i.key === 'cnt:objets:12')
+  assert.equal(twelve.mode, 'number')
+  assert.ok(!items.some(i => i.key === 'cnt:de:7'), 'a die stops at six')
+  assert.equal(source.fromKey('cnt:de:4').answer, '4')
+  const [counted] = pickQuestions(
+    compile({
+      ...example,
+      chapitres: [{ id: 'compter', nom: 'Compter' }],
+      fiches: [],
+    }),
+    new Map(),
+    { rng: seededRandom(2) },
+  )
+  assert.ok(example.generateurs[0].objets.includes(counted.count.object))
+})
+
+test('a label is named in its key as the server does', () => {
+  assert.equal(slug('  Le cheval à bascule !'), 'le-cheval-a-bascule')
+  assert.equal(slug('L’été'), 'l-ete')
+  assert.equal(slug('Œuf'), 'oeuf')
 })

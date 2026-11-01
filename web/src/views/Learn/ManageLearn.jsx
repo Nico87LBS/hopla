@@ -17,6 +17,7 @@ import {
   Input,
   Sheet,
   Stack,
+  Switch,
   Textarea,
   Typography,
 } from '@mui/joy'
@@ -497,6 +498,53 @@ TotalCard.propTypes = {
   onOpen: PropTypes.func.isRequired,
   person: PropTypes.object.isRequired,
   total: PropTypes.number,
+}
+
+// ReadAloudCard turns off, for one person, the voice that says the
+// questions and answers of the modules made for those who do not read yet.
+const ReadAloudCard = ({ person, value }) => {
+  const { t } = useTranslation('learn')
+  const setSetting = useSetSetting()
+  const notify = useNotify()
+  const on = value !== false
+  const change = async readAloud => {
+    try {
+      await setSetting.mutateAsync({
+        userId: person.userId,
+        scope: '*',
+        readAloud,
+      })
+    } catch (err) {
+      notify('error', err.message)
+    }
+  }
+  return (
+    <Sheet sx={{ ...surfaceSx, display: 'flex', alignItems: 'center', gap: 1 }}>
+      <Box sx={{ flex: 1 }}>
+        <Typography level='title-md'>{t('manage.readAloud')}</Typography>
+        <Typography level='body-xs' sx={{ color: 'text.secondary' }}>
+          {t('manage.readAloudHelp')}
+        </Typography>
+      </Box>
+      <Switch
+        checked={on}
+        disabled={setSetting.isPending}
+        onChange={e => change(e.target.checked)}
+        slotProps={{
+          input: {
+            'aria-label': t('manage.readAloudFor', {
+              name: person.displayName,
+            }),
+          },
+        }}
+      />
+    </Sheet>
+  )
+}
+
+ReadAloudCard.propTypes = {
+  person: PropTypes.object.isRequired,
+  value: PropTypes.bool,
 }
 
 // One installed pack, or the modules outside any pack, for one person: the
@@ -1184,6 +1232,10 @@ export const ManageLearn = () => {
             person={person}
             total={settings.get(`${person.userId}:*`)?.totalCap}
             onOpen={() => setSettingsFor({ scope: 'total' })}
+          />
+          <ReadAloudCard
+            person={person}
+            value={settings.get(`${person.userId}:*`)?.readAloud}
           />
           <Legend person={person} />
           {groups.map(group => (

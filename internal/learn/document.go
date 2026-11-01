@@ -31,13 +31,13 @@ const (
 // The question types and generators the game knows. A module using another
 // one is refused, rather than shown with questions nobody can answer.
 var (
-	CardTypes      = []string{"choix", "saisie", "retourner", "ecoute"}
+	CardTypes      = []string{"choix", "saisie", "retourner", "ecoute", "associer", "ordre", "classer", "zones"}
 	GeneratorKinds = []string{"addition", "soustraction", "multiplication", "division", "double", "moitie",
-		"complement", "comparaison", "position", "lettres", "modele"}
+		"complement", "comparaison", "position", "lettres", "modele", "compter"}
 	Audiences = []string{"enfant", "adulte", "tous"}
 	// ReservedDomains begin the keys the generators make, such as "mul:7x8":
 	// a written card may not take them, nor a module its id.
-	ReservedDomains = []string{"add", "sub", "mul", "div", "cmp", "pos", "num", "pb", "dbl", "half", "cpl"}
+	ReservedDomains = []string{"add", "sub", "mul", "div", "cmp", "pos", "num", "pb", "dbl", "half", "cpl", "cnt"}
 )
 
 var (
@@ -52,16 +52,19 @@ const maxSharedKey = 150
 // Document is the part of a module document the server reads. The web app
 // reads the rest, such as how each generator draws its numbers.
 type Document struct {
-	Format        string      `json:"format"`
-	ID            string      `json:"id"`
-	Version       string      `json:"version"`
-	Name          string      `json:"nom"`
-	Author        string      `json:"auteur"`
-	Description   string      `json:"description"`
-	Subject       string      `json:"matiere"`
-	Levels        []string    `json:"niveaux"`
-	Audience      string      `json:"public"`
-	Language      string      `json:"langue"`
+	Format      string   `json:"format"`
+	ID          string   `json:"id"`
+	Version     string   `json:"version"`
+	Name        string   `json:"nom"`
+	Author      string   `json:"auteur"`
+	Description string   `json:"description"`
+	Subject     string   `json:"matiere"`
+	Levels      []string `json:"niveaux"`
+	Audience    string   `json:"public"`
+	Language    string   `json:"langue"`
+	// ReadAloud lets the device say the questions and answers aloud, for
+	// those who do not read yet, unless a parent turned it off for them.
+	ReadAloud     bool        `json:"lecture_voix_haute"`
 	Modules       []string    `json:"modules"`
 	Prerequisites []Prereq    `json:"prerequis"`
 	Chapters      []Chapter   `json:"chapitres"`
@@ -96,6 +99,227 @@ type CardDef struct {
 	// of other modules that have it: they must expect the same answer.
 	// Without it the card is the module's own, as id-du-module:id-de-fiche.
 	Key string `json:"cle"`
+	// Senses are the ways the card is asked, such as "inverse".
+	Senses []string `json:"sens"`
+	// Image is a drawing of the catalogue, or for zones the zoned picture.
+	Image string `json:"image"`
+	// Pairs, for associer, are what goes together, left and right.
+	Pairs [][]Label `json:"paires"`
+	// Elements, for ordre, are the labels in their right order.
+	Elements []string `json:"elements"`
+	// Boxes and ToSort, for classer: each label goes into one box.
+	Boxes  []SortBox  `json:"boites"`
+	ToSort []SortItem `json:"a_classer"`
+}
+
+// Label is a word, a drawing or both. It is written as a plain string when
+// it is only a word.
+type Label struct {
+	Text  string `json:"texte"`
+	Image string `json:"image"`
+}
+
+func (l *Label) UnmarshalJSON(raw []byte) error {
+	var text string
+	if err := json.Unmarshal(raw, &text); err == nil {
+		*l = Label{Text: text}
+		return nil
+	}
+	type plain Label
+	return json.Unmarshal(raw, (*plain)(l))
+}
+
+func (l Label) empty() bool { return strings.TrimSpace(l.Text) == "" && l.Image == "" }
+
+type SortBox struct {
+	Name  string `json:"nom"`
+	Image string `json:"image"`
+}
+
+type SortItem struct {
+	Text  string `json:"texte"`
+	Box   string `json:"boite"`
+	Image string `json:"image"`
+}
+
+// Limits of the cards that hold several labels.
+const (
+	minPairs, maxPairs       = 3, 20
+	minElements, maxElements = 3, 8
+	minBoxes, maxBoxes       = 2, 3
+	minToSort, maxToSort     = 2, 30
+)
+
+// drawingPattern is how a drawing of the catalogue is named.
+var drawingPattern = regexp.MustCompile(`^[a-z0-9][a-z0-9-]{0,79}$`)
+
+// expected is what a card asks to find, to compare two cards of a shared
+// key: its answer, or its pairs or labels in order.
+func (c CardDef) expected() string {
+	switch c.Type {
+	case "associer":
+		var parts []string
+		for _, pair := range c.Pairs {
+			if len(pair) == 2 {
+				parts = append(parts, pair[0].Text+pair[0].Image+"="+pair[1].Text+pair[1].Image)
+			}
+		}
+		return strings.Join(parts, " | ")
+	case "ordre":
+		return strings.Join(c.Elements, " | ")
+	}
+	return c.Answer
+}
+
+// checkContent tells what a card of its type lacks, or nil.
+func (c CardDef) checkContent() error {
+	if strings.TrimSpace(c.Question) == "" {
+		return fmt.Errorf("question manquante")
+	}
+	for _, image := range c.images() {
+		if !drawingPattern.MatchString(image) {
+			return fmt.Errorf("dessin %q invalide : lettres minuscules, chiffres et tirets", image)
+		}
+	}
+	switch c.Type {
+	case "associer":
+		if len(c.Pairs) < minPairs || len(c.Pairs) > maxPairs {
+			return fmt.Errorf("de %d à %d paires", minPairs, maxPairs)
+		}
+		left, right := map[string]bool{}, map[string]bool{}
+		for _, pair := range c.Pairs {
+			if len(pair) != 2 || pair[0].empty() || pair[1].empty() {
+				return fmt.Errorf("chaque paire a deux côtés, un mot ou un dessin")
+			}
+			l, r := pair[0].Text+"|"+pair[0].Image, pair[1].Text+"|"+pair[1].Image
+			if left[l] || right[r] {
+				return fmt.Errorf("deux paires ont le même côté")
+			}
+			left[l], right[r] = true, true
+		}
+	case "ordre":
+		if len(c.Elements) < minElements || len(c.Elements) > maxElements {
+			return fmt.Errorf("de %d à %d étiquettes à remettre dans l'ordre", minElements, maxElements)
+		}
+		seen := map[string]bool{}
+		for _, e := range c.Elements {
+			if strings.TrimSpace(e) == "" || seen[e] {
+				return fmt.Errorf("étiquette vide ou en double")
+			}
+			seen[e] = true
+		}
+	case "classer":
+		if c.Key != "" {
+			return fmt.Errorf("une fiche classer ne prend pas de clé : chaque étiquette a la sienne")
+		}
+		if len(c.Boxes) < minBoxes || len(c.Boxes) > maxBoxes {
+			return fmt.Errorf("de %d à %d boîtes", minBoxes, maxBoxes)
+		}
+		boxes := map[string]bool{}
+		for _, box := range c.Boxes {
+			if strings.TrimSpace(box.Name) == "" || boxes[box.Name] {
+				return fmt.Errorf("boîte sans nom ou en double")
+			}
+			boxes[box.Name] = true
+		}
+		if len(c.ToSort) < minToSort || len(c.ToSort) > maxToSort {
+			return fmt.Errorf("de %d à %d étiquettes à classer", minToSort, maxToSort)
+		}
+		seen := map[string]bool{}
+		for _, item := range c.ToSort {
+			slug := Slug(item.Text)
+			switch {
+			case slug == "" || seen[slug]:
+				return fmt.Errorf("étiquette à classer %q vide ou en double", item.Text)
+			case !boxes[item.Box]:
+				return fmt.Errorf("étiquette %q : boîte %q inconnue", item.Text, item.Box)
+			}
+			seen[slug] = true
+		}
+	case "zones":
+		switch {
+		case c.Image == "":
+			return fmt.Errorf("image à zones manquante")
+		case !drawingPattern.MatchString(c.Question):
+			return fmt.Errorf("zone %q invalide : son identifiant dans l'image", c.Question)
+		case strings.TrimSpace(c.Answer) == "":
+			return fmt.Errorf("nom de la zone manquant")
+		}
+	default:
+		if strings.TrimSpace(c.Answer) == "" {
+			return fmt.Errorf("question ou réponse manquante")
+		}
+	}
+	for _, sense := range c.Senses {
+		if !contains(sensesOf[c.Type], sense) {
+			return fmt.Errorf("sens %q inconnu pour le type %s", sense, c.Type)
+		}
+	}
+	return nil
+}
+
+// sensesOf lists the ways each type of card can be asked.
+var sensesOf = map[string][]string{
+	"choix":     {"direct", "inverse"},
+	"saisie":    {"direct", "inverse"},
+	"retourner": {"direct", "inverse"},
+	"ecoute":    {"direct", "lire", "inverse", "dictee", "chiffres"},
+	"zones":     {"toucher", "nommer"},
+}
+
+func (c CardDef) images() []string {
+	var out []string
+	add := func(image string) {
+		if image != "" {
+			out = append(out, image)
+		}
+	}
+	add(c.Image)
+	for _, pair := range c.Pairs {
+		for _, side := range pair {
+			add(side.Image)
+		}
+	}
+	for _, box := range c.Boxes {
+		add(box.Image)
+	}
+	for _, item := range c.ToSort {
+		add(item.Image)
+	}
+	return out
+}
+
+// Slug is how a label to sort is named in its key: lower case, without
+// accents, words joined by dashes. The web app does the same.
+func Slug(text string) string {
+	var b strings.Builder
+	dash := false
+	for _, r := range strings.ToLower(text) {
+		folded, ok := accents[r]
+		if !ok {
+			folded = string(r)
+		}
+		if (folded[0] >= 'a' && folded[0] <= 'z') || (folded[0] >= '0' && folded[0] <= '9') {
+			if dash && b.Len() > 0 {
+				b.WriteByte('-')
+			}
+			b.WriteString(folded)
+			dash = false
+		} else {
+			dash = true
+		}
+	}
+	out := b.String()
+	if len(out) > 40 {
+		out = strings.TrimRight(out[:40], "-")
+	}
+	return out
+}
+
+var accents = map[rune]string{
+	'à': "a", 'â': "a", 'ä': "a", 'á': "a", 'ç': "c", 'é': "e", 'è': "e", 'ê': "e", 'ë': "e",
+	'î': "i", 'ï': "i", 'í': "i", 'ô': "o", 'ö': "o", 'ó': "o", 'ù': "u", 'û': "u", 'ü': "u", 'ú': "u",
+	'ÿ': "y", 'ñ': "n", 'œ': "oe", 'æ': "ae",
 }
 
 type Generator struct {
@@ -219,8 +443,9 @@ func (d Document) Check() error {
 			return fmt.Errorf("fiche %s : chapitre %s inconnu", card.ID, card.Chapter)
 		case !contains(CardTypes, card.Type):
 			return fmt.Errorf("fiche %s : le type %q n'est pas encore pris en charge", card.ID, card.Type)
-		case strings.TrimSpace(card.Question) == "" || strings.TrimSpace(card.Answer) == "":
-			return fmt.Errorf("fiche %s : question ou réponse manquante", card.ID)
+		}
+		if err := card.checkContent(); err != nil {
+			return fmt.Errorf("fiche %s : %v", card.ID, err)
 		}
 		ids[card.ID] = true
 	}
@@ -264,18 +489,21 @@ func checkKey(key string) error {
 		return fmt.Errorf("clé %q invalide : domaine:compétence:sujet, en minuscules, chiffres et tirets", key)
 	case contains(ReservedDomains, parts[0]):
 		return fmt.Errorf("clé %q : le domaine %s est réservé aux calculs", key, parts[0])
-	case parts[len(parts)-1] == "inverse":
-		return fmt.Errorf("clé %q : « inverse » est réservé à l'autre sens de la fiche", key)
+	case contains(senseSuffixes, parts[len(parts)-1]):
+		return fmt.Errorf("clé %q : « %s » est réservé à un autre sens de la fiche", key, parts[len(parts)-1])
 	}
 	return nil
 }
+
+// senseSuffixes end the keys of the other senses of a card.
+var senseSuffixes = []string{"inverse", "lire", "dictee", "chiffres", "nommer"}
 
 // SharedKeys lists the answer each shared key of the module expects.
 func (d Document) SharedKeys() map[string]string {
 	out := map[string]string{}
 	for _, card := range d.Cards {
 		if card.Key != "" {
-			out[card.Key] = card.Answer
+			out[card.Key] = card.expected()
 		}
 	}
 	return out

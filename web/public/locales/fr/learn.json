@@ -34,7 +34,9 @@
     "next": "Continuer",
     "progress": "{{current}} / {{total}}",
     "listen": "Écouter encore",
-    "heard": "Entendu : {{word}}"
+    "heard": "Entendu : {{word}}",
+    "matchHelp": "Touche une carte de chaque côté pour les relier.",
+    "readAgain": "Lire encore"
   },
   "end": {
     "title0": "Continue, ça va venir !",
@@ -117,7 +119,10 @@
     "tabs": {
       "people": "Par personne",
       "catalogue": "Catalogue"
-    }
+    },
+    "readAloud": "Lire à voix haute",
+    "readAloudHelp": "Dans les modules pour ceux qui apprennent à lire, la question est dite, puis chaque réponse au premier toucher ; un second toucher la choisit.",
+    "readAloudFor": "Lire à voix haute pour {{name}}"
   },
   "stats": {
     "chapters": "Chapitres",
@@ -178,7 +183,8 @@
     "familySettingsHelp": "Pour tout le monde, sauf qui a ses propres réglages",
     "reports_one": "{{count}} signalement",
     "reports_other": "{{count}} signalements",
-    "edited": "Modifiée par la famille"
+    "edited": "Modifiée par la famille",
+    "zone": "Image « {{image}} », zone « {{zone}} »"
   },
   "report": {
     "title": "Signaler cette question",
@@ -208,7 +214,17 @@
     "both": "Poser aussi dans l'autre sens",
     "keyHelp": "Clé : {{key}}. Ce qui est déjà appris sur cette fiche est gardé.",
     "original": "Original du module",
-    "revert": "Revenir à l'original"
+    "revert": "Revenir à l'original",
+    "instruction": "Consigne",
+    "zone": "Zone « {{zone}} » de l’image « {{image}} »",
+    "zoneName": "Nom de la zone",
+    "pairs": "Paires, une par ligne : gauche = droite",
+    "pairsHelp": "le chat = #cat  (#nom pour un dessin)",
+    "elements": "Étiquettes, une par ligne, dans le bon ordre",
+    "boxes": "Boîtes, une par ligne",
+    "boxesHelp": "Vivant #rabbit  (#nom pour un dessin)",
+    "toSort": "À classer, une par ligne : étiquette = boîte",
+    "toSortHelp": "le chat #cat = Vivant"
   },
   "playLink": {
     "expiredTitle": "Ce lien ne marche plus",

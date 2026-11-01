@@ -1,0 +1,101 @@
+{
+  "format": "hopla-module/1",
+  "id": "essai-nouveaux-jeux",
+  "version": "1.0.0",
+  "nom": "Essai des nouveaux jeux",
+  "description": "Un chapitre par nouvelle façon de jouer : compter, relier, remettre dans l'ordre, classer, toucher une zone. À importer pour les essayer.",
+  "matiere": "francais",
+  "niveaux": ["GS", "CP"],
+  "public": "enfant",
+  "langue": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "chapitres": [
+    { "id": "compter", "nom": "Compter" },
+    { "id": "relier", "nom": "Relier" },
+    { "id": "ordre", "nom": "Remettre dans l'ordre" },
+    { "id": "classer", "nom": "Classer" },
+    { "id": "zones", "nom": "Toucher une zone" }
+  ],
+  "generateurs": [
+    {
+      "id": "carottes",
+      "chapitre": "compter",
+      "operation": "compter",
+      "a": [1, 12],
+      "objets": ["carrot", "apple", "ball", "duck"],
+      "formes": ["objets", "de"]
+    }
+  ],
+  "fiches": [
+    {
+      "id": "animaux-anglais",
+      "chapitre": "relier",
+      "type": "associer",
+      "question": "Relie chaque animal à son dessin.",
+      "paires": [
+        ["le chat", { "image": "cat" }],
+        ["le chien", { "image": "dog" }],
+        ["la vache", { "image": "cow" }],
+        ["le canard", { "image": "duck" }],
+        ["le cochon", { "image": "pig" }],
+        ["le lapin", { "image": "rabbit" }]
+      ]
+    },
+    {
+      "id": "majuscules",
+      "chapitre": "relier",
+      "type": "associer",
+      "question": "Relie chaque lettre à sa majuscule.",
+      "paires": [
+        ["a", "A"],
+        ["b", "B"],
+        ["d", "D"],
+        ["e", "E"],
+        ["r", "R"]
+      ]
+    },
+    {
+      "id": "jours",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les jours dans l'ordre.",
+      "elements": ["lundi", "mardi", "mercredi", "jeudi", "vendredi"]
+    },
+    {
+      "id": "phrase",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l'ordre pour faire une phrase.",
+      "elements": ["Le", "chat", "boit", "du", "lait."]
+    },
+    {
+      "id": "vivant",
+      "chapitre": "classer",
+      "type": "classer",
+      "question": "Vivant ou non vivant ?",
+      "boites": [{ "nom": "Vivant", "image": "rabbit" }, { "nom": "Non vivant", "image": "car" }],
+      "a_classer": [
+        { "texte": "le chat", "boite": "Vivant", "image": "cat" },
+        { "texte": "la voiture", "boite": "Non vivant", "image": "car" },
+        { "texte": "l'oiseau", "boite": "Vivant", "image": "bird" },
+        { "texte": "le ballon", "boite": "Non vivant", "image": "ball" },
+        { "texte": "le poisson", "boite": "Vivant", "image": "fish" },
+        { "texte": "le livre", "boite": "Non vivant", "image": "book" }
+      ]
+    },
+    { "id": "z-bretagne", "chapitre": "zones", "type": "zones", "image": "carte-france", "question": "bretagne", "reponse": "Bretagne" },
+    { "id": "z-normandie", "chapitre": "zones", "type": "zones", "image": "carte-france", "question": "normandie", "reponse": "Normandie" },
+    { "id": "z-idf", "chapitre": "zones", "type": "zones", "image": "carte-france", "question": "ile-de-france", "reponse": "Île-de-France" },
+    { "id": "z-corse", "chapitre": "zones", "type": "zones", "image": "carte-france", "question": "corse", "reponse": "Corse" },
+    { "id": "z-occitanie", "chapitre": "zones", "type": "zones", "image": "carte-france", "question": "occitanie", "reponse": "Occitanie" },
+    { "id": "c-tete", "chapitre": "zones", "type": "zones", "image": "corps", "question": "tete", "reponse": "la tête" },
+    { "id": "c-main", "chapitre": "zones", "type": "zones", "image": "corps", "question": "main", "reponse": "la main" },
+    { "id": "c-genou", "chapitre": "zones", "type": "zones", "image": "corps", "question": "genou", "reponse": "le genou" },
+    { "id": "c-pied", "chapitre": "zones", "type": "zones", "image": "corps", "question": "pied", "reponse": "le pied" },
+    { "id": "p-fleur", "chapitre": "zones", "type": "zones", "image": "plante", "question": "fleur", "reponse": "la fleur" },
+    { "id": "p-tige", "chapitre": "zones", "type": "zones", "image": "plante", "question": "tige", "reponse": "la tige" },
+    { "id": "p-feuille", "chapitre": "zones", "type": "zones", "image": "plante", "question": "feuille", "reponse": "la feuille" },
+    { "id": "p-racines", "chapitre": "zones", "type": "zones", "image": "plante", "question": "racines", "reponse": "les racines" }
+  ]
+}

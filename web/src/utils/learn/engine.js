@@ -213,7 +213,42 @@ const drawFrom = (chapter, rng) => {
   return sources[Math.floor(rng() * sources.length)].draw(rng)
 }
 
+// prepare shapes a question for one game: its choices shuffled, the pairs
+// shown drawn, the labels to order mixed, the object counted picked.
 const prepare = (item, rng) => {
+  if (item.count) {
+    const { objects } = item.count
+    item = {
+      ...item,
+      count: {
+        ...item.count,
+        object: objects[Math.floor(rng() * objects.length)],
+      },
+    }
+  }
+  if (item.mode === 'match') {
+    const pairs = shuffle(item.pairs, rng).slice(0, item.shown)
+    const text = side => side.text || side.image || ''
+    return {
+      ...item,
+      pairs,
+      answer: pairs.map(([l, r]) => `${text(l)} – ${text(r)}`).join(', '),
+      left: shuffle(
+        pairs.map((p, i) => i),
+        rng,
+      ),
+      right: shuffle(
+        pairs.map((p, i) => i),
+        rng,
+      ),
+    }
+  }
+  if (item.mode === 'order') {
+    let mixed = shuffle(item.elements, rng)
+    for (let i = 0; i < 10 && mixed.join('|') === item.elements.join('|'); i++)
+      mixed = shuffle(item.elements, rng)
+    return { ...item, mixed }
+  }
   if (item.mode !== 'choice' || item.keepOrder) return item
   const choices = item.trapPool?.length
     ? [
@@ -335,6 +370,16 @@ export const checkAnswer = (item, given) => {
     case 'flip':
       return { correct: given === 'oui', almost: given === 'presque' }
     case 'choice':
+    case 'sort':
+      return { correct: given === item.answer, almost: false }
+    // A zone touched is given by its id; its name is what is shown.
+    case 'zone':
+      return { correct: given === item.zone, almost: false }
+    // Pairs are given as the mistakes made, none when all were matched
+    // straight away.
+    case 'match':
+      return { correct: given === '', almost: false }
+    case 'order':
       return { correct: given === item.answer, almost: false }
     case 'text': {
       const accepted = item.accepted?.length ? item.accepted : [item.answer]

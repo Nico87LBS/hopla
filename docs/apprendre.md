@@ -85,6 +85,19 @@ questions :
 | Réponse à taper | écrit la réponse ; les accents ou une petite faute peuvent être tolérés |
 | Écoute | entend un mot (voix de l'appareil) et choisit son sens ou son dessin, ou l'écrit (dictée) |
 | Carte à retourner | réfléchit, retourne la carte et dit s'il savait : « Je savais », « Presque », « Pas encore » |
+| Compter | compte une collection dessinée ou les points d'un dé, et touche le nombre (ou le tape au-delà de 10) |
+| Relier | touche une étiquette à gauche puis sa paire à droite, jusqu'à toutes les relier |
+| Remettre dans l'ordre | touche les étiquettes dans l'ordre pour les placer, puis « Valider » |
+| Classer | met chaque étiquette dans la bonne boîte |
+| Zones | touche une région, une partie du corps ou de la plante, ou nomme celle qui est en couleur |
+
+### Lire à voix haute
+
+Dans les modules faits pour ceux qui ne lisent pas encore, l'appareil dit la
+question à son ouverture, et chaque réponse au premier toucher ; un second
+toucher la choisit. Le haut-parleur de la question la redit. C'est activé
+pour tout le monde ; Gérer › Modules d'apprentissage › Par personne permet de
+l'éteindre pour une personne (« Lire à voix haute »).
 
 Une question ratée est remontrée avec sa réponse, et revient en fin de partie
 dans « À revoir ».
