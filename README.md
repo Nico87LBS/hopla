@@ -87,8 +87,7 @@ services:
 ```
 
 Au premier démarrage, Hopla crée `config/selfhosted.yaml` avec un secret
-aléatoire ; modifiez-le puis redémarrez. Pour envoyer des photos, donnez une
-valeur à `storage.max_file_size` et `storage.max_user_storage`. Tout le
+aléatoire ; modifiez-le puis redémarrez. Tout le
 détail (proxy HTTPS, e-mails, OpenID Connect, sauvegarde, mise à jour) est
 dans [la documentation d'installation](docs/installation.md).
 
