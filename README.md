@@ -49,11 +49,12 @@ tablette murale, envoie les notifications et fait les annonces.
 - Jeux éducatifs intégrés, sans publicité, jouables hors ligne.
 - Catalogue fourni : Apprendre à lire (GS et CP, méthode syllabique, en
   imprimerie et en cursif), Grande section (Langage, Maths, Explorer le
-  monde, avec dessins et voix), CE2 (Français, Questionner le monde avec
-  cartes de France et du monde, Maths), Anglais GS et CE2,
+  monde, avec dessins et voix), CP (Français avec dictée, Maths avec
+  monnaie et horloge, Questionner le monde), CE2 (Français, Questionner le
+  monde avec cartes de France et du monde, Maths), Anglais GS, CP et CE2,
   Anglais aéronautique niveau 6 OACI.
 - Calculs et problèmes tirés au hasard, questions à choix, à taper, à
-  écouter, cartes à retourner, collections à compter, paires à relier,
+  écouter, cartes à retourner, collections à compter, horloges à lire, paires à relier,
   étiquettes à remettre dans l'ordre ou à classer, zones d'une carte ou d'une
   image à toucher ; lecture à voix haute réglable par personne (tout, la
   consigne seulement, rien) ;

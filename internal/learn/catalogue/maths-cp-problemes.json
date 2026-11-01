@@ -1,0 +1,342 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-cp-problemes",
+  "version": "1.0.0",
+  "nom": "Problèmes CP",
+  "description": "De petits problèmes à lire ou à écouter : ajouter, enlever, partager en deux, comparer.",
+  "matiere": "maths",
+  "niveaux": [
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de mathématiques du cycle 2 (2024) et les repères annuels de progression du CP (Éduscol).",
+  "chapitres": [
+    {
+      "id": "ajouter",
+      "nom": "Ajouter"
+    },
+    {
+      "id": "enlever",
+      "nom": "Enlever",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "partager",
+      "nom": "Partager en deux",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "comparer",
+      "nom": "Comparer",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "generateurs": [
+    {
+      "id": "billes",
+      "chapitre": "ajouter",
+      "operation": "modele",
+      "texte": "{p} a {a} billes. Il en gagne {b}. Combien de billes a-t-il maintenant ?",
+      "variables": {
+        "p": {
+          "valeurs": [
+            "Léo",
+            "Noah",
+            "Tom",
+            "Malo"
+          ]
+        },
+        "a": [
+          2,
+          15
+        ],
+        "b": [
+          1,
+          9
+        ]
+      },
+      "reponse": "a+b",
+      "unite": "billes"
+    },
+    {
+      "id": "fleurs",
+      "chapitre": "ajouter",
+      "operation": "modele",
+      "texte": "Dans le vase, il y a {a} fleurs. {p} en ajoute {b}. Combien y a-t-il de fleurs ?",
+      "variables": {
+        "p": {
+          "valeurs": [
+            "Léo",
+            "Inès",
+            "Noah",
+            "Jade",
+            "Malo",
+            "Lina",
+            "Tom",
+            "Lou"
+          ]
+        },
+        "a": [
+          2,
+          12
+        ],
+        "b": [
+          1,
+          8
+        ]
+      },
+      "reponse": "a+b",
+      "unite": "fleurs"
+    },
+    {
+      "id": "bus",
+      "chapitre": "ajouter",
+      "operation": "modele",
+      "texte": "Il y a {a} enfants dans le bus. {b} enfants montent. Combien y a-t-il d’enfants dans le bus ?",
+      "variables": {
+        "a": [
+          10,
+          40
+        ],
+        "b": [
+          2,
+          9
+        ]
+      },
+      "reponse": "a+b",
+      "unite": "enfants"
+    },
+    {
+      "id": "bonbons",
+      "chapitre": "enlever",
+      "operation": "modele",
+      "texte": "{p} a {a} bonbons. Elle en mange {b}. Combien lui en reste-t-il ?",
+      "variables": {
+        "p": {
+          "valeurs": [
+            "Inès",
+            "Jade",
+            "Lina",
+            "Lou"
+          ]
+        },
+        "a": [
+          6,
+          20
+        ],
+        "b": [
+          1,
+          5
+        ]
+      },
+      "reponse": "a-b",
+      "unite": "bonbons"
+    },
+    {
+      "id": "oiseaux",
+      "chapitre": "enlever",
+      "operation": "modele",
+      "texte": "Sur l’arbre, il y a {a} oiseaux. {b} s’envolent. Combien en reste-t-il ?",
+      "variables": {
+        "a": [
+          5,
+          20
+        ],
+        "b": [
+          1,
+          9
+        ]
+      },
+      "si": "a>b",
+      "reponse": "a-b",
+      "unite": "oiseaux"
+    },
+    {
+      "id": "gateaux",
+      "chapitre": "enlever",
+      "operation": "modele",
+      "texte": "Maman a fait {a} gâteaux. La famille en mange {b}. Combien en reste-t-il ?",
+      "variables": {
+        "a": [
+          10,
+          30
+        ],
+        "b": [
+          2,
+          9
+        ]
+      },
+      "reponse": "a-b",
+      "unite": "gâteaux"
+    },
+    {
+      "id": "partage",
+      "chapitre": "partager",
+      "operation": "modele",
+      "texte": "{p} partage {n} cartes en deux paquets pareils. Combien de cartes dans chaque paquet ?",
+      "variables": {
+        "p": {
+          "valeurs": [
+            "Léo",
+            "Inès",
+            "Noah",
+            "Jade",
+            "Malo",
+            "Lina",
+            "Tom",
+            "Lou"
+          ]
+        },
+        "q": [
+          1,
+          10
+        ]
+      },
+      "calculs": {
+        "n": "q*2"
+      },
+      "reponse": "q",
+      "unite": "cartes"
+    },
+    {
+      "id": "jumeaux",
+      "chapitre": "partager",
+      "operation": "modele",
+      "texte": "Deux jumeaux se partagent {n} billes, autant chacun. Combien de billes a chacun ?",
+      "variables": {
+        "q": [
+          2,
+          15
+        ]
+      },
+      "calculs": {
+        "n": "q*2"
+      },
+      "reponse": "q",
+      "unite": "billes"
+    },
+    {
+      "id": "pattes",
+      "chapitre": "partager",
+      "operation": "modele",
+      "texte": "Il y a {n} chaussettes. Ça fait combien de paires ?",
+      "variables": {
+        "q": [
+          2,
+          10
+        ]
+      },
+      "calculs": {
+        "n": "q*2"
+      },
+      "reponse": "q",
+      "unite": "paires"
+    },
+    {
+      "id": "de-plus",
+      "chapitre": "comparer",
+      "operation": "modele",
+      "texte": "{p} a {a} images. {q} en a {b} de plus. Combien d’images a {q} ?",
+      "variables": {
+        "p": {
+          "valeurs": [
+            "Léo",
+            "Noah",
+            "Tom"
+          ]
+        },
+        "q": {
+          "valeurs": [
+            "Jade",
+            "Lina",
+            "Lou"
+          ]
+        },
+        "a": [
+          3,
+          20
+        ],
+        "b": [
+          1,
+          9
+        ]
+      },
+      "reponse": "a+b",
+      "unite": "images"
+    },
+    {
+      "id": "de-moins",
+      "chapitre": "comparer",
+      "operation": "modele",
+      "texte": "{p} a {a} ans. Son frère a {b} ans de moins. Quel âge a son frère ?",
+      "variables": {
+        "p": {
+          "valeurs": [
+            "Léo",
+            "Inès",
+            "Noah",
+            "Jade",
+            "Malo",
+            "Lina",
+            "Tom",
+            "Lou"
+          ]
+        },
+        "a": [
+          6,
+          12
+        ],
+        "b": [
+          1,
+          5
+        ]
+      },
+      "reponse": "a-b",
+      "unite": "ans"
+    },
+    {
+      "id": "ecart",
+      "chapitre": "comparer",
+      "operation": "modele",
+      "texte": "{p} a {a} billes et {q} en a {b}. Combien {p} en a-t-il de plus ?",
+      "variables": {
+        "p": {
+          "valeurs": [
+            "Léo",
+            "Noah",
+            "Tom"
+          ]
+        },
+        "q": {
+          "valeurs": [
+            "Jade",
+            "Lina",
+            "Lou"
+          ]
+        },
+        "a": [
+          8,
+          20
+        ],
+        "b": [
+          2,
+          9
+        ]
+      },
+      "si": "a>b",
+      "reponse": "a-b",
+      "unite": "billes"
+    }
+  ]
+}

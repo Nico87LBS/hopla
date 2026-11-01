@@ -1,0 +1,374 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-cp-formes",
+  "version": "1.0.0",
+  "nom": "Formes et repérage",
+  "description": "Le carré, le rectangle, le triangle et le rond ; le cube, la boule, le cylindre et la pyramide ; à gauche, à droite, entre, devant, derrière.",
+  "matiere": "maths",
+  "niveaux": [
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de mathématiques du cycle 2 (2024) et les repères annuels de progression du CP (Éduscol).",
+  "chapitres": [
+    {
+      "id": "formes",
+      "nom": "Les formes"
+    },
+    {
+      "id": "solides",
+      "nom": "Les solides",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "reperage",
+      "nom": "À gauche, à droite",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "forme-rond",
+      "chapitre": "formes",
+      "type": "ecoute",
+      "cle": "fr:forme:rond",
+      "question": "le rond",
+      "reponse": "le rond",
+      "image": "shape-circle",
+      "sens": [
+        "direct",
+        "inverse"
+      ]
+    },
+    {
+      "id": "forme-carre",
+      "chapitre": "formes",
+      "type": "ecoute",
+      "cle": "fr:forme:carre",
+      "question": "le carré",
+      "reponse": "le carré",
+      "image": "shape-square",
+      "sens": [
+        "direct",
+        "inverse"
+      ]
+    },
+    {
+      "id": "forme-triangle",
+      "chapitre": "formes",
+      "type": "ecoute",
+      "cle": "fr:forme:triangle",
+      "question": "le triangle",
+      "reponse": "le triangle",
+      "image": "shape-triangle",
+      "sens": [
+        "direct",
+        "inverse"
+      ]
+    },
+    {
+      "id": "forme-rectangle",
+      "chapitre": "formes",
+      "type": "ecoute",
+      "cle": "fr:forme:rectangle",
+      "question": "le rectangle",
+      "reponse": "le rectangle",
+      "image": "shape-rectangle",
+      "sens": [
+        "direct",
+        "inverse"
+      ]
+    },
+    {
+      "id": "cotes-triangle",
+      "chapitre": "formes",
+      "type": "choix",
+      "question": "Combien de côtés a le triangle ?",
+      "reponse": "3",
+      "pieges": [
+        "2",
+        "4",
+        "5"
+      ],
+      "consigne": "Combien de côtés a le triangle ?",
+      "image": "shape-triangle"
+    },
+    {
+      "id": "cotes-carre",
+      "chapitre": "formes",
+      "type": "choix",
+      "question": "Combien de côtés a le carré ?",
+      "reponse": "4",
+      "pieges": [
+        "2",
+        "3",
+        "5"
+      ],
+      "consigne": "Combien de côtés a le carré ?",
+      "image": "shape-square"
+    },
+    {
+      "id": "cotes-rectangle",
+      "chapitre": "formes",
+      "type": "choix",
+      "question": "Combien de côtés a le rectangle ?",
+      "reponse": "4",
+      "pieges": [
+        "2",
+        "3",
+        "5"
+      ],
+      "consigne": "Combien de côtés a le rectangle ?",
+      "image": "shape-rectangle"
+    },
+    {
+      "id": "cotes-rond",
+      "chapitre": "formes",
+      "type": "choix",
+      "question": "Combien de côtés droits a le rond ?",
+      "reponse": "0",
+      "pieges": [
+        "1",
+        "3",
+        "4"
+      ],
+      "consigne": "Combien de côtés droits a le rond ?",
+      "image": "shape-circle"
+    },
+    {
+      "id": "carre-rectangle",
+      "chapitre": "formes",
+      "type": "choix",
+      "question": "Quelle forme a 4 côtés tous pareils ?",
+      "reponse": "le carré",
+      "pieges": [
+        "le rectangle",
+        "le triangle",
+        "le rond"
+      ],
+      "consigne": "Quelle forme a 4 côtés tous pareils ?"
+    },
+    {
+      "id": "solide-cube",
+      "chapitre": "solides",
+      "type": "ecoute",
+      "cle": "fr:solide:cube",
+      "question": "le cube",
+      "reponse": "le cube",
+      "image": "shape-cube",
+      "sens": [
+        "direct",
+        "inverse"
+      ]
+    },
+    {
+      "id": "solide-boule",
+      "chapitre": "solides",
+      "type": "ecoute",
+      "cle": "fr:solide:boule",
+      "question": "la boule",
+      "reponse": "la boule",
+      "image": "shape-sphere",
+      "sens": [
+        "direct",
+        "inverse"
+      ]
+    },
+    {
+      "id": "solide-cylindre",
+      "chapitre": "solides",
+      "type": "ecoute",
+      "cle": "fr:solide:cylindre",
+      "question": "le cylindre",
+      "reponse": "le cylindre",
+      "image": "shape-cylinder",
+      "sens": [
+        "direct",
+        "inverse"
+      ]
+    },
+    {
+      "id": "solide-pyramide",
+      "chapitre": "solides",
+      "type": "ecoute",
+      "cle": "fr:solide:pyramide",
+      "question": "la pyramide",
+      "reponse": "la pyramide",
+      "image": "shape-pyramid",
+      "sens": [
+        "direct",
+        "inverse"
+      ]
+    },
+    {
+      "id": "roule",
+      "chapitre": "solides",
+      "type": "classer",
+      "question": "Est-ce que ça roule ?",
+      "consigne": "Est-ce que ça roule ?",
+      "boites": [
+        {
+          "nom": "Ça roule"
+        },
+        {
+          "nom": "Ça ne roule pas"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "la boule",
+          "boite": "Ça roule",
+          "image": "shape-sphere"
+        },
+        {
+          "texte": "le cylindre",
+          "boite": "Ça roule",
+          "image": "shape-cylinder"
+        },
+        {
+          "texte": "le cube",
+          "boite": "Ça ne roule pas",
+          "image": "shape-cube"
+        },
+        {
+          "texte": "la pyramide",
+          "boite": "Ça ne roule pas",
+          "image": "shape-pyramid"
+        },
+        {
+          "texte": "le ballon",
+          "boite": "Ça roule",
+          "image": "ball"
+        },
+        {
+          "texte": "la roue",
+          "boite": "Ça roule",
+          "image": "wheel"
+        },
+        {
+          "texte": "le livre",
+          "boite": "Ça ne roule pas",
+          "image": "book"
+        },
+        {
+          "texte": "la table",
+          "boite": "Ça ne roule pas",
+          "image": "table"
+        }
+      ]
+    },
+    {
+      "id": "faces-cube",
+      "chapitre": "solides",
+      "type": "choix",
+      "question": "Combien de faces a un cube ?",
+      "reponse": "6",
+      "pieges": [
+        "4",
+        "5",
+        "8"
+      ],
+      "consigne": "Combien de faces a un cube ?",
+      "explication": "Un dé est un cube : il a 6 faces, de 1 à 6.",
+      "image": "shape-cube"
+    },
+    {
+      "id": "position-a-gauche",
+      "chapitre": "reperage",
+      "type": "ecoute",
+      "cle": "fr:position:a-gauche",
+      "question": "Le lapin est à gauche de la boîte.",
+      "reponse": "à gauche",
+      "image": "pos-left"
+    },
+    {
+      "id": "position-a-droite",
+      "chapitre": "reperage",
+      "type": "ecoute",
+      "cle": "fr:position:a-droite",
+      "question": "Le lapin est à droite de la boîte.",
+      "reponse": "à droite",
+      "image": "pos-right"
+    },
+    {
+      "id": "position-entre",
+      "chapitre": "reperage",
+      "type": "ecoute",
+      "cle": "fr:position:entre",
+      "question": "Le lapin est entre les deux boîtes.",
+      "reponse": "entre",
+      "image": "pos-between"
+    },
+    {
+      "id": "position-devant",
+      "chapitre": "reperage",
+      "type": "ecoute",
+      "cle": "fr:position:devant",
+      "question": "Le lapin est devant la boîte.",
+      "reponse": "devant",
+      "image": "pos-in-front"
+    },
+    {
+      "id": "position-derriere",
+      "chapitre": "reperage",
+      "type": "ecoute",
+      "cle": "fr:position:derriere",
+      "question": "Le lapin est derrière la boîte.",
+      "reponse": "derrière",
+      "image": "pos-behind"
+    },
+    {
+      "id": "position-sur",
+      "chapitre": "reperage",
+      "type": "ecoute",
+      "cle": "fr:position:sur",
+      "question": "Le lapin est sur la boîte.",
+      "reponse": "sur",
+      "image": "pos-on"
+    },
+    {
+      "id": "position-sous",
+      "chapitre": "reperage",
+      "type": "ecoute",
+      "cle": "fr:position:sous",
+      "question": "Le lapin est sous la table.",
+      "reponse": "sous",
+      "image": "pos-under"
+    },
+    {
+      "id": "ou-pos-left",
+      "chapitre": "reperage",
+      "type": "choix",
+      "question": "Le lapin est-il à gauche ou à droite de la boîte ?",
+      "reponse": "à gauche",
+      "pieges": [
+        "à droite"
+      ],
+      "consigne": "Le lapin est-il à gauche ou à droite de la boîte ?",
+      "image": "pos-left"
+    },
+    {
+      "id": "ou-pos-right",
+      "chapitre": "reperage",
+      "type": "choix",
+      "question": "Le lapin est-il à gauche ou à droite de la boîte ?",
+      "reponse": "à droite",
+      "pieges": [
+        "à gauche"
+      ],
+      "consigne": "Le lapin est-il à gauche ou à droite de la boîte ?",
+      "image": "pos-right"
+    }
+  ]
+}

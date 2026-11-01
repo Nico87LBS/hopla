@@ -1,0 +1,1682 @@
+{
+  "format": "hopla-module/1",
+  "id": "francais-cp-genre-nombre",
+  "version": "1.0.0",
+  "nom": "Un, une, des",
+  "description": "Le ou la, un ou une, un ou des, le s du pluriel, et il, elle, ils ou elles pour remplacer un nom.",
+  "matiere": "francais",
+  "niveaux": [
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": "consigne",
+  "auteur": "Hopla",
+  "sources": "D'après le programme de français du cycle 2 (2024) et les repères annuels de progression du CP (Éduscol).",
+  "chapitres": [
+    {
+      "id": "le-la",
+      "nom": "Le ou la"
+    },
+    {
+      "id": "un-une",
+      "nom": "Un ou une",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "pluriel",
+      "nom": "Un ou des",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "s",
+      "nom": "Le s du pluriel",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "pronoms",
+      "nom": "Il, elle, ils, elles",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "lela-chat",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ chat",
+      "reponse": "Le",
+      "pieges": [
+        "La"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "cat"
+    },
+    {
+      "id": "lela-chien",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ chien",
+      "reponse": "Le",
+      "pieges": [
+        "La"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "dog"
+    },
+    {
+      "id": "lela-lapin",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ lapin",
+      "reponse": "Le",
+      "pieges": [
+        "La"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "rabbit"
+    },
+    {
+      "id": "lela-poisson",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ poisson",
+      "reponse": "Le",
+      "pieges": [
+        "La"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "fish"
+    },
+    {
+      "id": "lela-cheval",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ cheval",
+      "reponse": "Le",
+      "pieges": [
+        "La"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "horse"
+    },
+    {
+      "id": "lela-canard",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ canard",
+      "reponse": "Le",
+      "pieges": [
+        "La"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "duck"
+    },
+    {
+      "id": "lela-livre",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ livre",
+      "reponse": "Le",
+      "pieges": [
+        "La"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "book"
+    },
+    {
+      "id": "lela-ballon",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ ballon",
+      "reponse": "Le",
+      "pieges": [
+        "La"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "ball"
+    },
+    {
+      "id": "lela-velo",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ vélo",
+      "reponse": "Le",
+      "pieges": [
+        "La"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "bike"
+    },
+    {
+      "id": "lela-bateau",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ bateau",
+      "reponse": "Le",
+      "pieges": [
+        "La"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "boat"
+    },
+    {
+      "id": "lela-gateau",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ gâteau",
+      "reponse": "Le",
+      "pieges": [
+        "La"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "cake"
+    },
+    {
+      "id": "lela-pain",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ pain",
+      "reponse": "Le",
+      "pieges": [
+        "La"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "bread"
+    },
+    {
+      "id": "lela-citron",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ citron",
+      "reponse": "Le",
+      "pieges": [
+        "La"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "lemon"
+    },
+    {
+      "id": "lela-chapeau",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ chapeau",
+      "reponse": "Le",
+      "pieges": [
+        "La"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "hat"
+    },
+    {
+      "id": "lela-lit",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ lit",
+      "reponse": "Le",
+      "pieges": [
+        "La"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "bed"
+    },
+    {
+      "id": "lela-sac",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ sac",
+      "reponse": "Le",
+      "pieges": [
+        "La"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "bag"
+    },
+    {
+      "id": "lela-bol",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ bol",
+      "reponse": "Le",
+      "pieges": [
+        "La"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "bowl"
+    },
+    {
+      "id": "lela-robot",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ robot",
+      "reponse": "Le",
+      "pieges": [
+        "La"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "robot"
+    },
+    {
+      "id": "lela-vache",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ vache",
+      "reponse": "La",
+      "pieges": [
+        "Le"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "cow"
+    },
+    {
+      "id": "lela-souris",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ souris",
+      "reponse": "La",
+      "pieges": [
+        "Le"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "mouse"
+    },
+    {
+      "id": "lela-poule",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ poule",
+      "reponse": "La",
+      "pieges": [
+        "Le"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "hen"
+    },
+    {
+      "id": "lela-pomme",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ pomme",
+      "reponse": "La",
+      "pieges": [
+        "Le"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "apple"
+    },
+    {
+      "id": "lela-banane",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ banane",
+      "reponse": "La",
+      "pieges": [
+        "Le"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "banana"
+    },
+    {
+      "id": "lela-fraise",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ fraise",
+      "reponse": "La",
+      "pieges": [
+        "Le"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "strawberry"
+    },
+    {
+      "id": "lela-poire",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ poire",
+      "reponse": "La",
+      "pieges": [
+        "Le"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "pear"
+    },
+    {
+      "id": "lela-carotte",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ carotte",
+      "reponse": "La",
+      "pieges": [
+        "Le"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "carrot"
+    },
+    {
+      "id": "lela-poupee",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ poupée",
+      "reponse": "La",
+      "pieges": [
+        "Le"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "doll"
+    },
+    {
+      "id": "lela-voiture",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ voiture",
+      "reponse": "La",
+      "pieges": [
+        "Le"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "car"
+    },
+    {
+      "id": "lela-maison",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ maison",
+      "reponse": "La",
+      "pieges": [
+        "Le"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "house"
+    },
+    {
+      "id": "lela-table",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ table",
+      "reponse": "La",
+      "pieges": [
+        "Le"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "table"
+    },
+    {
+      "id": "lela-chaise",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ chaise",
+      "reponse": "La",
+      "pieges": [
+        "Le"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "chair"
+    },
+    {
+      "id": "lela-porte",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ porte",
+      "reponse": "La",
+      "pieges": [
+        "Le"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "door"
+    },
+    {
+      "id": "lela-lune",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ lune",
+      "reponse": "La",
+      "pieges": [
+        "Le"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "moon"
+    },
+    {
+      "id": "lela-fleur",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ fleur",
+      "reponse": "La",
+      "pieges": [
+        "Le"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "flower"
+    },
+    {
+      "id": "lela-robe",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ robe",
+      "reponse": "La",
+      "pieges": [
+        "Le"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "dress"
+    },
+    {
+      "id": "lela-moto",
+      "chapitre": "le-la",
+      "type": "choix",
+      "question": "___ moto",
+      "reponse": "La",
+      "pieges": [
+        "Le"
+      ],
+      "consigne": "Le ou la ?",
+      "image": "motorbike"
+    },
+    {
+      "id": "unune-chat",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ chat",
+      "reponse": "Un",
+      "pieges": [
+        "Une"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "cat"
+    },
+    {
+      "id": "unune-chien",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ chien",
+      "reponse": "Un",
+      "pieges": [
+        "Une"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "dog"
+    },
+    {
+      "id": "unune-lapin",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ lapin",
+      "reponse": "Un",
+      "pieges": [
+        "Une"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "rabbit"
+    },
+    {
+      "id": "unune-poisson",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ poisson",
+      "reponse": "Un",
+      "pieges": [
+        "Une"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "fish"
+    },
+    {
+      "id": "unune-cheval",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ cheval",
+      "reponse": "Un",
+      "pieges": [
+        "Une"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "horse"
+    },
+    {
+      "id": "unune-canard",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ canard",
+      "reponse": "Un",
+      "pieges": [
+        "Une"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "duck"
+    },
+    {
+      "id": "unune-livre",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ livre",
+      "reponse": "Un",
+      "pieges": [
+        "Une"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "book"
+    },
+    {
+      "id": "unune-ballon",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ ballon",
+      "reponse": "Un",
+      "pieges": [
+        "Une"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "ball"
+    },
+    {
+      "id": "unune-velo",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ vélo",
+      "reponse": "Un",
+      "pieges": [
+        "Une"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "bike"
+    },
+    {
+      "id": "unune-bateau",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ bateau",
+      "reponse": "Un",
+      "pieges": [
+        "Une"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "boat"
+    },
+    {
+      "id": "unune-gateau",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ gâteau",
+      "reponse": "Un",
+      "pieges": [
+        "Une"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "cake"
+    },
+    {
+      "id": "unune-pain",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ pain",
+      "reponse": "Un",
+      "pieges": [
+        "Une"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "bread"
+    },
+    {
+      "id": "unune-citron",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ citron",
+      "reponse": "Un",
+      "pieges": [
+        "Une"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "lemon"
+    },
+    {
+      "id": "unune-chapeau",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ chapeau",
+      "reponse": "Un",
+      "pieges": [
+        "Une"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "hat"
+    },
+    {
+      "id": "unune-lit",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ lit",
+      "reponse": "Un",
+      "pieges": [
+        "Une"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "bed"
+    },
+    {
+      "id": "unune-sac",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ sac",
+      "reponse": "Un",
+      "pieges": [
+        "Une"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "bag"
+    },
+    {
+      "id": "unune-bol",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ bol",
+      "reponse": "Un",
+      "pieges": [
+        "Une"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "bowl"
+    },
+    {
+      "id": "unune-robot",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ robot",
+      "reponse": "Un",
+      "pieges": [
+        "Une"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "robot"
+    },
+    {
+      "id": "unune-vache",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ vache",
+      "reponse": "Une",
+      "pieges": [
+        "Un"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "cow"
+    },
+    {
+      "id": "unune-souris",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ souris",
+      "reponse": "Une",
+      "pieges": [
+        "Un"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "mouse"
+    },
+    {
+      "id": "unune-poule",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ poule",
+      "reponse": "Une",
+      "pieges": [
+        "Un"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "hen"
+    },
+    {
+      "id": "unune-pomme",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ pomme",
+      "reponse": "Une",
+      "pieges": [
+        "Un"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "apple"
+    },
+    {
+      "id": "unune-banane",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ banane",
+      "reponse": "Une",
+      "pieges": [
+        "Un"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "banana"
+    },
+    {
+      "id": "unune-fraise",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ fraise",
+      "reponse": "Une",
+      "pieges": [
+        "Un"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "strawberry"
+    },
+    {
+      "id": "unune-poire",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ poire",
+      "reponse": "Une",
+      "pieges": [
+        "Un"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "pear"
+    },
+    {
+      "id": "unune-carotte",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ carotte",
+      "reponse": "Une",
+      "pieges": [
+        "Un"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "carrot"
+    },
+    {
+      "id": "unune-poupee",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ poupée",
+      "reponse": "Une",
+      "pieges": [
+        "Un"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "doll"
+    },
+    {
+      "id": "unune-voiture",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ voiture",
+      "reponse": "Une",
+      "pieges": [
+        "Un"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "car"
+    },
+    {
+      "id": "unune-maison",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ maison",
+      "reponse": "Une",
+      "pieges": [
+        "Un"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "house"
+    },
+    {
+      "id": "unune-table",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ table",
+      "reponse": "Une",
+      "pieges": [
+        "Un"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "table"
+    },
+    {
+      "id": "unune-chaise",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ chaise",
+      "reponse": "Une",
+      "pieges": [
+        "Un"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "chair"
+    },
+    {
+      "id": "unune-porte",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ porte",
+      "reponse": "Une",
+      "pieges": [
+        "Un"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "door"
+    },
+    {
+      "id": "unune-lune",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ lune",
+      "reponse": "Une",
+      "pieges": [
+        "Un"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "moon"
+    },
+    {
+      "id": "unune-fleur",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ fleur",
+      "reponse": "Une",
+      "pieges": [
+        "Un"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "flower"
+    },
+    {
+      "id": "unune-robe",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ robe",
+      "reponse": "Une",
+      "pieges": [
+        "Un"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "dress"
+    },
+    {
+      "id": "unune-moto",
+      "chapitre": "un-une",
+      "type": "choix",
+      "question": "___ moto",
+      "reponse": "Une",
+      "pieges": [
+        "Un"
+      ],
+      "consigne": "Un ou une ?",
+      "image": "motorbike"
+    },
+    {
+      "id": "des-chat",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "___ chats",
+      "reponse": "Des",
+      "pieges": [
+        "Un",
+        "Une"
+      ],
+      "consigne": "Un ou des ?",
+      "explication": "« chats » finit par un s : il y en a plusieurs."
+    },
+    {
+      "id": "un-chat",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "___ chat",
+      "reponse": "Un",
+      "pieges": [
+        "Des"
+      ],
+      "consigne": "Un ou des ?"
+    },
+    {
+      "id": "des-chien",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "___ chiens",
+      "reponse": "Des",
+      "pieges": [
+        "Un",
+        "Une"
+      ],
+      "consigne": "Un ou des ?",
+      "explication": "« chiens » finit par un s : il y en a plusieurs."
+    },
+    {
+      "id": "un-chien",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "___ chien",
+      "reponse": "Un",
+      "pieges": [
+        "Des"
+      ],
+      "consigne": "Un ou des ?"
+    },
+    {
+      "id": "des-pomme",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "___ pommes",
+      "reponse": "Des",
+      "pieges": [
+        "Un",
+        "Une"
+      ],
+      "consigne": "Un ou des ?",
+      "explication": "« pommes » finit par un s : il y en a plusieurs."
+    },
+    {
+      "id": "un-pomme",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "___ pomme",
+      "reponse": "Une",
+      "pieges": [
+        "Des"
+      ],
+      "consigne": "Un ou des ?"
+    },
+    {
+      "id": "des-fleur",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "___ fleurs",
+      "reponse": "Des",
+      "pieges": [
+        "Un",
+        "Une"
+      ],
+      "consigne": "Un ou des ?",
+      "explication": "« fleurs » finit par un s : il y en a plusieurs."
+    },
+    {
+      "id": "un-fleur",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "___ fleur",
+      "reponse": "Une",
+      "pieges": [
+        "Des"
+      ],
+      "consigne": "Un ou des ?"
+    },
+    {
+      "id": "des-livre",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "___ livres",
+      "reponse": "Des",
+      "pieges": [
+        "Un",
+        "Une"
+      ],
+      "consigne": "Un ou des ?",
+      "explication": "« livres » finit par un s : il y en a plusieurs."
+    },
+    {
+      "id": "un-livre",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "___ livre",
+      "reponse": "Un",
+      "pieges": [
+        "Des"
+      ],
+      "consigne": "Un ou des ?"
+    },
+    {
+      "id": "des-ballon",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "___ ballons",
+      "reponse": "Des",
+      "pieges": [
+        "Un",
+        "Une"
+      ],
+      "consigne": "Un ou des ?",
+      "explication": "« ballons » finit par un s : il y en a plusieurs."
+    },
+    {
+      "id": "un-ballon",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "___ ballon",
+      "reponse": "Un",
+      "pieges": [
+        "Des"
+      ],
+      "consigne": "Un ou des ?"
+    },
+    {
+      "id": "des-vélo",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "___ vélos",
+      "reponse": "Des",
+      "pieges": [
+        "Un",
+        "Une"
+      ],
+      "consigne": "Un ou des ?",
+      "explication": "« vélos » finit par un s : il y en a plusieurs."
+    },
+    {
+      "id": "un-vélo",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "___ vélo",
+      "reponse": "Un",
+      "pieges": [
+        "Des"
+      ],
+      "consigne": "Un ou des ?"
+    },
+    {
+      "id": "des-poule",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "___ poules",
+      "reponse": "Des",
+      "pieges": [
+        "Un",
+        "Une"
+      ],
+      "consigne": "Un ou des ?",
+      "explication": "« poules » finit par un s : il y en a plusieurs."
+    },
+    {
+      "id": "un-poule",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "___ poule",
+      "reponse": "Une",
+      "pieges": [
+        "Des"
+      ],
+      "consigne": "Un ou des ?"
+    },
+    {
+      "id": "des-maison",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "___ maisons",
+      "reponse": "Des",
+      "pieges": [
+        "Un",
+        "Une"
+      ],
+      "consigne": "Un ou des ?",
+      "explication": "« maisons » finit par un s : il y en a plusieurs."
+    },
+    {
+      "id": "des-lapin",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "___ lapins",
+      "reponse": "Des",
+      "pieges": [
+        "Un",
+        "Une"
+      ],
+      "consigne": "Un ou des ?",
+      "explication": "« lapins » finit par un s : il y en a plusieurs."
+    },
+    {
+      "id": "des-banane",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "___ bananes",
+      "reponse": "Des",
+      "pieges": [
+        "Un",
+        "Une"
+      ],
+      "consigne": "Un ou des ?",
+      "explication": "« bananes » finit par un s : il y en a plusieurs."
+    },
+    {
+      "id": "des-voiture",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "___ voitures",
+      "reponse": "Des",
+      "pieges": [
+        "Un",
+        "Une"
+      ],
+      "consigne": "Un ou des ?",
+      "explication": "« voitures » finit par un s : il y en a plusieurs."
+    },
+    {
+      "id": "s-des-chat",
+      "chapitre": "s",
+      "type": "choix",
+      "question": "des chat___",
+      "reponse": "s",
+      "pieges": [
+        "rien"
+      ],
+      "consigne": "Faut-il un s à la fin ?",
+      "explication": "Après « des », on écrit « chats » avec un s."
+    },
+    {
+      "id": "s-un-chat",
+      "chapitre": "s",
+      "type": "choix",
+      "question": "un chat___",
+      "reponse": "rien",
+      "pieges": [
+        "s"
+      ],
+      "consigne": "Faut-il un s à la fin ?",
+      "explication": "Il n’y en a qu’un : « un chat », sans s."
+    },
+    {
+      "id": "s-des-chien",
+      "chapitre": "s",
+      "type": "choix",
+      "question": "des chien___",
+      "reponse": "s",
+      "pieges": [
+        "rien"
+      ],
+      "consigne": "Faut-il un s à la fin ?",
+      "explication": "Après « des », on écrit « chiens » avec un s."
+    },
+    {
+      "id": "s-un-chien",
+      "chapitre": "s",
+      "type": "choix",
+      "question": "un chien___",
+      "reponse": "rien",
+      "pieges": [
+        "s"
+      ],
+      "consigne": "Faut-il un s à la fin ?",
+      "explication": "Il n’y en a qu’un : « un chien », sans s."
+    },
+    {
+      "id": "s-des-pomme",
+      "chapitre": "s",
+      "type": "choix",
+      "question": "des pomme___",
+      "reponse": "s",
+      "pieges": [
+        "rien"
+      ],
+      "consigne": "Faut-il un s à la fin ?",
+      "explication": "Après « des », on écrit « pommes » avec un s."
+    },
+    {
+      "id": "s-un-pomme",
+      "chapitre": "s",
+      "type": "choix",
+      "question": "une pomme___",
+      "reponse": "rien",
+      "pieges": [
+        "s"
+      ],
+      "consigne": "Faut-il un s à la fin ?",
+      "explication": "Il n’y en a qu’un : « une pomme », sans s."
+    },
+    {
+      "id": "s-des-fleur",
+      "chapitre": "s",
+      "type": "choix",
+      "question": "des fleur___",
+      "reponse": "s",
+      "pieges": [
+        "rien"
+      ],
+      "consigne": "Faut-il un s à la fin ?",
+      "explication": "Après « des », on écrit « fleurs » avec un s."
+    },
+    {
+      "id": "s-un-fleur",
+      "chapitre": "s",
+      "type": "choix",
+      "question": "une fleur___",
+      "reponse": "rien",
+      "pieges": [
+        "s"
+      ],
+      "consigne": "Faut-il un s à la fin ?",
+      "explication": "Il n’y en a qu’un : « une fleur », sans s."
+    },
+    {
+      "id": "s-des-livre",
+      "chapitre": "s",
+      "type": "choix",
+      "question": "des livre___",
+      "reponse": "s",
+      "pieges": [
+        "rien"
+      ],
+      "consigne": "Faut-il un s à la fin ?",
+      "explication": "Après « des », on écrit « livres » avec un s."
+    },
+    {
+      "id": "s-un-livre",
+      "chapitre": "s",
+      "type": "choix",
+      "question": "un livre___",
+      "reponse": "rien",
+      "pieges": [
+        "s"
+      ],
+      "consigne": "Faut-il un s à la fin ?",
+      "explication": "Il n’y en a qu’un : « un livre », sans s."
+    },
+    {
+      "id": "s-des-ballon",
+      "chapitre": "s",
+      "type": "choix",
+      "question": "des ballon___",
+      "reponse": "s",
+      "pieges": [
+        "rien"
+      ],
+      "consigne": "Faut-il un s à la fin ?",
+      "explication": "Après « des », on écrit « ballons » avec un s."
+    },
+    {
+      "id": "s-un-ballon",
+      "chapitre": "s",
+      "type": "choix",
+      "question": "un ballon___",
+      "reponse": "rien",
+      "pieges": [
+        "s"
+      ],
+      "consigne": "Faut-il un s à la fin ?",
+      "explication": "Il n’y en a qu’un : « un ballon », sans s."
+    },
+    {
+      "id": "s-des-vélo",
+      "chapitre": "s",
+      "type": "choix",
+      "question": "des vélo___",
+      "reponse": "s",
+      "pieges": [
+        "rien"
+      ],
+      "consigne": "Faut-il un s à la fin ?",
+      "explication": "Après « des », on écrit « vélos » avec un s."
+    },
+    {
+      "id": "s-un-vélo",
+      "chapitre": "s",
+      "type": "choix",
+      "question": "un vélo___",
+      "reponse": "rien",
+      "pieges": [
+        "s"
+      ],
+      "consigne": "Faut-il un s à la fin ?",
+      "explication": "Il n’y en a qu’un : « un vélo », sans s."
+    },
+    {
+      "id": "s-des-poule",
+      "chapitre": "s",
+      "type": "choix",
+      "question": "des poule___",
+      "reponse": "s",
+      "pieges": [
+        "rien"
+      ],
+      "consigne": "Faut-il un s à la fin ?",
+      "explication": "Après « des », on écrit « poules » avec un s."
+    },
+    {
+      "id": "s-un-poule",
+      "chapitre": "s",
+      "type": "choix",
+      "question": "une poule___",
+      "reponse": "rien",
+      "pieges": [
+        "s"
+      ],
+      "consigne": "Faut-il un s à la fin ?",
+      "explication": "Il n’y en a qu’un : « une poule », sans s."
+    },
+    {
+      "id": "s-des-maison",
+      "chapitre": "s",
+      "type": "choix",
+      "question": "des maison___",
+      "reponse": "s",
+      "pieges": [
+        "rien"
+      ],
+      "consigne": "Faut-il un s à la fin ?",
+      "explication": "Après « des », on écrit « maisons » avec un s."
+    },
+    {
+      "id": "s-un-maison",
+      "chapitre": "s",
+      "type": "choix",
+      "question": "une maison___",
+      "reponse": "rien",
+      "pieges": [
+        "s"
+      ],
+      "consigne": "Faut-il un s à la fin ?",
+      "explication": "Il n’y en a qu’un : « une maison », sans s."
+    },
+    {
+      "id": "s-des-lapin",
+      "chapitre": "s",
+      "type": "choix",
+      "question": "des lapin___",
+      "reponse": "s",
+      "pieges": [
+        "rien"
+      ],
+      "consigne": "Faut-il un s à la fin ?",
+      "explication": "Après « des », on écrit « lapins » avec un s."
+    },
+    {
+      "id": "s-un-lapin",
+      "chapitre": "s",
+      "type": "choix",
+      "question": "un lapin___",
+      "reponse": "rien",
+      "pieges": [
+        "s"
+      ],
+      "consigne": "Faut-il un s à la fin ?",
+      "explication": "Il n’y en a qu’un : « un lapin », sans s."
+    },
+    {
+      "id": "s-des-banane",
+      "chapitre": "s",
+      "type": "choix",
+      "question": "des banane___",
+      "reponse": "s",
+      "pieges": [
+        "rien"
+      ],
+      "consigne": "Faut-il un s à la fin ?",
+      "explication": "Après « des », on écrit « bananes » avec un s."
+    },
+    {
+      "id": "s-un-banane",
+      "chapitre": "s",
+      "type": "choix",
+      "question": "une banane___",
+      "reponse": "rien",
+      "pieges": [
+        "s"
+      ],
+      "consigne": "Faut-il un s à la fin ?",
+      "explication": "Il n’y en a qu’un : « une banane », sans s."
+    },
+    {
+      "id": "s-des-voiture",
+      "chapitre": "s",
+      "type": "choix",
+      "question": "des voiture___",
+      "reponse": "s",
+      "pieges": [
+        "rien"
+      ],
+      "consigne": "Faut-il un s à la fin ?",
+      "explication": "Après « des », on écrit « voitures » avec un s."
+    },
+    {
+      "id": "s-un-voiture",
+      "chapitre": "s",
+      "type": "choix",
+      "question": "une voiture___",
+      "reponse": "rien",
+      "pieges": [
+        "s"
+      ],
+      "consigne": "Faut-il un s à la fin ?",
+      "explication": "Il n’y en a qu’un : « une voiture », sans s."
+    },
+    {
+      "id": "pronom-1",
+      "chapitre": "pronoms",
+      "type": "choix",
+      "question": "Le chat dort. → ___ dort.",
+      "reponse": "Il",
+      "pieges": [
+        "Elle",
+        "Ils",
+        "Elles"
+      ],
+      "consigne": "Il, elle, ils ou elles ?"
+    },
+    {
+      "id": "pronom-2",
+      "chapitre": "pronoms",
+      "type": "choix",
+      "question": "La poule picore. → ___ picore.",
+      "reponse": "Elle",
+      "pieges": [
+        "Il",
+        "Ils",
+        "Elles"
+      ],
+      "consigne": "Il, elle, ils ou elles ?"
+    },
+    {
+      "id": "pronom-3",
+      "chapitre": "pronoms",
+      "type": "choix",
+      "question": "Les chiens jouent. → ___ jouent.",
+      "reponse": "Ils",
+      "pieges": [
+        "Il",
+        "Elle",
+        "Elles"
+      ],
+      "consigne": "Il, elle, ils ou elles ?"
+    },
+    {
+      "id": "pronom-4",
+      "chapitre": "pronoms",
+      "type": "choix",
+      "question": "Les filles chantent. → ___ chantent.",
+      "reponse": "Elles",
+      "pieges": [
+        "Il",
+        "Elle",
+        "Ils"
+      ],
+      "consigne": "Il, elle, ils ou elles ?"
+    },
+    {
+      "id": "pronom-5",
+      "chapitre": "pronoms",
+      "type": "choix",
+      "question": "Papa lit. → ___ lit.",
+      "reponse": "Il",
+      "pieges": [
+        "Elle",
+        "Ils",
+        "Elles"
+      ],
+      "consigne": "Il, elle, ils ou elles ?"
+    },
+    {
+      "id": "pronom-6",
+      "chapitre": "pronoms",
+      "type": "choix",
+      "question": "Maman cuisine. → ___ cuisine.",
+      "reponse": "Elle",
+      "pieges": [
+        "Il",
+        "Ils",
+        "Elles"
+      ],
+      "consigne": "Il, elle, ils ou elles ?"
+    },
+    {
+      "id": "pronom-7",
+      "chapitre": "pronoms",
+      "type": "choix",
+      "question": "Les garçons courent. → ___ courent.",
+      "reponse": "Ils",
+      "pieges": [
+        "Il",
+        "Elle",
+        "Elles"
+      ],
+      "consigne": "Il, elle, ils ou elles ?"
+    },
+    {
+      "id": "pronom-8",
+      "chapitre": "pronoms",
+      "type": "choix",
+      "question": "Les vaches mangent. → ___ mangent.",
+      "reponse": "Elles",
+      "pieges": [
+        "Il",
+        "Elle",
+        "Ils"
+      ],
+      "consigne": "Il, elle, ils ou elles ?"
+    },
+    {
+      "id": "pronom-9",
+      "chapitre": "pronoms",
+      "type": "choix",
+      "question": "Le bébé pleure. → ___ pleure.",
+      "reponse": "Il",
+      "pieges": [
+        "Elle",
+        "Ils",
+        "Elles"
+      ],
+      "consigne": "Il, elle, ils ou elles ?"
+    },
+    {
+      "id": "pronom-10",
+      "chapitre": "pronoms",
+      "type": "choix",
+      "question": "Ma sœur dessine. → ___ dessine.",
+      "reponse": "Elle",
+      "pieges": [
+        "Il",
+        "Ils",
+        "Elles"
+      ],
+      "consigne": "Il, elle, ils ou elles ?"
+    },
+    {
+      "id": "pronom-11",
+      "chapitre": "pronoms",
+      "type": "choix",
+      "question": "Tom et Léo jouent. → ___ jouent.",
+      "reponse": "Ils",
+      "pieges": [
+        "Il",
+        "Elle",
+        "Elles"
+      ],
+      "consigne": "Il, elle, ils ou elles ?"
+    },
+    {
+      "id": "pronom-12",
+      "chapitre": "pronoms",
+      "type": "choix",
+      "question": "Léa et Nina dansent. → ___ dansent.",
+      "reponse": "Elles",
+      "pieges": [
+        "Il",
+        "Elle",
+        "Ils"
+      ],
+      "consigne": "Il, elle, ils ou elles ?"
+    },
+    {
+      "id": "pronom-13",
+      "chapitre": "pronoms",
+      "type": "choix",
+      "question": "Le lapin saute. → ___ saute.",
+      "reponse": "Il",
+      "pieges": [
+        "Elle",
+        "Ils",
+        "Elles"
+      ],
+      "consigne": "Il, elle, ils ou elles ?"
+    },
+    {
+      "id": "pronom-14",
+      "chapitre": "pronoms",
+      "type": "choix",
+      "question": "La lune brille. → ___ brille.",
+      "reponse": "Elle",
+      "pieges": [
+        "Il",
+        "Ils",
+        "Elles"
+      ],
+      "consigne": "Il, elle, ils ou elles ?"
+    },
+    {
+      "id": "pronom-15",
+      "chapitre": "pronoms",
+      "type": "choix",
+      "question": "Les oiseaux volent. → ___ volent.",
+      "reponse": "Ils",
+      "pieges": [
+        "Il",
+        "Elle",
+        "Elles"
+      ],
+      "consigne": "Il, elle, ils ou elles ?"
+    },
+    {
+      "id": "pronom-16",
+      "chapitre": "pronoms",
+      "type": "choix",
+      "question": "Les fleurs poussent. → ___ poussent.",
+      "reponse": "Elles",
+      "pieges": [
+        "Il",
+        "Elle",
+        "Ils"
+      ],
+      "consigne": "Il, elle, ils ou elles ?"
+    },
+    {
+      "id": "pronom-17",
+      "chapitre": "pronoms",
+      "type": "choix",
+      "question": "Mon frère nage. → ___ nage.",
+      "reponse": "Il",
+      "pieges": [
+        "Elle",
+        "Ils",
+        "Elles"
+      ],
+      "consigne": "Il, elle, ils ou elles ?"
+    },
+    {
+      "id": "pronom-18",
+      "chapitre": "pronoms",
+      "type": "choix",
+      "question": "Mamie tricote. → ___ tricote.",
+      "reponse": "Elle",
+      "pieges": [
+        "Il",
+        "Ils",
+        "Elles"
+      ],
+      "consigne": "Il, elle, ils ou elles ?"
+    }
+  ]
+}

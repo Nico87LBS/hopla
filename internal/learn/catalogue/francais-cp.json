@@ -1,0 +1,27 @@
+{
+  "format": "hopla-module/1",
+  "id": "francais-cp",
+  "version": "1.0.0",
+  "nom": "Français CP",
+  "description": "Apprendre à lire avec la méthode syllabique, puis écrire des mots, la phrase, et un, une, des. Les modules d'Apprendre à lire gardent leurs progrès.",
+  "matiere": "francais",
+  "niveaux": [
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "auteur": "Hopla",
+  "sources": "D'après le programme de français du cycle 2 (2024) et les repères annuels de progression du CP (Éduscol).",
+  "modules": [
+    "lire-lettres-sons",
+    "lire-syllabes",
+    "lire-sons-complexes",
+    "lire-mots-outils",
+    "lire-mots",
+    "lire-phrases",
+    "lire-sans-dessin",
+    "francais-cp-ecrire",
+    "francais-cp-phrase",
+    "francais-cp-genre-nombre"
+  ]
+}

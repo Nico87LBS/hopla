@@ -1,0 +1,1557 @@
+{
+  "format": "hopla-module/1",
+  "id": "francais-cp-ecrire",
+  "version": "1.0.0",
+  "nom": "Écrire des mots",
+  "description": "Écrire les mots que l'appareil dit : syllabes simples, puis ou, on, an, in, oi et ch, les mots outils, remettre des lettres dans l'ordre et écrire de petites phrases. Les accents ne comptent pas.",
+  "matiere": "francais",
+  "niveaux": [
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": "consigne",
+  "auteur": "Hopla",
+  "sources": "D'après le programme de français du cycle 2 (2024) et les repères annuels de progression du CP (Éduscol).",
+  "chapitres": [
+    {
+      "id": "simples",
+      "nom": "Mots de syllabes simples"
+    },
+    {
+      "id": "sons",
+      "nom": "Mots avec ou, on, an, in, oi, ch",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "outils",
+      "nom": "Les mots outils",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "lettres",
+      "nom": "Remettre les lettres dans l’ordre",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "phrases",
+      "nom": "Petites phrases",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "ecrire-moto",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "question": "moto",
+      "reponse": "moto",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:moto",
+      "image": "motorbike"
+    },
+    {
+      "id": "ecrire-velo",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "question": "vélo",
+      "reponse": "vélo",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:velo",
+      "image": "bike"
+    },
+    {
+      "id": "ecrire-lune",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "question": "lune",
+      "reponse": "lune",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:lune",
+      "image": "moon"
+    },
+    {
+      "id": "ecrire-lama",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "question": "lama",
+      "reponse": "lama",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:lama",
+      "image": "llama"
+    },
+    {
+      "id": "ecrire-tomate",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "question": "tomate",
+      "reponse": "tomate",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:tomate",
+      "image": "tomato"
+    },
+    {
+      "id": "ecrire-domino",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "question": "domino",
+      "reponse": "domino",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:domino",
+      "image": "domino"
+    },
+    {
+      "id": "ecrire-robe",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "question": "robe",
+      "reponse": "robe",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:robe",
+      "image": "dress"
+    },
+    {
+      "id": "ecrire-kiwi",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "question": "kiwi",
+      "reponse": "kiwi",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:kiwi",
+      "image": "kiwi"
+    },
+    {
+      "id": "ecrire-salade",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "question": "salade",
+      "reponse": "salade",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:salade",
+      "image": "salad"
+    },
+    {
+      "id": "ecrire-bol",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "question": "bol",
+      "reponse": "bol",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:bol",
+      "image": "bowl"
+    },
+    {
+      "id": "ecrire-sac",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "question": "sac",
+      "reponse": "sac",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:sac",
+      "image": "bag"
+    },
+    {
+      "id": "ecrire-jupe",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "question": "jupe",
+      "reponse": "jupe",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:jupe",
+      "image": "skirt"
+    },
+    {
+      "id": "ecrire-valise",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "question": "valise",
+      "reponse": "valise",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:valise",
+      "image": "suitcase"
+    },
+    {
+      "id": "ecrire-tulipe",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "question": "tulipe",
+      "reponse": "tulipe",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:tulipe",
+      "image": "tulip"
+    },
+    {
+      "id": "ecrire-judo",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "question": "judo",
+      "reponse": "judo",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:judo"
+    },
+    {
+      "id": "ecrire-pomme",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "question": "pomme",
+      "reponse": "pomme",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:pomme",
+      "image": "apple"
+    },
+    {
+      "id": "ecrire-limace",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "question": "limace",
+      "reponse": "limace",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:limace"
+    },
+    {
+      "id": "ecrire-banane",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "question": "banane",
+      "reponse": "banane",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:banane",
+      "image": "banana"
+    },
+    {
+      "id": "ecrire-malle",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "question": "malle",
+      "reponse": "malle",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:malle"
+    },
+    {
+      "id": "ecrire-pirate",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "question": "pirate",
+      "reponse": "pirate",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:pirate"
+    },
+    {
+      "id": "ecrire-farine",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "question": "farine",
+      "reponse": "farine",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:farine"
+    },
+    {
+      "id": "ecrire-tortue",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "question": "tortue",
+      "reponse": "tortue",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:tortue",
+      "image": "turtle"
+    },
+    {
+      "id": "ecrire-cafe",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "question": "café",
+      "reponse": "café",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:cafe"
+    },
+    {
+      "id": "ecrire-rue",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "question": "rue",
+      "reponse": "rue",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:rue"
+    },
+    {
+      "id": "ecrire-poule",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "poule",
+      "reponse": "poule",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:poule",
+      "image": "hen"
+    },
+    {
+      "id": "ecrire-roue",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "roue",
+      "reponse": "roue",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:roue",
+      "image": "wheel"
+    },
+    {
+      "id": "ecrire-hibou",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "hibou",
+      "reponse": "hibou",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:hibou",
+      "image": "owl"
+    },
+    {
+      "id": "ecrire-route",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "route",
+      "reponse": "route",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:route"
+    },
+    {
+      "id": "ecrire-soupe",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "soupe",
+      "reponse": "soupe",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:soupe",
+      "image": "soup"
+    },
+    {
+      "id": "ecrire-chou",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "chou",
+      "reponse": "chou",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:chou",
+      "image": "cabbage"
+    },
+    {
+      "id": "ecrire-moule",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "moule",
+      "reponse": "moule",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:moule"
+    },
+    {
+      "id": "ecrire-mouton",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "mouton",
+      "reponse": "mouton",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:mouton",
+      "image": "sheep"
+    },
+    {
+      "id": "ecrire-cochon",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "cochon",
+      "reponse": "cochon",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:cochon",
+      "image": "pig"
+    },
+    {
+      "id": "ecrire-citron",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "citron",
+      "reponse": "citron",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:citron",
+      "image": "lemon"
+    },
+    {
+      "id": "ecrire-melon",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "melon",
+      "reponse": "melon",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:melon"
+    },
+    {
+      "id": "ecrire-savon",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "savon",
+      "reponse": "savon",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:savon"
+    },
+    {
+      "id": "ecrire-maman",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "maman",
+      "reponse": "maman",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:maman",
+      "image": "mum"
+    },
+    {
+      "id": "ecrire-ruban",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "ruban",
+      "reponse": "ruban",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:ruban"
+    },
+    {
+      "id": "ecrire-volcan",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "volcan",
+      "reponse": "volcan",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:volcan"
+    },
+    {
+      "id": "ecrire-lampe",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "lampe",
+      "reponse": "lampe",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:lampe",
+      "image": "lamp"
+    },
+    {
+      "id": "ecrire-jambe",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "jambe",
+      "reponse": "jambe",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:jambe"
+    },
+    {
+      "id": "ecrire-lapin",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "lapin",
+      "reponse": "lapin",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:lapin",
+      "image": "rabbit"
+    },
+    {
+      "id": "ecrire-sapin",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "sapin",
+      "reponse": "sapin",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:sapin",
+      "image": "fir"
+    },
+    {
+      "id": "ecrire-matin",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "matin",
+      "reponse": "matin",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:matin"
+    },
+    {
+      "id": "ecrire-moulin",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "moulin",
+      "reponse": "moulin",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:moulin"
+    },
+    {
+      "id": "ecrire-requin",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "requin",
+      "reponse": "requin",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:requin",
+      "image": "shark"
+    },
+    {
+      "id": "ecrire-roi",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "roi",
+      "reponse": "roi",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:roi",
+      "image": "king"
+    },
+    {
+      "id": "ecrire-poire",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "poire",
+      "reponse": "poire",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:poire",
+      "image": "pear"
+    },
+    {
+      "id": "ecrire-voiture",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "voiture",
+      "reponse": "voiture",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:voiture",
+      "image": "car"
+    },
+    {
+      "id": "ecrire-noisette",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "noisette",
+      "reponse": "noisette",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:noisette"
+    },
+    {
+      "id": "ecrire-boite",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "boîte",
+      "reponse": "boîte",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:boite"
+    },
+    {
+      "id": "ecrire-cheval",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "cheval",
+      "reponse": "cheval",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:cheval",
+      "image": "horse"
+    },
+    {
+      "id": "ecrire-vache",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "vache",
+      "reponse": "vache",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:vache",
+      "image": "cow"
+    },
+    {
+      "id": "ecrire-niche",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "niche",
+      "reponse": "niche",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:niche"
+    },
+    {
+      "id": "ecrire-mouche",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "mouche",
+      "reponse": "mouche",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:mouche"
+    },
+    {
+      "id": "ecrire-chemise",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "chemise",
+      "reponse": "chemise",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:chemise"
+    },
+    {
+      "id": "ecrire-cheminee",
+      "chapitre": "sons",
+      "type": "ecoute",
+      "question": "cheminée",
+      "reponse": "cheminée",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:cheminee"
+    },
+    {
+      "id": "outil-le",
+      "chapitre": "outils",
+      "type": "ecoute",
+      "question": "le",
+      "reponse": "le",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:le"
+    },
+    {
+      "id": "outil-la",
+      "chapitre": "outils",
+      "type": "ecoute",
+      "question": "la",
+      "reponse": "la",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:la"
+    },
+    {
+      "id": "outil-un",
+      "chapitre": "outils",
+      "type": "ecoute",
+      "question": "un",
+      "reponse": "un",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:un"
+    },
+    {
+      "id": "outil-une",
+      "chapitre": "outils",
+      "type": "ecoute",
+      "question": "une",
+      "reponse": "une",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:une"
+    },
+    {
+      "id": "outil-il",
+      "chapitre": "outils",
+      "type": "ecoute",
+      "question": "il",
+      "reponse": "il",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:il"
+    },
+    {
+      "id": "outil-je",
+      "chapitre": "outils",
+      "type": "ecoute",
+      "question": "je",
+      "reponse": "je",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:je"
+    },
+    {
+      "id": "outil-tu",
+      "chapitre": "outils",
+      "type": "ecoute",
+      "question": "tu",
+      "reponse": "tu",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:tu"
+    },
+    {
+      "id": "outil-nous",
+      "chapitre": "outils",
+      "type": "ecoute",
+      "question": "nous",
+      "reponse": "nous",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:nous"
+    },
+    {
+      "id": "outil-vous",
+      "chapitre": "outils",
+      "type": "ecoute",
+      "question": "vous",
+      "reponse": "vous",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:vous"
+    },
+    {
+      "id": "outil-avec",
+      "chapitre": "outils",
+      "type": "ecoute",
+      "question": "avec",
+      "reponse": "avec",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:avec"
+    },
+    {
+      "id": "outil-pour",
+      "chapitre": "outils",
+      "type": "ecoute",
+      "question": "pour",
+      "reponse": "pour",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:pour"
+    },
+    {
+      "id": "outil-qui",
+      "chapitre": "outils",
+      "type": "ecoute",
+      "question": "qui",
+      "reponse": "qui",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:qui"
+    },
+    {
+      "id": "outil-sur",
+      "chapitre": "outils",
+      "type": "ecoute",
+      "question": "sur",
+      "reponse": "sur",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:sur"
+    },
+    {
+      "id": "outil-mon",
+      "chapitre": "outils",
+      "type": "ecoute",
+      "question": "mon",
+      "reponse": "mon",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:mon"
+    },
+    {
+      "id": "outil-oui",
+      "chapitre": "outils",
+      "type": "ecoute",
+      "question": "oui",
+      "reponse": "oui",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:oui"
+    },
+    {
+      "id": "outil-chez",
+      "chapitre": "outils",
+      "type": "ecoute",
+      "question": "chez",
+      "reponse": "chez",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:chez"
+    },
+    {
+      "id": "outil-alors",
+      "chapitre": "outils",
+      "type": "ecoute",
+      "question": "alors",
+      "reponse": "alors",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:alors"
+    },
+    {
+      "id": "outil-aussi",
+      "chapitre": "outils",
+      "type": "ecoute",
+      "question": "aussi",
+      "reponse": "aussi",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:aussi"
+    },
+    {
+      "id": "outil-très",
+      "chapitre": "outils",
+      "type": "ecoute",
+      "question": "très",
+      "reponse": "très",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:tres"
+    },
+    {
+      "id": "outil-voici",
+      "chapitre": "outils",
+      "type": "ecoute",
+      "question": "voici",
+      "reponse": "voici",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:voici"
+    },
+    {
+      "id": "lettres-lune",
+      "chapitre": "lettres",
+      "type": "ordre",
+      "question": "Remets les lettres de « lune » dans l’ordre.",
+      "consigne": "Remets les lettres de « lune » dans l’ordre.",
+      "elements": [
+        "l",
+        "u",
+        "n",
+        "e"
+      ]
+    },
+    {
+      "id": "lettres-robe",
+      "chapitre": "lettres",
+      "type": "ordre",
+      "question": "Remets les lettres de « robe » dans l’ordre.",
+      "consigne": "Remets les lettres de « robe » dans l’ordre.",
+      "elements": [
+        "r",
+        "o",
+        "b",
+        "e"
+      ]
+    },
+    {
+      "id": "lettres-sac",
+      "chapitre": "lettres",
+      "type": "ordre",
+      "question": "Remets les lettres de « sac » dans l’ordre.",
+      "consigne": "Remets les lettres de « sac » dans l’ordre.",
+      "elements": [
+        "s",
+        "a",
+        "c"
+      ]
+    },
+    {
+      "id": "lettres-lit",
+      "chapitre": "lettres",
+      "type": "ordre",
+      "question": "Remets les lettres de « lit » dans l’ordre.",
+      "consigne": "Remets les lettres de « lit » dans l’ordre.",
+      "elements": [
+        "l",
+        "i",
+        "t"
+      ]
+    },
+    {
+      "id": "lettres-bol",
+      "chapitre": "lettres",
+      "type": "ordre",
+      "question": "Remets les lettres de « bol » dans l’ordre.",
+      "consigne": "Remets les lettres de « bol » dans l’ordre.",
+      "elements": [
+        "b",
+        "o",
+        "l"
+      ]
+    },
+    {
+      "id": "lettres-mur",
+      "chapitre": "lettres",
+      "type": "ordre",
+      "question": "Remets les lettres de « mur » dans l’ordre.",
+      "consigne": "Remets les lettres de « mur » dans l’ordre.",
+      "elements": [
+        "m",
+        "u",
+        "r"
+      ]
+    },
+    {
+      "id": "lettres-vase",
+      "chapitre": "lettres",
+      "type": "ordre",
+      "question": "Remets les lettres de « vase » dans l’ordre.",
+      "consigne": "Remets les lettres de « vase » dans l’ordre.",
+      "elements": [
+        "v",
+        "a",
+        "s",
+        "e"
+      ]
+    },
+    {
+      "id": "lettres-chat",
+      "chapitre": "lettres",
+      "type": "ordre",
+      "question": "Remets les lettres de « chat » dans l’ordre.",
+      "consigne": "Remets les lettres de « chat » dans l’ordre.",
+      "elements": [
+        "c",
+        "h",
+        "a",
+        "t"
+      ]
+    },
+    {
+      "id": "lettres-rat",
+      "chapitre": "lettres",
+      "type": "ordre",
+      "question": "Remets les lettres de « rat » dans l’ordre.",
+      "consigne": "Remets les lettres de « rat » dans l’ordre.",
+      "elements": [
+        "r",
+        "a",
+        "t"
+      ]
+    },
+    {
+      "id": "lettres-nid",
+      "chapitre": "lettres",
+      "type": "ordre",
+      "question": "Remets les lettres de « nid » dans l’ordre.",
+      "consigne": "Remets les lettres de « nid » dans l’ordre.",
+      "elements": [
+        "n",
+        "i",
+        "d"
+      ]
+    },
+    {
+      "id": "lettres-lion",
+      "chapitre": "lettres",
+      "type": "ordre",
+      "question": "Remets les lettres de « lion » dans l’ordre.",
+      "consigne": "Remets les lettres de « lion » dans l’ordre.",
+      "elements": [
+        "l",
+        "i",
+        "o",
+        "n"
+      ]
+    },
+    {
+      "id": "lettres-ours",
+      "chapitre": "lettres",
+      "type": "ordre",
+      "question": "Remets les lettres de « ours » dans l’ordre.",
+      "consigne": "Remets les lettres de « ours » dans l’ordre.",
+      "elements": [
+        "o",
+        "u",
+        "r",
+        "s"
+      ]
+    },
+    {
+      "id": "lettres-vache",
+      "chapitre": "lettres",
+      "type": "ordre",
+      "question": "Remets les lettres de « vache » dans l’ordre.",
+      "consigne": "Remets les lettres de « vache » dans l’ordre.",
+      "elements": [
+        "v",
+        "a",
+        "c",
+        "h",
+        "e"
+      ]
+    },
+    {
+      "id": "lettres-jupe",
+      "chapitre": "lettres",
+      "type": "ordre",
+      "question": "Remets les lettres de « jupe » dans l’ordre.",
+      "consigne": "Remets les lettres de « jupe » dans l’ordre.",
+      "elements": [
+        "j",
+        "u",
+        "p",
+        "e"
+      ]
+    },
+    {
+      "id": "lettres-lapin",
+      "chapitre": "lettres",
+      "type": "ordre",
+      "question": "Remets les lettres de « lapin » dans l’ordre.",
+      "consigne": "Remets les lettres de « lapin » dans l’ordre.",
+      "elements": [
+        "l",
+        "a",
+        "p",
+        "i",
+        "n"
+      ]
+    },
+    {
+      "id": "lettres-tigre",
+      "chapitre": "lettres",
+      "type": "ordre",
+      "question": "Remets les lettres de « tigre » dans l’ordre.",
+      "consigne": "Remets les lettres de « tigre » dans l’ordre.",
+      "elements": [
+        "t",
+        "i",
+        "g",
+        "r",
+        "e"
+      ]
+    },
+    {
+      "id": "lettres-singe",
+      "chapitre": "lettres",
+      "type": "ordre",
+      "question": "Remets les lettres de « singe » dans l’ordre.",
+      "consigne": "Remets les lettres de « singe » dans l’ordre.",
+      "elements": [
+        "s",
+        "i",
+        "n",
+        "g",
+        "e"
+      ]
+    },
+    {
+      "id": "lettres-fleur",
+      "chapitre": "lettres",
+      "type": "ordre",
+      "question": "Remets les lettres de « fleur » dans l’ordre.",
+      "consigne": "Remets les lettres de « fleur » dans l’ordre.",
+      "elements": [
+        "f",
+        "l",
+        "e",
+        "u",
+        "r"
+      ]
+    },
+    {
+      "id": "lettres-livre",
+      "chapitre": "lettres",
+      "type": "ordre",
+      "question": "Remets les lettres de « livre » dans l’ordre.",
+      "consigne": "Remets les lettres de « livre » dans l’ordre.",
+      "elements": [
+        "l",
+        "i",
+        "v",
+        "r",
+        "e"
+      ]
+    },
+    {
+      "id": "lettres-poire",
+      "chapitre": "lettres",
+      "type": "ordre",
+      "question": "Remets les lettres de « poire » dans l’ordre.",
+      "consigne": "Remets les lettres de « poire » dans l’ordre.",
+      "elements": [
+        "p",
+        "o",
+        "i",
+        "r",
+        "e"
+      ]
+    },
+    {
+      "id": "phrase-1",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "le chat dort",
+      "reponse": "le chat dort",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute la phrase et écris-la.",
+      "cle": "fr:ecrire-phrase:le-chat-dort"
+    },
+    {
+      "id": "phrase-2",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "papa lit",
+      "reponse": "papa lit",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute la phrase et écris-la.",
+      "cle": "fr:ecrire-phrase:papa-lit"
+    },
+    {
+      "id": "phrase-3",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "la moto roule",
+      "reponse": "la moto roule",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute la phrase et écris-la.",
+      "cle": "fr:ecrire-phrase:la-moto-roule"
+    },
+    {
+      "id": "phrase-4",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "je vais à l’école",
+      "reponse": "je vais à l’école",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute la phrase et écris-la.",
+      "cle": "fr:ecrire-phrase:je-vais-a-l-ecole"
+    },
+    {
+      "id": "phrase-5",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "il a un vélo",
+      "reponse": "il a un vélo",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute la phrase et écris-la.",
+      "cle": "fr:ecrire-phrase:il-a-un-velo"
+    },
+    {
+      "id": "phrase-6",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "le loup a faim",
+      "reponse": "le loup a faim",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute la phrase et écris-la.",
+      "cle": "fr:ecrire-phrase:le-loup-a-faim"
+    },
+    {
+      "id": "phrase-7",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "maman chante",
+      "reponse": "maman chante",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute la phrase et écris-la.",
+      "cle": "fr:ecrire-phrase:maman-chante"
+    },
+    {
+      "id": "phrase-8",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "tu as un ballon",
+      "reponse": "tu as un ballon",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute la phrase et écris-la.",
+      "cle": "fr:ecrire-phrase:tu-as-un-ballon"
+    },
+    {
+      "id": "phrase-9",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "le bébé rit",
+      "reponse": "le bébé rit",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute la phrase et écris-la.",
+      "cle": "fr:ecrire-phrase:le-bebe-rit"
+    },
+    {
+      "id": "phrase-10",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "elle mange une pomme",
+      "reponse": "elle mange une pomme",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute la phrase et écris-la.",
+      "cle": "fr:ecrire-phrase:elle-mange-une-pomme"
+    },
+    {
+      "id": "phrase-11",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "la lune brille",
+      "reponse": "la lune brille",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute la phrase et écris-la.",
+      "cle": "fr:ecrire-phrase:la-lune-brille"
+    },
+    {
+      "id": "phrase-12",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "le lapin saute",
+      "reponse": "le lapin saute",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute la phrase et écris-la.",
+      "cle": "fr:ecrire-phrase:le-lapin-saute"
+    },
+    {
+      "id": "phrase-13",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "je joue avec ma sœur",
+      "reponse": "je joue avec ma sœur",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute la phrase et écris-la.",
+      "cle": "fr:ecrire-phrase:je-joue-avec-ma-soeur"
+    },
+    {
+      "id": "phrase-14",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "il pleut",
+      "reponse": "il pleut",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute la phrase et écris-la.",
+      "cle": "fr:ecrire-phrase:il-pleut"
+    },
+    {
+      "id": "phrase-15",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "le roi est content",
+      "reponse": "le roi est content",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute la phrase et écris-la.",
+      "cle": "fr:ecrire-phrase:le-roi-est-content"
+    },
+    {
+      "id": "phrase-16",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "la poule pond un œuf",
+      "reponse": "la poule pond un œuf",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "accents",
+      "consigne": "Écoute la phrase et écris-la.",
+      "cle": "fr:ecrire-phrase:la-poule-pond-un-oeuf"
+    }
+  ]
+}

@@ -1,0 +1,1407 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-cp-nombres",
+  "version": "1.0.0",
+  "nom": "Les nombres jusqu’à 100",
+  "description": "Entendre un nombre et toucher son écriture en chiffres, jusqu'à 100 ; les dizaines et les unités. Les nombres jusqu'à 30 sont partagés avec la grande section.",
+  "matiere": "maths",
+  "niveaux": [
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de mathématiques du cycle 2 (2024) et les repères annuels de progression du CP (Éduscol).",
+  "chapitres": [
+    {
+      "id": "vingt",
+      "nom": "Jusqu’à 20"
+    },
+    {
+      "id": "dizaines",
+      "nom": "Dizaines et unités",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "soixante",
+      "nom": "De 21 à 69",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "cent",
+      "nom": "De 70 à 100 : soixante-dix, quatre-vingts",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "entendu-0",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:0",
+      "question": "zéro",
+      "reponse": "0"
+    },
+    {
+      "id": "entendu-1",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:1",
+      "question": "un",
+      "reponse": "1"
+    },
+    {
+      "id": "entendu-2",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:2",
+      "question": "deux",
+      "reponse": "2"
+    },
+    {
+      "id": "entendu-3",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:3",
+      "question": "trois",
+      "reponse": "3"
+    },
+    {
+      "id": "entendu-4",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:4",
+      "question": "quatre",
+      "reponse": "4"
+    },
+    {
+      "id": "entendu-5",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:5",
+      "question": "cinq",
+      "reponse": "5"
+    },
+    {
+      "id": "entendu-6",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:6",
+      "question": "six",
+      "reponse": "6"
+    },
+    {
+      "id": "entendu-7",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:7",
+      "question": "sept",
+      "reponse": "7"
+    },
+    {
+      "id": "entendu-8",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:8",
+      "question": "huit",
+      "reponse": "8"
+    },
+    {
+      "id": "entendu-9",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:9",
+      "question": "neuf",
+      "reponse": "9"
+    },
+    {
+      "id": "entendu-10",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:10",
+      "question": "dix",
+      "reponse": "10"
+    },
+    {
+      "id": "entendu-11",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:11",
+      "question": "onze",
+      "reponse": "11"
+    },
+    {
+      "id": "entendu-12",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:12",
+      "question": "douze",
+      "reponse": "12"
+    },
+    {
+      "id": "entendu-13",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:13",
+      "question": "treize",
+      "reponse": "13"
+    },
+    {
+      "id": "entendu-14",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:14",
+      "question": "quatorze",
+      "reponse": "14"
+    },
+    {
+      "id": "entendu-15",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:15",
+      "question": "quinze",
+      "reponse": "15"
+    },
+    {
+      "id": "entendu-16",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:16",
+      "question": "seize",
+      "reponse": "16"
+    },
+    {
+      "id": "entendu-17",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:17",
+      "question": "dix-sept",
+      "reponse": "17"
+    },
+    {
+      "id": "entendu-18",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:18",
+      "question": "dix-huit",
+      "reponse": "18"
+    },
+    {
+      "id": "entendu-19",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:19",
+      "question": "dix-neuf",
+      "reponse": "19"
+    },
+    {
+      "id": "entendu-20",
+      "chapitre": "vingt",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:20",
+      "question": "vingt",
+      "reponse": "20"
+    },
+    {
+      "id": "entendu-21",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:21",
+      "question": "vingt et un",
+      "reponse": "21"
+    },
+    {
+      "id": "entendu-22",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:22",
+      "question": "vingt-deux",
+      "reponse": "22"
+    },
+    {
+      "id": "entendu-23",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:23",
+      "question": "vingt-trois",
+      "reponse": "23"
+    },
+    {
+      "id": "entendu-24",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:24",
+      "question": "vingt-quatre",
+      "reponse": "24"
+    },
+    {
+      "id": "entendu-25",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:25",
+      "question": "vingt-cinq",
+      "reponse": "25"
+    },
+    {
+      "id": "entendu-26",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:26",
+      "question": "vingt-six",
+      "reponse": "26"
+    },
+    {
+      "id": "entendu-27",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:27",
+      "question": "vingt-sept",
+      "reponse": "27"
+    },
+    {
+      "id": "entendu-28",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:28",
+      "question": "vingt-huit",
+      "reponse": "28"
+    },
+    {
+      "id": "entendu-29",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:29",
+      "question": "vingt-neuf",
+      "reponse": "29"
+    },
+    {
+      "id": "entendu-30",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:30",
+      "question": "trente",
+      "reponse": "30"
+    },
+    {
+      "id": "entendu-31",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:31",
+      "question": "trente et un",
+      "reponse": "31"
+    },
+    {
+      "id": "entendu-32",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:32",
+      "question": "trente-deux",
+      "reponse": "32"
+    },
+    {
+      "id": "entendu-33",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:33",
+      "question": "trente-trois",
+      "reponse": "33"
+    },
+    {
+      "id": "entendu-34",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:34",
+      "question": "trente-quatre",
+      "reponse": "34"
+    },
+    {
+      "id": "entendu-35",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:35",
+      "question": "trente-cinq",
+      "reponse": "35"
+    },
+    {
+      "id": "entendu-36",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:36",
+      "question": "trente-six",
+      "reponse": "36"
+    },
+    {
+      "id": "entendu-37",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:37",
+      "question": "trente-sept",
+      "reponse": "37"
+    },
+    {
+      "id": "entendu-38",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:38",
+      "question": "trente-huit",
+      "reponse": "38"
+    },
+    {
+      "id": "entendu-39",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:39",
+      "question": "trente-neuf",
+      "reponse": "39"
+    },
+    {
+      "id": "entendu-40",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:40",
+      "question": "quarante",
+      "reponse": "40"
+    },
+    {
+      "id": "entendu-41",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:41",
+      "question": "quarante et un",
+      "reponse": "41"
+    },
+    {
+      "id": "entendu-42",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:42",
+      "question": "quarante-deux",
+      "reponse": "42"
+    },
+    {
+      "id": "entendu-43",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:43",
+      "question": "quarante-trois",
+      "reponse": "43"
+    },
+    {
+      "id": "entendu-44",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:44",
+      "question": "quarante-quatre",
+      "reponse": "44"
+    },
+    {
+      "id": "entendu-45",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:45",
+      "question": "quarante-cinq",
+      "reponse": "45"
+    },
+    {
+      "id": "entendu-46",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:46",
+      "question": "quarante-six",
+      "reponse": "46"
+    },
+    {
+      "id": "entendu-47",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:47",
+      "question": "quarante-sept",
+      "reponse": "47"
+    },
+    {
+      "id": "entendu-48",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:48",
+      "question": "quarante-huit",
+      "reponse": "48"
+    },
+    {
+      "id": "entendu-49",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:49",
+      "question": "quarante-neuf",
+      "reponse": "49"
+    },
+    {
+      "id": "entendu-50",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:50",
+      "question": "cinquante",
+      "reponse": "50"
+    },
+    {
+      "id": "entendu-51",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:51",
+      "question": "cinquante et un",
+      "reponse": "51"
+    },
+    {
+      "id": "entendu-52",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:52",
+      "question": "cinquante-deux",
+      "reponse": "52"
+    },
+    {
+      "id": "entendu-53",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:53",
+      "question": "cinquante-trois",
+      "reponse": "53"
+    },
+    {
+      "id": "entendu-54",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:54",
+      "question": "cinquante-quatre",
+      "reponse": "54"
+    },
+    {
+      "id": "entendu-55",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:55",
+      "question": "cinquante-cinq",
+      "reponse": "55"
+    },
+    {
+      "id": "entendu-56",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:56",
+      "question": "cinquante-six",
+      "reponse": "56"
+    },
+    {
+      "id": "entendu-57",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:57",
+      "question": "cinquante-sept",
+      "reponse": "57"
+    },
+    {
+      "id": "entendu-58",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:58",
+      "question": "cinquante-huit",
+      "reponse": "58"
+    },
+    {
+      "id": "entendu-59",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:59",
+      "question": "cinquante-neuf",
+      "reponse": "59"
+    },
+    {
+      "id": "entendu-60",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:60",
+      "question": "soixante",
+      "reponse": "60"
+    },
+    {
+      "id": "entendu-61",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:61",
+      "question": "soixante et un",
+      "reponse": "61"
+    },
+    {
+      "id": "entendu-62",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:62",
+      "question": "soixante-deux",
+      "reponse": "62"
+    },
+    {
+      "id": "entendu-63",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:63",
+      "question": "soixante-trois",
+      "reponse": "63"
+    },
+    {
+      "id": "entendu-64",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:64",
+      "question": "soixante-quatre",
+      "reponse": "64"
+    },
+    {
+      "id": "entendu-65",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:65",
+      "question": "soixante-cinq",
+      "reponse": "65"
+    },
+    {
+      "id": "entendu-66",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:66",
+      "question": "soixante-six",
+      "reponse": "66"
+    },
+    {
+      "id": "entendu-67",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:67",
+      "question": "soixante-sept",
+      "reponse": "67"
+    },
+    {
+      "id": "entendu-68",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:68",
+      "question": "soixante-huit",
+      "reponse": "68"
+    },
+    {
+      "id": "entendu-69",
+      "chapitre": "soixante",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:69",
+      "question": "soixante-neuf",
+      "reponse": "69"
+    },
+    {
+      "id": "entendu-70",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:70",
+      "question": "soixante-dix",
+      "reponse": "70",
+      "pieges": [
+        "60",
+        "80",
+        "71"
+      ]
+    },
+    {
+      "id": "entendu-71",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:71",
+      "question": "soixante et onze",
+      "reponse": "71",
+      "pieges": [
+        "61",
+        "81",
+        "72"
+      ]
+    },
+    {
+      "id": "entendu-72",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:72",
+      "question": "soixante-douze",
+      "reponse": "72",
+      "pieges": [
+        "62",
+        "82",
+        "73"
+      ]
+    },
+    {
+      "id": "entendu-73",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:73",
+      "question": "soixante-treize",
+      "reponse": "73",
+      "pieges": [
+        "63",
+        "83",
+        "74"
+      ]
+    },
+    {
+      "id": "entendu-74",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:74",
+      "question": "soixante-quatorze",
+      "reponse": "74",
+      "pieges": [
+        "64",
+        "84",
+        "75"
+      ]
+    },
+    {
+      "id": "entendu-75",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:75",
+      "question": "soixante-quinze",
+      "reponse": "75",
+      "pieges": [
+        "65",
+        "85",
+        "76"
+      ]
+    },
+    {
+      "id": "entendu-76",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:76",
+      "question": "soixante-seize",
+      "reponse": "76",
+      "pieges": [
+        "66",
+        "86",
+        "77"
+      ]
+    },
+    {
+      "id": "entendu-77",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:77",
+      "question": "soixante-dix-sept",
+      "reponse": "77",
+      "pieges": [
+        "67",
+        "87",
+        "78"
+      ]
+    },
+    {
+      "id": "entendu-78",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:78",
+      "question": "soixante-dix-huit",
+      "reponse": "78",
+      "pieges": [
+        "68",
+        "88",
+        "79"
+      ]
+    },
+    {
+      "id": "entendu-79",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:79",
+      "question": "soixante-dix-neuf",
+      "reponse": "79",
+      "pieges": [
+        "69",
+        "89",
+        "80"
+      ]
+    },
+    {
+      "id": "entendu-80",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:80",
+      "question": "quatre-vingts",
+      "reponse": "80",
+      "pieges": [
+        "70",
+        "90",
+        "81"
+      ]
+    },
+    {
+      "id": "entendu-81",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:81",
+      "question": "quatre-vingt-un",
+      "reponse": "81",
+      "pieges": [
+        "71",
+        "91",
+        "82"
+      ]
+    },
+    {
+      "id": "entendu-82",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:82",
+      "question": "quatre-vingt-deux",
+      "reponse": "82",
+      "pieges": [
+        "72",
+        "92",
+        "83"
+      ]
+    },
+    {
+      "id": "entendu-83",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:83",
+      "question": "quatre-vingt-trois",
+      "reponse": "83",
+      "pieges": [
+        "73",
+        "93",
+        "84"
+      ]
+    },
+    {
+      "id": "entendu-84",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:84",
+      "question": "quatre-vingt-quatre",
+      "reponse": "84",
+      "pieges": [
+        "74",
+        "94",
+        "85"
+      ]
+    },
+    {
+      "id": "entendu-85",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:85",
+      "question": "quatre-vingt-cinq",
+      "reponse": "85",
+      "pieges": [
+        "75",
+        "95",
+        "86"
+      ]
+    },
+    {
+      "id": "entendu-86",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:86",
+      "question": "quatre-vingt-six",
+      "reponse": "86",
+      "pieges": [
+        "76",
+        "96",
+        "87"
+      ]
+    },
+    {
+      "id": "entendu-87",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:87",
+      "question": "quatre-vingt-sept",
+      "reponse": "87",
+      "pieges": [
+        "77",
+        "97",
+        "88"
+      ]
+    },
+    {
+      "id": "entendu-88",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:88",
+      "question": "quatre-vingt-huit",
+      "reponse": "88",
+      "pieges": [
+        "78",
+        "98",
+        "89"
+      ]
+    },
+    {
+      "id": "entendu-89",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:89",
+      "question": "quatre-vingt-neuf",
+      "reponse": "89",
+      "pieges": [
+        "79",
+        "99",
+        "90"
+      ]
+    },
+    {
+      "id": "entendu-90",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:90",
+      "question": "quatre-vingt-dix",
+      "reponse": "90",
+      "pieges": [
+        "80",
+        "100",
+        "91"
+      ]
+    },
+    {
+      "id": "entendu-91",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:91",
+      "question": "quatre-vingt-onze",
+      "reponse": "91",
+      "pieges": [
+        "81",
+        "92"
+      ]
+    },
+    {
+      "id": "entendu-92",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:92",
+      "question": "quatre-vingt-douze",
+      "reponse": "92",
+      "pieges": [
+        "82",
+        "93"
+      ]
+    },
+    {
+      "id": "entendu-93",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:93",
+      "question": "quatre-vingt-treize",
+      "reponse": "93",
+      "pieges": [
+        "83",
+        "94"
+      ]
+    },
+    {
+      "id": "entendu-94",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:94",
+      "question": "quatre-vingt-quatorze",
+      "reponse": "94",
+      "pieges": [
+        "84",
+        "95"
+      ]
+    },
+    {
+      "id": "entendu-95",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:95",
+      "question": "quatre-vingt-quinze",
+      "reponse": "95",
+      "pieges": [
+        "85",
+        "96"
+      ]
+    },
+    {
+      "id": "entendu-96",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:96",
+      "question": "quatre-vingt-seize",
+      "reponse": "96",
+      "pieges": [
+        "86",
+        "97"
+      ]
+    },
+    {
+      "id": "entendu-97",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:97",
+      "question": "quatre-vingt-dix-sept",
+      "reponse": "97",
+      "pieges": [
+        "87",
+        "98"
+      ]
+    },
+    {
+      "id": "entendu-98",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:98",
+      "question": "quatre-vingt-dix-huit",
+      "reponse": "98",
+      "pieges": [
+        "88",
+        "99"
+      ]
+    },
+    {
+      "id": "entendu-99",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:99",
+      "question": "quatre-vingt-dix-neuf",
+      "reponse": "99",
+      "pieges": [
+        "89",
+        "100"
+      ]
+    },
+    {
+      "id": "entendu-100",
+      "chapitre": "cent",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:100",
+      "question": "cent",
+      "reponse": "100",
+      "pieges": [
+        "90"
+      ]
+    },
+    {
+      "id": "dizaines-1",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "2 dizaines et 4 unités",
+      "reponse": "24",
+      "pieges": [
+        "42",
+        "6",
+        "34"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-2",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "7 dizaines et 0 unité",
+      "reponse": "70",
+      "pieges": [
+        "7",
+        "80",
+        "71"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-3",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "2 dizaines et 1 unité",
+      "reponse": "21",
+      "pieges": [
+        "12",
+        "3",
+        "31"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-4",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "1 dizaine et 2 unités",
+      "reponse": "12",
+      "pieges": [
+        "21",
+        "3",
+        "22"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-5",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "9 dizaines et 4 unités",
+      "reponse": "94",
+      "pieges": [
+        "49",
+        "13",
+        "84"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-6",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "5 dizaines et 2 unités",
+      "reponse": "52",
+      "pieges": [
+        "25",
+        "7",
+        "62"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-7",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "6 dizaines et 2 unités",
+      "reponse": "62",
+      "pieges": [
+        "26",
+        "8",
+        "72"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-8",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "9 dizaines et 1 unité",
+      "reponse": "91",
+      "pieges": [
+        "19",
+        "10",
+        "81"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-9",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "3 dizaines et 4 unités",
+      "reponse": "34",
+      "pieges": [
+        "43",
+        "7",
+        "44"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-10",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "9 dizaines et 3 unités",
+      "reponse": "93",
+      "pieges": [
+        "39",
+        "12",
+        "83"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-11",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "9 dizaines et 2 unités",
+      "reponse": "92",
+      "pieges": [
+        "29",
+        "11",
+        "82"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-12",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "5 dizaines et 5 unités",
+      "reponse": "55",
+      "pieges": [
+        "10",
+        "65",
+        "56"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-13",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "8 dizaines et 7 unités",
+      "reponse": "87",
+      "pieges": [
+        "78",
+        "15",
+        "97"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-14",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "3 dizaines et 3 unités",
+      "reponse": "33",
+      "pieges": [
+        "6",
+        "43",
+        "34"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-15",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "4 dizaines et 6 unités",
+      "reponse": "46",
+      "pieges": [
+        "64",
+        "10",
+        "56"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-16",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "4 dizaines et 7 unités",
+      "reponse": "47",
+      "pieges": [
+        "74",
+        "11",
+        "57"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-17",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "2 dizaines et 0 unité",
+      "reponse": "20",
+      "pieges": [
+        "2",
+        "30",
+        "21"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-18",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "5 dizaines et 4 unités",
+      "reponse": "54",
+      "pieges": [
+        "45",
+        "9",
+        "64"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-19",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "4 dizaines et 9 unités",
+      "reponse": "49",
+      "pieges": [
+        "94",
+        "13",
+        "59"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-20",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "1 dizaine et 9 unités",
+      "reponse": "19",
+      "pieges": [
+        "91",
+        "10",
+        "29"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-21",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "4 dizaines et 3 unités",
+      "reponse": "43",
+      "pieges": [
+        "34",
+        "7",
+        "53"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-22",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "7 dizaines et 9 unités",
+      "reponse": "79",
+      "pieges": [
+        "97",
+        "16",
+        "89"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-23",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "6 dizaines et 5 unités",
+      "reponse": "65",
+      "pieges": [
+        "56",
+        "11",
+        "75"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-24",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "7 dizaines et 5 unités",
+      "reponse": "75",
+      "pieges": [
+        "57",
+        "12",
+        "85"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-25",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "4 dizaines et 0 unité",
+      "reponse": "40",
+      "pieges": [
+        "4",
+        "50",
+        "41"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-26",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "3 dizaines et 1 unité",
+      "reponse": "31",
+      "pieges": [
+        "13",
+        "4",
+        "41"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-27",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "5 dizaines et 7 unités",
+      "reponse": "57",
+      "pieges": [
+        "75",
+        "12",
+        "67"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-28",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "6 dizaines et 7 unités",
+      "reponse": "67",
+      "pieges": [
+        "76",
+        "13",
+        "77"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-29",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "3 dizaines et 2 unités",
+      "reponse": "32",
+      "pieges": [
+        "23",
+        "5",
+        "42"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "dizaines-30",
+      "chapitre": "dizaines",
+      "type": "choix",
+      "question": "6 dizaines et 4 unités",
+      "reponse": "64",
+      "pieges": [
+        "46",
+        "10",
+        "74"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    }
+  ],
+  "generateurs": [
+    {
+      "id": "rangs",
+      "chapitre": "dizaines",
+      "operation": "position",
+      "a": [
+        10,
+        99
+      ],
+      "rangs": [
+        "unites",
+        "dizaines"
+      ],
+      "formes": [
+        "chiffre"
+      ]
+    }
+  ]
+}

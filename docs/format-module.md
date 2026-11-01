@@ -273,6 +273,7 @@ Champs communs : `id`, `chapitre`, `operation`.
 | `lettres` | `a`, `formes` (`chiffres`, `mots`) | Écrire en chiffres « mille deux cent trois », ou choisir l'écriture en lettres |
 | `compter` | `a`, `objets` (dessins à compter, `carrot` par défaut), `formes` (`objets`, `de`) | Une collection dessinée, en rangées de cinq, ou les points d'un dé (1 à 6) : choisir le nombre parmi quatre jusqu'à 10, le taper au-delà |
 | `prenom` | `formes` (`premiere`, `reconnaitre`, `ordre`, `nombre`) | Le prénom de la personne qui joue : sa première lettre, le retrouver parmi des prénoms proches, remettre ses lettres dans l'ordre, compter ses lettres. Sans prénom (ou d'une seule lettre), le chapitre n'a pas de questions |
+| `heure` | `a` (les heures, de 1 à 12), `formes` (`pile`, `demie`, `quart`) | Une horloge à aiguilles dessinée : choisir l'heure parmi quatre (« 3 h », « 3 h 30 »), avec des pièges comme les aiguilles confondues ou une heure de décalage |
 | `modele` | `texte`, `variables`, `calculs`, `si`, `reponse`, `unite` | Un problème à trous (voir plus bas) |
 
 ### Problèmes : `modele`
@@ -326,7 +327,7 @@ en GS reste su en CE2.
 - Même clé, même réponse attendue. L'import refuse un module dont une clé
   existe ailleurs avec une autre réponse, ou deux fois dans le module.
 - Les domaines `add`, `sub`, `mul`, `div`, `cmp`, `pos`, `num`, `pb`, `dbl`,
-  `half`, `cpl` et `cnt` sont réservés aux générateurs, qui fabriquent eux-mêmes des
+  `half`, `cpl`, `cnt`, `prenom` et `hr` sont réservés aux générateurs, qui fabriquent eux-mêmes des
   clés comme `mul:7x8`. Un module ne peut pas non plus prendre l'un de ces mots
   comme `id`.
 - Une clé ne finit pas par `inverse`, `lire`, `dictee`, `chiffres` ou

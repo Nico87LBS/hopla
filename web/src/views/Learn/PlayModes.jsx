@@ -493,6 +493,89 @@ export const CountPicture = ({ count }) => {
 
 CountPicture.propTypes = { count: PropTypes.object.isRequired }
 
+// Clock draws a clock face with its two hands: the short one for the
+// hours, the long one for the minutes, as at school.
+export const Clock = ({ clock }) => {
+  const { h, m } = clock
+  const hand = (turns, length) => {
+    const angle = turns * 2 * Math.PI
+    return [50 + length * Math.sin(angle), 50 - length * Math.cos(angle)]
+  }
+  const [hx, hy] = hand(((h % 12) + m / 60) / 12, 22)
+  const [mx, my] = hand(m / 60, 34)
+  return (
+    <Box
+      component='svg'
+      viewBox='0 0 100 100'
+      role='img'
+      aria-label='horloge'
+      sx={{ display: 'block', height: 180, width: 180 }}
+    >
+      <circle
+        cx='50'
+        cy='50'
+        r='46'
+        fill='#fff'
+        stroke='#3E2F86'
+        strokeWidth='4'
+      />
+      {Array.from({ length: 60 }, (_, i) => {
+        const [x1, y1] = hand(i / 60, i % 5 ? 41 : 38)
+        const [x2, y2] = hand(i / 60, 43)
+        return (
+          <line
+            key={i}
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
+            stroke='#3E2F86'
+            strokeWidth={i % 5 ? 0.6 : 1.6}
+          />
+        )
+      })}
+      {Array.from({ length: 12 }, (_, i) => {
+        const [x, y] = hand((i + 1) / 12, 31)
+        return (
+          <text
+            key={i}
+            x={x}
+            y={y}
+            dy='0.35em'
+            textAnchor='middle'
+            fontSize='9'
+            fontWeight='700'
+            fill='#3E2F86'
+          >
+            {i + 1}
+          </text>
+        )
+      })}
+      <line
+        x1='50'
+        y1='50'
+        x2={mx}
+        y2={my}
+        stroke='#3B7DD8'
+        strokeWidth='3'
+        strokeLinecap='round'
+      />
+      <line
+        x1='50'
+        y1='50'
+        x2={hx}
+        y2={hy}
+        stroke='#E5484D'
+        strokeWidth='5'
+        strokeLinecap='round'
+      />
+      <circle cx='50' cy='50' r='3.5' fill='#3E2F86' />
+    </Box>
+  )
+}
+
+Clock.propTypes = { clock: PropTypes.object.isRequired }
+
 // LabelView shows a label to sort, word and drawing.
 export const LabelView = ({ subject }) => (
   <Stack alignItems='center' gap={0.5}>

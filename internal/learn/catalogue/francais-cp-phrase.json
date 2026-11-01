@@ -1,0 +1,1060 @@
+{
+  "format": "hopla-module/1",
+  "id": "francais-cp-phrase",
+  "version": "1.0.0",
+  "nom": "La phrase au CP",
+  "description": "La majuscule et le point, remettre les mots dans l'ordre, reconnaître une phrase et le point d'interrogation.",
+  "matiere": "francais",
+  "niveaux": [
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": "consigne",
+  "auteur": "Hopla",
+  "sources": "D'après le programme de français du cycle 2 (2024) et les repères annuels de progression du CP (Éduscol).",
+  "chapitres": [
+    {
+      "id": "majuscule",
+      "nom": "La majuscule et le point"
+    },
+    {
+      "id": "ordre",
+      "nom": "Remettre les mots dans l’ordre",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "phrase",
+      "nom": "Est-ce une phrase ?",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "question",
+      "nom": "Le point d’interrogation",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "bien-1",
+      "chapitre": "majuscule",
+      "type": "choix",
+      "question": "Quelle phrase est bien écrite ?",
+      "reponse": "Le chat dort.",
+      "pieges": [
+        "le chat dort.",
+        "Le chat dort",
+        "le chat dort"
+      ],
+      "consigne": "Quelle phrase est bien écrite ?",
+      "explication": "Une phrase commence par une majuscule et finit par un point."
+    },
+    {
+      "id": "bien-2",
+      "chapitre": "majuscule",
+      "type": "choix",
+      "question": "Quelle phrase est bien écrite ?",
+      "reponse": "Papa lit un livre.",
+      "pieges": [
+        "Papa lit un livre",
+        "papa lit un livre",
+        "papa lit un livre."
+      ],
+      "consigne": "Quelle phrase est bien écrite ?",
+      "explication": "Une phrase commence par une majuscule et finit par un point."
+    },
+    {
+      "id": "bien-3",
+      "chapitre": "majuscule",
+      "type": "choix",
+      "question": "Quelle phrase est bien écrite ?",
+      "reponse": "La moto roule vite.",
+      "pieges": [
+        "la moto roule vite.",
+        "La moto roule vite",
+        "la moto roule vite"
+      ],
+      "consigne": "Quelle phrase est bien écrite ?",
+      "explication": "Une phrase commence par une majuscule et finit par un point."
+    },
+    {
+      "id": "bien-4",
+      "chapitre": "majuscule",
+      "type": "choix",
+      "question": "Quelle phrase est bien écrite ?",
+      "reponse": "Léa mange une pomme.",
+      "pieges": [
+        "Léa mange une pomme",
+        "léa mange une pomme",
+        "léa mange une pomme."
+      ],
+      "consigne": "Quelle phrase est bien écrite ?",
+      "explication": "Une phrase commence par une majuscule et finit par un point."
+    },
+    {
+      "id": "bien-5",
+      "chapitre": "majuscule",
+      "type": "choix",
+      "question": "Quelle phrase est bien écrite ?",
+      "reponse": "Il fait beau.",
+      "pieges": [
+        "il fait beau.",
+        "Il fait beau",
+        "il fait beau"
+      ],
+      "consigne": "Quelle phrase est bien écrite ?",
+      "explication": "Une phrase commence par une majuscule et finit par un point."
+    },
+    {
+      "id": "bien-6",
+      "chapitre": "majuscule",
+      "type": "choix",
+      "question": "Quelle phrase est bien écrite ?",
+      "reponse": "Le chien court dans le jardin.",
+      "pieges": [
+        "le chien court dans le jardin.",
+        "Le chien court dans le jardin",
+        "le chien court dans le jardin"
+      ],
+      "consigne": "Quelle phrase est bien écrite ?",
+      "explication": "Une phrase commence par une majuscule et finit par un point."
+    },
+    {
+      "id": "bien-7",
+      "chapitre": "majuscule",
+      "type": "choix",
+      "question": "Quelle phrase est bien écrite ?",
+      "reponse": "Maman chante.",
+      "pieges": [
+        "Maman chante",
+        "maman chante",
+        "maman chante."
+      ],
+      "consigne": "Quelle phrase est bien écrite ?",
+      "explication": "Une phrase commence par une majuscule et finit par un point."
+    },
+    {
+      "id": "bien-8",
+      "chapitre": "majuscule",
+      "type": "choix",
+      "question": "Quelle phrase est bien écrite ?",
+      "reponse": "Tom joue au ballon.",
+      "pieges": [
+        "Tom joue au ballon",
+        "tom joue au ballon",
+        "tom joue au ballon."
+      ],
+      "consigne": "Quelle phrase est bien écrite ?",
+      "explication": "Une phrase commence par une majuscule et finit par un point."
+    },
+    {
+      "id": "bien-9",
+      "chapitre": "majuscule",
+      "type": "choix",
+      "question": "Quelle phrase est bien écrite ?",
+      "reponse": "La lune brille.",
+      "pieges": [
+        "la lune brille.",
+        "La lune brille",
+        "la lune brille"
+      ],
+      "consigne": "Quelle phrase est bien écrite ?",
+      "explication": "Une phrase commence par une majuscule et finit par un point."
+    },
+    {
+      "id": "bien-10",
+      "chapitre": "majuscule",
+      "type": "choix",
+      "question": "Quelle phrase est bien écrite ?",
+      "reponse": "Le bébé dort dans son lit.",
+      "pieges": [
+        "le bébé dort dans son lit.",
+        "Le bébé dort dans son lit",
+        "le bébé dort dans son lit"
+      ],
+      "consigne": "Quelle phrase est bien écrite ?",
+      "explication": "Une phrase commence par une majuscule et finit par un point."
+    },
+    {
+      "id": "bien-11",
+      "chapitre": "majuscule",
+      "type": "choix",
+      "question": "Quelle phrase est bien écrite ?",
+      "reponse": "Nina a un vélo rouge.",
+      "pieges": [
+        "Nina a un vélo rouge",
+        "nina a un vélo rouge",
+        "nina a un vélo rouge."
+      ],
+      "consigne": "Quelle phrase est bien écrite ?",
+      "explication": "Une phrase commence par une majuscule et finit par un point."
+    },
+    {
+      "id": "bien-12",
+      "chapitre": "majuscule",
+      "type": "choix",
+      "question": "Quelle phrase est bien écrite ?",
+      "reponse": "Le lapin mange une carotte.",
+      "pieges": [
+        "le lapin mange une carotte.",
+        "Le lapin mange une carotte",
+        "le lapin mange une carotte"
+      ],
+      "consigne": "Quelle phrase est bien écrite ?",
+      "explication": "Une phrase commence par une majuscule et finit par un point."
+    },
+    {
+      "id": "bien-13",
+      "chapitre": "majuscule",
+      "type": "choix",
+      "question": "Quelle phrase est bien écrite ?",
+      "reponse": "Il pleut.",
+      "pieges": [
+        "il pleut.",
+        "Il pleut",
+        "il pleut"
+      ],
+      "consigne": "Quelle phrase est bien écrite ?",
+      "explication": "Une phrase commence par une majuscule et finit par un point."
+    },
+    {
+      "id": "bien-14",
+      "chapitre": "majuscule",
+      "type": "choix",
+      "question": "Quelle phrase est bien écrite ?",
+      "reponse": "Sami va à l’école.",
+      "pieges": [
+        "Sami va à l’école",
+        "sami va à l’école",
+        "sami va à l’école."
+      ],
+      "consigne": "Quelle phrase est bien écrite ?",
+      "explication": "Une phrase commence par une majuscule et finit par un point."
+    },
+    {
+      "id": "bien-15",
+      "chapitre": "majuscule",
+      "type": "choix",
+      "question": "Quelle phrase est bien écrite ?",
+      "reponse": "Le roi a une couronne.",
+      "pieges": [
+        "le roi a une couronne.",
+        "Le roi a une couronne",
+        "le roi a une couronne"
+      ],
+      "consigne": "Quelle phrase est bien écrite ?",
+      "explication": "Une phrase commence par une majuscule et finit par un point."
+    },
+    {
+      "id": "bien-16",
+      "chapitre": "majuscule",
+      "type": "choix",
+      "question": "Quelle phrase est bien écrite ?",
+      "reponse": "La poule est dans la ferme.",
+      "pieges": [
+        "la poule est dans la ferme.",
+        "La poule est dans la ferme",
+        "la poule est dans la ferme"
+      ],
+      "consigne": "Quelle phrase est bien écrite ?",
+      "explication": "Une phrase commence par une majuscule et finit par un point."
+    },
+    {
+      "id": "bien-17",
+      "chapitre": "majuscule",
+      "type": "choix",
+      "question": "Quelle phrase est bien écrite ?",
+      "reponse": "Lou lave ses mains.",
+      "pieges": [
+        "Lou lave ses mains",
+        "lou lave ses mains",
+        "lou lave ses mains."
+      ],
+      "consigne": "Quelle phrase est bien écrite ?",
+      "explication": "Une phrase commence par une majuscule et finit par un point."
+    },
+    {
+      "id": "bien-18",
+      "chapitre": "majuscule",
+      "type": "choix",
+      "question": "Quelle phrase est bien écrite ?",
+      "reponse": "Le soleil se lève.",
+      "pieges": [
+        "le soleil se lève.",
+        "Le soleil se lève",
+        "le soleil se lève"
+      ],
+      "consigne": "Quelle phrase est bien écrite ?",
+      "explication": "Une phrase commence par une majuscule et finit par un point."
+    },
+    {
+      "id": "bien-19",
+      "chapitre": "majuscule",
+      "type": "choix",
+      "question": "Quelle phrase est bien écrite ?",
+      "reponse": "Mamie fait un gâteau.",
+      "pieges": [
+        "Mamie fait un gâteau",
+        "mamie fait un gâteau",
+        "mamie fait un gâteau."
+      ],
+      "consigne": "Quelle phrase est bien écrite ?",
+      "explication": "Une phrase commence par une majuscule et finit par un point."
+    },
+    {
+      "id": "bien-20",
+      "chapitre": "majuscule",
+      "type": "choix",
+      "question": "Quelle phrase est bien écrite ?",
+      "reponse": "Le poisson nage.",
+      "pieges": [
+        "le poisson nage.",
+        "Le poisson nage",
+        "le poisson nage"
+      ],
+      "consigne": "Quelle phrase est bien écrite ?",
+      "explication": "Une phrase commence par une majuscule et finit par un point."
+    },
+    {
+      "id": "ordre-1",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "Le",
+        "chat",
+        "dort",
+        "."
+      ]
+    },
+    {
+      "id": "ordre-2",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "Papa",
+        "lit",
+        "un",
+        "livre",
+        "."
+      ]
+    },
+    {
+      "id": "ordre-3",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "La",
+        "poule",
+        "pond",
+        "un",
+        "œuf",
+        "."
+      ]
+    },
+    {
+      "id": "ordre-4",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "Je",
+        "mange",
+        "une",
+        "pomme",
+        "."
+      ]
+    },
+    {
+      "id": "ordre-5",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "Le",
+        "chien",
+        "court",
+        "vite",
+        "."
+      ]
+    },
+    {
+      "id": "ordre-6",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "Il",
+        "fait",
+        "beau",
+        "."
+      ]
+    },
+    {
+      "id": "ordre-7",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "Tom",
+        "joue",
+        "au",
+        "ballon",
+        "."
+      ]
+    },
+    {
+      "id": "ordre-8",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "La",
+        "lune",
+        "brille",
+        "."
+      ]
+    },
+    {
+      "id": "ordre-9",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "Maman",
+        "chante",
+        "une",
+        "chanson",
+        "."
+      ]
+    },
+    {
+      "id": "ordre-10",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "Le",
+        "bébé",
+        "boit",
+        "son",
+        "lait",
+        "."
+      ]
+    },
+    {
+      "id": "ordre-11",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "Lou",
+        "va",
+        "à",
+        "l’école",
+        "."
+      ]
+    },
+    {
+      "id": "ordre-12",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "Le",
+        "lapin",
+        "saute",
+        "dans",
+        "l’herbe",
+        "."
+      ]
+    },
+    {
+      "id": "ordre-13",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "Où",
+        "est",
+        "mon",
+        "sac",
+        "?"
+      ]
+    },
+    {
+      "id": "ordre-14",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "Tu",
+        "viens",
+        "jouer",
+        "?"
+      ]
+    },
+    {
+      "id": "ordre-15",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "Le",
+        "soleil",
+        "est",
+        "chaud",
+        "."
+      ]
+    },
+    {
+      "id": "ordre-16",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "Il",
+        "a",
+        "un",
+        "vélo",
+        "rouge",
+        "."
+      ]
+    },
+    {
+      "id": "ordre-17",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "Nina",
+        "dessine",
+        "une",
+        "fleur",
+        "."
+      ]
+    },
+    {
+      "id": "ordre-18",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "Le",
+        "poisson",
+        "nage",
+        "dans",
+        "l’eau",
+        "."
+      ]
+    },
+    {
+      "id": "oui-1",
+      "chapitre": "phrase",
+      "type": "choix",
+      "question": "« Le chat boit du lait. »",
+      "reponse": "Oui",
+      "pieges": [
+        "Non"
+      ],
+      "consigne": "Est-ce une phrase ?",
+      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+    },
+    {
+      "id": "oui-2",
+      "chapitre": "phrase",
+      "type": "choix",
+      "question": "« Le vélo est rouge. »",
+      "reponse": "Oui",
+      "pieges": [
+        "Non"
+      ],
+      "consigne": "Est-ce une phrase ?",
+      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+    },
+    {
+      "id": "oui-3",
+      "chapitre": "phrase",
+      "type": "choix",
+      "question": "« Je vais au parc. »",
+      "reponse": "Oui",
+      "pieges": [
+        "Non"
+      ],
+      "consigne": "Est-ce une phrase ?",
+      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+    },
+    {
+      "id": "oui-4",
+      "chapitre": "phrase",
+      "type": "choix",
+      "question": "« La fleur pousse. »",
+      "reponse": "Oui",
+      "pieges": [
+        "Non"
+      ],
+      "consigne": "Est-ce une phrase ?",
+      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+    },
+    {
+      "id": "oui-5",
+      "chapitre": "phrase",
+      "type": "choix",
+      "question": "« Papa fait la cuisine. »",
+      "reponse": "Oui",
+      "pieges": [
+        "Non"
+      ],
+      "consigne": "Est-ce une phrase ?",
+      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+    },
+    {
+      "id": "oui-6",
+      "chapitre": "phrase",
+      "type": "choix",
+      "question": "« Le chien aboie. »",
+      "reponse": "Oui",
+      "pieges": [
+        "Non"
+      ],
+      "consigne": "Est-ce une phrase ?",
+      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+    },
+    {
+      "id": "oui-7",
+      "chapitre": "phrase",
+      "type": "choix",
+      "question": "« Il neige. »",
+      "reponse": "Oui",
+      "pieges": [
+        "Non"
+      ],
+      "consigne": "Est-ce une phrase ?",
+      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+    },
+    {
+      "id": "oui-8",
+      "chapitre": "phrase",
+      "type": "choix",
+      "question": "« Mon frère dort. »",
+      "reponse": "Oui",
+      "pieges": [
+        "Non"
+      ],
+      "consigne": "Est-ce une phrase ?",
+      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+    },
+    {
+      "id": "oui-9",
+      "chapitre": "phrase",
+      "type": "choix",
+      "question": "« La porte est ouverte. »",
+      "reponse": "Oui",
+      "pieges": [
+        "Non"
+      ],
+      "consigne": "Est-ce une phrase ?",
+      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+    },
+    {
+      "id": "oui-10",
+      "chapitre": "phrase",
+      "type": "choix",
+      "question": "« Elle a un chapeau. »",
+      "reponse": "Oui",
+      "pieges": [
+        "Non"
+      ],
+      "consigne": "Est-ce une phrase ?",
+      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+    },
+    {
+      "id": "non-1",
+      "chapitre": "phrase",
+      "type": "choix",
+      "question": "« chat le lait boit. »",
+      "reponse": "Non",
+      "pieges": [
+        "Oui"
+      ],
+      "consigne": "Est-ce une phrase ?",
+      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque."
+    },
+    {
+      "id": "non-2",
+      "chapitre": "phrase",
+      "type": "choix",
+      "question": "« Le vélo rouge. »",
+      "reponse": "Non",
+      "pieges": [
+        "Oui"
+      ],
+      "consigne": "Est-ce une phrase ?",
+      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque."
+    },
+    {
+      "id": "non-3",
+      "chapitre": "phrase",
+      "type": "choix",
+      "question": "« vais je parc au. »",
+      "reponse": "Non",
+      "pieges": [
+        "Oui"
+      ],
+      "consigne": "Est-ce une phrase ?",
+      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque."
+    },
+    {
+      "id": "non-4",
+      "chapitre": "phrase",
+      "type": "choix",
+      "question": "« La fleur la. »",
+      "reponse": "Non",
+      "pieges": [
+        "Oui"
+      ],
+      "consigne": "Est-ce une phrase ?",
+      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque."
+    },
+    {
+      "id": "non-5",
+      "chapitre": "phrase",
+      "type": "choix",
+      "question": "« Papa la. »",
+      "reponse": "Non",
+      "pieges": [
+        "Oui"
+      ],
+      "consigne": "Est-ce une phrase ?",
+      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque."
+    },
+    {
+      "id": "non-6",
+      "chapitre": "phrase",
+      "type": "choix",
+      "question": "« aboie chien le. »",
+      "reponse": "Non",
+      "pieges": [
+        "Oui"
+      ],
+      "consigne": "Est-ce une phrase ?",
+      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque."
+    },
+    {
+      "id": "non-7",
+      "chapitre": "phrase",
+      "type": "choix",
+      "question": "« Le dans. »",
+      "reponse": "Non",
+      "pieges": [
+        "Oui"
+      ],
+      "consigne": "Est-ce une phrase ?",
+      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque."
+    },
+    {
+      "id": "non-8",
+      "chapitre": "phrase",
+      "type": "choix",
+      "question": "« frère mon dort. »",
+      "reponse": "Non",
+      "pieges": [
+        "Oui"
+      ],
+      "consigne": "Est-ce une phrase ?",
+      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque."
+    },
+    {
+      "id": "non-9",
+      "chapitre": "phrase",
+      "type": "choix",
+      "question": "« La porte et. »",
+      "reponse": "Non",
+      "pieges": [
+        "Oui"
+      ],
+      "consigne": "Est-ce une phrase ?",
+      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque."
+    },
+    {
+      "id": "non-10",
+      "chapitre": "phrase",
+      "type": "choix",
+      "question": "« un chapeau elle a. »",
+      "reponse": "Non",
+      "pieges": [
+        "Oui"
+      ],
+      "consigne": "Est-ce une phrase ?",
+      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque."
+    },
+    {
+      "id": "question-1",
+      "chapitre": "question",
+      "type": "choix",
+      "question": "Où vas-tu ___",
+      "reponse": "?",
+      "pieges": [
+        "."
+      ],
+      "consigne": "Quel signe faut-il à la fin ?",
+      "explication": "Quand on pose une question, on met un point d’interrogation."
+    },
+    {
+      "id": "question-2",
+      "chapitre": "question",
+      "type": "choix",
+      "question": "Tu as faim ___",
+      "reponse": "?",
+      "pieges": [
+        "."
+      ],
+      "consigne": "Quel signe faut-il à la fin ?",
+      "explication": "Quand on pose une question, on met un point d’interrogation."
+    },
+    {
+      "id": "question-3",
+      "chapitre": "question",
+      "type": "choix",
+      "question": "Quel âge as-tu ___",
+      "reponse": "?",
+      "pieges": [
+        "."
+      ],
+      "consigne": "Quel signe faut-il à la fin ?",
+      "explication": "Quand on pose une question, on met un point d’interrogation."
+    },
+    {
+      "id": "question-4",
+      "chapitre": "question",
+      "type": "choix",
+      "question": "Comment t’appelles-tu ___",
+      "reponse": "?",
+      "pieges": [
+        "."
+      ],
+      "consigne": "Quel signe faut-il à la fin ?",
+      "explication": "Quand on pose une question, on met un point d’interrogation."
+    },
+    {
+      "id": "question-5",
+      "chapitre": "question",
+      "type": "choix",
+      "question": "Tu viens jouer ___",
+      "reponse": "?",
+      "pieges": [
+        "."
+      ],
+      "consigne": "Quel signe faut-il à la fin ?",
+      "explication": "Quand on pose une question, on met un point d’interrogation."
+    },
+    {
+      "id": "question-6",
+      "chapitre": "question",
+      "type": "choix",
+      "question": "Qui est là ___",
+      "reponse": "?",
+      "pieges": [
+        "."
+      ],
+      "consigne": "Quel signe faut-il à la fin ?",
+      "explication": "Quand on pose une question, on met un point d’interrogation."
+    },
+    {
+      "id": "question-7",
+      "chapitre": "question",
+      "type": "choix",
+      "question": "Il est quelle heure ___",
+      "reponse": "?",
+      "pieges": [
+        "."
+      ],
+      "consigne": "Quel signe faut-il à la fin ?",
+      "explication": "Quand on pose une question, on met un point d’interrogation."
+    },
+    {
+      "id": "question-8",
+      "chapitre": "question",
+      "type": "choix",
+      "question": "Tu aimes les bonbons ___",
+      "reponse": "?",
+      "pieges": [
+        "."
+      ],
+      "consigne": "Quel signe faut-il à la fin ?",
+      "explication": "Quand on pose une question, on met un point d’interrogation."
+    },
+    {
+      "id": "question-9",
+      "chapitre": "question",
+      "type": "choix",
+      "question": "Où est le chat ___",
+      "reponse": "?",
+      "pieges": [
+        "."
+      ],
+      "consigne": "Quel signe faut-il à la fin ?",
+      "explication": "Quand on pose une question, on met un point d’interrogation."
+    },
+    {
+      "id": "question-10",
+      "chapitre": "question",
+      "type": "choix",
+      "question": "Pourquoi tu pleures ___",
+      "reponse": "?",
+      "pieges": [
+        "."
+      ],
+      "consigne": "Quel signe faut-il à la fin ?",
+      "explication": "Quand on pose une question, on met un point d’interrogation."
+    },
+    {
+      "id": "point-1",
+      "chapitre": "question",
+      "type": "choix",
+      "question": "Je vais au parc ___",
+      "reponse": ".",
+      "pieges": [
+        "?"
+      ],
+      "consigne": "Quel signe faut-il à la fin ?",
+      "explication": "Cette phrase ne pose pas de question : elle finit par un point."
+    },
+    {
+      "id": "point-2",
+      "chapitre": "question",
+      "type": "choix",
+      "question": "J’ai faim ___",
+      "reponse": ".",
+      "pieges": [
+        "?"
+      ],
+      "consigne": "Quel signe faut-il à la fin ?",
+      "explication": "Cette phrase ne pose pas de question : elle finit par un point."
+    },
+    {
+      "id": "point-3",
+      "chapitre": "question",
+      "type": "choix",
+      "question": "J’ai six ans ___",
+      "reponse": ".",
+      "pieges": [
+        "?"
+      ],
+      "consigne": "Quel signe faut-il à la fin ?",
+      "explication": "Cette phrase ne pose pas de question : elle finit par un point."
+    },
+    {
+      "id": "point-4",
+      "chapitre": "question",
+      "type": "choix",
+      "question": "Je m’appelle Léo ___",
+      "reponse": ".",
+      "pieges": [
+        "?"
+      ],
+      "consigne": "Quel signe faut-il à la fin ?",
+      "explication": "Cette phrase ne pose pas de question : elle finit par un point."
+    },
+    {
+      "id": "point-5",
+      "chapitre": "question",
+      "type": "choix",
+      "question": "Le chat dort ___",
+      "reponse": ".",
+      "pieges": [
+        "?"
+      ],
+      "consigne": "Quel signe faut-il à la fin ?",
+      "explication": "Cette phrase ne pose pas de question : elle finit par un point."
+    },
+    {
+      "id": "point-6",
+      "chapitre": "question",
+      "type": "choix",
+      "question": "Il est huit heures ___",
+      "reponse": ".",
+      "pieges": [
+        "?"
+      ],
+      "consigne": "Quel signe faut-il à la fin ?",
+      "explication": "Cette phrase ne pose pas de question : elle finit par un point."
+    },
+    {
+      "id": "point-7",
+      "chapitre": "question",
+      "type": "choix",
+      "question": "J’aime les bonbons ___",
+      "reponse": ".",
+      "pieges": [
+        "?"
+      ],
+      "consigne": "Quel signe faut-il à la fin ?",
+      "explication": "Cette phrase ne pose pas de question : elle finit par un point."
+    },
+    {
+      "id": "point-8",
+      "chapitre": "question",
+      "type": "choix",
+      "question": "Le chat est sous la table ___",
+      "reponse": ".",
+      "pieges": [
+        "?"
+      ],
+      "consigne": "Quel signe faut-il à la fin ?",
+      "explication": "Cette phrase ne pose pas de question : elle finit par un point."
+    },
+    {
+      "id": "point-9",
+      "chapitre": "question",
+      "type": "choix",
+      "question": "Il fait froid ___",
+      "reponse": ".",
+      "pieges": [
+        "?"
+      ],
+      "consigne": "Quel signe faut-il à la fin ?",
+      "explication": "Cette phrase ne pose pas de question : elle finit par un point."
+    },
+    {
+      "id": "point-10",
+      "chapitre": "question",
+      "type": "choix",
+      "question": "Nous jouons dehors ___",
+      "reponse": ".",
+      "pieges": [
+        "?"
+      ],
+      "consigne": "Quel signe faut-il à la fin ?",
+      "explication": "Cette phrase ne pose pas de question : elle finit par un point."
+    }
+  ]
+}

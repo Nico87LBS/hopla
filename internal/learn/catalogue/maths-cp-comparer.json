@@ -1,0 +1,930 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-cp-comparer",
+  "version": "1.0.0",
+  "nom": "Comparer et ranger",
+  "description": "Le plus grand, le plus petit, les signes < et >, ranger des nombres, et le nombre d'avant, d'après ou entre deux, jusqu'à 100.",
+  "matiere": "maths",
+  "niveaux": [
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de mathématiques du cycle 2 (2024) et les repères annuels de progression du CP (Éduscol).",
+  "chapitres": [
+    {
+      "id": "grand-petit",
+      "nom": "Plus grand, plus petit"
+    },
+    {
+      "id": "signes",
+      "nom": "Les signes < et >",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "ranger",
+      "nom": "Ranger des nombres",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "avant-apres",
+      "nom": "Avant, après, entre",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "grand-1",
+      "chapitre": "grand-petit",
+      "type": "choix",
+      "question": "Quel nombre est le plus grand ?",
+      "reponse": "51",
+      "pieges": [
+        "45",
+        "29"
+      ],
+      "consigne": "Quel nombre est le plus grand ?"
+    },
+    {
+      "id": "petit-2",
+      "chapitre": "grand-petit",
+      "type": "choix",
+      "question": "Quel nombre est le plus petit ?",
+      "reponse": "21",
+      "pieges": [
+        "59",
+        "49"
+      ],
+      "consigne": "Quel nombre est le plus petit ?"
+    },
+    {
+      "id": "grand-3",
+      "chapitre": "grand-petit",
+      "type": "choix",
+      "question": "Quel nombre est le plus grand ?",
+      "reponse": "95",
+      "pieges": [
+        "60",
+        "48"
+      ],
+      "consigne": "Quel nombre est le plus grand ?"
+    },
+    {
+      "id": "petit-4",
+      "chapitre": "grand-petit",
+      "type": "choix",
+      "question": "Quel nombre est le plus petit ?",
+      "reponse": "16",
+      "pieges": [
+        "41",
+        "79"
+      ],
+      "consigne": "Quel nombre est le plus petit ?"
+    },
+    {
+      "id": "grand-5",
+      "chapitre": "grand-petit",
+      "type": "choix",
+      "question": "Quel nombre est le plus grand ?",
+      "reponse": "99",
+      "pieges": [
+        "25",
+        "8"
+      ],
+      "consigne": "Quel nombre est le plus grand ?"
+    },
+    {
+      "id": "petit-6",
+      "chapitre": "grand-petit",
+      "type": "choix",
+      "question": "Quel nombre est le plus petit ?",
+      "reponse": "34",
+      "pieges": [
+        "42",
+        "61"
+      ],
+      "consigne": "Quel nombre est le plus petit ?"
+    },
+    {
+      "id": "grand-7",
+      "chapitre": "grand-petit",
+      "type": "choix",
+      "question": "Quel nombre est le plus grand ?",
+      "reponse": "68",
+      "pieges": [
+        "13",
+        "36"
+      ],
+      "consigne": "Quel nombre est le plus grand ?"
+    },
+    {
+      "id": "petit-8",
+      "chapitre": "grand-petit",
+      "type": "choix",
+      "question": "Quel nombre est le plus petit ?",
+      "reponse": "50",
+      "pieges": [
+        "98",
+        "54"
+      ],
+      "consigne": "Quel nombre est le plus petit ?"
+    },
+    {
+      "id": "grand-9",
+      "chapitre": "grand-petit",
+      "type": "choix",
+      "question": "Quel nombre est le plus grand ?",
+      "reponse": "98",
+      "pieges": [
+        "73",
+        "12"
+      ],
+      "consigne": "Quel nombre est le plus grand ?"
+    },
+    {
+      "id": "petit-10",
+      "chapitre": "grand-petit",
+      "type": "choix",
+      "question": "Quel nombre est le plus petit ?",
+      "reponse": "23",
+      "pieges": [
+        "35",
+        "76"
+      ],
+      "consigne": "Quel nombre est le plus petit ?"
+    },
+    {
+      "id": "grand-11",
+      "chapitre": "grand-petit",
+      "type": "choix",
+      "question": "Quel nombre est le plus grand ?",
+      "reponse": "83",
+      "pieges": [
+        "10",
+        "11"
+      ],
+      "consigne": "Quel nombre est le plus grand ?"
+    },
+    {
+      "id": "petit-12",
+      "chapitre": "grand-petit",
+      "type": "choix",
+      "question": "Quel nombre est le plus petit ?",
+      "reponse": "72",
+      "pieges": [
+        "79",
+        "96"
+      ],
+      "consigne": "Quel nombre est le plus petit ?"
+    },
+    {
+      "id": "grand-13",
+      "chapitre": "grand-petit",
+      "type": "choix",
+      "question": "Quel nombre est le plus grand ?",
+      "reponse": "99",
+      "pieges": [
+        "65",
+        "54"
+      ],
+      "consigne": "Quel nombre est le plus grand ?"
+    },
+    {
+      "id": "petit-14",
+      "chapitre": "grand-petit",
+      "type": "choix",
+      "question": "Quel nombre est le plus petit ?",
+      "reponse": "9",
+      "pieges": [
+        "63",
+        "30"
+      ],
+      "consigne": "Quel nombre est le plus petit ?"
+    },
+    {
+      "id": "grand-15",
+      "chapitre": "grand-petit",
+      "type": "choix",
+      "question": "Quel nombre est le plus grand ?",
+      "reponse": "28",
+      "pieges": [
+        "5",
+        "15"
+      ],
+      "consigne": "Quel nombre est le plus grand ?"
+    },
+    {
+      "id": "petit-16",
+      "chapitre": "grand-petit",
+      "type": "choix",
+      "question": "Quel nombre est le plus petit ?",
+      "reponse": "39",
+      "pieges": [
+        "76",
+        "81"
+      ],
+      "consigne": "Quel nombre est le plus petit ?"
+    },
+    {
+      "id": "ranger-1",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "12",
+        "65",
+        "85",
+        "97"
+      ]
+    },
+    {
+      "id": "ranger-2",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "4",
+        "69",
+        "75",
+        "81"
+      ]
+    },
+    {
+      "id": "ranger-3",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "88",
+        "89",
+        "98",
+        "99"
+      ]
+    },
+    {
+      "id": "ranger-4",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "1",
+        "4",
+        "17",
+        "81"
+      ]
+    },
+    {
+      "id": "ranger-5",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "43",
+        "48",
+        "66",
+        "82"
+      ]
+    },
+    {
+      "id": "ranger-6",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "88",
+        "89",
+        "98",
+        "99"
+      ]
+    },
+    {
+      "id": "ranger-7",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "24",
+        "49",
+        "60",
+        "62"
+      ]
+    },
+    {
+      "id": "ranger-8",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "4",
+        "31",
+        "35",
+        "78"
+      ]
+    },
+    {
+      "id": "ranger-9",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "33",
+        "35",
+        "53",
+        "55"
+      ]
+    },
+    {
+      "id": "ranger-10",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "13",
+        "30",
+        "47",
+        "85",
+        "96"
+      ]
+    },
+    {
+      "id": "ranger-11",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "12",
+        "18",
+        "40",
+        "55",
+        "64"
+      ]
+    },
+    {
+      "id": "ranger-12",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "55",
+        "59",
+        "95",
+        "99"
+      ]
+    },
+    {
+      "id": "ranger-13",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "31",
+        "35",
+        "46",
+        "68",
+        "74"
+      ]
+    },
+    {
+      "id": "ranger-14",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "4",
+        "53",
+        "67",
+        "84",
+        "96"
+      ]
+    },
+    {
+      "id": "apres-1",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste après 27 ?",
+      "reponse": "28",
+      "pieges": [
+        "29",
+        "27",
+        "38"
+      ],
+      "consigne": "Quel nombre vient juste après 27 ?"
+    },
+    {
+      "id": "apres-2",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste après 61 ?",
+      "reponse": "62",
+      "pieges": [
+        "63",
+        "61",
+        "72"
+      ],
+      "consigne": "Quel nombre vient juste après 61 ?"
+    },
+    {
+      "id": "apres-3",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste après 19 ?",
+      "reponse": "20",
+      "pieges": [
+        "21",
+        "19",
+        "30"
+      ],
+      "consigne": "Quel nombre vient juste après 19 ?"
+    },
+    {
+      "id": "apres-4",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste après 85 ?",
+      "reponse": "86",
+      "pieges": [
+        "87",
+        "85",
+        "96"
+      ],
+      "consigne": "Quel nombre vient juste après 85 ?"
+    },
+    {
+      "id": "apres-5",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste après 39 ?",
+      "reponse": "40",
+      "pieges": [
+        "41",
+        "39",
+        "50"
+      ],
+      "consigne": "Quel nombre vient juste après 39 ?"
+    },
+    {
+      "id": "apres-6",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste après 23 ?",
+      "reponse": "24",
+      "pieges": [
+        "25",
+        "23",
+        "34"
+      ],
+      "consigne": "Quel nombre vient juste après 23 ?"
+    },
+    {
+      "id": "apres-7",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste après 21 ?",
+      "reponse": "22",
+      "pieges": [
+        "23",
+        "21",
+        "32"
+      ],
+      "consigne": "Quel nombre vient juste après 21 ?"
+    },
+    {
+      "id": "apres-8",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste après 52 ?",
+      "reponse": "53",
+      "pieges": [
+        "54",
+        "52",
+        "63"
+      ],
+      "consigne": "Quel nombre vient juste après 52 ?"
+    },
+    {
+      "id": "apres-9",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste après 77 ?",
+      "reponse": "78",
+      "pieges": [
+        "79",
+        "77",
+        "88"
+      ],
+      "consigne": "Quel nombre vient juste après 77 ?"
+    },
+    {
+      "id": "apres-10",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste après 40 ?",
+      "reponse": "41",
+      "pieges": [
+        "42",
+        "40",
+        "51"
+      ],
+      "consigne": "Quel nombre vient juste après 40 ?"
+    },
+    {
+      "id": "apres-11",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste après 28 ?",
+      "reponse": "29",
+      "pieges": [
+        "30",
+        "28",
+        "39"
+      ],
+      "consigne": "Quel nombre vient juste après 28 ?"
+    },
+    {
+      "id": "apres-12",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste après 34 ?",
+      "reponse": "35",
+      "pieges": [
+        "36",
+        "34",
+        "45"
+      ],
+      "consigne": "Quel nombre vient juste après 34 ?"
+    },
+    {
+      "id": "apres-13",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste après 47 ?",
+      "reponse": "48",
+      "pieges": [
+        "49",
+        "47",
+        "58"
+      ],
+      "consigne": "Quel nombre vient juste après 47 ?"
+    },
+    {
+      "id": "apres-14",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste après 76 ?",
+      "reponse": "77",
+      "pieges": [
+        "78",
+        "76",
+        "87"
+      ],
+      "consigne": "Quel nombre vient juste après 76 ?"
+    },
+    {
+      "id": "avant-1",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste avant 26 ?",
+      "reponse": "25",
+      "pieges": [
+        "26",
+        "24",
+        "35"
+      ],
+      "consigne": "Quel nombre vient juste avant 26 ?"
+    },
+    {
+      "id": "avant-2",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste avant 80 ?",
+      "reponse": "79",
+      "pieges": [
+        "80",
+        "78",
+        "89"
+      ],
+      "consigne": "Quel nombre vient juste avant 80 ?"
+    },
+    {
+      "id": "avant-3",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste avant 51 ?",
+      "reponse": "50",
+      "pieges": [
+        "51",
+        "49",
+        "60"
+      ],
+      "consigne": "Quel nombre vient juste avant 51 ?"
+    },
+    {
+      "id": "avant-4",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste avant 34 ?",
+      "reponse": "33",
+      "pieges": [
+        "34",
+        "32",
+        "43"
+      ],
+      "consigne": "Quel nombre vient juste avant 34 ?"
+    },
+    {
+      "id": "avant-5",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste avant 89 ?",
+      "reponse": "88",
+      "pieges": [
+        "89",
+        "87",
+        "98"
+      ],
+      "consigne": "Quel nombre vient juste avant 89 ?"
+    },
+    {
+      "id": "avant-6",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste avant 39 ?",
+      "reponse": "38",
+      "pieges": [
+        "39",
+        "37",
+        "48"
+      ],
+      "consigne": "Quel nombre vient juste avant 39 ?"
+    },
+    {
+      "id": "avant-7",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste avant 36 ?",
+      "reponse": "35",
+      "pieges": [
+        "36",
+        "34",
+        "45"
+      ],
+      "consigne": "Quel nombre vient juste avant 36 ?"
+    },
+    {
+      "id": "avant-8",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste avant 15 ?",
+      "reponse": "14",
+      "pieges": [
+        "15",
+        "13",
+        "24"
+      ],
+      "consigne": "Quel nombre vient juste avant 15 ?"
+    },
+    {
+      "id": "avant-9",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste avant 30 ?",
+      "reponse": "29",
+      "pieges": [
+        "30",
+        "28",
+        "39"
+      ],
+      "consigne": "Quel nombre vient juste avant 30 ?"
+    },
+    {
+      "id": "avant-10",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste avant 54 ?",
+      "reponse": "53",
+      "pieges": [
+        "54",
+        "52",
+        "63"
+      ],
+      "consigne": "Quel nombre vient juste avant 54 ?"
+    },
+    {
+      "id": "avant-11",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste avant 13 ?",
+      "reponse": "12",
+      "pieges": [
+        "13",
+        "11",
+        "22"
+      ],
+      "consigne": "Quel nombre vient juste avant 13 ?"
+    },
+    {
+      "id": "avant-12",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste avant 3 ?",
+      "reponse": "2",
+      "pieges": [
+        "3",
+        "1",
+        "12"
+      ],
+      "consigne": "Quel nombre vient juste avant 3 ?"
+    },
+    {
+      "id": "avant-13",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste avant 61 ?",
+      "reponse": "60",
+      "pieges": [
+        "61",
+        "59",
+        "70"
+      ],
+      "consigne": "Quel nombre vient juste avant 61 ?"
+    },
+    {
+      "id": "avant-14",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre vient juste avant 7 ?",
+      "reponse": "6",
+      "pieges": [
+        "7",
+        "5",
+        "16"
+      ],
+      "consigne": "Quel nombre vient juste avant 7 ?"
+    },
+    {
+      "id": "entre-1",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre est entre 96 et 98 ?",
+      "reponse": "97",
+      "pieges": [
+        "99",
+        "95",
+        "87"
+      ],
+      "consigne": "Quel nombre est entre 96 et 98 ?"
+    },
+    {
+      "id": "entre-2",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre est entre 18 et 20 ?",
+      "reponse": "19",
+      "pieges": [
+        "21",
+        "17",
+        "29"
+      ],
+      "consigne": "Quel nombre est entre 18 et 20 ?"
+    },
+    {
+      "id": "entre-3",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre est entre 2 et 4 ?",
+      "reponse": "3",
+      "pieges": [
+        "5",
+        "1",
+        "13"
+      ],
+      "consigne": "Quel nombre est entre 2 et 4 ?"
+    },
+    {
+      "id": "entre-4",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre est entre 52 et 54 ?",
+      "reponse": "53",
+      "pieges": [
+        "55",
+        "51",
+        "63"
+      ],
+      "consigne": "Quel nombre est entre 52 et 54 ?"
+    },
+    {
+      "id": "entre-5",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre est entre 86 et 88 ?",
+      "reponse": "87",
+      "pieges": [
+        "89",
+        "85",
+        "97"
+      ],
+      "consigne": "Quel nombre est entre 86 et 88 ?"
+    },
+    {
+      "id": "entre-6",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre est entre 75 et 77 ?",
+      "reponse": "76",
+      "pieges": [
+        "78",
+        "74",
+        "86"
+      ],
+      "consigne": "Quel nombre est entre 75 et 77 ?"
+    },
+    {
+      "id": "entre-7",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre est entre 28 et 30 ?",
+      "reponse": "29",
+      "pieges": [
+        "31",
+        "27",
+        "39"
+      ],
+      "consigne": "Quel nombre est entre 28 et 30 ?"
+    },
+    {
+      "id": "entre-8",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre est entre 40 et 42 ?",
+      "reponse": "41",
+      "pieges": [
+        "43",
+        "39",
+        "51"
+      ],
+      "consigne": "Quel nombre est entre 40 et 42 ?"
+    },
+    {
+      "id": "entre-9",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre est entre 74 et 76 ?",
+      "reponse": "75",
+      "pieges": [
+        "77",
+        "73",
+        "85"
+      ],
+      "consigne": "Quel nombre est entre 74 et 76 ?"
+    },
+    {
+      "id": "entre-10",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quel nombre est entre 35 et 37 ?",
+      "reponse": "36",
+      "pieges": [
+        "38",
+        "34",
+        "46"
+      ],
+      "consigne": "Quel nombre est entre 35 et 37 ?"
+    }
+  ],
+  "generateurs": [
+    {
+      "id": "signes",
+      "chapitre": "signes",
+      "operation": "comparaison",
+      "a": [
+        0,
+        100
+      ]
+    }
+  ]
+}

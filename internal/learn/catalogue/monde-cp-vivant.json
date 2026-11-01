@@ -1,0 +1,567 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-cp-vivant",
+  "version": "1.0.0",
+  "nom": "Vivant ou non vivant",
+  "description": "Reconnaître ce qui est vivant ; naître, grandir et mourir ; les petits des animaux ; animal ou végétal.",
+  "matiere": "monde",
+  "niveaux": [
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de questionner le monde du cycle 2 (2024) et les repères annuels de progression du CP (Éduscol).",
+  "chapitres": [
+    {
+      "id": "vivant",
+      "nom": "Est-ce vivant ?"
+    },
+    {
+      "id": "grandir",
+      "nom": "Naître, grandir, mourir",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "animal-vegetal",
+      "nom": "Animal ou végétal",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "vivant-1",
+      "chapitre": "vivant",
+      "type": "classer",
+      "question": "Vivant ou non vivant ?",
+      "consigne": "Vivant ou non vivant ?",
+      "boites": [
+        {
+          "nom": "Vivant"
+        },
+        {
+          "nom": "Non vivant"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le chat",
+          "boite": "Vivant",
+          "image": "cat"
+        },
+        {
+          "texte": "la fleur",
+          "boite": "Vivant",
+          "image": "flower"
+        },
+        {
+          "texte": "le poisson",
+          "boite": "Vivant",
+          "image": "fish"
+        },
+        {
+          "texte": "le sapin",
+          "boite": "Vivant",
+          "image": "fir"
+        },
+        {
+          "texte": "le bébé",
+          "boite": "Vivant",
+          "image": "baby"
+        },
+        {
+          "texte": "l’escargot",
+          "boite": "Vivant",
+          "image": "snail"
+        },
+        {
+          "texte": "le champignon",
+          "boite": "Vivant",
+          "image": "mushroom"
+        },
+        {
+          "texte": "l’herbe",
+          "boite": "Vivant",
+          "image": "grass"
+        },
+        {
+          "texte": "la voiture",
+          "boite": "Non vivant",
+          "image": "car"
+        },
+        {
+          "texte": "le caillou",
+          "boite": "Non vivant",
+          "image": "stone"
+        },
+        {
+          "texte": "le ballon",
+          "boite": "Non vivant",
+          "image": "ball"
+        },
+        {
+          "texte": "la chaise",
+          "boite": "Non vivant",
+          "image": "chair"
+        },
+        {
+          "texte": "le robot",
+          "boite": "Non vivant",
+          "image": "robot"
+        },
+        {
+          "texte": "la lampe",
+          "boite": "Non vivant",
+          "image": "lamp"
+        },
+        {
+          "texte": "le nuage",
+          "boite": "Non vivant",
+          "image": "cloud"
+        },
+        {
+          "texte": "la clé",
+          "boite": "Non vivant",
+          "image": "key"
+        }
+      ]
+    },
+    {
+      "id": "vivant-q1",
+      "chapitre": "vivant",
+      "type": "choix",
+      "question": "Un être vivant…",
+      "reponse": "naît, grandit et meurt",
+      "pieges": [
+        "ne change jamais",
+        "est toujours en plastique",
+        "ne mange pas"
+      ],
+      "consigne": "Un être vivant…"
+    },
+    {
+      "id": "vivant-q2",
+      "chapitre": "vivant",
+      "type": "choix",
+      "question": "Le robot bouge. Est-il vivant ?",
+      "reponse": "Non",
+      "pieges": [
+        "Oui"
+      ],
+      "consigne": "Le robot bouge. Est-il vivant ?"
+    },
+    {
+      "id": "vivant-q3",
+      "chapitre": "vivant",
+      "type": "choix",
+      "question": "L’arbre ne bouge pas. Est-il vivant ?",
+      "reponse": "Oui",
+      "pieges": [
+        "Non"
+      ],
+      "consigne": "L’arbre ne bouge pas. Est-il vivant ?"
+    },
+    {
+      "id": "vivant-q4",
+      "chapitre": "vivant",
+      "type": "choix",
+      "question": "La voiture avance. Est-elle vivante ?",
+      "reponse": "Non",
+      "pieges": [
+        "Oui"
+      ],
+      "consigne": "La voiture avance. Est-elle vivante ?"
+    },
+    {
+      "id": "vivant-q5",
+      "chapitre": "vivant",
+      "type": "choix",
+      "question": "Le champignon pousse. Est-il vivant ?",
+      "reponse": "Oui",
+      "pieges": [
+        "Non"
+      ],
+      "consigne": "Le champignon pousse. Est-il vivant ?"
+    },
+    {
+      "id": "vivant-q6",
+      "chapitre": "vivant",
+      "type": "choix",
+      "question": "De quoi a besoin un être vivant ?",
+      "reponse": "de manger et de boire",
+      "pieges": [
+        "de piles",
+        "d’essence",
+        "de rien"
+      ],
+      "consigne": "De quoi a besoin un être vivant ?"
+    },
+    {
+      "id": "vivant-q7",
+      "chapitre": "vivant",
+      "type": "choix",
+      "question": "Le feu bouge et grandit. Est-il vivant ?",
+      "reponse": "Non",
+      "pieges": [
+        "Oui"
+      ],
+      "consigne": "Le feu bouge et grandit. Est-il vivant ?"
+    },
+    {
+      "id": "vivant-q8",
+      "chapitre": "vivant",
+      "type": "choix",
+      "question": "La graine est-elle vivante ?",
+      "reponse": "Oui",
+      "pieges": [
+        "Non"
+      ],
+      "consigne": "La graine est-elle vivante ?"
+    },
+    {
+      "id": "cycle-poule",
+      "chapitre": "grandir",
+      "type": "ordre",
+      "question": "Remets dans l’ordre : comment la poule grandit.",
+      "consigne": "Remets dans l’ordre : comment la poule grandit.",
+      "elements": [
+        "l’œuf",
+        "le poussin",
+        "la poule"
+      ]
+    },
+    {
+      "id": "cycle-humain",
+      "chapitre": "grandir",
+      "type": "ordre",
+      "question": "Remets dans l’ordre : comment on grandit.",
+      "consigne": "Remets dans l’ordre : comment on grandit.",
+      "elements": [
+        "le bébé",
+        "l’enfant",
+        "l’adulte",
+        "la personne âgée"
+      ]
+    },
+    {
+      "id": "cycle-plante",
+      "chapitre": "grandir",
+      "type": "ordre",
+      "question": "Remets dans l’ordre : comment la plante grandit.",
+      "consigne": "Remets dans l’ordre : comment la plante grandit.",
+      "elements": [
+        "la graine",
+        "la pousse",
+        "la plante",
+        "la fleur"
+      ]
+    },
+    {
+      "id": "cycle-grenouille",
+      "chapitre": "grandir",
+      "type": "ordre",
+      "question": "Remets dans l’ordre : comment la grenouille grandit.",
+      "consigne": "Remets dans l’ordre : comment la grenouille grandit.",
+      "elements": [
+        "les œufs",
+        "le têtard",
+        "la grenouille"
+      ]
+    },
+    {
+      "id": "cycle-papillon",
+      "chapitre": "grandir",
+      "type": "ordre",
+      "question": "Remets dans l’ordre : comment le papillon grandit.",
+      "consigne": "Remets dans l’ordre : comment le papillon grandit.",
+      "elements": [
+        "la chenille",
+        "la chrysalide",
+        "le papillon"
+      ]
+    },
+    {
+      "id": "petits",
+      "chapitre": "grandir",
+      "type": "associer",
+      "question": "Relie chaque petit à sa maman.",
+      "consigne": "Relie chaque petit à sa maman.",
+      "paires": [
+        [
+          {
+            "texte": "le poussin",
+            "image": "chick"
+          },
+          {
+            "texte": "la poule",
+            "image": "hen"
+          }
+        ],
+        [
+          {
+            "texte": "le chaton",
+            "image": "kitten"
+          },
+          {
+            "texte": "le chat",
+            "image": "cat"
+          }
+        ],
+        [
+          {
+            "texte": "le chiot",
+            "image": "puppy"
+          },
+          {
+            "texte": "le chien",
+            "image": "dog"
+          }
+        ],
+        [
+          {
+            "texte": "le veau",
+            "image": "calf"
+          },
+          {
+            "texte": "la vache",
+            "image": "cow"
+          }
+        ],
+        [
+          {
+            "texte": "l’agneau",
+            "image": "lamb"
+          },
+          {
+            "texte": "le mouton",
+            "image": "sheep"
+          }
+        ],
+        [
+          {
+            "texte": "le poulain",
+            "image": "foal"
+          },
+          {
+            "texte": "le cheval",
+            "image": "horse"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "grandir-1",
+      "chapitre": "grandir",
+      "type": "choix",
+      "question": "Le petit de la vache s’appelle…",
+      "reponse": "le veau",
+      "pieges": [
+        "le poulain",
+        "l’agneau",
+        "le chiot"
+      ],
+      "consigne": "Le petit de la vache s’appelle…",
+      "image": "calf"
+    },
+    {
+      "id": "grandir-2",
+      "chapitre": "grandir",
+      "type": "choix",
+      "question": "Le petit du cheval s’appelle…",
+      "reponse": "le poulain",
+      "pieges": [
+        "le veau",
+        "le chaton",
+        "l’agneau"
+      ],
+      "consigne": "Le petit du cheval s’appelle…",
+      "image": "foal"
+    },
+    {
+      "id": "grandir-3",
+      "chapitre": "grandir",
+      "type": "choix",
+      "question": "Le petit de la grenouille s’appelle…",
+      "reponse": "le têtard",
+      "pieges": [
+        "la chenille",
+        "le poussin",
+        "le chaton"
+      ],
+      "consigne": "Le petit de la grenouille s’appelle…",
+      "image": "tadpole"
+    },
+    {
+      "id": "grandir-4",
+      "chapitre": "grandir",
+      "type": "choix",
+      "question": "La chenille devient…",
+      "reponse": "un papillon",
+      "pieges": [
+        "une abeille",
+        "un escargot",
+        "une araignée"
+      ],
+      "consigne": "La chenille devient…",
+      "image": "butterfly"
+    },
+    {
+      "id": "grandir-5",
+      "chapitre": "grandir",
+      "type": "choix",
+      "question": "Qu’est-ce qui sort de l’œuf de la poule ?",
+      "reponse": "un poussin",
+      "pieges": [
+        "un chaton",
+        "un têtard",
+        "un agneau"
+      ],
+      "consigne": "Qu’est-ce qui sort de l’œuf de la poule ?",
+      "image": "chick"
+    },
+    {
+      "id": "animal-vegetal",
+      "chapitre": "animal-vegetal",
+      "type": "classer",
+      "question": "Animal ou végétal ?",
+      "consigne": "Animal ou végétal ?",
+      "boites": [
+        {
+          "nom": "Animal"
+        },
+        {
+          "nom": "Végétal"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le chat",
+          "boite": "Animal",
+          "image": "cat"
+        },
+        {
+          "texte": "le papillon",
+          "boite": "Animal",
+          "image": "butterfly"
+        },
+        {
+          "texte": "le poisson",
+          "boite": "Animal",
+          "image": "fish"
+        },
+        {
+          "texte": "l’escargot",
+          "boite": "Animal",
+          "image": "snail"
+        },
+        {
+          "texte": "la poule",
+          "boite": "Animal",
+          "image": "hen"
+        },
+        {
+          "texte": "la grenouille",
+          "boite": "Animal",
+          "image": "frog"
+        },
+        {
+          "texte": "le lapin",
+          "boite": "Animal",
+          "image": "rabbit"
+        },
+        {
+          "texte": "la fleur",
+          "boite": "Végétal",
+          "image": "flower"
+        },
+        {
+          "texte": "le sapin",
+          "boite": "Végétal",
+          "image": "fir"
+        },
+        {
+          "texte": "la carotte",
+          "boite": "Végétal",
+          "image": "carrot"
+        },
+        {
+          "texte": "l’herbe",
+          "boite": "Végétal",
+          "image": "grass"
+        },
+        {
+          "texte": "la tulipe",
+          "boite": "Végétal",
+          "image": "tulip"
+        },
+        {
+          "texte": "la salade",
+          "boite": "Végétal",
+          "image": "salad"
+        },
+        {
+          "texte": "la pomme",
+          "boite": "Végétal",
+          "image": "apple"
+        }
+      ]
+    },
+    {
+      "id": "av-1",
+      "chapitre": "animal-vegetal",
+      "type": "choix",
+      "question": "Une plante peut-elle se déplacer toute seule ?",
+      "reponse": "Non",
+      "pieges": [
+        "Oui"
+      ],
+      "consigne": "Une plante peut-elle se déplacer toute seule ?"
+    },
+    {
+      "id": "av-2",
+      "chapitre": "animal-vegetal",
+      "type": "choix",
+      "question": "Les plantes ont des racines. Les animaux aussi ?",
+      "reponse": "Non",
+      "pieges": [
+        "Oui"
+      ],
+      "consigne": "Les plantes ont des racines. Les animaux aussi ?"
+    },
+    {
+      "id": "av-3",
+      "chapitre": "animal-vegetal",
+      "type": "choix",
+      "question": "Qu’est-ce qui est un végétal ?",
+      "reponse": "la carotte",
+      "pieges": [
+        "le lapin",
+        "le caillou",
+        "le ballon"
+      ],
+      "consigne": "Qu’est-ce qui est un végétal ?"
+    },
+    {
+      "id": "av-4",
+      "chapitre": "animal-vegetal",
+      "type": "choix",
+      "question": "Qu’est-ce qui est un animal ?",
+      "reponse": "l’abeille",
+      "pieges": [
+        "la fleur",
+        "la pomme",
+        "le sapin"
+      ],
+      "consigne": "Qu’est-ce qui est un animal ?"
+    }
+  ]
+}

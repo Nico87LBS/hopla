@@ -41,6 +41,7 @@ import { generateUUID } from '../../utils/UUID'
 import LoadingComponent from '../components/Loading'
 import { Stars, subjectColor, useCompiled } from './LearnParts'
 import {
+  Clock,
   CountPicture,
   Drawing,
   LabelView,
@@ -491,6 +492,7 @@ const Prompt = ({ color, item, say, tell }) => {
   const small =
     item.subject ||
     item.count ||
+    item.clock ||
     item.zones ||
     item.mode === 'match' ||
     item.mode === 'order'
@@ -510,6 +512,7 @@ const Prompt = ({ color, item, say, tell }) => {
       {said}
       {item.image && <Drawing id={item.image} />}
       {item.count && <CountPicture count={item.count} />}
+      {item.clock && <Clock clock={item.clock} />}
       {item.zones && item.mode === 'choice' && (
         <ZonePicture
           id={item.zones}

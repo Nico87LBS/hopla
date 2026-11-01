@@ -1,0 +1,23 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-cp",
+  "version": "1.0.0",
+  "nom": "Questionner le monde CP",
+  "description": "Le vivant, les animaux et les plantes, le corps et la santé, la matière, le temps qui passe et l'espace autour de soi. Les questions sont lues à voix haute.",
+  "matiere": "monde",
+  "niveaux": [
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "auteur": "Hopla",
+  "sources": "D'après le programme de questionner le monde du cycle 2 (2024) et les repères annuels de progression du CP (Éduscol).",
+  "modules": [
+    "monde-cp-vivant",
+    "monde-cp-animaux-plantes",
+    "monde-cp-corps",
+    "monde-cp-matiere",
+    "monde-cp-temps",
+    "monde-cp-espace"
+  ]
+}
