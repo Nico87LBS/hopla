@@ -1,0 +1,696 @@
+{
+  "format": "hopla-module/1",
+  "id": "lire-mots-cursif",
+  "version": "1.0.0",
+  "nom": "Lire des mots en cursif",
+  "description": "Lire un mot tout seul, puis toucher son dessin : syllabes simples, mots longs, lettres muettes, sons complexes.",
+  "matiere": "francais",
+  "niveaux": [
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": "consigne",
+  "auteur": "Hopla",
+  "sources": "D'après le programme du cycle 2 (CP) : lire l'écriture cursive. Police Playwrite FR Moderne (SIL Open Font License).",
+  "chapitres": [
+    {
+      "id": "simples",
+      "nom": "Mots de syllabes simples"
+    },
+    {
+      "id": "longs",
+      "nom": "Mots de trois syllabes",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "muettes",
+      "nom": "Les lettres muettes",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "complexes",
+      "nom": "Mots avec des sons complexes",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "lire-moto",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "la moto",
+      "reponse": "la moto",
+      "image": "motorbike",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-lune",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "la lune",
+      "reponse": "la lune",
+      "image": "moon",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-velo",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le vélo",
+      "reponse": "le vélo",
+      "image": "bike",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-bol",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le bol",
+      "reponse": "le bol",
+      "image": "bowl",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-sac",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le sac",
+      "reponse": "le sac",
+      "image": "bag",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-lama",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le lama",
+      "reponse": "le lama",
+      "image": "llama",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-robe",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "la robe",
+      "reponse": "la robe",
+      "image": "dress",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-kiwi",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le kiwi",
+      "reponse": "le kiwi",
+      "image": "kiwi",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-jupe",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "la jupe",
+      "reponse": "la jupe",
+      "image": "skirt",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-bus",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le bus",
+      "reponse": "le bus",
+      "image": "bus",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-fusee",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "la fusée",
+      "reponse": "la fusée",
+      "image": "rocket",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-bebe",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le bébé",
+      "reponse": "le bébé",
+      "image": "baby",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-pomme",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "la pomme",
+      "reponse": "la pomme",
+      "image": "apple",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-banane",
+      "chapitre": "simples",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "la banane",
+      "reponse": "la banane",
+      "image": "banana",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-domino",
+      "chapitre": "longs",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le domino",
+      "reponse": "le domino",
+      "image": "domino",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-tomate",
+      "chapitre": "longs",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "la tomate",
+      "reponse": "la tomate",
+      "image": "tomato",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-lavabo",
+      "chapitre": "longs",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le lavabo",
+      "reponse": "le lavabo",
+      "image": "sink",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-canape",
+      "chapitre": "longs",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le canapé",
+      "reponse": "le canapé",
+      "image": "sofa",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-salade",
+      "chapitre": "longs",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "la salade",
+      "reponse": "la salade",
+      "image": "salad",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-tulipe",
+      "chapitre": "longs",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "la tulipe",
+      "reponse": "la tulipe",
+      "image": "tulip",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-valise",
+      "chapitre": "longs",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "la valise",
+      "reponse": "la valise",
+      "image": "suitcase",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-carotte",
+      "chapitre": "longs",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "la carotte",
+      "reponse": "la carotte",
+      "image": "carrot",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-lit",
+      "chapitre": "muettes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le lit",
+      "reponse": "le lit",
+      "image": "bed",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-chat",
+      "chapitre": "muettes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le chat",
+      "reponse": "le chat",
+      "image": "cat",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-rat",
+      "chapitre": "muettes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le rat",
+      "reponse": "le rat",
+      "image": "rat",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-radis",
+      "chapitre": "muettes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le radis",
+      "reponse": "le radis",
+      "image": "radish",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-tapis",
+      "chapitre": "muettes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le tapis",
+      "reponse": "le tapis",
+      "image": "rug",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-robot",
+      "chapitre": "muettes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le robot",
+      "reponse": "le robot",
+      "image": "robot",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-jus",
+      "chapitre": "muettes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le jus",
+      "reponse": "le jus",
+      "image": "juice",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-nez",
+      "chapitre": "muettes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le nez",
+      "reponse": "le nez",
+      "image": "nose",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-pied",
+      "chapitre": "muettes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le pied",
+      "reponse": "le pied",
+      "image": "foot",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-dent",
+      "chapitre": "muettes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "la dent",
+      "reponse": "la dent",
+      "image": "tooth",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-loup",
+      "chapitre": "complexes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le loup",
+      "reponse": "le loup",
+      "image": "wolf",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-chou",
+      "chapitre": "complexes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le chou",
+      "reponse": "le chou",
+      "image": "cabbage",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-roue",
+      "chapitre": "complexes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "la roue",
+      "reponse": "la roue",
+      "image": "wheel",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-mouton",
+      "chapitre": "complexes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le mouton",
+      "reponse": "le mouton",
+      "image": "sheep",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-cochon",
+      "chapitre": "complexes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le cochon",
+      "reponse": "le cochon",
+      "image": "pig",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-lapin",
+      "chapitre": "complexes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le lapin",
+      "reponse": "le lapin",
+      "image": "rabbit",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-train",
+      "chapitre": "complexes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le train",
+      "reponse": "le train",
+      "image": "train",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-roi",
+      "chapitre": "complexes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le roi",
+      "reponse": "le roi",
+      "image": "king",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-poire",
+      "chapitre": "complexes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "la poire",
+      "reponse": "la poire",
+      "image": "pear",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-feu",
+      "chapitre": "complexes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le feu",
+      "reponse": "le feu",
+      "image": "fire",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-bateau",
+      "chapitre": "complexes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le bateau",
+      "reponse": "le bateau",
+      "image": "boat",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-gateau",
+      "chapitre": "complexes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le gâteau",
+      "reponse": "le gâteau",
+      "image": "cake",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-chevre",
+      "chapitre": "complexes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "la chèvre",
+      "reponse": "la chèvre",
+      "image": "goat",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-neige",
+      "chapitre": "complexes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "la neige",
+      "reponse": "la neige",
+      "image": "snow",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-champignon",
+      "chapitre": "complexes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le champignon",
+      "reponse": "le champignon",
+      "image": "mushroom",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-montagne",
+      "chapitre": "complexes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "la montagne",
+      "reponse": "la montagne",
+      "image": "mountain",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-grenouille",
+      "chapitre": "complexes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "la grenouille",
+      "reponse": "la grenouille",
+      "image": "frog",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-abeille",
+      "chapitre": "complexes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "l'abeille",
+      "reponse": "l'abeille",
+      "image": "bee",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-phoque",
+      "chapitre": "complexes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le phoque",
+      "reponse": "le phoque",
+      "image": "seal",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-dauphin",
+      "chapitre": "complexes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le dauphin",
+      "reponse": "le dauphin",
+      "image": "dolphin",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-girafe",
+      "chapitre": "complexes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "la girafe",
+      "reponse": "la girafe",
+      "image": "giraffe",
+      "consigne": "Lis le mot, puis touche son dessin."
+    },
+    {
+      "id": "lire-glacon",
+      "chapitre": "complexes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "le glaçon",
+      "reponse": "le glaçon",
+      "image": "ice-cube",
+      "consigne": "Lis le mot, puis touche son dessin."
+    }
+  ],
+  "ecriture": "cursive"
+}

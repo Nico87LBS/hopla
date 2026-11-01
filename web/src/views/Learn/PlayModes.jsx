@@ -239,6 +239,7 @@ export const OrderLabels = ({ color, item, onAnswer, say }) => {
         onClick={() =>
           onAnswer(placed.map(index => item.mixed[index]).join(' → '))
         }
+        className='hopla-print'
         sx={{ bgcolor: color, '&:hover': { bgcolor: color } }}
       >
         {t('play.check')}
@@ -491,7 +492,11 @@ CountPicture.propTypes = { count: PropTypes.object.isRequired }
 export const LabelView = ({ subject }) => (
   <Stack alignItems='center' gap={0.5}>
     {subject.image && <Drawing id={subject.image} size={96} />}
-    {subject.text && <Typography level='h2'>{subject.text}</Typography>}
+    {subject.text && (
+      <Typography level='h2' className='hopla-words'>
+        {subject.text}
+      </Typography>
+    )}
   </Stack>
 )
 

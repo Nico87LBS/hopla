@@ -64,7 +64,10 @@ type Document struct {
 	Language    string   `json:"langue"`
 	// ReadAloud lets the device say the questions and answers aloud, for
 	// those who do not read yet, unless a parent turned it off for them.
-	ReadAloud     ReadAloud   `json:"lecture_voix_haute"`
+	ReadAloud ReadAloud `json:"lecture_voix_haute"`
+	// Writing is how the words are written: in print (empty), in cursive
+	// ("cursive"), or only the question in cursive ("cursive_question").
+	Writing       string      `json:"ecriture"`
 	Modules       []string    `json:"modules"`
 	Prerequisites []Prereq    `json:"prerequis"`
 	Chapters      []Chapter   `json:"chapitres"`
@@ -111,6 +114,9 @@ type CardDef struct {
 	Boxes  []SortBox  `json:"boites"`
 	ToSort []SortItem `json:"a_classer"`
 }
+
+// Writings are the ways the words of a module may be written.
+var Writings = []string{"", "imprimerie", "cursive", "cursive_question"}
 
 // ReadAloud is what the device says aloud in a module: nothing, everything
 // (true in the file), or only the instructions ("consigne") in the modules
@@ -420,6 +426,9 @@ func (d Document) Check() error {
 	}
 	if strings.TrimSpace(d.Name) == "" {
 		return fmt.Errorf("module %s : nom manquant", d.ID)
+	}
+	if !contains(Writings, d.Writing) {
+		return fmt.Errorf("module %s : écriture %q inconnue (imprimerie, cursive ou cursive_question)", d.ID, d.Writing)
 	}
 	if strings.TrimSpace(d.Version) == "" {
 		return fmt.Errorf("module %s : version manquante", d.ID)

@@ -47,9 +47,10 @@ tablette murale, envoie les notifications et fait les annonces.
 **Apprendre**
 
 - Jeux éducatifs intégrés, sans publicité, jouables hors ligne.
-- Catalogue fourni : Apprendre à lire (GS et CP, méthode syllabique), Grande
-  section (Langage, Maths, Explorer le monde, avec dessins et voix), Maths
-  CE2 (8 modules), Anglais GS et CE2, Anglais aéronautique niveau 6 OACI.
+- Catalogue fourni : Apprendre à lire (GS et CP, méthode syllabique, en
+  imprimerie et en cursif), Grande section (Langage, Maths, Explorer le
+  monde, avec dessins et voix), Maths CE2 (8 modules), Anglais GS et CE2,
+  Anglais aéronautique niveau 6 OACI.
 - Calculs et problèmes tirés au hasard, questions à choix, à taper, à
   écouter, cartes à retourner, collections à compter, paires à relier,
   étiquettes à remettre dans l'ordre ou à classer, zones d'une carte ou d'une
