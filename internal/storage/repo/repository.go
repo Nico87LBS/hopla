@@ -43,7 +43,16 @@ func (r *StorageRepository) AddMediaRecord(ctx context.Context, media *st.Storag
 			return res.Error
 		}
 		if res.RowsAffected == 0 {
-			return errorx.ErrNotEnoughSpace
+			// A member made without a usage row (an older account, or one
+			// created by single sign-on) gets one now instead of being refused.
+			if err := tx.Create(&st.StorageUsage{
+				UserID:    user.ID,
+				FamilyID:  user.FamilyID,
+				UsedBytes: media.SizeBytes,
+				UpdatedAt: time.Now().UTC(),
+			}).Error; err != nil {
+				return err
+			}
 		}
 
 		if err := tx.Model(&st.StorageFile{}).Create(&media).Error; err != nil {

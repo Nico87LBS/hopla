@@ -102,17 +102,15 @@ devient `HOPLA_SERVER_PORT`. La variable l'emporte sur le fichier.
 | Réglage | Rôle |
 | --- | --- |
 | `storage.base_path` | Dossier des pièces jointes et photos. Vide : `files/` à côté de la base |
-| `storage.max_file_size` | Taille maximale d'un fichier, en octets |
-| `storage.max_user_storage` | Place totale de la famille, en octets |
+| `storage.max_file_size` | Taille maximale d'un fichier, en octets (par défaut 20 Mo) |
+| `storage.max_user_storage` | Place totale de la famille, en octets (par défaut 10 Go) |
 
-Ces deux limites n'ont pas de valeur par défaut : laissées vides, elles valent
-0 et tout envoi de fichier est refusé. Pour envoyer des photos, donnez-leur une
-valeur, par exemple :
+Par exemple, pour des fichiers jusqu'à 50 Mo et 20 Go pour la famille :
 
 ```yaml
 storage:
-  max_file_size: 10485760       # 10 Mo
-  max_user_storage: 2147483648  # 2 Go
+  max_file_size: 52428800
+  max_user_storage: 21474836480
 ```
 
 ### Variables d'environnement propres

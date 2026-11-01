@@ -50,9 +50,12 @@ type Info struct {
 type StorageConfig struct {
 	// BasePath is the folder of attachments and photos. Empty keeps them in
 	// "files" next to the SQLite database.
-	BasePath       string `mapstructure:"base_path" yaml:"base_path"`
-	MaxUserStorage int    `mapstructure:"max_user_storage" yaml:"max_user_storage"`
-	MaxFileSize    int64  `mapstructure:"max_file_size" yaml:"max_file_size"`
+	BasePath string `mapstructure:"base_path" yaml:"base_path"`
+	// MaxUserStorage is the room of a whole family, and MaxFileSize the size
+	// of one file, in bytes. Left out they get these defaults (10 GB and
+	// 20 MB): at 0 every upload would be refused.
+	MaxUserStorage int   `mapstructure:"max_user_storage" yaml:"max_user_storage" default:"10737418240"`
+	MaxFileSize    int64 `mapstructure:"max_file_size" yaml:"max_file_size" default:"20971520"`
 }
 type DatabaseConfig struct {
 	Type      string `mapstructure:"type" yaml:"type" default:"sqlite"`

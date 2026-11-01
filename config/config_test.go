@@ -6,6 +6,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/mcuadros/go-defaults"
 	"github.com/spf13/viper"
 )
 
@@ -37,5 +38,22 @@ func TestGenerateDefaultConfigFile(t *testing.T) {
 	}
 	if !cfg.Server.ServeFrontend {
 		t.Error("expected serve_frontend to be true")
+	}
+}
+
+func TestStorageLimitsHaveDefaults(t *testing.T) {
+	var cfg Config
+	defaults.SetDefaults(&cfg)
+	if cfg.Storage.MaxFileSize != 20<<20 {
+		t.Errorf("max_file_size = %d, want 20 MB", cfg.Storage.MaxFileSize)
+	}
+	if cfg.Storage.MaxUserStorage != 10<<30 {
+		t.Errorf("max_user_storage = %d, want 10 GB", cfg.Storage.MaxUserStorage)
+	}
+
+	cfg = Config{Storage: StorageConfig{MaxFileSize: 1000, MaxUserStorage: 5000}}
+	defaults.SetDefaults(&cfg)
+	if cfg.Storage.MaxFileSize != 1000 || cfg.Storage.MaxUserStorage != 5000 {
+		t.Errorf("set limits were replaced: %+v", cfg.Storage)
 	}
 }
