@@ -532,6 +532,8 @@ type SettingChange struct {
 	DailyCap      *int   `json:"dailyCap"`
 	UnlockPercent *int   `json:"unlockPercent"`
 	TotalCap      *int   `json:"totalCap"`
+	// ReadAloud turns reading aloud on or off for a person (scope AllPacks).
+	ReadAloud *bool `json:"readAloud"`
 	GameSettings
 }
 
@@ -558,6 +560,8 @@ func SetPersonSetting(db *gorm.DB, familyID int, change SettingChange, now time.
 		return invalid("seul le plafond total se règle pour tous les jeux, personne par personne")
 	case change.TotalCap != nil && change.Scope != AllPacks:
 		return invalid("le plafond total se règle pour tous les jeux")
+	case change.ReadAloud != nil && (change.Scope != AllPacks || change.Family):
+		return invalid("la lecture à voix haute se règle pour tous les jeux, personne par personne")
 	}
 	return db.Transaction(func(tx *gorm.DB) error {
 		if !change.Family {
@@ -596,9 +600,17 @@ func SetPersonSetting(db *gorm.DB, familyID int, change SettingChange, now time.
 		if change.TotalCap != nil {
 			row.TotalCap = ownSetting(change.TotalCap)
 		}
+		if change.ReadAloud != nil {
+			// On is the default, kept as nothing.
+			row.ReadAloud = nil
+			if !*change.ReadAloud {
+				row.ReadAloud = change.ReadAloud
+			}
+		}
 		row.GameSettings.apply(change.GameSettings)
 		row.UpdatedAt = now
-		if row.DailyCap == nil && row.UnlockPercent == nil && row.TotalCap == nil && row.GameSettings.empty() {
+		if row.DailyCap == nil && row.UnlockPercent == nil && row.TotalCap == nil && row.ReadAloud == nil &&
+			row.GameSettings.empty() {
 			return tx.Where("family_id = ? AND user_id = ? AND scope = ?", familyID, change.UserID, change.Scope).
 				Delete(&PersonSetting{}).Error
 		}
@@ -671,7 +683,7 @@ func FoldAllPacks(db *gorm.DB) error {
 				}
 			}
 			where := tx.Where("family_id = ? AND user_id = ? AND scope = ?", all.FamilyID, all.UserID, AllPacks)
-			if all.TotalCap == nil {
+			if all.TotalCap == nil && all.ReadAloud == nil {
 				return where.Delete(&PersonSetting{}).Error
 			}
 			return where.Model(&PersonSetting{}).Updates(map[string]any{"daily_cap": nil, "unlock_percent": nil,
@@ -773,6 +785,11 @@ func (l limits) settings(module string, activation Activation, own Settings) Set
 }
 
 func (l limits) totalCap() *int { return l.byScope[AllPacks].TotalCap }
+
+func (l limits) readAloud() bool {
+	off := l.byScope[AllPacks].ReadAloud
+	return off == nil || *off
+}
 
 // Value is a setting that applies and where it comes from.
 type Value struct {
@@ -930,6 +947,9 @@ type Player struct {
 	// none. EarnedToday counts them.
 	TotalCap    *int `json:"totalCap"`
 	EarnedToday int  `json:"earnedToday"`
+	// ReadAloud tells whether the device says the questions aloud, in the
+	// modules that ask for it.
+	ReadAloud bool `json:"readAloud"`
 }
 
 // PlayerFor gathers what a person plays.
@@ -968,6 +988,7 @@ func PlayerFor(db *gorm.DB, familyID, userID int, now time.Time) (Player, error)
 		return player, err
 	}
 	player.TotalCap = limits.totalCap()
+	player.ReadAloud = limits.readAloud()
 	for _, module := range modules {
 		if module.IsPack() {
 			player.Packs = append(player.Packs, module)

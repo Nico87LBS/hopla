@@ -30,6 +30,7 @@ import {
   useRemoveModule,
 } from '../../queries/LearnQueries'
 import { compile, seededRandom } from '../../utils/learn/engine'
+import { cardAnswer } from '../../utils/learn/generators'
 import LoadingComponent from '../components/Loading'
 import { surfaceSx } from '../Games/GameParts'
 import { ParentPage } from '../Manage/ParentPages'
@@ -107,10 +108,14 @@ const CardRow = ({ card, moduleId }) => {
       sx={{ borderTop: '1px solid', borderColor: 'divider', py: 1 }}
     >
       <Box sx={{ flex: 1, minWidth: 0 }}>
-        <Typography level='body-sm'>{card.question}</Typography>
+        <Typography level='body-sm'>
+          {card.type === 'zones'
+            ? t('detail.zone', { image: card.image, zone: card.question })
+            : card.question}
+        </Typography>
         <Stack direction='row' gap={0.75} alignItems='center'>
           <Typography level='title-sm' sx={{ color: HOPLA.violet }}>
-            {card.reponse}
+            {cardAnswer(card)}
           </Typography>
           {both && (
             <SwapHorizRounded
@@ -142,7 +147,7 @@ const CardRow = ({ card, moduleId }) => {
         <IconButton
           size='sm'
           variant='plain'
-          aria-label={t('edit.title', { name: card.reponse })}
+          aria-label={t('edit.title', { name: card.reponse || card.question })}
           onClick={() => onEdit(moduleId, card)}
         >
           <EditRounded />

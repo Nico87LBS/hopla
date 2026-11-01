@@ -70,6 +70,7 @@ Le fichier est contrôlé à l'import ; une erreur est expliquée en français
 | `public` | non | `enfant`, `adulte` ou `tous` |
 | `langue` | non | Langue des consignes (`fr`, `en`) |
 | `langue_apprise` | non | Langue enseignée, pour la voix des fiches Écoute (`en`) |
+| `lecture_voix_haute` | non | `true` pour les modules de ceux qui ne lisent pas encore : l'appareil dit la question, puis chaque réponse au premier toucher (un second toucher la choisit). Un parent peut l'éteindre pour une personne |
 | `couleur` | non | Couleur du module, en `#RRGGBB` |
 | `icone`, `sources` | non | Informations, pas encore affichées |
 | `modules` | paquet | Fait du fichier un **paquet** : la liste des `id` de ses modules (40 au plus). Un paquet n'a ni chapitres, ni fiches, ni générateurs. Ses modules sont ceux du catalogue (installés avec lui) ou des modules déjà importés |
@@ -99,8 +100,9 @@ Champs communs :
 | --- | --- |
 | `id` | Unique dans le module |
 | `chapitre` | `id` d'un chapitre du module |
-| `type` | `choix`, `saisie`, `ecoute` ou `retourner` |
-| `question`, `reponse` | Obligatoires |
+| `type` | `choix`, `saisie`, `ecoute`, `retourner`, `associer`, `ordre`, `classer` ou `zones` |
+| `question` | Obligatoire. Pour `associer`, `ordre` et `classer`, c'est la consigne |
+| `reponse` | Obligatoire, sauf pour `associer`, `ordre` et `classer` |
 | `explication` | Texte montré après la réponse (un exemple, une règle) |
 | `sens` | Sens posés, par défaut `["direct"]` (voir chaque type) |
 | `cle` | Clé partagée avec d'autres modules (voir plus bas) |
@@ -144,6 +146,88 @@ Pour une question ouverte (réciter, expliquer, dire à l'oral). L'enfant
 réfléchit, retourne la carte pour voir la `reponse` et dit lui-même :
 « Je savais », « Presque » ou « Pas encore ».
 
+### Étiquettes et dessins
+
+Dans les types qui suivent, une étiquette s'écrit comme un mot (`"le chat"`),
+ou comme `{"texte": "le chat", "image": "cat"}` pour un mot avec son dessin, ou
+`{"image": "cat"}` pour un dessin seul. Les dessins sont ceux de
+[`web/public/drawings/`](../web/public/drawings/), sans `.svg`.
+
+### `associer` : relier les paires
+
+```json
+{ "id": "animaux", "chapitre": "relier", "type": "associer",
+  "question": "Relie chaque animal à son dessin.",
+  "paires": [["le chat", {"image": "cat"}], ["le chien", {"image": "dog"}],
+             ["la vache", {"image": "cow"}], ["le canard", {"image": "duck"}]] }
+```
+
+Deux colonnes : on touche une étiquette à gauche puis sa paire à droite. Une
+bonne paire se colore et reste, une erreur fait trembler les deux. De 3 à 20
+paires ; une partie en montre 5 au plus, tirées au hasard. La fiche est une
+seule question, réussie si toutes les paires sont trouvées sans erreur.
+
+### `ordre` : remettre dans l'ordre
+
+```json
+{ "id": "jours", "chapitre": "ordre", "type": "ordre",
+  "question": "Remets les jours dans l'ordre.",
+  "elements": ["lundi", "mardi", "mercredi", "jeudi", "vendredi"] }
+```
+
+`elements` : de 3 à 8 étiquettes, **dans le bon ordre**. Elles arrivent
+mélangées ; on les touche dans l'ordre et elles montent dans les cases. Toucher
+une case renvoie son étiquette en bas. « Valider » quand tout est placé. Sert
+aussi aux mots d'une phrase, aux étapes d'une histoire, aux nombres à ranger.
+
+### `classer` : trier dans des boîtes
+
+```json
+{ "id": "vivant", "chapitre": "classer", "type": "classer",
+  "question": "Vivant ou non vivant ?",
+  "boites": [{"nom": "Vivant", "image": "rabbit"}, {"nom": "Non vivant", "image": "car"}],
+  "a_classer": [{"texte": "le chat", "boite": "Vivant", "image": "cat"},
+                {"texte": "la voiture", "boite": "Non vivant", "image": "car"}] }
+```
+
+De 2 à 3 `boites`, et de 2 à 30 étiquettes `a_classer`, chacune avec sa
+`boite`. Une étiquette à la fois, au centre ; on touche la bonne boîte. Chaque
+étiquette est une question à part, avec sa clé
+`id-du-module:id-de-fiche:etiquette` (le texte en minuscules, sans accents,
+mots reliés par des tirets). Une fiche `classer` ne prend pas de `cle`.
+
+### `zones` : toucher ou nommer une zone d'une image
+
+```json
+{ "id": "z-bretagne", "chapitre": "regions", "type": "zones",
+  "image": "carte-france", "question": "bretagne", "reponse": "Bretagne" }
+```
+
+`image` est une image à zones de
+[`web/public/drawings/zones/`](../web/public/drawings/zones/), `question`
+l'identifiant de la zone dans l'image et `reponse` son nom. Les `sens` :
+
+| Sens | L'enfant… |
+| --- | --- |
+| `toucher` | lit « Touche : Bretagne » et touche la zone sur l'image |
+| `nommer` | voit la zone en couleur et choisit son nom parmi quatre, tirés des autres fiches de la même image |
+
+Par défaut, les deux. Images fournies :
+
+| Image | Zones |
+| --- | --- |
+| `carte-france` | Les 13 régions de France métropolitaine : `auvergne-rhone-alpes`, `bourgogne-franche-comte`, `bretagne`, `centre-val-de-loire`, `corse`, `grand-est`, `hauts-de-france`, `ile-de-france`, `normandie`, `nouvelle-aquitaine`, `occitanie`, `pays-de-la-loire`, `provence-alpes-cote-d-azur` |
+| `corps` | `tete`, `cou`, `bras`, `coude`, `main`, `ventre`, `jambe`, `genou`, `pied` |
+| `plante` | `fleur`, `feuille`, `tige`, `racines` |
+
+Une image à zones est un SVG dont chaque zone est un élément portant
+`data-zone="identifiant"` (et `data-nom`, pour s'y retrouver). Les contours de
+la carte de France viennent d'IGN Admin Express (Licence ouverte Etalab).
+
+Un module d'essai qui utilise chacun de ces types est fourni :
+[`docs/exemples/essai-nouveaux-jeux.json`](exemples/essai-nouveaux-jeux.json),
+à importer depuis le Catalogue.
+
 ## Générateurs
 
 Un générateur fabrique des questions au hasard dans des bornes. Les nombres se
@@ -167,6 +251,7 @@ Champs communs : `id`, `chapitre`, `operation`.
 | `comparaison` | `a` | `345 … 354` : choisir `<`, `=` ou `>` |
 | `position` | `a`, `rangs` (`unites`, `dizaines`, `centaines`, `milliers`), `formes` (`chiffre`, `nombre`) | Le chiffre des dizaines de 4 582 ; combien de dizaines en tout |
 | `lettres` | `a`, `formes` (`chiffres`, `mots`) | Écrire en chiffres « mille deux cent trois », ou choisir l'écriture en lettres |
+| `compter` | `a`, `objets` (dessins à compter, `carrot` par défaut), `formes` (`objets`, `de`) | Une collection dessinée, en rangées de cinq, ou les points d'un dé (1 à 6) : choisir le nombre parmi quatre jusqu'à 10, le taper au-delà |
 | `modele` | `texte`, `variables`, `calculs`, `si`, `reponse`, `unite` | Un problème à trous (voir plus bas) |
 
 ### Problèmes : `modele`
@@ -220,9 +305,11 @@ en GS reste su en CE2.
 - Même clé, même réponse attendue. L'import refuse un module dont une clé
   existe ailleurs avec une autre réponse, ou deux fois dans le module.
 - Les domaines `add`, `sub`, `mul`, `div`, `cmp`, `pos`, `num`, `pb`, `dbl`,
-  `half` et `cpl` sont réservés aux générateurs, qui fabriquent eux-mêmes des
+  `half`, `cpl` et `cnt` sont réservés aux générateurs, qui fabriquent eux-mêmes des
   clés comme `mul:7x8`. Un module ne peut pas non plus prendre l'un de ces mots
   comme `id`.
+- Une clé ne finit pas par `inverse`, `lire`, `dictee`, `chiffres` ou
+  `nommer` : ces mots désignent les autres sens d'une fiche.
 
 ## Mettre à jour un module
 

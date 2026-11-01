@@ -82,6 +82,10 @@ type PersonSetting struct {
 	// TotalCap, for AllPacks only, is the most hops a person earns with the
 	// learning games in a day, all modules together.
 	TotalCap *int `json:"totalCap" gorm:"column:total_cap"`
+	// ReadAloud, for AllPacks only, is false when the device must not say
+	// the questions aloud for this person. Empty, it does for the modules
+	// that ask for it.
+	ReadAloud *bool `json:"readAloud" gorm:"column:read_aloud"`
 	GameSettings
 	UpdatedAt time.Time `json:"updatedAt" gorm:"column:updated_at"`
 }

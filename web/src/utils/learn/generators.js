@@ -444,6 +444,68 @@ const modelSource = (gen, moduleId) => {
   }
 }
 
+// Counting a collection drawn on the screen: objects of the catalogue's
+// drawings, or the dots of a die. Up to ten, the answer is picked among
+// four numbers; above, it is typed.
+const COUNT_CHOICES_UP_TO = 10
+
+const countSource = gen => {
+  const A = parseSpec(gen.a ?? [1, 10])
+  const forms = (gen.formes?.length ? gen.formes : ['objets']).filter(form =>
+    ['objets', 'de'].includes(form),
+  )
+  const objects = gen.objets?.length ? gen.objets : ['carrot']
+  const lo = A.list ? Math.min(...A.list) : A.min
+  const hi = A.list ? Math.max(...A.list) : A.max
+  // A die shows one to six dots.
+  const valid = (n, form) =>
+    Number.isInteger(n) && n >= 1 && (form !== 'de' || n <= 6)
+  const neighbours = n => {
+    const top = Math.min(hi, COUNT_CHOICES_UP_TO)
+    const near = [n - 1, n + 1, n - 2, n + 2, n + 3, n - 3].filter(
+      m => m >= Math.max(1, lo) && m <= top && m !== n,
+    )
+    return near.slice(0, 3)
+  }
+  const item = (n, form) => {
+    const choosing = n <= COUNT_CHOICES_UP_TO
+    return {
+      key: `cnt:${form}:${n}`,
+      prompt: 'Combien y en a-t-il ?',
+      answer: String(n),
+      count: { n, form, objects },
+      ...(choosing && {
+        mode: 'choice',
+        choices: [n, ...neighbours(n)].sort((a, b) => a - b).map(String),
+        keepOrder: true,
+      }),
+    }
+  }
+  return {
+    size: specCount(A) * forms.length,
+    list: () =>
+      specAll(A).flatMap(n =>
+        forms.filter(form => valid(n, form)).map(form => item(n, form)),
+      ),
+    draw: rng => {
+      for (let i = 0; i < DRAW_TRIES; i++) {
+        const n = specPick(A, rng)
+        const form = forms[Math.floor(rng() * forms.length)]
+        if (valid(n, form)) return item(n, form)
+      }
+      return null
+    },
+    fromKey: key => {
+      const m = /^cnt:([a-z]+):(\d+)$/.exec(key)
+      if (!m) return null
+      const [form, n] = [m[1], Number(m[2])]
+      return forms.includes(form) && specHas(A, n) && valid(n, form)
+        ? item(n, form)
+        : null
+    },
+  }
+}
+
 const SOURCES = {
   addition: arithmeticSource,
   soustraction: arithmeticSource,
@@ -489,6 +551,7 @@ const SOURCES = {
   position: positionSource,
   lettres: wordsSource,
   modele: modelSource,
+  compter: countSource,
 }
 
 // generatorSource turns a generator of a module into a question source.
@@ -519,9 +582,150 @@ export const generatorSource = (gen, moduleId) => {
 export const cardKey = (moduleId, card, direction = 'direct') =>
   `${card.cle || `${moduleId}:${card.id}`}${direction === 'direct' ? '' : `:${direction}`}`
 
+// slug names a label to sort in its key, as the server does: lower case,
+// without accents, words joined by dashes.
+export const slug = text =>
+  String(text ?? '')
+    .toLowerCase()
+    .replace(/œ/g, 'oe')
+    .replace(/æ/g, 'ae')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 40)
+    .replace(/-+$/, '')
+
+// label reads a side of a pair, or a label, written as a word or as
+// { texte, image }.
+export const label = side =>
+  typeof side === 'string'
+    ? { text: side }
+    : { text: side?.texte || '', image: side?.image }
+
+const labelText = l => l.text || l.image || ''
+
+// cardAnswer tells in a line what a written card expects, for the lists of
+// cards: its answer, its pairs, its labels in order or by box.
+export const cardAnswer = card => {
+  switch (card.type) {
+    case 'associer':
+      return (card.paires || [])
+        .map(pair => pair.map(side => labelText(label(side))).join(' – '))
+        .join(', ')
+    case 'ordre':
+      return (card.elements || []).join(' → ')
+    case 'classer':
+      return (card.boites || [])
+        .map(
+          box =>
+            `${box.nom} : ${(card.a_classer || [])
+              .filter(e => e.boite === box.nom)
+              .map(e => e.texte)
+              .join(', ')}`,
+        )
+        .join(' · ')
+    default:
+      return card.reponse
+  }
+}
+
+// The cards that hold several labels: pairs to match, labels to put in
+// order or to sort into boxes, zones of a picture.
+const MATCH_SHOWN = 5
+
+const matchItem = (card, base) => {
+  const pairs = (card.paires || []).map(pair => pair.map(label))
+  return {
+    ...base,
+    mode: 'match',
+    pairs,
+    shown: Math.min(MATCH_SHOWN, pairs.length),
+    answer: pairs
+      .map(([l, r]) => `${labelText(l)} – ${labelText(r)}`)
+      .join(', '),
+  }
+}
+
+const orderItem = (card, base) => ({
+  ...base,
+  mode: 'order',
+  elements: card.elements || [],
+  answer: (card.elements || []).join(' → '),
+})
+
+const sortItems = (card, moduleId) => {
+  const boxes = (card.boites || []).map(b => ({ name: b.nom, image: b.image }))
+  return (card.a_classer || []).map(element => ({
+    key: `${cardKey(moduleId, card)}:${slug(element.texte)}`,
+    chapter: card.chapitre,
+    source: card.id,
+    prompt: card.question,
+    subject: { text: element.texte, image: element.image },
+    answer: element.boite,
+    explanation: card.explication,
+    mode: 'sort',
+    boxes,
+    choices: boxes.map(b => b.name),
+  }))
+}
+
+// A zone is touched on its picture, from its name, or named once shown in
+// colour. The names of the other zones of the same picture are the traps.
+const zoneItems = (card, moduleId, siblings) => {
+  const sameImage = siblings.filter(
+    s => s.type === 'zones' && s.image === card.image,
+  )
+  const names = Object.fromEntries(sameImage.map(s => [s.question, s.reponse]))
+  const directions = card.sens?.length ? card.sens : ['toucher', 'nommer']
+  return directions
+    .filter(d => d === 'toucher' || d === 'nommer')
+    .map(direction => {
+      const base = {
+        key: `${cardKey(moduleId, card)}${direction === 'toucher' ? '' : ':nommer'}`,
+        chapter: card.chapitre,
+        source: card.id,
+        answer: card.reponse,
+        explanation: card.explication,
+        zones: card.image,
+        zone: card.question,
+        zoneNames: names,
+      }
+      if (direction === 'toucher') {
+        return { ...base, mode: 'zone', prompt: `Touche : ${card.reponse}` }
+      }
+      const traps = [
+        ...new Set(
+          sameImage.map(s => s.reponse).filter(n => n !== card.reponse),
+        ),
+      ]
+      return {
+        ...base,
+        mode: 'choice',
+        prompt: 'Comment s’appelle la zone en couleur ?',
+        choices: [card.reponse, ...traps.slice(0, 3)],
+        trapPool: traps,
+      }
+    })
+}
+
 // cardItems lists the questions of a written card, one per direction asked.
 // lang is the language the module teaches, which a listening card says.
 export const cardItems = (card, moduleId, siblings, lang) => {
+  if (card.type === 'classer') return sortItems(card, moduleId)
+  if (card.type === 'zones') return zoneItems(card, moduleId, siblings)
+  if (card.type === 'associer' || card.type === 'ordre') {
+    const base = {
+      key: cardKey(moduleId, card),
+      chapter: card.chapitre,
+      source: card.id,
+      prompt: card.question,
+      explanation: card.explication,
+    }
+    return [
+      card.type === 'associer' ? matchItem(card, base) : orderItem(card, base),
+    ]
+  }
   const listening = card.type === 'ecoute'
   const known = listening
     ? ['direct', 'lire', 'inverse', 'dictee', 'chiffres']
