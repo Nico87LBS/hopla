@@ -3,34 +3,71 @@
 **Les tâches de la famille, en jeu.**
 
 Hopla est une application auto-hébergée pour organiser les tâches de la maison
-en famille : tâches récurrentes, tours de rôle, points et récompenses pour les
-enfants. Elle est pensée pour fonctionner avec Home Assistant, qui se charge
-des notifications et de l'affichage sur une tablette murale.
+en famille. Les enfants gagnent des hops en faisant leurs tâches, montent de
+rang, réussissent des quêtes et des défis, s'offrent des récompenses et
+apprennent en jouant. Les parents règlent tout, depuis un ordinateur, un
+téléphone ou la tablette de la maison.
+
+Hopla est pensé pour fonctionner avec Home Assistant : l'intégration
+[hopla-ha](https://github.com/Nico87LBS/hopla-ha) affiche la famille sur une
+tablette murale, envoie les notifications et fait les annonces.
 
 ## Fonctionnalités
 
-- Tâches ponctuelles ou récurrentes (quotidiennes, hebdomadaires, mensuelles,
-  jours précis, planification adaptative), avec sous-tâches et étiquettes.
-- Créneaux : une tâche faite plusieurs fois par jour (se laver les dents le
-  matin, à midi et le soir), chaque créneau coché et validé à part ; un parent
-  peut rattraper un créneau oublié jusqu'à minuit.
-- Attribution par rotation, au hasard ou à tour de rôle.
-- Comptes enfants gérés par les parents.
-- Points, récompenses et demandes de récompense validées par un parent.
-- Pièces jointes et photos sur les tâches, rangées sur le disque du serveur.
-- Tâches « déclenchées de l'extérieur » : sans échéance, elles attendent
-  qu'une automatisation Home Assistant (`hopla.update_task`) les rende à faire.
-- Synchronisation en temps réel (SSE) entre tous les appareils.
-- Abonnement calendrier iCal privé.
-- Connexion par compte local ou OpenID Connect, double authentification TOTP.
-- API REST avec jetons d'accès longue durée.
+**Tâches**
+
+- Tâches uniques, répétées (tous les jours, certains jours, toutes les N
+  semaines, le 1er lundi du mois…, ou « à son rythme »), toujours disponibles,
+  ou déclenchées par un signal extérieur.
+- Ajout rapide qui comprend « Ranger la chambre demain 18h » ou « tous les
+  mardis ».
+- Créneaux : une tâche faite plusieurs fois par jour (les dents matin, midi et
+  soir), chaque créneau coché et validé à part.
+- À plusieurs, trois modes : **Chacun la sienne**, **Premier arrivé**, **Un
+  seul à la fois** (avec rotation, hasard ou tour de rôle).
+- Validation par un parent, étapes, étiquettes, consignes, photos et pièces
+  jointes, rappels.
+- Routines : des tâches enchaînées, une étape à la fois.
+- Mode « Pas là » : les tâches d'un enfant absent (garde partagée, vacances)
+  se mettent en pause, sans casser sa série.
+- Page Aujourd'hui avec le résumé de la journée de chaque enfant.
+
+**Jeu**
+
+- Une monnaie réglable : hops par défaut, ou points, étoiles, carottes,
+  pièces, jetons.
+- Rangs illustrés de la tribu des lapins Hopla, podium, étoiles de prestige.
+- Séries de jours, tâche surprise, quêtes de la semaine et du mois, défis
+  chacun pour soi ou en famille, périodes bonus (×2 à ×5), bonus chrono.
+- Bonus et pénalités des parents, bonus préparés, journal de tout ce qui est
+  gagné et dépensé.
+- Boutique de récompenses, avec limites par jour, semaine ou mois et demandes
+  validées par un parent.
+
+**Apprendre**
+
+- Jeux éducatifs intégrés, sans publicité, jouables hors ligne.
+- Catalogue fourni : Maths CE2 (8 modules), Anglais GS et CE2 (avec dessins
+  et voix), Anglais aéronautique niveau 6 OACI.
+- Calculs et problèmes tirés au hasard, questions à choix, à taper, à
+  écouter, cartes à retourner ; répétition espacée ; chapitres qui s'ouvrent
+  au fil des progrès.
+- Étoiles et hops par partie, avec plafonds par jour réglables par la famille,
+  le paquet, le module ou la personne ; statistiques détaillées.
+- Signalement d'une question en jeu, correction des fiches par la famille,
+  import de modules écrits à la main.
+
+**Famille et technique**
+
+- Comptes des enfants gérés par les parents, rôles, invitations par code.
+- Fuseau horaire de la famille, indépendant de l'appareil.
+- Synchronisation en temps réel entre tous les appareils, mode hors ligne,
+  application installable sur l'écran d'accueil.
+- Calendrier iCal privé, API REST avec jetons d'accès.
+- Connexion par compte local ou OpenID Connect, double authentification.
 - Interface en français et en anglais.
 
-Les notifications ne sont pas envoyées par le serveur : c'est l'intégration
-Home Assistant [hopla-ha](https://github.com/Nico87LBS/hopla-ha) qui les gère,
-à partir des rappels définis sur chaque tâche.
-
-## Installation avec Docker
+## Installation
 
 ```yaml
 services:
@@ -49,59 +86,35 @@ services:
       - TZ=Europe/Paris
 ```
 
-L'image est aussi publiée avec son numéro de version
-(`ghcr.io/nico87lbs/hopla:1.0.0`) pour rester sur une version précise. Le
-numéro est affiché en bas du menu de l'application.
+Au premier démarrage, Hopla crée `config/selfhosted.yaml` avec un secret
+aléatoire ; modifiez-le puis redémarrez. Pour envoyer des photos, donnez une
+valeur à `storage.max_file_size` et `storage.max_user_storage`. Tout le
+détail (proxy HTTPS, e-mails, OpenID Connect, sauvegarde, mise à jour) est
+dans [la documentation d'installation](docs/installation.md).
 
-Au premier démarrage, Hopla crée `config/selfhosted.yaml` à partir de
-[ce modèle](config/selfhosted.yaml.example), avec un secret JWT aléatoire.
-Modifiez ce fichier puis redémarrez le conteneur.
+## Documentation
 
-Chaque réglage du fichier peut aussi être donné par une variable
-d'environnement préfixée par `HOPLA_`, en remplaçant les points par des
-tirets bas. Par exemple `jwt.secret` devient `HOPLA_JWT_SECRET` et
-`server.port` devient `HOPLA_SERVER_PORT`.
-
-| Variable | Rôle |
+| Page | Contenu |
 | --- | --- |
-| `HOPLA_ENV` | Fichier de configuration à charger (`selfhosted`, `local`, `prod`) |
-| `HOPLA_SQLITE_PATH` | Chemin de la base SQLite (par défaut `hopla.db`) |
-| `HOPLA_DISABLE_SIGNUP` | `true` pour interdire la création de comptes |
-| `HOPLA_LOG_LEVEL` | Niveau de journalisation (`debug`, `info`, `warn`, `error`) |
+| [Installation et configuration](docs/installation.md) | Docker, réglages, e-mails, OpenID Connect, sauvegarde, mise à jour |
+| [Premiers pas](docs/premiers-pas.md) | Famille, comptes des enfants, rôles, réglages, navigation |
+| [Les tâches](docs/taches.md) | Éditeur, rythmes, créneaux, modes, validation, « Pas là » |
+| [Hops, récompenses et jeux](docs/points-et-jeux.md) | Rangs, séries, quêtes, défis, bonus, routines, Boutique |
+| [Apprendre](docs/apprendre.md) | Catalogue, réglages, étoiles, progrès |
+| [Format des modules](docs/format-module.md) | Écrire ses propres modules Apprendre |
+| [API et intégrations](docs/api.md) | Jetons, API externe, temps réel, iCal |
+| [Développement](docs/developpement.md) | Code, tests, traductions, versions |
 
 ## Développement
 
-Serveur (Go 1.24) :
-
 ```sh
-HOPLA_ENV=local go run .
+HOPLA_ENV=local go run .          # serveur, port 2021
+cd web && npm install && npm run dev   # application web, port 5173
 ```
 
-Application web (Node 20 ou plus), dans `web/` :
-
-```sh
-npm install
-npm run dev
-```
-
-Les textes de l'interface sont dans `web/public/locales/<langue>/`. Aucun
-texte ne doit être écrit en dur dans le code.
-
-### Versions
-
-Le numéro de version, `X.Y.Z`, est dans le fichier `VERSION` à la racine,
-partagé par le serveur et l'application web. Chaque pull request l'augmente :
-`Z` pour une correction, `Y` pour une nouveauté, `X` pour un changement qui
-demande une action à la mise à jour. Une fois fusionnée dans `main`, la
-nouvelle version devient une release GitHub `vX.Y.Z` et une image Docker du
-même numéro.
-
-Tests et vérifications :
-
-```sh
-go vet ./... && go test ./...
-cd web && npx eslint --quiet src && npm run lint:i18n && npx vite build --mode selfhosted
-```
+Chaque pull request augmente le fichier `VERSION` ; une fois fusionnée, elle
+devient une release `vX.Y.Z` et une image Docker du même numéro. Les règles du
+projet et les vérifications sont dans [Développement](docs/developpement.md).
 
 ## Licence
 
