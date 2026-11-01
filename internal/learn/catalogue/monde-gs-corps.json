@@ -1,0 +1,309 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-gs-corps",
+  "version": "1.0.0",
+  "nom": "Mon corps",
+  "description": "Nommer les parties du corps, connaître les cinq sens et prendre soin de soi.",
+  "matiere": "monde",
+  "niveaux": [
+    "GS"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de l'école maternelle (cycle 1) et ses attendus de fin de GS (Éduscol).",
+  "chapitres": [
+    {
+      "id": "parties",
+      "nom": "Les parties du corps"
+    },
+    {
+      "id": "sens",
+      "nom": "Les cinq sens",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "soin",
+      "nom": "Prendre soin de soi",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 6,
+    "nouvelles_par_partie": 2,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "zone-tete",
+      "chapitre": "parties",
+      "type": "zones",
+      "image": "corps",
+      "question": "tete",
+      "reponse": "la tête",
+      "cle": "monde:corps:tete"
+    },
+    {
+      "id": "zone-cou",
+      "chapitre": "parties",
+      "type": "zones",
+      "image": "corps",
+      "question": "cou",
+      "reponse": "le cou",
+      "cle": "monde:corps:cou"
+    },
+    {
+      "id": "zone-bras",
+      "chapitre": "parties",
+      "type": "zones",
+      "image": "corps",
+      "question": "bras",
+      "reponse": "le bras",
+      "cle": "monde:corps:bras"
+    },
+    {
+      "id": "zone-coude",
+      "chapitre": "parties",
+      "type": "zones",
+      "image": "corps",
+      "question": "coude",
+      "reponse": "le coude",
+      "cle": "monde:corps:coude"
+    },
+    {
+      "id": "zone-main",
+      "chapitre": "parties",
+      "type": "zones",
+      "image": "corps",
+      "question": "main",
+      "reponse": "la main",
+      "cle": "monde:corps:main"
+    },
+    {
+      "id": "zone-ventre",
+      "chapitre": "parties",
+      "type": "zones",
+      "image": "corps",
+      "question": "ventre",
+      "reponse": "le ventre",
+      "cle": "monde:corps:ventre"
+    },
+    {
+      "id": "zone-jambe",
+      "chapitre": "parties",
+      "type": "zones",
+      "image": "corps",
+      "question": "jambe",
+      "reponse": "la jambe",
+      "cle": "monde:corps:jambe"
+    },
+    {
+      "id": "zone-genou",
+      "chapitre": "parties",
+      "type": "zones",
+      "image": "corps",
+      "question": "genou",
+      "reponse": "le genou",
+      "cle": "monde:corps:genou"
+    },
+    {
+      "id": "zone-pied",
+      "chapitre": "parties",
+      "type": "zones",
+      "image": "corps",
+      "question": "pied",
+      "reponse": "le pied",
+      "cle": "monde:corps:pied"
+    },
+    {
+      "id": "sens",
+      "chapitre": "sens",
+      "type": "associer",
+      "question": "Relie chaque partie du corps à ce qu’elle permet de faire.",
+      "paires": [
+        [
+          {
+            "texte": "l'œil",
+            "image": "eye"
+          },
+          "voir"
+        ],
+        [
+          {
+            "texte": "l'oreille",
+            "image": "ear"
+          },
+          "entendre"
+        ],
+        [
+          {
+            "texte": "le nez",
+            "image": "nose"
+          },
+          "sentir"
+        ],
+        [
+          {
+            "texte": "la bouche",
+            "image": "mouth"
+          },
+          "goûter"
+        ],
+        [
+          {
+            "texte": "la main",
+            "image": "hand"
+          },
+          "toucher"
+        ]
+      ]
+    },
+    {
+      "id": "sens-1",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "Avec quoi entends-tu la musique ?",
+      "reponse": "les oreilles",
+      "pieges": [
+        "le nez",
+        "les yeux",
+        "la bouche"
+      ]
+    },
+    {
+      "id": "sens-2",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "Avec quoi sens-tu une fleur ?",
+      "reponse": "le nez",
+      "pieges": [
+        "les oreilles",
+        "les yeux",
+        "la bouche"
+      ]
+    },
+    {
+      "id": "sens-3",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "Avec quoi vois-tu les couleurs ?",
+      "reponse": "les yeux",
+      "pieges": [
+        "les oreilles",
+        "le nez",
+        "la bouche"
+      ]
+    },
+    {
+      "id": "sens-4",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "Avec quoi goûtes-tu un gâteau ?",
+      "reponse": "la bouche",
+      "pieges": [
+        "les oreilles",
+        "le nez",
+        "les yeux"
+      ]
+    },
+    {
+      "id": "sens-5",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "Avec quoi sens-tu si l’eau est chaude ?",
+      "reponse": "les mains",
+      "pieges": [
+        "les oreilles",
+        "le nez",
+        "les yeux"
+      ]
+    },
+    {
+      "id": "mains",
+      "chapitre": "soin",
+      "type": "ordre",
+      "question": "Pour se laver les mains : remets dans l’ordre.",
+      "elements": [
+        "mouiller ses mains",
+        "mettre du savon",
+        "frotter",
+        "rincer",
+        "essuyer"
+      ]
+    },
+    {
+      "id": "soir",
+      "chapitre": "soin",
+      "type": "ordre",
+      "question": "Le soir : remets dans l’ordre.",
+      "elements": [
+        "prendre le bain",
+        "mettre le pyjama",
+        "se brosser les dents",
+        "dormir"
+      ]
+    },
+    {
+      "id": "sante",
+      "chapitre": "soin",
+      "type": "classer",
+      "question": "À manger tous les jours, ou seulement de temps en temps ?",
+      "boites": [
+        {
+          "nom": "tous les jours",
+          "image": "apple"
+        },
+        {
+          "nom": "de temps en temps",
+          "image": "cake"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "la carotte",
+          "boite": "tous les jours",
+          "image": "carrot"
+        },
+        {
+          "texte": "la banane",
+          "boite": "tous les jours",
+          "image": "banana"
+        },
+        {
+          "texte": "la poire",
+          "boite": "tous les jours",
+          "image": "pear"
+        },
+        {
+          "texte": "le pain",
+          "boite": "tous les jours",
+          "image": "bread"
+        },
+        {
+          "texte": "la salade",
+          "boite": "tous les jours",
+          "image": "salad"
+        },
+        {
+          "texte": "la glace",
+          "boite": "de temps en temps",
+          "image": "ice-cream"
+        },
+        {
+          "texte": "le bonbon",
+          "boite": "de temps en temps",
+          "image": "candy"
+        },
+        {
+          "texte": "le soda",
+          "boite": "de temps en temps",
+          "image": "soda"
+        }
+      ]
+    }
+  ]
+}

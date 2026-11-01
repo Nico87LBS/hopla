@@ -1,0 +1,231 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-gs-saisons",
+  "version": "1.0.0",
+  "nom": "Les saisons",
+  "description": "Les quatre saisons, le temps qu'il fait et les habits qui vont avec.",
+  "matiere": "monde",
+  "niveaux": [
+    "GS"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de l'école maternelle (cycle 1) et ses attendus de fin de GS (Éduscol).",
+  "chapitres": [
+    {
+      "id": "saisons",
+      "nom": "Les quatre saisons"
+    },
+    {
+      "id": "meteo",
+      "nom": "Quel temps fait-il ?",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "habits",
+      "nom": "Habits et saisons",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 6,
+    "nouvelles_par_partie": 2,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "saisons",
+      "chapitre": "saisons",
+      "type": "associer",
+      "question": "Relie chaque dessin à sa saison.",
+      "paires": [
+        [
+          {
+            "texte": "le bonhomme de neige",
+            "image": "snowman"
+          },
+          "l'hiver"
+        ],
+        [
+          {
+            "texte": "la fleur",
+            "image": "flower"
+          },
+          "le printemps"
+        ],
+        [
+          {
+            "texte": "le soleil",
+            "image": "sun"
+          },
+          "l'été"
+        ],
+        [
+          {
+            "texte": "la feuille",
+            "image": "leaf"
+          },
+          "l'automne"
+        ]
+      ]
+    },
+    {
+      "id": "ordre-saisons",
+      "chapitre": "saisons",
+      "type": "ordre",
+      "question": "Remets les saisons dans l’ordre, en commençant par l’automne.",
+      "elements": [
+        "l'automne",
+        "l'hiver",
+        "le printemps",
+        "l'été"
+      ]
+    },
+    {
+      "id": "neige",
+      "chapitre": "saisons",
+      "type": "choix",
+      "image": "snowman",
+      "question": "En quelle saison fait-on un bonhomme de neige ?",
+      "reponse": "l'hiver",
+      "pieges": [
+        "l'été",
+        "le printemps",
+        "l'automne"
+      ]
+    },
+    {
+      "id": "feuilles",
+      "chapitre": "saisons",
+      "type": "choix",
+      "image": "leaf",
+      "question": "En quelle saison les feuilles tombent-elles des arbres ?",
+      "reponse": "l'automne",
+      "pieges": [
+        "l'été",
+        "le printemps",
+        "l'hiver"
+      ]
+    },
+    {
+      "id": "fleurs",
+      "chapitre": "saisons",
+      "type": "choix",
+      "image": "flower",
+      "question": "En quelle saison les fleurs poussent-elles ?",
+      "reponse": "le printemps",
+      "pieges": [
+        "l'été",
+        "l'automne",
+        "l'hiver"
+      ]
+    },
+    {
+      "id": "meteo-il-fait-beau",
+      "chapitre": "meteo",
+      "type": "ecoute",
+      "cle": "fr:meteo:il-fait-beau",
+      "question": "il fait beau",
+      "reponse": "il fait beau",
+      "image": "sun"
+    },
+    {
+      "id": "meteo-il-pleut",
+      "chapitre": "meteo",
+      "type": "ecoute",
+      "cle": "fr:meteo:il-pleut",
+      "question": "il pleut",
+      "reponse": "il pleut",
+      "image": "rain"
+    },
+    {
+      "id": "meteo-il-neige",
+      "chapitre": "meteo",
+      "type": "ecoute",
+      "cle": "fr:meteo:il-neige",
+      "question": "il neige",
+      "reponse": "il neige",
+      "image": "snow"
+    },
+    {
+      "id": "meteo-il-y-a-du-vent",
+      "chapitre": "meteo",
+      "type": "ecoute",
+      "cle": "fr:meteo:il-y-a-du-vent",
+      "question": "il y a du vent",
+      "reponse": "il y a du vent",
+      "image": "wind"
+    },
+    {
+      "id": "meteo-il-y-a-des-nuages",
+      "chapitre": "meteo",
+      "type": "ecoute",
+      "cle": "fr:meteo:il-y-a-des-nuages",
+      "question": "il y a des nuages",
+      "reponse": "il y a des nuages",
+      "image": "cloud"
+    },
+    {
+      "id": "meteo-il-y-a-un-arc-en-ciel",
+      "chapitre": "meteo",
+      "type": "ecoute",
+      "cle": "fr:meteo:il-y-a-un-arc-en-ciel",
+      "question": "il y a un arc-en-ciel",
+      "reponse": "il y a un arc-en-ciel",
+      "image": "rainbow"
+    },
+    {
+      "id": "habits",
+      "chapitre": "habits",
+      "type": "classer",
+      "question": "On le met plutôt en été ou en hiver ?",
+      "boites": [
+        {
+          "nom": "l'été",
+          "image": "sun"
+        },
+        {
+          "nom": "l'hiver",
+          "image": "snowman"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le chapeau de soleil",
+          "boite": "l'été",
+          "image": "hat"
+        },
+        {
+          "texte": "le tee-shirt",
+          "boite": "l'été",
+          "image": "t-shirt"
+        },
+        {
+          "texte": "la robe",
+          "boite": "l'été",
+          "image": "dress"
+        },
+        {
+          "texte": "l'écharpe",
+          "boite": "l'hiver",
+          "image": "scarf"
+        },
+        {
+          "texte": "le manteau",
+          "boite": "l'hiver",
+          "image": "coat"
+        },
+        {
+          "texte": "la glace",
+          "boite": "l'été",
+          "image": "ice-cream"
+        }
+      ]
+    }
+  ]
+}

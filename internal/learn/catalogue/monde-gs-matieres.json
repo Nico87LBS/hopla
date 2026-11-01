@@ -1,0 +1,230 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-gs-matieres",
+  "version": "1.0.0",
+  "nom": "Objets et matières",
+  "description": "Le vivant et le non-vivant, le bois, le métal et le plastique, ce qui flotte et ce qui coule.",
+  "matiere": "monde",
+  "niveaux": [
+    "GS"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de l'école maternelle (cycle 1) et ses attendus de fin de GS (Éduscol).",
+  "chapitres": [
+    {
+      "id": "vivant",
+      "nom": "Vivant ou non vivant"
+    },
+    {
+      "id": "matiere",
+      "nom": "Bois, métal ou plastique",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "flotte",
+      "nom": "Ça flotte ou ça coule ?",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 6,
+    "nouvelles_par_partie": 2,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "vivant",
+      "chapitre": "vivant",
+      "type": "classer",
+      "question": "Vivant ou non vivant ?",
+      "boites": [
+        {
+          "nom": "vivant",
+          "image": "rabbit"
+        },
+        {
+          "nom": "non vivant",
+          "image": "stone"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le chat",
+          "boite": "vivant",
+          "image": "cat"
+        },
+        {
+          "texte": "l'oiseau",
+          "boite": "vivant",
+          "image": "bird"
+        },
+        {
+          "texte": "le poisson",
+          "boite": "vivant",
+          "image": "fish"
+        },
+        {
+          "texte": "la fleur",
+          "boite": "vivant",
+          "image": "flower"
+        },
+        {
+          "texte": "le sapin",
+          "boite": "vivant",
+          "image": "fir"
+        },
+        {
+          "texte": "le bébé",
+          "boite": "vivant",
+          "image": "baby"
+        },
+        {
+          "texte": "la voiture",
+          "boite": "non vivant",
+          "image": "car"
+        },
+        {
+          "texte": "le ballon",
+          "boite": "non vivant",
+          "image": "ball"
+        },
+        {
+          "texte": "le livre",
+          "boite": "non vivant",
+          "image": "book"
+        },
+        {
+          "texte": "la clé",
+          "boite": "non vivant",
+          "image": "key"
+        },
+        {
+          "texte": "la cuillère",
+          "boite": "non vivant",
+          "image": "spoon"
+        },
+        {
+          "texte": "le train",
+          "boite": "non vivant",
+          "image": "train"
+        }
+      ]
+    },
+    {
+      "id": "matiere",
+      "chapitre": "matiere",
+      "type": "classer",
+      "question": "En quoi est-ce fait : bois, métal ou plastique ?",
+      "boites": [
+        {
+          "nom": "bois",
+          "image": "log"
+        },
+        {
+          "nom": "métal",
+          "image": "key"
+        },
+        {
+          "nom": "plastique",
+          "image": "bottle"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "la chaise",
+          "boite": "bois",
+          "image": "chair"
+        },
+        {
+          "texte": "la table",
+          "boite": "bois",
+          "image": "table"
+        },
+        {
+          "texte": "le crayon",
+          "boite": "bois",
+          "image": "pencil"
+        },
+        {
+          "texte": "la cuillère",
+          "boite": "métal",
+          "image": "spoon"
+        },
+        {
+          "texte": "la pièce",
+          "boite": "métal",
+          "image": "coin"
+        },
+        {
+          "texte": "le seau",
+          "boite": "plastique",
+          "image": "bucket"
+        },
+        {
+          "texte": "la brosse à dents",
+          "boite": "plastique",
+          "image": "toothbrush"
+        }
+      ]
+    },
+    {
+      "id": "flotte",
+      "chapitre": "flotte",
+      "type": "classer",
+      "question": "Dans l’eau : ça flotte ou ça coule ?",
+      "boites": [
+        {
+          "nom": "ça flotte",
+          "image": "boat"
+        },
+        {
+          "nom": "ça coule",
+          "image": "stone"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le bouchon",
+          "boite": "ça flotte",
+          "image": "cork"
+        },
+        {
+          "texte": "le canard",
+          "boite": "ça flotte",
+          "image": "duck"
+        },
+        {
+          "texte": "la feuille",
+          "boite": "ça flotte",
+          "image": "leaf"
+        },
+        {
+          "texte": "le ballon",
+          "boite": "ça flotte",
+          "image": "ball"
+        },
+        {
+          "texte": "la clé",
+          "boite": "ça coule",
+          "image": "key"
+        },
+        {
+          "texte": "la pièce",
+          "boite": "ça coule",
+          "image": "coin"
+        },
+        {
+          "texte": "la cuillère",
+          "boite": "ça coule",
+          "image": "spoon"
+        }
+      ]
+    }
+  ]
+}

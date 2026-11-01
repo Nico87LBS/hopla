@@ -1,0 +1,23 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-gs",
+  "version": "1.0.0",
+  "nom": "Maths GS",
+  "description": "Les nombres et les formes de la grande section : compter des quantités, la suite des nombres jusqu'à 30, comparer, composer 5 et 10, formes et positions. Les questions sont lues à voix haute.",
+  "matiere": "maths",
+  "niveaux": [
+    "GS"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "auteur": "Hopla",
+  "sources": "D'après le programme de l'école maternelle (cycle 1) et ses attendus de fin de GS (Éduscol).",
+  "modules": [
+    "maths-gs-quantites",
+    "maths-gs-suite",
+    "maths-gs-lire-nombres",
+    "maths-gs-comparer",
+    "maths-gs-composer",
+    "maths-gs-formes"
+  ]
+}

@@ -36,7 +36,7 @@ test('every generator of the catalogue draws questions it can rebuild', () => {
   const rng = seededRandom(7)
   for (const doc of modules) {
     for (const gen of doc.generateurs || []) {
-      const source = generatorSource(gen, doc.id)
+      const source = generatorSource(gen, doc.id, { firstName: 'Léa' })
       assert.ok(source, `${doc.id} ${gen.id}: opération ${gen.operation}`)
       for (let i = 0; i < 20; i++) {
         const item = source.draw(rng)
@@ -278,9 +278,27 @@ test('the youngest hear a word and pick one drawing among three', () => {
 test('every drawing a card names is in the app', () => {
   const drawings = new URL('../public/drawings/', import.meta.url)
   const have = new Set(readdirSync(drawings).map(n => n.replace('.svg', '')))
+  // Every drawing a card holds, in its labels too; a picture in zones has
+  // its own folder.
+  const imagesOf = value =>
+    Array.isArray(value)
+      ? value.flatMap(imagesOf)
+      : value && typeof value === 'object'
+        ? Object.entries(value).flatMap(([k, v]) =>
+            k === 'image' && typeof v === 'string' ? [v] : imagesOf(v),
+          )
+        : []
   for (const doc of modules) {
     for (const card of doc.fiches || []) {
-      if (card.image) assert.ok(have.has(card.image), `${doc.id} ${card.id}`)
+      if (card.type === 'zones') continue
+      for (const image of imagesOf(card)) {
+        assert.ok(have.has(image), `${doc.id} ${card.id}: ${image}`)
+      }
+    }
+    for (const gen of doc.generateurs || []) {
+      for (const image of gen.objets || []) {
+        assert.ok(have.has(image), `${doc.id} ${gen.id}: ${image}`)
+      }
     }
   }
 })

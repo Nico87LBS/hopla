@@ -1,0 +1,492 @@
+{
+  "format": "hopla-module/1",
+  "id": "langage-gs-mots",
+  "version": "1.0.0",
+  "nom": "Les mots en images",
+  "description": "Le vocabulaire de tous les jours : entendre un mot et toucher son dessin. La maison, l'école, le corps, les émotions, les jouets et les habits.",
+  "matiere": "francais",
+  "niveaux": [
+    "GS"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de l'école maternelle (cycle 1) et ses attendus de fin de GS (Éduscol).",
+  "chapitres": [
+    {
+      "id": "maison",
+      "nom": "La maison"
+    },
+    {
+      "id": "ecole",
+      "nom": "L'école",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "corps",
+      "nom": "Le corps",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "emotions",
+      "nom": "Les émotions",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "jouets",
+      "nom": "Les jouets",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "habits",
+      "nom": "Les habits",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 6,
+    "nouvelles_par_partie": 2,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "mot-la-maison",
+      "chapitre": "maison",
+      "type": "ecoute",
+      "cle": "fr:mot:maison",
+      "question": "la maison",
+      "reponse": "la maison",
+      "image": "house"
+    },
+    {
+      "id": "mot-le-lit",
+      "chapitre": "maison",
+      "type": "ecoute",
+      "cle": "fr:mot:lit",
+      "question": "le lit",
+      "reponse": "le lit",
+      "image": "bed"
+    },
+    {
+      "id": "mot-la-table",
+      "chapitre": "maison",
+      "type": "ecoute",
+      "cle": "fr:mot:table",
+      "question": "la table",
+      "reponse": "la table",
+      "image": "table"
+    },
+    {
+      "id": "mot-la-chaise",
+      "chapitre": "maison",
+      "type": "ecoute",
+      "cle": "fr:mot:chaise",
+      "question": "la chaise",
+      "reponse": "la chaise",
+      "image": "chair"
+    },
+    {
+      "id": "mot-la-porte",
+      "chapitre": "maison",
+      "type": "ecoute",
+      "cle": "fr:mot:porte",
+      "question": "la porte",
+      "reponse": "la porte",
+      "image": "door"
+    },
+    {
+      "id": "mot-la-fenetre",
+      "chapitre": "maison",
+      "type": "ecoute",
+      "cle": "fr:mot:fenetre",
+      "question": "la fenêtre",
+      "reponse": "la fenêtre",
+      "image": "window"
+    },
+    {
+      "id": "mot-la-lampe",
+      "chapitre": "maison",
+      "type": "ecoute",
+      "cle": "fr:mot:lampe",
+      "question": "la lampe",
+      "reponse": "la lampe",
+      "image": "lamp"
+    },
+    {
+      "id": "mot-la-baignoire",
+      "chapitre": "maison",
+      "type": "ecoute",
+      "cle": "fr:mot:baignoire",
+      "question": "la baignoire",
+      "reponse": "la baignoire",
+      "image": "bathtub"
+    },
+    {
+      "id": "mot-le-cartable",
+      "chapitre": "ecole",
+      "type": "ecoute",
+      "cle": "fr:mot:cartable",
+      "question": "le cartable",
+      "reponse": "le cartable",
+      "image": "schoolbag"
+    },
+    {
+      "id": "mot-le-crayon",
+      "chapitre": "ecole",
+      "type": "ecoute",
+      "cle": "fr:mot:crayon",
+      "question": "le crayon",
+      "reponse": "le crayon",
+      "image": "pencil"
+    },
+    {
+      "id": "mot-les-ciseaux",
+      "chapitre": "ecole",
+      "type": "ecoute",
+      "cle": "fr:mot:ciseaux",
+      "question": "les ciseaux",
+      "reponse": "les ciseaux",
+      "image": "scissors"
+    },
+    {
+      "id": "mot-la-colle",
+      "chapitre": "ecole",
+      "type": "ecoute",
+      "cle": "fr:mot:colle",
+      "question": "la colle",
+      "reponse": "la colle",
+      "image": "glue"
+    },
+    {
+      "id": "mot-le-cahier",
+      "chapitre": "ecole",
+      "type": "ecoute",
+      "cle": "fr:mot:cahier",
+      "question": "le cahier",
+      "reponse": "le cahier",
+      "image": "notebook"
+    },
+    {
+      "id": "mot-le-pinceau",
+      "chapitre": "ecole",
+      "type": "ecoute",
+      "cle": "fr:mot:pinceau",
+      "question": "le pinceau",
+      "reponse": "le pinceau",
+      "image": "paintbrush"
+    },
+    {
+      "id": "mot-le-tableau",
+      "chapitre": "ecole",
+      "type": "ecoute",
+      "cle": "fr:mot:tableau",
+      "question": "le tableau",
+      "reponse": "le tableau",
+      "image": "board"
+    },
+    {
+      "id": "mot-le-livre",
+      "chapitre": "ecole",
+      "type": "ecoute",
+      "cle": "fr:mot:livre",
+      "question": "le livre",
+      "reponse": "le livre",
+      "image": "book"
+    },
+    {
+      "id": "mot-la-tete",
+      "chapitre": "corps",
+      "type": "ecoute",
+      "cle": "fr:mot:tete",
+      "question": "la tête",
+      "reponse": "la tête",
+      "image": "head"
+    },
+    {
+      "id": "mot-l-oeil",
+      "chapitre": "corps",
+      "type": "ecoute",
+      "cle": "fr:mot:oeil",
+      "question": "l'œil",
+      "reponse": "l'œil",
+      "image": "eye"
+    },
+    {
+      "id": "mot-le-nez",
+      "chapitre": "corps",
+      "type": "ecoute",
+      "cle": "fr:mot:nez",
+      "question": "le nez",
+      "reponse": "le nez",
+      "image": "nose"
+    },
+    {
+      "id": "mot-la-bouche",
+      "chapitre": "corps",
+      "type": "ecoute",
+      "cle": "fr:mot:bouche",
+      "question": "la bouche",
+      "reponse": "la bouche",
+      "image": "mouth"
+    },
+    {
+      "id": "mot-l-oreille",
+      "chapitre": "corps",
+      "type": "ecoute",
+      "cle": "fr:mot:oreille",
+      "question": "l'oreille",
+      "reponse": "l'oreille",
+      "image": "ear"
+    },
+    {
+      "id": "mot-la-main",
+      "chapitre": "corps",
+      "type": "ecoute",
+      "cle": "fr:mot:main",
+      "question": "la main",
+      "reponse": "la main",
+      "image": "hand"
+    },
+    {
+      "id": "mot-le-pied",
+      "chapitre": "corps",
+      "type": "ecoute",
+      "cle": "fr:mot:pied",
+      "question": "le pied",
+      "reponse": "le pied",
+      "image": "foot"
+    },
+    {
+      "id": "mot-le-ballon",
+      "chapitre": "jouets",
+      "type": "ecoute",
+      "cle": "fr:mot:ballon",
+      "question": "le ballon",
+      "reponse": "le ballon",
+      "image": "ball"
+    },
+    {
+      "id": "mot-la-poupee",
+      "chapitre": "jouets",
+      "type": "ecoute",
+      "cle": "fr:mot:poupee",
+      "question": "la poupée",
+      "reponse": "la poupée",
+      "image": "doll"
+    },
+    {
+      "id": "mot-le-nounours",
+      "chapitre": "jouets",
+      "type": "ecoute",
+      "cle": "fr:mot:nounours",
+      "question": "le nounours",
+      "reponse": "le nounours",
+      "image": "teddy"
+    },
+    {
+      "id": "mot-la-voiture",
+      "chapitre": "jouets",
+      "type": "ecoute",
+      "cle": "fr:mot:voiture",
+      "question": "la voiture",
+      "reponse": "la voiture",
+      "image": "car"
+    },
+    {
+      "id": "mot-le-cerf-volant",
+      "chapitre": "jouets",
+      "type": "ecoute",
+      "cle": "fr:mot:cerf-volant",
+      "question": "le cerf-volant",
+      "reponse": "le cerf-volant",
+      "image": "kite"
+    },
+    {
+      "id": "mot-le-train",
+      "chapitre": "jouets",
+      "type": "ecoute",
+      "cle": "fr:mot:train",
+      "question": "le train",
+      "reponse": "le train",
+      "image": "train"
+    },
+    {
+      "id": "mot-le-velo",
+      "chapitre": "jouets",
+      "type": "ecoute",
+      "cle": "fr:mot:velo",
+      "question": "le vélo",
+      "reponse": "le vélo",
+      "image": "bike"
+    },
+    {
+      "id": "mot-le-bateau",
+      "chapitre": "jouets",
+      "type": "ecoute",
+      "cle": "fr:mot:bateau",
+      "question": "le bateau",
+      "reponse": "le bateau",
+      "image": "boat"
+    },
+    {
+      "id": "mot-le-chapeau",
+      "chapitre": "habits",
+      "type": "ecoute",
+      "cle": "fr:mot:chapeau",
+      "question": "le chapeau",
+      "reponse": "le chapeau",
+      "image": "hat"
+    },
+    {
+      "id": "mot-les-chaussures",
+      "chapitre": "habits",
+      "type": "ecoute",
+      "cle": "fr:mot:chaussures",
+      "question": "les chaussures",
+      "reponse": "les chaussures",
+      "image": "shoes"
+    },
+    {
+      "id": "mot-les-chaussettes",
+      "chapitre": "habits",
+      "type": "ecoute",
+      "cle": "fr:mot:chaussettes",
+      "question": "les chaussettes",
+      "reponse": "les chaussettes",
+      "image": "socks"
+    },
+    {
+      "id": "mot-le-manteau",
+      "chapitre": "habits",
+      "type": "ecoute",
+      "cle": "fr:mot:manteau",
+      "question": "le manteau",
+      "reponse": "le manteau",
+      "image": "coat"
+    },
+    {
+      "id": "mot-le-tee-shirt",
+      "chapitre": "habits",
+      "type": "ecoute",
+      "cle": "fr:mot:tee-shirt",
+      "question": "le tee-shirt",
+      "reponse": "le tee-shirt",
+      "image": "t-shirt"
+    },
+    {
+      "id": "mot-la-robe",
+      "chapitre": "habits",
+      "type": "ecoute",
+      "cle": "fr:mot:robe",
+      "question": "la robe",
+      "reponse": "la robe",
+      "image": "dress"
+    },
+    {
+      "id": "mot-l-echarpe",
+      "chapitre": "habits",
+      "type": "ecoute",
+      "cle": "fr:mot:echarpe",
+      "question": "l'écharpe",
+      "reponse": "l'écharpe",
+      "image": "scarf"
+    },
+    {
+      "id": "emotion-content",
+      "chapitre": "emotions",
+      "type": "ecoute",
+      "cle": "fr:emotion:content",
+      "question": "Le lapin… il est content.",
+      "reponse": "content",
+      "image": "happy"
+    },
+    {
+      "id": "emotion-triste",
+      "chapitre": "emotions",
+      "type": "ecoute",
+      "cle": "fr:emotion:triste",
+      "question": "Le lapin… il est triste.",
+      "reponse": "triste",
+      "image": "sad"
+    },
+    {
+      "id": "emotion-en-colere",
+      "chapitre": "emotions",
+      "type": "ecoute",
+      "cle": "fr:emotion:en-colere",
+      "question": "Le lapin… il est en colère.",
+      "reponse": "en colère",
+      "image": "angry"
+    },
+    {
+      "id": "emotion-a-peur",
+      "chapitre": "emotions",
+      "type": "ecoute",
+      "cle": "fr:emotion:a-peur",
+      "question": "Le lapin… il a peur.",
+      "reponse": "a peur",
+      "image": "scared"
+    },
+    {
+      "id": "emotion-surpris",
+      "chapitre": "emotions",
+      "type": "ecoute",
+      "cle": "fr:emotion:surpris",
+      "question": "Le lapin… il est surpris.",
+      "reponse": "surpris",
+      "image": "surprised"
+    },
+    {
+      "id": "maison-ecole",
+      "chapitre": "ecole",
+      "type": "classer",
+      "question": "On le trouve plutôt à la maison ou à l'école ?",
+      "boites": [
+        {
+          "nom": "à la maison",
+          "image": "house"
+        },
+        {
+          "nom": "à l'école",
+          "image": "board"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le lit",
+          "boite": "à la maison",
+          "image": "bed"
+        },
+        {
+          "texte": "la baignoire",
+          "boite": "à la maison",
+          "image": "bathtub"
+        },
+        {
+          "texte": "la lampe",
+          "boite": "à la maison",
+          "image": "lamp"
+        },
+        {
+          "texte": "le cartable",
+          "boite": "à l'école",
+          "image": "schoolbag"
+        },
+        {
+          "texte": "le cahier",
+          "boite": "à l'école",
+          "image": "notebook"
+        },
+        {
+          "texte": "la colle",
+          "boite": "à l'école",
+          "image": "glue"
+        }
+      ]
+    }
+  ]
+}
