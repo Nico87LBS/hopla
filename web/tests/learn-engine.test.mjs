@@ -539,3 +539,12 @@ test('a word to read is answered with drawings, its instruction apart', () => {
     .find(item => item.mode === 'order')
   assert.ok(order.image, 'the drawing of the word to put back together')
 })
+
+test('a word heard keeps the look-alike words given as its traps', () => {
+  const items = compile(catalogue['lire-sans-dessin']).chapters.flatMap(ch =>
+    ch.sources.flatMap(s => s.list() || []),
+  )
+  const lait = items.find(item => item.listen === 'lait')
+  assert.deepEqual([...lait.choices].sort(), ['lait', 'lit', 'loup', 'lune'])
+  assert.equal(lait.trapPool, undefined)
+})

@@ -141,6 +141,8 @@ La `question` est dite à voix haute par l'appareil, dans `langue_apprise`. La
 | `dictee` | entend le mot et l'écrit (`tolerance` par défaut : `une_faute`) |
 | `chiffres` | entend un message et tape ses chiffres (niveaux, codes à collationner) |
 
+`pieges` : mauvaises réponses proposées, toujours les mêmes, par exemple des mots qui se ressemblent à l'oreille (`lit`, `lait`, `loup`). Absent : tirées parmi les réponses des autres fiches du chapitre.
+
 `image` : nom d'un dessin du dossier
 [`web/public/drawings/`](../web/public/drawings/), sans `.svg` (`cat`,
 `colour-red`, `number-3`…). Avec des dessins, trois choix seulement sont
