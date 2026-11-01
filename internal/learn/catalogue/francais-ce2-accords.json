@@ -1,0 +1,888 @@
+{
+  "format": "hopla-module/1",
+  "id": "francais-ce2-accords",
+  "version": "1.0.0",
+  "nom": "Les accords",
+  "description": "Le masculin et le féminin, le pluriel des noms, l'accord dans le groupe nominal et l'accord du verbe avec son sujet ; puis écrire soi-même le mot accordé.",
+  "matiere": "francais",
+  "niveaux": [
+    "CE2"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de français du cycle 2 (2024) et les repères annuels de progression du CE2 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "genre",
+      "nom": "Masculin et féminin"
+    },
+    {
+      "id": "pluriel",
+      "nom": "Singulier et pluriel",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "groupe-nominal",
+      "nom": "Le groupe nominal",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "sujet-verbe",
+      "nom": "Le verbe et son sujet",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "tape",
+      "nom": "À toi d’écrire",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "fem-1",
+      "chapitre": "genre",
+      "type": "choix",
+      "question": "Au féminin, « un chat » devient…",
+      "reponse": "une chatte",
+      "pieges": [
+        "une chate",
+        "une chatesse"
+      ],
+      "consigne": "Mets le nom au féminin."
+    },
+    {
+      "id": "fem-2",
+      "chapitre": "genre",
+      "type": "choix",
+      "question": "Au féminin, « un lion » devient…",
+      "reponse": "une lionne",
+      "pieges": [
+        "une lione",
+        "une lionesse"
+      ],
+      "consigne": "Mets le nom au féminin."
+    },
+    {
+      "id": "fem-3",
+      "chapitre": "genre",
+      "type": "choix",
+      "question": "Au féminin, « un acteur » devient…",
+      "reponse": "une actrice",
+      "pieges": [
+        "une acteure",
+        "une acteuse"
+      ],
+      "consigne": "Mets le nom au féminin."
+    },
+    {
+      "id": "fem-4",
+      "chapitre": "genre",
+      "type": "choix",
+      "question": "Au féminin, « un boulanger » devient…",
+      "reponse": "une boulangère",
+      "pieges": [
+        "une boulangere",
+        "une boulangeuse"
+      ],
+      "consigne": "Mets le nom au féminin."
+    },
+    {
+      "id": "fem-5",
+      "chapitre": "genre",
+      "type": "choix",
+      "question": "Au féminin, « un chanteur » devient…",
+      "reponse": "une chanteuse",
+      "pieges": [
+        "une chantrice",
+        "une chanteure"
+      ],
+      "consigne": "Mets le nom au féminin."
+    },
+    {
+      "id": "fem-6",
+      "chapitre": "genre",
+      "type": "choix",
+      "question": "Au féminin, « un ami » devient…",
+      "reponse": "une amie",
+      "pieges": [
+        "une amis",
+        "une amite"
+      ],
+      "consigne": "Mets le nom au féminin."
+    },
+    {
+      "id": "fem-7",
+      "chapitre": "genre",
+      "type": "choix",
+      "question": "Au féminin, « un prince » devient…",
+      "reponse": "une princesse",
+      "pieges": [
+        "une princette",
+        "une princienne"
+      ],
+      "consigne": "Mets le nom au féminin."
+    },
+    {
+      "id": "fem-8",
+      "chapitre": "genre",
+      "type": "choix",
+      "question": "Au féminin, « un loup » devient…",
+      "reponse": "une louve",
+      "pieges": [
+        "une loupe",
+        "une louette"
+      ],
+      "consigne": "Mets le nom au féminin."
+    },
+    {
+      "id": "fem-9",
+      "chapitre": "genre",
+      "type": "choix",
+      "question": "Au féminin, « un coq » devient…",
+      "reponse": "une poule",
+      "pieges": [
+        "une coque",
+        "une coquine"
+      ],
+      "consigne": "Mets le nom au féminin."
+    },
+    {
+      "id": "fem-10",
+      "chapitre": "genre",
+      "type": "choix",
+      "question": "Au féminin, « un cheval » devient…",
+      "reponse": "une jument",
+      "pieges": [
+        "une chevale",
+        "une chevalle"
+      ],
+      "consigne": "Mets le nom au féminin."
+    },
+    {
+      "id": "adjf-1",
+      "chapitre": "genre",
+      "type": "choix",
+      "question": "Une fille ___ (« grand » au féminin)",
+      "reponse": "grande",
+      "pieges": [
+        "grandde",
+        "grands"
+      ],
+      "consigne": "Écris l’adjectif au féminin."
+    },
+    {
+      "id": "adjf-2",
+      "chapitre": "genre",
+      "type": "choix",
+      "question": "Une fille ___ (« gentil » au féminin)",
+      "reponse": "gentille",
+      "pieges": [
+        "gentile",
+        "gentils"
+      ],
+      "consigne": "Écris l’adjectif au féminin."
+    },
+    {
+      "id": "adjf-3",
+      "chapitre": "genre",
+      "type": "choix",
+      "question": "Une fille ___ (« beau » au féminin)",
+      "reponse": "belle",
+      "pieges": [
+        "beaue",
+        "beaux"
+      ],
+      "consigne": "Écris l’adjectif au féminin."
+    },
+    {
+      "id": "adjf-4",
+      "chapitre": "genre",
+      "type": "choix",
+      "question": "Une fille ___ (« blanc » au féminin)",
+      "reponse": "blanche",
+      "pieges": [
+        "blance",
+        "blancs"
+      ],
+      "consigne": "Écris l’adjectif au féminin."
+    },
+    {
+      "id": "adjf-5",
+      "chapitre": "genre",
+      "type": "choix",
+      "question": "Une fille ___ (« heureux » au féminin)",
+      "reponse": "heureuse",
+      "pieges": [
+        "heureuxe",
+        "heureuze"
+      ],
+      "consigne": "Écris l’adjectif au féminin."
+    },
+    {
+      "id": "adjf-6",
+      "chapitre": "genre",
+      "type": "choix",
+      "question": "Une fille ___ (« vieux » au féminin)",
+      "reponse": "vieille",
+      "pieges": [
+        "vieuxe",
+        "vieuse"
+      ],
+      "consigne": "Écris l’adjectif au féminin."
+    },
+    {
+      "id": "plu-1",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "Au pluriel, « un bateau » devient…",
+      "reponse": "des bateaux",
+      "pieges": [
+        "des bateaus",
+        "des bateau"
+      ],
+      "consigne": "Mets le nom au pluriel."
+    },
+    {
+      "id": "plu-2",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "Au pluriel, « un cheval » devient…",
+      "reponse": "des chevaux",
+      "pieges": [
+        "des chevals",
+        "des chevaus"
+      ],
+      "consigne": "Mets le nom au pluriel."
+    },
+    {
+      "id": "plu-3",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "Au pluriel, « un jeu » devient…",
+      "reponse": "des jeux",
+      "pieges": [
+        "des jeus",
+        "des jeu"
+      ],
+      "consigne": "Mets le nom au pluriel."
+    },
+    {
+      "id": "plu-4",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "Au pluriel, « un nez » devient…",
+      "reponse": "des nez",
+      "pieges": [
+        "des nezs",
+        "des nes"
+      ],
+      "consigne": "Mets le nom au pluriel."
+    },
+    {
+      "id": "plu-5",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "Au pluriel, « un bijou » devient…",
+      "reponse": "des bijoux",
+      "pieges": [
+        "des bijous",
+        "des bijou"
+      ],
+      "consigne": "Mets le nom au pluriel."
+    },
+    {
+      "id": "plu-6",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "Au pluriel, « un journal » devient…",
+      "reponse": "des journaux",
+      "pieges": [
+        "des journals",
+        "des journaus"
+      ],
+      "consigne": "Mets le nom au pluriel."
+    },
+    {
+      "id": "plu-7",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "Au pluriel, « une souris » devient…",
+      "reponse": "des souris",
+      "pieges": [
+        "des sourix",
+        "des sourises"
+      ],
+      "consigne": "Mets le nom au pluriel."
+    },
+    {
+      "id": "plu-8",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "Au pluriel, « un oiseau » devient…",
+      "reponse": "des oiseaux",
+      "pieges": [
+        "des oiseaus",
+        "des oiseau"
+      ],
+      "consigne": "Mets le nom au pluriel."
+    },
+    {
+      "id": "plu-9",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "Au pluriel, « un genou » devient…",
+      "reponse": "des genoux",
+      "pieges": [
+        "des genous",
+        "des genou"
+      ],
+      "consigne": "Mets le nom au pluriel."
+    },
+    {
+      "id": "plu-10",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "Au pluriel, « un clou » devient…",
+      "reponse": "des clous",
+      "pieges": [
+        "des cloux",
+        "des clou"
+      ],
+      "consigne": "Mets le nom au pluriel."
+    },
+    {
+      "id": "plu-11",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "Au pluriel, « une fleur » devient…",
+      "reponse": "des fleurs",
+      "pieges": [
+        "des fleur",
+        "des fleurx"
+      ],
+      "consigne": "Mets le nom au pluriel."
+    },
+    {
+      "id": "plu-12",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "Au pluriel, « un cheveu » devient…",
+      "reponse": "des cheveux",
+      "pieges": [
+        "des cheveus",
+        "des cheveu"
+      ],
+      "consigne": "Mets le nom au pluriel."
+    },
+    {
+      "id": "plu-13",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "Au pluriel, « un animal » devient…",
+      "reponse": "des animaux",
+      "pieges": [
+        "des animals",
+        "des animaus"
+      ],
+      "consigne": "Mets le nom au pluriel."
+    },
+    {
+      "id": "plu-14",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "Au pluriel, « une noix » devient…",
+      "reponse": "des noix",
+      "pieges": [
+        "des noixs",
+        "des noi"
+      ],
+      "consigne": "Mets le nom au pluriel."
+    },
+    {
+      "id": "regle-s",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "La plupart des noms prennent au pluriel…",
+      "reponse": "un s",
+      "pieges": [
+        "un x",
+        "un t",
+        "rien"
+      ],
+      "consigne": "La plupart des noms prennent au pluriel…"
+    },
+    {
+      "id": "regle-al",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "Les noms en -al font souvent leur pluriel en…",
+      "reponse": "-aux",
+      "pieges": [
+        "-als",
+        "-ales",
+        "-alx"
+      ],
+      "consigne": "Les noms en -al font souvent leur pluriel en…"
+    },
+    {
+      "id": "regle-eau",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "Les noms en -eau prennent au pluriel…",
+      "reponse": "un x",
+      "pieges": [
+        "un s",
+        "rien",
+        "un e"
+      ],
+      "consigne": "Les noms en -eau prennent au pluriel…"
+    },
+    {
+      "id": "gn-1",
+      "chapitre": "groupe-nominal",
+      "type": "choix",
+      "question": "des ___ fleurs (joli)",
+      "reponse": "jolies",
+      "pieges": [
+        "joli",
+        "jolis",
+        "jolie"
+      ],
+      "consigne": "Accorde l’adjectif avec le nom.",
+      "explication": "L’adjectif prend le genre et le nombre du nom."
+    },
+    {
+      "id": "gn-2",
+      "chapitre": "groupe-nominal",
+      "type": "choix",
+      "question": "une robe ___ (vert)",
+      "reponse": "verte",
+      "pieges": [
+        "vert",
+        "verts",
+        "vertes"
+      ],
+      "consigne": "Accorde l’adjectif avec le nom.",
+      "explication": "L’adjectif prend le genre et le nombre du nom."
+    },
+    {
+      "id": "gn-3",
+      "chapitre": "groupe-nominal",
+      "type": "choix",
+      "question": "les ___ chiens (petit)",
+      "reponse": "petits",
+      "pieges": [
+        "petit",
+        "petite",
+        "petites"
+      ],
+      "consigne": "Accorde l’adjectif avec le nom.",
+      "explication": "L’adjectif prend le genre et le nombre du nom."
+    },
+    {
+      "id": "gn-4",
+      "chapitre": "groupe-nominal",
+      "type": "choix",
+      "question": "des chemises ___ (blanc)",
+      "reponse": "blanches",
+      "pieges": [
+        "blancs",
+        "blanche",
+        "blanc"
+      ],
+      "consigne": "Accorde l’adjectif avec le nom.",
+      "explication": "L’adjectif prend le genre et le nombre du nom."
+    },
+    {
+      "id": "gn-5",
+      "chapitre": "groupe-nominal",
+      "type": "choix",
+      "question": "un ___ garçon (grand)",
+      "reponse": "grand",
+      "pieges": [
+        "grande",
+        "grands",
+        "grandes"
+      ],
+      "consigne": "Accorde l’adjectif avec le nom.",
+      "explication": "L’adjectif prend le genre et le nombre du nom."
+    },
+    {
+      "id": "gn-6",
+      "chapitre": "groupe-nominal",
+      "type": "choix",
+      "question": "mes ___ amies (meilleur)",
+      "reponse": "meilleures",
+      "pieges": [
+        "meilleur",
+        "meilleurs",
+        "meilleure"
+      ],
+      "consigne": "Accorde l’adjectif avec le nom.",
+      "explication": "L’adjectif prend le genre et le nombre du nom."
+    },
+    {
+      "id": "gn-7",
+      "chapitre": "groupe-nominal",
+      "type": "choix",
+      "question": "ces ___ maisons (vieux)",
+      "reponse": "vieilles",
+      "pieges": [
+        "vieux",
+        "vieille",
+        "vieilles s"
+      ],
+      "consigne": "Accorde l’adjectif avec le nom.",
+      "explication": "L’adjectif prend le genre et le nombre du nom."
+    },
+    {
+      "id": "gn-8",
+      "chapitre": "groupe-nominal",
+      "type": "choix",
+      "question": "des chats ___ (noir)",
+      "reponse": "noirs",
+      "pieges": [
+        "noir",
+        "noire",
+        "noires"
+      ],
+      "consigne": "Accorde l’adjectif avec le nom.",
+      "explication": "L’adjectif prend le genre et le nombre du nom."
+    },
+    {
+      "id": "gn-9",
+      "chapitre": "groupe-nominal",
+      "type": "choix",
+      "question": "une ___ idée (bon)",
+      "reponse": "bonne",
+      "pieges": [
+        "bon",
+        "bons",
+        "bonnes"
+      ],
+      "consigne": "Accorde l’adjectif avec le nom.",
+      "explication": "L’adjectif prend le genre et le nombre du nom."
+    },
+    {
+      "id": "gn-10",
+      "chapitre": "groupe-nominal",
+      "type": "choix",
+      "question": "des ballons ___ (rouge)",
+      "reponse": "rouges",
+      "pieges": [
+        "rouge",
+        "rougent",
+        "rougex"
+      ],
+      "consigne": "Accorde l’adjectif avec le nom.",
+      "explication": "L’adjectif prend le genre et le nombre du nom."
+    },
+    {
+      "id": "gn-det",
+      "chapitre": "groupe-nominal",
+      "type": "choix",
+      "question": "Dans « les belles maisons », qui donne le genre et le nombre ?",
+      "reponse": "le nom « maisons »",
+      "pieges": [
+        "l’adjectif « belles »",
+        "le déterminant « les »",
+        "personne"
+      ],
+      "consigne": "Dans « les belles maisons », qui donne le genre et le nombre ?"
+    },
+    {
+      "id": "sv-1",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "Les oiseaux ___ dans le ciel. (voler)",
+      "reponse": "volent",
+      "pieges": [
+        "vole",
+        "voles",
+        "volons"
+      ],
+      "consigne": "Accorde le verbe avec son sujet.",
+      "explication": "Le verbe s’accorde avec son sujet."
+    },
+    {
+      "id": "sv-2",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "Mon frère ___ du piano. (jouer)",
+      "reponse": "joue",
+      "pieges": [
+        "jouent",
+        "joues",
+        "jouez"
+      ],
+      "consigne": "Accorde le verbe avec son sujet.",
+      "explication": "Le verbe s’accorde avec son sujet."
+    },
+    {
+      "id": "sv-3",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "Tu ___ vite. (courir)",
+      "reponse": "cours",
+      "pieges": [
+        "court",
+        "courent",
+        "courez"
+      ],
+      "consigne": "Accorde le verbe avec son sujet.",
+      "explication": "Le verbe s’accorde avec son sujet."
+    },
+    {
+      "id": "sv-4",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "Les élèves ___ en silence. (travailler)",
+      "reponse": "travaillent",
+      "pieges": [
+        "travaille",
+        "travailles",
+        "travaillez"
+      ],
+      "consigne": "Accorde le verbe avec son sujet.",
+      "explication": "Le verbe s’accorde avec son sujet."
+    },
+    {
+      "id": "sv-5",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "Léa et Tom ___ au parc. (aller)",
+      "reponse": "vont",
+      "pieges": [
+        "va",
+        "vas",
+        "allez"
+      ],
+      "consigne": "Accorde le verbe avec son sujet.",
+      "explication": "Le verbe s’accorde avec son sujet."
+    },
+    {
+      "id": "sv-6",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "Le vent ___ fort. (souffler)",
+      "reponse": "souffle",
+      "pieges": [
+        "soufflent",
+        "souffles",
+        "soufflons"
+      ],
+      "consigne": "Accorde le verbe avec son sujet.",
+      "explication": "Le verbe s’accorde avec son sujet."
+    },
+    {
+      "id": "sv-7",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "Nous ___ une cabane. (construire)",
+      "reponse": "construisons",
+      "pieges": [
+        "construisent",
+        "construit",
+        "construisez"
+      ],
+      "consigne": "Accorde le verbe avec son sujet.",
+      "explication": "Le verbe s’accorde avec son sujet."
+    },
+    {
+      "id": "sv-8",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "Mes parents ___ le journal. (lire)",
+      "reponse": "lisent",
+      "pieges": [
+        "lit",
+        "lis",
+        "lisez"
+      ],
+      "consigne": "Accorde le verbe avec son sujet.",
+      "explication": "Le verbe s’accorde avec son sujet."
+    },
+    {
+      "id": "sv-9",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "Les fleurs du jardin ___ bon. (sentir)",
+      "reponse": "sentent",
+      "pieges": [
+        "sent",
+        "sens",
+        "sentons"
+      ],
+      "consigne": "Accorde le verbe avec son sujet.",
+      "explication": "Le verbe s’accorde avec son sujet."
+    },
+    {
+      "id": "sv-10",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "Vous ___ très gentils. (être)",
+      "reponse": "êtes",
+      "pieges": [
+        "est",
+        "sont",
+        "es"
+      ],
+      "consigne": "Accorde le verbe avec son sujet.",
+      "explication": "Le verbe s’accorde avec son sujet."
+    },
+    {
+      "id": "tape-1",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "un cheval, des ___",
+      "reponse": "chevaux",
+      "tolerance": "exacte",
+      "consigne": "Écris le mot bien accordé."
+    },
+    {
+      "id": "tape-2",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "un bateau, des ___",
+      "reponse": "bateaux",
+      "tolerance": "exacte",
+      "consigne": "Écris le mot bien accordé."
+    },
+    {
+      "id": "tape-3",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "un jeu, des ___",
+      "reponse": "jeux",
+      "tolerance": "exacte",
+      "consigne": "Écris le mot bien accordé."
+    },
+    {
+      "id": "tape-4",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "un journal, des ___",
+      "reponse": "journaux",
+      "tolerance": "exacte",
+      "consigne": "Écris le mot bien accordé."
+    },
+    {
+      "id": "tape-5",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "une souris, des ___",
+      "reponse": "souris",
+      "tolerance": "exacte",
+      "consigne": "Écris le mot bien accordé."
+    },
+    {
+      "id": "tape-6",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "un bijou, des ___",
+      "reponse": "bijoux",
+      "tolerance": "exacte",
+      "consigne": "Écris le mot bien accordé."
+    },
+    {
+      "id": "tape-7",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "un lion, une ___",
+      "reponse": "lionne",
+      "tolerance": "exacte",
+      "consigne": "Écris le mot bien accordé."
+    },
+    {
+      "id": "tape-8",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "un chanteur, une ___",
+      "reponse": "chanteuse",
+      "tolerance": "exacte",
+      "consigne": "Écris le mot bien accordé."
+    },
+    {
+      "id": "tape-9",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "un ami, une ___",
+      "reponse": "amie",
+      "tolerance": "exacte",
+      "consigne": "Écris le mot bien accordé."
+    },
+    {
+      "id": "tape-10",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "des fleurs ___ (joli)",
+      "reponse": "jolies",
+      "tolerance": "exacte",
+      "consigne": "Écris le mot bien accordé."
+    },
+    {
+      "id": "tape-11",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "une robe ___ (vert)",
+      "reponse": "verte",
+      "tolerance": "exacte",
+      "consigne": "Écris le mot bien accordé."
+    },
+    {
+      "id": "tape-12",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "les chiens ___ (noir)",
+      "reponse": "noirs",
+      "tolerance": "exacte",
+      "consigne": "Écris le mot bien accordé."
+    },
+    {
+      "id": "tape-13",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "Les oiseaux ___ . (chanter, présent)",
+      "reponse": "chantent",
+      "tolerance": "exacte",
+      "consigne": "Écris le mot bien accordé."
+    },
+    {
+      "id": "tape-14",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "Nous ___ . (jouer, présent)",
+      "reponse": "jouons",
+      "tolerance": "exacte",
+      "consigne": "Écris le mot bien accordé."
+    },
+    {
+      "id": "tape-15",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "Mes sœurs ___ . (danser, présent)",
+      "reponse": "dansent",
+      "tolerance": "exacte",
+      "consigne": "Écris le mot bien accordé."
+    },
+    {
+      "id": "tape-16",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "des chemises ___ (blanc)",
+      "reponse": "blanches",
+      "tolerance": "exacte",
+      "consigne": "Écris le mot bien accordé."
+    }
+  ]
+}

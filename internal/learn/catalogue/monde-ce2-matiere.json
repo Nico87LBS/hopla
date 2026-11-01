@@ -1,0 +1,653 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-ce2-matiere",
+  "version": "1.0.0",
+  "nom": "La matière",
+  "description": "Solide, liquide ou gaz, les changements d'état de l'eau, le cycle de l'eau, les mélanges et l'air.",
+  "matiere": "monde",
+  "niveaux": [
+    "CE2"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de Questionner le monde du cycle 2 et les repères de progression du CE2 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "etats",
+      "nom": "Solide, liquide ou gaz"
+    },
+    {
+      "id": "changements",
+      "nom": "L’eau change d’état",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "cycle",
+      "nom": "Le cycle de l’eau",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "melanges",
+      "nom": "Les mélanges",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "air",
+      "nom": "L’air existe",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "etats-1",
+      "chapitre": "etats",
+      "type": "classer",
+      "question": "Solide ou liquide ?",
+      "consigne": "Solide ou liquide ?",
+      "boites": [
+        {
+          "nom": "Solide"
+        },
+        {
+          "nom": "Liquide"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le glaçon",
+          "boite": "Solide",
+          "image": "ice-cube"
+        },
+        {
+          "texte": "le lait",
+          "boite": "Liquide",
+          "image": "milk"
+        },
+        {
+          "texte": "le caillou",
+          "boite": "Solide",
+          "image": "stone"
+        },
+        {
+          "texte": "l’huile",
+          "boite": "Liquide"
+        },
+        {
+          "texte": "le bois",
+          "boite": "Solide"
+        },
+        {
+          "texte": "le jus de fruit",
+          "boite": "Liquide",
+          "image": "juice"
+        },
+        {
+          "texte": "la clé",
+          "boite": "Solide",
+          "image": "key"
+        },
+        {
+          "texte": "l’eau du robinet",
+          "boite": "Liquide"
+        }
+      ]
+    },
+    {
+      "id": "etats-2",
+      "chapitre": "etats",
+      "type": "classer",
+      "question": "Solide, liquide ou gaz ?",
+      "consigne": "Solide, liquide ou gaz ?",
+      "boites": [
+        {
+          "nom": "Solide"
+        },
+        {
+          "nom": "Liquide"
+        },
+        {
+          "nom": "Gaz"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "l’air",
+          "boite": "Gaz"
+        },
+        {
+          "texte": "la vapeur d’eau",
+          "boite": "Gaz"
+        },
+        {
+          "texte": "le sable",
+          "boite": "Solide"
+        },
+        {
+          "texte": "la farine",
+          "boite": "Solide"
+        },
+        {
+          "texte": "le sirop",
+          "boite": "Liquide"
+        },
+        {
+          "texte": "la pierre",
+          "boite": "Solide"
+        },
+        {
+          "texte": "l’eau de la mer",
+          "boite": "Liquide"
+        },
+        {
+          "texte": "la fumée",
+          "boite": "Gaz"
+        }
+      ]
+    },
+    {
+      "id": "sable",
+      "chapitre": "etats",
+      "type": "choix",
+      "question": "Le sable coule entre les doigts. Pourtant, chaque grain est…",
+      "reponse": "solide",
+      "pieges": [
+        "liquide",
+        "un gaz"
+      ],
+      "consigne": "Le sable coule entre les doigts. Pourtant, chaque grain est…"
+    },
+    {
+      "id": "liquide-forme",
+      "chapitre": "etats",
+      "type": "choix",
+      "question": "Un liquide versé dans un verre…",
+      "reponse": "prend la forme du verre",
+      "pieges": [
+        "garde sa forme",
+        "disparaît",
+        "devient dur"
+      ],
+      "consigne": "Un liquide versé dans un verre…"
+    },
+    {
+      "id": "surface-plate",
+      "chapitre": "etats",
+      "type": "choix",
+      "question": "La surface d’un liquide au repos est…",
+      "reponse": "plate et horizontale",
+      "pieges": [
+        "penchée",
+        "en bosse",
+        "en escalier"
+      ],
+      "consigne": "La surface d’un liquide au repos est…"
+    },
+    {
+      "id": "solide-forme",
+      "chapitre": "etats",
+      "type": "choix",
+      "question": "Un solide…",
+      "reponse": "garde sa forme",
+      "pieges": [
+        "prend la forme du récipient",
+        "coule",
+        "s’envole"
+      ],
+      "consigne": "Un solide…"
+    },
+    {
+      "id": "eau-trois",
+      "chapitre": "etats",
+      "type": "choix",
+      "question": "L’eau peut être solide, liquide ou gazeuse. Solide, c’est…",
+      "reponse": "la glace",
+      "pieges": [
+        "la vapeur",
+        "la pluie",
+        "la mer"
+      ],
+      "consigne": "L’eau peut être solide, liquide ou gazeuse. Solide, c’est…",
+      "image": "ice-cube"
+    },
+    {
+      "id": "gele",
+      "chapitre": "changements",
+      "type": "choix",
+      "question": "À quelle température l’eau gèle-t-elle ?",
+      "reponse": "0 °C",
+      "pieges": [
+        "100 °C",
+        "20 °C",
+        "50 °C"
+      ],
+      "consigne": "À quelle température l’eau gèle-t-elle ?"
+    },
+    {
+      "id": "bout",
+      "chapitre": "changements",
+      "type": "choix",
+      "question": "À quelle température l’eau bout-elle ?",
+      "reponse": "100 °C",
+      "pieges": [
+        "0 °C",
+        "37 °C",
+        "20 °C"
+      ],
+      "consigne": "À quelle température l’eau bout-elle ?",
+      "image": "kettle"
+    },
+    {
+      "id": "fondre",
+      "chapitre": "changements",
+      "type": "choix",
+      "question": "Un glaçon posé au soleil…",
+      "reponse": "fond et devient de l’eau",
+      "pieges": [
+        "grossit",
+        "devient de la vapeur tout de suite",
+        "reste pareil"
+      ],
+      "consigne": "Un glaçon posé au soleil…",
+      "image": "ice-cube"
+    },
+    {
+      "id": "evaporation",
+      "chapitre": "changements",
+      "type": "choix",
+      "question": "Le linge mouillé sèche au soleil : son eau…",
+      "reponse": "s’évapore",
+      "pieges": [
+        "gèle",
+        "fond",
+        "se solidifie"
+      ],
+      "consigne": "Le linge mouillé sèche au soleil : son eau…"
+    },
+    {
+      "id": "condensation",
+      "chapitre": "changements",
+      "type": "choix",
+      "question": "De la buée se forme sur une vitre froide : la vapeur d’eau…",
+      "reponse": "redevient liquide",
+      "pieges": [
+        "devient solide",
+        "disparaît pour toujours",
+        "brûle"
+      ],
+      "consigne": "De la buée se forme sur une vitre froide : la vapeur d’eau…"
+    },
+    {
+      "id": "mots-changements",
+      "chapitre": "changements",
+      "type": "associer",
+      "question": "Relie chaque mot à ce qui se passe.",
+      "consigne": "Relie chaque mot à ce qui se passe.",
+      "paires": [
+        [
+          "la fusion",
+          "le solide devient liquide"
+        ],
+        [
+          "la solidification",
+          "le liquide devient solide"
+        ],
+        [
+          "l’évaporation",
+          "le liquide devient gaz"
+        ],
+        [
+          "la condensation",
+          "le gaz devient liquide"
+        ]
+      ]
+    },
+    {
+      "id": "glace-vapeur",
+      "chapitre": "changements",
+      "type": "ordre",
+      "question": "Remets dans l’ordre ce que devient la glace qu’on chauffe.",
+      "consigne": "Remets dans l’ordre ce que devient la glace qu’on chauffe.",
+      "elements": [
+        "la glace",
+        "l’eau liquide",
+        "la vapeur d’eau"
+      ]
+    },
+    {
+      "id": "chauffer",
+      "chapitre": "changements",
+      "type": "classer",
+      "question": "Pour obtenir cela, faut-il chauffer ou refroidir ?",
+      "consigne": "Pour obtenir cela, faut-il chauffer ou refroidir ?",
+      "boites": [
+        {
+          "nom": "Chauffer"
+        },
+        {
+          "nom": "Refroidir"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "faire fondre du chocolat",
+          "boite": "Chauffer"
+        },
+        {
+          "texte": "faire des glaçons",
+          "boite": "Refroidir"
+        },
+        {
+          "texte": "faire bouillir de l’eau",
+          "boite": "Chauffer"
+        },
+        {
+          "texte": "faire une glace",
+          "boite": "Refroidir"
+        },
+        {
+          "texte": "faire fondre la neige",
+          "boite": "Chauffer"
+        },
+        {
+          "texte": "faire geler une flaque",
+          "boite": "Refroidir"
+        }
+      ]
+    },
+    {
+      "id": "vf-glace-eau",
+      "chapitre": "changements",
+      "type": "choix",
+      "question": "Quand la glace fond, c’est toujours de l’eau.",
+      "reponse": "Vrai",
+      "pieges": [
+        "Faux"
+      ],
+      "consigne": "Vrai ou faux ?"
+    },
+    {
+      "id": "cycle-eau",
+      "chapitre": "cycle",
+      "type": "ordre",
+      "question": "Remets dans l’ordre le voyage de l’eau.",
+      "consigne": "Remets dans l’ordre le voyage de l’eau.",
+      "elements": [
+        "l’eau de la mer s’évapore",
+        "la vapeur forme les nuages",
+        "il pleut ou il neige",
+        "l’eau coule dans les rivières",
+        "les rivières rejoignent la mer"
+      ]
+    },
+    {
+      "id": "nuage",
+      "chapitre": "cycle",
+      "type": "choix",
+      "question": "De quoi sont faits les nuages ?",
+      "reponse": "de minuscules gouttes d’eau",
+      "pieges": [
+        "de coton",
+        "de fumée",
+        "de sable"
+      ],
+      "consigne": "De quoi sont faits les nuages ?",
+      "image": "cloud"
+    },
+    {
+      "id": "soleil-eau",
+      "chapitre": "cycle",
+      "type": "choix",
+      "question": "Qu’est-ce qui chauffe l’eau des mers et la fait s’évaporer ?",
+      "reponse": "le soleil",
+      "pieges": [
+        "la lune",
+        "le vent",
+        "les poissons"
+      ],
+      "consigne": "Qu’est-ce qui chauffe l’eau des mers et la fait s’évaporer ?",
+      "image": "sun"
+    },
+    {
+      "id": "neige",
+      "chapitre": "cycle",
+      "type": "choix",
+      "question": "Quand il fait très froid, les gouttes des nuages tombent en…",
+      "reponse": "neige",
+      "pieges": [
+        "vapeur",
+        "sable",
+        "fumée"
+      ],
+      "consigne": "Quand il fait très froid, les gouttes des nuages tombent en…",
+      "image": "snow"
+    },
+    {
+      "id": "fin-riviere",
+      "chapitre": "cycle",
+      "type": "choix",
+      "question": "Où finissent les fleuves ?",
+      "reponse": "dans la mer",
+      "pieges": [
+        "dans la montagne",
+        "dans les nuages",
+        "sous la terre"
+      ],
+      "consigne": "Où finissent les fleuves ?"
+    },
+    {
+      "id": "vf-cycle-eau",
+      "chapitre": "cycle",
+      "type": "choix",
+      "question": "L’eau de la Terre tourne sans cesse entre la mer, les nuages et les rivières.",
+      "reponse": "Vrai",
+      "pieges": [
+        "Faux"
+      ],
+      "consigne": "Vrai ou faux ?"
+    },
+    {
+      "id": "dissout",
+      "chapitre": "melanges",
+      "type": "classer",
+      "question": "Dans l’eau, est-ce que cela se dissout ?",
+      "consigne": "Dans l’eau, est-ce que cela se dissout ?",
+      "boites": [
+        {
+          "nom": "Se dissout"
+        },
+        {
+          "nom": "Ne se dissout pas"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le sucre",
+          "boite": "Se dissout"
+        },
+        {
+          "texte": "le sel",
+          "boite": "Se dissout"
+        },
+        {
+          "texte": "le sirop",
+          "boite": "Se dissout"
+        },
+        {
+          "texte": "le sable",
+          "boite": "Ne se dissout pas"
+        },
+        {
+          "texte": "l’huile",
+          "boite": "Ne se dissout pas"
+        },
+        {
+          "texte": "le caillou",
+          "boite": "Ne se dissout pas",
+          "image": "stone"
+        },
+        {
+          "texte": "le riz",
+          "boite": "Ne se dissout pas",
+          "image": "rice"
+        },
+        {
+          "texte": "le cacao en poudre",
+          "boite": "Se dissout"
+        }
+      ]
+    },
+    {
+      "id": "sel-cache",
+      "chapitre": "melanges",
+      "type": "choix",
+      "question": "On met du sel dans l’eau et on mélange. Le sel…",
+      "reponse": "est toujours là, mais on ne le voit plus",
+      "pieges": [
+        "a disparu pour toujours",
+        "est devenu du sable",
+        "est monté dans l’air"
+      ],
+      "consigne": "On met du sel dans l’eau et on mélange. Le sel…",
+      "explication": "L’eau est salée : le sel s’est dissous."
+    },
+    {
+      "id": "huile",
+      "chapitre": "melanges",
+      "type": "choix",
+      "question": "On verse de l’huile dans l’eau. L’huile…",
+      "reponse": "reste au-dessus",
+      "pieges": [
+        "se dissout",
+        "coule au fond",
+        "devient de l’eau"
+      ],
+      "consigne": "On verse de l’huile dans l’eau. L’huile…"
+    },
+    {
+      "id": "filtre",
+      "chapitre": "melanges",
+      "type": "choix",
+      "question": "Pour séparer le sable de l’eau, on peut…",
+      "reponse": "filtrer avec un filtre à café",
+      "pieges": [
+        "secouer",
+        "souffler",
+        "ajouter du sel"
+      ],
+      "consigne": "Pour séparer le sable de l’eau, on peut…"
+    },
+    {
+      "id": "sel-retrouve",
+      "chapitre": "melanges",
+      "type": "choix",
+      "question": "Comment retrouver le sel d’une eau salée ?",
+      "reponse": "laisser l’eau s’évaporer",
+      "pieges": [
+        "filtrer",
+        "la mettre au congélateur",
+        "la secouer"
+      ],
+      "consigne": "Comment retrouver le sel d’une eau salée ?"
+    },
+    {
+      "id": "solution",
+      "chapitre": "melanges",
+      "type": "choix",
+      "question": "Quand le sucre est dissous dans l’eau, le mélange est…",
+      "reponse": "transparent",
+      "pieges": [
+        "tout blanc",
+        "en morceaux",
+        "solide"
+      ],
+      "consigne": "Quand le sucre est dissous dans l’eau, le mélange est…"
+    },
+    {
+      "id": "air-matiere",
+      "chapitre": "air",
+      "type": "choix",
+      "question": "L’air est-il de la matière ?",
+      "reponse": "Oui",
+      "pieges": [
+        "Non"
+      ],
+      "consigne": "L’air est-il de la matière ?",
+      "explication": "On ne le voit pas, mais on le sent quand le vent souffle."
+    },
+    {
+      "id": "ballon-air",
+      "chapitre": "air",
+      "type": "choix",
+      "question": "Qu’y a-t-il dans un ballon gonflé ?",
+      "reponse": "de l’air",
+      "pieges": [
+        "rien",
+        "de l’eau",
+        "du sable"
+      ],
+      "consigne": "Qu’y a-t-il dans un ballon gonflé ?",
+      "image": "ball"
+    },
+    {
+      "id": "vent",
+      "chapitre": "air",
+      "type": "choix",
+      "question": "Le vent, c’est…",
+      "reponse": "de l’air qui bouge",
+      "pieges": [
+        "de l’eau",
+        "de la lumière",
+        "du bruit"
+      ],
+      "consigne": "Le vent, c’est…",
+      "image": "wind"
+    },
+    {
+      "id": "respirer-air",
+      "chapitre": "air",
+      "type": "choix",
+      "question": "De quoi avons-nous besoin dans l’air pour vivre ?",
+      "reponse": "de l’oxygène",
+      "pieges": [
+        "de la fumée",
+        "du sable",
+        "du sel"
+      ],
+      "consigne": "De quoi avons-nous besoin dans l’air pour vivre ?"
+    },
+    {
+      "id": "verre-vide",
+      "chapitre": "air",
+      "type": "choix",
+      "question": "Un verre « vide » est en réalité rempli…",
+      "reponse": "d’air",
+      "pieges": [
+        "de rien",
+        "d’eau",
+        "de lumière"
+      ],
+      "consigne": "Un verre « vide » est en réalité rempli…"
+    },
+    {
+      "id": "vf-air-bulles",
+      "chapitre": "air",
+      "type": "choix",
+      "question": "Les bulles dans l’eau sont de l’air.",
+      "reponse": "Vrai",
+      "pieges": [
+        "Faux"
+      ],
+      "consigne": "Vrai ou faux ?"
+    }
+  ]
+}

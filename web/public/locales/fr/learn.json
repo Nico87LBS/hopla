@@ -121,8 +121,13 @@
       "catalogue": "Catalogue"
     },
     "readAloud": "Lire à voix haute",
-    "readAloudHelp": "Dans les modules pour ceux qui apprennent à lire, la question est dite, puis chaque réponse au premier toucher ; un second toucher la choisit.",
+    "readAloudHelp": "Ce que dit l’appareil dans les modules faits pour être lus à voix haute. Tout : la question, puis chaque réponse au premier toucher (un second toucher la choisit).",
     "readAloudFor": "Lire à voix haute pour {{name}}",
+    "voice": {
+      "tout": "Tout",
+      "consigne": "La consigne seulement",
+      "rien": "Rien"
+    },
     "firstName": "Prénom dans les jeux",
     "firstNameHelp": "Pour les questions sur son prénom (première lettre, lettres dans l’ordre…). Vide : le premier mot de son nom dans Hopla.",
     "firstNameFor": "Prénom de {{name}} dans les jeux"

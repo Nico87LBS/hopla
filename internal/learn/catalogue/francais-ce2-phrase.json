@@ -1,0 +1,1052 @@
+{
+  "format": "hopla-module/1",
+  "id": "francais-ce2-phrase",
+  "version": "1.0.0",
+  "nom": "La phrase",
+  "description": "Les types de phrases, la forme négative, le sujet et le verbe, la nature des mots et les pronoms.",
+  "matiere": "francais",
+  "niveaux": [
+    "CE2"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de français du cycle 2 (2024) et les repères annuels de progression du CE2 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "types",
+      "nom": "Les types de phrases"
+    },
+    {
+      "id": "negation",
+      "nom": "La forme négative",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "sujet-verbe",
+      "nom": "Le sujet et le verbe",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "nature",
+      "nom": "Nom, verbe, adjectif…",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "pronoms",
+      "nom": "Les pronoms",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "type-1",
+      "chapitre": "types",
+      "type": "choix",
+      "question": "« Le chat dort sur le canapé. » Cette phrase est…",
+      "reponse": "déclarative",
+      "pieges": [
+        "interrogative",
+        "exclamative",
+        "impérative"
+      ],
+      "consigne": "Quel est le type de cette phrase ?"
+    },
+    {
+      "id": "type-2",
+      "chapitre": "types",
+      "type": "choix",
+      "question": "« Où as-tu rangé tes chaussures ? » Cette phrase est…",
+      "reponse": "interrogative",
+      "pieges": [
+        "déclarative",
+        "exclamative",
+        "impérative"
+      ],
+      "consigne": "Quel est le type de cette phrase ?"
+    },
+    {
+      "id": "type-3",
+      "chapitre": "types",
+      "type": "choix",
+      "question": "« Quelle belle journée ! » Cette phrase est…",
+      "reponse": "exclamative",
+      "pieges": [
+        "déclarative",
+        "interrogative",
+        "impérative"
+      ],
+      "consigne": "Quel est le type de cette phrase ?"
+    },
+    {
+      "id": "type-4",
+      "chapitre": "types",
+      "type": "choix",
+      "question": "« Range ta chambre. » Cette phrase est…",
+      "reponse": "impérative",
+      "pieges": [
+        "déclarative",
+        "interrogative",
+        "exclamative"
+      ],
+      "consigne": "Quel est le type de cette phrase ?"
+    },
+    {
+      "id": "type-5",
+      "chapitre": "types",
+      "type": "choix",
+      "question": "« Est-ce que tu viens jouer ? » Cette phrase est…",
+      "reponse": "interrogative",
+      "pieges": [
+        "déclarative",
+        "exclamative",
+        "impérative"
+      ],
+      "consigne": "Quel est le type de cette phrase ?"
+    },
+    {
+      "id": "type-6",
+      "chapitre": "types",
+      "type": "choix",
+      "question": "« Nous partons demain matin. » Cette phrase est…",
+      "reponse": "déclarative",
+      "pieges": [
+        "interrogative",
+        "exclamative",
+        "impérative"
+      ],
+      "consigne": "Quel est le type de cette phrase ?"
+    },
+    {
+      "id": "type-7",
+      "chapitre": "types",
+      "type": "choix",
+      "question": "« Comme tu as grandi ! » Cette phrase est…",
+      "reponse": "exclamative",
+      "pieges": [
+        "déclarative",
+        "interrogative",
+        "impérative"
+      ],
+      "consigne": "Quel est le type de cette phrase ?"
+    },
+    {
+      "id": "type-8",
+      "chapitre": "types",
+      "type": "choix",
+      "question": "« Ferme la porte, s’il te plaît. » Cette phrase est…",
+      "reponse": "impérative",
+      "pieges": [
+        "déclarative",
+        "interrogative",
+        "exclamative"
+      ],
+      "consigne": "Quel est le type de cette phrase ?"
+    },
+    {
+      "id": "type-9",
+      "chapitre": "types",
+      "type": "choix",
+      "question": "« Pourquoi le ciel est-il bleu ? » Cette phrase est…",
+      "reponse": "interrogative",
+      "pieges": [
+        "déclarative",
+        "exclamative",
+        "impérative"
+      ],
+      "consigne": "Quel est le type de cette phrase ?"
+    },
+    {
+      "id": "type-10",
+      "chapitre": "types",
+      "type": "choix",
+      "question": "« Il neige depuis ce matin. » Cette phrase est…",
+      "reponse": "déclarative",
+      "pieges": [
+        "interrogative",
+        "exclamative",
+        "impérative"
+      ],
+      "consigne": "Quel est le type de cette phrase ?"
+    },
+    {
+      "id": "type-11",
+      "chapitre": "types",
+      "type": "choix",
+      "question": "« Quel froid ! » Cette phrase est…",
+      "reponse": "exclamative",
+      "pieges": [
+        "déclarative",
+        "interrogative",
+        "impérative"
+      ],
+      "consigne": "Quel est le type de cette phrase ?"
+    },
+    {
+      "id": "type-12",
+      "chapitre": "types",
+      "type": "choix",
+      "question": "« Lavez-vous les mains avant de manger. » Cette phrase est…",
+      "reponse": "impérative",
+      "pieges": [
+        "déclarative",
+        "interrogative",
+        "exclamative"
+      ],
+      "consigne": "Quel est le type de cette phrase ?"
+    },
+    {
+      "id": "point-interro",
+      "chapitre": "types",
+      "type": "choix",
+      "question": "Par quel signe se termine une phrase interrogative ?",
+      "reponse": "?",
+      "pieges": [
+        ".",
+        "!",
+        ","
+      ],
+      "consigne": "Par quel signe se termine une phrase interrogative ?"
+    },
+    {
+      "id": "point-exclam",
+      "chapitre": "types",
+      "type": "choix",
+      "question": "Par quel signe se termine une phrase exclamative ?",
+      "reponse": "!",
+      "pieges": [
+        "?",
+        ",",
+        ";"
+      ],
+      "consigne": "Par quel signe se termine une phrase exclamative ?"
+    },
+    {
+      "id": "majuscule",
+      "chapitre": "types",
+      "type": "choix",
+      "question": "Une phrase commence toujours par…",
+      "reponse": "une majuscule",
+      "pieges": [
+        "un point",
+        "un verbe",
+        "une virgule"
+      ],
+      "consigne": "Une phrase commence toujours par…"
+    },
+    {
+      "id": "neg-1",
+      "chapitre": "negation",
+      "type": "choix",
+      "question": "« Je mange. » À la forme négative :",
+      "reponse": "Je ne mange pas.",
+      "pieges": [
+        "Je mange pas.",
+        "Je ne mange.",
+        "Ne je mange pas."
+      ],
+      "consigne": "Choisis la phrase à la forme négative bien écrite."
+    },
+    {
+      "id": "neg-2",
+      "chapitre": "negation",
+      "type": "choix",
+      "question": "« Il est content. » À la forme négative :",
+      "reponse": "Il n’est pas content.",
+      "pieges": [
+        "Il est pas content.",
+        "Il ne est pas content.",
+        "Il n’est content."
+      ],
+      "consigne": "Choisis la phrase à la forme négative bien écrite."
+    },
+    {
+      "id": "neg-3",
+      "chapitre": "negation",
+      "type": "choix",
+      "question": "« Nous jouons dehors. » À la forme négative :",
+      "reponse": "Nous ne jouons pas dehors.",
+      "pieges": [
+        "Nous jouons pas dehors.",
+        "Nous ne jouons dehors.",
+        "Ne nous jouons pas dehors."
+      ],
+      "consigne": "Choisis la phrase à la forme négative bien écrite."
+    },
+    {
+      "id": "neg-4",
+      "chapitre": "negation",
+      "type": "choix",
+      "question": "« Tu as faim. » À la forme négative :",
+      "reponse": "Tu n’as pas faim.",
+      "pieges": [
+        "Tu as pas faim.",
+        "Tu ne as pas faim.",
+        "Tu n’as faim."
+      ],
+      "consigne": "Choisis la phrase à la forme négative bien écrite."
+    },
+    {
+      "id": "neg-5",
+      "chapitre": "negation",
+      "type": "choix",
+      "question": "« Elle aime les épinards. » À la forme négative :",
+      "reponse": "Elle n’aime pas les épinards.",
+      "pieges": [
+        "Elle aime pas les épinards.",
+        "Elle ne aime pas les épinards.",
+        "Elle n’aime les épinards."
+      ],
+      "consigne": "Choisis la phrase à la forme négative bien écrite."
+    },
+    {
+      "id": "neg-6",
+      "chapitre": "negation",
+      "type": "choix",
+      "question": "« Ils regardent la télé. » À la forme négative :",
+      "reponse": "Ils ne regardent pas la télé.",
+      "pieges": [
+        "Ils regardent pas la télé.",
+        "Ils ne regardent la télé.",
+        "Ils pas regardent la télé."
+      ],
+      "consigne": "Choisis la phrase à la forme négative bien écrite."
+    },
+    {
+      "id": "neg-7",
+      "chapitre": "negation",
+      "type": "choix",
+      "question": "« Je vois quelque chose. » À la forme négative :",
+      "reponse": "Je ne vois rien.",
+      "pieges": [
+        "Je vois rien.",
+        "Je ne vois pas rien.",
+        "Je ne vois quelque chose."
+      ],
+      "consigne": "Choisis la phrase à la forme négative bien écrite."
+    },
+    {
+      "id": "neg-8",
+      "chapitre": "negation",
+      "type": "choix",
+      "question": "« Il pleut encore. » À la forme négative :",
+      "reponse": "Il ne pleut plus.",
+      "pieges": [
+        "Il pleut plus.",
+        "Il ne pleut encore.",
+        "Il ne pleut pas plus."
+      ],
+      "consigne": "Choisis la phrase à la forme négative bien écrite."
+    },
+    {
+      "id": "neg-ordre-1",
+      "chapitre": "negation",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase négative.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase négative.",
+      "elements": [
+        "Le",
+        "chien",
+        "ne",
+        "mange",
+        "pas",
+        "sa",
+        "soupe."
+      ]
+    },
+    {
+      "id": "neg-ordre-2",
+      "chapitre": "negation",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase négative.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase négative.",
+      "elements": [
+        "Nous",
+        "n’avons",
+        "pas",
+        "de",
+        "devoirs."
+      ]
+    },
+    {
+      "id": "neg-ordre-3",
+      "chapitre": "negation",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase négative.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase négative.",
+      "elements": [
+        "Elle",
+        "ne",
+        "veut",
+        "plus",
+        "jouer."
+      ]
+    },
+    {
+      "id": "neg-mots",
+      "chapitre": "negation",
+      "type": "choix",
+      "question": "Quels petits mots entourent le verbe dans une phrase négative ?",
+      "reponse": "ne… pas",
+      "pieges": [
+        "le… la",
+        "un… une",
+        "et… ou"
+      ],
+      "consigne": "Quels petits mots entourent le verbe dans une phrase négative ?"
+    },
+    {
+      "id": "verbe-1",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "« Le petit chat boit son lait. » Quel est le verbe ?",
+      "reponse": "boit",
+      "pieges": [
+        "chat",
+        "lait",
+        "petit"
+      ],
+      "consigne": "Trouve le verbe de la phrase.",
+      "explication": "Le verbe change quand on change le temps : hier…, demain…"
+    },
+    {
+      "id": "sujet-1",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "« Le petit chat boit son lait. » Quel est le sujet du verbe « boit » ?",
+      "reponse": "Le petit chat",
+      "pieges": [
+        "son lait",
+        "Le petit",
+        "lait"
+      ],
+      "consigne": "Trouve le sujet du verbe.",
+      "explication": "Le sujet répond à la question : qui est-ce qui… ?"
+    },
+    {
+      "id": "verbe-2",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "« Mes cousins arrivent ce soir. » Quel est le verbe ?",
+      "reponse": "arrivent",
+      "pieges": [
+        "cousins",
+        "soir",
+        "Mes"
+      ],
+      "consigne": "Trouve le verbe de la phrase.",
+      "explication": "Le verbe change quand on change le temps : hier…, demain…"
+    },
+    {
+      "id": "sujet-2",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "« Mes cousins arrivent ce soir. » Quel est le sujet du verbe « arrivent » ?",
+      "reponse": "Mes cousins",
+      "pieges": [
+        "ce soir",
+        "arrivent",
+        "soir"
+      ],
+      "consigne": "Trouve le sujet du verbe.",
+      "explication": "Le sujet répond à la question : qui est-ce qui… ?"
+    },
+    {
+      "id": "verbe-3",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "« Dans la forêt, le loup hurle. » Quel est le verbe ?",
+      "reponse": "hurle",
+      "pieges": [
+        "loup",
+        "forêt",
+        "Dans"
+      ],
+      "consigne": "Trouve le verbe de la phrase.",
+      "explication": "Le verbe change quand on change le temps : hier…, demain…"
+    },
+    {
+      "id": "sujet-3",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "« Dans la forêt, le loup hurle. » Quel est le sujet du verbe « hurle » ?",
+      "reponse": "le loup",
+      "pieges": [
+        "la forêt",
+        "Dans la forêt",
+        "hurle"
+      ],
+      "consigne": "Trouve le sujet du verbe.",
+      "explication": "Le sujet répond à la question : qui est-ce qui… ?"
+    },
+    {
+      "id": "verbe-4",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "« Tom et Léa construisent une cabane. » Quel est le verbe ?",
+      "reponse": "construisent",
+      "pieges": [
+        "cabane",
+        "Tom",
+        "Léa"
+      ],
+      "consigne": "Trouve le verbe de la phrase.",
+      "explication": "Le verbe change quand on change le temps : hier…, demain…"
+    },
+    {
+      "id": "sujet-4",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "« Tom et Léa construisent une cabane. » Quel est le sujet du verbe « construisent » ?",
+      "reponse": "Tom et Léa",
+      "pieges": [
+        "une cabane",
+        "Léa",
+        "Tom"
+      ],
+      "consigne": "Trouve le sujet du verbe.",
+      "explication": "Le sujet répond à la question : qui est-ce qui… ?"
+    },
+    {
+      "id": "verbe-5",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "« Le soleil brille. » Quel est le verbe ?",
+      "reponse": "brille",
+      "pieges": [
+        "soleil",
+        "Le"
+      ],
+      "consigne": "Trouve le verbe de la phrase.",
+      "explication": "Le verbe change quand on change le temps : hier…, demain…"
+    },
+    {
+      "id": "sujet-5",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "« Le soleil brille. » Quel est le sujet du verbe « brille » ?",
+      "reponse": "Le soleil",
+      "pieges": [
+        "brille"
+      ],
+      "consigne": "Trouve le sujet du verbe.",
+      "explication": "Le sujet répond à la question : qui est-ce qui… ?"
+    },
+    {
+      "id": "verbe-6",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "« Chaque matin, nous prenons le bus. » Quel est le verbe ?",
+      "reponse": "prenons",
+      "pieges": [
+        "matin",
+        "bus",
+        "nous"
+      ],
+      "consigne": "Trouve le verbe de la phrase.",
+      "explication": "Le verbe change quand on change le temps : hier…, demain…"
+    },
+    {
+      "id": "sujet-6",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "« Chaque matin, nous prenons le bus. » Quel est le sujet du verbe « prenons » ?",
+      "reponse": "nous",
+      "pieges": [
+        "le bus",
+        "Chaque matin",
+        "prenons"
+      ],
+      "consigne": "Trouve le sujet du verbe.",
+      "explication": "Le sujet répond à la question : qui est-ce qui… ?"
+    },
+    {
+      "id": "verbe-7",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "« La maîtresse lit une histoire. » Quel est le verbe ?",
+      "reponse": "lit",
+      "pieges": [
+        "maîtresse",
+        "histoire",
+        "une"
+      ],
+      "consigne": "Trouve le verbe de la phrase.",
+      "explication": "Le verbe change quand on change le temps : hier…, demain…"
+    },
+    {
+      "id": "sujet-7",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "« La maîtresse lit une histoire. » Quel est le sujet du verbe « lit » ?",
+      "reponse": "La maîtresse",
+      "pieges": [
+        "une histoire",
+        "histoire",
+        "lit"
+      ],
+      "consigne": "Trouve le sujet du verbe.",
+      "explication": "Le sujet répond à la question : qui est-ce qui… ?"
+    },
+    {
+      "id": "verbe-8",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "« Les oiseaux chantent dans l’arbre. » Quel est le verbe ?",
+      "reponse": "chantent",
+      "pieges": [
+        "oiseaux",
+        "arbre",
+        "dans"
+      ],
+      "consigne": "Trouve le verbe de la phrase.",
+      "explication": "Le verbe change quand on change le temps : hier…, demain…"
+    },
+    {
+      "id": "sujet-8",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "« Les oiseaux chantent dans l’arbre. » Quel est le sujet du verbe « chantent » ?",
+      "reponse": "Les oiseaux",
+      "pieges": [
+        "l’arbre",
+        "dans l’arbre",
+        "chantent"
+      ],
+      "consigne": "Trouve le sujet du verbe.",
+      "explication": "Le sujet répond à la question : qui est-ce qui… ?"
+    },
+    {
+      "id": "verbe-9",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "« Demain, vous irez au musée. » Quel est le verbe ?",
+      "reponse": "irez",
+      "pieges": [
+        "Demain",
+        "musée",
+        "vous"
+      ],
+      "consigne": "Trouve le verbe de la phrase.",
+      "explication": "Le verbe change quand on change le temps : hier…, demain…"
+    },
+    {
+      "id": "sujet-9",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "« Demain, vous irez au musée. » Quel est le sujet du verbe « irez » ?",
+      "reponse": "vous",
+      "pieges": [
+        "au musée",
+        "Demain",
+        "irez"
+      ],
+      "consigne": "Trouve le sujet du verbe.",
+      "explication": "Le sujet répond à la question : qui est-ce qui… ?"
+    },
+    {
+      "id": "verbe-10",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "« Mon grand frère répare son vélo. » Quel est le verbe ?",
+      "reponse": "répare",
+      "pieges": [
+        "frère",
+        "vélo",
+        "grand"
+      ],
+      "consigne": "Trouve le verbe de la phrase.",
+      "explication": "Le verbe change quand on change le temps : hier…, demain…"
+    },
+    {
+      "id": "sujet-10",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "« Mon grand frère répare son vélo. » Quel est le sujet du verbe « répare » ?",
+      "reponse": "Mon grand frère",
+      "pieges": [
+        "son vélo",
+        "Mon grand",
+        "vélo"
+      ],
+      "consigne": "Trouve le sujet du verbe.",
+      "explication": "Le sujet répond à la question : qui est-ce qui… ?"
+    },
+    {
+      "id": "verbe-11",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "« Ce soir, ma mère prépare une soupe. » Quel est le verbe ?",
+      "reponse": "prépare",
+      "pieges": [
+        "soir",
+        "soupe",
+        "mère"
+      ],
+      "consigne": "Trouve le verbe de la phrase.",
+      "explication": "Le verbe change quand on change le temps : hier…, demain…"
+    },
+    {
+      "id": "sujet-11",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "« Ce soir, ma mère prépare une soupe. » Quel est le sujet du verbe « prépare » ?",
+      "reponse": "ma mère",
+      "pieges": [
+        "une soupe",
+        "Ce soir",
+        "prépare"
+      ],
+      "consigne": "Trouve le sujet du verbe.",
+      "explication": "Le sujet répond à la question : qui est-ce qui… ?"
+    },
+    {
+      "id": "verbe-12",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "« Sous la pluie, les escargots sortent. » Quel est le verbe ?",
+      "reponse": "sortent",
+      "pieges": [
+        "pluie",
+        "escargots",
+        "Sous"
+      ],
+      "consigne": "Trouve le verbe de la phrase.",
+      "explication": "Le verbe change quand on change le temps : hier…, demain…"
+    },
+    {
+      "id": "sujet-12",
+      "chapitre": "sujet-verbe",
+      "type": "choix",
+      "question": "« Sous la pluie, les escargots sortent. » Quel est le sujet du verbe « sortent » ?",
+      "reponse": "les escargots",
+      "pieges": [
+        "la pluie",
+        "Sous la pluie",
+        "sortent"
+      ],
+      "consigne": "Trouve le sujet du verbe.",
+      "explication": "Le sujet répond à la question : qui est-ce qui… ?"
+    },
+    {
+      "id": "nature-1",
+      "chapitre": "nature",
+      "type": "classer",
+      "question": "Range chaque mot selon sa nature.",
+      "consigne": "Range chaque mot selon sa nature.",
+      "boites": [
+        {
+          "nom": "Nom"
+        },
+        {
+          "nom": "Verbe"
+        },
+        {
+          "nom": "Adjectif"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "maison",
+          "boite": "Nom"
+        },
+        {
+          "texte": "courir",
+          "boite": "Verbe"
+        },
+        {
+          "texte": "gentil",
+          "boite": "Adjectif"
+        },
+        {
+          "texte": "chien",
+          "boite": "Nom"
+        },
+        {
+          "texte": "manger",
+          "boite": "Verbe"
+        },
+        {
+          "texte": "rouge",
+          "boite": "Adjectif"
+        },
+        {
+          "texte": "jardin",
+          "boite": "Nom"
+        },
+        {
+          "texte": "chanter",
+          "boite": "Verbe"
+        },
+        {
+          "texte": "petit",
+          "boite": "Adjectif"
+        }
+      ]
+    },
+    {
+      "id": "nature-2",
+      "chapitre": "nature",
+      "type": "classer",
+      "question": "Range chaque mot selon sa nature.",
+      "consigne": "Range chaque mot selon sa nature.",
+      "boites": [
+        {
+          "nom": "Nom"
+        },
+        {
+          "nom": "Verbe"
+        },
+        {
+          "nom": "Adjectif"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "école",
+          "boite": "Nom"
+        },
+        {
+          "texte": "dormir",
+          "boite": "Verbe"
+        },
+        {
+          "texte": "joyeux",
+          "boite": "Adjectif"
+        },
+        {
+          "texte": "vélo",
+          "boite": "Nom"
+        },
+        {
+          "texte": "lire",
+          "boite": "Verbe"
+        },
+        {
+          "texte": "grand",
+          "boite": "Adjectif"
+        },
+        {
+          "texte": "forêt",
+          "boite": "Nom"
+        },
+        {
+          "texte": "sauter",
+          "boite": "Verbe"
+        },
+        {
+          "texte": "rapide",
+          "boite": "Adjectif"
+        }
+      ]
+    },
+    {
+      "id": "nature-3",
+      "chapitre": "nature",
+      "type": "classer",
+      "question": "Range chaque mot selon sa nature.",
+      "consigne": "Range chaque mot selon sa nature.",
+      "boites": [
+        {
+          "nom": "Déterminant"
+        },
+        {
+          "nom": "Nom"
+        },
+        {
+          "nom": "Pronom"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le",
+          "boite": "Déterminant"
+        },
+        {
+          "texte": "une",
+          "boite": "Déterminant"
+        },
+        {
+          "texte": "mes",
+          "boite": "Déterminant"
+        },
+        {
+          "texte": "ils",
+          "boite": "Pronom"
+        },
+        {
+          "texte": "nous",
+          "boite": "Pronom"
+        },
+        {
+          "texte": "elle",
+          "boite": "Pronom"
+        },
+        {
+          "texte": "table",
+          "boite": "Nom"
+        },
+        {
+          "texte": "ballon",
+          "boite": "Nom"
+        },
+        {
+          "texte": "fille",
+          "boite": "Nom"
+        }
+      ]
+    },
+    {
+      "id": "nature-adj",
+      "chapitre": "nature",
+      "type": "choix",
+      "question": "Dans « un gros chat noir », quels mots sont des adjectifs ?",
+      "reponse": "gros et noir",
+      "pieges": [
+        "un et chat",
+        "chat et noir",
+        "un et gros"
+      ],
+      "consigne": "Dans « un gros chat noir », quels mots sont des adjectifs ?"
+    },
+    {
+      "id": "nature-det",
+      "chapitre": "nature",
+      "type": "choix",
+      "question": "Dans « les petites souris », quel mot est le déterminant ?",
+      "reponse": "les",
+      "pieges": [
+        "petites",
+        "souris"
+      ],
+      "consigne": "Dans « les petites souris », quel mot est le déterminant ?"
+    },
+    {
+      "id": "nature-nom-propre",
+      "chapitre": "nature",
+      "type": "choix",
+      "question": "Lequel est un nom propre ?",
+      "reponse": "Paris",
+      "pieges": [
+        "ville",
+        "maison",
+        "rivière"
+      ],
+      "consigne": "Lequel est un nom propre ?",
+      "explication": "Un nom propre prend une majuscule."
+    },
+    {
+      "id": "pronom-1",
+      "chapitre": "pronoms",
+      "type": "choix",
+      "question": "« Les enfants jouent. » Par quel pronom remplacer le sujet ?",
+      "reponse": "Ils",
+      "pieges": [
+        "Elles",
+        "Il",
+        "Nous"
+      ],
+      "consigne": "Remplace le sujet par un pronom."
+    },
+    {
+      "id": "pronom-2",
+      "chapitre": "pronoms",
+      "type": "choix",
+      "question": "« Ma sœur dessine. » Par quel pronom remplacer le sujet ?",
+      "reponse": "Elle",
+      "pieges": [
+        "Il",
+        "Elles",
+        "Ils"
+      ],
+      "consigne": "Remplace le sujet par un pronom."
+    },
+    {
+      "id": "pronom-3",
+      "chapitre": "pronoms",
+      "type": "choix",
+      "question": "« Le boulanger fait du pain. » Par quel pronom remplacer le sujet ?",
+      "reponse": "Il",
+      "pieges": [
+        "Elle",
+        "Ils",
+        "On"
+      ],
+      "consigne": "Remplace le sujet par un pronom."
+    },
+    {
+      "id": "pronom-4",
+      "chapitre": "pronoms",
+      "type": "choix",
+      "question": "« Les filles chantent. » Par quel pronom remplacer le sujet ?",
+      "reponse": "Elles",
+      "pieges": [
+        "Ils",
+        "Elle",
+        "Vous"
+      ],
+      "consigne": "Remplace le sujet par un pronom."
+    },
+    {
+      "id": "pronom-5",
+      "chapitre": "pronoms",
+      "type": "choix",
+      "question": "« Paul et moi partons. » Par quel pronom remplacer le sujet ?",
+      "reponse": "Nous",
+      "pieges": [
+        "Ils",
+        "Vous",
+        "On"
+      ],
+      "consigne": "Remplace le sujet par un pronom."
+    },
+    {
+      "id": "pronom-6",
+      "chapitre": "pronoms",
+      "type": "choix",
+      "question": "« Toi et ton frère venez. » Par quel pronom remplacer le sujet ?",
+      "reponse": "Vous",
+      "pieges": [
+        "Nous",
+        "Ils",
+        "Tu"
+      ],
+      "consigne": "Remplace le sujet par un pronom."
+    },
+    {
+      "id": "pronom-7",
+      "chapitre": "pronoms",
+      "type": "choix",
+      "question": "« Léo et Inès rient. » Par quel pronom remplacer le sujet ?",
+      "reponse": "Ils",
+      "pieges": [
+        "Elles",
+        "Il",
+        "Nous"
+      ],
+      "consigne": "Remplace le sujet par un pronom."
+    },
+    {
+      "id": "pronom-8",
+      "chapitre": "pronoms",
+      "type": "choix",
+      "question": "« La voiture démarre. » Par quel pronom remplacer le sujet ?",
+      "reponse": "Elle",
+      "pieges": [
+        "Il",
+        "Ils",
+        "On"
+      ],
+      "consigne": "Remplace le sujet par un pronom."
+    }
+  ]
+}

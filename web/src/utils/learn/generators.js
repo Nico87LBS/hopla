@@ -780,7 +780,8 @@ const sortItems = (card, moduleId) => {
 }
 
 // A zone is touched on its picture, from its name, or named once shown in
-// colour. The names of the other zones of the same picture are the traps.
+// colour. The names of the other zones of the same picture are the traps,
+// from the same chapter first.
 const zoneItems = (card, moduleId, siblings) => {
   const sameImage = siblings.filter(
     s => s.type === 'zones' && s.image === card.image,
@@ -804,11 +805,14 @@ const zoneItems = (card, moduleId, siblings) => {
       if (direction === 'toucher') {
         return { ...base, mode: 'zone', prompt: `Touche : ${card.reponse}` }
       }
-      const traps = [
-        ...new Set(
-          sameImage.map(s => s.reponse).filter(n => n !== card.reponse),
-        ),
-      ]
+      // The traps come from the same chapter when it has enough of them, so
+      // that a river is not mixed with a city on the same map.
+      const others = list =>
+        [...new Set(list.map(s => s.reponse))].filter(n => n !== card.reponse)
+      const sameChapter = others(
+        sameImage.filter(s => s.chapitre === card.chapitre),
+      )
+      const traps = sameChapter.length >= 3 ? sameChapter : others(sameImage)
       return {
         ...base,
         mode: 'choice',

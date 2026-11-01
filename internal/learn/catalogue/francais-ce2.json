@@ -1,0 +1,23 @@
+{
+  "format": "hopla-module/1",
+  "id": "francais-ce2",
+  "version": "1.0.0",
+  "nom": "Français CE2",
+  "description": "La conjugaison, la phrase, les accords, les homophones, le vocabulaire et la compréhension de petits textes.",
+  "matiere": "francais",
+  "niveaux": [
+    "CE2"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "auteur": "Hopla",
+  "sources": "D'après le programme de français du cycle 2 (2024) et les repères annuels de progression du CE2 (Éduscol).",
+  "modules": [
+    "francais-ce2-conjugaison",
+    "francais-ce2-phrase",
+    "francais-ce2-accords",
+    "francais-ce2-homophones",
+    "francais-ce2-vocabulaire",
+    "francais-ce2-textes"
+  ]
+}

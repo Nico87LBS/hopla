@@ -86,6 +86,10 @@ type PersonSetting struct {
 	// the questions aloud for this person. Empty, it does for the modules
 	// that ask for it.
 	ReadAloud *bool `json:"readAloud" gorm:"column:read_aloud"`
+	// Voice, for AllPacks only, is what the device says aloud for this
+	// person: everything (empty), only the instructions, or nothing. It
+	// replaces ReadAloud, still read when it is false.
+	Voice string `json:"voice" gorm:"column:voice;size:10"`
 	// FirstName, for AllPacks only, is the name the games call the person
 	// by, in the questions about it. Empty, their name in Hopla.
 	FirstName string `json:"firstName" gorm:"column:first_name;size:40"`

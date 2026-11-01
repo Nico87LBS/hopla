@@ -70,7 +70,7 @@ Le fichier est contrôlé à l'import ; une erreur est expliquée en français
 | `public` | non | `enfant`, `adulte` ou `tous` |
 | `langue` | non | Langue des consignes (`fr`, `en`) |
 | `langue_apprise` | non | Langue enseignée, pour la voix des fiches Écoute (`en`) |
-| `lecture_voix_haute` | non | `true` pour les modules de ceux qui ne lisent pas encore : l'appareil dit la question, puis chaque réponse au premier toucher (un second toucher la choisit). `"consigne"` pour les modules qui apprennent à lire : l'appareil ne dit que la `consigne` des fiches qui en ont une, puis, une fois répondu, les mots à lire ; les réponses ne sont pas dites. Un parent peut l'éteindre pour une personne |
+| `lecture_voix_haute` | non | `true` pour les modules de ceux qui ne lisent pas encore : l'appareil dit la question, puis chaque réponse au premier toucher (un second toucher la choisit). `"consigne"` pour les modules qui apprennent à lire : l'appareil ne dit que la `consigne` des fiches qui en ont une, puis, une fois répondu, les mots à lire ; les réponses ne sont pas dites. `true` convient aussi aux plus grands : un parent choisit, pour chaque personne, ce que dit l'appareil (tout, la consigne seulement, rien) |
 | `ecriture` | non | `cursive` pour écrire les mots du module en cursif (police Playwrite FR Moderne, embarquée), `cursive_question` pour la question seule en cursif et les réponses en lettres d'imprimerie. Par défaut : lettres d'imprimerie. Les consignes restent en imprimerie |
 | `couleur` | non | Couleur du module, en `#RRGGBB` |
 | `icone`, `sources` | non | Informations, pas encore affichées |
@@ -228,10 +228,21 @@ Par défaut, les deux. Images fournies :
 | `carte-france` | Les 13 régions de France métropolitaine : `auvergne-rhone-alpes`, `bourgogne-franche-comte`, `bretagne`, `centre-val-de-loire`, `corse`, `grand-est`, `hauts-de-france`, `ile-de-france`, `normandie`, `nouvelle-aquitaine`, `occitanie`, `pays-de-la-loire`, `provence-alpes-cote-d-azur` |
 | `corps` | `tete`, `cou`, `bras`, `coude`, `main`, `ventre`, `jambe`, `genou`, `pied` |
 | `plante` | `fleur`, `feuille`, `tige`, `racines` |
+| `carte-france-relief` | Fleuves : `seine`, `loire`, `garonne`, `rhone`, `rhin` ; montagnes : `alpes`, `pyrenees`, `massif-central`, `jura`, `vosges` ; villes : `paris`, `lyon`, `marseille`, `toulouse`, `bordeaux`, `lille`, `nantes`, `strasbourg`, `nice`, `brest` |
+| `carte-monde` | Continents : `afrique`, `europe`, `asie`, `amerique-du-nord`, `amerique-du-sud`, `oceanie`, `antarctique` ; océans : `pacifique`, `atlantique`, `indien`, `arctique`, `austral` |
+| `squelette` | `crane`, `colonne`, `cotes`, `bassin`, `bras`, `main`, `jambe`, `pied` |
+
+Dans le sens `nommer`, les mauvaises réponses viennent des zones du même
+chapitre quand il en a au moins quatre : un fleuve se nomme parmi des fleuves,
+pas parmi des villes de la même carte.
 
 Une image à zones est un SVG dont chaque zone est un élément portant
-`data-zone="identifiant"` (et `data-nom`, pour s'y retrouver). Les contours de
-la carte de France viennent d'IGN Admin Express (Licence ouverte Etalab).
+`data-zone="identifiant"` (et `data-nom`, pour s'y retrouver). Une zone en
+trait, comme un fleuve, porte la classe `ligne` (son trait se colore) ; un
+élément de classe `prise`, invisible, l'élargit pour qu'elle se touche
+facilement. Les contours de la France viennent d'IGN Admin Express (Licence
+ouverte Etalab) ; les fleuves, les montagnes, les continents et les océans de
+Natural Earth (domaine public).
 
 Un module d'essai qui utilise chacun de ces types est fourni :
 [`docs/exemples/essai-nouveaux-jeux.json`](exemples/essai-nouveaux-jeux.json),

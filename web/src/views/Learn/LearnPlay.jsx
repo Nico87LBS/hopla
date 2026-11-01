@@ -415,6 +415,8 @@ export const spoken = item =>
   ]
     .filter(Boolean)
     .join(' ')
+    // A blank to fill is said as a pause, not as its dashes.
+    .replace(/_{2,}/g, '…')
 
 // writingClass shows the words of a module written in cursive: all of them,
 // or only those of the question, to read them in cursive and answer in print.
@@ -430,9 +432,9 @@ export const readBack = item => {
   if (item.subject?.text) return item.subject.text
   if (item.mode === 'order') return item.answer.split(' → ').join(' ')
   if (item.prompt === item.instruction) return item.answer
-  return item.prompt.includes('___')
-    ? item.prompt.replace('___', item.answer)
-    : item.prompt
+  // A hint in brackets at the end, « (aller, futur) », is not read back.
+  const prompt = item.prompt.replace(/\s*\([^)]*\)\s*$/, '')
+  return prompt.includes('___') ? prompt.replace('___', item.answer) : prompt
 }
 
 // Prompt is what a question asks: words to read, a drawing, a collection to
@@ -735,15 +737,19 @@ const LearnPlay = ({ playMode = false }) => {
   }
 
   const color = subjectColor(module.subject, module.document?.couleur)
-  // Read aloud, for the modules made for those who do not read yet, unless
-  // a parent turned it off for this person.
+  // Read aloud, in the modules made to be read aloud, as a parent chose for
+  // this person: everything, only the instructions, or nothing.
   const doc = compiled.doc
-  const voice = player.readAloud && canSpeak() && doc.lecture_voix_haute
+  const personVoice = player.voice || (player.readAloud ? 'tout' : 'rien')
+  const voice = personVoice !== 'rien' && canSpeak() && doc.lecture_voix_haute
   const tell = voice ? text => speak(text, doc.langue || 'fr') : undefined
   // In a module that teaches reading, a question with an instruction has
   // only it said: its words and its choices would give the answer away.
+  // A person who reads alone may hear only the instructions everywhere.
   const sayFor = shown =>
-    voice === 'consigne' && shown?.instruction ? undefined : tell
+    personVoice === 'consigne' || (voice === 'consigne' && shown?.instruction)
+      ? undefined
+      : tell
   const index = game.answers.length
   const item = game.questions[index]
   const say = sayFor(item)

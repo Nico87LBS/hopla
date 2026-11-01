@@ -1,0 +1,826 @@
+{
+  "format": "hopla-module/1",
+  "id": "francais-ce2-vocabulaire",
+  "version": "1.0.0",
+  "nom": "Le vocabulaire",
+  "description": "Les synonymes, les contraires, les familles de mots, les préfixes et les suffixes, l'ordre alphabétique et le dictionnaire, les mots qui en regroupent d'autres.",
+  "matiere": "francais",
+  "niveaux": [
+    "CE2"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de français du cycle 2 (2024) et les repères annuels de progression du CE2 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "synonymes",
+      "nom": "Les synonymes"
+    },
+    {
+      "id": "contraires",
+      "nom": "Les contraires",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "familles",
+      "nom": "Les familles de mots",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "prefixes",
+      "nom": "Préfixes et suffixes",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "dictionnaire",
+      "nom": "Ordre alphabétique et dictionnaire",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "generiques",
+      "nom": "Les mots qui regroupent",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "syn-1",
+      "chapitre": "synonymes",
+      "type": "associer",
+      "question": "Relie les mots qui veulent dire la même chose.",
+      "consigne": "Relie les mots qui veulent dire la même chose.",
+      "paires": [
+        [
+          "content",
+          "joyeux"
+        ],
+        [
+          "rapide",
+          "vite"
+        ],
+        [
+          "maison",
+          "logement"
+        ],
+        [
+          "effrayé",
+          "apeuré"
+        ],
+        [
+          "beau",
+          "joli"
+        ]
+      ]
+    },
+    {
+      "id": "syn-2",
+      "chapitre": "synonymes",
+      "type": "associer",
+      "question": "Relie les mots qui veulent dire la même chose.",
+      "consigne": "Relie les mots qui veulent dire la même chose.",
+      "paires": [
+        [
+          "commencer",
+          "débuter"
+        ],
+        [
+          "regarder",
+          "observer"
+        ],
+        [
+          "crier",
+          "hurler"
+        ],
+        [
+          "finir",
+          "terminer"
+        ],
+        [
+          "grand",
+          "immense"
+        ]
+      ]
+    },
+    {
+      "id": "syn-q1",
+      "chapitre": "synonymes",
+      "type": "choix",
+      "question": "Quel mot veut dire la même chose que « triste » ?",
+      "reponse": "malheureux",
+      "pieges": [
+        "heureux",
+        "drôle",
+        "rapide"
+      ],
+      "consigne": "Trouve le synonyme."
+    },
+    {
+      "id": "syn-q2",
+      "chapitre": "synonymes",
+      "type": "choix",
+      "question": "Quel mot veut dire la même chose que « un chemin » ?",
+      "reponse": "un sentier",
+      "pieges": [
+        "une rivière",
+        "un mur",
+        "une voiture"
+      ],
+      "consigne": "Trouve le synonyme."
+    },
+    {
+      "id": "syn-q3",
+      "chapitre": "synonymes",
+      "type": "choix",
+      "question": "Quel mot veut dire la même chose que « parler » ?",
+      "reponse": "discuter",
+      "pieges": [
+        "dormir",
+        "courir",
+        "manger"
+      ],
+      "consigne": "Trouve le synonyme."
+    },
+    {
+      "id": "syn-q4",
+      "chapitre": "synonymes",
+      "type": "choix",
+      "question": "Quel mot veut dire la même chose que « malin » ?",
+      "reponse": "rusé",
+      "pieges": [
+        "lent",
+        "bête",
+        "mouillé"
+      ],
+      "consigne": "Trouve le synonyme."
+    },
+    {
+      "id": "syn-q5",
+      "chapitre": "synonymes",
+      "type": "choix",
+      "question": "Quel mot veut dire la même chose que « un bateau » ?",
+      "reponse": "un navire",
+      "pieges": [
+        "un avion",
+        "un train",
+        "une plage"
+      ],
+      "consigne": "Trouve le synonyme."
+    },
+    {
+      "id": "syn-q6",
+      "chapitre": "synonymes",
+      "type": "choix",
+      "question": "Quel mot veut dire la même chose que « bavarder » ?",
+      "reponse": "papoter",
+      "pieges": [
+        "se taire",
+        "écrire",
+        "sauter"
+      ],
+      "consigne": "Trouve le synonyme."
+    },
+    {
+      "id": "con-1",
+      "chapitre": "contraires",
+      "type": "associer",
+      "question": "Relie chaque mot à son contraire.",
+      "consigne": "Relie chaque mot à son contraire.",
+      "paires": [
+        [
+          "chaud",
+          "froid"
+        ],
+        [
+          "lourd",
+          "léger"
+        ],
+        [
+          "rapide",
+          "lent"
+        ],
+        [
+          "allumer",
+          "éteindre"
+        ],
+        [
+          "gagner",
+          "perdre"
+        ]
+      ]
+    },
+    {
+      "id": "con-2",
+      "chapitre": "contraires",
+      "type": "associer",
+      "question": "Relie chaque mot à son contraire.",
+      "consigne": "Relie chaque mot à son contraire.",
+      "paires": [
+        [
+          "possible",
+          "impossible"
+        ],
+        [
+          "faire",
+          "défaire"
+        ],
+        [
+          "heureux",
+          "malheureux"
+        ],
+        [
+          "poli",
+          "impoli"
+        ],
+        [
+          "monter",
+          "descendre"
+        ]
+      ]
+    },
+    {
+      "id": "con-q1",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « visible », c’est…",
+      "reponse": "invisible",
+      "pieges": [
+        "dévisible",
+        "malvisible",
+        "revisible"
+      ],
+      "consigne": "Trouve le contraire."
+    },
+    {
+      "id": "con-q2",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « coller », c’est…",
+      "reponse": "décoller",
+      "pieges": [
+        "incoller",
+        "malcoller",
+        "recoller"
+      ],
+      "consigne": "Trouve le contraire."
+    },
+    {
+      "id": "con-q3",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « adroit », c’est…",
+      "reponse": "maladroit",
+      "pieges": [
+        "inadroit",
+        "désadroit",
+        "readroit"
+      ],
+      "consigne": "Trouve le contraire."
+    },
+    {
+      "id": "con-q4",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « patient », c’est…",
+      "reponse": "impatient",
+      "pieges": [
+        "dépatient",
+        "malpatient",
+        "inpatient"
+      ],
+      "consigne": "Trouve le contraire."
+    },
+    {
+      "id": "con-q5",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « toujours », c’est…",
+      "reponse": "jamais",
+      "pieges": [
+        "souvent",
+        "parfois",
+        "encore"
+      ],
+      "consigne": "Trouve le contraire."
+    },
+    {
+      "id": "con-q6",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « entrer », c’est…",
+      "reponse": "sortir",
+      "pieges": [
+        "rentrer",
+        "venir",
+        "partir loin"
+      ],
+      "consigne": "Trouve le contraire."
+    },
+    {
+      "id": "fam-1",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Quel mot n’est pas de la famille de « terre » ?",
+      "reponse": "terrible",
+      "pieges": [
+        "terrain",
+        "enterrer",
+        "terrestre"
+      ],
+      "consigne": "Trouve l’intrus.",
+      "explication": "Les mots d’une même famille ont un radical commun et un sens proche."
+    },
+    {
+      "id": "fam-2",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Quel mot n’est pas de la famille de « dent » ?",
+      "reponse": "danger",
+      "pieges": [
+        "dentiste",
+        "dentifrice",
+        "édenté"
+      ],
+      "consigne": "Trouve l’intrus.",
+      "explication": "Les mots d’une même famille ont un radical commun et un sens proche."
+    },
+    {
+      "id": "fam-3",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Quel mot n’est pas de la famille de « jardin » ?",
+      "reponse": "jaune",
+      "pieges": [
+        "jardinier",
+        "jardinage",
+        "jardiner"
+      ],
+      "consigne": "Trouve l’intrus.",
+      "explication": "Les mots d’une même famille ont un radical commun et un sens proche."
+    },
+    {
+      "id": "fam-4",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Quel mot n’est pas de la famille de « fleur » ?",
+      "reponse": "flûte",
+      "pieges": [
+        "fleuriste",
+        "fleurir",
+        "fleuri"
+      ],
+      "consigne": "Trouve l’intrus.",
+      "explication": "Les mots d’une même famille ont un radical commun et un sens proche."
+    },
+    {
+      "id": "fam-5",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Quel mot n’est pas de la famille de « lait » ?",
+      "reponse": "laid",
+      "pieges": [
+        "laitier",
+        "laiterie",
+        "allaiter"
+      ],
+      "consigne": "Trouve l’intrus.",
+      "explication": "Les mots d’une même famille ont un radical commun et un sens proche."
+    },
+    {
+      "id": "fam-6",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Quel mot n’est pas de la famille de « chant » ?",
+      "reponse": "champ",
+      "pieges": [
+        "chanter",
+        "chanteur",
+        "chanson"
+      ],
+      "consigne": "Trouve l’intrus.",
+      "explication": "Les mots d’une même famille ont un radical commun et un sens proche."
+    },
+    {
+      "id": "fam-7",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Quel mot n’est pas de la famille de « mer » ?",
+      "reponse": "mère",
+      "pieges": [
+        "marin",
+        "marée",
+        "maritime"
+      ],
+      "consigne": "Trouve l’intrus.",
+      "explication": "Les mots d’une même famille ont un radical commun et un sens proche."
+    },
+    {
+      "id": "fam-meme",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Quel mot est de la même famille que « nager » ?",
+      "reponse": "la natation",
+      "pieges": [
+        "la nappe",
+        "le nez",
+        "la neige"
+      ],
+      "consigne": "Quel mot est de la même famille que « nager » ?"
+    },
+    {
+      "id": "fam-meme-2",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Quel mot est de la même famille que « long » ?",
+      "reponse": "longueur",
+      "pieges": [
+        "loup",
+        "lent",
+        "large"
+      ],
+      "consigne": "Quel mot est de la même famille que « long » ?"
+    },
+    {
+      "id": "fam-meme-3",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Quel mot est de la même famille que « ami » ?",
+      "reponse": "amitié",
+      "pieges": [
+        "amer",
+        "âme",
+        "amande"
+      ],
+      "consigne": "Quel mot est de la même famille que « ami » ?"
+    },
+    {
+      "id": "pre-1",
+      "chapitre": "prefixes",
+      "type": "choix",
+      "question": "Que veut dire « refaire » ?",
+      "reponse": "faire encore une fois",
+      "pieges": [
+        "ne pas faire",
+        "faire mal",
+        "faire vite"
+      ],
+      "consigne": "Choisis le bon sens.",
+      "explication": "« re- » change le sens du mot."
+    },
+    {
+      "id": "pre-2",
+      "chapitre": "prefixes",
+      "type": "choix",
+      "question": "Que veut dire « démonter » ?",
+      "reponse": "le contraire de monter",
+      "pieges": [
+        "monter encore",
+        "monter vite",
+        "bien monter"
+      ],
+      "consigne": "Choisis le bon sens.",
+      "explication": "« dé- » change le sens du mot."
+    },
+    {
+      "id": "pre-3",
+      "chapitre": "prefixes",
+      "type": "choix",
+      "question": "Que veut dire « une maisonnette » ?",
+      "reponse": "une petite maison",
+      "pieges": [
+        "une grande maison",
+        "une vieille maison",
+        "une maison en bois"
+      ],
+      "consigne": "Choisis le bon sens.",
+      "explication": "« -ette » change le sens du mot."
+    },
+    {
+      "id": "pre-4",
+      "chapitre": "prefixes",
+      "type": "choix",
+      "question": "Comment appelle-t-on celui qui chante ?",
+      "reponse": "un chanteur",
+      "pieges": [
+        "une chanson",
+        "un chantier",
+        "un chantage"
+      ],
+      "consigne": "Choisis le bon sens.",
+      "explication": "« -eur » change le sens du mot."
+    },
+    {
+      "id": "pre-5",
+      "chapitre": "prefixes",
+      "type": "choix",
+      "question": "Que veut dire « impossible » ?",
+      "reponse": "pas possible",
+      "pieges": [
+        "très possible",
+        "possible encore",
+        "presque possible"
+      ],
+      "consigne": "Choisis le bon sens.",
+      "explication": "« im- » change le sens du mot."
+    },
+    {
+      "id": "pre-6",
+      "chapitre": "prefixes",
+      "type": "choix",
+      "question": "Comment appelle-t-on celui qui vend des fleurs ?",
+      "reponse": "un fleuriste",
+      "pieges": [
+        "un fleuret",
+        "une floraison",
+        "un fleurier"
+      ],
+      "consigne": "Choisis le bon sens.",
+      "explication": "« -iste » change le sens du mot."
+    },
+    {
+      "id": "pre-7",
+      "chapitre": "prefixes",
+      "type": "choix",
+      "question": "Que veut dire « relire » ?",
+      "reponse": "lire encore une fois",
+      "pieges": [
+        "ne pas lire",
+        "lire vite",
+        "lire mal"
+      ],
+      "consigne": "Choisis le bon sens.",
+      "explication": "« re- » change le sens du mot."
+    },
+    {
+      "id": "pre-8",
+      "chapitre": "prefixes",
+      "type": "choix",
+      "question": "Que veut dire « une camionnette » ?",
+      "reponse": "un petit camion",
+      "pieges": [
+        "un gros camion",
+        "un camion rouge",
+        "un vieux camion"
+      ],
+      "consigne": "Choisis le bon sens.",
+      "explication": "« -ette » change le sens du mot."
+    },
+    {
+      "id": "alpha-1",
+      "chapitre": "dictionnaire",
+      "type": "ordre",
+      "question": "Range les mots dans l’ordre alphabétique, comme dans le dictionnaire.",
+      "consigne": "Range les mots dans l’ordre alphabétique, comme dans le dictionnaire.",
+      "elements": [
+        "arbre",
+        "bateau",
+        "chat",
+        "dent"
+      ]
+    },
+    {
+      "id": "alpha-2",
+      "chapitre": "dictionnaire",
+      "type": "ordre",
+      "question": "Range les mots dans l’ordre alphabétique, comme dans le dictionnaire.",
+      "consigne": "Range les mots dans l’ordre alphabétique, comme dans le dictionnaire.",
+      "elements": [
+        "lune",
+        "maison",
+        "pomme",
+        "tigre"
+      ]
+    },
+    {
+      "id": "alpha-3",
+      "chapitre": "dictionnaire",
+      "type": "ordre",
+      "question": "Range les mots dans l’ordre alphabétique, comme dans le dictionnaire.",
+      "consigne": "Range les mots dans l’ordre alphabétique, comme dans le dictionnaire.",
+      "elements": [
+        "balle",
+        "banc",
+        "bille",
+        "bol"
+      ]
+    },
+    {
+      "id": "alpha-4",
+      "chapitre": "dictionnaire",
+      "type": "ordre",
+      "question": "Range les mots dans l’ordre alphabétique, comme dans le dictionnaire.",
+      "consigne": "Range les mots dans l’ordre alphabétique, comme dans le dictionnaire.",
+      "elements": [
+        "carte",
+        "cerise",
+        "chaise",
+        "citron"
+      ]
+    },
+    {
+      "id": "alpha-5",
+      "chapitre": "dictionnaire",
+      "type": "ordre",
+      "question": "Range les mots dans l’ordre alphabétique, comme dans le dictionnaire.",
+      "consigne": "Range les mots dans l’ordre alphabétique, comme dans le dictionnaire.",
+      "elements": [
+        "mardi",
+        "mer",
+        "midi",
+        "mouton"
+      ]
+    },
+    {
+      "id": "alpha-6",
+      "chapitre": "dictionnaire",
+      "type": "ordre",
+      "question": "Range les mots dans l’ordre alphabétique, comme dans le dictionnaire.",
+      "consigne": "Range les mots dans l’ordre alphabétique, comme dans le dictionnaire.",
+      "elements": [
+        "salade",
+        "sel",
+        "soleil",
+        "sucre"
+      ]
+    },
+    {
+      "id": "dico-1",
+      "chapitre": "dictionnaire",
+      "type": "choix",
+      "question": "Dans le dictionnaire, quel mot vient en premier ?",
+      "reponse": "avion",
+      "pieges": [
+        "bateau",
+        "train",
+        "vélo"
+      ],
+      "consigne": "Dans le dictionnaire, quel mot vient en premier ?"
+    },
+    {
+      "id": "dico-2",
+      "chapitre": "dictionnaire",
+      "type": "choix",
+      "question": "Dans le dictionnaire, quel mot vient en premier ?",
+      "reponse": "pain",
+      "pieges": [
+        "poire",
+        "pull",
+        "plage"
+      ],
+      "consigne": "Dans le dictionnaire, quel mot vient en premier ?"
+    },
+    {
+      "id": "dico-3",
+      "chapitre": "dictionnaire",
+      "type": "choix",
+      "question": "Dans le dictionnaire, on cherche « chevaux » au mot…",
+      "reponse": "cheval",
+      "pieges": [
+        "chevaux",
+        "chev",
+        "chevalier"
+      ],
+      "consigne": "Dans le dictionnaire, on cherche « chevaux » au mot…",
+      "explication": "On cherche les noms au singulier et les verbes à l’infinitif."
+    },
+    {
+      "id": "dico-4",
+      "chapitre": "dictionnaire",
+      "type": "choix",
+      "question": "Dans le dictionnaire, on cherche « nous mangions » au mot…",
+      "reponse": "manger",
+      "pieges": [
+        "mangions",
+        "nous",
+        "mange"
+      ],
+      "consigne": "Dans le dictionnaire, on cherche « nous mangions » au mot…"
+    },
+    {
+      "id": "dico-5",
+      "chapitre": "dictionnaire",
+      "type": "choix",
+      "question": "Que trouve-t-on dans un dictionnaire ?",
+      "reponse": "le sens et l’orthographe des mots",
+      "pieges": [
+        "des histoires",
+        "des recettes",
+        "des cartes du monde"
+      ],
+      "consigne": "Que trouve-t-on dans un dictionnaire ?"
+    },
+    {
+      "id": "gen-1",
+      "chapitre": "generiques",
+      "type": "choix",
+      "question": "pomme, poire, cerise, banane : ce sont…",
+      "reponse": "des fruits",
+      "pieges": [
+        "des légumes",
+        "des fleurs",
+        "des outils"
+      ],
+      "consigne": "Trouve le mot qui les regroupe."
+    },
+    {
+      "id": "gen-2",
+      "chapitre": "generiques",
+      "type": "choix",
+      "question": "lundi, mardi, jeudi, dimanche : ce sont…",
+      "reponse": "des jours",
+      "pieges": [
+        "des mois",
+        "des saisons",
+        "des heures"
+      ],
+      "consigne": "Trouve le mot qui les regroupe."
+    },
+    {
+      "id": "gen-3",
+      "chapitre": "generiques",
+      "type": "choix",
+      "question": "chaise, table, lit, armoire : ce sont…",
+      "reponse": "des meubles",
+      "pieges": [
+        "des jouets",
+        "des vêtements",
+        "des outils"
+      ],
+      "consigne": "Trouve le mot qui les regroupe."
+    },
+    {
+      "id": "gen-4",
+      "chapitre": "generiques",
+      "type": "choix",
+      "question": "marteau, scie, tournevis, pince : ce sont…",
+      "reponse": "des outils",
+      "pieges": [
+        "des instruments",
+        "des meubles",
+        "des jeux"
+      ],
+      "consigne": "Trouve le mot qui les regroupe."
+    },
+    {
+      "id": "gen-5",
+      "chapitre": "generiques",
+      "type": "choix",
+      "question": "piano, guitare, flûte, violon : ce sont…",
+      "reponse": "des instruments de musique",
+      "pieges": [
+        "des outils",
+        "des jouets",
+        "des sports"
+      ],
+      "consigne": "Trouve le mot qui les regroupe."
+    },
+    {
+      "id": "gen-6",
+      "chapitre": "generiques",
+      "type": "choix",
+      "question": "rose, tulipe, marguerite, coquelicot : ce sont…",
+      "reponse": "des fleurs",
+      "pieges": [
+        "des fruits",
+        "des arbres",
+        "des légumes"
+      ],
+      "consigne": "Trouve le mot qui les regroupe."
+    },
+    {
+      "id": "gen-7",
+      "chapitre": "generiques",
+      "type": "choix",
+      "question": "chêne, sapin, bouleau, platane : ce sont…",
+      "reponse": "des arbres",
+      "pieges": [
+        "des fleurs",
+        "des fruits",
+        "des oiseaux"
+      ],
+      "consigne": "Trouve le mot qui les regroupe."
+    },
+    {
+      "id": "gen-8",
+      "chapitre": "generiques",
+      "type": "choix",
+      "question": "pull, pantalon, jupe, manteau : ce sont…",
+      "reponse": "des vêtements",
+      "pieges": [
+        "des meubles",
+        "des chaussures",
+        "des tissus"
+      ],
+      "consigne": "Trouve le mot qui les regroupe."
+    }
+  ]
+}

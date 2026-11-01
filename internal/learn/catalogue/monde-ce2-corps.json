@@ -1,0 +1,764 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-ce2-corps",
+  "version": "1.0.0",
+  "nom": "Mon corps",
+  "description": "Le squelette, les muscles et les articulations, bien manger, les dents, et les gestes pour rester en bonne santé.",
+  "matiere": "monde",
+  "niveaux": [
+    "CE2"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de Questionner le monde du cycle 2 et les repères de progression du CE2 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "squelette",
+      "nom": "Le squelette"
+    },
+    {
+      "id": "muscles",
+      "nom": "Muscles et articulations",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "aliments",
+      "nom": "Bien manger",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "dents",
+      "nom": "Les dents",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "sante",
+      "nom": "Dormir, bouger, se laver",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "zone-crane",
+      "chapitre": "squelette",
+      "type": "zones",
+      "image": "squelette",
+      "question": "crane",
+      "reponse": "le crâne"
+    },
+    {
+      "id": "zone-colonne",
+      "chapitre": "squelette",
+      "type": "zones",
+      "image": "squelette",
+      "question": "colonne",
+      "reponse": "la colonne vertébrale"
+    },
+    {
+      "id": "zone-cotes",
+      "chapitre": "squelette",
+      "type": "zones",
+      "image": "squelette",
+      "question": "cotes",
+      "reponse": "les côtes"
+    },
+    {
+      "id": "zone-bassin",
+      "chapitre": "squelette",
+      "type": "zones",
+      "image": "squelette",
+      "question": "bassin",
+      "reponse": "le bassin"
+    },
+    {
+      "id": "zone-bras",
+      "chapitre": "squelette",
+      "type": "zones",
+      "image": "squelette",
+      "question": "bras",
+      "reponse": "les os du bras"
+    },
+    {
+      "id": "zone-main",
+      "chapitre": "squelette",
+      "type": "zones",
+      "image": "squelette",
+      "question": "main",
+      "reponse": "la main"
+    },
+    {
+      "id": "zone-jambe",
+      "chapitre": "squelette",
+      "type": "zones",
+      "image": "squelette",
+      "question": "jambe",
+      "reponse": "les os de la jambe"
+    },
+    {
+      "id": "zone-pied",
+      "chapitre": "squelette",
+      "type": "zones",
+      "image": "squelette",
+      "question": "pied",
+      "reponse": "le pied"
+    },
+    {
+      "id": "combien-os",
+      "chapitre": "squelette",
+      "type": "choix",
+      "question": "Combien d’os a le squelette d’un adulte ?",
+      "reponse": "environ 200",
+      "pieges": [
+        "environ 20",
+        "environ 50",
+        "environ 2 000"
+      ],
+      "consigne": "Combien d’os a le squelette d’un adulte ?",
+      "explication": "Il en a 206 exactement."
+    },
+    {
+      "id": "protege-cerveau",
+      "chapitre": "squelette",
+      "type": "choix",
+      "question": "Quel os protège le cerveau ?",
+      "reponse": "le crâne",
+      "pieges": [
+        "les côtes",
+        "le bassin",
+        "la colonne vertébrale"
+      ],
+      "consigne": "Quel os protège le cerveau ?"
+    },
+    {
+      "id": "protege-coeur",
+      "chapitre": "squelette",
+      "type": "choix",
+      "question": "Que protègent les côtes ?",
+      "reponse": "le cœur et les poumons",
+      "pieges": [
+        "le cerveau",
+        "les yeux",
+        "les pieds"
+      ],
+      "consigne": "Que protègent les côtes ?"
+    },
+    {
+      "id": "vertebres",
+      "chapitre": "squelette",
+      "type": "choix",
+      "question": "La colonne vertébrale est faite de petits os appelés…",
+      "reponse": "les vertèbres",
+      "pieges": [
+        "les côtes",
+        "les phalanges",
+        "les dents"
+      ],
+      "consigne": "La colonne vertébrale est faite de petits os appelés…"
+    },
+    {
+      "id": "femur",
+      "chapitre": "squelette",
+      "type": "choix",
+      "question": "Le plus long os du corps est dans la cuisse. C’est…",
+      "reponse": "le fémur",
+      "pieges": [
+        "le crâne",
+        "la côte",
+        "la vertèbre"
+      ],
+      "consigne": "Le plus long os du corps est dans la cuisse. C’est…"
+    },
+    {
+      "id": "role-squelette",
+      "chapitre": "squelette",
+      "type": "choix",
+      "question": "À quoi sert le squelette ?",
+      "reponse": "à tenir le corps et protéger les organes",
+      "pieges": [
+        "à digérer",
+        "à respirer",
+        "à voir"
+      ],
+      "consigne": "À quoi sert le squelette ?"
+    },
+    {
+      "id": "articulations",
+      "chapitre": "muscles",
+      "type": "associer",
+      "question": "Relie chaque articulation à sa place.",
+      "consigne": "Relie chaque articulation à sa place.",
+      "paires": [
+        [
+          "le coude",
+          "au milieu du bras"
+        ],
+        [
+          "le genou",
+          "au milieu de la jambe"
+        ],
+        [
+          "le poignet",
+          "entre le bras et la main"
+        ],
+        [
+          "la cheville",
+          "entre la jambe et le pied"
+        ],
+        [
+          "l’épaule",
+          "en haut du bras"
+        ],
+        [
+          "la hanche",
+          "en haut de la jambe"
+        ]
+      ]
+    },
+    {
+      "id": "articulation-def",
+      "chapitre": "muscles",
+      "type": "choix",
+      "question": "Comment appelle-t-on l’endroit où deux os se rejoignent et peuvent bouger ?",
+      "reponse": "une articulation",
+      "pieges": [
+        "un muscle",
+        "une vertèbre",
+        "un organe"
+      ],
+      "consigne": "Comment appelle-t-on l’endroit où deux os se rejoignent et peuvent bouger ?"
+    },
+    {
+      "id": "muscle-role",
+      "chapitre": "muscles",
+      "type": "choix",
+      "question": "Qu’est-ce qui tire sur les os pour faire bouger le corps ?",
+      "reponse": "les muscles",
+      "pieges": [
+        "la peau",
+        "le sang",
+        "les ongles"
+      ],
+      "consigne": "Qu’est-ce qui tire sur les os pour faire bouger le corps ?"
+    },
+    {
+      "id": "contracte",
+      "chapitre": "muscles",
+      "type": "choix",
+      "question": "Quand on plie le bras, le muscle du dessus (le biceps)…",
+      "reponse": "se contracte et gonfle",
+      "pieges": [
+        "s’allonge et devient mou",
+        "disparaît",
+        "ne bouge pas"
+      ],
+      "consigne": "Quand on plie le bras, le muscle du dessus (le biceps)…"
+    },
+    {
+      "id": "coeur-muscle",
+      "chapitre": "muscles",
+      "type": "choix",
+      "question": "Le cœur est un muscle. Que fait-il ?",
+      "reponse": "il pousse le sang dans tout le corps",
+      "pieges": [
+        "il sert à respirer",
+        "il digère les aliments",
+        "il fait penser"
+      ],
+      "consigne": "Le cœur est un muscle. Que fait-il ?"
+    },
+    {
+      "id": "poumons",
+      "chapitre": "muscles",
+      "type": "choix",
+      "question": "À quoi servent les poumons ?",
+      "reponse": "à respirer",
+      "pieges": [
+        "à digérer",
+        "à marcher",
+        "à entendre"
+      ],
+      "consigne": "À quoi servent les poumons ?"
+    },
+    {
+      "id": "sport-coeur",
+      "chapitre": "muscles",
+      "type": "choix",
+      "question": "Après une course, le cœur bat…",
+      "reponse": "plus vite",
+      "pieges": [
+        "plus lentement",
+        "pareil",
+        "il s’arrête"
+      ],
+      "consigne": "Après une course, le cœur bat…"
+    },
+    {
+      "id": "vf-muscles-genou",
+      "chapitre": "muscles",
+      "type": "choix",
+      "question": "Le genou est une articulation.",
+      "reponse": "Vrai",
+      "pieges": [
+        "Faux"
+      ],
+      "consigne": "Vrai ou faux ?"
+    },
+    {
+      "id": "vf-muscles-os",
+      "chapitre": "muscles",
+      "type": "choix",
+      "question": "Les os bougent tout seuls, sans les muscles.",
+      "reponse": "Faux",
+      "pieges": [
+        "Vrai"
+      ],
+      "consigne": "Vrai ou faux ?",
+      "explication": "Ce sont les muscles qui tirent sur les os."
+    },
+    {
+      "id": "familles-1",
+      "chapitre": "aliments",
+      "type": "classer",
+      "question": "Dans quelle famille d’aliments ?",
+      "consigne": "Dans quelle famille d’aliments ?",
+      "boites": [
+        {
+          "nom": "Féculents"
+        },
+        {
+          "nom": "Fruits et légumes"
+        },
+        {
+          "nom": "Produits laitiers"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le pain",
+          "boite": "Féculents",
+          "image": "bread"
+        },
+        {
+          "texte": "les pâtes",
+          "boite": "Féculents",
+          "image": "pasta"
+        },
+        {
+          "texte": "le riz",
+          "boite": "Féculents",
+          "image": "rice"
+        },
+        {
+          "texte": "la pomme de terre",
+          "boite": "Féculents",
+          "image": "potato"
+        },
+        {
+          "texte": "la carotte",
+          "boite": "Fruits et légumes",
+          "image": "carrot"
+        },
+        {
+          "texte": "la pomme",
+          "boite": "Fruits et légumes",
+          "image": "apple"
+        },
+        {
+          "texte": "la tomate",
+          "boite": "Fruits et légumes",
+          "image": "tomato"
+        },
+        {
+          "texte": "le lait",
+          "boite": "Produits laitiers",
+          "image": "milk"
+        },
+        {
+          "texte": "le fromage",
+          "boite": "Produits laitiers",
+          "image": "cheese"
+        },
+        {
+          "texte": "le yaourt",
+          "boite": "Produits laitiers",
+          "image": "yogurt"
+        }
+      ]
+    },
+    {
+      "id": "familles-2",
+      "chapitre": "aliments",
+      "type": "classer",
+      "question": "Dans quelle famille d’aliments ?",
+      "consigne": "Dans quelle famille d’aliments ?",
+      "boites": [
+        {
+          "nom": "Viande, poisson, œufs"
+        },
+        {
+          "nom": "Produits sucrés"
+        },
+        {
+          "nom": "Matières grasses"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "la viande",
+          "boite": "Viande, poisson, œufs",
+          "image": "steak"
+        },
+        {
+          "texte": "le poisson",
+          "boite": "Viande, poisson, œufs",
+          "image": "fish"
+        },
+        {
+          "texte": "l’œuf",
+          "boite": "Viande, poisson, œufs",
+          "image": "egg"
+        },
+        {
+          "texte": "le bonbon",
+          "boite": "Produits sucrés",
+          "image": "candy"
+        },
+        {
+          "texte": "le gâteau",
+          "boite": "Produits sucrés",
+          "image": "cake"
+        },
+        {
+          "texte": "le soda",
+          "boite": "Produits sucrés",
+          "image": "soda"
+        },
+        {
+          "texte": "le beurre",
+          "boite": "Matières grasses",
+          "image": "butter"
+        },
+        {
+          "texte": "l’huile",
+          "boite": "Matières grasses"
+        }
+      ]
+    },
+    {
+      "id": "cinq-fruits",
+      "chapitre": "aliments",
+      "type": "choix",
+      "question": "Combien de fruits et légumes faut-il manger par jour, au moins ?",
+      "reponse": "5",
+      "pieges": [
+        "1",
+        "2",
+        "10"
+      ],
+      "consigne": "Combien de fruits et légumes faut-il manger par jour, au moins ?"
+    },
+    {
+      "id": "boisson",
+      "chapitre": "aliments",
+      "type": "choix",
+      "question": "Quelle est la seule boisson indispensable ?",
+      "reponse": "l’eau",
+      "pieges": [
+        "le soda",
+        "le jus de fruit",
+        "le sirop"
+      ],
+      "consigne": "Quelle est la seule boisson indispensable ?",
+      "image": "bottle"
+    },
+    {
+      "id": "sucre-rarement",
+      "chapitre": "aliments",
+      "type": "choix",
+      "question": "Les bonbons et les sodas, il faut en manger…",
+      "reponse": "rarement",
+      "pieges": [
+        "à chaque repas",
+        "tous les matins",
+        "beaucoup"
+      ],
+      "consigne": "Les bonbons et les sodas, il faut en manger…"
+    },
+    {
+      "id": "energie",
+      "chapitre": "aliments",
+      "type": "choix",
+      "question": "Les féculents (pain, pâtes, riz) donnent surtout…",
+      "reponse": "de l’énergie pour longtemps",
+      "pieges": [
+        "du calcium pour les os",
+        "des vitamines",
+        "rien du tout"
+      ],
+      "consigne": "Les féculents (pain, pâtes, riz) donnent surtout…"
+    },
+    {
+      "id": "calcium",
+      "chapitre": "aliments",
+      "type": "choix",
+      "question": "Les produits laitiers donnent du calcium. Il sert à…",
+      "reponse": "construire les os et les dents",
+      "pieges": [
+        "voir la nuit",
+        "courir vite",
+        "dormir"
+      ],
+      "consigne": "Les produits laitiers donnent du calcium. Il sert à…"
+    },
+    {
+      "id": "equilibre",
+      "chapitre": "aliments",
+      "type": "choix",
+      "question": "Un repas équilibré, c’est…",
+      "reponse": "un peu de chaque famille d’aliments",
+      "pieges": [
+        "seulement des pâtes",
+        "seulement un dessert",
+        "beaucoup de frites"
+      ],
+      "consigne": "Un repas équilibré, c’est…"
+    },
+    {
+      "id": "petit-dej",
+      "chapitre": "aliments",
+      "type": "choix",
+      "question": "Quel petit-déjeuner est le plus équilibré ?",
+      "reponse": "du pain, un yaourt et un fruit",
+      "pieges": [
+        "un soda et des bonbons",
+        "seulement un gâteau",
+        "rien"
+      ],
+      "consigne": "Quel petit-déjeuner est le plus équilibré ?"
+    },
+    {
+      "id": "dents",
+      "chapitre": "dents",
+      "type": "associer",
+      "question": "Relie chaque dent à ce qu’elle fait.",
+      "consigne": "Relie chaque dent à ce qu’elle fait.",
+      "paires": [
+        [
+          "les incisives",
+          "couper"
+        ],
+        [
+          "les canines",
+          "déchirer"
+        ],
+        [
+          "les molaires",
+          "broyer"
+        ]
+      ]
+    },
+    {
+      "id": "dents-lait",
+      "chapitre": "dents",
+      "type": "choix",
+      "question": "Combien un enfant a-t-il de dents de lait ?",
+      "reponse": "20",
+      "pieges": [
+        "10",
+        "32",
+        "100"
+      ],
+      "consigne": "Combien un enfant a-t-il de dents de lait ?",
+      "explication": "Elles tombent et laissent la place aux dents définitives : un adulte en a 32."
+    },
+    {
+      "id": "dents-adulte",
+      "chapitre": "dents",
+      "type": "choix",
+      "question": "Combien un adulte a-t-il de dents ?",
+      "reponse": "32",
+      "pieges": [
+        "20",
+        "12",
+        "50"
+      ],
+      "consigne": "Combien un adulte a-t-il de dents ?"
+    },
+    {
+      "id": "brosser",
+      "chapitre": "dents",
+      "type": "choix",
+      "question": "Combien de fois par jour faut-il se brosser les dents ?",
+      "reponse": "2 fois, matin et soir",
+      "pieges": [
+        "1 fois par semaine",
+        "jamais",
+        "10 fois"
+      ],
+      "consigne": "Combien de fois par jour faut-il se brosser les dents ?",
+      "image": "toothbrush"
+    },
+    {
+      "id": "brosser-temps",
+      "chapitre": "dents",
+      "type": "choix",
+      "question": "Combien de temps dure un bon brossage ?",
+      "reponse": "2 minutes",
+      "pieges": [
+        "5 secondes",
+        "20 minutes",
+        "1 heure"
+      ],
+      "consigne": "Combien de temps dure un bon brossage ?"
+    },
+    {
+      "id": "carie",
+      "chapitre": "dents",
+      "type": "choix",
+      "question": "Trop de sucre et pas de brossage, cela fait…",
+      "reponse": "des caries",
+      "pieges": [
+        "des muscles",
+        "des poils",
+        "de la fièvre"
+      ],
+      "consigne": "Trop de sucre et pas de brossage, cela fait…"
+    },
+    {
+      "id": "dentiste",
+      "chapitre": "dents",
+      "type": "choix",
+      "question": "Qui soigne les dents ?",
+      "reponse": "le dentiste",
+      "pieges": [
+        "le boulanger",
+        "le vétérinaire",
+        "le pilote"
+      ],
+      "consigne": "Qui soigne les dents ?"
+    },
+    {
+      "id": "molaires-ou",
+      "chapitre": "dents",
+      "type": "choix",
+      "question": "Où sont les molaires ?",
+      "reponse": "au fond de la bouche",
+      "pieges": [
+        "devant",
+        "sur la langue",
+        "sous le nez"
+      ],
+      "consigne": "Où sont les molaires ?"
+    },
+    {
+      "id": "sommeil",
+      "chapitre": "sante",
+      "type": "choix",
+      "question": "Combien d’heures un enfant de 8 ans doit-il dormir par nuit ?",
+      "reponse": "environ 10 heures",
+      "pieges": [
+        "environ 3 heures",
+        "environ 6 heures",
+        "environ 20 heures"
+      ],
+      "consigne": "Combien d’heures un enfant de 8 ans doit-il dormir par nuit ?",
+      "image": "bed"
+    },
+    {
+      "id": "mains",
+      "chapitre": "sante",
+      "type": "choix",
+      "question": "Quand faut-il se laver les mains ?",
+      "reponse": "avant de manger et après les toilettes",
+      "pieges": [
+        "seulement le dimanche",
+        "jamais",
+        "seulement l’été"
+      ],
+      "consigne": "Quand faut-il se laver les mains ?",
+      "image": "sink"
+    },
+    {
+      "id": "microbes",
+      "chapitre": "sante",
+      "type": "choix",
+      "question": "Le savon enlève de nos mains…",
+      "reponse": "les microbes",
+      "pieges": [
+        "les os",
+        "les muscles",
+        "les ongles"
+      ],
+      "consigne": "Le savon enlève de nos mains…"
+    },
+    {
+      "id": "ecrans",
+      "chapitre": "sante",
+      "type": "choix",
+      "question": "Avant de dormir, il vaut mieux…",
+      "reponse": "éviter les écrans",
+      "pieges": [
+        "jouer à la console",
+        "regarder un film effrayant",
+        "boire un soda"
+      ],
+      "consigne": "Avant de dormir, il vaut mieux…"
+    },
+    {
+      "id": "bouger",
+      "chapitre": "sante",
+      "type": "choix",
+      "question": "Bouger et faire du sport chaque jour aide…",
+      "reponse": "le cœur et les muscles à rester en forme",
+      "pieges": [
+        "à avoir des caries",
+        "à moins bien dormir",
+        "à rien"
+      ],
+      "consigne": "Bouger et faire du sport chaque jour aide…"
+    },
+    {
+      "id": "vf-sante-fatigue",
+      "chapitre": "sante",
+      "type": "choix",
+      "question": "Quand on dort mal, on est fatigué et on apprend moins bien.",
+      "reponse": "Vrai",
+      "pieges": [
+        "Faux"
+      ],
+      "consigne": "Vrai ou faux ?"
+    },
+    {
+      "id": "vf-sante-eau",
+      "chapitre": "sante",
+      "type": "choix",
+      "question": "Quand on fait du sport, il faut boire de l’eau.",
+      "reponse": "Vrai",
+      "pieges": [
+        "Faux"
+      ],
+      "consigne": "Vrai ou faux ?"
+    },
+    {
+      "id": "vf-sante-sucre",
+      "chapitre": "sante",
+      "type": "choix",
+      "question": "Manger des bonbons à chaque repas est bon pour la santé.",
+      "reponse": "Faux",
+      "pieges": [
+        "Vrai"
+      ],
+      "consigne": "Vrai ou faux ?"
+    }
+  ]
+}

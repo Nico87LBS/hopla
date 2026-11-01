@@ -1,0 +1,2699 @@
+{
+  "format": "hopla-module/1",
+  "id": "francais-ce2-conjugaison",
+  "version": "1.0.0",
+  "nom": "Conjugaison CE2",
+  "description": "Passé, présent ou futur ; le présent, le futur, l'imparfait et le passé composé des verbes du CE2 (être, avoir, aller, faire, dire, venir, pouvoir, voir, vouloir, prendre, partir et les verbes en -er) ; puis écrire soi-même le verbe.",
+  "matiere": "francais",
+  "niveaux": [
+    "CE2"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de français du cycle 2 (2024) et les repères annuels de progression du CE2 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "temps",
+      "nom": "Passé, présent ou futur"
+    },
+    {
+      "id": "present",
+      "nom": "Le présent",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "futur",
+      "nom": "Le futur",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "imparfait",
+      "nom": "L’imparfait",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "passe",
+      "nom": "Le passé composé",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "tape",
+      "nom": "À toi d’écrire",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "temps-1",
+      "chapitre": "temps",
+      "type": "classer",
+      "question": "Passé, présent ou futur ?",
+      "consigne": "Passé, présent ou futur ?",
+      "boites": [
+        {
+          "nom": "Passé"
+        },
+        {
+          "nom": "Présent"
+        },
+        {
+          "nom": "Futur"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "Hier, nous avons joué.",
+          "boite": "Passé"
+        },
+        {
+          "texte": "Demain, il pleuvra.",
+          "boite": "Futur"
+        },
+        {
+          "texte": "En ce moment, je lis.",
+          "boite": "Présent"
+        },
+        {
+          "texte": "Autrefois, on s’éclairait à la bougie.",
+          "boite": "Passé"
+        },
+        {
+          "texte": "L’an prochain, tu iras au CM1.",
+          "boite": "Futur"
+        },
+        {
+          "texte": "Maintenant, elle mange.",
+          "boite": "Présent"
+        },
+        {
+          "texte": "La semaine dernière, vous êtes partis.",
+          "boite": "Passé"
+        },
+        {
+          "texte": "Bientôt, nous aurons un chat.",
+          "boite": "Futur"
+        },
+        {
+          "texte": "Aujourd’hui, il fait beau.",
+          "boite": "Présent"
+        }
+      ]
+    },
+    {
+      "id": "temps-2",
+      "chapitre": "temps",
+      "type": "classer",
+      "question": "Passé, présent ou futur ?",
+      "consigne": "Passé, présent ou futur ?",
+      "boites": [
+        {
+          "nom": "Passé"
+        },
+        {
+          "nom": "Présent"
+        },
+        {
+          "nom": "Futur"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "je chantais",
+          "boite": "Passé"
+        },
+        {
+          "texte": "je chanterai",
+          "boite": "Futur"
+        },
+        {
+          "texte": "je chante",
+          "boite": "Présent"
+        },
+        {
+          "texte": "j’ai chanté",
+          "boite": "Passé"
+        },
+        {
+          "texte": "nous irons",
+          "boite": "Futur"
+        },
+        {
+          "texte": "nous allons",
+          "boite": "Présent"
+        },
+        {
+          "texte": "nous allions",
+          "boite": "Passé"
+        },
+        {
+          "texte": "ils seront",
+          "boite": "Futur"
+        },
+        {
+          "texte": "ils sont",
+          "boite": "Présent"
+        }
+      ]
+    },
+    {
+      "id": "infinitif",
+      "chapitre": "temps",
+      "type": "choix",
+      "question": "Quel est l’infinitif de « nous irons » ?",
+      "reponse": "aller",
+      "pieges": [
+        "irer",
+        "iron",
+        "venir"
+      ],
+      "consigne": "Quel est l’infinitif de « nous irons » ?",
+      "explication": "L’infinitif est le nom du verbe : aller, être, avoir…"
+    },
+    {
+      "id": "infinitif-2",
+      "chapitre": "temps",
+      "type": "choix",
+      "question": "Quel est l’infinitif de « elles font » ?",
+      "reponse": "faire",
+      "pieges": [
+        "fondre",
+        "font",
+        "fonter"
+      ],
+      "consigne": "Quel est l’infinitif de « elles font » ?"
+    },
+    {
+      "id": "infinitif-3",
+      "chapitre": "temps",
+      "type": "choix",
+      "question": "Quel est l’infinitif de « tu étais » ?",
+      "reponse": "être",
+      "pieges": [
+        "étaier",
+        "avoir",
+        "étais"
+      ],
+      "consigne": "Quel est l’infinitif de « tu étais » ?"
+    },
+    {
+      "id": "infinitif-4",
+      "chapitre": "temps",
+      "type": "choix",
+      "question": "Quel est l’infinitif de « il a pris » ?",
+      "reponse": "prendre",
+      "pieges": [
+        "prier",
+        "avoir pris",
+        "priser"
+      ],
+      "consigne": "Quel est l’infinitif de « il a pris » ?"
+    },
+    {
+      "id": "infinitif-5",
+      "chapitre": "temps",
+      "type": "choix",
+      "question": "Quel est l’infinitif de « vous voyez » ?",
+      "reponse": "voir",
+      "pieges": [
+        "voyer",
+        "vouloir",
+        "voyager"
+      ],
+      "consigne": "Quel est l’infinitif de « vous voyez » ?"
+    },
+    {
+      "id": "present-etre-1",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, ___ à la maison. (être, je)",
+      "reponse": "je suis",
+      "pieges": [
+        "je serai",
+        "j’étais",
+        "je sommes"
+      ],
+      "consigne": "Choisis le verbe être au présent."
+    },
+    {
+      "id": "present-etre-2",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, il ___ à la maison. (être)",
+      "reponse": "est",
+      "pieges": [
+        "sera",
+        "était",
+        "sont"
+      ],
+      "consigne": "Choisis le verbe être au présent."
+    },
+    {
+      "id": "present-etre-3",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, vous ___ à la maison. (être)",
+      "reponse": "êtes",
+      "pieges": [
+        "serez",
+        "étiez",
+        "es"
+      ],
+      "consigne": "Choisis le verbe être au présent."
+    },
+    {
+      "id": "present-avoir-1",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, tu ___ un chien. (avoir)",
+      "reponse": "as",
+      "pieges": [
+        "auras",
+        "avais",
+        "avez"
+      ],
+      "consigne": "Choisis le verbe avoir au présent."
+    },
+    {
+      "id": "present-avoir-2",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, nous ___ un chien. (avoir)",
+      "reponse": "avons",
+      "pieges": [
+        "aurons",
+        "avions",
+        "ai"
+      ],
+      "consigne": "Choisis le verbe avoir au présent."
+    },
+    {
+      "id": "present-avoir-3",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, ils ___ un chien. (avoir)",
+      "reponse": "ont",
+      "pieges": [
+        "auront",
+        "avaient",
+        "a"
+      ],
+      "consigne": "Choisis le verbe avoir au présent."
+    },
+    {
+      "id": "present-aller-1",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, il ___ à l’école. (aller)",
+      "reponse": "va",
+      "pieges": [
+        "ira",
+        "allait",
+        "vont"
+      ],
+      "consigne": "Choisis le verbe aller au présent."
+    },
+    {
+      "id": "present-aller-2",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, vous ___ à l’école. (aller)",
+      "reponse": "allez",
+      "pieges": [
+        "irez",
+        "alliez",
+        "vas"
+      ],
+      "consigne": "Choisis le verbe aller au présent."
+    },
+    {
+      "id": "present-aller-3",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, ___ à l’école. (aller, je)",
+      "reponse": "je vais",
+      "pieges": [
+        "j’irai",
+        "j’allais",
+        "j’allons"
+      ],
+      "consigne": "Choisis le verbe aller au présent."
+    },
+    {
+      "id": "present-faire-1",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, nous ___ un gâteau. (faire)",
+      "reponse": "faisons",
+      "pieges": [
+        "ferons",
+        "faisions",
+        "fais"
+      ],
+      "consigne": "Choisis le verbe faire au présent."
+    },
+    {
+      "id": "present-faire-2",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, ils ___ un gâteau. (faire)",
+      "reponse": "font",
+      "pieges": [
+        "feront",
+        "faisaient",
+        "fait"
+      ],
+      "consigne": "Choisis le verbe faire au présent."
+    },
+    {
+      "id": "present-faire-3",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, tu ___ un gâteau. (faire)",
+      "reponse": "fais",
+      "pieges": [
+        "feras",
+        "faisais",
+        "faites"
+      ],
+      "consigne": "Choisis le verbe faire au présent."
+    },
+    {
+      "id": "present-dire-1",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, vous ___ bonjour. (dire)",
+      "reponse": "dites",
+      "pieges": [
+        "direz",
+        "disiez",
+        "dis"
+      ],
+      "consigne": "Choisis le verbe dire au présent."
+    },
+    {
+      "id": "present-dire-2",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, ___ bonjour. (dire, je)",
+      "reponse": "je dis",
+      "pieges": [
+        "je dirai",
+        "je disais",
+        "je disons"
+      ],
+      "consigne": "Choisis le verbe dire au présent."
+    },
+    {
+      "id": "present-dire-3",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, il ___ bonjour. (dire)",
+      "reponse": "dit",
+      "pieges": [
+        "dira",
+        "disait",
+        "disent"
+      ],
+      "consigne": "Choisis le verbe dire au présent."
+    },
+    {
+      "id": "present-venir-1",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, ils ___ à la fête. (venir)",
+      "reponse": "viennent",
+      "pieges": [
+        "viendront",
+        "venaient",
+        "vient"
+      ],
+      "consigne": "Choisis le verbe venir au présent."
+    },
+    {
+      "id": "present-venir-2",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, tu ___ à la fête. (venir)",
+      "reponse": "viens",
+      "pieges": [
+        "viendras",
+        "venais",
+        "venez"
+      ],
+      "consigne": "Choisis le verbe venir au présent."
+    },
+    {
+      "id": "present-venir-3",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, nous ___ à la fête. (venir)",
+      "reponse": "venons",
+      "pieges": [
+        "viendrons",
+        "venions",
+        "viens"
+      ],
+      "consigne": "Choisis le verbe venir au présent."
+    },
+    {
+      "id": "present-pouvoir-1",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, ___ jouer dehors. (pouvoir, je)",
+      "reponse": "je peux",
+      "pieges": [
+        "je pourrai",
+        "je pouvais",
+        "je pouvons"
+      ],
+      "consigne": "Choisis le verbe pouvoir au présent."
+    },
+    {
+      "id": "present-pouvoir-2",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, il ___ jouer dehors. (pouvoir)",
+      "reponse": "peut",
+      "pieges": [
+        "pourra",
+        "pouvait",
+        "peuvent"
+      ],
+      "consigne": "Choisis le verbe pouvoir au présent."
+    },
+    {
+      "id": "present-pouvoir-3",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, vous ___ jouer dehors. (pouvoir)",
+      "reponse": "pouvez",
+      "pieges": [
+        "pourrez",
+        "pouviez",
+        "peux"
+      ],
+      "consigne": "Choisis le verbe pouvoir au présent."
+    },
+    {
+      "id": "present-voir-1",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, tu ___ la mer. (voir)",
+      "reponse": "vois",
+      "pieges": [
+        "verras",
+        "voyais",
+        "voyez"
+      ],
+      "consigne": "Choisis le verbe voir au présent."
+    },
+    {
+      "id": "present-voir-2",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, nous ___ la mer. (voir)",
+      "reponse": "voyons",
+      "pieges": [
+        "verrons",
+        "voyions",
+        "vois"
+      ],
+      "consigne": "Choisis le verbe voir au présent."
+    },
+    {
+      "id": "present-voir-3",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, ils ___ la mer. (voir)",
+      "reponse": "voient",
+      "pieges": [
+        "verront",
+        "voyaient",
+        "voit"
+      ],
+      "consigne": "Choisis le verbe voir au présent."
+    },
+    {
+      "id": "present-vouloir-1",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, il ___ un bonbon. (vouloir)",
+      "reponse": "veut",
+      "pieges": [
+        "voudra",
+        "voulait",
+        "veulent"
+      ],
+      "consigne": "Choisis le verbe vouloir au présent."
+    },
+    {
+      "id": "present-vouloir-2",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, vous ___ un bonbon. (vouloir)",
+      "reponse": "voulez",
+      "pieges": [
+        "voudrez",
+        "vouliez",
+        "veux"
+      ],
+      "consigne": "Choisis le verbe vouloir au présent."
+    },
+    {
+      "id": "present-vouloir-3",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, ___ un bonbon. (vouloir, je)",
+      "reponse": "je veux",
+      "pieges": [
+        "je voudrai",
+        "je voulais",
+        "je voulons"
+      ],
+      "consigne": "Choisis le verbe vouloir au présent."
+    },
+    {
+      "id": "present-prendre-1",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, nous ___ le bus. (prendre)",
+      "reponse": "prenons",
+      "pieges": [
+        "prendrons",
+        "prenions",
+        "prends"
+      ],
+      "consigne": "Choisis le verbe prendre au présent."
+    },
+    {
+      "id": "present-prendre-2",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, ils ___ le bus. (prendre)",
+      "reponse": "prennent",
+      "pieges": [
+        "prendront",
+        "prenaient",
+        "prend"
+      ],
+      "consigne": "Choisis le verbe prendre au présent."
+    },
+    {
+      "id": "present-prendre-3",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, tu ___ le bus. (prendre)",
+      "reponse": "prends",
+      "pieges": [
+        "prendras",
+        "prenais",
+        "prenez"
+      ],
+      "consigne": "Choisis le verbe prendre au présent."
+    },
+    {
+      "id": "present-partir-1",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, vous ___ en vacances. (partir)",
+      "reponse": "partez",
+      "pieges": [
+        "partirez",
+        "partiez",
+        "pars"
+      ],
+      "consigne": "Choisis le verbe partir au présent."
+    },
+    {
+      "id": "present-partir-2",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, ___ en vacances. (partir, je)",
+      "reponse": "je pars",
+      "pieges": [
+        "je partirai",
+        "je partais",
+        "je partons"
+      ],
+      "consigne": "Choisis le verbe partir au présent."
+    },
+    {
+      "id": "present-partir-3",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, il ___ en vacances. (partir)",
+      "reponse": "part",
+      "pieges": [
+        "partira",
+        "partait",
+        "partent"
+      ],
+      "consigne": "Choisis le verbe partir au présent."
+    },
+    {
+      "id": "present-chanter-1",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, ils ___ une chanson. (chanter)",
+      "reponse": "chantent",
+      "pieges": [
+        "chanteront",
+        "chantaient",
+        "chante"
+      ],
+      "consigne": "Choisis le verbe chanter au présent."
+    },
+    {
+      "id": "present-chanter-2",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, tu ___ une chanson. (chanter)",
+      "reponse": "chantes",
+      "pieges": [
+        "chanteras",
+        "chantais",
+        "chantez"
+      ],
+      "consigne": "Choisis le verbe chanter au présent."
+    },
+    {
+      "id": "present-chanter-3",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, nous ___ une chanson. (chanter)",
+      "reponse": "chantons",
+      "pieges": [
+        "chanterons",
+        "chantions",
+        "chante"
+      ],
+      "consigne": "Choisis le verbe chanter au présent."
+    },
+    {
+      "id": "present-jouer-1",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, ___ au ballon. (jouer, je)",
+      "reponse": "je joue",
+      "pieges": [
+        "je jouerai",
+        "je jouais",
+        "je jouons"
+      ],
+      "consigne": "Choisis le verbe jouer au présent."
+    },
+    {
+      "id": "present-jouer-2",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, il ___ au ballon. (jouer)",
+      "reponse": "joue",
+      "pieges": [
+        "jouera",
+        "jouait",
+        "jouent"
+      ],
+      "consigne": "Choisis le verbe jouer au présent."
+    },
+    {
+      "id": "present-jouer-3",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, vous ___ au ballon. (jouer)",
+      "reponse": "jouez",
+      "pieges": [
+        "jouerez",
+        "jouiez",
+        "joues"
+      ],
+      "consigne": "Choisis le verbe jouer au présent."
+    },
+    {
+      "id": "present-manger-1",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, tu ___ une pomme. (manger)",
+      "reponse": "manges",
+      "pieges": [
+        "mangeras",
+        "mangeais",
+        "mangez"
+      ],
+      "consigne": "Choisis le verbe manger au présent."
+    },
+    {
+      "id": "present-manger-2",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, nous ___ une pomme. (manger)",
+      "reponse": "mangeons",
+      "pieges": [
+        "mangerons",
+        "mangions",
+        "mange"
+      ],
+      "consigne": "Choisis le verbe manger au présent."
+    },
+    {
+      "id": "present-manger-3",
+      "chapitre": "present",
+      "type": "choix",
+      "question": "Aujourd’hui, ils ___ une pomme. (manger)",
+      "reponse": "mangent",
+      "pieges": [
+        "mangeront",
+        "mangeaient",
+        "mange"
+      ],
+      "consigne": "Choisis le verbe manger au présent."
+    },
+    {
+      "id": "futur-etre-1",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, tu ___ à la maison. (être)",
+      "reponse": "seras",
+      "pieges": [
+        "es",
+        "étais",
+        "serez"
+      ],
+      "consigne": "Choisis le verbe être au futur."
+    },
+    {
+      "id": "futur-etre-2",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, nous ___ à la maison. (être)",
+      "reponse": "serons",
+      "pieges": [
+        "sommes",
+        "étions",
+        "serai"
+      ],
+      "consigne": "Choisis le verbe être au futur."
+    },
+    {
+      "id": "futur-etre-3",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, ils ___ à la maison. (être)",
+      "reponse": "seront",
+      "pieges": [
+        "sont",
+        "étaient",
+        "sera"
+      ],
+      "consigne": "Choisis le verbe être au futur."
+    },
+    {
+      "id": "futur-avoir-1",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, il ___ un chien. (avoir)",
+      "reponse": "aura",
+      "pieges": [
+        "a",
+        "avait",
+        "auront"
+      ],
+      "consigne": "Choisis le verbe avoir au futur."
+    },
+    {
+      "id": "futur-avoir-2",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, vous ___ un chien. (avoir)",
+      "reponse": "aurez",
+      "pieges": [
+        "avez",
+        "aviez",
+        "auras"
+      ],
+      "consigne": "Choisis le verbe avoir au futur."
+    },
+    {
+      "id": "futur-avoir-3",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, ___ un chien. (avoir, je)",
+      "reponse": "j’aurai",
+      "pieges": [
+        "j’ai",
+        "j’avais",
+        "j’aurons"
+      ],
+      "consigne": "Choisis le verbe avoir au futur."
+    },
+    {
+      "id": "futur-aller-1",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, nous ___ à l’école. (aller)",
+      "reponse": "irons",
+      "pieges": [
+        "allons",
+        "allions",
+        "irai"
+      ],
+      "consigne": "Choisis le verbe aller au futur."
+    },
+    {
+      "id": "futur-aller-2",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, ils ___ à l’école. (aller)",
+      "reponse": "iront",
+      "pieges": [
+        "vont",
+        "allaient",
+        "ira"
+      ],
+      "consigne": "Choisis le verbe aller au futur."
+    },
+    {
+      "id": "futur-aller-3",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, tu ___ à l’école. (aller)",
+      "reponse": "iras",
+      "pieges": [
+        "vas",
+        "allais",
+        "irez"
+      ],
+      "consigne": "Choisis le verbe aller au futur."
+    },
+    {
+      "id": "futur-faire-1",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, vous ___ un gâteau. (faire)",
+      "reponse": "ferez",
+      "pieges": [
+        "faites",
+        "faisiez",
+        "feras"
+      ],
+      "consigne": "Choisis le verbe faire au futur."
+    },
+    {
+      "id": "futur-faire-2",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, ___ un gâteau. (faire, je)",
+      "reponse": "je ferai",
+      "pieges": [
+        "je fais",
+        "je faisais",
+        "je ferons"
+      ],
+      "consigne": "Choisis le verbe faire au futur."
+    },
+    {
+      "id": "futur-faire-3",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, il ___ un gâteau. (faire)",
+      "reponse": "fera",
+      "pieges": [
+        "fait",
+        "faisait",
+        "feront"
+      ],
+      "consigne": "Choisis le verbe faire au futur."
+    },
+    {
+      "id": "futur-dire-1",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, ils ___ bonjour. (dire)",
+      "reponse": "diront",
+      "pieges": [
+        "disent",
+        "disaient",
+        "dira"
+      ],
+      "consigne": "Choisis le verbe dire au futur."
+    },
+    {
+      "id": "futur-dire-2",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, tu ___ bonjour. (dire)",
+      "reponse": "diras",
+      "pieges": [
+        "dis",
+        "disais",
+        "direz"
+      ],
+      "consigne": "Choisis le verbe dire au futur."
+    },
+    {
+      "id": "futur-dire-3",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, nous ___ bonjour. (dire)",
+      "reponse": "dirons",
+      "pieges": [
+        "disons",
+        "disions",
+        "dirai"
+      ],
+      "consigne": "Choisis le verbe dire au futur."
+    },
+    {
+      "id": "futur-venir-1",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, ___ à la fête. (venir, je)",
+      "reponse": "je viendrai",
+      "pieges": [
+        "je viens",
+        "je venais",
+        "je viendrons"
+      ],
+      "consigne": "Choisis le verbe venir au futur."
+    },
+    {
+      "id": "futur-venir-2",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, il ___ à la fête. (venir)",
+      "reponse": "viendra",
+      "pieges": [
+        "vient",
+        "venait",
+        "viendront"
+      ],
+      "consigne": "Choisis le verbe venir au futur."
+    },
+    {
+      "id": "futur-venir-3",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, vous ___ à la fête. (venir)",
+      "reponse": "viendrez",
+      "pieges": [
+        "venez",
+        "veniez",
+        "viendras"
+      ],
+      "consigne": "Choisis le verbe venir au futur."
+    },
+    {
+      "id": "futur-pouvoir-1",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, tu ___ jouer dehors. (pouvoir)",
+      "reponse": "pourras",
+      "pieges": [
+        "peux",
+        "pouvais",
+        "pourrez"
+      ],
+      "consigne": "Choisis le verbe pouvoir au futur."
+    },
+    {
+      "id": "futur-pouvoir-2",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, nous ___ jouer dehors. (pouvoir)",
+      "reponse": "pourrons",
+      "pieges": [
+        "pouvons",
+        "pouvions",
+        "pourrai"
+      ],
+      "consigne": "Choisis le verbe pouvoir au futur."
+    },
+    {
+      "id": "futur-pouvoir-3",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, ils ___ jouer dehors. (pouvoir)",
+      "reponse": "pourront",
+      "pieges": [
+        "peuvent",
+        "pouvaient",
+        "pourra"
+      ],
+      "consigne": "Choisis le verbe pouvoir au futur."
+    },
+    {
+      "id": "futur-voir-1",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, il ___ la mer. (voir)",
+      "reponse": "verra",
+      "pieges": [
+        "voit",
+        "voyait",
+        "verront"
+      ],
+      "consigne": "Choisis le verbe voir au futur."
+    },
+    {
+      "id": "futur-voir-2",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, vous ___ la mer. (voir)",
+      "reponse": "verrez",
+      "pieges": [
+        "voyez",
+        "voyiez",
+        "verras"
+      ],
+      "consigne": "Choisis le verbe voir au futur."
+    },
+    {
+      "id": "futur-voir-3",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, ___ la mer. (voir, je)",
+      "reponse": "je verrai",
+      "pieges": [
+        "je vois",
+        "je voyais",
+        "je verrons"
+      ],
+      "consigne": "Choisis le verbe voir au futur."
+    },
+    {
+      "id": "futur-vouloir-1",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, nous ___ un bonbon. (vouloir)",
+      "reponse": "voudrons",
+      "pieges": [
+        "voulons",
+        "voulions",
+        "voudrai"
+      ],
+      "consigne": "Choisis le verbe vouloir au futur."
+    },
+    {
+      "id": "futur-vouloir-2",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, ils ___ un bonbon. (vouloir)",
+      "reponse": "voudront",
+      "pieges": [
+        "veulent",
+        "voulaient",
+        "voudra"
+      ],
+      "consigne": "Choisis le verbe vouloir au futur."
+    },
+    {
+      "id": "futur-vouloir-3",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, tu ___ un bonbon. (vouloir)",
+      "reponse": "voudras",
+      "pieges": [
+        "veux",
+        "voulais",
+        "voudrez"
+      ],
+      "consigne": "Choisis le verbe vouloir au futur."
+    },
+    {
+      "id": "futur-prendre-1",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, vous ___ le bus. (prendre)",
+      "reponse": "prendrez",
+      "pieges": [
+        "prenez",
+        "preniez",
+        "prendras"
+      ],
+      "consigne": "Choisis le verbe prendre au futur."
+    },
+    {
+      "id": "futur-prendre-2",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, ___ le bus. (prendre, je)",
+      "reponse": "je prendrai",
+      "pieges": [
+        "je prends",
+        "je prenais",
+        "je prendrons"
+      ],
+      "consigne": "Choisis le verbe prendre au futur."
+    },
+    {
+      "id": "futur-prendre-3",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, il ___ le bus. (prendre)",
+      "reponse": "prendra",
+      "pieges": [
+        "prend",
+        "prenait",
+        "prendront"
+      ],
+      "consigne": "Choisis le verbe prendre au futur."
+    },
+    {
+      "id": "futur-partir-1",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, ils ___ en vacances. (partir)",
+      "reponse": "partiront",
+      "pieges": [
+        "partent",
+        "partaient",
+        "partira"
+      ],
+      "consigne": "Choisis le verbe partir au futur."
+    },
+    {
+      "id": "futur-partir-2",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, tu ___ en vacances. (partir)",
+      "reponse": "partiras",
+      "pieges": [
+        "pars",
+        "partais",
+        "partirez"
+      ],
+      "consigne": "Choisis le verbe partir au futur."
+    },
+    {
+      "id": "futur-partir-3",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, nous ___ en vacances. (partir)",
+      "reponse": "partirons",
+      "pieges": [
+        "partons",
+        "partions",
+        "partirai"
+      ],
+      "consigne": "Choisis le verbe partir au futur."
+    },
+    {
+      "id": "futur-chanter-1",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, ___ une chanson. (chanter, je)",
+      "reponse": "je chanterai",
+      "pieges": [
+        "je chante",
+        "je chantais",
+        "je chanterons"
+      ],
+      "consigne": "Choisis le verbe chanter au futur."
+    },
+    {
+      "id": "futur-chanter-2",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, il ___ une chanson. (chanter)",
+      "reponse": "chantera",
+      "pieges": [
+        "chante",
+        "chantait",
+        "chanteront"
+      ],
+      "consigne": "Choisis le verbe chanter au futur."
+    },
+    {
+      "id": "futur-chanter-3",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, vous ___ une chanson. (chanter)",
+      "reponse": "chanterez",
+      "pieges": [
+        "chantez",
+        "chantiez",
+        "chanteras"
+      ],
+      "consigne": "Choisis le verbe chanter au futur."
+    },
+    {
+      "id": "futur-jouer-1",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, tu ___ au ballon. (jouer)",
+      "reponse": "joueras",
+      "pieges": [
+        "joues",
+        "jouais",
+        "jouerez"
+      ],
+      "consigne": "Choisis le verbe jouer au futur."
+    },
+    {
+      "id": "futur-jouer-2",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, nous ___ au ballon. (jouer)",
+      "reponse": "jouerons",
+      "pieges": [
+        "jouons",
+        "jouions",
+        "jouerai"
+      ],
+      "consigne": "Choisis le verbe jouer au futur."
+    },
+    {
+      "id": "futur-jouer-3",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, ils ___ au ballon. (jouer)",
+      "reponse": "joueront",
+      "pieges": [
+        "jouent",
+        "jouaient",
+        "jouera"
+      ],
+      "consigne": "Choisis le verbe jouer au futur."
+    },
+    {
+      "id": "futur-manger-1",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, il ___ une pomme. (manger)",
+      "reponse": "mangera",
+      "pieges": [
+        "mange",
+        "mangeait",
+        "mangeront"
+      ],
+      "consigne": "Choisis le verbe manger au futur."
+    },
+    {
+      "id": "futur-manger-2",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, vous ___ une pomme. (manger)",
+      "reponse": "mangerez",
+      "pieges": [
+        "mangez",
+        "mangiez",
+        "mangeras"
+      ],
+      "consigne": "Choisis le verbe manger au futur."
+    },
+    {
+      "id": "futur-manger-3",
+      "chapitre": "futur",
+      "type": "choix",
+      "question": "Demain, ___ une pomme. (manger, je)",
+      "reponse": "je mangerai",
+      "pieges": [
+        "je mange",
+        "je mangeais",
+        "je mangerons"
+      ],
+      "consigne": "Choisis le verbe manger au futur."
+    },
+    {
+      "id": "imparfait-etre-1",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, il ___ à la maison. (être)",
+      "reponse": "était",
+      "pieges": [
+        "est",
+        "sera",
+        "étaient"
+      ],
+      "consigne": "Choisis le verbe être au imparfait."
+    },
+    {
+      "id": "imparfait-etre-2",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, vous ___ à la maison. (être)",
+      "reponse": "étiez",
+      "pieges": [
+        "êtes",
+        "serez",
+        "étais"
+      ],
+      "consigne": "Choisis le verbe être au imparfait."
+    },
+    {
+      "id": "imparfait-etre-3",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, ___ à la maison. (être, je)",
+      "reponse": "j’étais",
+      "pieges": [
+        "je suis",
+        "je serai",
+        "j’étions"
+      ],
+      "consigne": "Choisis le verbe être au imparfait."
+    },
+    {
+      "id": "imparfait-avoir-1",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, nous ___ un chien. (avoir)",
+      "reponse": "avions",
+      "pieges": [
+        "avons",
+        "aurons",
+        "avais"
+      ],
+      "consigne": "Choisis le verbe avoir au imparfait."
+    },
+    {
+      "id": "imparfait-avoir-2",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, ils ___ un chien. (avoir)",
+      "reponse": "avaient",
+      "pieges": [
+        "ont",
+        "auront",
+        "avait"
+      ],
+      "consigne": "Choisis le verbe avoir au imparfait."
+    },
+    {
+      "id": "imparfait-avoir-3",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, tu ___ un chien. (avoir)",
+      "reponse": "avais",
+      "pieges": [
+        "as",
+        "auras",
+        "aviez"
+      ],
+      "consigne": "Choisis le verbe avoir au imparfait."
+    },
+    {
+      "id": "imparfait-aller-1",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, vous ___ à l’école. (aller)",
+      "reponse": "alliez",
+      "pieges": [
+        "allez",
+        "irez",
+        "allais"
+      ],
+      "consigne": "Choisis le verbe aller au imparfait."
+    },
+    {
+      "id": "imparfait-aller-2",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, ___ à l’école. (aller, je)",
+      "reponse": "j’allais",
+      "pieges": [
+        "je vais",
+        "j’irai",
+        "j’allions"
+      ],
+      "consigne": "Choisis le verbe aller au imparfait."
+    },
+    {
+      "id": "imparfait-aller-3",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, il ___ à l’école. (aller)",
+      "reponse": "allait",
+      "pieges": [
+        "va",
+        "ira",
+        "allaient"
+      ],
+      "consigne": "Choisis le verbe aller au imparfait."
+    },
+    {
+      "id": "imparfait-faire-1",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, ils ___ un gâteau. (faire)",
+      "reponse": "faisaient",
+      "pieges": [
+        "font",
+        "feront",
+        "faisait"
+      ],
+      "consigne": "Choisis le verbe faire au imparfait."
+    },
+    {
+      "id": "imparfait-faire-2",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, tu ___ un gâteau. (faire)",
+      "reponse": "faisais",
+      "pieges": [
+        "fais",
+        "feras",
+        "faisiez"
+      ],
+      "consigne": "Choisis le verbe faire au imparfait."
+    },
+    {
+      "id": "imparfait-faire-3",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, nous ___ un gâteau. (faire)",
+      "reponse": "faisions",
+      "pieges": [
+        "faisons",
+        "ferons",
+        "faisais"
+      ],
+      "consigne": "Choisis le verbe faire au imparfait."
+    },
+    {
+      "id": "imparfait-dire-1",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, ___ bonjour. (dire, je)",
+      "reponse": "je disais",
+      "pieges": [
+        "je dis",
+        "je dirai",
+        "je disions"
+      ],
+      "consigne": "Choisis le verbe dire au imparfait."
+    },
+    {
+      "id": "imparfait-dire-2",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, il ___ bonjour. (dire)",
+      "reponse": "disait",
+      "pieges": [
+        "dit",
+        "dira",
+        "disaient"
+      ],
+      "consigne": "Choisis le verbe dire au imparfait."
+    },
+    {
+      "id": "imparfait-dire-3",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, vous ___ bonjour. (dire)",
+      "reponse": "disiez",
+      "pieges": [
+        "dites",
+        "direz",
+        "disais"
+      ],
+      "consigne": "Choisis le verbe dire au imparfait."
+    },
+    {
+      "id": "imparfait-venir-1",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, tu ___ à la fête. (venir)",
+      "reponse": "venais",
+      "pieges": [
+        "viens",
+        "viendras",
+        "veniez"
+      ],
+      "consigne": "Choisis le verbe venir au imparfait."
+    },
+    {
+      "id": "imparfait-venir-2",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, nous ___ à la fête. (venir)",
+      "reponse": "venions",
+      "pieges": [
+        "venons",
+        "viendrons",
+        "venais"
+      ],
+      "consigne": "Choisis le verbe venir au imparfait."
+    },
+    {
+      "id": "imparfait-venir-3",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, ils ___ à la fête. (venir)",
+      "reponse": "venaient",
+      "pieges": [
+        "viennent",
+        "viendront",
+        "venait"
+      ],
+      "consigne": "Choisis le verbe venir au imparfait."
+    },
+    {
+      "id": "imparfait-pouvoir-1",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, il ___ jouer dehors. (pouvoir)",
+      "reponse": "pouvait",
+      "pieges": [
+        "peut",
+        "pourra",
+        "pouvaient"
+      ],
+      "consigne": "Choisis le verbe pouvoir au imparfait."
+    },
+    {
+      "id": "imparfait-pouvoir-2",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, vous ___ jouer dehors. (pouvoir)",
+      "reponse": "pouviez",
+      "pieges": [
+        "pouvez",
+        "pourrez",
+        "pouvais"
+      ],
+      "consigne": "Choisis le verbe pouvoir au imparfait."
+    },
+    {
+      "id": "imparfait-pouvoir-3",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, ___ jouer dehors. (pouvoir, je)",
+      "reponse": "je pouvais",
+      "pieges": [
+        "je peux",
+        "je pourrai",
+        "je pouvions"
+      ],
+      "consigne": "Choisis le verbe pouvoir au imparfait."
+    },
+    {
+      "id": "imparfait-voir-1",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, nous ___ la mer. (voir)",
+      "reponse": "voyions",
+      "pieges": [
+        "voyons",
+        "verrons",
+        "voyais"
+      ],
+      "consigne": "Choisis le verbe voir au imparfait."
+    },
+    {
+      "id": "imparfait-voir-2",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, ils ___ la mer. (voir)",
+      "reponse": "voyaient",
+      "pieges": [
+        "voient",
+        "verront",
+        "voyait"
+      ],
+      "consigne": "Choisis le verbe voir au imparfait."
+    },
+    {
+      "id": "imparfait-voir-3",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, tu ___ la mer. (voir)",
+      "reponse": "voyais",
+      "pieges": [
+        "vois",
+        "verras",
+        "voyiez"
+      ],
+      "consigne": "Choisis le verbe voir au imparfait."
+    },
+    {
+      "id": "imparfait-vouloir-1",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, vous ___ un bonbon. (vouloir)",
+      "reponse": "vouliez",
+      "pieges": [
+        "voulez",
+        "voudrez",
+        "voulais"
+      ],
+      "consigne": "Choisis le verbe vouloir au imparfait."
+    },
+    {
+      "id": "imparfait-vouloir-2",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, ___ un bonbon. (vouloir, je)",
+      "reponse": "je voulais",
+      "pieges": [
+        "je veux",
+        "je voudrai",
+        "je voulions"
+      ],
+      "consigne": "Choisis le verbe vouloir au imparfait."
+    },
+    {
+      "id": "imparfait-vouloir-3",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, il ___ un bonbon. (vouloir)",
+      "reponse": "voulait",
+      "pieges": [
+        "veut",
+        "voudra",
+        "voulaient"
+      ],
+      "consigne": "Choisis le verbe vouloir au imparfait."
+    },
+    {
+      "id": "imparfait-prendre-1",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, ils ___ le bus. (prendre)",
+      "reponse": "prenaient",
+      "pieges": [
+        "prennent",
+        "prendront",
+        "prenait"
+      ],
+      "consigne": "Choisis le verbe prendre au imparfait."
+    },
+    {
+      "id": "imparfait-prendre-2",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, tu ___ le bus. (prendre)",
+      "reponse": "prenais",
+      "pieges": [
+        "prends",
+        "prendras",
+        "preniez"
+      ],
+      "consigne": "Choisis le verbe prendre au imparfait."
+    },
+    {
+      "id": "imparfait-prendre-3",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, nous ___ le bus. (prendre)",
+      "reponse": "prenions",
+      "pieges": [
+        "prenons",
+        "prendrons",
+        "prenais"
+      ],
+      "consigne": "Choisis le verbe prendre au imparfait."
+    },
+    {
+      "id": "imparfait-partir-1",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, ___ en vacances. (partir, je)",
+      "reponse": "je partais",
+      "pieges": [
+        "je pars",
+        "je partirai",
+        "je partions"
+      ],
+      "consigne": "Choisis le verbe partir au imparfait."
+    },
+    {
+      "id": "imparfait-partir-2",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, il ___ en vacances. (partir)",
+      "reponse": "partait",
+      "pieges": [
+        "part",
+        "partira",
+        "partaient"
+      ],
+      "consigne": "Choisis le verbe partir au imparfait."
+    },
+    {
+      "id": "imparfait-partir-3",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, vous ___ en vacances. (partir)",
+      "reponse": "partiez",
+      "pieges": [
+        "partez",
+        "partirez",
+        "partais"
+      ],
+      "consigne": "Choisis le verbe partir au imparfait."
+    },
+    {
+      "id": "imparfait-chanter-1",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, tu ___ une chanson. (chanter)",
+      "reponse": "chantais",
+      "pieges": [
+        "chantes",
+        "chanteras",
+        "chantiez"
+      ],
+      "consigne": "Choisis le verbe chanter au imparfait."
+    },
+    {
+      "id": "imparfait-chanter-2",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, nous ___ une chanson. (chanter)",
+      "reponse": "chantions",
+      "pieges": [
+        "chantons",
+        "chanterons",
+        "chantais"
+      ],
+      "consigne": "Choisis le verbe chanter au imparfait."
+    },
+    {
+      "id": "imparfait-chanter-3",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, ils ___ une chanson. (chanter)",
+      "reponse": "chantaient",
+      "pieges": [
+        "chantent",
+        "chanteront",
+        "chantait"
+      ],
+      "consigne": "Choisis le verbe chanter au imparfait."
+    },
+    {
+      "id": "imparfait-jouer-1",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, il ___ au ballon. (jouer)",
+      "reponse": "jouait",
+      "pieges": [
+        "joue",
+        "jouera",
+        "jouaient"
+      ],
+      "consigne": "Choisis le verbe jouer au imparfait."
+    },
+    {
+      "id": "imparfait-jouer-2",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, vous ___ au ballon. (jouer)",
+      "reponse": "jouiez",
+      "pieges": [
+        "jouez",
+        "jouerez",
+        "jouais"
+      ],
+      "consigne": "Choisis le verbe jouer au imparfait."
+    },
+    {
+      "id": "imparfait-jouer-3",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, ___ au ballon. (jouer, je)",
+      "reponse": "je jouais",
+      "pieges": [
+        "je joue",
+        "je jouerai",
+        "je jouions"
+      ],
+      "consigne": "Choisis le verbe jouer au imparfait."
+    },
+    {
+      "id": "imparfait-manger-1",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, nous ___ une pomme. (manger)",
+      "reponse": "mangions",
+      "pieges": [
+        "mangeons",
+        "mangerons",
+        "mangeais"
+      ],
+      "consigne": "Choisis le verbe manger au imparfait."
+    },
+    {
+      "id": "imparfait-manger-2",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, ils ___ une pomme. (manger)",
+      "reponse": "mangeaient",
+      "pieges": [
+        "mangent",
+        "mangeront",
+        "mangeait"
+      ],
+      "consigne": "Choisis le verbe manger au imparfait."
+    },
+    {
+      "id": "imparfait-manger-3",
+      "chapitre": "imparfait",
+      "type": "choix",
+      "question": "Autrefois, tu ___ une pomme. (manger)",
+      "reponse": "mangeais",
+      "pieges": [
+        "manges",
+        "mangeras",
+        "mangiez"
+      ],
+      "consigne": "Choisis le verbe manger au imparfait."
+    },
+    {
+      "id": "passe-etre-1",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, nous ___ à la maison. (être)",
+      "reponse": "avons été",
+      "pieges": [
+        "sommes",
+        "serons",
+        "ai été"
+      ],
+      "consigne": "Choisis le verbe être au passé composé."
+    },
+    {
+      "id": "passe-etre-2",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, ils ___ à la maison. (être)",
+      "reponse": "ont été",
+      "pieges": [
+        "sont",
+        "seront",
+        "a été"
+      ],
+      "consigne": "Choisis le verbe être au passé composé."
+    },
+    {
+      "id": "passe-etre-3",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, tu ___ à la maison. (être)",
+      "reponse": "as été",
+      "pieges": [
+        "es",
+        "seras",
+        "avez été"
+      ],
+      "consigne": "Choisis le verbe être au passé composé."
+    },
+    {
+      "id": "passe-avoir-1",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, vous ___ un chien. (avoir)",
+      "reponse": "avez eu",
+      "pieges": [
+        "avez",
+        "aurez",
+        "as eu"
+      ],
+      "consigne": "Choisis le verbe avoir au passé composé."
+    },
+    {
+      "id": "passe-avoir-2",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, ___ un chien. (avoir, je)",
+      "reponse": "j’ai eu",
+      "pieges": [
+        "j’ai",
+        "j’aurai",
+        "j’avons eu"
+      ],
+      "consigne": "Choisis le verbe avoir au passé composé."
+    },
+    {
+      "id": "passe-avoir-3",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, il ___ un chien. (avoir)",
+      "reponse": "a eu",
+      "pieges": [
+        "a",
+        "aura",
+        "ont eu"
+      ],
+      "consigne": "Choisis le verbe avoir au passé composé."
+    },
+    {
+      "id": "passe-aller-1",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, ils ___ à l’école. (aller)",
+      "reponse": "sont allés",
+      "pieges": [
+        "vont",
+        "iront",
+        "est allé"
+      ],
+      "consigne": "Choisis le verbe aller au passé composé."
+    },
+    {
+      "id": "passe-aller-2",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, tu ___ à l’école. (aller)",
+      "reponse": "es allé",
+      "pieges": [
+        "vas",
+        "iras",
+        "êtes allés"
+      ],
+      "consigne": "Choisis le verbe aller au passé composé."
+    },
+    {
+      "id": "passe-aller-3",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, nous ___ à l’école. (aller)",
+      "reponse": "sommes allés",
+      "pieges": [
+        "allons",
+        "irons",
+        "suis allé"
+      ],
+      "consigne": "Choisis le verbe aller au passé composé."
+    },
+    {
+      "id": "passe-faire-1",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, ___ un gâteau. (faire, je)",
+      "reponse": "j’ai fait",
+      "pieges": [
+        "je fais",
+        "je ferai",
+        "j’avons fait"
+      ],
+      "consigne": "Choisis le verbe faire au passé composé."
+    },
+    {
+      "id": "passe-faire-2",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, il ___ un gâteau. (faire)",
+      "reponse": "a fait",
+      "pieges": [
+        "fait",
+        "fera",
+        "ont fait"
+      ],
+      "consigne": "Choisis le verbe faire au passé composé."
+    },
+    {
+      "id": "passe-faire-3",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, vous ___ un gâteau. (faire)",
+      "reponse": "avez fait",
+      "pieges": [
+        "faites",
+        "ferez",
+        "as fait"
+      ],
+      "consigne": "Choisis le verbe faire au passé composé."
+    },
+    {
+      "id": "passe-dire-1",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, tu ___ bonjour. (dire)",
+      "reponse": "as dit",
+      "pieges": [
+        "dis",
+        "diras",
+        "avez dit"
+      ],
+      "consigne": "Choisis le verbe dire au passé composé."
+    },
+    {
+      "id": "passe-dire-2",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, nous ___ bonjour. (dire)",
+      "reponse": "avons dit",
+      "pieges": [
+        "disons",
+        "dirons",
+        "ai dit"
+      ],
+      "consigne": "Choisis le verbe dire au passé composé."
+    },
+    {
+      "id": "passe-dire-3",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, ils ___ bonjour. (dire)",
+      "reponse": "ont dit",
+      "pieges": [
+        "disent",
+        "diront",
+        "a dit"
+      ],
+      "consigne": "Choisis le verbe dire au passé composé."
+    },
+    {
+      "id": "passe-venir-1",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, il ___ à la fête. (venir)",
+      "reponse": "est venu",
+      "pieges": [
+        "vient",
+        "viendra",
+        "sont venus"
+      ],
+      "consigne": "Choisis le verbe venir au passé composé."
+    },
+    {
+      "id": "passe-venir-2",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, vous ___ à la fête. (venir)",
+      "reponse": "êtes venus",
+      "pieges": [
+        "venez",
+        "viendrez",
+        "es venu"
+      ],
+      "consigne": "Choisis le verbe venir au passé composé."
+    },
+    {
+      "id": "passe-venir-3",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, ___ à la fête. (venir, je)",
+      "reponse": "je suis venu",
+      "pieges": [
+        "je viens",
+        "je viendrai",
+        "je sommes venus"
+      ],
+      "consigne": "Choisis le verbe venir au passé composé."
+    },
+    {
+      "id": "passe-pouvoir-1",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, nous ___ jouer dehors. (pouvoir)",
+      "reponse": "avons pu",
+      "pieges": [
+        "pouvons",
+        "pourrons",
+        "ai pu"
+      ],
+      "consigne": "Choisis le verbe pouvoir au passé composé."
+    },
+    {
+      "id": "passe-pouvoir-2",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, ils ___ jouer dehors. (pouvoir)",
+      "reponse": "ont pu",
+      "pieges": [
+        "peuvent",
+        "pourront",
+        "a pu"
+      ],
+      "consigne": "Choisis le verbe pouvoir au passé composé."
+    },
+    {
+      "id": "passe-pouvoir-3",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, tu ___ jouer dehors. (pouvoir)",
+      "reponse": "as pu",
+      "pieges": [
+        "peux",
+        "pourras",
+        "avez pu"
+      ],
+      "consigne": "Choisis le verbe pouvoir au passé composé."
+    },
+    {
+      "id": "passe-voir-1",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, vous ___ la mer. (voir)",
+      "reponse": "avez vu",
+      "pieges": [
+        "voyez",
+        "verrez",
+        "as vu"
+      ],
+      "consigne": "Choisis le verbe voir au passé composé."
+    },
+    {
+      "id": "passe-voir-2",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, ___ la mer. (voir, je)",
+      "reponse": "j’ai vu",
+      "pieges": [
+        "je vois",
+        "je verrai",
+        "j’avons vu"
+      ],
+      "consigne": "Choisis le verbe voir au passé composé."
+    },
+    {
+      "id": "passe-voir-3",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, il ___ la mer. (voir)",
+      "reponse": "a vu",
+      "pieges": [
+        "voit",
+        "verra",
+        "ont vu"
+      ],
+      "consigne": "Choisis le verbe voir au passé composé."
+    },
+    {
+      "id": "passe-vouloir-1",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, ils ___ un bonbon. (vouloir)",
+      "reponse": "ont voulu",
+      "pieges": [
+        "veulent",
+        "voudront",
+        "a voulu"
+      ],
+      "consigne": "Choisis le verbe vouloir au passé composé."
+    },
+    {
+      "id": "passe-vouloir-2",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, tu ___ un bonbon. (vouloir)",
+      "reponse": "as voulu",
+      "pieges": [
+        "veux",
+        "voudras",
+        "avez voulu"
+      ],
+      "consigne": "Choisis le verbe vouloir au passé composé."
+    },
+    {
+      "id": "passe-vouloir-3",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, nous ___ un bonbon. (vouloir)",
+      "reponse": "avons voulu",
+      "pieges": [
+        "voulons",
+        "voudrons",
+        "ai voulu"
+      ],
+      "consigne": "Choisis le verbe vouloir au passé composé."
+    },
+    {
+      "id": "passe-prendre-1",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, ___ le bus. (prendre, je)",
+      "reponse": "j’ai pris",
+      "pieges": [
+        "je prends",
+        "je prendrai",
+        "j’avons pris"
+      ],
+      "consigne": "Choisis le verbe prendre au passé composé."
+    },
+    {
+      "id": "passe-prendre-2",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, il ___ le bus. (prendre)",
+      "reponse": "a pris",
+      "pieges": [
+        "prend",
+        "prendra",
+        "ont pris"
+      ],
+      "consigne": "Choisis le verbe prendre au passé composé."
+    },
+    {
+      "id": "passe-prendre-3",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, vous ___ le bus. (prendre)",
+      "reponse": "avez pris",
+      "pieges": [
+        "prenez",
+        "prendrez",
+        "as pris"
+      ],
+      "consigne": "Choisis le verbe prendre au passé composé."
+    },
+    {
+      "id": "passe-partir-1",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, tu ___ en vacances. (partir)",
+      "reponse": "es parti",
+      "pieges": [
+        "pars",
+        "partiras",
+        "êtes partis"
+      ],
+      "consigne": "Choisis le verbe partir au passé composé."
+    },
+    {
+      "id": "passe-partir-2",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, nous ___ en vacances. (partir)",
+      "reponse": "sommes partis",
+      "pieges": [
+        "partons",
+        "partirons",
+        "suis parti"
+      ],
+      "consigne": "Choisis le verbe partir au passé composé."
+    },
+    {
+      "id": "passe-partir-3",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, ils ___ en vacances. (partir)",
+      "reponse": "sont partis",
+      "pieges": [
+        "partent",
+        "partiront",
+        "est parti"
+      ],
+      "consigne": "Choisis le verbe partir au passé composé."
+    },
+    {
+      "id": "passe-chanter-1",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, il ___ une chanson. (chanter)",
+      "reponse": "a chanté",
+      "pieges": [
+        "chante",
+        "chantera",
+        "ont chanté"
+      ],
+      "consigne": "Choisis le verbe chanter au passé composé."
+    },
+    {
+      "id": "passe-chanter-2",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, vous ___ une chanson. (chanter)",
+      "reponse": "avez chanté",
+      "pieges": [
+        "chantez",
+        "chanterez",
+        "as chanté"
+      ],
+      "consigne": "Choisis le verbe chanter au passé composé."
+    },
+    {
+      "id": "passe-chanter-3",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, ___ une chanson. (chanter, je)",
+      "reponse": "j’ai chanté",
+      "pieges": [
+        "je chante",
+        "je chanterai",
+        "j’avons chanté"
+      ],
+      "consigne": "Choisis le verbe chanter au passé composé."
+    },
+    {
+      "id": "passe-jouer-1",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, nous ___ au ballon. (jouer)",
+      "reponse": "avons joué",
+      "pieges": [
+        "jouons",
+        "jouerons",
+        "ai joué"
+      ],
+      "consigne": "Choisis le verbe jouer au passé composé."
+    },
+    {
+      "id": "passe-jouer-2",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, ils ___ au ballon. (jouer)",
+      "reponse": "ont joué",
+      "pieges": [
+        "jouent",
+        "joueront",
+        "a joué"
+      ],
+      "consigne": "Choisis le verbe jouer au passé composé."
+    },
+    {
+      "id": "passe-jouer-3",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, tu ___ au ballon. (jouer)",
+      "reponse": "as joué",
+      "pieges": [
+        "joues",
+        "joueras",
+        "avez joué"
+      ],
+      "consigne": "Choisis le verbe jouer au passé composé."
+    },
+    {
+      "id": "passe-manger-1",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, vous ___ une pomme. (manger)",
+      "reponse": "avez mangé",
+      "pieges": [
+        "mangez",
+        "mangerez",
+        "as mangé"
+      ],
+      "consigne": "Choisis le verbe manger au passé composé."
+    },
+    {
+      "id": "passe-manger-2",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, ___ une pomme. (manger, je)",
+      "reponse": "j’ai mangé",
+      "pieges": [
+        "je mange",
+        "je mangerai",
+        "j’avons mangé"
+      ],
+      "consigne": "Choisis le verbe manger au passé composé."
+    },
+    {
+      "id": "passe-manger-3",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, il ___ une pomme. (manger)",
+      "reponse": "a mangé",
+      "pieges": [
+        "mange",
+        "mangera",
+        "ont mangé"
+      ],
+      "consigne": "Choisis le verbe manger au passé composé."
+    },
+    {
+      "id": "pc-aux-etre",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Avec quel auxiliaire se conjugue « aller » au passé composé ?",
+      "reponse": "être",
+      "pieges": [
+        "avoir"
+      ],
+      "consigne": "Avec quel auxiliaire se conjugue « aller » au passé composé ?",
+      "explication": "Je suis allé, nous sommes allés."
+    },
+    {
+      "id": "pc-aux-avoir",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Avec quel auxiliaire se conjugue « manger » au passé composé ?",
+      "reponse": "avoir",
+      "pieges": [
+        "être"
+      ],
+      "consigne": "Avec quel auxiliaire se conjugue « manger » au passé composé ?",
+      "explication": "J’ai mangé, nous avons mangé."
+    },
+    {
+      "id": "pc-elle",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, elle ___ à la piscine. (aller)",
+      "reponse": "est allée",
+      "pieges": [
+        "est allé",
+        "a allé",
+        "allait"
+      ],
+      "consigne": "Choisis le verbe aller au passé composé.",
+      "explication": "Avec être, le participe s’accorde avec le sujet : elle est allée."
+    },
+    {
+      "id": "pc-elles",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, elles ___ en vacances. (partir)",
+      "reponse": "sont parties",
+      "pieges": [
+        "sont partis",
+        "ont parti",
+        "partiront"
+      ],
+      "consigne": "Choisis le verbe partir au passé composé."
+    },
+    {
+      "id": "pc-elle-venir",
+      "chapitre": "passe",
+      "type": "choix",
+      "question": "Hier, ma tante ___ me voir. (venir)",
+      "reponse": "est venue",
+      "pieges": [
+        "est venu",
+        "a venu",
+        "venait"
+      ],
+      "consigne": "Choisis le verbe venir au passé composé."
+    },
+    {
+      "id": "tape-1",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "Demain, nous ___ à l’école. (aller, futur)",
+      "reponse": "irons",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe conjugué, sans le sujet."
+    },
+    {
+      "id": "tape-2",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "Demain, ils ___ à la maison. (être, futur)",
+      "reponse": "seront",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe conjugué, sans le sujet."
+    },
+    {
+      "id": "tape-3",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "Demain, tu ___ un chien. (avoir, futur)",
+      "reponse": "auras",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe conjugué, sans le sujet."
+    },
+    {
+      "id": "tape-4",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "Demain, il ___ un gâteau. (faire, futur)",
+      "reponse": "fera",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe conjugué, sans le sujet."
+    },
+    {
+      "id": "tape-5",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "Demain, vous ___ une chanson. (chanter, futur)",
+      "reponse": "chanterez",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe conjugué, sans le sujet."
+    },
+    {
+      "id": "tape-6",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "Demain, ils ___ à la fête. (venir, futur)",
+      "reponse": "viendront",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe conjugué, sans le sujet."
+    },
+    {
+      "id": "tape-7",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "Aujourd’hui, vous ___ un gâteau. (faire, présent)",
+      "reponse": "faites",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe conjugué, sans le sujet."
+    },
+    {
+      "id": "tape-8",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "Aujourd’hui, vous ___ bonjour. (dire, présent)",
+      "reponse": "dites",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe conjugué, sans le sujet."
+    },
+    {
+      "id": "tape-9",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "Aujourd’hui, ils ___ à l’école. (aller, présent)",
+      "reponse": "vont",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe conjugué, sans le sujet."
+    },
+    {
+      "id": "tape-10",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "Aujourd’hui, ils ___ le bus. (prendre, présent)",
+      "reponse": "prennent",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe conjugué, sans le sujet."
+    },
+    {
+      "id": "tape-11",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "Aujourd’hui, tu ___ jouer dehors. (pouvoir, présent)",
+      "reponse": "peux",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe conjugué, sans le sujet."
+    },
+    {
+      "id": "tape-12",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "Aujourd’hui, nous ___ une pomme. (manger, présent)",
+      "reponse": "mangeons",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe conjugué, sans le sujet."
+    },
+    {
+      "id": "tape-13",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "Autrefois, il ___ à la maison. (être, imparfait)",
+      "reponse": "était",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe conjugué, sans le sujet."
+    },
+    {
+      "id": "tape-14",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "Autrefois, ils ___ un chien. (avoir, imparfait)",
+      "reponse": "avaient",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe conjugué, sans le sujet."
+    },
+    {
+      "id": "tape-15",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "Autrefois, nous ___ au ballon. (jouer, imparfait)",
+      "reponse": "jouions",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe conjugué, sans le sujet."
+    },
+    {
+      "id": "tape-16",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "Autrefois, il ___ une pomme. (manger, imparfait)",
+      "reponse": "mangeait",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe conjugué, sans le sujet."
+    },
+    {
+      "id": "tape-17",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "Autrefois, vous ___ un gâteau. (faire, imparfait)",
+      "reponse": "faisiez",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe conjugué, sans le sujet."
+    },
+    {
+      "id": "tape-18",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "Hier, nous ___ une pomme. (manger, passé composé)",
+      "reponse": "avons mangé",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe conjugué, sans le sujet."
+    },
+    {
+      "id": "tape-19",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "Hier, tu ___ la mer. (voir, passé composé)",
+      "reponse": "as vu",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe conjugué, sans le sujet."
+    },
+    {
+      "id": "tape-20",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "Hier, ils ___ le bus. (prendre, passé composé)",
+      "reponse": "ont pris",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe conjugué, sans le sujet."
+    },
+    {
+      "id": "tape-21",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "Hier, il ___ un gâteau. (faire, passé composé)",
+      "reponse": "a fait",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe conjugué, sans le sujet."
+    },
+    {
+      "id": "tape-22",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "Hier, il ___ à l’école. (aller, passé composé)",
+      "reponse": "est allé",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe conjugué, sans le sujet."
+    },
+    {
+      "id": "tape-23",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "Hier, nous ___ en vacances. (partir, passé composé)",
+      "reponse": "sommes partis",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe conjugué, sans le sujet."
+    },
+    {
+      "id": "tape-24",
+      "chapitre": "tape",
+      "type": "saisie",
+      "question": "Hier, vous ___ bonjour. (dire, passé composé)",
+      "reponse": "avez dit",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe conjugué, sans le sujet."
+    }
+  ]
+}

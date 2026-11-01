@@ -1701,6 +1701,240 @@ Object.assign(DRAWINGS, {
     circle(70, 72, 2.6, METAL, false),
 })
 
+// ── CE2: the living world, food, matter, electricity and times past ──
+
+const YELLOW = '#FFD23F'
+// A circuit: a battery on the left, a bulb on the right, two wires.
+const battery = (x, y) =>
+  rect(x, y, 16, 30, 2, '#4B4458') +
+  rect(x, y, 16, 12, 2, '#F97316') +
+  rect(x + 5, y - 4, 6, 4, 1, METAL) +
+  line(`M${x + 8} ${y + 3} V${y + 9} M${x + 5} ${y + 6} H${x + 11}`, 1.4) +
+  line(`M${x + 5} ${y + 23} H${x + 11}`, 1.4)
+const bulb = (x, y, lit) =>
+  (lit
+    ? line(
+        `M${x - 16} ${y - 8} l-6 -3 M${x + 16} ${y - 8} l6 -3 M${x} ${y - 24} v-6 M${x - 12} ${y - 20} l-4 -5 M${x + 12} ${y - 20} l4 -5`,
+        1.8,
+      )
+    : '') +
+  shape(
+    `M${x - 10} ${y + 8} C${x - 18} ${y} ${x - 14} ${y - 18} ${x} ${y - 18} C${x + 14} ${y - 18} ${x + 18} ${y} ${x + 10} ${y + 8}Z`,
+    lit ? YELLOW : '#F4F1FA',
+  ) +
+  line(
+    `M${x - 4} ${y + 6} L${x - 2} ${y - 4} L${x + 2} ${y - 4} L${x + 4} ${y + 6}`,
+    1.2,
+  ) +
+  rect(x - 9, y + 8, 18, 10, 2, METAL)
+const circuit = ({ cut = false, lit = false, open = false, same = false }) => {
+  const knob = x => circle(x, 20, 2, INK, false)
+  // The top wire: from + through the switch, round to the side of the bulb.
+  const top =
+    line('M22 36 V20 H36', 1.8) +
+    (open ? line('M36 20 L48 10', 2.4) : line('M36 20 H50', 2.4)) +
+    knob(36) +
+    knob(50) +
+    line('M50 20 H90 V60 H81', 1.8)
+  // The bottom wire, to the tip of the bulb: from -, or from + again.
+  const bottom = same
+    ? line('M22 30 H8 V86 H72 V64', 1.8)
+    : cut
+      ? line('M22 70 V86 H40 M52 86 H72 V64', 1.8) +
+        line('M40 86 l3 -4 M52 86 l-3 4', 1.6)
+      : line('M22 70 V86 H72 V64', 1.8)
+  return battery(14, 40) + bulb(72, 46, lit) + top + bottom
+}
+
+Object.assign(DRAWINGS, {
+  lizard:
+    shape(
+      'M16 62 C26 52 40 50 54 52 C66 52 74 46 84 48 C90 50 90 56 84 58 C74 60 66 62 56 64 C44 68 30 70 16 62Z',
+      '#7BC96F',
+    ) +
+    shape('M16 62 C10 66 6 74 12 80 C10 72 14 68 20 66Z', '#7BC96F') +
+    line(
+      'M40 54 L34 44 L30 44 M40 64 L34 74 L30 74 M62 54 L66 44 L70 44 M60 62 L64 72 L68 72',
+      2.4,
+    ) +
+    eye(80, 51, 1.8),
+  crocodile:
+    shape(
+      'M8 58 C14 48 30 46 44 48 H74 L92 52 C94 56 92 60 88 60 H76 C70 64 60 66 48 66 C30 68 16 66 8 58Z',
+      '#4CA36A',
+    ) +
+    line('M76 56 H92', 1.4) +
+    line('M78 56 l2 -3 l2 3 l2 -3 l2 3 l2 -3 l2 3', 1.2) +
+    line('M30 48 l3 -4 l3 4 l3 -4 l3 4 l3 -4 l3 4', 1.6) +
+    line('M30 66 L26 76 M56 66 L60 76', 3) +
+    circle(68, 46, 4, '#4CA36A') +
+    eye(68, 45, 1.8),
+  bat:
+    shape(
+      'M50 40 C40 30 26 26 10 32 C16 38 16 44 12 50 C20 46 26 48 30 54 C34 48 42 48 50 54 C58 48 66 48 70 54 C74 48 80 46 88 50 C84 44 84 38 90 32 C74 26 60 30 50 40Z',
+      '#6B5B95',
+    ) +
+    oval(50, 46, 9, 11, '#6B5B95') +
+    shape('M43 38 L42 28 L48 35Z M57 38 L58 28 L52 35Z', '#6B5B95') +
+    eyes(46, 54, 44, 1.8) +
+    line('M47 51 l1.5 2 l1.5 -2 M50 51 l1.5 2 l1.5 -2', 1),
+  penguin:
+    oval(50, 56, 22, 30, '#2B2B33') +
+    oval(50, 62, 15, 22, '#fff', false) +
+    oval(50, 34, 11, 9, '#fff', false) +
+    eyes(45, 55, 34, 2) +
+    shape('M46 40 L54 40 L50 46Z', '#F97316') +
+    shape('M28 52 C20 62 22 72 30 74Z M72 52 C80 62 78 72 70 74Z', '#2B2B33') +
+    oval(42, 86, 7, 3, '#F97316') +
+    oval(58, 86, 7, 3, '#F97316'),
+  frogspawn:
+    shape('M14 60 C20 46 80 46 86 60 C80 74 20 74 14 60Z', '#BFE3FF', 0.7) +
+    [
+      [26, 58],
+      [36, 54],
+      [46, 58],
+      [56, 54],
+      [66, 58],
+      [76, 60],
+      [32, 64],
+      [42, 66],
+      [52, 64],
+      [62, 66],
+      [72, 66],
+    ]
+      .map(
+        ([x, y]) =>
+          circle(x, y, 5, '#E6F4FF') + circle(x, y, 1.8, '#2B2B33', false),
+      )
+      .join(''),
+  tadpole:
+    shape(
+      'M30 50 C30 38 50 38 54 46 C66 44 80 36 88 42 C80 50 70 52 58 54 C54 62 30 62 30 50Z',
+      '#4B4458',
+    ) + eye(38, 48, 2),
+  caterpillar:
+    [20, 32, 44, 56, 68]
+      .map((x, i) =>
+        circle(x, 58 - (i % 2) * 6, 9, i % 2 ? '#7BC96F' : '#A3D977'),
+      )
+      .join('') +
+    circle(80, 48, 11, '#7BC96F') +
+    eyes(76, 84, 46, 1.8) +
+    line('M76 38 L72 28 M84 38 L88 28', 1.8) +
+    smile(80, 52, 2.6),
+  chrysalis:
+    line('M50 10 V22 M30 12 H70', 2) +
+    shape(
+      'M50 22 C64 26 66 48 60 66 C56 78 52 84 50 88 C48 84 44 78 40 66 C34 48 36 26 50 22Z',
+      '#C9A86A',
+    ) +
+    line(
+      'M42 40 C48 44 52 44 58 40 M41 54 C48 58 52 58 59 54 M44 68 C48 70 52 70 56 68',
+      1.4,
+    ),
+  pasta:
+    shape('M14 56 C14 76 86 76 86 56Z', '#fff') +
+    line('M14 56 H86') +
+    line(
+      'M26 56 C30 44 36 52 40 42 C44 34 50 48 54 40 C58 32 62 46 68 40 C72 36 74 48 76 56',
+      3.4,
+    ) +
+    line('M30 56 C34 46 40 50 46 44 M56 56 C60 46 66 50 70 44', 3) +
+    circle(50, 46, 5, '#E5484D'),
+  rice:
+    shape('M14 56 C14 76 86 76 86 56Z', '#60A5FA') +
+    shape('M18 56 C20 38 80 38 82 56Z', '#fff') +
+    line(
+      'M34 46 l3 1 M44 42 l3 -1 M54 46 l3 1 M64 44 l2 2 M40 52 l3 0 M58 52 l3 -1 M48 50 l2 2',
+      1.4,
+    ),
+  yogurt:
+    shape('M30 30 H70 L66 84 H34Z', '#fff') +
+    shape('M28 24 H72 V32 H28Z', '#F472B6') +
+    shape('M32 46 H68 L66 62 H34Z', '#FFB3C5') +
+    circle(50, 54, 4, '#E5484D', false),
+  steak:
+    shape(
+      'M18 54 C18 34 46 30 62 36 C80 42 86 58 74 68 C62 78 30 78 22 68 C19 64 18 60 18 54Z',
+      '#C2410C',
+    ) +
+    shape(
+      'M30 52 C34 44 50 42 58 48 C62 54 54 60 44 60 C36 60 30 58 30 52Z',
+      '#F5D3AE',
+    ) +
+    line('M28 64 C40 70 60 70 70 62', 1.4),
+  butter:
+    shape('M14 64 L34 76 L86 60 L66 50Z', '#fff') +
+    shape('M24 52 L38 60 V70 L24 62Z', YELLOW) +
+    shape('M24 52 L64 40 L78 48 L38 60Z', '#FFE58F') +
+    shape('M38 60 L78 48 V58 L38 70Z', YELLOW),
+  kettle:
+    shape('M24 80 C20 56 30 40 50 40 C70 40 80 56 76 80Z', '#60A5FA') +
+    line('M36 40 C36 26 64 26 64 40', 3) +
+    shape('M76 62 L90 50 L92 54 L80 70Z', '#60A5FA') +
+    circle(50, 38, 3, '#2B2B33') +
+    line('M90 40 C86 34 94 30 90 24 M84 38 C80 32 88 28 84 22', 1.6),
+  battery: battery(42, 30) + line('M50 26 V18', 1.6) + line('M50 66 V78', 1.6),
+  bulb: bulb(50, 48, true),
+  socket:
+    rect(22, 22, 56, 56, 10, '#fff') +
+    circle(50, 50, 18, '#F4F1FA') +
+    circle(42, 50, 3, INK, false) +
+    circle(58, 50, 3, INK, false) +
+    shape('M76 14 L66 34 H74 L64 56 L84 28 H76 L84 14Z', YELLOW),
+  'circuit-closed': circuit({ lit: true }),
+  'circuit-open': circuit({ open: true }),
+  'circuit-cut': circuit({ cut: true }),
+  'circuit-same': circuit({ same: true }),
+  mammoth:
+    shape(
+      'M14 58 C14 34 34 24 56 26 C74 28 84 40 84 54 C84 60 82 64 80 66 V82 H70 V68 H58 V82 H48 V68 H36 V82 H26 V68 C18 66 14 62 14 58Z',
+      '#8D5A3B',
+    ) +
+    shape(
+      'M80 48 C90 54 90 70 86 80 C84 82 80 80 82 76 C84 70 82 62 76 58Z',
+      '#8D5A3B',
+    ) +
+    shape('M74 58 C76 70 70 76 60 76 C66 72 68 66 66 60Z', '#FFF8EE') +
+    line('M24 40 l-2 6 M32 34 l-2 6 M42 30 l-1 6', 1.4) +
+    eye(70, 44, 2),
+  castle:
+    shape('M14 84 V40 H22 V34 H28 V40 H34 V34 H40 V40 H46 V84Z', METAL) +
+    shape('M54 84 V40 H60 V34 H66 V40 H72 V34 H78 V40 H86 V84Z', METAL) +
+    shape('M34 84 V52 H66 V84Z', '#D9D6E4') +
+    shape('M42 84 V68 C42 60 58 60 58 68 V84Z', '#8D5A3B') +
+    line('M30 20 V40', 1.6) +
+    shape('M30 20 L44 25 L30 30Z', '#E5484D') +
+    rect(26, 52, 6, 10, 3, '#2B2B33') +
+    rect(68, 52, 6, 10, 3, '#2B2B33'),
+  temple:
+    shape('M12 36 L50 16 L88 36Z', '#FFF8EE') +
+    rect(14, 36, 72, 7, 1, '#FFF8EE') +
+    [22, 38, 54, 70].map(x => rect(x, 43, 8, 34, 1, '#FFF8EE')).join('') +
+    rect(10, 77, 80, 7, 1, '#FFF8EE'),
+  candle:
+    rect(38, 42, 24, 40, 3, '#fff') +
+    line('M50 42 V34', 1.6) +
+    shape('M50 12 C58 22 58 32 50 34 C42 32 42 22 50 12Z', YELLOW) +
+    shape('M50 20 C54 26 54 30 50 32 C46 30 46 26 50 20Z', '#F97316') +
+    oval(50, 84, 22, 5, '#F97316'),
+  phone:
+    rect(32, 14, 36, 72, 7, '#2B2B33') +
+    rect(36, 22, 28, 52, 2, '#BFE3FF') +
+    circle(50, 80, 2.6, METAL, false) +
+    rect(40, 30, 8, 8, 2, '#F97316') +
+    rect(52, 30, 8, 8, 2, '#30A46C') +
+    rect(40, 44, 8, 8, 2, '#E5484D') +
+    rect(52, 44, 8, 8, 2, YELLOW),
+  computer:
+    rect(18, 20, 64, 44, 4, '#4B4458') +
+    rect(23, 25, 54, 34, 2, '#BFE3FF') +
+    shape('M42 64 H58 L60 74 H40Z', METAL) +
+    rect(28, 74, 44, 6, 2, METAL) +
+    rect(30, 32, 20, 4, 1, '#fff') +
+    rect(30, 40, 30, 4, 1, '#fff'),
+})
+
 for (const [name, colour] of Object.entries(COLOURS)) {
   DRAWINGS[`colour-${name}`] = splash(colour)
 }
@@ -1727,12 +1961,14 @@ const GROUPS = {
   animal:
     'cat dog rabbit bird fish horse cow pig duck mouse sheep frog lion elephant bear snake ' +
     'llama turtle wolf goat spider bee seal dolphin shark giraffe panda zebra koala ' +
-    'hen chick calf lamb foal kitten puppy piglet duckling rat fox owl hedgehog whale crab octopus butterfly snail worm',
+    'hen chick calf lamb foal kitten puppy piglet duckling rat fox owl hedgehog whale crab octopus butterfly snail worm ' +
+    'lizard crocodile bat penguin frogspawn tadpole caterpillar chrysalis mammoth',
   family: 'mum dad baby grandma grandpa sister brother king',
   body: 'head eye nose mouth ear hand foot tooth',
   food:
     'apple banana orange strawberry pear cherry grapes lemon carrot bread milk cake egg cheese ice-cream ' +
-    'honey candy soda salad leek potato peas bone tomato radish kiwi cabbage soup juice ice-cube mushroom',
+    'honey candy soda salad leek potato peas bone tomato radish kiwi cabbage soup juice ice-cube mushroom ' +
+    'pasta rice yogurt steak butter',
   toy: 'ball doll teddy car kite book train bike boat motorbike domino robot guitar plane bus rocket',
   weather: 'sun rain snow wind cloud rainbow',
   clothes: 'hat shoes socks coat t-shirt dress scarf skirt',
@@ -1742,7 +1978,8 @@ const GROUPS = {
   nature:
     'moon star snowman flower leaf fir grass barn wave tulip fire mountain igloo',
   object:
-    'spoon key bottle bucket cork stone coin toothbrush truck log bag bowl suitcase wheel cage',
+    'spoon key bottle bucket cork stone coin toothbrush truck log bag bowl suitcase wheel cage ' +
+    'kettle battery bulb socket circuit-closed circuit-open circuit-cut circuit-same castle temple candle phone computer',
 }
 const groupOf = id => {
   const prefix = id.split('-')[0]

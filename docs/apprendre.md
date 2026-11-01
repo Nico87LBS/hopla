@@ -28,6 +28,8 @@ peuvent aussi partager ce qui est appris grâce à leur clé (voir
 | **Langage GS** | Les rimes, Les syllabes, Le son du début, Les lettres (avec « Mon prénom »), Les mots en images | Enfant, GS |
 | **Maths GS** | Compter des quantités, La suite des nombres, Lire les nombres, Comparer, Composer 5 et 10, Formes et positions | Enfant, GS |
 | **Explorer le monde GS** | Le temps qui passe, Les saisons, Les animaux, Mon corps, Les plantes, Objets et matières | Enfant, GS |
+| **Français CE2** | Conjugaison (présent, futur, imparfait, passé composé, puis le verbe à écrire soi-même), La phrase, Les accords (avec un chapitre à écrire), Les homophones, Le vocabulaire, Comprendre un texte | Enfant, CE2 |
+| **Questionner le monde CE2** | Le vivant, Mon corps (squelette à toucher), La matière, L'électricité, Se repérer dans l'espace (régions, fleuves, montagnes et villes de France, continents et océans), Se repérer dans le temps | Enfant, CE2 |
 | **Maths CE2** | Nombres jusqu'à 10 000, Calcul mental, Addition et soustraction, Multiplication, Division, Mesures, Problèmes, Géométrie | Enfant, CE2 |
 | **Anglais à l'école** | Anglais GS : mes premiers mots (à l'oreille, avec dessins, sans lire) ; Anglais CE2 | Enfant, GS et CE2 |
 | **Anglais aéronautique** | Bases radio, Phraséo et au-delà, Systèmes de l'avion, Météo, Aérodrome, Situations anormales, Anglais idiomatique, Compréhension orale, Oral | Adulte, niveau 6 OACI |
@@ -94,19 +96,25 @@ questions :
 | Relier | touche une étiquette à gauche puis sa paire à droite, jusqu'à toutes les relier |
 | Remettre dans l'ordre | touche les étiquettes dans l'ordre pour les placer, puis « Valider » |
 | Classer | met chaque étiquette dans la bonne boîte |
-| Zones | touche une région, une partie du corps ou de la plante, ou nomme celle qui est en couleur |
+| Zones | touche une région, un fleuve, une ville, un continent, un os ou une partie du corps ou de la plante, ou nomme celui qui est en couleur |
 
 ### Lire à voix haute
 
-Dans les modules faits pour ceux qui ne lisent pas encore, l'appareil dit la
-question à son ouverture, et chaque réponse au premier toucher ; un second
-toucher la choisit. Le haut-parleur de la question la redit. C'est activé
-pour tout le monde ; Gérer › Modules d'apprentissage › Par personne permet de
-l'éteindre pour une personne (« Lire à voix haute »).
+Dans les modules faits pour être lus à voix haute, l'appareil dit la question
+à son ouverture, et chaque réponse au premier toucher ; un second toucher la
+choisit. Le haut-parleur de la question la redit. Gérer › Modules
+d'apprentissage › Par personne règle, pour chaque personne, ce que dit
+l'appareil (« Lire à voix haute ») :
 
-Dans les modules d'Apprendre à lire, l'appareil ne dit que la consigne
-(« Lis le mot, puis touche son dessin »), jamais les mots à lire ni les
-réponses : il les dit une fois que l'enfant a répondu.
+| Choix | L'appareil dit… |
+| --- | --- |
+| Tout (par défaut) | la question, puis chaque réponse touchée |
+| La consigne seulement | la consigne de la question (« Choisis le verbe aller au futur »), puis la phrase complète une fois répondu ; un toucher choisit tout de suite |
+| Rien | rien |
+
+Dans les modules d'Apprendre à lire, l'appareil ne dit jamais plus que la
+consigne (« Lis le mot, puis touche son dessin ») : ni les mots à lire ni les
+réponses, qu'il dit une fois que l'enfant a répondu.
 
 ### Prénom
 
