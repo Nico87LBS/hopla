@@ -547,6 +547,64 @@ ReadAloudCard.propTypes = {
   value: PropTypes.bool,
 }
 
+// FirstNameCard sets the first name the games call a person by, in the
+// questions about it; empty, the first word of their name in Hopla.
+const FirstNameCard = ({ person, value }) => {
+  const { t } = useTranslation('learn')
+  const setSetting = useSetSetting()
+  const notify = useNotify()
+  const [name, setName] = useState(value || '')
+  const fallback = (person.displayName || '').split(/\s+/)[0]
+  const changed = name.trim() !== (value || '')
+  const save = async () => {
+    try {
+      await setSetting.mutateAsync({
+        userId: person.userId,
+        scope: '*',
+        firstName: name.trim(),
+      })
+      notify('success', t('manage.saved'))
+    } catch (err) {
+      notify('error', err.message)
+    }
+  }
+  return (
+    <Sheet sx={{ ...surfaceSx, display: 'flex', alignItems: 'center', gap: 1 }}>
+      <Box sx={{ flex: 1, minWidth: 0 }}>
+        <Typography level='title-md'>{t('manage.firstName')}</Typography>
+        <Typography level='body-xs' sx={{ color: 'text.secondary' }}>
+          {t('manage.firstNameHelp')}
+        </Typography>
+        <Input
+          size='sm'
+          value={name}
+          placeholder={fallback}
+          onChange={e => setName(e.target.value.slice(0, 20))}
+          onKeyDown={e => e.key === 'Enter' && changed && save()}
+          sx={{ mt: 1, maxWidth: 240 }}
+          slotProps={{
+            input: {
+              'aria-label': t('manage.firstNameFor', {
+                name: person.displayName,
+              }),
+            },
+          }}
+        />
+      </Box>
+      {changed && (
+        <Button size='sm' loading={setSetting.isPending} onClick={save}>
+          {t('manage.save')}
+        </Button>
+      )}
+    </Sheet>
+  )
+}
+
+FirstNameCard.propTypes = {
+  person: PropTypes.object.isRequired,
+  value: PropTypes.string,
+}
+
 // One installed pack, or the modules outside any pack, for one person: the
 // pack's settings on one line under its name, then each module with only
 // the settings of its own, and at the right the box of who plays it.
@@ -1236,6 +1294,11 @@ export const ManageLearn = () => {
           <ReadAloudCard
             person={person}
             value={settings.get(`${person.userId}:*`)?.readAloud}
+          />
+          <FirstNameCard
+            key={person.userId}
+            person={person}
+            value={settings.get(`${person.userId}:*`)?.firstName}
           />
           <Legend person={person} />
           {groups.map(group => (

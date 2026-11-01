@@ -506,6 +506,113 @@ const countSource = gen => {
   }
 }
 
+// ── the player's first name ──
+
+// NAME_WORD stands for the player's first name in a card; without one, the
+// card speaks to them.
+const NAME_WORD = /\{prenom\}/g
+
+// withName writes the player's first name into the cards that ask about it.
+export const withName = (cards, name) => {
+  const put = value =>
+    typeof value === 'string'
+      ? value.replace(NAME_WORD, name || 'toi')
+      : Array.isArray(value)
+        ? value.map(put)
+        : value && typeof value === 'object'
+          ? Object.fromEntries(
+              Object.entries(value).map(([k, v]) => [k, put(v)]),
+            )
+          : value
+  return cards.map(card =>
+    JSON.stringify(card).includes('{prenom}') ? put(card) : card,
+  )
+}
+
+// Names of other children, for the choices around the player's own.
+const OTHER_NAMES = (
+  'ADAM ALICE ANNA ARTHUR BAPTISTE CAMILLE CHLOÉ CLARA ÉMILE EMMA ÉTHAN GABRIEL ' +
+  'HUGO INÈS JADE JULES LÉA LÉO LÉON LINA LOUIS LOUISE LUCAS MAËL MANON MARIUS ' +
+  'MIA NATHAN NOAH NOÉ NORA PAUL RAPHAËL ROSE SACHA SARAH TOM VICTOR ZOÉ'
+).split(' ')
+
+const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
+
+const lettersOf = name =>
+  name
+    .toUpperCase()
+    .split('')
+    .filter(c => c.toLowerCase() !== c.toUpperCase())
+
+// A few others that look like it: those of the same first letter first,
+// then of the same length.
+const lookAlikes = (name, count) => {
+  const others = OTHER_NAMES.filter(n => n !== name)
+  const score = n =>
+    (n[0] === name[0] ? 0 : 2) + Math.abs(n.length - name.length)
+  return [...others]
+    .sort((a, b) => score(a) - score(b) || a.localeCompare(b))
+    .slice(0, count)
+}
+
+// The questions about the player's first name, written in capitals as at
+// school: its first letter, its letters in order, how many there are, and
+// finding it among others. Without a name there are none.
+const firstNameSource = (gen, moduleId, context) => {
+  const name = (context.firstName || '').trim().toUpperCase()
+  const letters = lettersOf(name)
+  const forms = (
+    gen.formes?.length
+      ? gen.formes
+      : ['premiere', 'reconnaitre', 'ordre', 'nombre']
+  ).filter(form => letters.length >= (form === 'ordre' ? 3 : 2))
+  const near = n =>
+    [n - 1, n + 1, n + 2, n - 2, n + 3].filter(m => m >= 1 && m !== n)
+  const make = {
+    premiere: () => ({
+      prompt: 'Par quelle lettre commence ton prénom ?',
+      mode: 'choice',
+      answer: letters[0],
+      choices: [letters[0], 'O', 'S', 'X'].filter(
+        (l, i, all) => all.indexOf(l) === i,
+      ),
+      trapPool: ALPHABET.filter(l => l !== letters[0] && !letters.includes(l)),
+    }),
+    reconnaitre: () => ({
+      prompt: 'Lequel est ton prénom ?',
+      mode: 'choice',
+      answer: name,
+      choices: [name, ...lookAlikes(name, 3)],
+    }),
+    ordre: () => ({
+      prompt: 'Remets les lettres de ton prénom dans l’ordre.',
+      mode: 'order',
+      elements: letters,
+      answer: letters.join(' → '),
+    }),
+    nombre: () => ({
+      prompt: 'Combien de lettres a ton prénom ?',
+      mode: 'choice',
+      answer: String(letters.length),
+      choices: [letters.length, ...near(letters.length).slice(0, 3)]
+        .sort((a, b) => a - b)
+        .map(String),
+      keepOrder: true,
+    }),
+  }
+  const item = form => ({ key: `prenom:${form}`, ...make[form]() })
+  return {
+    size: forms.length,
+    list: () => forms.map(item),
+    draw: rng =>
+      forms.length ? item(forms[Math.floor(rng() * forms.length)]) : null,
+    fromKey: key => {
+      const form = key.startsWith('prenom:') && key.slice(7)
+      return forms.includes(form) ? item(form) : null
+    },
+  }
+}
+
 const SOURCES = {
   addition: arithmeticSource,
   soustraction: arithmeticSource,
@@ -552,13 +659,14 @@ const SOURCES = {
   lettres: wordsSource,
   modele: modelSource,
   compter: countSource,
+  prenom: firstNameSource,
 }
 
 // generatorSource turns a generator of a module into a question source.
-export const generatorSource = (gen, moduleId) => {
+export const generatorSource = (gen, moduleId, context = {}) => {
   const make = SOURCES[gen.operation]
   if (!make) return null
-  const source = make(gen, moduleId)
+  const source = make(gen, moduleId, context)
   const stamp = item =>
     item && { mode: 'number', ...item, chapter: gen.chapitre, source: gen.id }
   const finite = source.size <= LIST_LIMIT
@@ -746,6 +854,9 @@ export const cardItems = (card, moduleId, siblings, lang) => {
         explanation: card.explication,
       }
       if (listening) return listeningItem(card, base, direction, siblings, lang)
+      // A drawing above the question, such as the word whose syllables are
+      // counted; the other way round, it would give the answer away.
+      if (card.image && !inverse) base.image = card.image
       if (card.type === 'choix') {
         const others = siblings
           .filter(s => s.id !== card.id)

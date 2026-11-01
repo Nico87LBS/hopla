@@ -4,8 +4,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"html"
 	"strings"
 	"time"
+	"unicode/utf8"
 
 	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	ptModel "github.com/nico87lbs/hopla/internal/points"
@@ -534,6 +536,9 @@ type SettingChange struct {
 	TotalCap      *int   `json:"totalCap"`
 	// ReadAloud turns reading aloud on or off for a person (scope AllPacks).
 	ReadAloud *bool `json:"readAloud"`
+	// FirstName sets the name the games use for a person (scope AllPacks);
+	// empty gives their name in Hopla back.
+	FirstName *string `json:"firstName"`
 	GameSettings
 }
 
@@ -562,6 +567,10 @@ func SetPersonSetting(db *gorm.DB, familyID int, change SettingChange, now time.
 		return invalid("le plafond total se règle pour tous les jeux")
 	case change.ReadAloud != nil && (change.Scope != AllPacks || change.Family):
 		return invalid("la lecture à voix haute se règle pour tous les jeux, personne par personne")
+	case change.FirstName != nil && (change.Scope != AllPacks || change.Family):
+		return invalid("le prénom se règle pour tous les jeux, personne par personne")
+	case change.FirstName != nil && utf8.RuneCountInString(strings.TrimSpace(*change.FirstName)) > MaxFirstName:
+		return invalid("le prénom a %d lettres au plus", MaxFirstName)
 	}
 	return db.Transaction(func(tx *gorm.DB) error {
 		if !change.Family {
@@ -607,10 +616,13 @@ func SetPersonSetting(db *gorm.DB, familyID int, change SettingChange, now time.
 				row.ReadAloud = change.ReadAloud
 			}
 		}
+		if change.FirstName != nil {
+			row.FirstName = strings.TrimSpace(*change.FirstName)
+		}
 		row.GameSettings.apply(change.GameSettings)
 		row.UpdatedAt = now
 		if row.DailyCap == nil && row.UnlockPercent == nil && row.TotalCap == nil && row.ReadAloud == nil &&
-			row.GameSettings.empty() {
+			row.FirstName == "" && row.GameSettings.empty() {
 			return tx.Where("family_id = ? AND user_id = ? AND scope = ?", familyID, change.UserID, change.Scope).
 				Delete(&PersonSetting{}).Error
 		}
@@ -683,7 +695,7 @@ func FoldAllPacks(db *gorm.DB) error {
 				}
 			}
 			where := tx.Where("family_id = ? AND user_id = ? AND scope = ?", all.FamilyID, all.UserID, AllPacks)
-			if all.TotalCap == nil && all.ReadAloud == nil {
+			if all.TotalCap == nil && all.ReadAloud == nil && all.FirstName == "" {
 				return where.Delete(&PersonSetting{}).Error
 			}
 			return where.Model(&PersonSetting{}).Updates(map[string]any{"daily_cap": nil, "unlock_percent": nil,
@@ -950,6 +962,8 @@ type Player struct {
 	// ReadAloud tells whether the device says the questions aloud, in the
 	// modules that ask for it.
 	ReadAloud bool `json:"readAloud"`
+	// FirstName is what the questions about the person's name ask about.
+	FirstName string `json:"firstName"`
 }
 
 // PlayerFor gathers what a person plays.
@@ -989,6 +1003,13 @@ func PlayerFor(db *gorm.DB, familyID, userID int, now time.Time) (Player, error)
 	}
 	player.TotalCap = limits.totalCap()
 	player.ReadAloud = limits.readAloud()
+	player.FirstName = limits.byScope[AllPacks].FirstName
+	if player.FirstName == "" {
+		player.FirstName, err = nameInHopla(db, userID)
+		if err != nil {
+			return player, err
+		}
+	}
 	for _, module := range modules {
 		if module.IsPack() {
 			player.Packs = append(player.Packs, module)
@@ -1013,6 +1034,30 @@ func PlayerFor(db *gorm.DB, familyID, userID int, now time.Time) (Player, error)
 		return player, err
 	}
 	return player, nil
+}
+
+// MaxFirstName is the longest first name the games take, in letters.
+const MaxFirstName = 20
+
+// nameInHopla is the first word of a person's name in Hopla, which the
+// games call them by until a parent sets another one.
+func nameInHopla(db *gorm.DB, userID int) (string, error) {
+	var names []string
+	if err := db.Table("users").Where("id = ?", userID).Pluck("display_name", &names).Error; err != nil {
+		return "", err
+	}
+	if len(names) == 0 {
+		return "", nil
+	}
+	words := strings.Fields(html.UnescapeString(names[0]))
+	if len(words) == 0 {
+		return "", nil
+	}
+	name := []rune(words[0])
+	if len(name) > MaxFirstName {
+		name = name[:MaxFirstName]
+	}
+	return string(name), nil
 }
 
 // StatsDays is how far back the statistics of a module go.

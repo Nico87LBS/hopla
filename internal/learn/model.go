@@ -86,6 +86,9 @@ type PersonSetting struct {
 	// the questions aloud for this person. Empty, it does for the modules
 	// that ask for it.
 	ReadAloud *bool `json:"readAloud" gorm:"column:read_aloud"`
+	// FirstName, for AllPacks only, is the name the games call the person
+	// by, in the questions about it. Empty, their name in Hopla.
+	FirstName string `json:"firstName" gorm:"column:first_name;size:40"`
 	GameSettings
 	UpdatedAt time.Time `json:"updatedAt" gorm:"column:updated_at"`
 }

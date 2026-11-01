@@ -466,3 +466,42 @@ test('a label is named in its key as the server does', () => {
   assert.equal(slug('L’été'), 'l-ete')
   assert.equal(slug('Œuf'), 'oeuf')
 })
+
+test('the questions about the first name use the player’s own', () => {
+  const doc = {
+    id: 'essai-prenom',
+    nom: 'Prénom',
+    chapitres: [{ id: 'p', nom: 'Mon prénom' }],
+    generateurs: [{ id: 'g', chapitre: 'p', operation: 'prenom' }],
+    fiches: [
+      {
+        id: 'bonjour',
+        chapitre: 'p',
+        type: 'choix',
+        question: 'Bonjour {prenom} ! Combien font 1 + 1 ?',
+        reponse: '2',
+        pieges: ['3'],
+        image: 'apple',
+      },
+    ],
+  }
+  const items = compile(doc, { firstName: 'Léa' }).chapters[0].sources.flatMap(
+    s => s.list(),
+  )
+  const byKey = Object.fromEntries(items.map(i => [i.key, i]))
+  assert.equal(byKey['prenom:premiere'].answer, 'L')
+  assert.ok(!byKey['prenom:premiere'].trapPool.includes('A'))
+  assert.equal(byKey['prenom:reconnaitre'].answer, 'LÉA')
+  assert.ok(byKey['prenom:reconnaitre'].choices.includes('LÉO'))
+  assert.deepEqual(byKey['prenom:ordre'].elements, ['L', 'É', 'A'])
+  assert.equal(byKey['prenom:nombre'].answer, '3')
+  assert.equal(
+    byKey['essai-prenom:bonjour'].prompt,
+    'Bonjour Léa ! Combien font 1 + 1 ?',
+  )
+  assert.equal(byKey['essai-prenom:bonjour'].image, 'apple')
+
+  const nameless = compile(doc).chapters[0].sources.flatMap(s => s.list())
+  assert.ok(!nameless.some(i => i.key.startsWith('prenom:')))
+  assert.equal(nameless[0].prompt, 'Bonjour toi ! Combien font 1 + 1 ?')
+})
