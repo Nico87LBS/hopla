@@ -129,7 +129,7 @@ func TestTheExampleOfTheNewGamesIsAValidModule(t *testing.T) {
 	require.NoError(t, err)
 	doc, err := Parse(raw)
 	require.NoError(t, err)
-	require.True(t, doc.ReadAloud)
+	require.Equal(t, ReadEverything, doc.ReadAloud)
 }
 
 func TestTheGamesCallAPersonByTheirFirstName(t *testing.T) {
@@ -153,4 +153,20 @@ func TestTheGamesCallAPersonByTheirFirstName(t *testing.T) {
 	settings, err := PersonSettings(db, 1)
 	require.NoError(t, err)
 	require.Empty(t, settings)
+}
+
+func TestAReadingModuleSaysOnlyItsInstructions(t *testing.T) {
+	raw := func(voice string) []byte {
+		return []byte(`{"format":"hopla-module/1","id":"essai","version":"1","nom":"Essai","public":"enfant",
+			"lecture_voix_haute":` + voice + `,"chapitres":[{"id":"c1","nom":"Un"}],
+			"fiches":[{"id":"f1","chapitre":"c1","type":"choix","question":"lune","reponse":"la lune",
+			"consigne":"Lis le mot, puis touche son dessin.","pieges":["le lit","la lampe"]}]}`)
+	}
+	for voice, want := range map[string]ReadAloud{`"consigne"`: ReadInstructions, "true": ReadEverything, "false": ReadNothing} {
+		doc, err := Parse(raw(voice))
+		require.NoError(t, err, voice)
+		require.Equal(t, want, doc.ReadAloud, voice)
+	}
+	_, err := Parse(raw(`"tout"`))
+	require.Error(t, err)
 }

@@ -1315,6 +1315,362 @@ Object.assign(DRAWINGS, {
     line('M36 48 H60 M40 60 H66', 1.6),
 })
 
+// ── the pictures of the reading pack ──
+
+const GREY = '#B8B4C8'
+
+Object.assign(DRAWINGS, {
+  // words of simple syllables
+  motorbike:
+    circle(28, 66, 11, '#2B2B33') +
+    circle(74, 66, 11, '#2B2B33') +
+    circle(28, 66, 4, METAL, false) +
+    circle(74, 66, 4, METAL, false) +
+    shape('M34 62 L44 46 H62 L70 60 H52 L46 64Z', '#E5484D') +
+    rect(42, 40, 18, 7, 3, '#2B2B33') +
+    line('M64 46 L70 34 L78 32 M70 60 L74 66', 3),
+  bag:
+    line('M38 40 C38 22 62 22 62 40', 3.2) +
+    shape('M26 40 H74 L70 80 H30Z', '#8E4EC6') +
+    rect(44, 50, 12, 8, 2, '#FFD23F'),
+  bowl:
+    line('M42 30 C38 24 46 22 42 16 M56 30 C52 24 60 22 56 16', 2) +
+    shape('M20 42 H80 C80 62 66 74 50 74 C34 74 20 62 20 42Z', '#3B82F6') +
+    oval(50, 42, 30, 5, '#F6C66B') +
+    rect(40, 74, 20, 6, 2, '#3B82F6'),
+  llama:
+    line('M36 84 V70 M46 84 V70 M60 84 V70 M70 84 V70', 3.4) +
+    oval(54, 66, 22, 12, CREAM) +
+    shape('M30 64 C28 50 30 36 32 30 H44 C44 40 44 54 46 64Z', CREAM) +
+    shape('M30 20 L32 10 L36 20Z M40 20 L42 10 L45 20Z', CREAM) +
+    oval(38, 28, 11, 9, CREAM) +
+    eyes(34, 42, 26, 2) +
+    oval(36, 34, 5, 3.4, '#F5D3AE', false) +
+    rect(26, 46, 22, 6, 2, '#E5484D'),
+  tomato:
+    circle(50, 56, 26, '#E5484D') +
+    shape('M50 32 L42 26 L48 30 L44 22 L52 30 L58 24 L54 32 L62 30Z', LEAF) +
+    oval(40, 46, 5, 3, '#fff', false, -30),
+  domino:
+    rect(30, 16, 40, 68, 6, '#fff') +
+    line('M34 50 H66') +
+    circle(42, 28, 3.6, INK, false) +
+    circle(58, 40, 3.6, INK, false) +
+    circle(42, 62, 3.6, INK, false) +
+    circle(58, 62, 3.6, INK, false) +
+    circle(42, 74, 3.6, INK, false) +
+    circle(58, 74, 3.6, INK, false),
+  radish:
+    shape('M50 32 C42 18 32 16 30 22 C38 22 44 28 48 34Z', LEAF) +
+    shape('M50 32 C58 18 68 16 70 22 C62 22 56 28 52 34Z', LEAF) +
+    shape(
+      'M50 32 C34 32 30 52 40 62 C44 66 48 72 50 86 C52 72 56 66 60 62 C70 52 66 32 50 32Z',
+      '#E0306A',
+    ) +
+    oval(44, 46, 4, 6, '#fff', false, 20),
+  rug:
+    shape('M22 40 H78 L86 72 H14Z', '#E5484D') +
+    shape('M30 46 H70 L75 66 H25Z', '#FFD23F') +
+    shape('M50 49 L60 56 L50 63 L40 56Z', '#3B82F6') +
+    line(
+      'M16 72 v6 M26 72 v6 M36 72 v6 M46 72 v6 M56 72 v6 M66 72 v6 M76 72 v6 M84 72 v6',
+      1.8,
+    ),
+  turtle:
+    oval(82, 58, 9, 8, '#86D19B') +
+    eyes(80, 86, 56, 1.8) +
+    oval(30, 72, 7, 5, '#86D19B') +
+    oval(64, 74, 7, 5, '#86D19B') +
+    shape('M18 70 C18 44 34 34 50 34 C66 34 80 44 80 70Z', LEAF) +
+    shape('M40 52 L50 46 L60 52 L58 62 H42Z', '#86D19B') +
+    line('M40 52 L28 50 M60 52 L72 50 M42 62 L36 70 M58 62 L64 70', 1.6),
+  rocket:
+    shape('M50 12 C62 22 66 40 64 62 H36 C34 40 38 22 50 12Z', '#fff') +
+    shape('M50 12 C56 17 60 22 62 28 H38 C40 22 44 17 50 12Z', '#E5484D') +
+    shape('M36 50 L24 66 L36 64Z M64 50 L76 66 L64 64Z', '#E5484D') +
+    circle(50, 42, 6, '#BFE3FF') +
+    shape('M40 64 H60 C58 76 54 82 50 88 C46 82 42 76 40 64Z', '#F97316') +
+    flat('M45 66 H55 C54 74 52 78 50 82 C48 78 46 74 45 66Z', '#FFD23F'),
+  sink:
+    rect(46, 22, 8, 12, 2, METAL) +
+    line('M50 22 V16 H60', 3) +
+    shape('M20 40 H80 C80 58 66 66 50 66 C34 66 20 58 20 40Z', '#fff') +
+    oval(50, 44, 22, 4, '#BFE3FF', false) +
+    rect(44, 66, 12, 18, 2, '#fff'),
+  sofa:
+    rect(22, 34, 56, 24, 8, '#3B82F6') +
+    rect(14, 46, 14, 26, 6, '#3B82F6') +
+    rect(72, 46, 14, 26, 6, '#3B82F6') +
+    rect(26, 54, 48, 16, 4, '#60A5FA') +
+    line('M50 54 V70 M22 72 V80 M78 72 V80', 2.6),
+  kiwi:
+    oval(38, 52, 20, 24, '#8D5A3B') +
+    circle(62, 54, 22, '#86D19B') +
+    circle(62, 54, 8, '#F5F0D8', false) +
+    line(
+      'M62 40 v2 M74 48 h-2 M72 64 l-2 -2 M52 64 l2 -2 M50 48 h2 M70 42 l-2 2 M54 42 l2 2',
+      2.4,
+    ),
+  robot:
+    line('M50 18 V26', 2.4) +
+    circle(50, 16, 3.6, '#E5484D') +
+    rect(32, 26, 36, 26, 6, METAL) +
+    circle(42, 38, 5, '#fff') +
+    circle(58, 38, 5, '#fff') +
+    eyes(42, 58, 38, 2.2) +
+    line('M44 46 H56', 2) +
+    rect(28, 56, 44, 26, 4, '#60A5FA') +
+    circle(50, 68, 5, '#FFD23F'),
+  suitcase:
+    rect(40, 22, 20, 10, 3, '#8D5A3B') +
+    rect(20, 32, 60, 42, 6, '#F97316') +
+    line('M34 32 V74 M66 32 V74', 2.4) +
+    circle(30, 78, 4, '#2B2B33') +
+    circle(70, 78, 4, '#2B2B33'),
+  tulip:
+    line('M50 46 V86', 3) +
+    shape('M50 70 C40 68 32 58 34 50 C42 54 48 60 50 70Z', LEAF) +
+    shape('M50 76 C60 74 68 64 66 56 C58 60 52 66 50 76Z', LEAF) +
+    shape(
+      'M36 22 L42 30 L50 18 L58 30 L64 22 C68 36 62 48 50 48 C38 48 32 36 36 22Z',
+      '#E5484D',
+    ),
+  // words of the sounds to learn
+  wolf:
+    shape('M28 40 L30 16 L44 30Z M72 40 L70 16 L56 30Z', GREY) +
+    shape(
+      'M24 42 C24 30 76 30 76 42 C76 58 64 70 50 74 C36 70 24 58 24 42Z',
+      GREY,
+    ) +
+    shape(
+      'M38 54 C42 50 58 50 62 54 C60 66 54 72 50 72 C46 72 40 66 38 54Z',
+      '#fff',
+    ) +
+    eyes(40, 60, 44, 2.4) +
+    oval(50, 58, 4, 3, INK, false),
+  cabbage:
+    circle(50, 54, 28, '#86D19B') +
+    shape('M50 26 C36 34 34 60 50 82 C66 60 64 34 50 26Z', '#B5E5C0') +
+    line(
+      'M50 30 V80 M50 46 L38 40 M50 46 L62 40 M50 60 L36 56 M50 60 L64 56',
+      1.6,
+    ),
+  soup:
+    line('M40 30 C36 24 44 22 40 16 M54 30 C50 24 58 22 54 16', 2) +
+    rect(60, 20, 6, 30, 3, METAL) +
+    shape('M18 42 H82 C82 62 68 76 50 76 C32 76 18 62 18 42Z', '#fff') +
+    oval(50, 42, 32, 6, '#F97316'),
+  wheel:
+    circle(50, 50, 32, '#2B2B33') +
+    circle(50, 50, 20, METAL) +
+    circle(50, 50, 5, '#fff') +
+    line(
+      'M50 30 V45 M50 55 V70 M30 50 H45 M55 50 H70 M36 36 L46 46 M54 54 L64 64 M64 36 L54 46 M46 54 L36 64',
+      2,
+    ),
+  tooth:
+    shape(
+      'M28 30 C28 18 42 18 50 24 C58 18 72 18 72 30 C72 46 66 52 64 66 C62 80 56 82 54 70 C52 62 48 62 46 70 C44 82 38 80 36 66 C34 52 28 46 28 30Z',
+      '#fff',
+    ) +
+    eyes(42, 58, 38, 2.2) +
+    smile(50, 46, 4),
+  king:
+    rabbit({ ears: false, y: 6 }) +
+    shape('M30 36 L32 16 L41 28 L50 12 L59 28 L68 16 L70 36Z', '#FFD23F') +
+    circle(50, 22, 2.6, '#E5484D'),
+  fire:
+    rect(24, 72, 52, 8, 4, WOOD) +
+    rect(30, 66, 40, 8, 4, '#8D5A3B') +
+    shape(
+      'M50 14 C60 30 72 38 70 54 C68 66 58 70 50 70 C42 70 32 66 30 54 C28 40 42 34 40 22 C46 28 48 22 50 14Z',
+      '#F97316',
+    ) +
+    shape(
+      'M50 38 C56 46 62 52 60 60 C58 66 54 68 50 68 C46 68 40 66 40 60 C40 52 48 50 50 38Z',
+      '#FFD23F',
+    ),
+  goat:
+    shape(
+      'M38 28 C34 18 26 14 22 18 C28 20 32 24 34 32Z M62 28 C66 18 74 14 78 18 C72 20 68 24 66 32Z',
+      '#C9B79C',
+    ) +
+    shape(
+      'M24 40 C18 38 14 44 20 46 C24 47 28 45 30 42Z M76 40 C82 38 86 44 80 46 C76 47 72 45 70 42Z',
+      '#fff',
+    ) +
+    shape(
+      'M32 34 C32 24 68 24 68 34 C68 50 60 64 50 66 C40 64 32 50 32 34Z',
+      '#fff',
+    ) +
+    eyes(42, 58, 40, 2.2) +
+    oval(50, 56, 7, 5, '#FFB3C5') +
+    shape('M46 64 L50 80 L54 64Z', '#E8E2D6'),
+  mushroom:
+    rect(40, 50, 20, 32, 8, '#F5F0D8') +
+    shape('M16 54 C16 28 34 18 50 18 C66 18 84 28 84 54Z', '#E5484D') +
+    circle(34, 38, 4, '#fff', false) +
+    circle(52, 28, 4, '#fff', false) +
+    circle(66, 42, 4, '#fff', false) +
+    circle(46, 46, 3, '#fff', false),
+  mountain:
+    shape('M8 80 L38 26 L68 80Z', '#8E8AA8') +
+    shape('M40 80 L66 38 L92 80Z', '#A9A5C2') +
+    shape('M30 40 L38 26 L46 40 L42 44 L38 40 L34 44Z', '#fff') +
+    shape('M60 48 L66 38 L72 48 L68 51 L64 48Z', '#fff'),
+  spider:
+    line('M50 14 V30', 1.4) +
+    line(
+      'M40 48 L22 36 L16 44 M40 54 L18 54 L14 62 M42 60 L24 70 L22 80 M44 64 L34 78 M60 48 L78 36 L84 44 M60 54 L82 54 L86 62 M58 60 L76 70 L78 80 M56 64 L66 78',
+      2.4,
+    ) +
+    circle(50, 56, 14, '#4B4458') +
+    circle(50, 36, 8, '#4B4458') +
+    eyes(47, 53, 36, 1.8),
+  bee:
+    oval(38, 34, 12, 8, '#E6F4FF', true, -30) +
+    oval(60, 32, 12, 8, '#E6F4FF', true, 30) +
+    oval(50, 56, 26, 18, '#FFD23F') +
+    flat('M44 39 C40 46 40 66 44 73 L50 74 C46 66 46 46 50 38Z', INK) +
+    flat('M58 40 C54 48 54 64 58 72 L63 70 C60 62 60 50 63 42Z', INK) +
+    eyes(70, 70, 52, 2) +
+    smile(72, 60, 2.4) +
+    shape('M24 56 L16 56 L24 60Z', '#4B4458'),
+  seal:
+    shape(
+      'M14 76 C20 62 36 52 52 50 C56 36 64 28 72 30 C82 32 86 44 80 54 C78 66 70 78 56 80Z',
+      GREY,
+    ) +
+    shape('M40 66 L30 80 L46 76Z', '#8E8AA8') +
+    eyes(70, 76, 40, 2) +
+    oval(80, 46, 3, 2.4, INK, false) +
+    line('M82 50 l8 -2 M82 52 l8 2', 1.2),
+  dolphin:
+    shape(
+      'M14 62 C24 40 50 30 72 38 C80 40 86 46 88 50 L76 50 C74 58 66 66 56 66 L60 76 L48 66 C36 66 24 64 14 62Z',
+      '#60A5FA',
+    ) +
+    shape('M50 34 L56 22 L62 36Z', '#60A5FA') +
+    shape('M14 62 L6 54 M14 62 L8 72', '#60A5FA') +
+    shape(
+      'M20 60 C34 62 50 62 64 56 C58 62 52 64 46 64 C36 66 26 64 20 60Z',
+      '#BFE3FF',
+    ) +
+    eye(68, 44, 2),
+  shark:
+    shape(
+      'M10 58 C24 40 56 34 76 44 C84 48 90 54 90 58 C80 64 60 68 40 66 C30 66 18 64 10 58Z',
+      GREY,
+    ) +
+    shape('M46 40 L52 22 L60 42Z', GREY) +
+    shape('M10 58 L4 46 L16 54 M10 58 L4 70 L16 62', GREY) +
+    shape('M64 58 L84 58 L80 62 H68Z', '#fff') +
+    line('M68 58 l2 3 l2 -3 l2 3 l2 -3 l2 3', 1.2) +
+    eye(76, 50, 2),
+  guitar:
+    rect(46, 10, 8, 40, 2, WOOD) +
+    line('M48 12 V58 M52 12 V58', 1) +
+    shape(
+      'M50 44 C34 40 26 50 30 60 C22 70 30 88 50 86 C70 88 78 70 70 60 C74 50 66 40 50 44Z',
+      '#F97316',
+    ) +
+    circle(50, 62, 6, '#4B4458') +
+    rect(42, 74, 16, 4, 1, '#8D5A3B'),
+  'ice-cube':
+    shape('M30 40 L50 30 L74 38 L74 66 L54 76 L30 68Z', '#BFE3FF') +
+    line('M30 40 L54 48 L74 38 M54 48 V76') +
+    flat('M36 46 L44 49 L44 58 L36 55Z', '#fff', 0.8),
+  giraffe:
+    shape('M30 18 V10 M38 18 V10', '#FFD23F') +
+    circle(30, 10, 2.6, '#8D5A3B') +
+    circle(38, 10, 2.6, '#8D5A3B') +
+    shape('M44 40 C48 56 52 72 54 88 H72 C66 70 58 52 52 36Z', '#FFD23F') +
+    oval(34, 28, 14, 11, '#FFD23F') +
+    oval(26, 34, 7, 5, '#F5D3AE', false) +
+    eyes(32, 40, 25, 2) +
+    circle(56, 56, 3.4, '#C08457', false) +
+    circle(62, 72, 4, '#C08457', false) +
+    circle(52, 44, 2.6, '#C08457', false) +
+    circle(66, 84, 2.6, '#C08457', false),
+  cage:
+    line('M50 10 V18', 2.4) +
+    shape('M24 44 C24 26 76 26 76 44 V80 H24Z', 'none') +
+    line('M34 30 V80 M42 27 V80 M50 26 V80 M58 27 V80 M66 30 V80', 1.6) +
+    rect(20, 78, 60, 8, 2, '#FFD23F') +
+    oval(50, 62, 8, 7, '#FFD23F') +
+    eye(52, 60, 1.8) +
+    shape('M57 62 L62 63 L57 65Z', '#F97316'),
+  panda:
+    circle(28, 32, 10, '#2B2B33') +
+    circle(72, 32, 10, '#2B2B33') +
+    oval(50, 54, 28, 25, '#fff') +
+    oval(40, 50, 7, 9, '#2B2B33', false, 20) +
+    oval(60, 50, 7, 9, '#2B2B33', false, -20) +
+    eyes(41, 59, 50, 2) +
+    oval(50, 62, 4, 3, INK, false) +
+    smile(50, 68, 3),
+  skirt:
+    rect(32, 26, 36, 8, 2, '#8E4EC6') +
+    shape('M32 34 H68 L82 76 H18Z', '#F472B6') +
+    line('M40 34 L32 76 M50 34 V76 M60 34 L68 76', 1.4),
+  juice:
+    line('M58 12 L52 34', 3) +
+    shape('M32 26 H68 L62 84 H38Z', '#fff') +
+    shape('M34 40 H66 L62 84 H38Z', '#F97316') +
+    circle(70, 28, 8, '#F97316') +
+    line('M70 22 V34 M64 28 H76', 1.2),
+  zebra:
+    shape('M36 26 L34 12 L44 22Z M64 26 L66 12 L56 22Z', '#fff') +
+    shape(
+      'M30 40 C30 22 70 22 70 40 C70 58 62 74 50 76 C38 74 30 58 30 40Z',
+      '#fff',
+    ) +
+    line(
+      'M33 36 C40 34 44 38 46 42 M67 36 C60 34 56 38 54 42 M32 46 H40 M68 46 H60 M44 24 V32 M50 22 V30 M56 24 V32',
+      3,
+    ) +
+    oval(50, 64, 14, 11, '#4B4458') +
+    eyes(41, 59, 48, 2.2) +
+    circle(45, 64, 1.8, '#fff', false) +
+    circle(55, 64, 1.8, '#fff', false),
+  koala:
+    circle(26, 36, 14, GREY) +
+    circle(74, 36, 14, GREY) +
+    circle(26, 36, 7, '#F5E6EC', false) +
+    circle(74, 36, 7, '#F5E6EC', false) +
+    oval(50, 54, 26, 24, GREY) +
+    eyes(40, 60, 48, 2.2) +
+    oval(50, 60, 6, 9, '#2B2B33') +
+    smile(50, 72, 3),
+  plane:
+    shape(
+      'M14 50 C14 44 22 42 30 42 H76 C84 42 90 46 90 50 C90 54 84 58 76 58 H30 C22 58 14 56 14 50Z',
+      '#fff',
+    ) +
+    shape('M44 44 L32 20 H42 L60 44Z M44 56 L32 80 H42 L60 56Z', '#3B82F6') +
+    shape('M20 44 L14 30 H22 L30 44Z', '#3B82F6') +
+    circle(70, 48, 3, '#BFE3FF') +
+    circle(60, 48, 3, '#BFE3FF') +
+    circle(80, 48, 3, '#BFE3FF'),
+  igloo:
+    shape('M14 74 C14 46 30 30 50 30 C70 30 86 46 86 74Z', '#fff') +
+    line(
+      'M18 60 H82 M16 70 H84 M24 48 H76 M34 38 H66 M40 30 V38 M60 30 V38 M30 48 V60 M50 38 V48 M70 48 V60 M40 60 V70',
+      1.4,
+    ) +
+    shape('M40 74 C40 60 60 60 60 74Z', '#3E2F86'),
+  bus:
+    rect(12, 30, 76, 40, 6, '#FFD23F') +
+    rect(18, 36, 14, 12, 2, '#BFE3FF') +
+    rect(36, 36, 14, 12, 2, '#BFE3FF') +
+    rect(54, 36, 14, 12, 2, '#BFE3FF') +
+    rect(72, 36, 10, 22, 2, '#BFE3FF') +
+    circle(28, 72, 7, '#2B2B33') +
+    circle(70, 72, 7, '#2B2B33') +
+    circle(28, 72, 2.6, METAL, false) +
+    circle(70, 72, 2.6, METAL, false),
+})
+
 for (const [name, colour] of Object.entries(COLOURS)) {
   DRAWINGS[`colour-${name}`] = splash(colour)
 }
@@ -1340,20 +1696,23 @@ const BACKGROUNDS = {
 const GROUPS = {
   animal:
     'cat dog rabbit bird fish horse cow pig duck mouse sheep frog lion elephant bear snake ' +
+    'llama turtle wolf goat spider bee seal dolphin shark giraffe panda zebra koala ' +
     'hen chick calf lamb foal kitten puppy piglet duckling rat fox owl hedgehog whale crab octopus butterfly snail worm',
-  family: 'mum dad baby grandma grandpa sister brother',
-  body: 'head eye nose mouth ear hand foot',
+  family: 'mum dad baby grandma grandpa sister brother king',
+  body: 'head eye nose mouth ear hand foot tooth',
   food:
     'apple banana orange strawberry pear cherry grapes lemon carrot bread milk cake egg cheese ice-cream ' +
-    'honey candy soda salad leek potato peas bone',
-  toy: 'ball doll teddy car kite book train bike boat',
+    'honey candy soda salad leek potato peas bone tomato radish kiwi cabbage soup juice ice-cube mushroom',
+  toy: 'ball doll teddy car kite book train bike boat motorbike domino robot guitar plane bus rocket',
   weather: 'sun rain snow wind cloud rainbow',
-  clothes: 'hat shoes socks coat t-shirt dress scarf',
-  home: 'house bed table chair door window lamp bathtub',
+  clothes: 'hat shoes socks coat t-shirt dress scarf skirt',
+  home: 'house bed table chair door window lamp bathtub sink sofa rug',
   school: 'schoolbag pencil scissors glue notebook paintbrush board',
   feeling: 'happy sad angry scared surprised',
-  nature: 'moon star snowman flower leaf fir grass barn wave',
-  object: 'spoon key bottle bucket cork stone coin toothbrush truck log',
+  nature:
+    'moon star snowman flower leaf fir grass barn wave tulip fire mountain igloo',
+  object:
+    'spoon key bottle bucket cork stone coin toothbrush truck log bag bowl suitcase wheel cage',
 }
 const groupOf = id => {
   const prefix = id.split('-')[0]

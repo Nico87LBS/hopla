@@ -772,6 +772,7 @@ const sortItems = (card, moduleId) => {
     subject: { text: element.texte, image: element.image },
     answer: element.boite,
     explanation: card.explication,
+    ...(card.consigne && { instruction: card.consigne }),
     mode: 'sort',
     boxes,
     choices: boxes.map(b => b.name),
@@ -795,6 +796,7 @@ const zoneItems = (card, moduleId, siblings) => {
         source: card.id,
         answer: card.reponse,
         explanation: card.explication,
+        ...(card.consigne && { instruction: card.consigne }),
         zones: card.image,
         zone: card.question,
         zoneNames: names,
@@ -829,6 +831,9 @@ export const cardItems = (card, moduleId, siblings, lang) => {
       source: card.id,
       prompt: card.question,
       explanation: card.explication,
+      ...(card.consigne && { instruction: card.consigne }),
+      // The drawing of the word to put back together, syllable by syllable.
+      ...(card.type === 'ordre' && card.image && { image: card.image }),
     }
     return [
       card.type === 'associer' ? matchItem(card, base) : orderItem(card, base),
@@ -852,6 +857,7 @@ export const cardItems = (card, moduleId, siblings, lang) => {
         prompt,
         answer,
         explanation: card.explication,
+        ...(card.consigne && { instruction: card.consigne }),
       }
       if (listening) return listeningItem(card, base, direction, siblings, lang)
       // A drawing above the question, such as the word whose syllables are
@@ -890,7 +896,8 @@ export const cardItems = (card, moduleId, siblings, lang) => {
 
 // A listening card says its question aloud, in the language taught:
 // - direct: hear the word, pick its meaning, as a drawing when it has one;
-// - lire: read the word, pick its meaning; the word is said once answered;
+// - lire: read the word, pick its meaning, as a drawing when it has one;
+//   the word is said once answered;
 // - inverse: see the meaning, pick the word, said once answered too;
 // - dictee: hear the word and write it;
 // - chiffres: hear a message and type the figures of its answer, such as
@@ -920,7 +927,7 @@ const listeningItem = (card, base, direction, siblings, lang) => {
     ...new Set(others.map(s => (inverse ? s.question : s.reponse))),
   ]
   const images = {}
-  if (direction === 'direct') {
+  if (!inverse) {
     for (const s of [card, ...others]) if (s.image) images[s.reponse] = s.image
   }
   // Three drawings are enough for the youngest, who cannot read yet.
