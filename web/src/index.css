@@ -82,3 +82,22 @@ body {
 [dir='rtl'] .rtl-flip {
   transform: scaleX(-1);
 }
+
+/* French school cursive for the reading games written in cursive.
+   Playwrite FR Moderne, SIL Open Font License (assets/fonts/OFL-playwrite.txt),
+   kept with the app so that it works offline. */
+@font-face {
+  font-family: 'Playwrite FR Moderne';
+  src: url('./assets/fonts/playwrite-fr-moderne.woff2') format('woff2');
+  font-weight: 100 400;
+  font-display: swap;
+}
+
+.hopla-cursive .hopla-words,
+.hopla-cursive .hopla-answers .MuiButton-root:not(.hopla-print),
+.hopla-cursive .hopla-answers .MuiTypography-root:not(.hopla-print),
+.hopla-cursive-question .hopla-words {
+  font-family: 'Playwrite FR Moderne', cursive;
+  font-weight: 400;
+  letter-spacing: 0;
+}

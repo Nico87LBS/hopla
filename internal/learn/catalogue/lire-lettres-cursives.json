@@ -1,0 +1,838 @@
+{
+  "format": "hopla-module/1",
+  "id": "lire-lettres-cursives",
+  "version": "1.0.0",
+  "nom": "Lettres cursives",
+  "description": "Reconnaître chaque lettre écrite en cursif, puis les majuscules et des mots, en les retrouvant en lettres d'imprimerie.",
+  "matiere": "francais",
+  "niveaux": [
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": "consigne",
+  "auteur": "Hopla",
+  "sources": "D'après le programme du cycle 2 (CP) : lire l'écriture cursive. Police Playwrite FR Moderne (SIL Open Font License).",
+  "chapitres": [
+    {
+      "id": "voyelles",
+      "nom": "Les voyelles"
+    },
+    {
+      "id": "consonnes-1",
+      "nom": "l, m, n, r, s, f, v",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "consonnes-2",
+      "nom": "p, t, d, b, c, g, j",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "consonnes-3",
+      "nom": "h, k, q, w, x, z",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "majuscules",
+      "nom": "Les majuscules",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "mots",
+      "nom": "Des mots en cursif",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "ecriture": "cursive_question",
+  "fiches": [
+    {
+      "id": "lettre-a",
+      "chapitre": "voyelles",
+      "type": "choix",
+      "question": "a",
+      "reponse": "a",
+      "pieges": [
+        "o",
+        "d",
+        "q"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "lettre-e",
+      "chapitre": "voyelles",
+      "type": "choix",
+      "question": "e",
+      "reponse": "e",
+      "pieges": [
+        "l",
+        "c",
+        "o"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "lettre-i",
+      "chapitre": "voyelles",
+      "type": "choix",
+      "question": "i",
+      "reponse": "i",
+      "pieges": [
+        "u",
+        "e",
+        "t"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "lettre-o",
+      "chapitre": "voyelles",
+      "type": "choix",
+      "question": "o",
+      "reponse": "o",
+      "pieges": [
+        "a",
+        "c",
+        "v"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "lettre-u",
+      "chapitre": "voyelles",
+      "type": "choix",
+      "question": "u",
+      "reponse": "u",
+      "pieges": [
+        "n",
+        "v",
+        "w"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "lettre-y",
+      "chapitre": "voyelles",
+      "type": "choix",
+      "question": "y",
+      "reponse": "y",
+      "pieges": [
+        "g",
+        "j",
+        "z"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "lettre-e-aigu",
+      "chapitre": "voyelles",
+      "type": "choix",
+      "question": "é",
+      "reponse": "é",
+      "pieges": [
+        "è",
+        "e",
+        "ê"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "lettre-e-grave",
+      "chapitre": "voyelles",
+      "type": "choix",
+      "question": "è",
+      "reponse": "è",
+      "pieges": [
+        "é",
+        "e",
+        "ê"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "lettre-l",
+      "chapitre": "consonnes-1",
+      "type": "choix",
+      "question": "l",
+      "reponse": "l",
+      "pieges": [
+        "e",
+        "b",
+        "h"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "lettre-m",
+      "chapitre": "consonnes-1",
+      "type": "choix",
+      "question": "m",
+      "reponse": "m",
+      "pieges": [
+        "n",
+        "u",
+        "w"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "lettre-n",
+      "chapitre": "consonnes-1",
+      "type": "choix",
+      "question": "n",
+      "reponse": "n",
+      "pieges": [
+        "m",
+        "u",
+        "r"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "lettre-r",
+      "chapitre": "consonnes-1",
+      "type": "choix",
+      "question": "r",
+      "reponse": "r",
+      "pieges": [
+        "s",
+        "v",
+        "n"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "lettre-s",
+      "chapitre": "consonnes-1",
+      "type": "choix",
+      "question": "s",
+      "reponse": "s",
+      "pieges": [
+        "r",
+        "z",
+        "x"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "lettre-f",
+      "chapitre": "consonnes-1",
+      "type": "choix",
+      "question": "f",
+      "reponse": "f",
+      "pieges": [
+        "l",
+        "b",
+        "p"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "lettre-v",
+      "chapitre": "consonnes-1",
+      "type": "choix",
+      "question": "v",
+      "reponse": "v",
+      "pieges": [
+        "u",
+        "w",
+        "r"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "lettre-p",
+      "chapitre": "consonnes-2",
+      "type": "choix",
+      "question": "p",
+      "reponse": "p",
+      "pieges": [
+        "j",
+        "q",
+        "b"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "lettre-t",
+      "chapitre": "consonnes-2",
+      "type": "choix",
+      "question": "t",
+      "reponse": "t",
+      "pieges": [
+        "l",
+        "f",
+        "i"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "lettre-d",
+      "chapitre": "consonnes-2",
+      "type": "choix",
+      "question": "d",
+      "reponse": "d",
+      "pieges": [
+        "a",
+        "b",
+        "q"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "lettre-b",
+      "chapitre": "consonnes-2",
+      "type": "choix",
+      "question": "b",
+      "reponse": "b",
+      "pieges": [
+        "l",
+        "h",
+        "d"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "lettre-c",
+      "chapitre": "consonnes-2",
+      "type": "choix",
+      "question": "c",
+      "reponse": "c",
+      "pieges": [
+        "e",
+        "o",
+        "a"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "lettre-g",
+      "chapitre": "consonnes-2",
+      "type": "choix",
+      "question": "g",
+      "reponse": "g",
+      "pieges": [
+        "y",
+        "j",
+        "q"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "lettre-j",
+      "chapitre": "consonnes-2",
+      "type": "choix",
+      "question": "j",
+      "reponse": "j",
+      "pieges": [
+        "g",
+        "i",
+        "y"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "lettre-h",
+      "chapitre": "consonnes-3",
+      "type": "choix",
+      "question": "h",
+      "reponse": "h",
+      "pieges": [
+        "k",
+        "b",
+        "l"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "lettre-k",
+      "chapitre": "consonnes-3",
+      "type": "choix",
+      "question": "k",
+      "reponse": "k",
+      "pieges": [
+        "h",
+        "l",
+        "b"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "lettre-q",
+      "chapitre": "consonnes-3",
+      "type": "choix",
+      "question": "q",
+      "reponse": "q",
+      "pieges": [
+        "g",
+        "p",
+        "a"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "lettre-w",
+      "chapitre": "consonnes-3",
+      "type": "choix",
+      "question": "w",
+      "reponse": "w",
+      "pieges": [
+        "m",
+        "v",
+        "u"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "lettre-x",
+      "chapitre": "consonnes-3",
+      "type": "choix",
+      "question": "x",
+      "reponse": "x",
+      "pieges": [
+        "s",
+        "z",
+        "r"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "lettre-z",
+      "chapitre": "consonnes-3",
+      "type": "choix",
+      "question": "z",
+      "reponse": "z",
+      "pieges": [
+        "s",
+        "x",
+        "y"
+      ],
+      "consigne": "Quelle est cette lettre ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "majuscule-a",
+      "chapitre": "majuscules",
+      "type": "choix",
+      "question": "A",
+      "reponse": "A",
+      "pieges": [
+        "H",
+        "R",
+        "N"
+      ],
+      "consigne": "Quelle est cette majuscule ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "majuscule-b",
+      "chapitre": "majuscules",
+      "type": "choix",
+      "question": "B",
+      "reponse": "B",
+      "pieges": [
+        "R",
+        "P",
+        "D"
+      ],
+      "consigne": "Quelle est cette majuscule ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "majuscule-c",
+      "chapitre": "majuscules",
+      "type": "choix",
+      "question": "C",
+      "reponse": "C",
+      "pieges": [
+        "G",
+        "E",
+        "O"
+      ],
+      "consigne": "Quelle est cette majuscule ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "majuscule-d",
+      "chapitre": "majuscules",
+      "type": "choix",
+      "question": "D",
+      "reponse": "D",
+      "pieges": [
+        "O",
+        "B",
+        "P"
+      ],
+      "consigne": "Quelle est cette majuscule ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "majuscule-e",
+      "chapitre": "majuscules",
+      "type": "choix",
+      "question": "E",
+      "reponse": "E",
+      "pieges": [
+        "C",
+        "F",
+        "L"
+      ],
+      "consigne": "Quelle est cette majuscule ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "majuscule-f",
+      "chapitre": "majuscules",
+      "type": "choix",
+      "question": "F",
+      "reponse": "F",
+      "pieges": [
+        "T",
+        "E",
+        "P"
+      ],
+      "consigne": "Quelle est cette majuscule ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "majuscule-g",
+      "chapitre": "majuscules",
+      "type": "choix",
+      "question": "G",
+      "reponse": "G",
+      "pieges": [
+        "C",
+        "J",
+        "S"
+      ],
+      "consigne": "Quelle est cette majuscule ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "majuscule-h",
+      "chapitre": "majuscules",
+      "type": "choix",
+      "question": "H",
+      "reponse": "H",
+      "pieges": [
+        "K",
+        "N",
+        "A"
+      ],
+      "consigne": "Quelle est cette majuscule ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "majuscule-i",
+      "chapitre": "majuscules",
+      "type": "choix",
+      "question": "I",
+      "reponse": "I",
+      "pieges": [
+        "J",
+        "T",
+        "L"
+      ],
+      "consigne": "Quelle est cette majuscule ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "majuscule-j",
+      "chapitre": "majuscules",
+      "type": "choix",
+      "question": "J",
+      "reponse": "J",
+      "pieges": [
+        "I",
+        "G",
+        "Y"
+      ],
+      "consigne": "Quelle est cette majuscule ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "majuscule-k",
+      "chapitre": "majuscules",
+      "type": "choix",
+      "question": "K",
+      "reponse": "K",
+      "pieges": [
+        "H",
+        "R",
+        "X"
+      ],
+      "consigne": "Quelle est cette majuscule ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "majuscule-l",
+      "chapitre": "majuscules",
+      "type": "choix",
+      "question": "L",
+      "reponse": "L",
+      "pieges": [
+        "I",
+        "C",
+        "E"
+      ],
+      "consigne": "Quelle est cette majuscule ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "majuscule-m",
+      "chapitre": "majuscules",
+      "type": "choix",
+      "question": "M",
+      "reponse": "M",
+      "pieges": [
+        "N",
+        "W",
+        "H"
+      ],
+      "consigne": "Quelle est cette majuscule ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "majuscule-n",
+      "chapitre": "majuscules",
+      "type": "choix",
+      "question": "N",
+      "reponse": "N",
+      "pieges": [
+        "M",
+        "H",
+        "U"
+      ],
+      "consigne": "Quelle est cette majuscule ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "majuscule-o",
+      "chapitre": "majuscules",
+      "type": "choix",
+      "question": "O",
+      "reponse": "O",
+      "pieges": [
+        "Q",
+        "D",
+        "C"
+      ],
+      "consigne": "Quelle est cette majuscule ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "majuscule-p",
+      "chapitre": "majuscules",
+      "type": "choix",
+      "question": "P",
+      "reponse": "P",
+      "pieges": [
+        "R",
+        "B",
+        "F"
+      ],
+      "consigne": "Quelle est cette majuscule ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "majuscule-r",
+      "chapitre": "majuscules",
+      "type": "choix",
+      "question": "R",
+      "reponse": "R",
+      "pieges": [
+        "B",
+        "P",
+        "K"
+      ],
+      "consigne": "Quelle est cette majuscule ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "majuscule-s",
+      "chapitre": "majuscules",
+      "type": "choix",
+      "question": "S",
+      "reponse": "S",
+      "pieges": [
+        "G",
+        "Z",
+        "L"
+      ],
+      "consigne": "Quelle est cette majuscule ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "majuscule-t",
+      "chapitre": "majuscules",
+      "type": "choix",
+      "question": "T",
+      "reponse": "T",
+      "pieges": [
+        "F",
+        "I",
+        "J"
+      ],
+      "consigne": "Quelle est cette majuscule ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "majuscule-u",
+      "chapitre": "majuscules",
+      "type": "choix",
+      "question": "U",
+      "reponse": "U",
+      "pieges": [
+        "V",
+        "N",
+        "W"
+      ],
+      "consigne": "Quelle est cette majuscule ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "majuscule-v",
+      "chapitre": "majuscules",
+      "type": "choix",
+      "question": "V",
+      "reponse": "V",
+      "pieges": [
+        "U",
+        "W",
+        "N"
+      ],
+      "consigne": "Quelle est cette majuscule ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "majuscule-z",
+      "chapitre": "majuscules",
+      "type": "choix",
+      "question": "Z",
+      "reponse": "Z",
+      "pieges": [
+        "S",
+        "L",
+        "E"
+      ],
+      "consigne": "Quelle est cette majuscule ? Touche-la en lettres d’imprimerie."
+    },
+    {
+      "id": "mot-lune",
+      "chapitre": "mots",
+      "type": "choix",
+      "question": "lune",
+      "reponse": "lune",
+      "pieges": [
+        "lame",
+        "lime",
+        "lire"
+      ],
+      "consigne": "Lis le mot en cursif, puis touche le même en lettres d’imprimerie."
+    },
+    {
+      "id": "mot-mur",
+      "chapitre": "mots",
+      "type": "choix",
+      "question": "mur",
+      "reponse": "mur",
+      "pieges": [
+        "mer",
+        "mûr",
+        "mûre"
+      ],
+      "consigne": "Lis le mot en cursif, puis touche le même en lettres d’imprimerie."
+    },
+    {
+      "id": "mot-moto",
+      "chapitre": "mots",
+      "type": "choix",
+      "question": "moto",
+      "reponse": "moto",
+      "pieges": [
+        "mot",
+        "mode",
+        "motte"
+      ],
+      "consigne": "Lis le mot en cursif, puis touche le même en lettres d’imprimerie."
+    },
+    {
+      "id": "mot-bol",
+      "chapitre": "mots",
+      "type": "choix",
+      "question": "bol",
+      "reponse": "bol",
+      "pieges": [
+        "bal",
+        "bel",
+        "boa"
+      ],
+      "consigne": "Lis le mot en cursif, puis touche le même en lettres d’imprimerie."
+    },
+    {
+      "id": "mot-velo",
+      "chapitre": "mots",
+      "type": "choix",
+      "question": "vélo",
+      "reponse": "vélo",
+      "pieges": [
+        "vole",
+        "valet",
+        "volé"
+      ],
+      "consigne": "Lis le mot en cursif, puis touche le même en lettres d’imprimerie."
+    },
+    {
+      "id": "mot-nid",
+      "chapitre": "mots",
+      "type": "choix",
+      "question": "nid",
+      "reponse": "nid",
+      "pieges": [
+        "nul",
+        "nue",
+        "nuit"
+      ],
+      "consigne": "Lis le mot en cursif, puis touche le même en lettres d’imprimerie."
+    },
+    {
+      "id": "mot-papa",
+      "chapitre": "mots",
+      "type": "choix",
+      "question": "papa",
+      "reponse": "papa",
+      "pieges": [
+        "pipe",
+        "pape",
+        "pâte"
+      ],
+      "consigne": "Lis le mot en cursif, puis touche le même en lettres d’imprimerie."
+    },
+    {
+      "id": "mot-robe",
+      "chapitre": "mots",
+      "type": "choix",
+      "question": "robe",
+      "reponse": "robe",
+      "pieges": [
+        "rose",
+        "rame",
+        "ride"
+      ],
+      "consigne": "Lis le mot en cursif, puis touche le même en lettres d’imprimerie."
+    },
+    {
+      "id": "mot-sac",
+      "chapitre": "mots",
+      "type": "choix",
+      "question": "sac",
+      "reponse": "sac",
+      "pieges": [
+        "sec",
+        "soc",
+        "sel"
+      ],
+      "consigne": "Lis le mot en cursif, puis touche le même en lettres d’imprimerie."
+    },
+    {
+      "id": "mot-tapis",
+      "chapitre": "mots",
+      "type": "choix",
+      "question": "tapis",
+      "reponse": "tapis",
+      "pieges": [
+        "tamis",
+        "tipi",
+        "radis"
+      ],
+      "consigne": "Lis le mot en cursif, puis touche le même en lettres d’imprimerie."
+    }
+  ]
+}

@@ -1,0 +1,927 @@
+{
+  "format": "hopla-module/1",
+  "id": "lire-syllabes-cursif",
+  "version": "1.0.0",
+  "nom": "Syllabes simples en cursif",
+  "description": "Lire une consonne et une voyelle ensemble (la, mi, po…), puis assembler les syllabes en mots.",
+  "matiere": "francais",
+  "niveaux": [
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": "consigne",
+  "auteur": "Hopla",
+  "sources": "D'après le programme du cycle 2 (CP) : lire l'écriture cursive. Police Playwrite FR Moderne (SIL Open Font License).",
+  "chapitres": [
+    {
+      "id": "lmr",
+      "nom": "Syllabes avec l, m et r"
+    },
+    {
+      "id": "sfch",
+      "nom": "Syllabes avec s, f et ch",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "vjn",
+      "nom": "Syllabes avec v, j et n",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "ptd",
+      "nom": "Syllabes avec p, t et d",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "bcg",
+      "nom": "Syllabes avec b, c et g",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "envers",
+      "nom": "Les syllabes à l’envers (al, or, is…)",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "mots",
+      "nom": "Des syllabes aux mots",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "syl-la",
+      "chapitre": "lmr",
+      "type": "ecoute",
+      "question": "la",
+      "reponse": "la",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-li",
+      "chapitre": "lmr",
+      "type": "ecoute",
+      "question": "li",
+      "reponse": "li",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-lo",
+      "chapitre": "lmr",
+      "type": "ecoute",
+      "question": "lo",
+      "reponse": "lo",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-lu",
+      "chapitre": "lmr",
+      "type": "ecoute",
+      "question": "lu",
+      "reponse": "lu",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-le",
+      "chapitre": "lmr",
+      "type": "ecoute",
+      "question": "lé",
+      "reponse": "lé",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-ma",
+      "chapitre": "lmr",
+      "type": "ecoute",
+      "question": "ma",
+      "reponse": "ma",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-mi",
+      "chapitre": "lmr",
+      "type": "ecoute",
+      "question": "mi",
+      "reponse": "mi",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-mo",
+      "chapitre": "lmr",
+      "type": "ecoute",
+      "question": "mo",
+      "reponse": "mo",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-mu",
+      "chapitre": "lmr",
+      "type": "ecoute",
+      "question": "mu",
+      "reponse": "mu",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-me",
+      "chapitre": "lmr",
+      "type": "ecoute",
+      "question": "mé",
+      "reponse": "mé",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-ra",
+      "chapitre": "lmr",
+      "type": "ecoute",
+      "question": "ra",
+      "reponse": "ra",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-ri",
+      "chapitre": "lmr",
+      "type": "ecoute",
+      "question": "ri",
+      "reponse": "ri",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-ro",
+      "chapitre": "lmr",
+      "type": "ecoute",
+      "question": "ro",
+      "reponse": "ro",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-ru",
+      "chapitre": "lmr",
+      "type": "ecoute",
+      "question": "ru",
+      "reponse": "ru",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-re",
+      "chapitre": "lmr",
+      "type": "ecoute",
+      "question": "ré",
+      "reponse": "ré",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-sa",
+      "chapitre": "sfch",
+      "type": "ecoute",
+      "question": "sa",
+      "reponse": "sa",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-si",
+      "chapitre": "sfch",
+      "type": "ecoute",
+      "question": "si",
+      "reponse": "si",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-so",
+      "chapitre": "sfch",
+      "type": "ecoute",
+      "question": "so",
+      "reponse": "so",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-su",
+      "chapitre": "sfch",
+      "type": "ecoute",
+      "question": "su",
+      "reponse": "su",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-se",
+      "chapitre": "sfch",
+      "type": "ecoute",
+      "question": "sé",
+      "reponse": "sé",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-fa",
+      "chapitre": "sfch",
+      "type": "ecoute",
+      "question": "fa",
+      "reponse": "fa",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-fi",
+      "chapitre": "sfch",
+      "type": "ecoute",
+      "question": "fi",
+      "reponse": "fi",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-fo",
+      "chapitre": "sfch",
+      "type": "ecoute",
+      "question": "fo",
+      "reponse": "fo",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-fu",
+      "chapitre": "sfch",
+      "type": "ecoute",
+      "question": "fu",
+      "reponse": "fu",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-fe",
+      "chapitre": "sfch",
+      "type": "ecoute",
+      "question": "fé",
+      "reponse": "fé",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-cha",
+      "chapitre": "sfch",
+      "type": "ecoute",
+      "question": "cha",
+      "reponse": "cha",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-chi",
+      "chapitre": "sfch",
+      "type": "ecoute",
+      "question": "chi",
+      "reponse": "chi",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-cho",
+      "chapitre": "sfch",
+      "type": "ecoute",
+      "question": "cho",
+      "reponse": "cho",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-chu",
+      "chapitre": "sfch",
+      "type": "ecoute",
+      "question": "chu",
+      "reponse": "chu",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-che",
+      "chapitre": "sfch",
+      "type": "ecoute",
+      "question": "ché",
+      "reponse": "ché",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-va",
+      "chapitre": "vjn",
+      "type": "ecoute",
+      "question": "va",
+      "reponse": "va",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-vi",
+      "chapitre": "vjn",
+      "type": "ecoute",
+      "question": "vi",
+      "reponse": "vi",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-vo",
+      "chapitre": "vjn",
+      "type": "ecoute",
+      "question": "vo",
+      "reponse": "vo",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-vu",
+      "chapitre": "vjn",
+      "type": "ecoute",
+      "question": "vu",
+      "reponse": "vu",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-ve",
+      "chapitre": "vjn",
+      "type": "ecoute",
+      "question": "vé",
+      "reponse": "vé",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-ja",
+      "chapitre": "vjn",
+      "type": "ecoute",
+      "question": "ja",
+      "reponse": "ja",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-ji",
+      "chapitre": "vjn",
+      "type": "ecoute",
+      "question": "ji",
+      "reponse": "ji",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-jo",
+      "chapitre": "vjn",
+      "type": "ecoute",
+      "question": "jo",
+      "reponse": "jo",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-ju",
+      "chapitre": "vjn",
+      "type": "ecoute",
+      "question": "ju",
+      "reponse": "ju",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-je",
+      "chapitre": "vjn",
+      "type": "ecoute",
+      "question": "jé",
+      "reponse": "jé",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-na",
+      "chapitre": "vjn",
+      "type": "ecoute",
+      "question": "na",
+      "reponse": "na",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-ni",
+      "chapitre": "vjn",
+      "type": "ecoute",
+      "question": "ni",
+      "reponse": "ni",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-no",
+      "chapitre": "vjn",
+      "type": "ecoute",
+      "question": "no",
+      "reponse": "no",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-nu",
+      "chapitre": "vjn",
+      "type": "ecoute",
+      "question": "nu",
+      "reponse": "nu",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-ne",
+      "chapitre": "vjn",
+      "type": "ecoute",
+      "question": "né",
+      "reponse": "né",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-pa",
+      "chapitre": "ptd",
+      "type": "ecoute",
+      "question": "pa",
+      "reponse": "pa",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-pi",
+      "chapitre": "ptd",
+      "type": "ecoute",
+      "question": "pi",
+      "reponse": "pi",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-po",
+      "chapitre": "ptd",
+      "type": "ecoute",
+      "question": "po",
+      "reponse": "po",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-pu",
+      "chapitre": "ptd",
+      "type": "ecoute",
+      "question": "pu",
+      "reponse": "pu",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-pe",
+      "chapitre": "ptd",
+      "type": "ecoute",
+      "question": "pé",
+      "reponse": "pé",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-ta",
+      "chapitre": "ptd",
+      "type": "ecoute",
+      "question": "ta",
+      "reponse": "ta",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-ti",
+      "chapitre": "ptd",
+      "type": "ecoute",
+      "question": "ti",
+      "reponse": "ti",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-to",
+      "chapitre": "ptd",
+      "type": "ecoute",
+      "question": "to",
+      "reponse": "to",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-tu",
+      "chapitre": "ptd",
+      "type": "ecoute",
+      "question": "tu",
+      "reponse": "tu",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-te",
+      "chapitre": "ptd",
+      "type": "ecoute",
+      "question": "té",
+      "reponse": "té",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-da",
+      "chapitre": "ptd",
+      "type": "ecoute",
+      "question": "da",
+      "reponse": "da",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-di",
+      "chapitre": "ptd",
+      "type": "ecoute",
+      "question": "di",
+      "reponse": "di",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-do",
+      "chapitre": "ptd",
+      "type": "ecoute",
+      "question": "do",
+      "reponse": "do",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-du",
+      "chapitre": "ptd",
+      "type": "ecoute",
+      "question": "du",
+      "reponse": "du",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-de",
+      "chapitre": "ptd",
+      "type": "ecoute",
+      "question": "dé",
+      "reponse": "dé",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-ba",
+      "chapitre": "bcg",
+      "type": "ecoute",
+      "question": "ba",
+      "reponse": "ba",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-bi",
+      "chapitre": "bcg",
+      "type": "ecoute",
+      "question": "bi",
+      "reponse": "bi",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-bo",
+      "chapitre": "bcg",
+      "type": "ecoute",
+      "question": "bo",
+      "reponse": "bo",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-bu",
+      "chapitre": "bcg",
+      "type": "ecoute",
+      "question": "bu",
+      "reponse": "bu",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-be",
+      "chapitre": "bcg",
+      "type": "ecoute",
+      "question": "bé",
+      "reponse": "bé",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-ca",
+      "chapitre": "bcg",
+      "type": "ecoute",
+      "question": "ca",
+      "reponse": "ca",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-co",
+      "chapitre": "bcg",
+      "type": "ecoute",
+      "question": "co",
+      "reponse": "co",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-cu",
+      "chapitre": "bcg",
+      "type": "ecoute",
+      "question": "cu",
+      "reponse": "cu",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-ga",
+      "chapitre": "bcg",
+      "type": "ecoute",
+      "question": "ga",
+      "reponse": "ga",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-go",
+      "chapitre": "bcg",
+      "type": "ecoute",
+      "question": "go",
+      "reponse": "go",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-gu",
+      "chapitre": "bcg",
+      "type": "ecoute",
+      "question": "gu",
+      "reponse": "gu",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-al",
+      "chapitre": "envers",
+      "type": "ecoute",
+      "question": "al",
+      "reponse": "al",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-il",
+      "chapitre": "envers",
+      "type": "ecoute",
+      "question": "il",
+      "reponse": "il",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-ol",
+      "chapitre": "envers",
+      "type": "ecoute",
+      "question": "ol",
+      "reponse": "ol",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-ar",
+      "chapitre": "envers",
+      "type": "ecoute",
+      "question": "ar",
+      "reponse": "ar",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-or",
+      "chapitre": "envers",
+      "type": "ecoute",
+      "question": "or",
+      "reponse": "or",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-ir",
+      "chapitre": "envers",
+      "type": "ecoute",
+      "question": "ir",
+      "reponse": "ir",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-as",
+      "chapitre": "envers",
+      "type": "ecoute",
+      "question": "as",
+      "reponse": "as",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-is",
+      "chapitre": "envers",
+      "type": "ecoute",
+      "question": "is",
+      "reponse": "is",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-os",
+      "chapitre": "envers",
+      "type": "ecoute",
+      "question": "os",
+      "reponse": "os",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "syl-ac",
+      "chapitre": "envers",
+      "type": "ecoute",
+      "question": "ac",
+      "reponse": "ac",
+      "consigne": "Écoute, puis touche la syllabe que tu entends."
+    },
+    {
+      "id": "ordre-domino",
+      "chapitre": "mots",
+      "type": "ordre",
+      "image": "domino",
+      "question": "Remets les syllabes dans l’ordre pour écrire le nom du dessin.",
+      "consigne": "Remets les syllabes dans l’ordre pour écrire le nom du dessin.",
+      "elements": [
+        "do",
+        "mi",
+        "no"
+      ]
+    },
+    {
+      "id": "ordre-tomate",
+      "chapitre": "mots",
+      "type": "ordre",
+      "image": "tomato",
+      "question": "Remets les syllabes dans l’ordre pour écrire le nom du dessin.",
+      "consigne": "Remets les syllabes dans l’ordre pour écrire le nom du dessin.",
+      "elements": [
+        "to",
+        "ma",
+        "te"
+      ]
+    },
+    {
+      "id": "ordre-lavabo",
+      "chapitre": "mots",
+      "type": "ordre",
+      "image": "sink",
+      "question": "Remets les syllabes dans l’ordre pour écrire le nom du dessin.",
+      "consigne": "Remets les syllabes dans l’ordre pour écrire le nom du dessin.",
+      "elements": [
+        "la",
+        "va",
+        "bo"
+      ]
+    },
+    {
+      "id": "ordre-canape",
+      "chapitre": "mots",
+      "type": "ordre",
+      "image": "sofa",
+      "question": "Remets les syllabes dans l’ordre pour écrire le nom du dessin.",
+      "consigne": "Remets les syllabes dans l’ordre pour écrire le nom du dessin.",
+      "elements": [
+        "ca",
+        "na",
+        "pé"
+      ]
+    },
+    {
+      "id": "ordre-banane",
+      "chapitre": "mots",
+      "type": "ordre",
+      "image": "banana",
+      "question": "Remets les syllabes dans l’ordre pour écrire le nom du dessin.",
+      "consigne": "Remets les syllabes dans l’ordre pour écrire le nom du dessin.",
+      "elements": [
+        "ba",
+        "na",
+        "ne"
+      ]
+    },
+    {
+      "id": "ordre-salade",
+      "chapitre": "mots",
+      "type": "ordre",
+      "image": "salad",
+      "question": "Remets les syllabes dans l’ordre pour écrire le nom du dessin.",
+      "consigne": "Remets les syllabes dans l’ordre pour écrire le nom du dessin.",
+      "elements": [
+        "sa",
+        "la",
+        "de"
+      ]
+    },
+    {
+      "id": "ordre-tulipe",
+      "chapitre": "mots",
+      "type": "ordre",
+      "image": "tulip",
+      "question": "Remets les syllabes dans l’ordre pour écrire le nom du dessin.",
+      "consigne": "Remets les syllabes dans l’ordre pour écrire le nom du dessin.",
+      "elements": [
+        "tu",
+        "li",
+        "pe"
+      ]
+    },
+    {
+      "id": "ordre-valise",
+      "chapitre": "mots",
+      "type": "ordre",
+      "image": "suitcase",
+      "question": "Remets les syllabes dans l’ordre pour écrire le nom du dessin.",
+      "consigne": "Remets les syllabes dans l’ordre pour écrire le nom du dessin.",
+      "elements": [
+        "va",
+        "li",
+        "se"
+      ]
+    },
+    {
+      "id": "debut-moto",
+      "chapitre": "mots",
+      "type": "choix",
+      "question": "Par quelle syllabe commence « moto » ?",
+      "consigne": "Par quelle syllabe commence « moto » ?",
+      "reponse": "mo",
+      "image": "motorbike",
+      "pieges": [
+        "vé",
+        "ki",
+        "lu"
+      ]
+    },
+    {
+      "id": "debut-velo",
+      "chapitre": "mots",
+      "type": "choix",
+      "question": "Par quelle syllabe commence « vélo » ?",
+      "consigne": "Par quelle syllabe commence « vélo » ?",
+      "reponse": "vé",
+      "image": "bike",
+      "pieges": [
+        "mo",
+        "ki",
+        "lu"
+      ]
+    },
+    {
+      "id": "debut-kiwi",
+      "chapitre": "mots",
+      "type": "choix",
+      "question": "Par quelle syllabe commence « kiwi » ?",
+      "consigne": "Par quelle syllabe commence « kiwi » ?",
+      "reponse": "ki",
+      "image": "kiwi",
+      "pieges": [
+        "mo",
+        "vé",
+        "lu"
+      ]
+    },
+    {
+      "id": "debut-lune",
+      "chapitre": "mots",
+      "type": "choix",
+      "question": "Par quelle syllabe commence « lune » ?",
+      "consigne": "Par quelle syllabe commence « lune » ?",
+      "reponse": "lu",
+      "image": "moon",
+      "pieges": [
+        "mo",
+        "vé",
+        "ki"
+      ]
+    },
+    {
+      "id": "debut-lama",
+      "chapitre": "mots",
+      "type": "choix",
+      "question": "Par quelle syllabe commence « lama » ?",
+      "consigne": "Par quelle syllabe commence « lama » ?",
+      "reponse": "la",
+      "image": "llama",
+      "pieges": [
+        "mo",
+        "vé",
+        "ki"
+      ]
+    },
+    {
+      "id": "debut-robe",
+      "chapitre": "mots",
+      "type": "choix",
+      "question": "Par quelle syllabe commence « robe » ?",
+      "consigne": "Par quelle syllabe commence « robe » ?",
+      "reponse": "ro",
+      "image": "dress",
+      "pieges": [
+        "mo",
+        "vé",
+        "ki"
+      ]
+    },
+    {
+      "id": "debut-radis",
+      "chapitre": "mots",
+      "type": "choix",
+      "question": "Par quelle syllabe commence « radis » ?",
+      "consigne": "Par quelle syllabe commence « radis » ?",
+      "reponse": "ra",
+      "image": "radish",
+      "pieges": [
+        "mo",
+        "vé",
+        "ki"
+      ]
+    },
+    {
+      "id": "debut-tapis",
+      "chapitre": "mots",
+      "type": "choix",
+      "question": "Par quelle syllabe commence « tapis » ?",
+      "consigne": "Par quelle syllabe commence « tapis » ?",
+      "reponse": "ta",
+      "image": "rug",
+      "pieges": [
+        "mo",
+        "vé",
+        "ki"
+      ]
+    }
+  ],
+  "ecriture": "cursive"
+}

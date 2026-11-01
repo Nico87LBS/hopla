@@ -1,0 +1,628 @@
+{
+  "format": "hopla-module/1",
+  "id": "lire-phrases-cursif",
+  "version": "1.0.0",
+  "nom": "Comprendre une phrase en cursif",
+  "description": "Lire une phrase et la comprendre : devinettes, vrai ou faux, phrases à remettre dans l'ordre, petits textes.",
+  "matiere": "francais",
+  "niveaux": [
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": "consigne",
+  "auteur": "Hopla",
+  "sources": "D'après le programme du cycle 2 (CP) : lire l'écriture cursive. Police Playwrite FR Moderne (SIL Open Font License).",
+  "chapitres": [
+    {
+      "id": "devinettes",
+      "nom": "Devinettes"
+    },
+    {
+      "id": "vrai",
+      "nom": "Vrai ou faux",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "ordre",
+      "nom": "Remettre la phrase dans l’ordre",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "textes",
+      "nom": "Petits textes",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "devinette-1",
+      "chapitre": "devinettes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "Il vit dans la mer. Il est très gros.",
+      "reponse": "la baleine",
+      "image": "whale",
+      "consigne": "Lis la phrase, puis touche le bon dessin."
+    },
+    {
+      "id": "devinette-2",
+      "chapitre": "devinettes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "Il a de grandes oreilles et il saute.",
+      "reponse": "le lapin",
+      "image": "rabbit",
+      "consigne": "Lis la phrase, puis touche le bon dessin."
+    },
+    {
+      "id": "devinette-3",
+      "chapitre": "devinettes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "Elle fait du miel.",
+      "reponse": "l'abeille",
+      "image": "bee",
+      "consigne": "Lis la phrase, puis touche le bon dessin."
+    },
+    {
+      "id": "devinette-4",
+      "chapitre": "devinettes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "Il brille la nuit dans le ciel.",
+      "reponse": "la lune",
+      "image": "moon",
+      "consigne": "Lis la phrase, puis touche le bon dessin."
+    },
+    {
+      "id": "devinette-5",
+      "chapitre": "devinettes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "On dort dedans.",
+      "reponse": "le lit",
+      "image": "bed",
+      "consigne": "Lis la phrase, puis touche le bon dessin."
+    },
+    {
+      "id": "devinette-6",
+      "chapitre": "devinettes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "On le met sur la tête quand il fait froid.",
+      "reponse": "le chapeau",
+      "image": "hat",
+      "consigne": "Lis la phrase, puis touche le bon dessin."
+    },
+    {
+      "id": "devinette-7",
+      "chapitre": "devinettes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "Il a un très long cou.",
+      "reponse": "la girafe",
+      "image": "giraffe",
+      "consigne": "Lis la phrase, puis touche le bon dessin."
+    },
+    {
+      "id": "devinette-8",
+      "chapitre": "devinettes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "Il a des roues et il roule vite.",
+      "reponse": "la moto",
+      "image": "motorbike",
+      "consigne": "Lis la phrase, puis touche le bon dessin."
+    },
+    {
+      "id": "devinette-9",
+      "chapitre": "devinettes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "Il porte une couronne.",
+      "reponse": "le roi",
+      "image": "king",
+      "consigne": "Lis la phrase, puis touche le bon dessin."
+    },
+    {
+      "id": "devinette-10",
+      "chapitre": "devinettes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "Elle est jaune et le singe l’aime.",
+      "reponse": "la banane",
+      "image": "banana",
+      "consigne": "Lis la phrase, puis touche le bon dessin."
+    },
+    {
+      "id": "devinette-11",
+      "chapitre": "devinettes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "Il est froid et blanc, on le trouve dans un verre.",
+      "reponse": "le glaçon",
+      "image": "ice-cube",
+      "consigne": "Lis la phrase, puis touche le bon dessin."
+    },
+    {
+      "id": "devinette-12",
+      "chapitre": "devinettes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "Elle va très haut, jusqu’à la lune.",
+      "reponse": "la fusée",
+      "image": "rocket",
+      "consigne": "Lis la phrase, puis touche le bon dessin."
+    },
+    {
+      "id": "devinette-13",
+      "chapitre": "devinettes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "Il a huit pattes et il fait des toiles.",
+      "reponse": "l'araignée",
+      "image": "spider",
+      "consigne": "Lis la phrase, puis touche le bon dessin."
+    },
+    {
+      "id": "devinette-14",
+      "chapitre": "devinettes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "Elle vit dans une maison sur son dos.",
+      "reponse": "la tortue",
+      "image": "turtle",
+      "consigne": "Lis la phrase, puis touche le bon dessin."
+    },
+    {
+      "id": "devinette-15",
+      "chapitre": "devinettes",
+      "type": "ecoute",
+      "sens": [
+        "lire"
+      ],
+      "question": "Il est noir et blanc et il mange du bambou.",
+      "reponse": "le panda",
+      "image": "panda",
+      "consigne": "Lis la phrase, puis touche le bon dessin."
+    },
+    {
+      "id": "vrai-1",
+      "chapitre": "vrai",
+      "type": "choix",
+      "question": "La vache vole dans le ciel.",
+      "reponse": "non",
+      "pieges": [
+        "oui"
+      ],
+      "consigne": "Lis la phrase. Est-ce que c’est vrai ?"
+    },
+    {
+      "id": "vrai-2",
+      "chapitre": "vrai",
+      "type": "choix",
+      "question": "Le poisson nage dans l’eau.",
+      "reponse": "oui",
+      "pieges": [
+        "non"
+      ],
+      "consigne": "Lis la phrase. Est-ce que c’est vrai ?"
+    },
+    {
+      "id": "vrai-3",
+      "chapitre": "vrai",
+      "type": "choix",
+      "question": "Le soleil brille la nuit.",
+      "reponse": "non",
+      "pieges": [
+        "oui"
+      ],
+      "consigne": "Lis la phrase. Est-ce que c’est vrai ?"
+    },
+    {
+      "id": "vrai-4",
+      "chapitre": "vrai",
+      "type": "choix",
+      "question": "Le chat dit miaou.",
+      "reponse": "oui",
+      "pieges": [
+        "non"
+      ],
+      "consigne": "Lis la phrase. Est-ce que c’est vrai ?"
+    },
+    {
+      "id": "vrai-5",
+      "chapitre": "vrai",
+      "type": "choix",
+      "question": "On mange la soupe avec une fourchette.",
+      "reponse": "non",
+      "pieges": [
+        "oui"
+      ],
+      "consigne": "Lis la phrase. Est-ce que c’est vrai ?"
+    },
+    {
+      "id": "vrai-6",
+      "chapitre": "vrai",
+      "type": "choix",
+      "question": "La neige est blanche.",
+      "reponse": "oui",
+      "pieges": [
+        "non"
+      ],
+      "consigne": "Lis la phrase. Est-ce que c’est vrai ?"
+    },
+    {
+      "id": "vrai-7",
+      "chapitre": "vrai",
+      "type": "choix",
+      "question": "Le bébé conduit le bus.",
+      "reponse": "non",
+      "pieges": [
+        "oui"
+      ],
+      "consigne": "Lis la phrase. Est-ce que c’est vrai ?"
+    },
+    {
+      "id": "vrai-8",
+      "chapitre": "vrai",
+      "type": "choix",
+      "question": "La fraise est rouge.",
+      "reponse": "oui",
+      "pieges": [
+        "non"
+      ],
+      "consigne": "Lis la phrase. Est-ce que c’est vrai ?"
+    },
+    {
+      "id": "vrai-9",
+      "chapitre": "vrai",
+      "type": "choix",
+      "question": "Le loup a des plumes.",
+      "reponse": "non",
+      "pieges": [
+        "oui"
+      ],
+      "consigne": "Lis la phrase. Est-ce que c’est vrai ?"
+    },
+    {
+      "id": "vrai-10",
+      "chapitre": "vrai",
+      "type": "choix",
+      "question": "On dort dans un lit.",
+      "reponse": "oui",
+      "pieges": [
+        "non"
+      ],
+      "consigne": "Lis la phrase. Est-ce que c’est vrai ?"
+    },
+    {
+      "id": "vrai-11",
+      "chapitre": "vrai",
+      "type": "choix",
+      "question": "La tortue court très vite.",
+      "reponse": "non",
+      "pieges": [
+        "oui"
+      ],
+      "consigne": "Lis la phrase. Est-ce que c’est vrai ?"
+    },
+    {
+      "id": "vrai-12",
+      "chapitre": "vrai",
+      "type": "choix",
+      "question": "Le feu est chaud.",
+      "reponse": "oui",
+      "pieges": [
+        "non"
+      ],
+      "consigne": "Lis la phrase. Est-ce que c’est vrai ?"
+    },
+    {
+      "id": "vrai-13",
+      "chapitre": "vrai",
+      "type": "choix",
+      "question": "Un oiseau a quatre pattes.",
+      "reponse": "non",
+      "pieges": [
+        "oui"
+      ],
+      "consigne": "Lis la phrase. Est-ce que c’est vrai ?"
+    },
+    {
+      "id": "vrai-14",
+      "chapitre": "vrai",
+      "type": "choix",
+      "question": "On lit un livre.",
+      "reponse": "oui",
+      "pieges": [
+        "non"
+      ],
+      "consigne": "Lis la phrase. Est-ce que c’est vrai ?"
+    },
+    {
+      "id": "vrai-15",
+      "chapitre": "vrai",
+      "type": "choix",
+      "question": "La lune est un fruit.",
+      "reponse": "non",
+      "pieges": [
+        "oui"
+      ],
+      "consigne": "Lis la phrase. Est-ce que c’est vrai ?"
+    },
+    {
+      "id": "ordre-1",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "Le",
+        "chat",
+        "dort."
+      ]
+    },
+    {
+      "id": "ordre-2",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "Papa",
+        "lit",
+        "un",
+        "livre."
+      ]
+    },
+    {
+      "id": "ordre-3",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "La",
+        "poule",
+        "pond",
+        "un",
+        "œuf."
+      ]
+    },
+    {
+      "id": "ordre-4",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "Je",
+        "mange",
+        "une",
+        "pomme."
+      ]
+    },
+    {
+      "id": "ordre-5",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "Le",
+        "chien",
+        "court",
+        "vite."
+      ]
+    },
+    {
+      "id": "ordre-6",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "Maman",
+        "boit",
+        "du",
+        "lait."
+      ]
+    },
+    {
+      "id": "ordre-7",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "Il",
+        "fait",
+        "très",
+        "froid."
+      ]
+    },
+    {
+      "id": "ordre-8",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "La",
+        "lune",
+        "brille."
+      ]
+    },
+    {
+      "id": "ordre-9",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "Nous",
+        "allons",
+        "à",
+        "l’école."
+      ]
+    },
+    {
+      "id": "ordre-10",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les mots dans l’ordre pour faire une phrase.",
+      "consigne": "Remets les mots dans l’ordre pour faire une phrase.",
+      "elements": [
+        "Le",
+        "bébé",
+        "joue",
+        "avec",
+        "un",
+        "ballon."
+      ]
+    },
+    {
+      "id": "texte-1",
+      "chapitre": "textes",
+      "type": "choix",
+      "question": "Léo a un chat. Le chat est noir. Il dort sur le lit. De quelle couleur est le chat ?",
+      "reponse": "noir",
+      "pieges": [
+        "blanc",
+        "roux",
+        "gris"
+      ],
+      "consigne": "Lis le petit texte, puis réponds à la question."
+    },
+    {
+      "id": "texte-2",
+      "chapitre": "textes",
+      "type": "choix",
+      "question": "Lina va au parc avec papa. Elle joue au ballon. Puis elle mange une glace. Avec qui Lina va-t-elle au parc ?",
+      "reponse": "avec papa",
+      "pieges": [
+        "avec maman",
+        "avec mamie",
+        "avec son chat"
+      ],
+      "consigne": "Lis le petit texte, puis réponds à la question."
+    },
+    {
+      "id": "texte-3",
+      "chapitre": "textes",
+      "type": "choix",
+      "question": "Le lapin a faim. Il cherche une carotte dans le jardin. Il la trouve sous une feuille. Où est la carotte ?",
+      "reponse": "sous une feuille",
+      "pieges": [
+        "sur le lit",
+        "dans la maison",
+        "sous la table"
+      ],
+      "consigne": "Lis le petit texte, puis réponds à la question."
+    },
+    {
+      "id": "texte-4",
+      "chapitre": "textes",
+      "type": "choix",
+      "question": "Il pleut. Tom met son manteau et ses bottes. Il prend un parapluie. Quel temps fait-il ?",
+      "reponse": "il pleut",
+      "pieges": [
+        "il fait chaud",
+        "il neige",
+        "il y a du soleil"
+      ],
+      "consigne": "Lis le petit texte, puis réponds à la question."
+    },
+    {
+      "id": "texte-5",
+      "chapitre": "textes",
+      "type": "choix",
+      "question": "C’est l’hiver. La neige tombe. Les enfants font un bonhomme de neige. Que font les enfants ?",
+      "reponse": "un bonhomme de neige",
+      "pieges": [
+        "un gâteau",
+        "un château de sable",
+        "une cabane"
+      ],
+      "consigne": "Lis le petit texte, puis réponds à la question."
+    },
+    {
+      "id": "texte-6",
+      "chapitre": "textes",
+      "type": "choix",
+      "question": "Mamie fait une soupe. Elle met des carottes et des poireaux. La soupe est chaude. Que fait mamie ?",
+      "reponse": "une soupe",
+      "pieges": [
+        "un gâteau",
+        "une salade",
+        "du pain"
+      ],
+      "consigne": "Lis le petit texte, puis réponds à la question."
+    },
+    {
+      "id": "texte-7",
+      "chapitre": "textes",
+      "type": "choix",
+      "question": "Le loup se cache derrière l’arbre. Il voit trois petits cochons. Ils courent vite à la maison. Où se cache le loup ?",
+      "reponse": "derrière l’arbre",
+      "pieges": [
+        "dans la maison",
+        "sous le lit",
+        "sur le toit"
+      ],
+      "consigne": "Lis le petit texte, puis réponds à la question."
+    },
+    {
+      "id": "texte-8",
+      "chapitre": "textes",
+      "type": "choix",
+      "question": "Zoé a cinq ans. Demain, c’est son anniversaire. Elle aura six ans. Quel âge aura Zoé demain ?",
+      "reponse": "six ans",
+      "pieges": [
+        "cinq ans",
+        "quatre ans",
+        "sept ans"
+      ],
+      "consigne": "Lis le petit texte, puis réponds à la question."
+    }
+  ],
+  "ecriture": "cursive"
+}

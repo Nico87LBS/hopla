@@ -24,6 +24,7 @@ peuvent aussi partager ce qui est appris grâce à leur clé (voir
 | Paquet | Modules | Public |
 | --- | --- | --- |
 | **Apprendre à lire** | Lettres et sons, Syllabes simples, Sons complexes, Mots outils, Lire des mots, Comprendre une phrase, Mots sans dessin (méthode syllabique) | Enfant, GS et CP |
+| **Apprendre à lire en cursif** | Lettres cursives (la lettre en cursif, la réponse en imprimerie), puis les six autres modules d'Apprendre à lire écrits en cursif, avec leur propre progression | Enfant, CP |
 | **Langage GS** | Les rimes, Les syllabes, Le son du début, Les lettres (avec « Mon prénom »), Les mots en images | Enfant, GS |
 | **Maths GS** | Compter des quantités, La suite des nombres, Lire les nombres, Comparer, Composer 5 et 10, Formes et positions | Enfant, GS |
 | **Explorer le monde GS** | Le temps qui passe, Les saisons, Les animaux, Mon corps, Les plantes, Objets et matières | Enfant, GS |

@@ -170,3 +170,18 @@ func TestAReadingModuleSaysOnlyItsInstructions(t *testing.T) {
 	_, err := Parse(raw(`"tout"`))
 	require.Error(t, err)
 }
+
+func TestAModuleIsWrittenInPrintOrInCursive(t *testing.T) {
+	for writing, ok := range map[string]bool{"": true, "imprimerie": true, "cursive": true, "cursive_question": true, "gothique": false} {
+		raw := []byte(`{"format":"hopla-module/1","id":"essai","version":"1","nom":"Essai","public":"enfant",
+			"ecriture":"` + writing + `","chapitres":[{"id":"c1","nom":"Un"}],
+			"fiches":[{"id":"f1","chapitre":"c1","type":"choix","question":"m","reponse":"m","pieges":["n","u"]}]}`)
+		doc, err := Parse(raw)
+		if ok {
+			require.NoError(t, err, writing)
+			require.Equal(t, writing, doc.Writing)
+		} else {
+			require.Error(t, err, writing)
+		}
+	}
+}

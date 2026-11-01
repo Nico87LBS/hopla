@@ -261,6 +261,7 @@ const TextAnswer = ({ color, onAnswer }) => {
         size='lg'
         onClick={send}
         disabled={!value.trim()}
+        className='hopla-print'
         sx={{ bgcolor: color, '&:hover': { bgcolor: color } }}
       >
         {t('play.check')}
@@ -415,6 +416,14 @@ export const spoken = item =>
     .filter(Boolean)
     .join(' ')
 
+// writingClass shows the words of a module written in cursive: all of them,
+// or only those of the question, to read them in cursive and answer in print.
+export const writingClass = doc =>
+  ({
+    cursive: 'hopla-cursive',
+    cursive_question: 'hopla-cursive-question',
+  })[doc?.ecriture]
+
 // readBack is what is said once a question of a reading module is answered:
 // the words the child had to read, so that they hear them.
 export const readBack = item => {
@@ -447,7 +456,11 @@ const Prompt = ({ color, item, say, tell }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [voice, item.key, item.listen, item.lang])
   const said = instruction && (
-    <Typography level='body-md' textColor='text.secondary'>
+    <Typography
+      level='body-md'
+      textColor='text.secondary'
+      className='hopla-print'
+    >
       {instruction}
     </Typography>
   )
@@ -504,6 +517,10 @@ const Prompt = ({ color, item, say, tell }) => {
         />
       )}
       <Typography
+        // An instruction stays in print; the words to read follow the module.
+        className={
+          item.prompt === item.instruction ? 'hopla-print' : 'hopla-words'
+        }
         level={small ? 'title-lg' : item.prompt.length > 40 ? 'h4' : 'h1'}
         sx={{ fontVariantNumeric: 'tabular-nums' }}
       >
@@ -879,7 +896,7 @@ const LearnPlay = ({ playMode = false }) => {
         <EndScreen end={end} onReplay={start} back={back} color={color} />
       ) : (
         (item || feedback) && (
-          <Stack gap={3} alignItems='center'>
+          <Stack gap={3} alignItems='center' className={writingClass(doc)}>
             <Sheet
               variant='outlined'
               sx={{
@@ -905,13 +922,19 @@ const LearnPlay = ({ playMode = false }) => {
             {feedback ? (
               <Feedback feedback={feedback} onNext={next} />
             ) : (
-              <Question
-                key={item.key}
-                item={item}
-                onAnswer={answer}
-                color={color}
-                say={say}
-              />
+              <Stack
+                className='hopla-answers'
+                alignItems='center'
+                sx={{ width: '100%' }}
+              >
+                <Question
+                  key={item.key}
+                  item={item}
+                  onAnswer={answer}
+                  color={color}
+                  say={say}
+                />
+              </Stack>
             )}
           </Stack>
         )

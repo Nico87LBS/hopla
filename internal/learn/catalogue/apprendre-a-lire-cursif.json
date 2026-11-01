@@ -1,0 +1,24 @@
+{
+  "format": "hopla-module/1",
+  "id": "apprendre-a-lire-cursif",
+  "version": "1.0.0",
+  "nom": "Apprendre à lire en cursif",
+  "description": "Le paquet Apprendre à lire, écrit en cursif comme à l'école : les lettres cursives, puis les syllabes, les sons, les mots et les phrases. Pour le CP.",
+  "matiere": "francais",
+  "niveaux": [
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "auteur": "Hopla",
+  "sources": "D'après le programme du cycle 2 (CP) : lire l'écriture cursive. Police Playwrite FR Moderne (SIL Open Font License).",
+  "modules": [
+    "lire-lettres-cursives",
+    "lire-syllabes-cursif",
+    "lire-sons-complexes-cursif",
+    "lire-mots-outils-cursif",
+    "lire-mots-cursif",
+    "lire-phrases-cursif",
+    "lire-sans-dessin-cursif"
+  ]
+}

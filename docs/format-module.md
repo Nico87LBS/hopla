@@ -71,6 +71,7 @@ Le fichier est contrôlé à l'import ; une erreur est expliquée en français
 | `langue` | non | Langue des consignes (`fr`, `en`) |
 | `langue_apprise` | non | Langue enseignée, pour la voix des fiches Écoute (`en`) |
 | `lecture_voix_haute` | non | `true` pour les modules de ceux qui ne lisent pas encore : l'appareil dit la question, puis chaque réponse au premier toucher (un second toucher la choisit). `"consigne"` pour les modules qui apprennent à lire : l'appareil ne dit que la `consigne` des fiches qui en ont une, puis, une fois répondu, les mots à lire ; les réponses ne sont pas dites. Un parent peut l'éteindre pour une personne |
+| `ecriture` | non | `cursive` pour écrire les mots du module en cursif (police Playwrite FR Moderne, embarquée), `cursive_question` pour la question seule en cursif et les réponses en lettres d'imprimerie. Par défaut : lettres d'imprimerie. Les consignes restent en imprimerie |
 | `couleur` | non | Couleur du module, en `#RRGGBB` |
 | `icone`, `sources` | non | Informations, pas encore affichées |
 | `modules` | paquet | Fait du fichier un **paquet** : la liste des `id` de ses modules (40 au plus). Un paquet n'a ni chapitres, ni fiches, ni générateurs. Ses modules sont ceux du catalogue (installés avec lui) ou des modules déjà importés |
