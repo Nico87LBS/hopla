@@ -51,6 +51,12 @@ oauth2:
   #   - "hopla-admins"
   # manager_groups:
   #   - "hopla-managers"
+# Files and photos (optional). Both limits are in bytes; left out, uploads
+# are refused. base_path defaults to "files" next to the SQLite database.
+# storage:
+#   base_path: ""
+#   max_file_size: 10485760       # 10 MB per file
+#   max_user_storage: 2147483648  # 2 GB for the family
 # Single-family instance mode (optional).
 # When true, disables family join/leave endpoints and adds new OIDC users
 # to a shared household family instead of creating personal families.
