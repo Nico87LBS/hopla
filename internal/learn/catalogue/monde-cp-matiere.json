@@ -1,0 +1,405 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-cp-matiere",
+  "version": "1.0.0",
+  "nom": "La matière",
+  "description": "Solide ou liquide, l'eau qui gèle et la glace qui fond, et ce qui flotte ou coule.",
+  "matiere": "monde",
+  "niveaux": [
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de questionner le monde du cycle 2 (2024) et les repères annuels de progression du CP (Éduscol).",
+  "chapitres": [
+    {
+      "id": "etats",
+      "nom": "Solide ou liquide"
+    },
+    {
+      "id": "eau",
+      "nom": "L’eau et la glace",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "flotte",
+      "nom": "Flotte ou coule",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "solide-liquide",
+      "chapitre": "etats",
+      "type": "classer",
+      "question": "Solide ou liquide ?",
+      "consigne": "Solide ou liquide ?",
+      "boites": [
+        {
+          "nom": "Solide"
+        },
+        {
+          "nom": "Liquide"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le caillou",
+          "boite": "Solide",
+          "image": "stone"
+        },
+        {
+          "texte": "la clé",
+          "boite": "Solide",
+          "image": "key"
+        },
+        {
+          "texte": "le livre",
+          "boite": "Solide",
+          "image": "book"
+        },
+        {
+          "texte": "la cuillère",
+          "boite": "Solide",
+          "image": "spoon"
+        },
+        {
+          "texte": "le glaçon",
+          "boite": "Solide",
+          "image": "ice-cube"
+        },
+        {
+          "texte": "la bûche",
+          "boite": "Solide",
+          "image": "log"
+        },
+        {
+          "texte": "le lait",
+          "boite": "Liquide",
+          "image": "milk"
+        },
+        {
+          "texte": "le jus de fruit",
+          "boite": "Liquide",
+          "image": "juice"
+        },
+        {
+          "texte": "le soda",
+          "boite": "Liquide",
+          "image": "soda"
+        },
+        {
+          "texte": "la soupe",
+          "boite": "Liquide",
+          "image": "soup"
+        },
+        {
+          "texte": "la pluie",
+          "boite": "Liquide",
+          "image": "rain"
+        },
+        {
+          "texte": "le miel",
+          "boite": "Liquide",
+          "image": "honey"
+        }
+      ]
+    },
+    {
+      "id": "etat-1",
+      "chapitre": "etats",
+      "type": "choix",
+      "question": "Un liquide…",
+      "reponse": "coule et prend la forme du verre",
+      "pieges": [
+        "garde toujours sa forme",
+        "se casse en morceaux",
+        "ne coule jamais"
+      ],
+      "consigne": "Un liquide…"
+    },
+    {
+      "id": "etat-2",
+      "chapitre": "etats",
+      "type": "choix",
+      "question": "Un solide…",
+      "reponse": "garde sa forme",
+      "pieges": [
+        "coule partout",
+        "prend la forme du verre",
+        "n’existe pas"
+      ],
+      "consigne": "Un solide…"
+    },
+    {
+      "id": "etat-3",
+      "chapitre": "etats",
+      "type": "choix",
+      "question": "Le sable coule entre les doigts. Est-ce un liquide ?",
+      "reponse": "Non, ce sont de petits grains solides",
+      "pieges": [
+        "Oui"
+      ],
+      "consigne": "Le sable coule entre les doigts. Est-ce un liquide ?"
+    },
+    {
+      "id": "etat-4",
+      "chapitre": "etats",
+      "type": "choix",
+      "question": "Peut-on tenir de l’eau dans sa main fermée ?",
+      "reponse": "Non, elle coule",
+      "pieges": [
+        "Oui, facilement"
+      ],
+      "consigne": "Peut-on tenir de l’eau dans sa main fermée ?"
+    },
+    {
+      "id": "eau-1",
+      "chapitre": "eau",
+      "type": "choix",
+      "question": "Qu’arrive-t-il à l’eau quand il fait très froid ?",
+      "reponse": "elle devient de la glace",
+      "pieges": [
+        "elle devient du lait",
+        "elle chauffe",
+        "elle disparaît"
+      ],
+      "consigne": "Qu’arrive-t-il à l’eau quand il fait très froid ?",
+      "image": "ice-cube"
+    },
+    {
+      "id": "eau-2",
+      "chapitre": "eau",
+      "type": "choix",
+      "question": "Qu’arrive-t-il au glaçon au soleil ?",
+      "reponse": "il fond et devient de l’eau",
+      "pieges": [
+        "il grandit",
+        "il devient un caillou",
+        "il gèle encore plus"
+      ],
+      "consigne": "Qu’arrive-t-il au glaçon au soleil ?",
+      "image": "ice-cube"
+    },
+    {
+      "id": "eau-3",
+      "chapitre": "eau",
+      "type": "choix",
+      "question": "Où met-on l’eau pour faire des glaçons ?",
+      "reponse": "au congélateur",
+      "pieges": [
+        "au four",
+        "au soleil",
+        "dans la baignoire"
+      ],
+      "consigne": "Où met-on l’eau pour faire des glaçons ?",
+      "image": "ice-cube"
+    },
+    {
+      "id": "eau-4",
+      "chapitre": "eau",
+      "type": "choix",
+      "question": "La neige, c’est…",
+      "reponse": "de l’eau gelée",
+      "pieges": [
+        "du sucre",
+        "du sable",
+        "du coton"
+      ],
+      "consigne": "La neige, c’est…",
+      "image": "snow"
+    },
+    {
+      "id": "eau-5",
+      "chapitre": "eau",
+      "type": "choix",
+      "question": "Le bonhomme de neige au printemps…",
+      "reponse": "fond",
+      "pieges": [
+        "grandit",
+        "se met à marcher",
+        "devient du pain"
+      ],
+      "consigne": "Le bonhomme de neige au printemps…",
+      "image": "snowman"
+    },
+    {
+      "id": "eau-6",
+      "chapitre": "eau",
+      "type": "choix",
+      "question": "Quand l’eau bout dans la casserole, elle fait…",
+      "reponse": "de la vapeur",
+      "pieges": [
+        "de la glace",
+        "du sable",
+        "de la neige"
+      ],
+      "consigne": "Quand l’eau bout dans la casserole, elle fait…",
+      "image": "kettle"
+    },
+    {
+      "id": "eau-7",
+      "chapitre": "eau",
+      "type": "choix",
+      "question": "La glace est-elle un solide ?",
+      "reponse": "Oui",
+      "pieges": [
+        "Non"
+      ],
+      "consigne": "La glace est-elle un solide ?",
+      "image": "ice-cube"
+    },
+    {
+      "id": "glacon-ordre",
+      "chapitre": "eau",
+      "type": "ordre",
+      "question": "Remets dans l’ordre.",
+      "consigne": "Remets dans l’ordre.",
+      "elements": [
+        "je remplis le bac d’eau",
+        "je le mets au congélateur",
+        "j’attends",
+        "j’ai des glaçons"
+      ]
+    },
+    {
+      "id": "flotte-1",
+      "chapitre": "flotte",
+      "type": "classer",
+      "question": "Flotte ou coule ?",
+      "consigne": "Flotte ou coule ?",
+      "boites": [
+        {
+          "nom": "Flotte"
+        },
+        {
+          "nom": "Coule"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le bouchon",
+          "boite": "Flotte",
+          "image": "cork"
+        },
+        {
+          "texte": "la feuille",
+          "boite": "Flotte",
+          "image": "leaf"
+        },
+        {
+          "texte": "le bateau",
+          "boite": "Flotte",
+          "image": "boat"
+        },
+        {
+          "texte": "le ballon",
+          "boite": "Flotte",
+          "image": "ball"
+        },
+        {
+          "texte": "la bûche",
+          "boite": "Flotte",
+          "image": "log"
+        },
+        {
+          "texte": "le canard",
+          "boite": "Flotte",
+          "image": "duck"
+        },
+        {
+          "texte": "le caillou",
+          "boite": "Coule",
+          "image": "stone"
+        },
+        {
+          "texte": "la clé",
+          "boite": "Coule",
+          "image": "key"
+        },
+        {
+          "texte": "la pièce",
+          "boite": "Coule",
+          "image": "coin"
+        },
+        {
+          "texte": "la cuillère",
+          "boite": "Coule",
+          "image": "spoon"
+        },
+        {
+          "texte": "le seau",
+          "boite": "Flotte",
+          "image": "bucket"
+        }
+      ]
+    },
+    {
+      "id": "flotte-q1",
+      "chapitre": "flotte",
+      "type": "choix",
+      "question": "Le caillou jeté dans l’eau…",
+      "reponse": "coule",
+      "pieges": [
+        "flotte"
+      ],
+      "consigne": "Le caillou jeté dans l’eau…"
+    },
+    {
+      "id": "flotte-q2",
+      "chapitre": "flotte",
+      "type": "choix",
+      "question": "Le bouchon posé sur l’eau…",
+      "reponse": "flotte",
+      "pieges": [
+        "coule"
+      ],
+      "consigne": "Le bouchon posé sur l’eau…"
+    },
+    {
+      "id": "flotte-q3",
+      "chapitre": "flotte",
+      "type": "choix",
+      "question": "La clé en métal posée sur l’eau…",
+      "reponse": "coule",
+      "pieges": [
+        "flotte"
+      ],
+      "consigne": "La clé en métal posée sur l’eau…"
+    },
+    {
+      "id": "flotte-q4",
+      "chapitre": "flotte",
+      "type": "choix",
+      "question": "La feuille d’arbre sur la rivière…",
+      "reponse": "flotte",
+      "pieges": [
+        "coule"
+      ],
+      "consigne": "La feuille d’arbre sur la rivière…"
+    },
+    {
+      "id": "flotte-q5",
+      "chapitre": "flotte",
+      "type": "choix",
+      "question": "Pourquoi le bateau flotte-t-il ?",
+      "reponse": "il est creux et plein d’air",
+      "pieges": [
+        "il est lourd",
+        "il est rouge",
+        "il a peur de l’eau"
+      ],
+      "consigne": "Pourquoi le bateau flotte-t-il ?"
+    }
+  ]
+}

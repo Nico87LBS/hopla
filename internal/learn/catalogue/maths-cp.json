@@ -1,0 +1,24 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-cp",
+  "version": "1.0.0",
+  "nom": "Maths CP",
+  "description": "Les nombres jusqu'à 100, comparer et ranger, additions et soustractions, calcul mental, problèmes, monnaie et heures, formes et repérage. Les questions sont lues à voix haute.",
+  "matiere": "maths",
+  "niveaux": [
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "auteur": "Hopla",
+  "sources": "D'après le programme de mathématiques du cycle 2 (2024) et les repères annuels de progression du CP (Éduscol).",
+  "modules": [
+    "maths-cp-nombres",
+    "maths-cp-comparer",
+    "maths-cp-calcul",
+    "maths-cp-calcul-mental",
+    "maths-cp-problemes",
+    "maths-cp-monnaie-heure",
+    "maths-cp-formes"
+  ]
+}

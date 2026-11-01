@@ -1,0 +1,136 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-cp-calcul",
+  "version": "1.0.0",
+  "nom": "Additions et soustractions",
+  "description": "Additions et soustractions jusqu'à 10, puis 20, puis jusqu'à 100 sans retenue.",
+  "matiere": "maths",
+  "niveaux": [
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de mathématiques du cycle 2 (2024) et les repères annuels de progression du CP (Éduscol).",
+  "chapitres": [
+    {
+      "id": "add-10",
+      "nom": "Additions jusqu’à 10"
+    },
+    {
+      "id": "sub-10",
+      "nom": "Soustractions jusqu’à 10",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "add-20",
+      "nom": "Additions jusqu’à 20",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "sub-20",
+      "nom": "Soustractions jusqu’à 20",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "cent",
+      "nom": "Jusqu’à 100, sans retenue",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "generateurs": [
+    {
+      "id": "add-10",
+      "chapitre": "add-10",
+      "operation": "addition",
+      "a": [
+        0,
+        10
+      ],
+      "b": [
+        0,
+        10
+      ],
+      "resultat_max": 10
+    },
+    {
+      "id": "add-20",
+      "chapitre": "add-20",
+      "operation": "addition",
+      "a": [
+        1,
+        19
+      ],
+      "b": [
+        1,
+        10
+      ],
+      "resultat_min": 11,
+      "resultat_max": 20
+    },
+    {
+      "id": "sub-10",
+      "chapitre": "sub-10",
+      "operation": "soustraction",
+      "a": [
+        1,
+        10
+      ],
+      "b": [
+        0,
+        10
+      ]
+    },
+    {
+      "id": "sub-20",
+      "chapitre": "sub-20",
+      "operation": "soustraction",
+      "a": [
+        11,
+        20
+      ],
+      "b": [
+        1,
+        10
+      ]
+    },
+    {
+      "id": "add-100",
+      "chapitre": "cent",
+      "operation": "addition",
+      "a": [
+        10,
+        89
+      ],
+      "b": [
+        1,
+        30
+      ],
+      "retenue": "sans",
+      "resultat_max": 99
+    },
+    {
+      "id": "sub-100",
+      "chapitre": "cent",
+      "operation": "soustraction",
+      "a": [
+        20,
+        99
+      ],
+      "b": [
+        1,
+        30
+      ],
+      "retenue": "sans"
+    }
+  ]
+}

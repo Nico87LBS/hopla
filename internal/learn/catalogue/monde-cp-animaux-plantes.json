@@ -1,0 +1,603 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-cp-animaux-plantes",
+  "version": "1.0.0",
+  "nom": "Animaux et plantes",
+  "description": "Ce dont les animaux et les plantes ont besoin, comment les animaux se déplacent et où ils vivent, et comment une graine devient une plante.",
+  "matiere": "monde",
+  "niveaux": [
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de questionner le monde du cycle 2 (2024) et les repères annuels de progression du CP (Éduscol).",
+  "chapitres": [
+    {
+      "id": "besoins",
+      "nom": "Ce dont ils ont besoin"
+    },
+    {
+      "id": "bouger",
+      "nom": "Comment ils bougent",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "graine",
+      "nom": "De la graine à la plante",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "besoin-1",
+      "chapitre": "besoins",
+      "type": "choix",
+      "question": "De quoi a besoin une plante pour pousser ?",
+      "reponse": "d’eau et de lumière",
+      "pieges": [
+        "de lait",
+        "de bonbons",
+        "de rien"
+      ],
+      "consigne": "De quoi a besoin une plante pour pousser ?"
+    },
+    {
+      "id": "besoin-2",
+      "chapitre": "besoins",
+      "type": "choix",
+      "question": "Que mange le lapin ?",
+      "reponse": "des carottes et de l’herbe",
+      "pieges": [
+        "des poissons",
+        "des cailloux",
+        "du chocolat"
+      ],
+      "consigne": "Que mange le lapin ?"
+    },
+    {
+      "id": "besoin-3",
+      "chapitre": "besoins",
+      "type": "choix",
+      "question": "Que mange le chat ?",
+      "reponse": "des croquettes et de la viande",
+      "pieges": [
+        "de l’herbe",
+        "des cailloux",
+        "du sable"
+      ],
+      "consigne": "Que mange le chat ?"
+    },
+    {
+      "id": "besoin-4",
+      "chapitre": "besoins",
+      "type": "choix",
+      "question": "Que boit le chaton ?",
+      "reponse": "du lait",
+      "pieges": [
+        "du jus",
+        "du soda",
+        "du café"
+      ],
+      "consigne": "Que boit le chaton ?"
+    },
+    {
+      "id": "besoin-5",
+      "chapitre": "besoins",
+      "type": "choix",
+      "question": "Où vit le poisson ?",
+      "reponse": "dans l’eau",
+      "pieges": [
+        "dans un arbre",
+        "sous la terre",
+        "dans le ciel"
+      ],
+      "consigne": "Où vit le poisson ?"
+    },
+    {
+      "id": "besoin-6",
+      "chapitre": "besoins",
+      "type": "choix",
+      "question": "Où vit la taupe ?",
+      "reponse": "sous la terre",
+      "pieges": [
+        "dans l’eau",
+        "dans un nid",
+        "dans le ciel"
+      ],
+      "consigne": "Où vit la taupe ?"
+    },
+    {
+      "id": "besoin-7",
+      "chapitre": "besoins",
+      "type": "choix",
+      "question": "Où l’oiseau fait-il son nid ?",
+      "reponse": "dans un arbre",
+      "pieges": [
+        "dans l’eau",
+        "sous la terre",
+        "dans le four"
+      ],
+      "consigne": "Où l’oiseau fait-il son nid ?"
+    },
+    {
+      "id": "besoin-8",
+      "chapitre": "besoins",
+      "type": "choix",
+      "question": "Que mange la vache ?",
+      "reponse": "de l’herbe",
+      "pieges": [
+        "de la viande",
+        "des poissons",
+        "des bonbons"
+      ],
+      "consigne": "Que mange la vache ?"
+    },
+    {
+      "id": "besoin-9",
+      "chapitre": "besoins",
+      "type": "choix",
+      "question": "Une plante dans le noir…",
+      "reponse": "jaunit et meurt",
+      "pieges": [
+        "pousse plus vite",
+        "devient bleue",
+        "se met à marcher"
+      ],
+      "consigne": "Une plante dans le noir…"
+    },
+    {
+      "id": "besoin-10",
+      "chapitre": "besoins",
+      "type": "choix",
+      "question": "Que faut-il donner à un animal de la maison ?",
+      "reponse": "à manger, à boire et de l’attention",
+      "pieges": [
+        "rien",
+        "des jouets seulement",
+        "du soda"
+      ],
+      "consigne": "Que faut-il donner à un animal de la maison ?"
+    },
+    {
+      "id": "mange",
+      "chapitre": "besoins",
+      "type": "classer",
+      "question": "Que mange-t-il : de l’herbe ou de la viande ?",
+      "consigne": "Que mange-t-il : de l’herbe ou de la viande ?",
+      "boites": [
+        {
+          "nom": "Herbe et plantes"
+        },
+        {
+          "nom": "Viande"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "la vache",
+          "boite": "Herbe et plantes",
+          "image": "cow"
+        },
+        {
+          "texte": "le lapin",
+          "boite": "Herbe et plantes",
+          "image": "rabbit"
+        },
+        {
+          "texte": "le mouton",
+          "boite": "Herbe et plantes",
+          "image": "sheep"
+        },
+        {
+          "texte": "le cheval",
+          "boite": "Herbe et plantes",
+          "image": "horse"
+        },
+        {
+          "texte": "la girafe",
+          "boite": "Herbe et plantes",
+          "image": "giraffe"
+        },
+        {
+          "texte": "le lion",
+          "boite": "Viande",
+          "image": "lion"
+        },
+        {
+          "texte": "le loup",
+          "boite": "Viande",
+          "image": "wolf"
+        },
+        {
+          "texte": "le requin",
+          "boite": "Viande",
+          "image": "shark"
+        },
+        {
+          "texte": "le renard",
+          "boite": "Viande",
+          "image": "fox"
+        },
+        {
+          "texte": "le crocodile",
+          "boite": "Viande",
+          "image": "crocodile"
+        }
+      ]
+    },
+    {
+      "id": "bouger-1",
+      "chapitre": "bouger",
+      "type": "associer",
+      "question": "Relie chaque animal à sa façon de bouger.",
+      "consigne": "Relie chaque animal à sa façon de bouger.",
+      "paires": [
+        [
+          {
+            "texte": "le poisson",
+            "image": "fish"
+          },
+          "il nage"
+        ],
+        [
+          {
+            "texte": "l’oiseau",
+            "image": "bird"
+          },
+          "il vole"
+        ],
+        [
+          {
+            "texte": "le serpent",
+            "image": "snake"
+          },
+          "il rampe"
+        ],
+        [
+          {
+            "texte": "le cheval",
+            "image": "horse"
+          },
+          "il galope"
+        ],
+        [
+          {
+            "texte": "la grenouille",
+            "image": "frog"
+          },
+          "elle saute"
+        ]
+      ]
+    },
+    {
+      "id": "bouger-2",
+      "chapitre": "bouger",
+      "type": "associer",
+      "question": "Relie chaque animal à sa façon de bouger.",
+      "consigne": "Relie chaque animal à sa façon de bouger.",
+      "paires": [
+        [
+          {
+            "texte": "le dauphin",
+            "image": "dolphin"
+          },
+          "il nage"
+        ],
+        [
+          {
+            "texte": "le papillon",
+            "image": "butterfly"
+          },
+          "il vole"
+        ],
+        [
+          {
+            "texte": "l’escargot",
+            "image": "snail"
+          },
+          "il rampe"
+        ],
+        [
+          {
+            "texte": "le lapin",
+            "image": "rabbit"
+          },
+          "il saute"
+        ],
+        [
+          {
+            "texte": "le chien",
+            "image": "dog"
+          },
+          "il court"
+        ]
+      ]
+    },
+    {
+      "id": "ou-vit",
+      "chapitre": "bouger",
+      "type": "classer",
+      "question": "Où vit-il : dans l’eau ou sur la terre ?",
+      "consigne": "Où vit-il : dans l’eau ou sur la terre ?",
+      "boites": [
+        {
+          "nom": "Dans l’eau"
+        },
+        {
+          "nom": "Sur la terre"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le poisson",
+          "boite": "Dans l’eau",
+          "image": "fish"
+        },
+        {
+          "texte": "la baleine",
+          "boite": "Dans l’eau",
+          "image": "whale"
+        },
+        {
+          "texte": "la pieuvre",
+          "boite": "Dans l’eau",
+          "image": "octopus"
+        },
+        {
+          "texte": "le requin",
+          "boite": "Dans l’eau",
+          "image": "shark"
+        },
+        {
+          "texte": "le crabe",
+          "boite": "Dans l’eau",
+          "image": "crab"
+        },
+        {
+          "texte": "le dauphin",
+          "boite": "Dans l’eau",
+          "image": "dolphin"
+        },
+        {
+          "texte": "le cheval",
+          "boite": "Sur la terre",
+          "image": "horse"
+        },
+        {
+          "texte": "le lion",
+          "boite": "Sur la terre",
+          "image": "lion"
+        },
+        {
+          "texte": "la vache",
+          "boite": "Sur la terre",
+          "image": "cow"
+        },
+        {
+          "texte": "le renard",
+          "boite": "Sur la terre",
+          "image": "fox"
+        },
+        {
+          "texte": "le hérisson",
+          "boite": "Sur la terre",
+          "image": "hedgehog"
+        },
+        {
+          "texte": "le lapin",
+          "boite": "Sur la terre",
+          "image": "rabbit"
+        }
+      ]
+    },
+    {
+      "id": "pattes-1",
+      "chapitre": "bouger",
+      "type": "choix",
+      "question": "Combien de pattes a l’oiseau ?",
+      "reponse": "2",
+      "pieges": [
+        "4",
+        "6",
+        "8"
+      ],
+      "consigne": "Combien de pattes a l’oiseau ?",
+      "image": "bird"
+    },
+    {
+      "id": "pattes-2",
+      "chapitre": "bouger",
+      "type": "choix",
+      "question": "Combien de pattes a le chien ?",
+      "reponse": "4",
+      "pieges": [
+        "2",
+        "6",
+        "8"
+      ],
+      "consigne": "Combien de pattes a le chien ?",
+      "image": "dog"
+    },
+    {
+      "id": "pattes-3",
+      "chapitre": "bouger",
+      "type": "choix",
+      "question": "Combien de pattes a l’araignée ?",
+      "reponse": "8",
+      "pieges": [
+        "4",
+        "6",
+        "2"
+      ],
+      "consigne": "Combien de pattes a l’araignée ?",
+      "image": "spider"
+    },
+    {
+      "id": "pattes-4",
+      "chapitre": "bouger",
+      "type": "choix",
+      "question": "Combien de pattes a l’abeille ?",
+      "reponse": "6",
+      "pieges": [
+        "4",
+        "8",
+        "2"
+      ],
+      "consigne": "Combien de pattes a l’abeille ?",
+      "image": "bee"
+    },
+    {
+      "id": "pattes-5",
+      "chapitre": "bouger",
+      "type": "choix",
+      "question": "Combien de pattes a le serpent ?",
+      "reponse": "0",
+      "pieges": [
+        "2",
+        "4",
+        "6"
+      ],
+      "consigne": "Combien de pattes a le serpent ?",
+      "image": "snake"
+    },
+    {
+      "id": "pousse",
+      "chapitre": "graine",
+      "type": "ordre",
+      "question": "Remets dans l’ordre : la graine devient une plante.",
+      "consigne": "Remets dans l’ordre : la graine devient une plante.",
+      "elements": [
+        "je plante la graine",
+        "je l’arrose",
+        "une pousse sort de la terre",
+        "la plante grandit"
+      ]
+    },
+    {
+      "id": "graine-1",
+      "chapitre": "graine",
+      "type": "choix",
+      "question": "Comment s’appelle ce qu’on plante pour avoir une fleur ?",
+      "reponse": "la graine",
+      "pieges": [
+        "la feuille",
+        "la tige",
+        "le caillou"
+      ],
+      "consigne": "Comment s’appelle ce qu’on plante pour avoir une fleur ?",
+      "image": "seed"
+    },
+    {
+      "id": "graine-2",
+      "chapitre": "graine",
+      "type": "choix",
+      "question": "Qu’est-ce qui sort de la graine en premier ?",
+      "reponse": "une petite pousse",
+      "pieges": [
+        "une fleur",
+        "un fruit",
+        "un arbre"
+      ],
+      "consigne": "Qu’est-ce qui sort de la graine en premier ?",
+      "image": "sprout"
+    },
+    {
+      "id": "graine-3",
+      "chapitre": "graine",
+      "type": "choix",
+      "question": "Où plante-t-on une graine ?",
+      "reponse": "dans la terre",
+      "pieges": [
+        "dans le lait",
+        "dans un sac",
+        "sur la table"
+      ],
+      "consigne": "Où plante-t-on une graine ?",
+      "image": "seed"
+    },
+    {
+      "id": "graine-4",
+      "chapitre": "graine",
+      "type": "choix",
+      "question": "Dans quel fruit trouve-t-on des pépins ?",
+      "reponse": "la pomme",
+      "pieges": [
+        "la banane",
+        "la carotte",
+        "le pain"
+      ],
+      "consigne": "Dans quel fruit trouve-t-on des pépins ?",
+      "image": "apple"
+    },
+    {
+      "id": "graine-5",
+      "chapitre": "graine",
+      "type": "choix",
+      "question": "La graine de la cerise s’appelle…",
+      "reponse": "le noyau",
+      "pieges": [
+        "la feuille",
+        "la racine",
+        "la tige"
+      ],
+      "consigne": "La graine de la cerise s’appelle…",
+      "image": "cherry"
+    },
+    {
+      "id": "graine-6",
+      "chapitre": "graine",
+      "type": "choix",
+      "question": "Que fait la racine ?",
+      "reponse": "elle boit l’eau dans la terre",
+      "pieges": [
+        "elle vole",
+        "elle fait des fleurs",
+        "elle chante"
+      ],
+      "consigne": "Que fait la racine ?",
+      "image": "sprout"
+    },
+    {
+      "id": "plante-fleur",
+      "chapitre": "graine",
+      "type": "zones",
+      "image": "plante",
+      "question": "fleur",
+      "reponse": "la fleur"
+    },
+    {
+      "id": "plante-feuille",
+      "chapitre": "graine",
+      "type": "zones",
+      "image": "plante",
+      "question": "feuille",
+      "reponse": "la feuille"
+    },
+    {
+      "id": "plante-tige",
+      "chapitre": "graine",
+      "type": "zones",
+      "image": "plante",
+      "question": "tige",
+      "reponse": "la tige"
+    },
+    {
+      "id": "plante-racines",
+      "chapitre": "graine",
+      "type": "zones",
+      "image": "plante",
+      "question": "racines",
+      "reponse": "les racines"
+    }
+  ]
+}

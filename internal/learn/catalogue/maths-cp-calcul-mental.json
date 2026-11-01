@@ -1,0 +1,139 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-cp-calcul-mental",
+  "version": "1.0.0",
+  "nom": "Calcul mental CP",
+  "description": "Les doubles et les moitiés, les compléments à 10, ajouter ou enlever 10, et les tables d'addition.",
+  "matiere": "maths",
+  "niveaux": [
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de mathématiques du cycle 2 (2024) et les repères annuels de progression du CP (Éduscol).",
+  "chapitres": [
+    {
+      "id": "doubles",
+      "nom": "Doubles et moitiés"
+    },
+    {
+      "id": "dix",
+      "nom": "Faire 10",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "dizaine",
+      "nom": "Ajouter ou enlever 10",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "tables",
+      "nom": "Les tables d’addition",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "generateurs": [
+    {
+      "id": "doubles",
+      "chapitre": "doubles",
+      "operation": "double",
+      "a": [
+        1,
+        10
+      ]
+    },
+    {
+      "id": "moities",
+      "chapitre": "doubles",
+      "operation": "moitie",
+      "a": [
+        2,
+        20,
+        2
+      ]
+    },
+    {
+      "id": "faire-10",
+      "chapitre": "dix",
+      "operation": "complement",
+      "cible": "10",
+      "a": [
+        1,
+        9
+      ]
+    },
+    {
+      "id": "trou-10",
+      "chapitre": "dix",
+      "operation": "addition",
+      "a": [
+        1,
+        9
+      ],
+      "b": [
+        1,
+        9
+      ],
+      "formes": [
+        "trou"
+      ],
+      "resultat_min": 10,
+      "resultat_max": 10
+    },
+    {
+      "id": "plus-10",
+      "chapitre": "dizaine",
+      "operation": "addition",
+      "a": [
+        1,
+        89
+      ],
+      "b": {
+        "valeurs": [
+          10
+        ]
+      }
+    },
+    {
+      "id": "moins-10",
+      "chapitre": "dizaine",
+      "operation": "soustraction",
+      "a": [
+        11,
+        99
+      ],
+      "b": {
+        "valeurs": [
+          10
+        ]
+      }
+    },
+    {
+      "id": "tables",
+      "chapitre": "tables",
+      "operation": "addition",
+      "a": [
+        1,
+        9
+      ],
+      "b": [
+        1,
+        9
+      ],
+      "formes": [
+        "normal",
+        "trou"
+      ]
+    }
+  ]
+}

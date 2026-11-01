@@ -562,3 +562,27 @@ test('a word heard keeps the look-alike words given as its traps', () => {
   assert.deepEqual([...lait.choices].sort(), ['lait', 'lit', 'loup', 'lune'])
   assert.equal(lait.trapPool, undefined)
 })
+
+test('a clock is read among times that are easy to mix up', () => {
+  const source = generatorSource(
+    {
+      id: 'h',
+      chapitre: 'c',
+      operation: 'heure',
+      a: [1, 12],
+      formes: ['pile', 'demie'],
+    },
+    'essai',
+  )
+  const items = source.list()
+  assert.equal(items.length, 24)
+  const three = items.find(i => i.key === 'hr:3:0')
+  assert.equal(three.answer, '3 h')
+  assert.deepEqual(three.clock, { h: 3, m: 0 })
+  assert.equal(three.choices.length, 4)
+  assert.ok(three.choices.includes('12 h'), 'the long hand read as the hour')
+  assert.equal(new Set(three.choices).size, 4)
+  assert.equal(source.fromKey('hr:12:30').answer, '12 h 30')
+  assert.equal(source.fromKey('hr:12:15'), null)
+  assert.ok(items.every(i => i.choices.includes(i.answer)))
+})

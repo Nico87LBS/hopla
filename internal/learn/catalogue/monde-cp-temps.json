@@ -1,0 +1,688 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-cp-temps",
+  "version": "1.0.0",
+  "nom": "Le temps qui passe",
+  "description": "Les jours de la semaine, les mois, les saisons, et hier, aujourd'hui, demain.",
+  "matiere": "monde",
+  "niveaux": [
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de questionner le monde du cycle 2 (2024) et les repères annuels de progression du CP (Éduscol).",
+  "chapitres": [
+    {
+      "id": "jours",
+      "nom": "Les jours de la semaine"
+    },
+    {
+      "id": "mois",
+      "nom": "Les mois de l’année",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "saisons",
+      "nom": "Les saisons",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "avant-apres",
+      "nom": "Avant, maintenant, après",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "jours-0",
+      "chapitre": "jours",
+      "type": "ordre",
+      "question": "Remets les jours dans l’ordre.",
+      "consigne": "Remets les jours dans l’ordre.",
+      "elements": [
+        "lundi",
+        "mardi",
+        "mercredi",
+        "jeudi"
+      ]
+    },
+    {
+      "id": "jours-3",
+      "chapitre": "jours",
+      "type": "ordre",
+      "question": "Remets les jours dans l’ordre.",
+      "consigne": "Remets les jours dans l’ordre.",
+      "elements": [
+        "jeudi",
+        "vendredi",
+        "samedi",
+        "dimanche"
+      ]
+    },
+    {
+      "id": "jours-6",
+      "chapitre": "jours",
+      "type": "ordre",
+      "question": "Remets les jours dans l’ordre.",
+      "consigne": "Remets les jours dans l’ordre.",
+      "elements": [
+        "dimanche",
+        "lundi",
+        "mardi",
+        "mercredi"
+      ]
+    },
+    {
+      "id": "apres-lundi",
+      "chapitre": "jours",
+      "type": "choix",
+      "question": "Quel jour vient après lundi ?",
+      "reponse": "mardi",
+      "pieges": [
+        "mercredi",
+        "jeudi",
+        "vendredi"
+      ],
+      "consigne": "Quel jour vient après lundi ?"
+    },
+    {
+      "id": "apres-mardi",
+      "chapitre": "jours",
+      "type": "choix",
+      "question": "Quel jour vient après mardi ?",
+      "reponse": "mercredi",
+      "pieges": [
+        "lundi",
+        "jeudi",
+        "vendredi"
+      ],
+      "consigne": "Quel jour vient après mardi ?"
+    },
+    {
+      "id": "apres-mercredi",
+      "chapitre": "jours",
+      "type": "choix",
+      "question": "Quel jour vient après mercredi ?",
+      "reponse": "jeudi",
+      "pieges": [
+        "lundi",
+        "mardi",
+        "vendredi"
+      ],
+      "consigne": "Quel jour vient après mercredi ?"
+    },
+    {
+      "id": "apres-jeudi",
+      "chapitre": "jours",
+      "type": "choix",
+      "question": "Quel jour vient après jeudi ?",
+      "reponse": "vendredi",
+      "pieges": [
+        "lundi",
+        "mardi",
+        "mercredi"
+      ],
+      "consigne": "Quel jour vient après jeudi ?"
+    },
+    {
+      "id": "apres-vendredi",
+      "chapitre": "jours",
+      "type": "choix",
+      "question": "Quel jour vient après vendredi ?",
+      "reponse": "samedi",
+      "pieges": [
+        "lundi",
+        "mardi",
+        "mercredi"
+      ],
+      "consigne": "Quel jour vient après vendredi ?"
+    },
+    {
+      "id": "apres-samedi",
+      "chapitre": "jours",
+      "type": "choix",
+      "question": "Quel jour vient après samedi ?",
+      "reponse": "dimanche",
+      "pieges": [
+        "lundi",
+        "mardi",
+        "mercredi"
+      ],
+      "consigne": "Quel jour vient après samedi ?"
+    },
+    {
+      "id": "apres-dimanche",
+      "chapitre": "jours",
+      "type": "choix",
+      "question": "Quel jour vient après dimanche ?",
+      "reponse": "lundi",
+      "pieges": [
+        "mardi",
+        "mercredi",
+        "jeudi"
+      ],
+      "consigne": "Quel jour vient après dimanche ?"
+    },
+    {
+      "id": "semaine-1",
+      "chapitre": "jours",
+      "type": "choix",
+      "question": "Combien y a-t-il de jours dans une semaine ?",
+      "reponse": "7",
+      "pieges": [
+        "5",
+        "10",
+        "12"
+      ],
+      "consigne": "Combien y a-t-il de jours dans une semaine ?"
+    },
+    {
+      "id": "semaine-2",
+      "chapitre": "jours",
+      "type": "choix",
+      "question": "Quels jours n’a-t-on pas école, souvent ?",
+      "reponse": "samedi et dimanche",
+      "pieges": [
+        "lundi et mardi",
+        "jeudi et vendredi",
+        "mardi et jeudi"
+      ],
+      "consigne": "Quels jours n’a-t-on pas école, souvent ?"
+    },
+    {
+      "id": "semaine-3",
+      "chapitre": "jours",
+      "type": "choix",
+      "question": "Si aujourd’hui c’est mardi, hier c’était…",
+      "reponse": "lundi",
+      "pieges": [
+        "mercredi",
+        "dimanche",
+        "jeudi"
+      ],
+      "consigne": "Si aujourd’hui c’est mardi, hier c’était…"
+    },
+    {
+      "id": "semaine-4",
+      "chapitre": "jours",
+      "type": "choix",
+      "question": "Si aujourd’hui c’est jeudi, demain ce sera…",
+      "reponse": "vendredi",
+      "pieges": [
+        "mercredi",
+        "samedi",
+        "lundi"
+      ],
+      "consigne": "Si aujourd’hui c’est jeudi, demain ce sera…"
+    },
+    {
+      "id": "mois-0",
+      "chapitre": "mois",
+      "type": "ordre",
+      "question": "Remets les mois dans l’ordre.",
+      "consigne": "Remets les mois dans l’ordre.",
+      "elements": [
+        "janvier",
+        "février",
+        "mars",
+        "avril"
+      ]
+    },
+    {
+      "id": "mois-4",
+      "chapitre": "mois",
+      "type": "ordre",
+      "question": "Remets les mois dans l’ordre.",
+      "consigne": "Remets les mois dans l’ordre.",
+      "elements": [
+        "mai",
+        "juin",
+        "juillet",
+        "août"
+      ]
+    },
+    {
+      "id": "mois-8",
+      "chapitre": "mois",
+      "type": "ordre",
+      "question": "Remets les mois dans l’ordre.",
+      "consigne": "Remets les mois dans l’ordre.",
+      "elements": [
+        "septembre",
+        "octobre",
+        "novembre",
+        "décembre"
+      ]
+    },
+    {
+      "id": "apres-janvier",
+      "chapitre": "mois",
+      "type": "choix",
+      "question": "Quel mois vient après janvier ?",
+      "reponse": "février",
+      "pieges": [
+        "mars",
+        "avril",
+        "mai"
+      ],
+      "consigne": "Quel mois vient après janvier ?"
+    },
+    {
+      "id": "apres-fevrier",
+      "chapitre": "mois",
+      "type": "choix",
+      "question": "Quel mois vient après février ?",
+      "reponse": "mars",
+      "pieges": [
+        "avril",
+        "mai",
+        "juin"
+      ],
+      "consigne": "Quel mois vient après février ?"
+    },
+    {
+      "id": "apres-mars",
+      "chapitre": "mois",
+      "type": "choix",
+      "question": "Quel mois vient après mars ?",
+      "reponse": "avril",
+      "pieges": [
+        "mai",
+        "juin",
+        "juillet"
+      ],
+      "consigne": "Quel mois vient après mars ?"
+    },
+    {
+      "id": "apres-avril",
+      "chapitre": "mois",
+      "type": "choix",
+      "question": "Quel mois vient après avril ?",
+      "reponse": "mai",
+      "pieges": [
+        "juin",
+        "juillet",
+        "août"
+      ],
+      "consigne": "Quel mois vient après avril ?"
+    },
+    {
+      "id": "apres-mai",
+      "chapitre": "mois",
+      "type": "choix",
+      "question": "Quel mois vient après mai ?",
+      "reponse": "juin",
+      "pieges": [
+        "juillet",
+        "août",
+        "septembre"
+      ],
+      "consigne": "Quel mois vient après mai ?"
+    },
+    {
+      "id": "apres-juin",
+      "chapitre": "mois",
+      "type": "choix",
+      "question": "Quel mois vient après juin ?",
+      "reponse": "juillet",
+      "pieges": [
+        "août",
+        "septembre",
+        "octobre"
+      ],
+      "consigne": "Quel mois vient après juin ?"
+    },
+    {
+      "id": "apres-juillet",
+      "chapitre": "mois",
+      "type": "choix",
+      "question": "Quel mois vient après juillet ?",
+      "reponse": "août",
+      "pieges": [
+        "septembre",
+        "octobre",
+        "novembre"
+      ],
+      "consigne": "Quel mois vient après juillet ?"
+    },
+    {
+      "id": "apres-aout",
+      "chapitre": "mois",
+      "type": "choix",
+      "question": "Quel mois vient après août ?",
+      "reponse": "septembre",
+      "pieges": [
+        "octobre",
+        "novembre",
+        "décembre"
+      ],
+      "consigne": "Quel mois vient après août ?"
+    },
+    {
+      "id": "apres-septembre",
+      "chapitre": "mois",
+      "type": "choix",
+      "question": "Quel mois vient après septembre ?",
+      "reponse": "octobre",
+      "pieges": [
+        "janvier",
+        "février",
+        "mars"
+      ],
+      "consigne": "Quel mois vient après septembre ?"
+    },
+    {
+      "id": "apres-octobre",
+      "chapitre": "mois",
+      "type": "choix",
+      "question": "Quel mois vient après octobre ?",
+      "reponse": "novembre",
+      "pieges": [
+        "février",
+        "mars",
+        "avril"
+      ],
+      "consigne": "Quel mois vient après octobre ?"
+    },
+    {
+      "id": "apres-novembre",
+      "chapitre": "mois",
+      "type": "choix",
+      "question": "Quel mois vient après novembre ?",
+      "reponse": "décembre",
+      "pieges": [
+        "mars",
+        "avril",
+        "mai"
+      ],
+      "consigne": "Quel mois vient après novembre ?"
+    },
+    {
+      "id": "annee-1",
+      "chapitre": "mois",
+      "type": "choix",
+      "question": "Combien y a-t-il de mois dans une année ?",
+      "reponse": "12",
+      "pieges": [
+        "7",
+        "10",
+        "30"
+      ],
+      "consigne": "Combien y a-t-il de mois dans une année ?"
+    },
+    {
+      "id": "annee-2",
+      "chapitre": "mois",
+      "type": "choix",
+      "question": "Quel est le premier mois de l’année ?",
+      "reponse": "janvier",
+      "pieges": [
+        "décembre",
+        "mars",
+        "septembre"
+      ],
+      "consigne": "Quel est le premier mois de l’année ?"
+    },
+    {
+      "id": "annee-3",
+      "chapitre": "mois",
+      "type": "choix",
+      "question": "Quel est le dernier mois de l’année ?",
+      "reponse": "décembre",
+      "pieges": [
+        "janvier",
+        "novembre",
+        "août"
+      ],
+      "consigne": "Quel est le dernier mois de l’année ?"
+    },
+    {
+      "id": "annee-4",
+      "chapitre": "mois",
+      "type": "choix",
+      "question": "Noël, c’est en…",
+      "reponse": "décembre",
+      "pieges": [
+        "juillet",
+        "avril",
+        "mars"
+      ],
+      "consigne": "Noël, c’est en…"
+    },
+    {
+      "id": "annee-5",
+      "chapitre": "mois",
+      "type": "choix",
+      "question": "La rentrée des classes, c’est en…",
+      "reponse": "septembre",
+      "pieges": [
+        "janvier",
+        "juillet",
+        "mai"
+      ],
+      "consigne": "La rentrée des classes, c’est en…"
+    },
+    {
+      "id": "saisons",
+      "chapitre": "saisons",
+      "type": "ordre",
+      "question": "Remets les saisons dans l’ordre, en commençant par le printemps.",
+      "consigne": "Remets les saisons dans l’ordre, en commençant par le printemps.",
+      "elements": [
+        "le printemps",
+        "l’été",
+        "l’automne",
+        "l’hiver"
+      ]
+    },
+    {
+      "id": "saison-1",
+      "chapitre": "saisons",
+      "type": "choix",
+      "question": "Il neige, on fait un bonhomme de neige : c’est…",
+      "reponse": "l’hiver",
+      "pieges": [
+        "le printemps",
+        "l’été",
+        "l’automne"
+      ],
+      "consigne": "Il neige, on fait un bonhomme de neige : c’est…",
+      "image": "snowman"
+    },
+    {
+      "id": "saison-2",
+      "chapitre": "saisons",
+      "type": "choix",
+      "question": "Les feuilles tombent des arbres : c’est…",
+      "reponse": "l’automne",
+      "pieges": [
+        "le printemps",
+        "l’été",
+        "l’hiver"
+      ],
+      "consigne": "Les feuilles tombent des arbres : c’est…",
+      "image": "leaf"
+    },
+    {
+      "id": "saison-3",
+      "chapitre": "saisons",
+      "type": "choix",
+      "question": "Il fait chaud, on va à la mer : c’est…",
+      "reponse": "l’été",
+      "pieges": [
+        "le printemps",
+        "l’automne",
+        "l’hiver"
+      ],
+      "consigne": "Il fait chaud, on va à la mer : c’est…",
+      "image": "sun"
+    },
+    {
+      "id": "saison-4",
+      "chapitre": "saisons",
+      "type": "choix",
+      "question": "Les fleurs poussent, les oiseaux reviennent : c’est…",
+      "reponse": "le printemps",
+      "pieges": [
+        "l’été",
+        "l’automne",
+        "l’hiver"
+      ],
+      "consigne": "Les fleurs poussent, les oiseaux reviennent : c’est…",
+      "image": "tulip"
+    },
+    {
+      "id": "saison-5",
+      "chapitre": "saisons",
+      "type": "choix",
+      "question": "On met un manteau et une écharpe : c’est…",
+      "reponse": "l’hiver",
+      "pieges": [
+        "le printemps",
+        "l’été",
+        "l’automne"
+      ],
+      "consigne": "On met un manteau et une écharpe : c’est…",
+      "image": "scarf"
+    },
+    {
+      "id": "saison-6",
+      "chapitre": "saisons",
+      "type": "choix",
+      "question": "On ramasse des champignons et des châtaignes : c’est…",
+      "reponse": "l’automne",
+      "pieges": [
+        "le printemps",
+        "l’été",
+        "l’hiver"
+      ],
+      "consigne": "On ramasse des champignons et des châtaignes : c’est…",
+      "image": "mushroom"
+    },
+    {
+      "id": "temps-1",
+      "chapitre": "avant-apres",
+      "type": "ordre",
+      "question": "Remets dans l’ordre du temps.",
+      "consigne": "Remets dans l’ordre du temps.",
+      "elements": [
+        "hier",
+        "aujourd’hui",
+        "demain"
+      ]
+    },
+    {
+      "id": "temps-2",
+      "chapitre": "avant-apres",
+      "type": "ordre",
+      "question": "Remets dans l’ordre du temps.",
+      "consigne": "Remets dans l’ordre du temps.",
+      "elements": [
+        "le matin",
+        "le midi",
+        "le soir",
+        "la nuit"
+      ]
+    },
+    {
+      "id": "temps-3",
+      "chapitre": "avant-apres",
+      "type": "ordre",
+      "question": "Remets dans l’ordre du temps.",
+      "consigne": "Remets dans l’ordre du temps.",
+      "elements": [
+        "avant",
+        "maintenant",
+        "après"
+      ]
+    },
+    {
+      "id": "temps-4",
+      "chapitre": "avant-apres",
+      "type": "ordre",
+      "question": "Remets dans l’ordre du temps.",
+      "consigne": "Remets dans l’ordre du temps.",
+      "elements": [
+        "je me lève",
+        "je déjeune",
+        "je vais à l’école",
+        "je me couche"
+      ]
+    },
+    {
+      "id": "quand-1",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Le jour d’avant aujourd’hui, c’est…",
+      "reponse": "hier",
+      "pieges": [
+        "demain",
+        "maintenant",
+        "bientôt"
+      ],
+      "consigne": "Le jour d’avant aujourd’hui, c’est…"
+    },
+    {
+      "id": "quand-2",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Le jour d’après aujourd’hui, c’est…",
+      "reponse": "demain",
+      "pieges": [
+        "hier",
+        "avant",
+        "jamais"
+      ],
+      "consigne": "Le jour d’après aujourd’hui, c’est…"
+    },
+    {
+      "id": "quand-3",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "On prend le petit-déjeuner…",
+      "reponse": "le matin",
+      "pieges": [
+        "le soir",
+        "la nuit",
+        "à minuit"
+      ],
+      "consigne": "On prend le petit-déjeuner…"
+    },
+    {
+      "id": "quand-4",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "On dort…",
+      "reponse": "la nuit",
+      "pieges": [
+        "le midi",
+        "à la récréation",
+        "à la cantine"
+      ],
+      "consigne": "On dort…"
+    },
+    {
+      "id": "quand-5",
+      "chapitre": "avant-apres",
+      "type": "choix",
+      "question": "Quand j’étais bébé, c’était…",
+      "reponse": "avant",
+      "pieges": [
+        "après",
+        "demain",
+        "maintenant"
+      ],
+      "consigne": "Quand j’étais bébé, c’était…"
+    }
+  ]
+}

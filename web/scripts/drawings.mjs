@@ -1935,6 +1935,65 @@ Object.assign(DRAWINGS, {
     rect(30, 40, 30, 4, 1, '#fff'),
 })
 
+// ── CP: money, solids, left and right, seeds ──
+
+const FONT = `font-family="Fredoka, 'Arial Rounded MT Bold', Arial, sans-serif" font-weight="700"`
+const GOLD = '#F2C14E'
+const SILVER = '#D5D9E0'
+const COPPER = '#D98B5F'
+const coinOf = (value, unit, outer, inner = outer) =>
+  circle(50, 50, value.length > 1 ? 30 : 28, outer) +
+  circle(50, 50, value.length > 1 ? 22 : 20, inner) +
+  `<text x="50" y="${unit ? 53 : 59}" text-anchor="middle" ${FONT} font-size="${unit ? 22 : 26}" fill="${INK}">${value}</text>` +
+  (unit
+    ? `<text x="50" y="69" text-anchor="middle" ${FONT} font-size="13" fill="${INK}">${unit}</text>`
+    : '')
+const note = (value, fill, dark) =>
+  rect(10, 26, 80, 48, 4, fill) +
+  rect(16, 32, 68, 36, 2, dark) +
+  circle(66, 50, 11, fill, false) +
+  `<text x="36" y="58" text-anchor="middle" ${FONT} font-size="24" fill="#fff">${value}</text>` +
+  `<text x="66" y="55" text-anchor="middle" ${FONT} font-size="14" fill="${INK}">€</text>`
+
+Object.assign(DRAWINGS, {
+  'euro-1': coinOf('1', '€', GOLD, SILVER),
+  'euro-2': coinOf('2', '€', SILVER, GOLD),
+  'cent-10': coinOf('10', 'c', GOLD),
+  'cent-20': coinOf('20', 'c', GOLD),
+  'cent-50': coinOf('50', 'c', GOLD),
+  'cent-5': coinOf('5', 'c', COPPER),
+  'bill-5': note('5', '#B9BEC6', '#7D8794'),
+  'bill-10': note('10', '#F2A7A0', '#C9524A'),
+  'bill-20': note('20', '#A9C8F0', '#3F6DB5'),
+  'bill-50': note('50', '#F7C38E', '#D9772B'),
+  'shape-cube':
+    shape('M26 38 L50 26 L74 38 L50 50Z', '#FF8A8E') +
+    shape('M26 38 V66 L50 78 V50Z', '#E5484D') +
+    shape('M74 38 V66 L50 78 V50Z', '#B83A3F'),
+  'shape-sphere':
+    circle(50, 50, 26, '#3B82F6') +
+    oval(50, 50, 26, 8, 'none') +
+    flat('M38 36 C42 30 50 28 54 30 C48 32 42 36 40 42Z', '#fff', 0.7),
+  'shape-cylinder':
+    shape('M30 30 V70 C30 80 70 80 70 70 V30Z', '#30A46C') +
+    oval(50, 30, 20, 7, '#6FD49A'),
+  'shape-pyramid':
+    shape('M50 20 L26 70 L54 80Z', '#FFD23F') +
+    shape('M50 20 L54 80 L76 64Z', '#E0A800'),
+  'pos-left': box(54, 52, 32, 30) + bunny(30, 62, 0.42),
+  'pos-right': box(14, 52, 32, 30) + bunny(70, 62, 0.42),
+  'pos-between': box(4, 54, 26, 28) + box(70, 54, 26, 28) + bunny(50, 62, 0.42),
+  seed:
+    oval(50, 56, 16, 11, '#B07A4A', true, -20) +
+    line('M40 60 C46 54 54 52 60 52', 1.4),
+  sprout:
+    shape('M14 78 C30 70 70 70 86 78 V86 H14Z', '#8D5A3B') +
+    line('M50 76 V46', 2.6) +
+    shape('M50 54 C40 54 32 46 30 36 C42 36 50 42 50 54Z', LEAF) +
+    shape('M50 48 C58 46 66 38 68 28 C56 28 50 36 50 48Z', LEAF) +
+    oval(50, 78, 6, 4, '#B07A4A'),
+})
+
 for (const [name, colour] of Object.entries(COLOURS)) {
   DRAWINGS[`colour-${name}`] = splash(colour)
 }
@@ -1976,10 +2035,11 @@ const GROUPS = {
   school: 'schoolbag pencil scissors glue notebook paintbrush board',
   feeling: 'happy sad angry scared surprised',
   nature:
-    'moon star snowman flower leaf fir grass barn wave tulip fire mountain igloo',
+    'moon star snowman flower leaf fir grass barn wave tulip fire mountain igloo seed sprout',
   object:
     'spoon key bottle bucket cork stone coin toothbrush truck log bag bowl suitcase wheel cage ' +
-    'kettle battery bulb socket circuit-closed circuit-open circuit-cut circuit-same castle temple candle phone computer',
+    'kettle battery bulb socket circuit-closed circuit-open circuit-cut circuit-same castle temple candle phone computer ' +
+    'euro-1 euro-2 cent-5 cent-10 cent-20 cent-50 bill-5 bill-10 bill-20 bill-50',
 }
 const groupOf = id => {
   const prefix = id.split('-')[0]

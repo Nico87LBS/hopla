@@ -1,0 +1,424 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-cp-corps",
+  "version": "1.0.0",
+  "nom": "Mon corps, ma santé",
+  "description": "Les parties du corps, les cinq sens, et prendre soin de soi : se laver, dormir, bien manger.",
+  "matiere": "monde",
+  "niveaux": [
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de questionner le monde du cycle 2 (2024) et les repères annuels de progression du CP (Éduscol).",
+  "chapitres": [
+    {
+      "id": "parties",
+      "nom": "Les parties du corps"
+    },
+    {
+      "id": "sens",
+      "nom": "Les cinq sens",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "sante",
+      "nom": "Prendre soin de soi",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "zone-tete",
+      "chapitre": "parties",
+      "type": "zones",
+      "image": "corps",
+      "question": "tete",
+      "reponse": "la tête",
+      "cle": "monde:corps:tete"
+    },
+    {
+      "id": "zone-cou",
+      "chapitre": "parties",
+      "type": "zones",
+      "image": "corps",
+      "question": "cou",
+      "reponse": "le cou",
+      "cle": "monde:corps:cou"
+    },
+    {
+      "id": "zone-bras",
+      "chapitre": "parties",
+      "type": "zones",
+      "image": "corps",
+      "question": "bras",
+      "reponse": "le bras",
+      "cle": "monde:corps:bras"
+    },
+    {
+      "id": "zone-coude",
+      "chapitre": "parties",
+      "type": "zones",
+      "image": "corps",
+      "question": "coude",
+      "reponse": "le coude",
+      "cle": "monde:corps:coude"
+    },
+    {
+      "id": "zone-main",
+      "chapitre": "parties",
+      "type": "zones",
+      "image": "corps",
+      "question": "main",
+      "reponse": "la main",
+      "cle": "monde:corps:main"
+    },
+    {
+      "id": "zone-ventre",
+      "chapitre": "parties",
+      "type": "zones",
+      "image": "corps",
+      "question": "ventre",
+      "reponse": "le ventre",
+      "cle": "monde:corps:ventre"
+    },
+    {
+      "id": "zone-jambe",
+      "chapitre": "parties",
+      "type": "zones",
+      "image": "corps",
+      "question": "jambe",
+      "reponse": "la jambe",
+      "cle": "monde:corps:jambe"
+    },
+    {
+      "id": "zone-genou",
+      "chapitre": "parties",
+      "type": "zones",
+      "image": "corps",
+      "question": "genou",
+      "reponse": "le genou",
+      "cle": "monde:corps:genou"
+    },
+    {
+      "id": "zone-pied",
+      "chapitre": "parties",
+      "type": "zones",
+      "image": "corps",
+      "question": "pied",
+      "reponse": "le pied",
+      "cle": "monde:corps:pied"
+    },
+    {
+      "id": "sens-relier",
+      "chapitre": "sens",
+      "type": "associer",
+      "question": "Relie chaque sens à ce qui le fait marcher.",
+      "consigne": "Relie chaque sens à ce qui le fait marcher.",
+      "paires": [
+        [
+          "voir",
+          {
+            "texte": "les yeux",
+            "image": "eye"
+          }
+        ],
+        [
+          "entendre",
+          {
+            "texte": "les oreilles",
+            "image": "ear"
+          }
+        ],
+        [
+          "sentir",
+          {
+            "texte": "le nez",
+            "image": "nose"
+          }
+        ],
+        [
+          "goûter",
+          {
+            "texte": "la bouche",
+            "image": "mouth"
+          }
+        ],
+        [
+          "toucher",
+          {
+            "texte": "la main",
+            "image": "hand"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "sens-1",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "Avec quoi entends-tu la sonnette ?",
+      "reponse": "les oreilles",
+      "pieges": [
+        "les yeux",
+        "le nez",
+        "la main"
+      ],
+      "consigne": "Avec quoi entends-tu la sonnette ?"
+    },
+    {
+      "id": "sens-2",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "Avec quoi sens-tu le parfum ?",
+      "reponse": "le nez",
+      "pieges": [
+        "les oreilles",
+        "les yeux",
+        "la bouche"
+      ],
+      "consigne": "Avec quoi sens-tu le parfum ?"
+    },
+    {
+      "id": "sens-3",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "Avec quoi vois-tu l’arc-en-ciel ?",
+      "reponse": "les yeux",
+      "pieges": [
+        "le nez",
+        "la main",
+        "les oreilles"
+      ],
+      "consigne": "Avec quoi vois-tu l’arc-en-ciel ?"
+    },
+    {
+      "id": "sens-4",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "Avec quoi sais-tu que le citron est acide ?",
+      "reponse": "la bouche",
+      "pieges": [
+        "les yeux",
+        "les oreilles",
+        "le pied"
+      ],
+      "consigne": "Avec quoi sais-tu que le citron est acide ?"
+    },
+    {
+      "id": "sens-5",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "Avec quoi sens-tu que le chat est doux ?",
+      "reponse": "la main",
+      "pieges": [
+        "le nez",
+        "les oreilles",
+        "les yeux"
+      ],
+      "consigne": "Avec quoi sens-tu que le chat est doux ?"
+    },
+    {
+      "id": "sens-6",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "Combien avons-nous de sens ?",
+      "reponse": "5",
+      "pieges": [
+        "3",
+        "4",
+        "10"
+      ],
+      "consigne": "Combien avons-nous de sens ?"
+    },
+    {
+      "id": "sens-7",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "La musique, c’est pour quel sens ?",
+      "reponse": "l’ouïe",
+      "pieges": [
+        "la vue",
+        "le goût",
+        "l’odorat"
+      ],
+      "consigne": "La musique, c’est pour quel sens ?"
+    },
+    {
+      "id": "sens-8",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "Les couleurs, c’est pour quel sens ?",
+      "reponse": "la vue",
+      "pieges": [
+        "l’ouïe",
+        "le toucher",
+        "le goût"
+      ],
+      "consigne": "Les couleurs, c’est pour quel sens ?"
+    },
+    {
+      "id": "dents",
+      "chapitre": "sante",
+      "type": "classer",
+      "question": "Bon pour les dents, ou à éviter ?",
+      "consigne": "Bon pour les dents, ou à éviter ?",
+      "boites": [
+        {
+          "nom": "Bon pour les dents"
+        },
+        {
+          "nom": "À éviter"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "la pomme",
+          "boite": "Bon pour les dents",
+          "image": "apple"
+        },
+        {
+          "texte": "la carotte",
+          "boite": "Bon pour les dents",
+          "image": "carrot"
+        },
+        {
+          "texte": "le fromage",
+          "boite": "Bon pour les dents",
+          "image": "cheese"
+        },
+        {
+          "texte": "le lait",
+          "boite": "Bon pour les dents",
+          "image": "milk"
+        },
+        {
+          "texte": "la brosse à dents",
+          "boite": "Bon pour les dents",
+          "image": "toothbrush"
+        },
+        {
+          "texte": "le bonbon",
+          "boite": "À éviter",
+          "image": "candy"
+        },
+        {
+          "texte": "le soda",
+          "boite": "À éviter",
+          "image": "soda"
+        },
+        {
+          "texte": "le gâteau",
+          "boite": "À éviter",
+          "image": "cake"
+        },
+        {
+          "texte": "la glace",
+          "boite": "À éviter",
+          "image": "ice-cream"
+        }
+      ]
+    },
+    {
+      "id": "dents-ordre",
+      "chapitre": "sante",
+      "type": "ordre",
+      "question": "Pour se brosser les dents : remets dans l’ordre.",
+      "consigne": "Pour se brosser les dents : remets dans l’ordre.",
+      "elements": [
+        "je mets le dentifrice",
+        "je brosse mes dents",
+        "je crache",
+        "je rince la brosse"
+      ]
+    },
+    {
+      "id": "sante-1",
+      "chapitre": "sante",
+      "type": "choix",
+      "question": "Combien de fois par jour se brosse-t-on les dents ?",
+      "reponse": "2 fois, matin et soir",
+      "pieges": [
+        "jamais",
+        "1 fois par semaine",
+        "10 fois"
+      ],
+      "consigne": "Combien de fois par jour se brosse-t-on les dents ?"
+    },
+    {
+      "id": "sante-2",
+      "chapitre": "sante",
+      "type": "choix",
+      "question": "Quand se lave-t-on les mains ?",
+      "reponse": "avant de manger",
+      "pieges": [
+        "jamais",
+        "après avoir mangé seulement",
+        "une fois par mois"
+      ],
+      "consigne": "Quand se lave-t-on les mains ?"
+    },
+    {
+      "id": "sante-3",
+      "chapitre": "sante",
+      "type": "choix",
+      "question": "Pour bien grandir, un enfant dort…",
+      "reponse": "beaucoup, chaque nuit",
+      "pieges": [
+        "jamais",
+        "une heure",
+        "seulement le dimanche"
+      ],
+      "consigne": "Pour bien grandir, un enfant dort…"
+    },
+    {
+      "id": "sante-4",
+      "chapitre": "sante",
+      "type": "choix",
+      "question": "Quand on tousse, on met…",
+      "reponse": "son coude devant sa bouche",
+      "pieges": [
+        "sa main sur ses yeux",
+        "rien du tout",
+        "son pied"
+      ],
+      "consigne": "Quand on tousse, on met…"
+    },
+    {
+      "id": "sante-5",
+      "chapitre": "sante",
+      "type": "choix",
+      "question": "Pour avoir de l’énergie, on boit surtout…",
+      "reponse": "de l’eau",
+      "pieges": [
+        "du soda",
+        "du sirop",
+        "du café"
+      ],
+      "consigne": "Pour avoir de l’énergie, on boit surtout…"
+    },
+    {
+      "id": "sante-6",
+      "chapitre": "sante",
+      "type": "choix",
+      "question": "Pour être en forme, il faut aussi…",
+      "reponse": "bouger et jouer dehors",
+      "pieges": [
+        "rester assis tout le temps",
+        "manger des bonbons",
+        "ne pas dormir"
+      ],
+      "consigne": "Pour être en forme, il faut aussi…"
+    }
+  ]
+}

@@ -1,0 +1,620 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-cp-monnaie-heure",
+  "version": "1.0.0",
+  "nom": "Monnaie et heures",
+  "description": "Reconnaître les pièces et les billets, compter une somme, payer le juste prix, et lire l'heure pile sur une horloge à aiguilles.",
+  "matiere": "maths",
+  "niveaux": [
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de mathématiques du cycle 2 (2024) et les repères annuels de progression du CP (Éduscol).",
+  "chapitres": [
+    {
+      "id": "pieces",
+      "nom": "Pièces et billets"
+    },
+    {
+      "id": "payer",
+      "nom": "Payer une somme",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "heure",
+      "nom": "Lire l’heure pile",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "vaut-euro-1",
+      "chapitre": "pieces",
+      "type": "choix",
+      "question": "Combien vaut cette pièce ?",
+      "reponse": "1 €",
+      "pieges": [
+        "2 €",
+        "5 €",
+        "10 centimes"
+      ],
+      "consigne": "Combien vaut cette pièce ?",
+      "image": "euro-1"
+    },
+    {
+      "id": "vaut-euro-2",
+      "chapitre": "pieces",
+      "type": "choix",
+      "question": "Combien vaut cette pièce ?",
+      "reponse": "2 €",
+      "pieges": [
+        "1 €",
+        "5 €",
+        "10 centimes"
+      ],
+      "consigne": "Combien vaut cette pièce ?",
+      "image": "euro-2"
+    },
+    {
+      "id": "vaut-cent-10",
+      "chapitre": "pieces",
+      "type": "choix",
+      "question": "Combien vaut cette pièce ?",
+      "reponse": "10 centimes",
+      "pieges": [
+        "20 centimes",
+        "50 centimes",
+        "1 €"
+      ],
+      "consigne": "Combien vaut cette pièce ?",
+      "image": "cent-10"
+    },
+    {
+      "id": "vaut-cent-20",
+      "chapitre": "pieces",
+      "type": "choix",
+      "question": "Combien vaut cette pièce ?",
+      "reponse": "20 centimes",
+      "pieges": [
+        "10 centimes",
+        "50 centimes",
+        "1 €"
+      ],
+      "consigne": "Combien vaut cette pièce ?",
+      "image": "cent-20"
+    },
+    {
+      "id": "vaut-cent-50",
+      "chapitre": "pieces",
+      "type": "choix",
+      "question": "Combien vaut cette pièce ?",
+      "reponse": "50 centimes",
+      "pieges": [
+        "10 centimes",
+        "20 centimes",
+        "1 €"
+      ],
+      "consigne": "Combien vaut cette pièce ?",
+      "image": "cent-50"
+    },
+    {
+      "id": "vaut-cent-5",
+      "chapitre": "pieces",
+      "type": "choix",
+      "question": "Combien vaut cette pièce ?",
+      "reponse": "5 centimes",
+      "pieges": [
+        "10 centimes",
+        "20 centimes",
+        "1 €"
+      ],
+      "consigne": "Combien vaut cette pièce ?",
+      "image": "cent-5"
+    },
+    {
+      "id": "vaut-bill-5",
+      "chapitre": "pieces",
+      "type": "choix",
+      "question": "Combien vaut ce billet ?",
+      "reponse": "5 €",
+      "pieges": [
+        "10 €",
+        "20 €",
+        "50 €"
+      ],
+      "consigne": "Combien vaut ce billet ?",
+      "image": "bill-5"
+    },
+    {
+      "id": "vaut-bill-10",
+      "chapitre": "pieces",
+      "type": "choix",
+      "question": "Combien vaut ce billet ?",
+      "reponse": "10 €",
+      "pieges": [
+        "5 €",
+        "20 €",
+        "50 €"
+      ],
+      "consigne": "Combien vaut ce billet ?",
+      "image": "bill-10"
+    },
+    {
+      "id": "vaut-bill-20",
+      "chapitre": "pieces",
+      "type": "choix",
+      "question": "Combien vaut ce billet ?",
+      "reponse": "20 €",
+      "pieges": [
+        "5 €",
+        "10 €",
+        "50 €"
+      ],
+      "consigne": "Combien vaut ce billet ?",
+      "image": "bill-20"
+    },
+    {
+      "id": "vaut-bill-50",
+      "chapitre": "pieces",
+      "type": "choix",
+      "question": "Combien vaut ce billet ?",
+      "reponse": "50 €",
+      "pieges": [
+        "5 €",
+        "10 €",
+        "20 €"
+      ],
+      "consigne": "Combien vaut ce billet ?",
+      "image": "bill-50"
+    },
+    {
+      "id": "piece-ou-billet",
+      "chapitre": "pieces",
+      "type": "classer",
+      "question": "Pièce ou billet ?",
+      "consigne": "Pièce ou billet ?",
+      "boites": [
+        {
+          "nom": "Pièce"
+        },
+        {
+          "nom": "Billet"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "la pièce de 1 euro",
+          "boite": "Pièce",
+          "image": "euro-1"
+        },
+        {
+          "texte": "la pièce de 2 euros",
+          "boite": "Pièce",
+          "image": "euro-2"
+        },
+        {
+          "texte": "le billet de 5 euros",
+          "boite": "Billet",
+          "image": "bill-5"
+        },
+        {
+          "texte": "le billet de 10 euros",
+          "boite": "Billet",
+          "image": "bill-10"
+        },
+        {
+          "texte": "le billet de 20 euros",
+          "boite": "Billet",
+          "image": "bill-20"
+        },
+        {
+          "texte": "le billet de 50 euros",
+          "boite": "Billet",
+          "image": "bill-50"
+        }
+      ]
+    },
+    {
+      "id": "relier-argent",
+      "chapitre": "pieces",
+      "type": "associer",
+      "question": "Relie chaque pièce ou billet à sa valeur.",
+      "consigne": "Relie chaque pièce ou billet à sa valeur.",
+      "paires": [
+        [
+          {
+            "image": "euro-1"
+          },
+          "1 €"
+        ],
+        [
+          {
+            "image": "euro-2"
+          },
+          "2 €"
+        ],
+        [
+          {
+            "image": "bill-5"
+          },
+          "5 €"
+        ],
+        [
+          {
+            "image": "bill-10"
+          },
+          "10 €"
+        ],
+        [
+          {
+            "image": "bill-20"
+          },
+          "20 €"
+        ]
+      ]
+    },
+    {
+      "id": "somme-1",
+      "chapitre": "payer",
+      "type": "choix",
+      "question": "2 € + 1 € = ?",
+      "reponse": "3 €",
+      "pieges": [
+        "4 €",
+        "2 €",
+        "13 €"
+      ],
+      "consigne": "Combien d’euros en tout ?"
+    },
+    {
+      "id": "somme-2",
+      "chapitre": "payer",
+      "type": "choix",
+      "question": "2 € + 2 € = ?",
+      "reponse": "4 €",
+      "pieges": [
+        "5 €",
+        "3 €",
+        "14 €"
+      ],
+      "consigne": "Combien d’euros en tout ?"
+    },
+    {
+      "id": "somme-3",
+      "chapitre": "payer",
+      "type": "choix",
+      "question": "5 € + 2 € = ?",
+      "reponse": "7 €",
+      "pieges": [
+        "8 €",
+        "6 €",
+        "17 €"
+      ],
+      "consigne": "Combien d’euros en tout ?"
+    },
+    {
+      "id": "somme-4",
+      "chapitre": "payer",
+      "type": "choix",
+      "question": "5 € + 1 € = ?",
+      "reponse": "6 €",
+      "pieges": [
+        "7 €",
+        "5 €",
+        "16 €"
+      ],
+      "consigne": "Combien d’euros en tout ?"
+    },
+    {
+      "id": "somme-5",
+      "chapitre": "payer",
+      "type": "choix",
+      "question": "10 € + 5 € = ?",
+      "reponse": "15 €",
+      "pieges": [
+        "16 €",
+        "14 €",
+        "25 €"
+      ],
+      "consigne": "Combien d’euros en tout ?"
+    },
+    {
+      "id": "somme-6",
+      "chapitre": "payer",
+      "type": "choix",
+      "question": "10 € + 2 € = ?",
+      "reponse": "12 €",
+      "pieges": [
+        "13 €",
+        "11 €",
+        "22 €"
+      ],
+      "consigne": "Combien d’euros en tout ?"
+    },
+    {
+      "id": "somme-7",
+      "chapitre": "payer",
+      "type": "choix",
+      "question": "5 € + 5 € = ?",
+      "reponse": "10 €",
+      "pieges": [
+        "11 €",
+        "9 €",
+        "20 €"
+      ],
+      "consigne": "Combien d’euros en tout ?"
+    },
+    {
+      "id": "somme-8",
+      "chapitre": "payer",
+      "type": "choix",
+      "question": "10 € + 10 € = ?",
+      "reponse": "20 €",
+      "pieges": [
+        "21 €",
+        "19 €",
+        "30 €"
+      ],
+      "consigne": "Combien d’euros en tout ?"
+    },
+    {
+      "id": "somme-9",
+      "chapitre": "payer",
+      "type": "choix",
+      "question": "20 € + 5 € = ?",
+      "reponse": "25 €",
+      "pieges": [
+        "26 €",
+        "24 €",
+        "35 €"
+      ],
+      "consigne": "Combien d’euros en tout ?"
+    },
+    {
+      "id": "somme-10",
+      "chapitre": "payer",
+      "type": "choix",
+      "question": "20 € + 10 € = ?",
+      "reponse": "30 €",
+      "pieges": [
+        "31 €",
+        "29 €",
+        "40 €"
+      ],
+      "consigne": "Combien d’euros en tout ?"
+    },
+    {
+      "id": "somme-11",
+      "chapitre": "payer",
+      "type": "choix",
+      "question": "10 € + 2 € + 1 € = ?",
+      "reponse": "13 €",
+      "pieges": [
+        "14 €",
+        "12 €",
+        "23 €"
+      ],
+      "consigne": "Combien d’euros en tout ?"
+    },
+    {
+      "id": "somme-12",
+      "chapitre": "payer",
+      "type": "choix",
+      "question": "5 € + 2 € + 2 € = ?",
+      "reponse": "9 €",
+      "pieges": [
+        "10 €",
+        "8 €",
+        "19 €"
+      ],
+      "consigne": "Combien d’euros en tout ?"
+    },
+    {
+      "id": "somme-13",
+      "chapitre": "payer",
+      "type": "choix",
+      "question": "20 € + 2 € = ?",
+      "reponse": "22 €",
+      "pieges": [
+        "23 €",
+        "21 €",
+        "32 €"
+      ],
+      "consigne": "Combien d’euros en tout ?"
+    },
+    {
+      "id": "somme-14",
+      "chapitre": "payer",
+      "type": "choix",
+      "question": "50 € + 10 € = ?",
+      "reponse": "60 €",
+      "pieges": [
+        "61 €",
+        "59 €",
+        "50 €"
+      ],
+      "consigne": "Combien d’euros en tout ?"
+    },
+    {
+      "id": "somme-15",
+      "chapitre": "payer",
+      "type": "choix",
+      "question": "5 € + 2 € + 1 € = ?",
+      "reponse": "8 €",
+      "pieges": [
+        "9 €",
+        "7 €",
+        "18 €"
+      ],
+      "consigne": "Combien d’euros en tout ?"
+    },
+    {
+      "id": "somme-16",
+      "chapitre": "payer",
+      "type": "choix",
+      "question": "10 € + 5 € + 2 € = ?",
+      "reponse": "17 €",
+      "pieges": [
+        "18 €",
+        "16 €",
+        "27 €"
+      ],
+      "consigne": "Combien d’euros en tout ?"
+    },
+    {
+      "id": "payer-1",
+      "chapitre": "payer",
+      "type": "choix",
+      "question": "Le jouet coûte 7 €. Comment payer juste ?",
+      "reponse": "5 € + 2 €",
+      "pieges": [
+        "5 € + 1 €",
+        "2 € + 2 €",
+        "5 € + 5 €"
+      ],
+      "consigne": "Le jouet coûte 7 €. Comment payer juste ?"
+    },
+    {
+      "id": "payer-2",
+      "chapitre": "payer",
+      "type": "choix",
+      "question": "Le jouet coûte 3 €. Comment payer juste ?",
+      "reponse": "2 € + 1 €",
+      "pieges": [
+        "2 € + 2 €",
+        "1 € + 1 €",
+        "5 €"
+      ],
+      "consigne": "Le jouet coûte 3 €. Comment payer juste ?"
+    },
+    {
+      "id": "payer-3",
+      "chapitre": "payer",
+      "type": "choix",
+      "question": "Le jouet coûte 12 €. Comment payer juste ?",
+      "reponse": "10 € + 2 €",
+      "pieges": [
+        "10 € + 1 €",
+        "5 € + 5 €",
+        "20 €"
+      ],
+      "consigne": "Le jouet coûte 12 €. Comment payer juste ?"
+    },
+    {
+      "id": "payer-4",
+      "chapitre": "payer",
+      "type": "choix",
+      "question": "Le jouet coûte 15 €. Comment payer juste ?",
+      "reponse": "10 € + 5 €",
+      "pieges": [
+        "10 € + 2 €",
+        "5 € + 5 €",
+        "20 € + 5 €"
+      ],
+      "consigne": "Le jouet coûte 15 €. Comment payer juste ?"
+    },
+    {
+      "id": "payer-5",
+      "chapitre": "payer",
+      "type": "choix",
+      "question": "Le jouet coûte 6 €. Comment payer juste ?",
+      "reponse": "5 € + 1 €",
+      "pieges": [
+        "2 € + 2 €",
+        "5 € + 2 €",
+        "1 € + 1 €"
+      ],
+      "consigne": "Le jouet coûte 6 €. Comment payer juste ?"
+    },
+    {
+      "id": "payer-6",
+      "chapitre": "payer",
+      "type": "choix",
+      "question": "Le jouet coûte 25 €. Comment payer juste ?",
+      "reponse": "20 € + 5 €",
+      "pieges": [
+        "20 € + 2 €",
+        "10 € + 5 €",
+        "50 €"
+      ],
+      "consigne": "Le jouet coûte 25 €. Comment payer juste ?"
+    },
+    {
+      "id": "payer-7",
+      "chapitre": "payer",
+      "type": "choix",
+      "question": "Le jouet coûte 11 €. Comment payer juste ?",
+      "reponse": "10 € + 1 €",
+      "pieges": [
+        "5 € + 5 €",
+        "10 € + 2 €",
+        "1 € + 1 €"
+      ],
+      "consigne": "Le jouet coûte 11 €. Comment payer juste ?"
+    },
+    {
+      "id": "payer-8",
+      "chapitre": "payer",
+      "type": "choix",
+      "question": "Le jouet coûte 22 €. Comment payer juste ?",
+      "reponse": "20 € + 2 €",
+      "pieges": [
+        "20 € + 1 €",
+        "10 € + 2 €",
+        "20 €"
+      ],
+      "consigne": "Le jouet coûte 22 €. Comment payer juste ?"
+    },
+    {
+      "id": "payer-9",
+      "chapitre": "payer",
+      "type": "choix",
+      "question": "Le jouet coûte 30 €. Comment payer juste ?",
+      "reponse": "20 € + 10 €",
+      "pieges": [
+        "20 € + 5 €",
+        "10 € + 10 €",
+        "50 €"
+      ],
+      "consigne": "Le jouet coûte 30 €. Comment payer juste ?"
+    },
+    {
+      "id": "payer-10",
+      "chapitre": "payer",
+      "type": "choix",
+      "question": "Le jouet coûte 4 €. Comment payer juste ?",
+      "reponse": "2 € + 2 €",
+      "pieges": [
+        "2 € + 1 €",
+        "1 € + 1 €",
+        "5 €"
+      ],
+      "consigne": "Le jouet coûte 4 €. Comment payer juste ?"
+    }
+  ],
+  "generateurs": [
+    {
+      "id": "heure-pile",
+      "chapitre": "heure",
+      "operation": "heure",
+      "a": [
+        1,
+        12
+      ],
+      "formes": [
+        "pile"
+      ]
+    }
+  ]
+}

@@ -506,6 +506,67 @@ const countSource = gen => {
   }
 }
 
+// Reading the time on a clock with hands. The hours come from `a` (1 to
+// 12); `formes` says which minutes: `pile` (o'clock), `demie` (half past),
+// `quart` (quarter past and to). The answer is picked among four times
+// that are easy to mix up: the hands swapped, an hour off, the other half.
+const CLOCK_FORMS = { pile: [0], demie: [30], quart: [15, 45] }
+
+export const clockText = (h, m) => (m ? `${h} h ${m}` : `${h} h`)
+
+const clockSource = gen => {
+  const A = parseSpec(gen.a ?? [1, 12])
+  const forms = (gen.formes?.length ? gen.formes : ['pile']).filter(
+    form => CLOCK_FORMS[form],
+  )
+  const minutes = forms.flatMap(form => CLOCK_FORMS[form])
+  const valid = (h, m) =>
+    Number.isInteger(h) && h >= 1 && h <= 12 && minutes.includes(m)
+  const wrap = h => ((h + 11) % 12) + 1
+  const item = (h, m) => {
+    const near = [
+      [wrap(h + 1), m],
+      [wrap(h - 1), m],
+      // The hands mixed up: the long hand, on 12, read as the hour.
+      ...(m === 0 ? [[12, 0]] : [[h, (m + 30) % 60]]),
+      [wrap(h + 6), m],
+    ]
+    const choices = [clockText(h, m)]
+    for (const [hh, mm] of near) {
+      const text = clockText(hh, mm)
+      if (choices.length < 4 && !choices.includes(text)) choices.push(text)
+    }
+    return {
+      key: `hr:${h}:${m}`,
+      prompt: 'Quelle heure est-il ?',
+      answer: clockText(h, m),
+      clock: { h, m },
+      mode: 'choice',
+      choices,
+    }
+  }
+  const all = () =>
+    specAll(A).flatMap(h => minutes.filter(m => valid(h, m)).map(m => [h, m]))
+  return {
+    size: specCount(A) * minutes.length,
+    list: () => all().map(([h, m]) => item(h, m)),
+    draw: rng => {
+      for (let i = 0; i < DRAW_TRIES; i++) {
+        const h = specPick(A, rng)
+        const m = minutes[Math.floor(rng() * minutes.length)]
+        if (valid(h, m)) return item(h, m)
+      }
+      return null
+    },
+    fromKey: key => {
+      const found = /^hr:(\d+):(\d+)$/.exec(key)
+      if (!found) return null
+      const [h, m] = [Number(found[1]), Number(found[2])]
+      return specHas(A, h) && valid(h, m) ? item(h, m) : null
+    },
+  }
+}
+
 // ── the player's first name ──
 
 // NAME_WORD stands for the player's first name in a card; without one, the
@@ -660,6 +721,7 @@ const SOURCES = {
   modele: modelSource,
   compter: countSource,
   prenom: firstNameSource,
+  heure: clockSource,
 }
 
 // generatorSource turns a generator of a module into a question source.

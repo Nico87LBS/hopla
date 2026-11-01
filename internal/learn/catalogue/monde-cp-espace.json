@@ -1,0 +1,426 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-cp-espace",
+  "version": "1.0.0",
+  "nom": "L’espace autour de moi",
+  "description": "À gauche, à droite, devant, derrière, entre ; les pièces de la maison ; le plan ; traverser la rue.",
+  "matiere": "monde",
+  "niveaux": [
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de questionner le monde du cycle 2 (2024) et les repères annuels de progression du CP (Éduscol).",
+  "chapitres": [
+    {
+      "id": "positions",
+      "nom": "Où est le lapin ?"
+    },
+    {
+      "id": "maison",
+      "nom": "La maison et le plan",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "rue",
+      "nom": "Dans la rue",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 6
+  },
+  "fiches": [
+    {
+      "id": "position-a-gauche",
+      "chapitre": "positions",
+      "type": "ecoute",
+      "cle": "fr:position:a-gauche",
+      "question": "Le lapin est à gauche de la boîte.",
+      "reponse": "à gauche",
+      "image": "pos-left",
+      "sens": [
+        "inverse"
+      ]
+    },
+    {
+      "id": "position-a-droite",
+      "chapitre": "positions",
+      "type": "ecoute",
+      "cle": "fr:position:a-droite",
+      "question": "Le lapin est à droite de la boîte.",
+      "reponse": "à droite",
+      "image": "pos-right",
+      "sens": [
+        "inverse"
+      ]
+    },
+    {
+      "id": "position-entre",
+      "chapitre": "positions",
+      "type": "ecoute",
+      "cle": "fr:position:entre",
+      "question": "Le lapin est entre les deux boîtes.",
+      "reponse": "entre",
+      "image": "pos-between",
+      "sens": [
+        "inverse"
+      ]
+    },
+    {
+      "id": "position-devant",
+      "chapitre": "positions",
+      "type": "ecoute",
+      "cle": "fr:position:devant",
+      "question": "Le lapin est devant la boîte.",
+      "reponse": "devant",
+      "image": "pos-in-front",
+      "sens": [
+        "inverse"
+      ]
+    },
+    {
+      "id": "position-derriere",
+      "chapitre": "positions",
+      "type": "ecoute",
+      "cle": "fr:position:derriere",
+      "question": "Le lapin est derrière la boîte.",
+      "reponse": "derrière",
+      "image": "pos-behind",
+      "sens": [
+        "inverse"
+      ]
+    },
+    {
+      "id": "position-dans",
+      "chapitre": "positions",
+      "type": "ecoute",
+      "cle": "fr:position:dans",
+      "question": "Le lapin est dans la boîte.",
+      "reponse": "dans",
+      "image": "pos-in",
+      "sens": [
+        "inverse"
+      ]
+    },
+    {
+      "id": "position-sur",
+      "chapitre": "positions",
+      "type": "ecoute",
+      "cle": "fr:position:sur",
+      "question": "Le lapin est sur la boîte.",
+      "reponse": "sur",
+      "image": "pos-on",
+      "sens": [
+        "inverse"
+      ]
+    },
+    {
+      "id": "position-sous",
+      "chapitre": "positions",
+      "type": "ecoute",
+      "cle": "fr:position:sous",
+      "question": "Le lapin est sous la table.",
+      "reponse": "sous",
+      "image": "pos-under",
+      "sens": [
+        "inverse"
+      ]
+    },
+    {
+      "id": "position-a-cote",
+      "chapitre": "positions",
+      "type": "ecoute",
+      "cle": "fr:position:a-cote",
+      "question": "Le lapin est à côté de la boîte.",
+      "reponse": "à côté",
+      "image": "pos-next-to",
+      "sens": [
+        "inverse"
+      ]
+    },
+    {
+      "id": "maison-1",
+      "chapitre": "maison",
+      "type": "choix",
+      "question": "Où dort-on ?",
+      "reponse": "dans la chambre",
+      "pieges": [
+        "dans la cuisine",
+        "dans le garage",
+        "dans le jardin"
+      ],
+      "consigne": "Où dort-on ?"
+    },
+    {
+      "id": "maison-2",
+      "chapitre": "maison",
+      "type": "choix",
+      "question": "Où prépare-t-on le repas ?",
+      "reponse": "dans la cuisine",
+      "pieges": [
+        "dans la chambre",
+        "dans la salle de bains",
+        "dans le grenier"
+      ],
+      "consigne": "Où prépare-t-on le repas ?"
+    },
+    {
+      "id": "maison-3",
+      "chapitre": "maison",
+      "type": "choix",
+      "question": "Où prend-on son bain ?",
+      "reponse": "dans la salle de bains",
+      "pieges": [
+        "dans le salon",
+        "dans la cuisine",
+        "dans la chambre"
+      ],
+      "consigne": "Où prend-on son bain ?"
+    },
+    {
+      "id": "maison-4",
+      "chapitre": "maison",
+      "type": "choix",
+      "question": "Où range-t-on la voiture ?",
+      "reponse": "dans le garage",
+      "pieges": [
+        "dans la chambre",
+        "dans la cuisine",
+        "dans la baignoire"
+      ],
+      "consigne": "Où range-t-on la voiture ?"
+    },
+    {
+      "id": "maison-5",
+      "chapitre": "maison",
+      "type": "choix",
+      "question": "Où regarde-t-on la télévision, sur le canapé ?",
+      "reponse": "dans le salon",
+      "pieges": [
+        "dans le garage",
+        "dans la salle de bains",
+        "dans le grenier"
+      ],
+      "consigne": "Où regarde-t-on la télévision, sur le canapé ?"
+    },
+    {
+      "id": "pieces",
+      "chapitre": "maison",
+      "type": "classer",
+      "question": "Dans quelle pièce le trouve-t-on ?",
+      "consigne": "Dans quelle pièce le trouve-t-on ?",
+      "boites": [
+        {
+          "nom": "La chambre"
+        },
+        {
+          "nom": "La salle de bains"
+        },
+        {
+          "nom": "La cuisine"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le lit",
+          "boite": "La chambre",
+          "image": "bed"
+        },
+        {
+          "texte": "le nounours",
+          "boite": "La chambre",
+          "image": "teddy"
+        },
+        {
+          "texte": "la baignoire",
+          "boite": "La salle de bains",
+          "image": "bathtub"
+        },
+        {
+          "texte": "la brosse à dents",
+          "boite": "La salle de bains",
+          "image": "toothbrush"
+        },
+        {
+          "texte": "le lavabo",
+          "boite": "La salle de bains",
+          "image": "sink"
+        },
+        {
+          "texte": "la bouilloire",
+          "boite": "La cuisine",
+          "image": "kettle"
+        },
+        {
+          "texte": "la cuillère",
+          "boite": "La cuisine",
+          "image": "spoon"
+        },
+        {
+          "texte": "le bol",
+          "boite": "La cuisine",
+          "image": "bowl"
+        }
+      ]
+    },
+    {
+      "id": "rue-1",
+      "chapitre": "rue",
+      "type": "choix",
+      "question": "Pour traverser la rue, on passe…",
+      "reponse": "sur le passage piéton",
+      "pieges": [
+        "au milieu des voitures",
+        "en courant n’importe où",
+        "derrière le bus"
+      ],
+      "consigne": "Pour traverser la rue, on passe…"
+    },
+    {
+      "id": "rue-2",
+      "chapitre": "rue",
+      "type": "choix",
+      "question": "Le petit bonhomme est rouge. Que fais-tu ?",
+      "reponse": "j’attends sur le trottoir",
+      "pieges": [
+        "je traverse vite",
+        "je cours",
+        "je ferme les yeux"
+      ],
+      "consigne": "Le petit bonhomme est rouge. Que fais-tu ?"
+    },
+    {
+      "id": "rue-3",
+      "chapitre": "rue",
+      "type": "choix",
+      "question": "Le petit bonhomme est vert. Que fais-tu ?",
+      "reponse": "je regarde, puis je traverse",
+      "pieges": [
+        "j’attends toujours",
+        "je m’assois",
+        "je recule"
+      ],
+      "consigne": "Le petit bonhomme est vert. Que fais-tu ?"
+    },
+    {
+      "id": "rue-4",
+      "chapitre": "rue",
+      "type": "choix",
+      "question": "Où marchent les piétons ?",
+      "reponse": "sur le trottoir",
+      "pieges": [
+        "sur la route",
+        "sur les rails",
+        "au milieu du rond-point"
+      ],
+      "consigne": "Où marchent les piétons ?"
+    },
+    {
+      "id": "rue-5",
+      "chapitre": "rue",
+      "type": "choix",
+      "question": "Dans la voiture, l’enfant s’assoit…",
+      "reponse": "à l’arrière, attaché",
+      "pieges": [
+        "devant, sans ceinture",
+        "sur le toit",
+        "dans le coffre"
+      ],
+      "consigne": "Dans la voiture, l’enfant s’assoit…"
+    },
+    {
+      "id": "ville-campagne",
+      "chapitre": "rue",
+      "type": "classer",
+      "question": "En ville ou à la campagne ?",
+      "consigne": "En ville ou à la campagne ?",
+      "boites": [
+        {
+          "nom": "En ville"
+        },
+        {
+          "nom": "À la campagne"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le bus",
+          "boite": "En ville",
+          "image": "bus"
+        },
+        {
+          "texte": "le camion",
+          "boite": "En ville",
+          "image": "truck"
+        },
+        {
+          "texte": "la ferme",
+          "boite": "À la campagne",
+          "image": "barn"
+        },
+        {
+          "texte": "la vache",
+          "boite": "À la campagne",
+          "image": "cow"
+        },
+        {
+          "texte": "le mouton",
+          "boite": "À la campagne",
+          "image": "sheep"
+        },
+        {
+          "texte": "le train",
+          "boite": "En ville",
+          "image": "train"
+        }
+      ]
+    },
+    {
+      "id": "plan-1",
+      "chapitre": "maison",
+      "type": "choix",
+      "question": "Sur le plan de la classe, le tableau est devant les élèves. Le bureau de la maîtresse est près…",
+      "reponse": "du tableau",
+      "pieges": [
+        "de la porte du couloir",
+        "des toilettes",
+        "du jardin"
+      ],
+      "consigne": "Sur le plan de la classe, le tableau est devant les élèves. Le bureau de la maîtresse est près…"
+    },
+    {
+      "id": "plan-2",
+      "chapitre": "maison",
+      "type": "choix",
+      "question": "Un plan, c’est…",
+      "reponse": "un dessin vu d’en haut",
+      "pieges": [
+        "une photo de face",
+        "une chanson",
+        "un livre d’histoires"
+      ],
+      "consigne": "Un plan, c’est…"
+    },
+    {
+      "id": "plan-3",
+      "chapitre": "maison",
+      "type": "choix",
+      "question": "Sur un plan, une table vue d’en haut ressemble à…",
+      "reponse": "un rectangle",
+      "pieges": [
+        "un triangle",
+        "une étoile",
+        "un cœur"
+      ],
+      "consigne": "Sur un plan, une table vue d’en haut ressemble à…"
+    }
+  ]
+}
