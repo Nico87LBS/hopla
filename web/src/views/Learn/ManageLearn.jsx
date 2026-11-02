@@ -36,15 +36,26 @@ import {
   useInstallModule,
   useLearnCatalogue,
   useLearnModules,
+  usePlayer,
   useRemoveModule,
   useSetActivation,
   useSetSetting,
 } from '../../queries/LearnQueries'
 import { useNotification } from '../../service/NotificationProvider'
+import { moduleProgress } from '../../utils/learn/engine'
+import {
+  isRecent,
+  levelsIn,
+  matches,
+  shape,
+  sortItems,
+} from '../../utils/learn/listing'
 import LoadingComponent from '../components/Loading'
 import { MemberAvatar, surfaceSx } from '../Games/GameParts'
 import { ParentPage, useMembers } from '../Manage/ParentPages'
+import { useCompiled } from './LearnParts'
 import { VoicesCard } from './LearnVoices'
+import ListBar, { useListChoices } from './ListBar'
 import RemoveModal from './RemoveModal'
 
 const HEAD = 40
@@ -738,7 +749,10 @@ const ModuleGroup = ({
             checked={on === ids.length}
             indeterminate={on > 0 && on < ids.length}
             onChange={e =>
-              toggle(group.pack ? [group.pack.id] : ids, e.target.checked)
+              toggle(
+                group.pack && !group.partial ? [group.pack.id] : ids,
+                e.target.checked,
+              )
             }
             slotProps={{
               input: { 'aria-label': `${name} · ${person.displayName}` },
@@ -909,7 +923,33 @@ const CatalogueCard = ({ defaults, installed, settings }) => {
   const [settingsFor, setSettingsFor] = useState(null)
   // A module of a pack is installed with its pack.
   const inPacks = new Set(catalogue.flatMap(entry => entry.children || []))
-  const shown = catalogue.filter(entry => !inPacks.has(entry.id))
+  const all = catalogue.filter(entry => !inPacks.has(entry.id))
+  const [query, setQuery] = useState('')
+  const [choices, setChoices] = useListChoices('hopla.learn.list.catalogue', {
+    filters: [],
+    levels: [],
+    sort: 'level',
+  })
+  const checks = {
+    installed: entry => installed.has(entry.id),
+    notInstalled: entry => !installed.has(entry.id),
+  }
+  const names = new Map(catalogue.map(entry => [entry.id, entry.name]))
+  const shown = sortItems(
+    all.filter(
+      entry =>
+        matches(
+          query,
+          entry.name,
+          entry.description,
+          ...(entry.children || []).map(id => names.get(id)),
+        ) &&
+        (!choices.levels?.length ||
+          (entry.levels || []).some(l => choices.levels.includes(l))) &&
+        (choices.filters || []).every(f => !checks[f] || checks[f](entry)),
+    ),
+    choices.sort,
+  )
 
   const add = async entry => {
     try {
@@ -926,6 +966,32 @@ const CatalogueCard = ({ defaults, installed, settings }) => {
       <Typography level='body-sm' sx={{ color: 'text.secondary', mb: 1.5 }}>
         {t('manage.catalogueHelp')}
       </Typography>
+      <ListBar
+        query={query}
+        onQuery={setQuery}
+        choices={choices}
+        onChoices={setChoices}
+        count={shown.length}
+        filters={[
+          ['installed', ['notInstalled']],
+          ['notInstalled', ['installed']],
+        ].map(([key, exclusive]) => ({
+          key,
+          exclusive,
+          label: t(`list.filter.${key}`),
+          count: all.filter(checks[key]).length,
+        }))}
+        levels={levelsIn(all)}
+        sorts={['level', 'name'].map(key => ({
+          key,
+          label: t(`list.sort.${key}`),
+        }))}
+      />
+      {shown.length === 0 && (
+        <Typography level='body-md' sx={{ color: 'text.secondary' }}>
+          {t('list.nothing')}
+        </Typography>
+      )}
       <Stack gap={1}>
         {shown.map(entry => (
           <Sheet
@@ -1172,6 +1238,72 @@ export const ManageLearn = () => {
     return out
   }, [modules])
 
+  const [query, setQuery] = useState('')
+  const [choices, setChoices] = useListChoices('hopla.learn.list.people', {
+    filters: [],
+    levels: [],
+    sort: 'level',
+  })
+  const { data: player } = usePlayer(person?.userId)
+  const { byId: compiled, cards } = useCompiled(player)
+  const shown = useMemo(() => {
+    if (!person) return []
+    const uid = person.userId
+    const day = data?.day
+    const last = data?.lastPlayed?.[uid] || {}
+    const playedBy = new Set((data?.activations || []).map(a => a.module))
+    const checks = {
+      active: m => activations.has(`${uid}:${m.id}`),
+      inactive: m => !activations.has(`${uid}:${m.id}`),
+      fresh: (m, g) =>
+        isRecent(m.installedAt, day) ||
+        isRecent(m.updatedAt, day) ||
+        (!!g.pack &&
+          !playedBy.has(m.id) &&
+          new Date(m.installedAt) > new Date(g.pack.installedAt)),
+      playing: m => isRecent(last[m.id], day),
+      reported: m => (data?.reports?.[m.id] || 0) > 0,
+    }
+    const value = (m, sort) => {
+      if (sort === 'recent') return last[m.id] ?? null
+      if (sort === 'progress') {
+        const c = activations.has(`${uid}:${m.id}`) && compiled[m.id]
+        return c ? moduleProgress(c, cards) : null
+      }
+      return null
+    }
+    const list = groups.map(g => ({
+      ...g,
+      name: g.pack?.name || '',
+      levels: g.pack?.levels?.length ? g.pack.levels : levelsIn(g.modules),
+      items: g.modules,
+    }))
+    const kept = shape(list, {
+      query,
+      levels: choices.levels,
+      sort: choices.sort,
+      value,
+      test: (m, g) =>
+        (choices.filters || []).every(f => !checks[f] || checks[f](m, g)),
+    })
+    const counts = {}
+    for (const [key, check] of Object.entries(checks)) {
+      counts[key] = list.reduce(
+        (n, g) => n + g.items.filter(m => check(m, g)).length,
+        0,
+      )
+    }
+    return {
+      counts,
+      groups: kept.map(g => ({
+        pack: g.pack,
+        modules: g.items,
+        partial: g.items.length < g.modules.length,
+      })),
+      levels: levelsIn(list.flatMap(g => [g, ...g.items])),
+    }
+  }, [person, data, activations, groups, query, choices, compiled, cards])
+
   // inherited is the setting someone gets from above, in grey: their packs,
   // then the family's module and packs, then the module itself.
   const inherited = (userId, field, moduleId) => {
@@ -1315,7 +1447,38 @@ export const ManageLearn = () => {
             value={settings.get(`${person.userId}:*`)?.firstName}
           />
           <Legend person={person} />
-          {groups.map(group => (
+          <ListBar
+            query={query}
+            onQuery={setQuery}
+            choices={choices}
+            onChoices={setChoices}
+            count={shown.groups.reduce((n, g) => n + g.modules.length, 0)}
+            filters={[
+              ['active', ['inactive']],
+              ['inactive', ['active']],
+              ['fresh'],
+              ['playing'],
+              ['reported'],
+            ].map(([key, exclusive]) => ({
+              key,
+              exclusive,
+              label: t(`list.filter.${key}`),
+              count: shown.counts[key],
+            }))}
+            levels={shown.levels}
+            sorts={['level', 'name', 'recent', 'progress'].map(key => ({
+              key,
+              label: t(`list.sort.${key}`),
+            }))}
+          />
+          {shown.groups.length === 0 && (
+            <Sheet sx={surfaceSx}>
+              <Typography level='body-md' sx={{ color: 'text.secondary' }}>
+                {t('list.nothing')}
+              </Typography>
+            </Sheet>
+          )}
+          {shown.groups.map(group => (
             <ModuleGroup
               key={group.pack?.id || 'others'}
               group={group}

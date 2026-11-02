@@ -435,6 +435,10 @@ func TestStatsShowWhoPlaysAModuleAndTheirGames(t *testing.T) {
 
 	_, err = Stats(db, 1, "maths-ce2", now)
 	require.ErrorIs(t, err, ErrNotFound, "a pack has no statistics of its own")
+
+	last, err := LastPlayed(db, 1)
+	require.NoError(t, err)
+	require.Equal(t, map[int]map[string]string{anna: {"maths-ce2-multiplication": Day(1, now)}}, last)
 }
 
 func TestGameSettingsComeFromAboveAndShapeTheStarsAndHops(t *testing.T) {
