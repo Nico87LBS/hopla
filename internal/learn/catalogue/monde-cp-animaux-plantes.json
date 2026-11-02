@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-cp-animaux-plantes",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Animaux et plantes",
   "description": "Ce dont les animaux et les plantes ont besoin, comment les animaux se déplacent et où ils vivent, et comment une graine devient une plante.",
   "matiere": "monde",
@@ -176,10 +176,12 @@
       "consigne": "Que mange-t-il : de l’herbe ou de la viande ?",
       "boites": [
         {
-          "nom": "Herbe et plantes"
+          "nom": "Herbe et plantes",
+          "regle": "il ne mange que des plantes."
         },
         {
-          "nom": "Viande"
+          "nom": "Viande",
+          "regle": "il mange d’autres animaux."
         }
       ],
       "a_classer": [
@@ -331,10 +333,12 @@
       "consigne": "Où vit-il : dans l’eau ou sur la terre ?",
       "boites": [
         {
-          "nom": "Dans l’eau"
+          "nom": "Dans l’eau",
+          "regle": "il nage ou respire dans l’eau."
         },
         {
-          "nom": "Sur la terre"
+          "nom": "Sur la terre",
+          "regle": "il marche, court ou rampe sur le sol."
         }
       ],
       "a_classer": [

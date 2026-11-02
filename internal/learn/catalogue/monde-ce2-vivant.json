@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce2-vivant",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Le vivant",
   "description": "Les familles d'animaux, ce qu'ils mangent, les chaînes alimentaires, les cycles de vie et les besoins des plantes.",
   "matiere": "monde",
@@ -57,11 +57,13 @@
       "boites": [
         {
           "nom": "Mammifère",
-          "image": "cat"
+          "image": "cat",
+          "regle": "il a des poils et la maman allaite ses petits."
         },
         {
           "nom": "Oiseau",
-          "image": "bird"
+          "image": "bird",
+          "regle": "il a des plumes, un bec et pond des œufs."
         }
       ],
       "a_classer": [
@@ -116,11 +118,13 @@
       "boites": [
         {
           "nom": "Poisson",
-          "image": "fish"
+          "image": "fish",
+          "regle": "il a des écailles et respire dans l’eau avec des branchies."
         },
         {
           "nom": "Mammifère",
-          "image": "dog"
+          "image": "dog",
+          "regle": "il a des poils et la maman allaite ses petits."
         }
       ],
       "a_classer": [
@@ -163,11 +167,13 @@
       "boites": [
         {
           "nom": "Reptile",
-          "image": "snake"
+          "image": "snake",
+          "regle": "il a des écailles et pond des œufs sur la terre."
         },
         {
           "nom": "Amphibien",
-          "image": "frog"
+          "image": "frog",
+          "regle": "peau lisse et humide ; il naît dans l’eau (têtard) puis vit aussi sur terre."
         }
       ],
       "a_classer": [
@@ -248,7 +254,12 @@
       ],
       "consigne": "Le dauphin vit dans la mer, mais c’est un…",
       "explication": "Il respire de l’air à la surface et la mère allaite son petit.",
-      "image": "dolphin"
+      "image": "dolphin",
+      "pourquoi": {
+        "poisson": "il respire de l’air avec des poumons et allaite ses petits ; un poisson respire dans l’eau avec des branchies.",
+        "reptile": "il n’a pas d’écailles et ne pond pas d’œufs.",
+        "amphibien": "il ne vit jamais sur terre et ne naît pas têtard."
+      }
     },
     {
       "id": "chauve-souris",
@@ -263,7 +274,12 @@
       ],
       "consigne": "La chauve-souris vole, mais c’est un…",
       "explication": "Elle a des poils, pas de plumes, et allaite ses petits.",
-      "image": "bat"
+      "image": "bat",
+      "pourquoi": {
+        "oiseau": "elle n’a ni plumes ni bec : elle a des poils et allaite ses petits.",
+        "insecte": "elle n’a pas six pattes : c’est un animal avec un squelette.",
+        "reptile": "elle n’a pas d’écailles : elle a des poils."
+      }
     },
     {
       "id": "manchot",
@@ -278,7 +294,12 @@
       ],
       "consigne": "Le manchot ne vole pas, mais c’est un…",
       "explication": "Il a des plumes, un bec, et pond des œufs.",
-      "image": "penguin"
+      "image": "penguin",
+      "pourquoi": {
+        "mammifère": "il a des plumes et un bec, et il pond des œufs.",
+        "poisson": "il nage, mais respire de l’air et a des plumes.",
+        "reptile": "il a des plumes, pas des écailles."
+      }
     },
     {
       "id": "vertebres",
@@ -292,7 +313,12 @@
         "une coquille"
       ],
       "consigne": "Les mammifères, les oiseaux, les poissons, les reptiles et les amphibiens ont tous…",
-      "explication": "On les appelle les vertébrés."
+      "explication": "On les appelle les vertébrés.",
+      "pourquoi": {
+        "des plumes": "seuls les oiseaux ont des plumes.",
+        "six pattes": "six pattes, ce sont les insectes, qui n’ont pas d’os.",
+        "une coquille": "la coquille, c’est l’escargot ou l’huître, qui n’ont pas d’os."
+      }
     },
     {
       "id": "insecte",
@@ -307,7 +333,12 @@
       ],
       "consigne": "Combien de pattes a un insecte ?",
       "explication": "L’abeille, la fourmi et le papillon ont 6 pattes. L’araignée en a 8 : ce n’est pas un insecte.",
-      "image": "bee"
+      "image": "bee",
+      "pourquoi": {
+        "4": "4 pattes, c’est le chien ou le chat, pas un insecte.",
+        "8": "8 pattes, c’est l’araignée, qui n’est pas un insecte.",
+        "10": "10 pattes, c’est le crabe."
+      }
     },
     {
       "id": "araignee",
@@ -320,7 +351,10 @@
       ],
       "consigne": "L’araignée a 8 pattes. Est-ce un insecte ?",
       "explication": "Les insectes ont 6 pattes. L’araignée est un arachnide.",
-      "image": "spider"
+      "image": "spider",
+      "pourquoi": {
+        "Oui": "un insecte a 6 pattes ; l’araignée en a 8."
+      }
     },
     {
       "id": "allaiter",
@@ -333,7 +367,12 @@
         "les poissons",
         "les reptiles"
       ],
-      "consigne": "Quels animaux nourrissent leurs petits avec leur lait ?"
+      "consigne": "Quels animaux nourrissent leurs petits avec leur lait ?",
+      "pourquoi": {
+        "les oiseaux": "les oiseaux nourrissent leurs petits avec des graines ou des vers.",
+        "les poissons": "les petits poissons se nourrissent seuls dès la naissance.",
+        "les reptiles": "les petits reptiles se nourrissent seuls."
+      }
     },
     {
       "id": "herbi-carni",
@@ -344,11 +383,13 @@
       "boites": [
         {
           "nom": "Herbivore",
-          "image": "cow"
+          "image": "cow",
+          "regle": "il ne mange que des plantes."
         },
         {
           "nom": "Carnivore",
-          "image": "lion"
+          "image": "lion",
+          "regle": "il mange d’autres animaux."
         }
       ],
       "a_classer": [
@@ -412,13 +453,16 @@
       "consigne": "Que mange-t-il ?",
       "boites": [
         {
-          "nom": "Que des plantes"
+          "nom": "Que des plantes",
+          "regle": "il mange de l’herbe, des feuilles ou des fruits."
         },
         {
-          "nom": "Que des animaux"
+          "nom": "Que des animaux",
+          "regle": "il chasse ou mange d’autres animaux."
         },
         {
-          "nom": "Des deux"
+          "nom": "Des deux",
+          "regle": "il mange des plantes et des animaux."
         }
       ],
       "a_classer": [
@@ -475,7 +519,12 @@
         "omnivore",
         "insectivore"
       ],
-      "consigne": "Un animal qui ne mange que des plantes est…"
+      "consigne": "Un animal qui ne mange que des plantes est…",
+      "pourquoi": {
+        "carnivore": "un carnivore mange d’autres animaux.",
+        "omnivore": "un omnivore mange des plantes et des animaux.",
+        "insectivore": "un insectivore mange des insectes."
+      }
     },
     {
       "id": "carnivore",
@@ -488,7 +537,12 @@
         "omnivore",
         "granivore"
       ],
-      "consigne": "Un animal qui mange d’autres animaux est…"
+      "consigne": "Un animal qui mange d’autres animaux est…",
+      "pourquoi": {
+        "herbivore": "un herbivore ne mange que des plantes.",
+        "omnivore": "un omnivore mange aussi des plantes.",
+        "granivore": "un granivore mange des graines."
+      }
     },
     {
       "id": "omnivore-def",
@@ -501,7 +555,12 @@
         "carnivore",
         "insectivore"
       ],
-      "consigne": "Un animal qui mange des plantes et des animaux est…"
+      "consigne": "Un animal qui mange des plantes et des animaux est…",
+      "pourquoi": {
+        "herbivore": "un herbivore ne mange que des plantes.",
+        "carnivore": "un carnivore ne mange que des animaux.",
+        "insectivore": "un insectivore mange des insectes."
+      }
     },
     {
       "id": "humain",
@@ -514,7 +573,12 @@
         "carnivore",
         "insectivore"
       ],
-      "consigne": "L’être humain mange des légumes, des fruits, de la viande et du poisson. Il est…"
+      "consigne": "L’être humain mange des légumes, des fruits, de la viande et du poisson. Il est…",
+      "pourquoi": {
+        "herbivore": "il mange aussi de la viande et du poisson.",
+        "carnivore": "il mange aussi des fruits et des légumes.",
+        "insectivore": "il ne mange pas surtout des insectes."
+      }
     },
     {
       "id": "dents-carni",
@@ -528,7 +592,12 @@
         "le cheval"
       ],
       "consigne": "Quel animal a des crocs pointus pour déchirer la viande ?",
-      "explication": "Les carnivores ont des crocs ; les herbivores ont des dents plates pour broyer l’herbe."
+      "explication": "Les carnivores ont des crocs ; les herbivores ont des dents plates pour broyer l’herbe.",
+      "pourquoi": {
+        "la vache": "elle mange de l’herbe : ses dents sont plates pour mâcher.",
+        "le lapin": "il ronge des plantes avec ses grandes incisives.",
+        "le cheval": "il mange de l’herbe : ses dents sont plates."
+      }
     },
     {
       "id": "hibou-mange",
@@ -542,7 +611,12 @@
         "des fruits"
       ],
       "consigne": "Que mange le hibou ?",
-      "image": "owl"
+      "image": "owl",
+      "pourquoi": {
+        "de l’herbe": "le hibou est un chasseur : il mange des petits animaux.",
+        "des glands": "les glands, c’est l’écureuil ou le sanglier.",
+        "des fruits": "le hibou chasse la nuit des souris et des mulots."
+      }
     },
     {
       "id": "escargot-mange",
@@ -556,7 +630,12 @@
         "des poissons"
       ],
       "consigne": "Que mange l’escargot ?",
-      "image": "snail"
+      "image": "snail",
+      "pourquoi": {
+        "des souris": "l’escargot est bien trop petit et lent pour chasser.",
+        "des insectes": "l’escargot mange des plantes.",
+        "des poissons": "l’escargot de jardin ne vit pas dans l’eau."
+      }
     },
     {
       "id": "chaine-1",
@@ -654,7 +733,12 @@
         "a peur de",
         "vit avec"
       ],
-      "consigne": "Dans « l’herbe → le lapin », que veut dire la flèche ?"
+      "consigne": "Dans « l’herbe → le lapin », que veut dire la flèche ?",
+      "pourquoi": {
+        "mange": "la flèche va vers celui qui mange : c’est le lapin qui mange l’herbe.",
+        "a peur de": "la flèche montre qui est mangé par qui.",
+        "vit avec": "la flèche montre qui est mangé par qui."
+      }
     },
     {
       "id": "debut-chaine",
@@ -667,7 +751,12 @@
         "un oiseau",
         "un insecte"
       ],
-      "consigne": "Par quoi commence presque toujours une chaîne alimentaire ?"
+      "consigne": "Par quoi commence presque toujours une chaîne alimentaire ?",
+      "pourquoi": {
+        "un carnivore": "un carnivore mange un animal qui, lui, a mangé des plantes.",
+        "un oiseau": "l’oiseau mange des graines ou des insectes : il n’est pas au début.",
+        "un insecte": "l’insecte mange des plantes : la plante est avant lui."
+      }
     },
     {
       "id": "qui-mange-lapin",
@@ -680,7 +769,12 @@
         "personne",
         "le lapin"
       ],
-      "consigne": "Dans « l’herbe → le lapin → le renard », qui mange le lapin ?"
+      "consigne": "Dans « l’herbe → le lapin → le renard », qui mange le lapin ?",
+      "pourquoi": {
+        "l’herbe": "l’herbe est mangée par le lapin, pas l’inverse.",
+        "personne": "la flèche va du lapin au renard.",
+        "le lapin": "le lapin ne se mange pas lui-même."
+      }
     },
     {
       "id": "si-plus-lapins",
@@ -693,7 +787,12 @@
         "rien ne change",
         "ils deviennent herbivores"
       ],
-      "consigne": "S’il n’y a plus de lapins, que se passe-t-il pour les renards ?"
+      "consigne": "S’il n’y a plus de lapins, que se passe-t-il pour les renards ?",
+      "pourquoi": {
+        "ils ont plus à manger": "le lapin est la nourriture du renard.",
+        "rien ne change": "sans lapins, le renard perd sa nourriture.",
+        "ils deviennent herbivores": "un renard ne change pas ce qu’il mange."
+      }
     },
     {
       "id": "cycle-grenouille",
@@ -757,7 +856,12 @@
         "la larve de mouche"
       ],
       "consigne": "Le petit de la grenouille, qui vit dans l’eau, s’appelle…",
-      "image": "tadpole"
+      "image": "tadpole",
+      "pourquoi": {
+        "le caneton": "le caneton est le petit du canard.",
+        "le poussin": "le poussin est le petit de la poule.",
+        "la larve de mouche": "c’est l’asticot, le petit de la mouche."
+      }
     },
     {
       "id": "chenille",
@@ -771,7 +875,12 @@
         "un ver de terre"
       ],
       "consigne": "La chenille va devenir…",
-      "image": "caterpillar"
+      "image": "caterpillar",
+      "pourquoi": {
+        "une abeille": "l’abeille naît d’une larve dans la ruche.",
+        "une araignée": "l’araignée sort d’un œuf déjà en araignée.",
+        "un ver de terre": "le ver de terre ne se transforme pas."
+      }
     },
     {
       "id": "chrysalide",
@@ -785,7 +894,12 @@
         "une coquille"
       ],
       "consigne": "Dans quoi la chenille se transforme-t-elle en papillon ?",
-      "image": "chrysalis"
+      "image": "chrysalis",
+      "pourquoi": {
+        "un œuf": "l’œuf, c’est avant la chenille.",
+        "un nid": "le nid, c’est la maison des oiseaux.",
+        "une coquille": "la coquille, c’est l’escargot ou l’œuf."
+      }
     },
     {
       "id": "metamorphose",
@@ -798,7 +912,12 @@
         "migration",
         "hibernation"
       ],
-      "consigne": "Quand un animal change complètement de forme en grandissant, c’est une…"
+      "consigne": "Quand un animal change complètement de forme en grandissant, c’est une…",
+      "pourquoi": {
+        "naissance": "la naissance, c’est le début de la vie.",
+        "migration": "une migration, c’est un long voyage, comme les hirondelles.",
+        "hibernation": "hiberner, c’est dormir tout l’hiver."
+      }
     },
     {
       "id": "ovipare",
@@ -811,7 +930,12 @@
         "carnivore",
         "herbivore"
       ],
-      "consigne": "Un animal qui pond des œufs est…"
+      "consigne": "Un animal qui pond des œufs est…",
+      "pourquoi": {
+        "vivipare": "un vivipare a des petits qui naissent du ventre de leur mère.",
+        "carnivore": "carnivore dit ce qu’il mange, pas comment il naît.",
+        "herbivore": "herbivore dit ce qu’il mange, pas comment il naît."
+      }
     },
     {
       "id": "vivipare",
@@ -824,7 +948,12 @@
         "omnivore",
         "insectivore"
       ],
-      "consigne": "Un animal dont le petit naît du ventre de sa mère est…"
+      "consigne": "Un animal dont le petit naît du ventre de sa mère est…",
+      "pourquoi": {
+        "ovipare": "un ovipare pond des œufs.",
+        "omnivore": "omnivore dit ce qu’il mange, pas comment il naît.",
+        "insectivore": "insectivore dit ce qu’il mange."
+      }
     },
     {
       "id": "ovi-vivi",
@@ -835,11 +964,13 @@
       "boites": [
         {
           "nom": "Ovipare",
-          "image": "hen"
+          "image": "hen",
+          "regle": "le petit sort d’un œuf."
         },
         {
           "nom": "Vivipare",
-          "image": "cow"
+          "image": "cow",
+          "regle": "le petit grandit dans le ventre de sa maman."
         }
       ],
       "a_classer": [
@@ -906,10 +1037,12 @@
       "consigne": "De quoi la plante a-t-elle besoin pour vivre ?",
       "boites": [
         {
-          "nom": "Elle en a besoin"
+          "nom": "Elle en a besoin",
+          "regle": "une plante a besoin d’eau, de lumière, d’air et de terre."
         },
         {
-          "nom": "Elle n’en a pas besoin"
+          "nom": "Elle n’en a pas besoin",
+          "regle": "une plante n’a besoin que d’eau, de lumière, d’air et de terre."
         }
       ],
       "a_classer": [
@@ -969,7 +1102,12 @@
         "les feuilles",
         "les fruits"
       ],
-      "consigne": "Par où la plante prend-elle l’eau du sol ?"
+      "consigne": "Par où la plante prend-elle l’eau du sol ?",
+      "pourquoi": {
+        "les fleurs": "les fleurs servent à faire des graines.",
+        "les feuilles": "les feuilles prennent la lumière.",
+        "les fruits": "les fruits protègent les graines."
+      }
     },
     {
       "id": "graine-dans",
@@ -982,7 +1120,12 @@
         "dans la tige",
         "dans la feuille"
       ],
-      "consigne": "Où se trouvent les graines ?"
+      "consigne": "Où se trouvent les graines ?",
+      "pourquoi": {
+        "dans la racine": "la racine boit l’eau du sol.",
+        "dans la tige": "la tige porte les feuilles et les fleurs.",
+        "dans la feuille": "la feuille prend la lumière."
+      }
     },
     {
       "id": "noir",
@@ -995,7 +1138,12 @@
         "devient rouge",
         "fait plus de fleurs"
       ],
-      "consigne": "Une plante laissée dans le noir pendant longtemps…"
+      "consigne": "Une plante laissée dans le noir pendant longtemps…",
+      "pourquoi": {
+        "pousse mieux": "une plante a besoin de lumière pour vivre.",
+        "devient rouge": "sans lumière, elle perd sa couleur verte et jaunit.",
+        "fait plus de fleurs": "sans lumière, elle n’a plus de force pour fleurir."
+      }
     },
     {
       "id": "vivant-plante",
@@ -1007,7 +1155,10 @@
         "Non"
       ],
       "consigne": "Une plante est-elle un être vivant ?",
-      "explication": "Elle naît, se nourrit, grandit, se reproduit et meurt."
+      "explication": "Elle naît, se nourrit, grandit, se reproduit et meurt.",
+      "pourquoi": {
+        "Non": "elle naît, grandit, se nourrit et meurt : elle est vivante."
+      }
     },
     {
       "id": "germer",
@@ -1020,7 +1171,12 @@
         "gèle",
         "fane"
       ],
-      "consigne": "Quand une graine commence à pousser, on dit qu’elle…"
+      "consigne": "Quand une graine commence à pousser, on dit qu’elle…",
+      "pourquoi": {
+        "fond": "fondre, c’est la glace qui devient eau.",
+        "gèle": "geler, c’est l’eau qui devient glace.",
+        "fane": "faner, c’est une fleur qui se dessèche."
+      }
     }
   ]
 }

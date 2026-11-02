@@ -332,7 +332,21 @@ FlipCard.propTypes = {
 
 const Feedback = ({ feedback, onNext }) => {
   const { t } = useTranslation('learn')
-  const { correct, item, typo } = feedback
+  const { correct, given, item, typo } = feedback
+  // When wrong: why the answer given is not right, the rules of the boxes
+  // concerned, and the steps of a calculation.
+  const helps = correct
+    ? []
+    : [
+        item.whyNot?.[given] &&
+          t('play.whyNot', { given, why: item.whyNot[given] }),
+        ...(item.mode === 'sort'
+          ? [given, item.answer]
+              .filter(box => item.rules?.[box])
+              .map(box => t('play.boxRule', { box, rule: item.rules[box] }))
+          : []),
+        item.whenWrong,
+      ].filter(Boolean)
   // Enter goes on, but only a new press: the one that sent the answer is
   // still down when this shows.
   useEffect(() => {
@@ -392,6 +406,15 @@ const Feedback = ({ feedback, onNext }) => {
           {t('play.heard', { word: item.listen })}
         </Typography>
       )}
+      {helps.map(help => (
+        <Typography
+          key={help}
+          level='body-sm'
+          sx={{ color: 'inherit', mt: 0.5 }}
+        >
+          {help}
+        </Typography>
+      ))}
       {item.explanation && (
         <Typography level='body-sm' sx={{ color: 'inherit', mt: 0.5 }}>
           {item.explanation}
@@ -860,7 +883,7 @@ const LearnPlay = ({ playMode = false }) => {
       if (answers.length === game.questions.length) finish(answers)
       return
     }
-    setFeedback({ ...check, item })
+    setFeedback({ ...check, given: String(given), item })
   }
 
   const next = () => {

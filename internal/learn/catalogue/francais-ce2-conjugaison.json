@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce2-conjugaison",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Conjugaison CE2",
   "description": "Passé, présent ou futur ; le présent, le futur, l'imparfait et le passé composé des verbes du CE2 (être, avoir, aller, faire, dire, venir, pouvoir, voir, vouloir, prendre, partir et les verbes en -er) ; puis écrire soi-même le verbe.",
   "matiere": "francais",
@@ -61,13 +61,16 @@
       "consigne": "Passé, présent ou futur ?",
       "boites": [
         {
-          "nom": "Passé"
+          "nom": "Passé",
+          "regle": "c’est déjà arrivé (hier, autrefois)."
         },
         {
-          "nom": "Présent"
+          "nom": "Présent",
+          "regle": "ça se passe maintenant."
         },
         {
-          "nom": "Futur"
+          "nom": "Futur",
+          "regle": "ça arrivera plus tard (demain, bientôt)."
         }
       ],
       "a_classer": [
@@ -117,13 +120,16 @@
       "consigne": "Passé, présent ou futur ?",
       "boites": [
         {
-          "nom": "Passé"
+          "nom": "Passé",
+          "regle": "c’est déjà arrivé (hier, autrefois)."
         },
         {
-          "nom": "Présent"
+          "nom": "Présent",
+          "regle": "ça se passe maintenant."
         },
         {
-          "nom": "Futur"
+          "nom": "Futur",
+          "regle": "ça arrivera plus tard (demain, bientôt)."
         }
       ],
       "a_classer": [

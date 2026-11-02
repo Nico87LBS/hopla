@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-gs-plantes",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Les plantes",
   "description": "Les parties d'une plante, de la graine à la fleur, et les fruits et légumes.",
   "matiere": "monde",
@@ -130,11 +130,13 @@
       "boites": [
         {
           "nom": "fruit",
-          "image": "cherry"
+          "image": "cherry",
+          "regle": "il a des pépins ou un noyau, souvent sucré."
         },
         {
           "nom": "légume",
-          "image": "leek"
+          "image": "leek",
+          "regle": "une partie de plante qu’on cuisine : feuille, racine, tige."
         }
       ],
       "a_classer": [

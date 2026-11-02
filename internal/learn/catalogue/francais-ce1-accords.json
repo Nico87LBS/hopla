@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce1-accords",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Les accords au CE1",
   "description": "Masculin ou féminin, singulier ou pluriel, les pluriels en -s ou -x, accorder le nom et l'adjectif, puis écrire soi-même le mot accordé.",
   "matiere": "francais",
@@ -51,10 +51,12 @@
       "consigne": "Masculin ou féminin ?",
       "boites": [
         {
-          "nom": "Masculin"
+          "nom": "Masculin",
+          "regle": "on peut dire « un » ou « le » devant le nom."
         },
         {
-          "nom": "Féminin"
+          "nom": "Féminin",
+          "regle": "on peut dire « une » ou « la » devant le nom."
         }
       ],
       "a_classer": [

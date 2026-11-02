@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce1-temps",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Le temps",
   "description": "Le calendrier, la frise du temps, les générations de la famille, et les objets d'autrefois et d'aujourd'hui.",
   "matiere": "monde",
@@ -308,10 +308,12 @@
       "consigne": "Autrefois ou aujourd’hui ?",
       "boites": [
         {
-          "nom": "Autrefois"
+          "nom": "Autrefois",
+          "regle": "il y a longtemps, avant l’électricité partout."
         },
         {
-          "nom": "Aujourd’hui"
+          "nom": "Aujourd’hui",
+          "regle": "ce qu’on utilise maintenant."
         }
       ],
       "a_classer": [

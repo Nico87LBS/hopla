@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-cp-vivant",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Vivant ou non vivant",
   "description": "Reconnaître ce qui est vivant ; naître, grandir et mourir ; les petits des animaux ; animal ou végétal.",
   "matiere": "monde",
@@ -46,10 +46,12 @@
       "consigne": "Vivant ou non vivant ?",
       "boites": [
         {
-          "nom": "Vivant"
+          "nom": "Vivant",
+          "regle": "il naît, grandit, se nourrit et meurt."
         },
         {
-          "nom": "Non vivant"
+          "nom": "Non vivant",
+          "regle": "il ne naît pas, ne grandit pas, ne se nourrit pas."
         }
       ],
       "a_classer": [
@@ -436,10 +438,12 @@
       "consigne": "Animal ou végétal ?",
       "boites": [
         {
-          "nom": "Animal"
+          "nom": "Animal",
+          "regle": "il bouge tout seul et mange."
         },
         {
-          "nom": "Végétal"
+          "nom": "Végétal",
+          "regle": "une plante : elle pousse dans la terre et ne bouge pas."
         }
       ],
       "a_classer": [

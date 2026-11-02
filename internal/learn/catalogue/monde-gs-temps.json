@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-gs-temps",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "Le temps qui passe",
   "description": "Les moments de la journée, les jours de la semaine, hier, aujourd'hui et demain.",
   "matiere": "monde",
@@ -77,11 +77,13 @@
       "boites": [
         {
           "nom": "le jour",
-          "image": "sun"
+          "image": "sun",
+          "regle": "quand le soleil brille."
         },
         {
           "nom": "la nuit",
-          "image": "moon"
+          "image": "moon",
+          "regle": "quand il fait noir et qu’on dort."
         }
       ],
       "a_classer": [

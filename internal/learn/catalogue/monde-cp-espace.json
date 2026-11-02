@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-cp-espace",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "L’espace autour de moi",
   "description": "À gauche, à droite, devant, derrière, entre ; les pièces de la maison ; le plan ; traverser la rue.",
   "matiere": "monde",
@@ -228,13 +228,16 @@
       "consigne": "Dans quelle pièce le trouve-t-on ?",
       "boites": [
         {
-          "nom": "La chambre"
+          "nom": "La chambre",
+          "regle": "la pièce où l’on dort."
         },
         {
-          "nom": "La salle de bains"
+          "nom": "La salle de bains",
+          "regle": "la pièce où l’on se lave."
         },
         {
-          "nom": "La cuisine"
+          "nom": "La cuisine",
+          "regle": "la pièce où l’on prépare les repas."
         }
       ],
       "a_classer": [
@@ -353,10 +356,12 @@
       "consigne": "En ville ou à la campagne ?",
       "boites": [
         {
-          "nom": "En ville"
+          "nom": "En ville",
+          "regle": "beaucoup de maisons, d’immeubles, de rues et de magasins."
         },
         {
-          "nom": "À la campagne"
+          "nom": "À la campagne",
+          "regle": "des champs, des fermes, peu de maisons."
         }
       ],
       "a_classer": [

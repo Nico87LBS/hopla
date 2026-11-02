@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-gs-saisons",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Les saisons",
   "description": "Les quatre saisons, le temps qu'il fait et les habits qui vont avec.",
   "matiere": "monde",
@@ -187,11 +187,13 @@
       "boites": [
         {
           "nom": "l'été",
-          "image": "sun"
+          "image": "sun",
+          "regle": "quand il fait chaud."
         },
         {
           "nom": "l'hiver",
-          "image": "snowman"
+          "image": "snowman",
+          "regle": "quand il fait froid."
         }
       ],
       "a_classer": [

@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce2-espace",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Se repérer dans l'espace",
   "description": "Les points cardinaux, la France (régions, fleuves, montagnes, grandes villes), les paysages, les continents et les océans.",
   "matiere": "monde",
@@ -702,13 +702,16 @@
       "consigne": "Où est-on ?",
       "boites": [
         {
-          "nom": "En ville"
+          "nom": "En ville",
+          "regle": "beaucoup de maisons, d’immeubles, de rues et de magasins."
         },
         {
-          "nom": "À la campagne"
+          "nom": "À la campagne",
+          "regle": "des champs, des fermes, peu de maisons."
         },
         {
-          "nom": "À la montagne"
+          "nom": "À la montagne",
+          "regle": "des sommets hauts, de la neige en hiver."
         }
       ],
       "a_classer": [

@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "maths-cp-monnaie-heure",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Monnaie et heures",
   "description": "Reconnaître les pièces et les billets, compter une somme, payer le juste prix, et lire l'heure pile sur une horloge à aiguilles.",
   "matiere": "maths",
@@ -186,10 +186,12 @@
       "consigne": "Pièce ou billet ?",
       "boites": [
         {
-          "nom": "Pièce"
+          "nom": "Pièce",
+          "regle": "en métal, petite et ronde : de 1 centime à 2 €."
         },
         {
-          "nom": "Billet"
+          "nom": "Billet",
+          "regle": "en papier : 5 € et plus."
         }
       ],
       "a_classer": [

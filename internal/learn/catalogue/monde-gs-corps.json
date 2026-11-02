@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-gs-corps",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "Mon corps",
   "description": "Nommer les parties du corps, connaître les cinq sens et prendre soin de soi.",
   "matiere": "monde",
@@ -261,11 +261,13 @@
       "boites": [
         {
           "nom": "tous les jours",
-          "image": "apple"
+          "image": "apple",
+          "regle": "bon pour grandir : fruits, légumes, pain, lait."
         },
         {
           "nom": "de temps en temps",
-          "image": "cake"
+          "image": "cake",
+          "regle": "très sucré ou très gras."
         }
       ],
       "a_classer": [
