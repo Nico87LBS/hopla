@@ -7,7 +7,7 @@ import {
 import { Box, Button, Container, Sheet, Stack, Typography } from '@mui/joy'
 import { useQueryClient } from '@tanstack/react-query'
 import PropTypes from 'prop-types'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, Navigate, useParams } from 'react-router-dom'
 
@@ -20,10 +20,12 @@ import {
 } from '../../queries/LearnQueries'
 import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries'
 import { moduleLocked, openChapters, totalLeft } from '../../utils/learn/engine'
+import { levelsIn, playFirst, shape, toReview } from '../../utils/learn/listing'
 import { queuedFor } from '../../utils/learn/store'
 import LoadingComponent from '../components/Loading'
 import { MemberAvatar } from '../Games/GameParts'
 import { Progress, subjectColor, useCompiled } from './LearnParts'
+import ListBar, { useListChoices } from './ListBar'
 
 const pageSx = { px: { xs: 2, sm: 3 }, pb: 6, pt: { xs: 1, sm: 3 } }
 
@@ -141,6 +143,15 @@ const ModuleCard = ({ cards, compiled, compiledById, dayFull, module, to }) => {
           <>
             <Typography level='body-xs' sx={{ color: 'text.secondary' }} noWrap>
               {current?.chapter.name}
+              {module.review > 0 && (
+                <Typography
+                  component='span'
+                  sx={{ color: HOPLA.carrotText, fontWeight: 700 }}
+                >
+                  {' · '}
+                  {t('list.toReview', { count: module.review })}
+                </Typography>
+              )}
             </Typography>
             <Stack
               direction='row'
@@ -219,11 +230,23 @@ const groupByPack = player => {
       .map(id => left.get(id))
       .filter(Boolean)
     modules.forEach(m => left.delete(m.id))
-    if (modules.length) groups.push({ id: pack.id, name: pack.name, modules })
+    if (modules.length) {
+      groups.push({
+        id: pack.id,
+        name: pack.name,
+        levels: pack.levels,
+        modules,
+      })
+    }
   }
-  if (left.size) groups.push({ id: '', name: '', modules: [...left.values()] })
+  if (left.size) {
+    groups.push({ id: '', name: '', levels: [], modules: [...left.values()] })
+  }
   return groups
 }
+
+// A child with only a few modules finds them without searching.
+const BAR_FROM = 6
 
 // LearnModules is the list of a person's modules, with the day's total. The
 // family screen shows it too, signed in as nobody: it gets the member and
@@ -233,6 +256,11 @@ export const LearnModules = ({ isParent, member, playPath, userId }) => {
   const queryClient = useQueryClient()
   const { data: player, error, isLoading } = usePlayer(userId)
   const { byId, cards } = useCompiled(player)
+  const [query, setQuery] = useState('')
+  const [choices, setChoices] = useListChoices(`hopla.learn.list.${userId}`, {
+    levels: [],
+    sort: 'level',
+  })
 
   useEffect(() => {
     const online = async () => {
@@ -246,8 +274,31 @@ export const LearnModules = ({ isParent, member, playPath, userId }) => {
   if (isLoading) return <LoadingComponent />
 
   const waiting = queuedFor(userId)
-  const groups = player ? groupByPack(player) : []
   const left = totalLeft(player)
+  const all = (player ? groupByPack(player) : []).map(group => ({
+    ...group,
+    items: group.modules.filter(module => byId[module.id]),
+  }))
+  const count = all.reduce((n, group) => n + group.items.length, 0)
+  const withBar = count >= BAR_FROM
+  let groups = shape(all, {
+    query: withBar ? query : '',
+    levels: withBar ? choices.levels : [],
+  })
+  if (withBar && choices.sort === 'first') {
+    const items = groups.flatMap(group =>
+      group.items.map(module => ({
+        ...module,
+        levels: module.levels?.length ? module.levels : group.levels,
+        review: toReview(byId[module.id], cards, player.day),
+        done: left === 0 || module.earnedToday >= module.dailyCap,
+        locked: !!moduleLocked(byId[module.id], byId, cards),
+      })),
+    )
+    groups = items.length
+      ? [{ id: 'first', name: '', items: playFirst(items) }]
+      : []
+  }
 
   return (
     <Container maxWidth='sm' sx={pageSx}>
@@ -325,7 +376,28 @@ export const LearnModules = ({ isParent, member, playPath, userId }) => {
         <Typography color='danger'>{t('home.error')}</Typography>
       )}
 
-      {player && groups.length === 0 && (
+      {withBar && (
+        <ListBar
+          query={query}
+          onQuery={setQuery}
+          choices={choices}
+          onChoices={setChoices}
+          count={groups.reduce((n, group) => n + group.items.length, 0)}
+          levels={levelsIn(all.flatMap(group => [group, ...group.items]))}
+          sorts={['level', 'first'].map(key => ({
+            key,
+            label: t(`list.sort.${key}`),
+          }))}
+        />
+      )}
+
+      {withBar && count > 0 && groups.length === 0 && (
+        <Typography level='body-md' sx={{ color: 'text.secondary' }}>
+          {t('list.nothing')}
+        </Typography>
+      )}
+
+      {player && count === 0 && (
         <Sheet
           variant='outlined'
           sx={{ borderRadius: 'xl', p: 3, textAlign: 'center' }}
@@ -359,22 +431,22 @@ export const LearnModules = ({ isParent, member, playPath, userId }) => {
                 textTransform: 'uppercase',
               }}
             >
-              {group.name || t('home.others')}
+              {group.id === 'first'
+                ? t('list.sort.first')
+                : group.name || t('home.others')}
             </Typography>
             <Stack gap={1}>
-              {group.modules
-                .filter(module => byId[module.id])
-                .map(module => (
-                  <ModuleCard
-                    key={module.id}
-                    module={module}
-                    compiled={byId[module.id]}
-                    compiledById={byId}
-                    cards={cards}
-                    dayFull={left === 0}
-                    to={playPath(module.id)}
-                  />
-                ))}
+              {group.items.map(module => (
+                <ModuleCard
+                  key={module.id}
+                  module={module}
+                  compiled={byId[module.id]}
+                  compiledById={byId}
+                  cards={cards}
+                  dayFull={left === 0}
+                  to={playPath(module.id)}
+                />
+              ))}
             </Stack>
           </Box>
         ))}

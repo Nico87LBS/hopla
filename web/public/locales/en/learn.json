@@ -283,5 +283,32 @@
         "steps": "In Edge, the “Natural” (online) voices are already there. Otherwise: Settings › Time & language › Speech › Add voices."
       }
     }
+  },
+  "list": {
+    "search": "Search a module",
+    "clearSearch": "Clear the search",
+    "sortBy": "Sort by",
+    "shown_one": "{{count}} module shown",
+    "shown_other": "{{count}} modules shown",
+    "clear": "Clear all",
+    "nothing": "No module matches the search or the filters.",
+    "toReview_one": "{{count}} to review",
+    "toReview_other": "{{count}} to review",
+    "filter": {
+      "active": "On",
+      "inactive": "Off",
+      "fresh": "New or updated",
+      "playing": "Played lately",
+      "reported": "Reported",
+      "installed": "Installed",
+      "notInstalled": "Not installed"
+    },
+    "sort": {
+      "level": "Level",
+      "name": "Name",
+      "recent": "Last game",
+      "progress": "Progress",
+      "first": "Play first"
+    }
   }
 }

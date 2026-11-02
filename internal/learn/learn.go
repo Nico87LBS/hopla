@@ -1093,6 +1093,28 @@ func nameInHopla(db *gorm.DB, userID int) (string, error) {
 	return string(name), nil
 }
 
+// LastPlayed is the day of each person's last game of each module, by
+// person then module.
+func LastPlayed(db *gorm.DB, familyID int) (map[int]map[string]string, error) {
+	var rows []struct {
+		UserID    int
+		ModuleKey string
+		Day       string
+	}
+	if err := db.Model(&Session{}).Select("user_id, module_key, MAX(day) AS day").
+		Where("family_id = ?", familyID).Group("user_id, module_key").Scan(&rows).Error; err != nil {
+		return nil, err
+	}
+	out := map[int]map[string]string{}
+	for _, row := range rows {
+		if out[row.UserID] == nil {
+			out[row.UserID] = map[string]string{}
+		}
+		out[row.UserID][row.ModuleKey] = row.Day
+	}
+	return out, nil
+}
+
 // StatsDays is how far back the statistics of a module go.
 const StatsDays = 90
 

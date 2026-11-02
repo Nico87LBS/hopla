@@ -129,6 +129,10 @@ type Installed struct {
 	Applied map[int]map[string]learn.Applied `json:"applied"`
 	// Reports counts the questions reported and not looked at, by module.
 	Reports map[string]int `json:"reports"`
+	// LastPlayed is the day of each person's last game of each module, and
+	// Day the family's today, to tell the modules played lately.
+	LastPlayed map[int]map[string]string `json:"lastPlayed"`
+	Day        string                    `json:"day"`
 }
 
 func (h *Handler) getModules(c *gin.Context) {
@@ -177,8 +181,14 @@ func (h *Handler) getModules(c *gin.Context) {
 	for _, report := range reports {
 		counts[report.ModuleKey]++
 	}
+	lastPlayed, err := learn.LastPlayed(db, who.familyID)
+	if err != nil {
+		answerError(c, err, "list the games")
+		return
+	}
 	c.JSON(200, gin.H{"res": Installed{Modules: modules, Activations: activations, Settings: settings,
-		Defaults: defaults, Applied: applied, Reports: counts}})
+		Defaults: defaults, Applied: applied, Reports: counts, LastPlayed: lastPlayed,
+		Day: learn.Day(who.familyID, time.Now().UTC())}})
 }
 
 func (h *Handler) install(c *gin.Context) {

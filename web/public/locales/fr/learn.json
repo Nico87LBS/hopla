@@ -283,5 +283,32 @@
         "steps": "Dans Edge, les voix « Natural » (en ligne) sont déjà là. Sinon : Paramètres › Heure et langue › Voix › Ajouter des voix."
       }
     }
+  },
+  "list": {
+    "search": "Chercher un module",
+    "clearSearch": "Effacer la recherche",
+    "sortBy": "Trier par",
+    "shown_one": "{{count}} module affiché",
+    "shown_other": "{{count}} modules affichés",
+    "clear": "Tout effacer",
+    "nothing": "Aucun module ne correspond à la recherche ou aux filtres.",
+    "toReview_one": "{{count}} à revoir",
+    "toReview_other": "{{count}} à revoir",
+    "filter": {
+      "active": "Actifs",
+      "inactive": "Inactifs",
+      "fresh": "Nouveaux ou mis à jour",
+      "playing": "En cours",
+      "reported": "Signalés",
+      "installed": "Installés",
+      "notInstalled": "Pas installés"
+    },
+    "sort": {
+      "level": "Niveau",
+      "name": "Nom",
+      "recent": "Dernière partie",
+      "progress": "Progrès",
+      "first": "À jouer d’abord"
+    }
   }
 }
