@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-cp-espace",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "L’espace autour de moi",
   "description": "À gauche, à droite, devant, derrière, entre ; les pièces de la maison ; le plan ; traverser la rue.",
   "matiere": "monde",
@@ -48,7 +48,8 @@
       "image": "pos-left",
       "sens": [
         "inverse"
-      ]
+      ],
+      "question_inverse": "Où est le lapin ?"
     },
     {
       "id": "position-a-droite",
@@ -60,7 +61,8 @@
       "image": "pos-right",
       "sens": [
         "inverse"
-      ]
+      ],
+      "question_inverse": "Où est le lapin ?"
     },
     {
       "id": "position-entre",
@@ -72,7 +74,8 @@
       "image": "pos-between",
       "sens": [
         "inverse"
-      ]
+      ],
+      "question_inverse": "Où est le lapin ?"
     },
     {
       "id": "position-devant",
@@ -84,7 +87,8 @@
       "image": "pos-in-front",
       "sens": [
         "inverse"
-      ]
+      ],
+      "question_inverse": "Où est le lapin ?"
     },
     {
       "id": "position-derriere",
@@ -96,7 +100,8 @@
       "image": "pos-behind",
       "sens": [
         "inverse"
-      ]
+      ],
+      "question_inverse": "Où est le lapin ?"
     },
     {
       "id": "position-dans",
@@ -108,7 +113,8 @@
       "image": "pos-in",
       "sens": [
         "inverse"
-      ]
+      ],
+      "question_inverse": "Où est le lapin ?"
     },
     {
       "id": "position-sur",
@@ -120,7 +126,8 @@
       "image": "pos-on",
       "sens": [
         "inverse"
-      ]
+      ],
+      "question_inverse": "Où est le lapin ?"
     },
     {
       "id": "position-sous",
@@ -132,7 +139,8 @@
       "image": "pos-under",
       "sens": [
         "inverse"
-      ]
+      ],
+      "question_inverse": "Où est le lapin ?"
     },
     {
       "id": "position-a-cote",
@@ -144,7 +152,8 @@
       "image": "pos-next-to",
       "sens": [
         "inverse"
-      ]
+      ],
+      "question_inverse": "Où est le lapin ?"
     },
     {
       "id": "maison-1",

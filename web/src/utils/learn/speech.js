@@ -97,15 +97,44 @@ export const deviceVoices = onChange => {
   return () => voice.removeEventListener?.('voiceschanged', tell)
 }
 
+// A text in parts is said with a short silence between them, such as an
+// instruction, then the word it is about: « Solide ou liquide ? … la
+// cuillère ». What is said next cancels the parts still to come.
+export const PAUSE_MS = 700
+let waiting = []
+// Each new text said, not queued, starts a new turn: a part of an older
+// turn that ends, even cut short, says nothing more.
+let turn = 0
+const stopWaiting = () => {
+  turn++
+  for (const timer of waiting) clearTimeout(timer)
+  waiting = []
+}
+
 // speak says a text slowly, cutting what was being said, or after it when
-// queued. A voice that fails never stops the game: the speaker button is
+// queued. A list of texts is said part after part, with a pause between
+// them. A voice that fails never stops the game: the speaker button is
 // still there to try again.
-export const speak = (text, lang, { queue = false, voiceURI } = {}) => {
+export const speak = (text, lang, options = {}) => {
+  if (Array.isArray(text)) return speakParts(text, lang, options)
+  const { onDone, queue = false, voiceURI } = options
   const voice = synth()
   if (!voice || !text) return false
   try {
-    if (!queue) voice.cancel()
+    if (!queue) {
+      stopWaiting()
+      voice.cancel()
+    }
     const utterance = new SpeechSynthesisUtterance(text)
+    if (onDone) {
+      let done = false
+      utterance.onend = utterance.onerror = () => {
+        if (!done) {
+          done = true
+          onDone()
+        }
+      }
+    }
     const chosen = pickVoice(
       voice.getVoices(),
       lang,
@@ -121,7 +150,35 @@ export const speak = (text, lang, { queue = false, voiceURI } = {}) => {
   }
 }
 
+const speakParts = (parts, lang, { queue = false, voiceURI } = {}) => {
+  const said = parts.filter(Boolean)
+  if (!said.length) return false
+  if (!queue) {
+    stopWaiting()
+    try {
+      synth()?.cancel()
+    } catch {
+      // Nothing was being said.
+    }
+  }
+  const mine = turn
+  // A part may be in another language: { text, lang }.
+  const sayFrom = (i, queued) =>
+    speak(said[i].text ?? said[i], said[i].lang || lang, {
+      queue: queued,
+      voiceURI,
+      ...(i + 1 < said.length && {
+        onDone: () => {
+          if (turn !== mine) return
+          waiting.push(setTimeout(() => sayFrom(i + 1, true), PAUSE_MS))
+        },
+      }),
+    })
+  return sayFrom(0, true)
+}
+
 export const stopSpeaking = () => {
+  stopWaiting()
   try {
     synth()?.cancel()
   } catch {

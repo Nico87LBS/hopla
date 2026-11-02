@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "maths-cp-formes",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Formes et repérage",
   "description": "Le carré, le rectangle, le triangle et le rond ; le cube, la boule, le cylindre et la pyramide ; à gauche, à droite, entre, devant, derrière.",
   "matiere": "maths",
@@ -49,7 +49,8 @@
       "sens": [
         "direct",
         "inverse"
-      ]
+      ],
+      "question_inverse": "Comment s’appelle cette forme ?"
     },
     {
       "id": "forme-carre",
@@ -62,7 +63,8 @@
       "sens": [
         "direct",
         "inverse"
-      ]
+      ],
+      "question_inverse": "Comment s’appelle cette forme ?"
     },
     {
       "id": "forme-triangle",
@@ -75,7 +77,8 @@
       "sens": [
         "direct",
         "inverse"
-      ]
+      ],
+      "question_inverse": "Comment s’appelle cette forme ?"
     },
     {
       "id": "forme-rectangle",
@@ -88,7 +91,8 @@
       "sens": [
         "direct",
         "inverse"
-      ]
+      ],
+      "question_inverse": "Comment s’appelle cette forme ?"
     },
     {
       "id": "cotes-triangle",
@@ -170,7 +174,8 @@
       "sens": [
         "direct",
         "inverse"
-      ]
+      ],
+      "question_inverse": "Comment s’appelle ce solide ?"
     },
     {
       "id": "solide-boule",
@@ -183,7 +188,8 @@
       "sens": [
         "direct",
         "inverse"
-      ]
+      ],
+      "question_inverse": "Comment s’appelle ce solide ?"
     },
     {
       "id": "solide-cylindre",
@@ -196,7 +202,8 @@
       "sens": [
         "direct",
         "inverse"
-      ]
+      ],
+      "question_inverse": "Comment s’appelle ce solide ?"
     },
     {
       "id": "solide-pyramide",
@@ -209,7 +216,8 @@
       "sens": [
         "direct",
         "inverse"
-      ]
+      ],
+      "question_inverse": "Comment s’appelle ce solide ?"
     },
     {
       "id": "roule",

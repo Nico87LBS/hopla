@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-gs-temps",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Le temps qui passe",
   "description": "Les moments de la journée, les jours de la semaine, hier, aujourd'hui et demain.",
   "matiere": "monde",
@@ -61,6 +61,12 @@
         "s'habiller",
         "prendre le petit-déjeuner",
         "aller à l'école"
+      ],
+      "echangeables": [
+        [
+          "s'habiller",
+          "prendre le petit-déjeuner"
+        ]
       ]
     },
     {

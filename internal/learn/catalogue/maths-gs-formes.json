@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "maths-gs-formes",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Formes et positions",
   "description": "Reconnaître le rond, le carré, le triangle et le rectangle, et dire où est le lapin : dans, sur, sous, devant, derrière, à côté.",
   "matiere": "maths",
@@ -44,7 +44,8 @@
       "sens": [
         "direct",
         "inverse"
-      ]
+      ],
+      "question_inverse": "Comment s’appelle cette forme ?"
     },
     {
       "id": "forme-carre",
@@ -57,7 +58,8 @@
       "sens": [
         "direct",
         "inverse"
-      ]
+      ],
+      "question_inverse": "Comment s’appelle cette forme ?"
     },
     {
       "id": "forme-triangle",
@@ -70,7 +72,8 @@
       "sens": [
         "direct",
         "inverse"
-      ]
+      ],
+      "question_inverse": "Comment s’appelle cette forme ?"
     },
     {
       "id": "forme-rectangle",
@@ -83,7 +86,8 @@
       "sens": [
         "direct",
         "inverse"
-      ]
+      ],
+      "question_inverse": "Comment s’appelle cette forme ?"
     },
     {
       "id": "position-dans",
