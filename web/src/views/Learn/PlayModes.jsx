@@ -9,6 +9,12 @@ import { useTranslation } from 'react-i18next'
 
 import { HOPLA } from '../../constants/theme'
 
+// onHover styles a pointer passing over; on a touch screen, Safari keeps it
+// on what was touched last, which then looks chosen at the next question.
+export const onHover = style => ({
+  '@media (hover: hover)': { '&:hover': style },
+})
+
 // drawingURL is where a drawing of the catalogue lives, kept offline with the
 // rest of the app.
 export const drawingURL = id => `/drawings/${id}.svg`
@@ -66,7 +72,7 @@ const LabelButton = ({ color, item, onClick, size = 56, state, ...rest }) => (
         color: `${HOPLA.greenText} !important`,
       }),
       ...(state === 'wrong' && shake),
-      '&:hover': { borderColor: color },
+      ...onHover({ borderColor: color }),
     }}
     {...rest}
   >
@@ -175,6 +181,11 @@ MatchPairs.propTypes = {
 export const OrderLabels = ({ color, item, onAnswer, say }) => {
   const { t } = useTranslation('learn')
   const [placed, setPlaced] = useState([])
+  // With the voice on, a first touch says a label and a second one puts it
+  // up, as for the other questions.
+  const [armed, touch] = useTwoTaps(say, index => {
+    setPlaced(now => [...now, index])
+  })
   const left = item.mixed.map((text, i) => i).filter(i => !placed.includes(i))
   const full = placed.length === item.mixed.length
   return (
@@ -226,10 +237,8 @@ export const OrderLabels = ({ color, item, onAnswer, say }) => {
             key={index}
             color={color}
             item={{ text: item.mixed[index] }}
-            onClick={() => {
-              if (say) say(item.mixed[index])
-              setPlaced([...placed, index])
-            }}
+            state={armed === index ? 'picked' : undefined}
+            onClick={() => touch(index, item.mixed[index])}
           />
         ))}
       </Stack>
@@ -256,15 +265,18 @@ OrderLabels.propTypes = {
 }
 
 // useTwoTaps: with the voice on, a first touch says an answer and a second
-// one chooses it; otherwise one touch chooses.
-export const useTwoTaps = (say, onAnswer) => {
+// one chooses it; otherwise one touch chooses. Quiet, as in a question to
+// listen to, the first touch only circles the answer: saying it would give
+// it away.
+export const useTwoTaps = (say, onAnswer, quiet = false) => {
   const [armed, setArmed] = useState(null)
   const touch = (value, spoken = value) => {
     if (!say || armed === value) {
+      setArmed(null)
       onAnswer(value)
       return
     }
-    say(spoken)
+    if (!quiet) say(spoken)
     setArmed(value)
   }
   return [armed, touch]
@@ -299,7 +311,7 @@ export const SortBoxes = ({ color, item, onAnswer, say }) => {
             p: 1.5,
             whiteSpace: 'normal',
             ...(armed === box.name && { bgcolor: `${color}1f` }),
-            '&:hover': { borderColor: color },
+            ...onHover({ borderColor: color }),
           }}
         >
           {box.image && <Drawing id={box.image} size={72} />}
@@ -357,14 +369,21 @@ export const ZonePicture = ({ color, highlight, id, maxHeight, onTouch }) => {
       live = false
     }
   }, [id])
-  // A zone is filled, or a line (a river) coloured; the wide invisible
-  // edge of a line or a dot (.prise) only makes it easier to touch.
+  // A zone is filled, or a line (a river) coloured, in a bright colour
+  // with a dark edge, the other zones paler, so that it is seen at once;
+  // the wide invisible edge of a line or a dot (.prise) only makes it
+  // easier to touch.
+  const zone = `[data-zone="${highlight}"]`
   const lit = zoneSafe(highlight)
     ? {
-        [`& [data-zone="${highlight}"], & [data-zone="${highlight}"] *`]: {
+        [`& [data-zone]:not(${zone})`]: { opacity: 0.45 },
+        [`& ${zone}, & ${zone} *:not(.prise)`]: {
           fill: color,
+          stroke: HOPLA.ink,
+          strokeWidth: '2.5px',
+          vectorEffect: 'non-scaling-stroke',
         },
-        [`& [data-zone="${highlight}"] .ligne`]: { stroke: color },
+        [`& ${zone} .ligne`]: { stroke: color, strokeWidth: '5px' },
       }
     : {}
   return (
@@ -387,10 +406,12 @@ export const ZonePicture = ({ color, highlight, id, maxHeight, onTouch }) => {
         },
         ...(onTouch && {
           '& [data-zone]': { cursor: 'pointer' },
-          '& [data-zone]:hover, & [data-zone]:hover *': {
-            fill: `${color}55`,
+          '@media (hover: hover)': {
+            '& [data-zone]:hover, & [data-zone]:hover *': {
+              fill: `${color}55`,
+            },
+            '& [data-zone]:hover .ligne': { stroke: color },
           },
-          '& [data-zone]:hover .ligne': { stroke: color },
         }),
         ...lit,
         '& .ligne, & .prise': { fill: 'none !important' },

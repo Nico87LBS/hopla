@@ -19,13 +19,14 @@ import {
 } from '@mui/joy'
 import { useQueryClient } from '@tanstack/react-query'
 import PropTypes from 'prop-types'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, Navigate, useParams } from 'react-router-dom'
 
 import { HOPLA } from '../../constants/theme'
 import { learnKeys, usePlayer } from '../../queries/LearnQueries'
 import { SendLearnGame } from '../../utils/Fetcher'
+import { capitalFor, isolated } from '../../utils/learn/display'
 import {
   checkAnswer,
   expectedHops,
@@ -46,6 +47,7 @@ import {
   Drawing,
   LabelView,
   MatchPairs,
+  onHover,
   OrderLabels,
   Ruler,
   SortBoxes,
@@ -152,7 +154,10 @@ NumberPad.propTypes = {
 }
 
 const Choices = ({ color, item, onAnswer, say }) => {
-  const [armed, touch] = useTwoTaps(say, onAnswer)
+  // In a question to listen to, saying the answers would give them away:
+  // the first touch only circles one.
+  const [armed, touch] = useTwoTaps(say, onAnswer, !!item.listen)
+  const asShown = capitalFor(item)
   const armedSx = choice =>
     armed === choice && { borderColor: color, bgcolor: `${color}1f` }
   // Drawings, for those who cannot read yet: big pictures, two by two
@@ -183,7 +188,7 @@ const Choices = ({ color, item, onAnswer, say }) => {
               borderWidth: 2,
               p: 1,
               ...armedSx(choice),
-              '&:hover': { borderColor: color },
+              ...onHover({ borderColor: color }),
             }}
           >
             {item.images[choice] ? (
@@ -221,10 +226,10 @@ const Choices = ({ color, item, onAnswer, say }) => {
             minHeight: 56,
             whiteSpace: 'normal',
             ...armedSx(choice),
-            '&:hover': { borderColor: color },
+            ...onHover({ borderColor: color }),
           }}
         >
-          {choice}
+          {asShown(choice)}
         </Button>
       ))}
     </Box>
@@ -368,7 +373,7 @@ const Feedback = ({ feedback, onNext }) => {
       {(!correct || typo) && (
         <Typography level='body-md' sx={{ color: 'inherit', mt: 0.5 }}>
           {t('play.answerWas', {
-            answer: `${item.answer}${item.unit ? ` ${item.unit}` : ''}`,
+            answer: `${item.mode === 'choice' ? capitalFor(item)(item.answer) : item.answer}${item.unit ? ` ${item.unit}` : ''}`,
           })}
         </Typography>
       )}
@@ -408,7 +413,9 @@ Feedback.propTypes = {
   onNext: PropTypes.func.isRequired,
 }
 
-// spoken is what is said of a question when it is read aloud.
+// spoken is what is said of a question when it is read aloud, in parts
+// said with a short silence between them: the instruction, the question,
+// then what it is about (« Solide ou liquide ? … la cuillère »).
 export const spoken = item =>
   [
     item.instruction !== item.prompt && item.instruction,
@@ -416,9 +423,8 @@ export const spoken = item =>
     item.subject?.text,
   ]
     .filter(Boolean)
-    .join(' ')
     // A blank to fill is said as a pause, not as its dashes.
-    .replace(/_{2,}/g, '…')
+    .map(part => part.replace(/_{2,}/g, '…'))
 
 // writingClass shows the words of a module written in cursive: all of them,
 // or only those of the question, to read them in cursive and answer in print.
@@ -427,6 +433,16 @@ export const writingClass = doc =>
     cursive: 'hopla-cursive',
     cursive_question: 'hopla-cursive-question',
   })[doc?.ecriture]
+
+// readsBack tells whether a module says the answer again once given: by
+// itself in the languages and the modules that teach reading, where hearing
+// the word teaches its sound, not in the others, where it only repeats what
+// was just heard. relire_reponse in the module decides otherwise.
+export const readsBack = doc =>
+  typeof doc?.relire_reponse === 'boolean'
+    ? doc.relire_reponse
+    : ['anglais', 'langues'].includes(doc?.matiere) ||
+      doc?.lecture_voix_haute === 'consigne'
 
 // readBack is what is said once a question of a reading module is answered:
 // the words the child had to read, so that they hear them.
@@ -444,15 +460,21 @@ export const readBack = item => {
 // speaker button. Without a voice on the device, the words are shown
 // instead. Read aloud, the question is said as it opens. In a module that
 // teaches reading, tell says only the instruction, written above it.
-const Prompt = ({ color, item, say, tell }) => {
+const Prompt = ({ color, item, say, tell, tellLang }) => {
   const { t } = useTranslation('learn')
   const voice = item.listen && canSpeak()
   const instruction = item.instruction !== item.prompt && item.instruction
   const telling = !say && tell && item.instruction
   useEffect(() => {
     if (voice) {
-      if (telling) tell(item.instruction)
-      speak(item.listen, item.lang, { queue: !!telling })
+      // The instruction, a short silence, then the word to listen to.
+      speak(
+        [
+          telling && { text: item.instruction, lang: tellLang },
+          { text: item.listen, lang: item.lang },
+        ],
+        item.lang,
+      )
     } else if (say) say(spoken(item))
     else if (telling) tell(item.instruction)
     return stopSpeaking
@@ -490,14 +512,6 @@ const Prompt = ({ color, item, say, tell }) => {
       </Stack>
     )
   }
-  const small =
-    item.subject ||
-    item.count ||
-    item.clock ||
-    item.ruler ||
-    item.zones ||
-    item.mode === 'match' ||
-    item.mode === 'order'
   return (
     <Stack alignItems='center' gap={1} sx={{ width: '100%' }}>
       {(say || telling) && (
@@ -520,7 +534,7 @@ const Prompt = ({ color, item, say, tell }) => {
         <ZonePicture
           id={item.zones}
           highlight={item.zone}
-          color={color}
+          color={HOPLA.carrot}
           maxHeight={300}
         />
       )}
@@ -529,7 +543,9 @@ const Prompt = ({ color, item, say, tell }) => {
         className={
           item.prompt === item.instruction ? 'hopla-print' : 'hopla-words'
         }
-        level={small ? 'title-lg' : item.prompt.length > 40 ? 'h4' : 'h1'}
+        // Two sizes, by what is asked and never by its length: a word or a
+        // calculation alone, big; a sentence, the same for all.
+        level={isolated(item) ? 'h1' : 'h4'}
         sx={{ fontVariantNumeric: 'tabular-nums' }}
       >
         {item.prompt}
@@ -544,6 +560,7 @@ Prompt.propTypes = {
   item: PropTypes.object.isRequired,
   say: PropTypes.func,
   tell: PropTypes.func,
+  tellLang: PropTypes.string,
 }
 
 const Question = ({ color, item, onAnswer, say }) => {
@@ -713,24 +730,29 @@ const LearnPlay = ({ playMode = false }) => {
   const [feedback, setFeedback] = useState(null)
   const [end, setEnd] = useState(null)
   const [reporting, setReporting] = useState(false)
+  // The questions of the game just played: playing again asks others first.
+  const lastKeys = useRef(new Set())
 
-  const start = useCallback(() => {
-    if (!compiled || !module) return
-    setFeedback(null)
-    setEnd(null)
-    setGame({
-      clientId: generateUUID(),
-      startedAt: Date.now(),
-      questions: pickQuestions(compiled, cards, {
-        day: player.day,
-        settings: module.settings,
-        unlockPercent: module.unlockPercent ?? undefined,
-      }),
-      answers: [],
-    })
-    // Only a new game picks new questions, not a card moved by this one.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [compiled, module?.id])
+  const start = useCallback(
+    recent => {
+      if (!compiled || !module) return
+      setFeedback(null)
+      setEnd(null)
+      setGame({
+        clientId: generateUUID(),
+        startedAt: Date.now(),
+        questions: pickQuestions(compiled, cards, {
+          day: player.day,
+          settings: module.settings,
+          unlockPercent: module.unlockPercent ?? undefined,
+          recent,
+        }),
+        answers: [],
+      })
+      // Only a new game picks new questions, not a card moved by this one.
+    },
+    [compiled, module?.id],
+  )
 
   useEffect(() => {
     if (!game && compiled && module) start()
@@ -782,7 +804,13 @@ const LearnPlay = ({ playMode = false }) => {
       durationSec: Math.round((Date.now() - game.startedAt) / 1000),
       answers,
     }
-    playLocally(player, sent, hops)
+    // The cards moved by this game count at once, even before the server
+    // answers, so that playing again starts from them.
+    const played = playLocally(player, sent, hops)
+    lastKeys.current = new Set(game.questions.map(q => q.key))
+    queryClient.setQueryData(learnKeys.player(userId), kept =>
+      kept ? { ...played, offline: kept.offline } : kept,
+    )
     const mistakes = game.questions.filter(
       (q, i) => answers[i] && !answers[i].correct,
     )
@@ -811,10 +839,13 @@ const LearnPlay = ({ playMode = false }) => {
 
   const answer = given => {
     const check = checkAnswer(item, given)
-    // A word picked from its meaning is said once answered.
-    if (item.said) speak(item.said.listen, item.said.lang)
-    else if (tell && !say && item.instruction && !item.listen)
-      tell(readBack(item))
+    // Once answered, the words are said again where hearing them teaches
+    // something: an English word, a word the child had to read.
+    if (readsBack(doc)) {
+      if (item.said) speak(item.said.listen, item.said.lang)
+      else if (tell && !say && item.instruction && !item.listen)
+        tell(readBack(item))
+    }
     const answers = [
       ...game.answers,
       {
@@ -905,7 +936,12 @@ const LearnPlay = ({ playMode = false }) => {
       </Stack>
 
       {end ? (
-        <EndScreen end={end} onReplay={start} back={back} color={color} />
+        <EndScreen
+          end={end}
+          onReplay={() => start(lastKeys.current)}
+          back={back}
+          color={color}
+        />
       ) : (
         (item || feedback) && (
           <Stack gap={3} alignItems='center' className={writingClass(doc)}>
@@ -929,6 +965,7 @@ const LearnPlay = ({ playMode = false }) => {
                 color={color}
                 say={sayFor(feedback?.item || item)}
                 tell={tell}
+                tellLang={doc.langue || 'fr'}
               />
             </Sheet>
             {feedback ? (

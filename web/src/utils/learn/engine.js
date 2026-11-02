@@ -313,14 +313,20 @@ export const pickQuestions = (compiled, cards, options = {}) => {
     }
   }
 
-  // Then fill, half from the latest chapter.
-  for (let tries = 0; tries < count * 30 && picked.length < count; tries++) {
-    if (!open.length) break
-    const chapter =
-      rng() < 0.5
-        ? open[open.length - 1]
-        : open[Math.floor(rng() * open.length)]
-    add(drawFrom(chapter, rng))
+  // Then fill, half from the latest chapter: first with questions the last
+  // game did not ask, so that playing again asks others, then with any.
+  const recent = options.recent || new Set()
+  for (const fresh of [true, false]) {
+    for (let tries = 0; tries < count * 30 && picked.length < count; tries++) {
+      if (!open.length) break
+      const chapter =
+        rng() < 0.5
+          ? open[open.length - 1]
+          : open[Math.floor(rng() * open.length)]
+      const item = drawFrom(chapter, rng)
+      if (fresh && item && recent.has(item.key)) continue
+      add(item)
+    }
   }
   return shuffle(picked, rng).map(item => prepare(item, rng))
 }
@@ -382,8 +388,12 @@ export const checkAnswer = (item, given) => {
     // straight away.
     case 'match':
       return { correct: given === '', almost: false }
+    // Some labels may swap, such as getting dressed and having breakfast.
     case 'order':
-      return { correct: given === item.answer, almost: false }
+      return {
+        correct: (item.accepted || [item.answer]).includes(given),
+        almost: false,
+      }
     case 'text': {
       const accepted = item.accepted?.length ? item.accepted : [item.answer]
       const tolerance = item.tolerance || 'accents'

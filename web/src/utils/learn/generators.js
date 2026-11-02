@@ -885,12 +885,51 @@ const matchItem = (card, base) => {
   }
 }
 
-const orderItem = (card, base) => ({
-  ...base,
-  mode: 'order',
-  elements: card.elements || [],
-  answer: (card.elements || []).join(' → '),
-})
+const permutations = list =>
+  list.length <= 1
+    ? [list]
+    : list.flatMap((x, i) =>
+        permutations([...list.slice(0, i), ...list.slice(i + 1)]).map(rest => [
+          x,
+          ...rest,
+        ]),
+      )
+
+// orderings lists the right orders of labels: the one written, and those
+// where labels that may swap (getting dressed and having breakfast) do.
+export const orderings = (elements, swappable = []) => {
+  let out = [elements]
+  for (const group of swappable || []) {
+    const places = group
+      .map(label => elements.indexOf(label))
+      .filter(i => i !== -1)
+      .sort((a, b) => a - b)
+    if (places.length < 2) continue
+    const values = places.map(i => elements[i])
+    out = out.flatMap(order =>
+      permutations(values).map(perm => {
+        const next = [...order]
+        places.forEach((place, i) => {
+          next[place] = perm[i]
+        })
+        return next
+      }),
+    )
+  }
+  return [...new Set(out.map(order => order.join(' → ')))]
+}
+
+const orderItem = (card, base) => {
+  const elements = card.elements || []
+  const accepted = orderings(elements, card.echangeables)
+  return {
+    ...base,
+    mode: 'order',
+    elements,
+    answer: elements.join(' → '),
+    ...(accepted.length > 1 && { accepted }),
+  }
+}
 
 const sortItems = (card, moduleId) => {
   const boxes = (card.boites || []).map(b => ({ name: b.nom, image: b.image }))
@@ -1028,6 +1067,111 @@ export const cardItems = (card, moduleId, siblings, lang) => {
     })
 }
 
+// Words that sound the same, by language: one of them heard cannot be told
+// from the others. A leading article is left aside (le ver, le verre).
+const HOMOPHONES = {
+  fr: [
+    ['et', 'est', 'es', 'ai', 'eh'],
+    ['a', 'à', 'as', 'ah'],
+    ['ou', 'où', 'houx', 'août'],
+    ['on', 'ont'],
+    ['son', 'sont'],
+    ['ces', 'ses', 'c’est', 's’est', 'sait', 'sais'],
+    ['mes', 'mais', 'met', 'mets'],
+    ['la', 'là', 'l’a', 'las'],
+    ['peu', 'peut', 'peux'],
+    ['ce', 'se'],
+    ['ni', 'n’y', 'nid'],
+    ['leur', 'leurs'],
+    ['ver', 'verre', 'vers', 'vert', 'verts', 'vertes'],
+    ['mer', 'mère', 'maire'],
+    ['cent', 'sans', 'sang', 's’en'],
+    ['dans', 'dent', 'dents'],
+    ['cour', 'cours', 'court', 'courre'],
+    ['pain', 'pin', 'peint'],
+    ['sel', 'selle', 'celle'],
+    ['pois', 'poids', 'poix'],
+    ['fois', 'foie', 'foi'],
+    ['conte', 'compte', 'comte'],
+    ['chair', 'cher', 'chère', 'chaire'],
+    ['père', 'paire', 'perd', 'pair'],
+    ['vin', 'vingt', 'vain', 'vint'],
+    ['mi', 'mie', 'mis', 'mit'],
+    ['si', 'scie', 'six'],
+    ['dix', 'dis', 'dit'],
+    ['nez', 'né', 'née'],
+    ['quand', 'quant', 'camp'],
+    ['moi', 'mois'],
+    ['tant', 'temps', 'tend', 'taon'],
+    ['du', 'dû'],
+    ['sur', 'sûr'],
+    ['vos', 'veau', 'vaut'],
+    ['eau', 'au', 'aux', 'haut', 'oh'],
+    ['bal', 'balle'],
+    ['chant', 'champ'],
+    ['coup', 'cou', 'coût'],
+    ['faim', 'fin'],
+    ['lait', 'les', 'laid'],
+    ['fée', 'fait'],
+  ],
+  en: [
+    ['to', 'too', 'two'],
+    ['there', 'their', 'they’re'],
+    ['right', 'write'],
+    ['sea', 'see'],
+    ['be', 'bee'],
+    ['for', 'four'],
+    ['son', 'sun'],
+    ['hear', 'here'],
+    ['know', 'no'],
+    ['one', 'won'],
+    ['eight', 'ate'],
+    ['blue', 'blew'],
+    ['flower', 'flour'],
+    ['pear', 'pair'],
+    ['meat', 'meet'],
+    ['night', 'knight'],
+    ['tail', 'tale'],
+    ['wear', 'where'],
+    ['which', 'witch'],
+    ['hour', 'our'],
+    ['by', 'buy', 'bye'],
+    ['red', 'read'],
+    ['week', 'weak'],
+  ],
+}
+
+const ARTICLES = /^(le|la|les|l’|un|une|des|the|a|an)\s+|^l’/
+
+const soundOf = text =>
+  String(text ?? '')
+    .toLowerCase()
+    .replace(/'/g, '’')
+    .trim()
+    .replace(ARTICLES, '')
+
+const families = {}
+const familyOf = (word, lang) => {
+  const base = String(lang || 'fr').split(/[-_]/)[0]
+  if (!families[base]) {
+    families[base] = new Map()
+    ;(HOMOPHONES[base] || []).forEach((family, i) => {
+      for (const w of family) families[base].set(w, i)
+    })
+  }
+  return families[base].get(word)
+}
+
+// soundsAlike tells whether two words are said the same way.
+export const soundsAlike = (a, b, lang) => {
+  const x = soundOf(a)
+  const y = soundOf(b)
+  // The same word after different articles is heard apart.
+  if (x === y) return false
+  const fx = familyOf(x, lang)
+  return fx !== undefined && fx === familyOf(y, lang)
+}
+
 // A listening card says its question aloud, in the language taught:
 // - direct: hear the word, pick its meaning, as a drawing when it has one;
 // - lire: read the word, pick its meaning, as a drawing when it has one;
@@ -1059,10 +1203,24 @@ const listeningItem = (card, base, direction, siblings, lang) => {
   )
   // Traps of its own, such as words that sound alike, stay the same from
   // one game to the next; otherwise they are the chapter's other answers.
+  // A word heard is never shown beside one that sounds the same (et, est):
+  // nobody could tell which one was said.
   const own = !inverse && card.pieges?.length
-  const traps = own
-    ? [...new Set(card.pieges.filter(t => t !== base.answer))]
-    : [...new Set(others.map(s => (inverse ? s.question : s.reponse)))]
+  const heard = direction === 'direct'
+  const traps = (
+    own
+      ? [...new Set(card.pieges.filter(t => t !== base.answer))]
+      : [...new Set(others.map(s => (inverse ? s.question : s.reponse)))]
+  ).filter(t => !heard || !soundsAlike(t, base.answer, lang))
+  // Seen as a drawing, a word is named without being written above: the
+  // question is then the drawing, with what to say of it.
+  if (inverse && card.image) {
+    base = {
+      ...base,
+      prompt: card.question_inverse || 'Comment s’appelle ce dessin ?',
+      image: card.image,
+    }
+  }
   const images = {}
   if (!inverse) {
     for (const s of [card, ...others]) if (s.image) images[s.reponse] = s.image
@@ -1072,8 +1230,10 @@ const listeningItem = (card, base, direction, siblings, lang) => {
   const trapCount = drawn ? 2 : 3
   return {
     ...base,
-    ...(inverse || reading ? { said: say } : say),
-    ...(inverse && card.image && { image: card.image }),
+    // The word read, or picked from its meaning, is said once answered;
+    // not a word named from its drawing, which the child just heard.
+    ...(reading || (inverse && !card.image) ? { said: say } : {}),
+    ...(!inverse && !reading && say),
     mode: 'choice',
     choices: [base.answer, ...traps.slice(0, trapCount)],
     trapPool: own ? undefined : traps,

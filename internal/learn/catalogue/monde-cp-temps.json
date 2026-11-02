@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-cp-temps",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Le temps qui passe",
   "description": "Les jours de la semaine, les mois, les saisons, et hier, aujourd'hui, demain.",
   "matiere": "monde",
@@ -73,7 +73,7 @@
       "id": "jours-6",
       "chapitre": "jours",
       "type": "ordre",
-      "question": "Remets les jours dans l’ordre.",
+      "question": "Remets les jours dans l’ordre, en commençant par dimanche.",
       "consigne": "Remets les jours dans l’ordre.",
       "elements": [
         "dimanche",
