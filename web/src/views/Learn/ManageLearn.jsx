@@ -44,6 +44,7 @@ import { useNotification } from '../../service/NotificationProvider'
 import LoadingComponent from '../components/Loading'
 import { MemberAvatar, surfaceSx } from '../Games/GameParts'
 import { ParentPage, useMembers } from '../Manage/ParentPages'
+import { VoicesCard } from './LearnVoices'
 import RemoveModal from './RemoveModal'
 
 const HEAD = 40
@@ -1111,6 +1112,7 @@ const ImportCard = () => {
 const TABS = [
   { value: 'people', to: '/manage/learn' },
   { value: 'catalogue', to: '/manage/learn/catalogue' },
+  { value: 'voices', to: '/manage/learn/voix' },
 ]
 
 const LearnTabs = ({ current }) => {
@@ -1123,7 +1125,9 @@ const LearnTabs = ({ current }) => {
   )
 }
 
-LearnTabs.propTypes = { current: PropTypes.oneOf(['people', 'catalogue']) }
+LearnTabs.propTypes = {
+  current: PropTypes.oneOf(['people', 'catalogue', 'voices']),
+}
 
 export const ManageLearn = () => {
   const { t } = useTranslation('learn')
@@ -1360,5 +1364,14 @@ export const LearnCatalogue = () => {
     </ParentPage>
   )
 }
+
+// /manage/learn/voix: the voice of this device for the questions read
+// aloud; each device keeps its own.
+export const LearnVoices = () => (
+  <ParentPage page='learn'>
+    <LearnTabs current='voices' />
+    <VoicesCard />
+  </ParentPage>
+)
 
 export default ManageLearn
