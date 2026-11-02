@@ -117,7 +117,7 @@ func (p *Piper) Voices(ctx context.Context) ([]Voice, error) {
 		return nil, err
 	}
 	p.mu.Lock()
-	p.voices, p.voicesAt = voices, time.Now()
+	p.voices, p.voicesAt = voices, time.Now().UTC()
 	p.mu.Unlock()
 	return voices, nil
 }
