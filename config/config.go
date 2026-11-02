@@ -38,6 +38,7 @@ type Config struct {
 	Storage                StorageConfig  `mapstructure:"storage" yaml:"storage"`
 	SingleFamilyInstance   bool           `mapstructure:"single_family_instance" yaml:"single_family_instance"`
 	DisablePasswordAuth    bool           `mapstructure:"disable_password_auth" yaml:"disable_password_auth"`
+	Voice                  VoiceConfig    `mapstructure:"voice" yaml:"voice"`
 	Info                   Info
 }
 
@@ -45,6 +46,18 @@ type Info struct {
 	Version   string
 	Commit    string
 	BuildDate string
+}
+
+// VoiceConfig sets the speech server that says the questions of the games
+// with a natural voice.
+type VoiceConfig struct {
+	// Piper is the address of a Piper server speaking the Wyoming protocol,
+	// such as tcp://piper:10200. Empty: each device says the questions with
+	// its own voice.
+	Piper string `mapstructure:"piper" yaml:"piper"`
+	// CacheDir keeps the sentences made, so each is made once. Empty keeps
+	// them in "voix" next to the SQLite database.
+	CacheDir string `mapstructure:"cache_dir" yaml:"cache_dir"`
 }
 
 type StorageConfig struct {
@@ -197,6 +210,12 @@ func configEnvironmentOverrides(config *Config) {
 		config.IsUserCreationDisabled = true
 	}
 
+	if piper := os.Getenv("HOPLA_VOICE_PIPER"); piper != "" {
+		config.Voice.Piper = piper
+	}
+	if dir := os.Getenv("HOPLA_VOICE_CACHE_DIR"); dir != "" {
+		config.Voice.CacheDir = dir
+	}
 	// Logging environment overrides
 	if os.Getenv("HOPLA_LOG_LEVEL") != "" {
 		config.Logging.Level = os.Getenv("HOPLA_LOG_LEVEL")

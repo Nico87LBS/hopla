@@ -21,6 +21,7 @@ import {
 import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries'
 import { moduleLocked, openChapters, totalLeft } from '../../utils/learn/engine'
 import { levelsIn, playFirst, shape, toReview } from '../../utils/learn/listing'
+import { loadServerVoices } from '../../utils/learn/serverVoice'
 import { queuedFor } from '../../utils/learn/store'
 import LoadingComponent from '../components/Loading'
 import { MemberAvatar } from '../Games/GameParts'
@@ -261,6 +262,11 @@ export const LearnModules = ({ isParent, member, playPath, userId }) => {
     levels: [],
     sort: 'level',
   })
+
+  // The natural voice, if any, is ready before the first question.
+  useEffect(() => {
+    loadServerVoices()
+  }, [])
 
   useEffect(() => {
     const online = async () => {

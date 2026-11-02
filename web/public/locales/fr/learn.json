@@ -282,7 +282,9 @@
         "title": "Ordinateur Windows",
         "steps": "Dans Edge, les voix « Natural » (en ligne) sont déjà là. Sinon : Paramètres › Heure et langue › Voix › Ajouter des voix."
       }
-    }
+    },
+    "server": "Serveur",
+    "serverHelp": "Les voix « Serveur » sont fabriquées par le serveur Hopla : très naturelles, mais il faut le réseau ; hors ligne, l’appareil reprend sa propre voix."
   },
   "list": {
     "search": "Chercher un module",

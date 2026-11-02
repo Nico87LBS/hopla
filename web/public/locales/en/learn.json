@@ -282,7 +282,9 @@
         "title": "Windows computer",
         "steps": "In Edge, the “Natural” (online) voices are already there. Otherwise: Settings › Time & language › Speech › Add voices."
       }
-    }
+    },
+    "server": "Server",
+    "serverHelp": "The « Server » voices are made by the Hopla server: very natural, but they need the network; offline, the device uses its own voice."
   },
   "list": {
     "search": "Search a module",
