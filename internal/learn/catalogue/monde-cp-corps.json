@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-cp-corps",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Mon corps, ma santé",
   "description": "Les parties du corps, les cinq sens, et prendre soin de soi : se laver, dormir, bien manger.",
   "matiere": "monde",
@@ -275,10 +275,12 @@
       "consigne": "Bon pour les dents, ou à éviter ?",
       "boites": [
         {
-          "nom": "Bon pour les dents"
+          "nom": "Bon pour les dents",
+          "regle": "peu sucré."
         },
         {
-          "nom": "À éviter"
+          "nom": "À éviter",
+          "regle": "très sucré : les dents s’abîment."
         }
       ],
       "a_classer": [

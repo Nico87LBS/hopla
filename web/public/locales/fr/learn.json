@@ -31,6 +31,8 @@
     "right": "Bravo !",
     "wrong": "Pas tout à fait",
     "answerWas": "La réponse : {{answer}}",
+    "whyNot": "Pourquoi pas « {{given}} » : {{why}}",
+    "boxRule": "{{box}} : {{rule}}",
     "next": "Continuer",
     "progress": "{{current}} / {{total}}",
     "listen": "Écouter encore",

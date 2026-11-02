@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce2-corps",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Mon corps",
   "description": "Le squelette, les muscles et les articulations, bien manger, les dents, et les gestes pour rester en bonne santé.",
   "matiere": "monde",
@@ -333,13 +333,16 @@
       "consigne": "Dans quelle famille d’aliments ?",
       "boites": [
         {
-          "nom": "Féculents"
+          "nom": "Féculents",
+          "regle": "ils donnent de l’énergie : pain, pâtes, riz, pommes de terre."
         },
         {
-          "nom": "Fruits et légumes"
+          "nom": "Fruits et légumes",
+          "regle": "des plantes à manger, pleines de vitamines."
         },
         {
-          "nom": "Produits laitiers"
+          "nom": "Produits laitiers",
+          "regle": "faits avec du lait : yaourt, fromage."
         }
       ],
       "a_classer": [
@@ -403,13 +406,16 @@
       "consigne": "Dans quelle famille d’aliments ?",
       "boites": [
         {
-          "nom": "Viande, poisson, œufs"
+          "nom": "Viande, poisson, œufs",
+          "regle": "ils aident les muscles à grandir."
         },
         {
-          "nom": "Produits sucrés"
+          "nom": "Produits sucrés",
+          "regle": "sucrés, à manger de temps en temps."
         },
         {
-          "nom": "Matières grasses"
+          "nom": "Matières grasses",
+          "regle": "gras : beurre, huile ; en petite quantité."
         }
       ],
       "a_classer": [

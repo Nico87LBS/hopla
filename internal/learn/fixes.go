@@ -32,7 +32,7 @@ func (CardEdit) TableName() string { return "learn_card_edits" }
 // EditableFields are the fields of a card the family may change. Its id,
 // chapter, type and key stay, to keep what everyone learned.
 var EditableFields = []string{"question", "reponse", "consigne", "explication", "sens", "pieges", "autres_reponses",
-	"paires", "elements", "echangeables", "boites", "a_classer", "question_inverse"}
+	"paires", "elements", "echangeables", "boites", "a_classer", "question_inverse", "pourquoi"}
 
 // MaxReportComment is the longest comment of a report, in characters.
 const MaxReportComment = 500

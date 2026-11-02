@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce2-temps",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Se repérer dans le temps",
   "description": "Les durées, la frise des grandes périodes de l'histoire, des repères, ce qui a changé depuis autrefois, et les générations.",
   "matiere": "monde",
@@ -266,13 +266,16 @@
       "consigne": "À quelle période ?",
       "boites": [
         {
-          "nom": "la Préhistoire"
+          "nom": "la Préhistoire",
+          "regle": "avant l’écriture : chasseurs, grottes, outils en pierre."
         },
         {
-          "nom": "l’Antiquité"
+          "nom": "l’Antiquité",
+          "regle": "les Gaulois, les Romains, les premières villes."
         },
         {
-          "nom": "le Moyen Âge"
+          "nom": "le Moyen Âge",
+          "regle": "les châteaux forts, les chevaliers."
         }
       ],
       "a_classer": [
@@ -325,10 +328,12 @@
       "consigne": "Autrefois ou aujourd’hui ?",
       "boites": [
         {
-          "nom": "Autrefois"
+          "nom": "Autrefois",
+          "regle": "il y a longtemps, avant l’électricité partout."
         },
         {
-          "nom": "Aujourd’hui"
+          "nom": "Aujourd’hui",
+          "regle": "ce qu’on utilise maintenant."
         }
       ],
       "a_classer": [

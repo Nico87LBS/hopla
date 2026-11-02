@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce2-electricite",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "L'électricité",
   "description": "Les objets électriques, le circuit avec une pile et une ampoule, les conducteurs et les isolants, et les dangers.",
   "matiere": "monde",
@@ -51,13 +51,16 @@
       "consigne": "Comment fonctionne cet objet ?",
       "boites": [
         {
-          "nom": "Avec une pile"
+          "nom": "Avec une pile",
+          "regle": "il marche partout, sans fil."
         },
         {
-          "nom": "Branché à une prise"
+          "nom": "Branché à une prise",
+          "regle": "il a un fil à brancher au mur."
         },
         {
-          "nom": "Sans électricité"
+          "nom": "Sans électricité",
+          "regle": "il marche avec la main, le vent ou rien du tout."
         }
       ],
       "a_classer": [
@@ -281,10 +284,12 @@
       "consigne": "Le courant passe-t-il à travers ?",
       "boites": [
         {
-          "nom": "Conducteur"
+          "nom": "Conducteur",
+          "regle": "le courant passe à travers : les métaux."
         },
         {
-          "nom": "Isolant"
+          "nom": "Isolant",
+          "regle": "le courant ne passe pas : plastique, bois, verre, caoutchouc."
         }
       ],
       "a_classer": [

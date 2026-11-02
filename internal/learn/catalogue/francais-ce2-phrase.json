@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce2-phrase",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "La phrase",
   "description": "Les types de phrases, la forme négative, le sujet et le verbe, la nature des mots et les pronoms.",
   "matiere": "francais",
@@ -745,13 +745,16 @@
       "consigne": "Range chaque mot selon sa nature.",
       "boites": [
         {
-          "nom": "Nom"
+          "nom": "Nom",
+          "regle": "il désigne une personne, un animal, une chose ou une idée ; on peut mettre « le », « la » ou « un » devant."
         },
         {
-          "nom": "Verbe"
+          "nom": "Verbe",
+          "regle": "il dit ce qu’on fait ou ce qui se passe ; il change avec le temps (hier, aujourd’hui, demain)."
         },
         {
-          "nom": "Adjectif"
+          "nom": "Adjectif",
+          "regle": "il dit comment est le nom (sa couleur, sa taille…) et s’accorde avec lui."
         }
       ],
       "a_classer": [
@@ -801,13 +804,16 @@
       "consigne": "Range chaque mot selon sa nature.",
       "boites": [
         {
-          "nom": "Nom"
+          "nom": "Nom",
+          "regle": "il désigne une personne, un animal, une chose ou une idée ; on peut mettre « le », « la » ou « un » devant."
         },
         {
-          "nom": "Verbe"
+          "nom": "Verbe",
+          "regle": "il dit ce qu’on fait ou ce qui se passe ; il change avec le temps (hier, aujourd’hui, demain)."
         },
         {
-          "nom": "Adjectif"
+          "nom": "Adjectif",
+          "regle": "il dit comment est le nom (sa couleur, sa taille…) et s’accorde avec lui."
         }
       ],
       "a_classer": [
@@ -857,13 +863,16 @@
       "consigne": "Range chaque mot selon sa nature.",
       "boites": [
         {
-          "nom": "Déterminant"
+          "nom": "Déterminant",
+          "regle": "le petit mot placé devant le nom : le, la, un, des, mon, ce…"
         },
         {
-          "nom": "Nom"
+          "nom": "Nom",
+          "regle": "il désigne une personne, un animal, une chose ou une idée ; on peut mettre « le », « la » ou « un » devant."
         },
         {
-          "nom": "Pronom"
+          "nom": "Pronom",
+          "regle": "il remplace un nom : il, elle, nous, ils…"
         }
       ],
       "a_classer": [

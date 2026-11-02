@@ -96,6 +96,49 @@ const ARITHMETIC = {
   },
 }
 
+// steps explains a calculation, shown when the answer was wrong: the way
+// one works it out in their head, not only its result.
+const tensAndUnits = n => [n - (n % 10), n % 10]
+
+export const steps = (operation, a, b) => {
+  const r = ARITHMETIC[operation]?.result(a, b)
+  if (operation === 'multiplication') {
+    // The factor with the easiest trick leads (× 10, × 9, × 2…), the
+    // calculation keeps the order shown.
+    const rank = n => {
+      const i = [10, 9, 2, 5, 4, 3, 6, 7, 8, 0, 1].indexOf(n)
+      return i === -1 ? 99 : i
+    }
+    const [x, y] = rank(b) <= rank(a) ? [a, b] : [b, a]
+    const head = `${f(a)} × ${f(b)}`
+    if (y === 0 || y === 1) return `${head} = ${f(r)}`
+    if (y === 10) return `${head} : on ajoute un zéro, ${f(r)}.`
+    if (y === 2) return `${head}, c’est le double de ${f(x)} : ${f(r)}.`
+    if (y === 4)
+      return `${head}, c’est le double du double : ${f(x * 2)}, puis ${f(r)}.`
+    if (y === 5)
+      return `${head}, c’est la moitié de ${f(x)} × 10 = ${f(x * 10)} : ${f(r)}.`
+    if (y === 9)
+      return `${head} = ${f(x)} × 10 − ${f(x)} = ${f(x * 10)} − ${f(x)} = ${f(r)}.`
+    if (y > 5 && y < 9)
+      return `${head} = ${f(x)} × 5 + ${f(x)} × ${y - 5} = ${f(x * 5)} + ${f(x * (y - 5))} = ${f(r)}.`
+    if (y === 3) return `${head} = ${f(x)} + ${f(x)} + ${f(x)} = ${f(r)}.`
+    const [t, u] = tensAndUnits(x)
+    if (t && u)
+      return `${head} = ${f(t)} × ${f(y)} + ${f(u)} × ${f(y)} = ${f(t * y)} + ${f(u * y)} = ${f(r)}.`
+    return `${head} = ${f(r)}.`
+  }
+  if (operation === 'addition' || operation === 'soustraction') {
+    const sign = operation === 'addition' ? '+' : '−'
+    const [t, u] = tensAndUnits(b)
+    const head = `${f(a)} ${sign} ${f(b)}`
+    if (!t || !u) return `${head} = ${f(r)}.`
+    const mid = operation === 'addition' ? a + t : a - t
+    return `${head} = ${f(a)} ${sign} ${f(t)} ${sign} ${f(u)} = ${f(mid)} ${sign} ${f(u)} = ${f(r)}.`
+  }
+  return ''
+}
+
 const arithmeticSource = (gen, chapter) => {
   const op = ARITHMETIC[gen.operation]
   const keySign = op.keySign || op.sign
@@ -110,12 +153,14 @@ const arithmeticSource = (gen, chapter) => {
         key: `${op.tag}:${a}${keySign}?=${result}`,
         prompt: `${f(a)} ${op.sign} ? = ${f(result)}`,
         answer: String(b),
+        whenWrong: `${f(b)}, car ${f(a)} ${op.sign} ${f(b)} = ${f(result)}.`,
       }
     }
     return {
       key: `${op.tag}:${a}${keySign}${b}`,
       prompt: `${f(a)} ${op.sign} ${f(b)}`,
       answer: String(result),
+      whenWrong: steps(gen.operation, a, b),
     }
   }
   const pattern = new RegExp(
@@ -168,8 +213,14 @@ const divisionSource = gen => {
           key: `div:${d}/?=${q}`,
           prompt: `${f(d)} ÷ ? = ${f(q)}`,
           answer: String(t),
+          whenWrong: `${f(t)}, car ${f(d)} ÷ ${f(t)} = ${f(q)} : ${f(t)} × ${f(q)} = ${f(d)}.`,
         }
-      : { key: `div:${d}/${t}`, prompt: `${f(d)} ÷ ${f(t)}`, answer: String(q) }
+      : {
+          key: `div:${d}/${t}`,
+          prompt: `${f(d)} ÷ ${f(t)}`,
+          answer: String(q),
+          whenWrong: `${f(d)} ÷ ${f(t)} = ${f(q)}, car ${f(t)} × ${f(q)} = ${f(d)}.`,
+        }
   }
   return {
     size: specCount(T) * specCount(B) * forms.length,
@@ -933,6 +984,10 @@ const orderItem = (card, base) => {
 
 const sortItems = (card, moduleId) => {
   const boxes = (card.boites || []).map(b => ({ name: b.nom, image: b.image }))
+  // What makes a label go into a box, said when one went into another.
+  const rules = Object.fromEntries(
+    (card.boites || []).filter(b => b.regle).map(b => [b.nom, b.regle]),
+  )
   return (card.a_classer || []).map(element => ({
     key: `${cardKey(moduleId, card)}:${slug(element.texte)}`,
     chapter: card.chapitre,
@@ -941,6 +996,8 @@ const sortItems = (card, moduleId) => {
     subject: { text: element.texte, image: element.image },
     answer: element.boite,
     explanation: card.explication,
+    ...(Object.keys(rules).length > 0 && { rules }),
+    ...(element.pourquoi && { whenWrong: element.pourquoi }),
     ...(card.consigne && { instruction: card.consigne }),
     mode: 'sort',
     boxes,
@@ -1046,6 +1103,8 @@ export const cardItems = (card, moduleId, siblings, lang) => {
         ]
         return {
           ...base,
+          // Why each wrong answer is wrong, said when it was picked.
+          ...(!inverse && card.pourquoi && { whyNot: card.pourquoi }),
           mode: 'choice',
           choices: [answer, ...traps.slice(0, 3)],
           // Without traps of its own, a game draws three of the chapter's

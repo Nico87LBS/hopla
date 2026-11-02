@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-cp-matiere",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "La matière",
   "description": "Solide ou liquide, l'eau qui gèle et la glace qui fond, et ce qui flotte ou coule.",
   "matiere": "monde",
@@ -46,10 +46,12 @@
       "consigne": "Solide ou liquide ?",
       "boites": [
         {
-          "nom": "Solide"
+          "nom": "Solide",
+          "regle": "il garde sa forme ; on peut le prendre dans la main."
         },
         {
-          "nom": "Liquide"
+          "nom": "Liquide",
+          "regle": "il coule et prend la forme du récipient."
         }
       ],
       "a_classer": [
@@ -280,10 +282,12 @@
       "consigne": "Flotte ou coule ?",
       "boites": [
         {
-          "nom": "Flotte"
+          "nom": "Flotte",
+          "regle": "il reste à la surface de l’eau."
         },
         {
-          "nom": "Coule"
+          "nom": "Coule",
+          "regle": "il descend au fond de l’eau."
         }
       ],
       "a_classer": [

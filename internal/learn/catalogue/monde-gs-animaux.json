@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-gs-animaux",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Les animaux",
   "description": "Les animaux et leurs petits, où ils vivent et ce qu'ils mangent.",
   "matiere": "monde",
@@ -214,15 +214,18 @@
       "boites": [
         {
           "nom": "la ferme",
-          "image": "barn"
+          "image": "barn",
+          "regle": "animal élevé par l’homme."
         },
         {
           "nom": "la forêt",
-          "image": "fir"
+          "image": "fir",
+          "regle": "animal sauvage qui vit sous les arbres."
         },
         {
           "nom": "la mer",
-          "image": "wave"
+          "image": "wave",
+          "regle": "il vit dans l’eau salée."
         }
       ],
       "a_classer": [

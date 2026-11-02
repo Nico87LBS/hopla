@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce1-objets",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Objets et électricité",
   "description": "Ce qui marche avec une pile ou sur une prise, les dangers de l'électricité, et ce qu'attire un aimant.",
   "matiere": "monde",
@@ -46,13 +46,16 @@
       "consigne": "Comment marche-t-il ?",
       "boites": [
         {
-          "nom": "Avec une pile"
+          "nom": "Avec une pile",
+          "regle": "il marche partout, sans fil."
         },
         {
-          "nom": "Sur une prise"
+          "nom": "Sur une prise",
+          "regle": "il a un fil à brancher au mur."
         },
         {
-          "nom": "Sans électricité"
+          "nom": "Sans électricité",
+          "regle": "il marche avec la main, le vent ou rien du tout."
         }
       ],
       "a_classer": [
@@ -227,10 +230,12 @@
       "consigne": "L’aimant l’attire-t-il ?",
       "boites": [
         {
-          "nom": "Attiré"
+          "nom": "Attiré",
+          "regle": "l’aimant attire le fer et l’acier."
         },
         {
-          "nom": "Pas attiré"
+          "nom": "Pas attiré",
+          "regle": "l’aimant n’attire ni le bois, ni le plastique, ni le verre, ni le papier."
         }
       ],
       "a_classer": [

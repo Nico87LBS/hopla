@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce2-matiere",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "La matière",
   "description": "Solide, liquide ou gaz, les changements d'état de l'eau, le cycle de l'eau, les mélanges et l'air.",
   "matiere": "monde",
@@ -56,10 +56,12 @@
       "consigne": "Solide ou liquide ?",
       "boites": [
         {
-          "nom": "Solide"
+          "nom": "Solide",
+          "regle": "il garde sa forme ; on peut le prendre dans la main."
         },
         {
-          "nom": "Liquide"
+          "nom": "Liquide",
+          "regle": "il coule et prend la forme du récipient."
         }
       ],
       "a_classer": [
@@ -110,13 +112,16 @@
       "consigne": "Solide, liquide ou gaz ?",
       "boites": [
         {
-          "nom": "Solide"
+          "nom": "Solide",
+          "regle": "il garde sa forme ; on peut le prendre dans la main."
         },
         {
-          "nom": "Liquide"
+          "nom": "Liquide",
+          "regle": "il coule et prend la forme du récipient."
         },
         {
-          "nom": "Gaz"
+          "nom": "Gaz",
+          "regle": "on ne le voit pas toujours ; il s’échappe et remplit tout l’espace (la vapeur, l’air)."
         }
       ],
       "a_classer": [
@@ -331,10 +336,12 @@
       "consigne": "Pour obtenir cela, faut-il chauffer ou refroidir ?",
       "boites": [
         {
-          "nom": "Chauffer"
+          "nom": "Chauffer",
+          "regle": "la chaleur fait fondre ou bouillir."
         },
         {
-          "nom": "Refroidir"
+          "nom": "Refroidir",
+          "regle": "le froid fait geler."
         }
       ],
       "a_classer": [
@@ -463,10 +470,12 @@
       "consigne": "Dans l’eau, est-ce que cela se dissout ?",
       "boites": [
         {
-          "nom": "Se dissout"
+          "nom": "Se dissout",
+          "regle": "on ne le voit plus dans l’eau, mais il est toujours là (le sucre, le sel)."
         },
         {
-          "nom": "Ne se dissout pas"
+          "nom": "Ne se dissout pas",
+          "regle": "il ne se mélange pas : on le voit encore dans l’eau."
         }
       ],
       "a_classer": [

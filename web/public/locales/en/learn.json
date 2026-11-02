@@ -31,6 +31,8 @@
     "right": "Well done!",
     "wrong": "Not quite",
     "answerWas": "The answer: {{answer}}",
+    "whyNot": "Why not “{{given}}”: {{why}}",
+    "boxRule": "{{box}}: {{rule}}",
     "next": "Continue",
     "progress": "{{current}} / {{total}}",
     "listen": "Listen again",

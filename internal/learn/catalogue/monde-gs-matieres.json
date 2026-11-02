@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-gs-matieres",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Objets et matières",
   "description": "Le vivant et le non-vivant, le bois, le métal et le plastique, ce qui flotte et ce qui coule.",
   "matiere": "monde",
@@ -46,11 +46,13 @@
       "boites": [
         {
           "nom": "vivant",
-          "image": "rabbit"
+          "image": "rabbit",
+          "regle": "il naît, grandit, se nourrit et meurt."
         },
         {
           "nom": "non vivant",
-          "image": "stone"
+          "image": "stone",
+          "regle": "il ne naît pas, ne grandit pas, ne se nourrit pas."
         }
       ],
       "a_classer": [
@@ -124,15 +126,18 @@
       "boites": [
         {
           "nom": "bois",
-          "image": "log"
+          "image": "log",
+          "regle": "vient des arbres."
         },
         {
           "nom": "métal",
-          "image": "key"
+          "image": "key",
+          "regle": "dur, froid, souvent brillant."
         },
         {
           "nom": "plastique",
-          "image": "bottle"
+          "image": "bottle",
+          "regle": "léger, fabriqué par l’homme."
         }
       ],
       "a_classer": [
@@ -181,11 +186,13 @@
       "boites": [
         {
           "nom": "ça flotte",
-          "image": "boat"
+          "image": "boat",
+          "regle": "il reste à la surface de l’eau."
         },
         {
           "nom": "ça coule",
-          "image": "stone"
+          "image": "stone",
+          "regle": "il descend au fond de l’eau."
         }
       ],
       "a_classer": [

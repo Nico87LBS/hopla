@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "lire-mots-outils-cursif",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Mots outils en cursif",
   "description": "Reconnaître d'un coup d'œil les petits mots qu'on lit partout (le, est, dans, avec…), puis compléter des phrases.",
   "matiere": "francais",
@@ -100,7 +100,7 @@
       "id": "mot-et",
       "chapitre": "petits",
       "type": "ecoute",
-      "question": "et",
+      "question": "et… papa et maman",
       "reponse": "et",
       "consigne": "Écoute, puis touche le mot que tu entends."
     },
@@ -108,7 +108,7 @@
       "id": "mot-est",
       "chapitre": "petits",
       "type": "ecoute",
-      "question": "est",
+      "question": "est… il est là",
       "reponse": "est",
       "consigne": "Écoute, puis touche le mot que tu entends."
     },
@@ -276,7 +276,7 @@
       "id": "mot-a",
       "chapitre": "ou-comment",
       "type": "ecoute",
-      "question": "à",
+      "question": "à… je vais à l’école",
       "reponse": "à",
       "consigne": "Écoute, puis touche le mot que tu entends."
     },
@@ -308,7 +308,7 @@
       "id": "mot-mes",
       "chapitre": "phrases",
       "type": "ecoute",
-      "question": "mes",
+      "question": "mes… mes jouets",
       "reponse": "mes",
       "consigne": "Écoute, puis touche le mot que tu entends."
     },
@@ -316,7 +316,7 @@
       "id": "mot-c-est",
       "chapitre": "phrases",
       "type": "ecoute",
-      "question": "c’est",
+      "question": "c’est… c’est mon ami",
       "reponse": "c’est",
       "consigne": "Écoute, puis touche le mot que tu entends."
     },
@@ -356,7 +356,7 @@
       "id": "mot-mais",
       "chapitre": "phrases",
       "type": "ecoute",
-      "question": "mais",
+      "question": "mais… petit, mais costaud",
       "reponse": "mais",
       "consigne": "Écoute, puis touche le mot que tu entends."
     },

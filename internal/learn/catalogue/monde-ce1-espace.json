@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce1-espace",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "L’espace",
   "description": "Le plan et la carte, les paysages, la France et les continents sur la carte du monde, et les points cardinaux.",
   "matiere": "monde",
@@ -116,13 +116,16 @@
       "consigne": "Dans quel paysage ?",
       "boites": [
         {
-          "nom": "La mer"
+          "nom": "La mer",
+          "regle": "de l’eau salée, des plages, des bateaux."
         },
         {
-          "nom": "La montagne"
+          "nom": "La montagne",
+          "regle": "des sommets hauts, de la neige en hiver."
         },
         {
-          "nom": "La campagne"
+          "nom": "La campagne",
+          "regle": "des champs, des fermes, peu de maisons."
         }
       ],
       "a_classer": [
@@ -173,10 +176,12 @@
       "consigne": "En ville ou à la campagne ?",
       "boites": [
         {
-          "nom": "En ville"
+          "nom": "En ville",
+          "regle": "beaucoup de maisons, d’immeubles, de rues et de magasins."
         },
         {
-          "nom": "À la campagne"
+          "nom": "À la campagne",
+          "regle": "des champs, des fermes, peu de maisons."
         }
       ],
       "a_classer": [

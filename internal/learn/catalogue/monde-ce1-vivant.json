@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce1-vivant",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Le vivant",
   "description": "Les milieux de vie, qui mange quoi (les chaînes alimentaires) et le cycle de vie des animaux et des plantes.",
   "matiere": "monde",
@@ -46,13 +46,16 @@
       "consigne": "Où vit-il ?",
       "boites": [
         {
-          "nom": "Dans l’eau"
+          "nom": "Dans l’eau",
+          "regle": "il nage ou respire dans l’eau."
         },
         {
-          "nom": "Dans la forêt"
+          "nom": "Dans la forêt",
+          "regle": "il vit sous les arbres."
         },
         {
-          "nom": "Dans la savane"
+          "nom": "Dans la savane",
+          "regle": "grande plaine d’herbe chaude, en Afrique."
         }
       ],
       "a_classer": [
@@ -264,13 +267,16 @@
       "consigne": "Que mange-t-il ?",
       "boites": [
         {
-          "nom": "Des plantes"
+          "nom": "Des plantes",
+          "regle": "il mange de l’herbe, des feuilles ou des fruits."
         },
         {
-          "nom": "Des animaux"
+          "nom": "Des animaux",
+          "regle": "il chasse ou mange d’autres animaux."
         },
         {
-          "nom": "Les deux"
+          "nom": "Les deux",
+          "regle": "il mange des plantes et des animaux."
         }
       ],
       "a_classer": [

@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce1-matiere",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "La matière",
   "description": "L'eau solide, liquide ou en vapeur, les matériaux, et les mélanges qui se dissolvent ou non.",
   "matiere": "monde",
@@ -46,13 +46,16 @@
       "consigne": "L’eau : solide, liquide ou gaz ?",
       "boites": [
         {
-          "nom": "Solide"
+          "nom": "Solide",
+          "regle": "il garde sa forme ; on peut le prendre dans la main."
         },
         {
-          "nom": "Liquide"
+          "nom": "Liquide",
+          "regle": "il coule et prend la forme du récipient."
         },
         {
-          "nom": "Gaz"
+          "nom": "Gaz",
+          "regle": "on ne le voit pas toujours ; il s’échappe et remplit tout l’espace (la vapeur, l’air)."
         }
       ],
       "a_classer": [
@@ -188,13 +191,16 @@
       "consigne": "En quoi est-il fait ?",
       "boites": [
         {
-          "nom": "Bois"
+          "nom": "Bois",
+          "regle": "vient des arbres."
         },
         {
-          "nom": "Métal"
+          "nom": "Métal",
+          "regle": "dur, froid au toucher, souvent brillant."
         },
         {
-          "nom": "Verre"
+          "nom": "Verre",
+          "regle": "dur, transparent, il se casse."
         }
       ],
       "a_classer": [
@@ -251,13 +257,16 @@
       "consigne": "En quoi est-il fait ?",
       "boites": [
         {
-          "nom": "Plastique"
+          "nom": "Plastique",
+          "regle": "léger, fabriqué par l’homme à partir du pétrole."
         },
         {
-          "nom": "Tissu"
+          "nom": "Tissu",
+          "regle": "souple, fait de fils tissés."
         },
         {
-          "nom": "Papier"
+          "nom": "Papier",
+          "regle": "fin, fait avec du bois ; il se déchire."
         }
       ],
       "a_classer": [
@@ -361,10 +370,12 @@
       "consigne": "Dans l’eau, il se dissout ou non ?",
       "boites": [
         {
-          "nom": "Il disparaît (se dissout)"
+          "nom": "Il disparaît (se dissout)",
+          "regle": "on ne le voit plus dans l’eau, mais il est toujours là (le sucre, le sel)."
         },
         {
-          "nom": "Il reste visible"
+          "nom": "Il reste visible",
+          "regle": "il ne se mélange pas : on le voit encore dans l’eau."
         }
       ],
       "a_classer": [

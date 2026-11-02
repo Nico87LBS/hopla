@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce1-vocabulaire",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Le vocabulaire",
   "description": "L'ordre alphabétique, les familles de mots, les contraires, les mots de même sens et les mots-étiquettes.",
   "matiere": "francais",
@@ -654,13 +654,16 @@
       "consigne": "Range chaque mot sous son mot-étiquette.",
       "boites": [
         {
-          "nom": "Fruits"
+          "nom": "Fruits",
+          "regle": "ils poussent sur une plante et contiennent souvent des pépins ou un noyau."
         },
         {
-          "nom": "Animaux"
+          "nom": "Animaux",
+          "regle": "des êtres vivants qui bougent, respirent et se nourrissent."
         },
         {
-          "nom": "Vêtements"
+          "nom": "Vêtements",
+          "regle": "ce qu’on porte sur le corps."
         }
       ],
       "a_classer": [
@@ -719,13 +722,16 @@
       "consigne": "Range chaque mot sous son mot-étiquette.",
       "boites": [
         {
-          "nom": "Meubles"
+          "nom": "Meubles",
+          "regle": "ce qui équipe une maison : table, lit, armoire…"
         },
         {
-          "nom": "Outils de l’école"
+          "nom": "Outils de l’école",
+          "regle": "ce qui sert à travailler en classe."
         },
         {
-          "nom": "Moyens de transport"
+          "nom": "Moyens de transport",
+          "regle": "ce qui sert à se déplacer."
         }
       ],
       "a_classer": [
