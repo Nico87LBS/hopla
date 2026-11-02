@@ -1185,6 +1185,14 @@ const ResolveLearnReport = async id =>
     }),
   )
 
+const ExportLearnReports = async () =>
+  learnAnswer(
+    await Fetch('/learn/reports/export', {
+      method: 'GET',
+      headers: HEADERS(),
+    }),
+  )
+
 const GetLearnStats = async key =>
   learnAnswer(
     await Fetch(`/learn/stats/${encodeURIComponent(key)}`, {
@@ -1255,6 +1263,7 @@ export {
   DeleteUser,
   DisableMFA,
   EditLearnCard,
+  ExportLearnReports,
   GetAllFamilyMembers,
   GetAllUsers,
   GetArchivedChores,

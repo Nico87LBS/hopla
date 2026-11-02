@@ -2,6 +2,7 @@ import {
   ChevronRightRounded,
   DeleteOutlineRounded,
   DownloadDoneRounded,
+  FileDownloadRounded,
   InsightsRounded,
   OutlinedFlagRounded,
   SchoolRounded,
@@ -42,6 +43,7 @@ import {
   useSetSetting,
 } from '../../queries/LearnQueries'
 import { useNotification } from '../../service/NotificationProvider'
+import { ExportLearnReports } from '../../utils/Fetcher'
 import { moduleProgress } from '../../utils/learn/engine'
 import {
   isRecent,
@@ -1173,6 +1175,83 @@ const ImportCard = () => {
 
 // /manage/learn: the modules of the family, who plays them and the settings
 // of each person.
+// saveFile hands a file to the person: the share sheet where the device
+// has one (an iPad sends it by message or keeps it in Files), else a
+// download.
+const saveFile = async (name, text) => {
+  const file = new File([text], name, { type: 'application/json' })
+  if (navigator.canShare?.({ files: [file] })) {
+    try {
+      await navigator.share({ files: [file] })
+      return
+    } catch (err) {
+      if (err?.name === 'AbortError') return
+    }
+  }
+  const url = URL.createObjectURL(file)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = name
+  document.body.appendChild(link)
+  link.click()
+  link.remove()
+  setTimeout(() => URL.revokeObjectURL(url), 1000)
+}
+
+// ReportsCard sends the questions reported in the games, in one file, to
+// whoever writes the modules.
+const ReportsCard = ({ count }) => {
+  const { t } = useTranslation('learn')
+  const notify = useNotify()
+  const [busy, setBusy] = useState(false)
+  const exportAll = async () => {
+    setBusy(true)
+    try {
+      const reports = await ExportLearnReports()
+      const now = new Date()
+      const file = {
+        format: 'hopla-signalements/1',
+        hopla: import.meta.env.VITE_APP_VERSION,
+        exportedAt: now.toISOString(),
+        reports,
+      }
+      await saveFile(
+        `hopla-signalements-${now.toISOString().slice(0, 10)}.json`,
+        `${JSON.stringify(file, null, 2)}\n`,
+      )
+    } catch (err) {
+      notify('error', err.message)
+    } finally {
+      setBusy(false)
+    }
+  }
+  return (
+    <Sheet sx={surfaceSx}>
+      <Stack direction='row' gap={1.5} alignItems='center' flexWrap='wrap'>
+        <OutlinedFlagRounded sx={{ color: HOPLA.carrotText }} />
+        <Box sx={{ flex: 1, minWidth: 200 }}>
+          <Typography level='title-md'>
+            {t('reports.title', { count })}
+          </Typography>
+          <Typography level='body-sm' sx={{ color: 'text.secondary' }}>
+            {t('reports.help')}
+          </Typography>
+        </Box>
+        <Button
+          variant='soft'
+          startDecorator={<FileDownloadRounded />}
+          loading={busy}
+          onClick={exportAll}
+        >
+          {t('reports.export')}
+        </Button>
+      </Stack>
+    </Sheet>
+  )
+}
+
+ReportsCard.propTypes = { count: PropTypes.number.isRequired }
+
 // LearnTabs switches between the settings of each person and the
 // catalogue, shared by the whole family.
 const TABS = [
@@ -1238,6 +1317,10 @@ export const ManageLearn = () => {
     return out
   }, [modules])
 
+  const reportCount = Object.values(data?.reports || {}).reduce(
+    (n, c) => n + c,
+    0,
+  )
   const [query, setQuery] = useState('')
   const [choices, setChoices] = useListChoices('hopla.learn.list.people', {
     filters: [],
@@ -1417,6 +1500,7 @@ export const ManageLearn = () => {
     <ParentPage page='learn'>
       <LearnTabs current='people' />
       {isLoading && <LoadingComponent />}
+      {reportCount > 0 && <ReportsCard count={reportCount} />}
       {!isLoading && groups.length === 0 && (
         <Sheet sx={surfaceSx}>
           <Typography level='title-md'>{t('manage.none')}</Typography>

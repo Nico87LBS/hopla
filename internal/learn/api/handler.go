@@ -345,6 +345,19 @@ func (h *Handler) addReport(c *gin.Context) {
 	c.JSON(200, gin.H{"res": "ok"})
 }
 
+func (h *Handler) exportReports(c *gin.Context) {
+	who, ok := h.requireParent(c)
+	if !ok {
+		return
+	}
+	reports, err := learn.ExportReports(h.db.WithContext(c), who.familyID, time.Now().UTC())
+	if err != nil {
+		answerError(c, err, "list the reports")
+		return
+	}
+	c.JSON(200, gin.H{"res": reports})
+}
+
 func (h *Handler) resolveReport(c *gin.Context) {
 	who, ok := h.requireParent(c)
 	if !ok {
@@ -426,5 +439,6 @@ func Routes(r *gin.Engine, h *Handler, auth *jwt.GinJWTMiddleware) {
 		routes.PUT("/cards", h.editCard)
 		routes.POST("/reports", h.addReport)
 		routes.PUT("/reports/:id/resolve", h.resolveReport)
+		routes.GET("/reports/export", h.exportReports)
 	}
 }
