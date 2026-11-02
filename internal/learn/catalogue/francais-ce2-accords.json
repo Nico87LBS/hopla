@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce2-accords",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Les accords",
   "description": "Le masculin et le féminin, le pluriel des noms, l'accord dans le groupe nominal et l'accord du verbe avec son sujet ; puis écrire soi-même le mot accordé.",
   "matiere": "francais",
@@ -58,7 +58,11 @@
         "une chate",
         "une chatesse"
       ],
-      "consigne": "Mets le nom au féminin."
+      "consigne": "Mets le nom au féminin.",
+      "pourquoi": {
+        "une chate": "« chate » ne prend qu’un t : on double le t de « chat ».",
+        "une chatesse": "« chatesse » n’existe pas : on dit « une chatte »."
+      }
     },
     {
       "id": "fem-2",
@@ -70,7 +74,11 @@
         "une lione",
         "une lionesse"
       ],
-      "consigne": "Mets le nom au féminin."
+      "consigne": "Mets le nom au féminin.",
+      "pourquoi": {
+        "une lione": "« lione » ne prend qu’un n : on double le n de « lion ».",
+        "une lionesse": "« lionesse » n’existe pas : on dit « une lionne »."
+      }
     },
     {
       "id": "fem-3",
@@ -82,7 +90,11 @@
         "une acteure",
         "une acteuse"
       ],
-      "consigne": "Mets le nom au féminin."
+      "consigne": "Mets le nom au féminin.",
+      "pourquoi": {
+        "une acteure": "« acteure » n’existe pas : les mots en -teur font souvent -trice.",
+        "une acteuse": "« acteuse » n’existe pas : on dit « une actrice »."
+      }
     },
     {
       "id": "fem-4",
@@ -94,7 +106,11 @@
         "une boulangere",
         "une boulangeuse"
       ],
-      "consigne": "Mets le nom au féminin."
+      "consigne": "Mets le nom au féminin.",
+      "pourquoi": {
+        "une boulangere": "il manque l’accent grave : on écrit « boulangère ».",
+        "une boulangeuse": "« boulangeuse » n’existe pas : -er devient -ère."
+      }
     },
     {
       "id": "fem-5",
@@ -106,7 +122,11 @@
         "une chantrice",
         "une chanteure"
       ],
-      "consigne": "Mets le nom au féminin."
+      "consigne": "Mets le nom au féminin.",
+      "pourquoi": {
+        "une chantrice": "« chantrice » n’existe pas : on dit « une chanteuse ».",
+        "une chanteure": "« chanteure » n’existe pas : -eur devient ici -euse."
+      }
     },
     {
       "id": "fem-6",
@@ -118,7 +138,11 @@
         "une amis",
         "une amite"
       ],
-      "consigne": "Mets le nom au féminin."
+      "consigne": "Mets le nom au féminin.",
+      "pourquoi": {
+        "une amis": "« amis » est le pluriel, pas le féminin : on ajoute un e.",
+        "une amite": "« amite » n’existe pas : on ajoute juste un e, « amie »."
+      }
     },
     {
       "id": "fem-7",
@@ -130,7 +154,11 @@
         "une princette",
         "une princienne"
       ],
-      "consigne": "Mets le nom au féminin."
+      "consigne": "Mets le nom au féminin.",
+      "pourquoi": {
+        "une princette": "« princette » n’existe pas : on dit « une princesse ».",
+        "une princienne": "« princienne » n’existe pas : on dit « une princesse »."
+      }
     },
     {
       "id": "fem-8",
@@ -142,7 +170,11 @@
         "une loupe",
         "une louette"
       ],
-      "consigne": "Mets le nom au féminin."
+      "consigne": "Mets le nom au féminin.",
+      "pourquoi": {
+        "une loupe": "une loupe sert à voir en grand : la femelle du loup est la louve.",
+        "une louette": "« louette » n’existe pas : on dit « une louve »."
+      }
     },
     {
       "id": "fem-9",
@@ -154,7 +186,11 @@
         "une coque",
         "une coquine"
       ],
-      "consigne": "Mets le nom au féminin."
+      "consigne": "Mets le nom au féminin.",
+      "pourquoi": {
+        "une coque": "une coque est celle d’un bateau ou d’un œuf : la femelle du coq est la poule.",
+        "une coquine": "une coquine est une fille espiègle : la femelle du coq est la poule."
+      }
     },
     {
       "id": "fem-10",
@@ -166,7 +202,11 @@
         "une chevale",
         "une chevalle"
       ],
-      "consigne": "Mets le nom au féminin."
+      "consigne": "Mets le nom au féminin.",
+      "pourquoi": {
+        "une chevale": "« chevale » n’existe pas : la femelle du cheval a un autre nom, la jument.",
+        "une chevalle": "« chevalle » n’existe pas : la femelle du cheval s’appelle la jument."
+      }
     },
     {
       "id": "adjf-1",
@@ -178,7 +218,11 @@
         "grandde",
         "grands"
       ],
-      "consigne": "Écris l’adjectif au féminin."
+      "consigne": "Écris l’adjectif au féminin.",
+      "pourquoi": {
+        "grandde": "on n’ajoute qu’un e : « grande ».",
+        "grands": "« grands » est le pluriel, pas le féminin."
+      }
     },
     {
       "id": "adjf-2",
@@ -190,7 +234,11 @@
         "gentile",
         "gentils"
       ],
-      "consigne": "Écris l’adjectif au féminin."
+      "consigne": "Écris l’adjectif au féminin.",
+      "pourquoi": {
+        "gentile": "« gentil » double son l au féminin : « gentille ».",
+        "gentils": "« gentils » est le pluriel, pas le féminin."
+      }
     },
     {
       "id": "adjf-3",
@@ -202,7 +250,11 @@
         "beaue",
         "beaux"
       ],
-      "consigne": "Écris l’adjectif au féminin."
+      "consigne": "Écris l’adjectif au féminin.",
+      "pourquoi": {
+        "beaue": "« beaue » n’existe pas : au féminin, « beau » devient « belle ».",
+        "beaux": "« beaux » est le masculin pluriel."
+      }
     },
     {
       "id": "adjf-4",
@@ -214,7 +266,11 @@
         "blance",
         "blancs"
       ],
-      "consigne": "Écris l’adjectif au féminin."
+      "consigne": "Écris l’adjectif au féminin.",
+      "pourquoi": {
+        "blance": "« blanc » devient « blanche » : on entend « ch ».",
+        "blancs": "« blancs » est le masculin pluriel."
+      }
     },
     {
       "id": "adjf-5",
@@ -226,7 +282,11 @@
         "heureuxe",
         "heureuze"
       ],
-      "consigne": "Écris l’adjectif au féminin."
+      "consigne": "Écris l’adjectif au féminin.",
+      "pourquoi": {
+        "heureuxe": "les mots en -eux font -euse au féminin.",
+        "heureuze": "on entend « z » mais on écrit un s : « heureuse »."
+      }
     },
     {
       "id": "adjf-6",
@@ -238,7 +298,11 @@
         "vieuxe",
         "vieuse"
       ],
-      "consigne": "Écris l’adjectif au féminin."
+      "consigne": "Écris l’adjectif au féminin.",
+      "pourquoi": {
+        "vieuxe": "« vieuxe » n’existe pas : au féminin, « vieux » devient « vieille ».",
+        "vieuse": "« vieuse » n’existe pas : on dit « vieille »."
+      }
     },
     {
       "id": "plu-1",
@@ -250,7 +314,11 @@
         "des bateaus",
         "des bateau"
       ],
-      "consigne": "Mets le nom au pluriel."
+      "consigne": "Mets le nom au pluriel.",
+      "pourquoi": {
+        "des bateaus": "les mots en -eau prennent un x au pluriel.",
+        "des bateau": "au pluriel, il faut un x à la fin."
+      }
     },
     {
       "id": "plu-2",
@@ -262,7 +330,11 @@
         "des chevals",
         "des chevaus"
       ],
-      "consigne": "Mets le nom au pluriel."
+      "consigne": "Mets le nom au pluriel.",
+      "pourquoi": {
+        "des chevals": "les mots en -al font -aux au pluriel.",
+        "des chevaus": "on écrit -aux, avec un x à la fin."
+      }
     },
     {
       "id": "plu-3",
@@ -274,7 +346,11 @@
         "des jeus",
         "des jeu"
       ],
-      "consigne": "Mets le nom au pluriel."
+      "consigne": "Mets le nom au pluriel.",
+      "pourquoi": {
+        "des jeus": "les mots en -eu prennent un x au pluriel.",
+        "des jeu": "au pluriel, il faut un x à la fin."
+      }
     },
     {
       "id": "plu-4",
@@ -286,7 +362,11 @@
         "des nezs",
         "des nes"
       ],
-      "consigne": "Mets le nom au pluriel."
+      "consigne": "Mets le nom au pluriel.",
+      "pourquoi": {
+        "des nezs": "un mot qui finit par z ne change pas au pluriel.",
+        "des nes": "le z reste : « nez » ne change pas au pluriel."
+      }
     },
     {
       "id": "plu-5",
@@ -298,7 +378,11 @@
         "des bijous",
         "des bijou"
       ],
-      "consigne": "Mets le nom au pluriel."
+      "consigne": "Mets le nom au pluriel.",
+      "pourquoi": {
+        "des bijous": "« bijou » fait partie des sept mots en -ou qui prennent un x.",
+        "des bijou": "au pluriel, il faut un x à la fin."
+      }
     },
     {
       "id": "plu-6",
@@ -310,7 +394,11 @@
         "des journals",
         "des journaus"
       ],
-      "consigne": "Mets le nom au pluriel."
+      "consigne": "Mets le nom au pluriel.",
+      "pourquoi": {
+        "des journals": "les mots en -al font -aux au pluriel.",
+        "des journaus": "on écrit -aux, avec un x à la fin."
+      }
     },
     {
       "id": "plu-7",
@@ -322,7 +410,11 @@
         "des sourix",
         "des sourises"
       ],
-      "consigne": "Mets le nom au pluriel."
+      "consigne": "Mets le nom au pluriel.",
+      "pourquoi": {
+        "des sourix": "un mot qui finit par s ne change pas au pluriel.",
+        "des sourises": "« sourises » n’existe pas : « souris » ne change pas."
+      }
     },
     {
       "id": "plu-8",
@@ -334,7 +426,11 @@
         "des oiseaus",
         "des oiseau"
       ],
-      "consigne": "Mets le nom au pluriel."
+      "consigne": "Mets le nom au pluriel.",
+      "pourquoi": {
+        "des oiseaus": "les mots en -eau prennent un x au pluriel.",
+        "des oiseau": "au pluriel, il faut un x à la fin."
+      }
     },
     {
       "id": "plu-9",
@@ -346,7 +442,11 @@
         "des genous",
         "des genou"
       ],
-      "consigne": "Mets le nom au pluriel."
+      "consigne": "Mets le nom au pluriel.",
+      "pourquoi": {
+        "des genous": "« genou » fait partie des sept mots en -ou qui prennent un x.",
+        "des genou": "au pluriel, il faut un x à la fin."
+      }
     },
     {
       "id": "plu-10",
@@ -358,7 +458,11 @@
         "des cloux",
         "des clou"
       ],
-      "consigne": "Mets le nom au pluriel."
+      "consigne": "Mets le nom au pluriel.",
+      "pourquoi": {
+        "des cloux": "« clou » n’est pas un des sept mots en -ou qui prennent un x : il prend un s.",
+        "des clou": "au pluriel, il faut un s à la fin."
+      }
     },
     {
       "id": "plu-11",
@@ -370,7 +474,11 @@
         "des fleur",
         "des fleurx"
       ],
-      "consigne": "Mets le nom au pluriel."
+      "consigne": "Mets le nom au pluriel.",
+      "pourquoi": {
+        "des fleur": "au pluriel, il faut un s à la fin.",
+        "des fleurx": "la plupart des noms prennent un s, pas un x."
+      }
     },
     {
       "id": "plu-12",
@@ -382,7 +490,11 @@
         "des cheveus",
         "des cheveu"
       ],
-      "consigne": "Mets le nom au pluriel."
+      "consigne": "Mets le nom au pluriel.",
+      "pourquoi": {
+        "des cheveus": "les mots en -eu prennent un x au pluriel.",
+        "des cheveu": "au pluriel, il faut un x à la fin."
+      }
     },
     {
       "id": "plu-13",
@@ -394,7 +506,11 @@
         "des animals",
         "des animaus"
       ],
-      "consigne": "Mets le nom au pluriel."
+      "consigne": "Mets le nom au pluriel.",
+      "pourquoi": {
+        "des animals": "les mots en -al font -aux au pluriel.",
+        "des animaus": "on écrit -aux, avec un x à la fin."
+      }
     },
     {
       "id": "plu-14",
@@ -406,7 +522,11 @@
         "des noixs",
         "des noi"
       ],
-      "consigne": "Mets le nom au pluriel."
+      "consigne": "Mets le nom au pluriel.",
+      "pourquoi": {
+        "des noixs": "un mot qui finit par x ne change pas au pluriel.",
+        "des noi": "le x reste : « noix » ne change pas."
+      }
     },
     {
       "id": "regle-s",
@@ -419,7 +539,12 @@
         "un t",
         "rien"
       ],
-      "consigne": "La plupart des noms prennent au pluriel…"
+      "consigne": "La plupart des noms prennent au pluriel…",
+      "pourquoi": {
+        "un x": "le x, c’est pour quelques mots seulement, comme ceux en -eau.",
+        "un t": "le t ne sert jamais à faire le pluriel.",
+        "rien": "au pluriel, la plupart des noms changent : ils prennent un s."
+      }
     },
     {
       "id": "regle-al",
@@ -432,7 +557,12 @@
         "-ales",
         "-alx"
       ],
-      "consigne": "Les noms en -al font souvent leur pluriel en…"
+      "consigne": "Les noms en -al font souvent leur pluriel en…",
+      "pourquoi": {
+        "-als": "« chevals » ou « journals » n’existent pas : on dit chevaux, journaux.",
+        "-ales": "-ales est la fin de certains adjectifs au féminin, pas des noms.",
+        "-alx": "-alx n’existe pas : le a devient -au, puis on met un x."
+      }
     },
     {
       "id": "regle-eau",
@@ -445,7 +575,12 @@
         "rien",
         "un e"
       ],
-      "consigne": "Les noms en -eau prennent au pluriel…"
+      "consigne": "Les noms en -eau prennent au pluriel…",
+      "pourquoi": {
+        "un s": "« bateaus » n’existe pas : les mots en -eau prennent un x.",
+        "rien": "les mots en -eau changent au pluriel : ils prennent un x.",
+        "un e": "le e ne fait pas le pluriel."
+      }
     },
     {
       "id": "gn-1",
@@ -459,7 +594,12 @@
         "jolie"
       ],
       "consigne": "Accorde l’adjectif avec le nom.",
-      "explication": "L’adjectif prend le genre et le nombre du nom."
+      "explication": "L’adjectif prend le genre et le nombre du nom.",
+      "pourquoi": {
+        "joli": "« fleurs » est au pluriel : il faut un s.",
+        "jolis": "« fleurs » est au féminin : il faut un e.",
+        "jolie": "« fleurs » est au pluriel : il faut aussi un s."
+      }
     },
     {
       "id": "gn-2",
@@ -473,7 +613,12 @@
         "vertes"
       ],
       "consigne": "Accorde l’adjectif avec le nom.",
-      "explication": "L’adjectif prend le genre et le nombre du nom."
+      "explication": "L’adjectif prend le genre et le nombre du nom.",
+      "pourquoi": {
+        "vert": "« robe » est au féminin : il faut un e.",
+        "verts": "« robe » est au féminin singulier, pas au masculin pluriel.",
+        "vertes": "« une robe » est au singulier : pas de s."
+      }
     },
     {
       "id": "gn-3",
@@ -487,7 +632,12 @@
         "petites"
       ],
       "consigne": "Accorde l’adjectif avec le nom.",
-      "explication": "L’adjectif prend le genre et le nombre du nom."
+      "explication": "L’adjectif prend le genre et le nombre du nom.",
+      "pourquoi": {
+        "petit": "« chiens » est au pluriel : il faut un s.",
+        "petite": "« chiens » est au masculin : pas de e.",
+        "petites": "« chiens » est au masculin : pas de e."
+      }
     },
     {
       "id": "gn-4",
@@ -501,7 +651,12 @@
         "blanc"
       ],
       "consigne": "Accorde l’adjectif avec le nom.",
-      "explication": "L’adjectif prend le genre et le nombre du nom."
+      "explication": "L’adjectif prend le genre et le nombre du nom.",
+      "pourquoi": {
+        "blancs": "« chemises » est au féminin : « blanc » devient « blanches ».",
+        "blanche": "« chemises » est au pluriel : il faut un s.",
+        "blanc": "« chemises » est au féminin pluriel : il faut « blanches »."
+      }
     },
     {
       "id": "gn-5",
@@ -515,7 +670,12 @@
         "grandes"
       ],
       "consigne": "Accorde l’adjectif avec le nom.",
-      "explication": "L’adjectif prend le genre et le nombre du nom."
+      "explication": "L’adjectif prend le genre et le nombre du nom.",
+      "pourquoi": {
+        "grande": "« garçon » est au masculin : pas de e.",
+        "grands": "« un garçon » est au singulier : pas de s.",
+        "grandes": "« un garçon » est au masculin singulier."
+      }
     },
     {
       "id": "gn-6",
@@ -529,7 +689,12 @@
         "meilleure"
       ],
       "consigne": "Accorde l’adjectif avec le nom.",
-      "explication": "L’adjectif prend le genre et le nombre du nom."
+      "explication": "L’adjectif prend le genre et le nombre du nom.",
+      "pourquoi": {
+        "meilleur": "« amies » est au féminin pluriel : il faut -es.",
+        "meilleurs": "« amies » est au féminin : il faut un e.",
+        "meilleure": "« amies » est au pluriel : il faut un s."
+      }
     },
     {
       "id": "gn-7",
@@ -540,10 +705,15 @@
       "pieges": [
         "vieux",
         "vieille",
-        "vieilles s"
+        "vieils"
       ],
       "consigne": "Accorde l’adjectif avec le nom.",
-      "explication": "L’adjectif prend le genre et le nombre du nom."
+      "explication": "L’adjectif prend le genre et le nombre du nom.",
+      "pourquoi": {
+        "vieux": "« maisons » est au féminin : « vieux » devient « vieilles ».",
+        "vieille": "« maisons » est au pluriel : il faut un s.",
+        "vieils": "« vieils » n’existe pas, et « maisons » est au féminin."
+      }
     },
     {
       "id": "gn-8",
@@ -557,7 +727,12 @@
         "noires"
       ],
       "consigne": "Accorde l’adjectif avec le nom.",
-      "explication": "L’adjectif prend le genre et le nombre du nom."
+      "explication": "L’adjectif prend le genre et le nombre du nom.",
+      "pourquoi": {
+        "noir": "« chats » est au pluriel : il faut un s.",
+        "noire": "« chats » est au masculin : pas de e.",
+        "noires": "« chats » est au masculin : pas de e."
+      }
     },
     {
       "id": "gn-9",
@@ -571,7 +746,12 @@
         "bonnes"
       ],
       "consigne": "Accorde l’adjectif avec le nom.",
-      "explication": "L’adjectif prend le genre et le nombre du nom."
+      "explication": "L’adjectif prend le genre et le nombre du nom.",
+      "pourquoi": {
+        "bon": "« idée » est au féminin : « bon » devient « bonne ».",
+        "bons": "« une idée » est au féminin singulier.",
+        "bonnes": "« une idée » est au singulier : pas de s."
+      }
     },
     {
       "id": "gn-10",
@@ -585,7 +765,12 @@
         "rougex"
       ],
       "consigne": "Accorde l’adjectif avec le nom.",
-      "explication": "L’adjectif prend le genre et le nombre du nom."
+      "explication": "L’adjectif prend le genre et le nombre du nom.",
+      "pourquoi": {
+        "rouge": "« ballons » est au pluriel : il faut un s.",
+        "rougent": "-ent est la fin des verbes, pas des adjectifs.",
+        "rougex": "« rougex » n’existe pas : on ajoute un s."
+      }
     },
     {
       "id": "gn-det",
@@ -598,7 +783,12 @@
         "le déterminant « les »",
         "personne"
       ],
-      "consigne": "Dans « les belles maisons », qui donne le genre et le nombre ?"
+      "consigne": "Dans « les belles maisons », qui donne le genre et le nombre ?",
+      "pourquoi": {
+        "l’adjectif « belles »": "l’adjectif ne décide pas : il prend le genre et le nombre du nom.",
+        "le déterminant « les »": "« les » suit le nom, comme l’adjectif.",
+        "personne": "c’est le nom qui commande : les autres mots s’accordent avec lui."
+      }
     },
     {
       "id": "sv-1",
@@ -612,7 +802,12 @@
         "volons"
       ],
       "consigne": "Accorde le verbe avec son sujet.",
-      "explication": "Le verbe s’accorde avec son sujet."
+      "explication": "Le verbe s’accorde avec son sujet.",
+      "pourquoi": {
+        "vole": "« les oiseaux » est au pluriel : il faut -ent.",
+        "voles": "-es va avec « tu ».",
+        "volons": "-ons va avec « nous »."
+      }
     },
     {
       "id": "sv-2",
@@ -626,7 +821,12 @@
         "jouez"
       ],
       "consigne": "Accorde le verbe avec son sujet.",
-      "explication": "Le verbe s’accorde avec son sujet."
+      "explication": "Le verbe s’accorde avec son sujet.",
+      "pourquoi": {
+        "jouent": "« mon frère » est au singulier : pas de -ent.",
+        "joues": "-es va avec « tu ».",
+        "jouez": "-ez va avec « vous »."
+      }
     },
     {
       "id": "sv-3",
@@ -640,7 +840,12 @@
         "courez"
       ],
       "consigne": "Accorde le verbe avec son sujet.",
-      "explication": "Le verbe s’accorde avec son sujet."
+      "explication": "Le verbe s’accorde avec son sujet.",
+      "pourquoi": {
+        "court": "« court » va avec « il » ou « elle » ; avec « tu », on écrit « cours ».",
+        "courent": "-ent va avec « ils » ou « elles ».",
+        "courez": "-ez va avec « vous »."
+      }
     },
     {
       "id": "sv-4",
@@ -654,7 +859,12 @@
         "travaillez"
       ],
       "consigne": "Accorde le verbe avec son sujet.",
-      "explication": "Le verbe s’accorde avec son sujet."
+      "explication": "Le verbe s’accorde avec son sujet.",
+      "pourquoi": {
+        "travaille": "« les élèves » est au pluriel : il faut -ent.",
+        "travailles": "-es va avec « tu ».",
+        "travaillez": "-ez va avec « vous »."
+      }
     },
     {
       "id": "sv-5",
@@ -668,7 +878,12 @@
         "allez"
       ],
       "consigne": "Accorde le verbe avec son sujet.",
-      "explication": "Le verbe s’accorde avec son sujet."
+      "explication": "Le verbe s’accorde avec son sujet.",
+      "pourquoi": {
+        "va": "« va » va avec un seul : Léa et Tom, ce sont deux, donc « ils vont ».",
+        "vas": "« vas » va avec « tu ».",
+        "allez": "« allez » va avec « vous »."
+      }
     },
     {
       "id": "sv-6",
@@ -682,7 +897,12 @@
         "soufflons"
       ],
       "consigne": "Accorde le verbe avec son sujet.",
-      "explication": "Le verbe s’accorde avec son sujet."
+      "explication": "Le verbe s’accorde avec son sujet.",
+      "pourquoi": {
+        "soufflent": "« le vent » est au singulier : pas de -ent.",
+        "souffles": "-es va avec « tu ».",
+        "soufflons": "-ons va avec « nous »."
+      }
     },
     {
       "id": "sv-7",
@@ -696,7 +916,12 @@
         "construisez"
       ],
       "consigne": "Accorde le verbe avec son sujet.",
-      "explication": "Le verbe s’accorde avec son sujet."
+      "explication": "Le verbe s’accorde avec son sujet.",
+      "pourquoi": {
+        "construisent": "« construisent » va avec « ils » ou « elles ».",
+        "construit": "« construit » va avec « il » ou « elle ».",
+        "construisez": "« construisez » va avec « vous »."
+      }
     },
     {
       "id": "sv-8",
@@ -710,7 +935,12 @@
         "lisez"
       ],
       "consigne": "Accorde le verbe avec son sujet.",
-      "explication": "Le verbe s’accorde avec son sujet."
+      "explication": "Le verbe s’accorde avec son sujet.",
+      "pourquoi": {
+        "lit": "« lit » va avec « il » ou « elle » : « mes parents » sont plusieurs.",
+        "lis": "« lis » va avec « je » ou « tu ».",
+        "lisez": "« lisez » va avec « vous »."
+      }
     },
     {
       "id": "sv-9",
@@ -724,7 +954,12 @@
         "sentons"
       ],
       "consigne": "Accorde le verbe avec son sujet.",
-      "explication": "Le verbe s’accorde avec son sujet."
+      "explication": "Le verbe s’accorde avec son sujet.",
+      "pourquoi": {
+        "sent": "« sent » va avec un seul : « les fleurs » sont plusieurs.",
+        "sens": "« sens » va avec « je » ou « tu ».",
+        "sentons": "« sentons » va avec « nous »."
+      }
     },
     {
       "id": "sv-10",
@@ -738,7 +973,12 @@
         "es"
       ],
       "consigne": "Accorde le verbe avec son sujet.",
-      "explication": "Le verbe s’accorde avec son sujet."
+      "explication": "Le verbe s’accorde avec son sujet.",
+      "pourquoi": {
+        "est": "« est » va avec « il » ou « elle ».",
+        "sont": "« sont » va avec « ils » ou « elles ».",
+        "es": "« es » va avec « tu »."
+      }
     },
     {
       "id": "tape-1",

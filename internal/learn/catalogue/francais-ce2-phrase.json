@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce2-phrase",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "La phrase",
   "description": "Les types de phrases, la forme négative, le sujet et le verbe, la nature des mots et les pronoms.",
   "matiere": "francais",
@@ -59,7 +59,12 @@
         "exclamative",
         "impérative"
       ],
-      "consigne": "Quel est le type de cette phrase ?"
+      "consigne": "Quel est le type de cette phrase ?",
+      "pourquoi": {
+        "interrogative": "elle ne pose pas de question ; elle raconte quelque chose et finit par un point : elle est déclarative.",
+        "exclamative": "elle ne montre pas d’émotion forte ; elle raconte quelque chose et finit par un point : elle est déclarative.",
+        "impérative": "elle ne donne pas d’ordre ; elle raconte quelque chose et finit par un point : elle est déclarative."
+      }
     },
     {
       "id": "type-2",
@@ -72,7 +77,12 @@
         "exclamative",
         "impérative"
       ],
-      "consigne": "Quel est le type de cette phrase ?"
+      "consigne": "Quel est le type de cette phrase ?",
+      "pourquoi": {
+        "déclarative": "elle ne raconte pas simplement un fait ; elle pose une question et finit par « ? » : elle est interrogative.",
+        "exclamative": "elle ne montre pas d’émotion forte ; elle pose une question et finit par « ? » : elle est interrogative.",
+        "impérative": "elle ne donne pas d’ordre ; elle pose une question et finit par « ? » : elle est interrogative."
+      }
     },
     {
       "id": "type-3",
@@ -85,7 +95,12 @@
         "interrogative",
         "impérative"
       ],
-      "consigne": "Quel est le type de cette phrase ?"
+      "consigne": "Quel est le type de cette phrase ?",
+      "pourquoi": {
+        "déclarative": "elle ne raconte pas simplement un fait ; elle montre une émotion et finit par « ! » : elle est exclamative.",
+        "interrogative": "elle ne pose pas de question ; elle montre une émotion et finit par « ! » : elle est exclamative.",
+        "impérative": "elle ne donne pas d’ordre ; elle montre une émotion et finit par « ! » : elle est exclamative."
+      }
     },
     {
       "id": "type-4",
@@ -98,7 +113,12 @@
         "interrogative",
         "exclamative"
       ],
-      "consigne": "Quel est le type de cette phrase ?"
+      "consigne": "Quel est le type de cette phrase ?",
+      "pourquoi": {
+        "déclarative": "elle ne raconte pas simplement un fait ; elle donne un ordre : elle est impérative.",
+        "interrogative": "elle ne pose pas de question ; elle donne un ordre : elle est impérative.",
+        "exclamative": "elle ne montre pas d’émotion forte ; elle donne un ordre : elle est impérative."
+      }
     },
     {
       "id": "type-5",
@@ -111,7 +131,12 @@
         "exclamative",
         "impérative"
       ],
-      "consigne": "Quel est le type de cette phrase ?"
+      "consigne": "Quel est le type de cette phrase ?",
+      "pourquoi": {
+        "déclarative": "elle ne raconte pas simplement un fait ; elle pose une question et finit par « ? » : elle est interrogative.",
+        "exclamative": "elle ne montre pas d’émotion forte ; elle pose une question et finit par « ? » : elle est interrogative.",
+        "impérative": "elle ne donne pas d’ordre ; elle pose une question et finit par « ? » : elle est interrogative."
+      }
     },
     {
       "id": "type-6",
@@ -124,7 +149,12 @@
         "exclamative",
         "impérative"
       ],
-      "consigne": "Quel est le type de cette phrase ?"
+      "consigne": "Quel est le type de cette phrase ?",
+      "pourquoi": {
+        "interrogative": "elle ne pose pas de question ; elle raconte quelque chose et finit par un point : elle est déclarative.",
+        "exclamative": "elle ne montre pas d’émotion forte ; elle raconte quelque chose et finit par un point : elle est déclarative.",
+        "impérative": "elle ne donne pas d’ordre ; elle raconte quelque chose et finit par un point : elle est déclarative."
+      }
     },
     {
       "id": "type-7",
@@ -137,7 +167,12 @@
         "interrogative",
         "impérative"
       ],
-      "consigne": "Quel est le type de cette phrase ?"
+      "consigne": "Quel est le type de cette phrase ?",
+      "pourquoi": {
+        "déclarative": "elle ne raconte pas simplement un fait ; elle montre une émotion et finit par « ! » : elle est exclamative.",
+        "interrogative": "elle ne pose pas de question ; elle montre une émotion et finit par « ! » : elle est exclamative.",
+        "impérative": "elle ne donne pas d’ordre ; elle montre une émotion et finit par « ! » : elle est exclamative."
+      }
     },
     {
       "id": "type-8",
@@ -150,7 +185,12 @@
         "interrogative",
         "exclamative"
       ],
-      "consigne": "Quel est le type de cette phrase ?"
+      "consigne": "Quel est le type de cette phrase ?",
+      "pourquoi": {
+        "déclarative": "elle ne raconte pas simplement un fait ; elle donne un ordre : elle est impérative.",
+        "interrogative": "elle ne pose pas de question ; elle donne un ordre : elle est impérative.",
+        "exclamative": "elle ne montre pas d’émotion forte ; elle donne un ordre : elle est impérative."
+      }
     },
     {
       "id": "type-9",
@@ -163,7 +203,12 @@
         "exclamative",
         "impérative"
       ],
-      "consigne": "Quel est le type de cette phrase ?"
+      "consigne": "Quel est le type de cette phrase ?",
+      "pourquoi": {
+        "déclarative": "elle ne raconte pas simplement un fait ; elle pose une question et finit par « ? » : elle est interrogative.",
+        "exclamative": "elle ne montre pas d’émotion forte ; elle pose une question et finit par « ? » : elle est interrogative.",
+        "impérative": "elle ne donne pas d’ordre ; elle pose une question et finit par « ? » : elle est interrogative."
+      }
     },
     {
       "id": "type-10",
@@ -176,7 +221,12 @@
         "exclamative",
         "impérative"
       ],
-      "consigne": "Quel est le type de cette phrase ?"
+      "consigne": "Quel est le type de cette phrase ?",
+      "pourquoi": {
+        "interrogative": "elle ne pose pas de question ; elle raconte quelque chose et finit par un point : elle est déclarative.",
+        "exclamative": "elle ne montre pas d’émotion forte ; elle raconte quelque chose et finit par un point : elle est déclarative.",
+        "impérative": "elle ne donne pas d’ordre ; elle raconte quelque chose et finit par un point : elle est déclarative."
+      }
     },
     {
       "id": "type-11",
@@ -189,7 +239,12 @@
         "interrogative",
         "impérative"
       ],
-      "consigne": "Quel est le type de cette phrase ?"
+      "consigne": "Quel est le type de cette phrase ?",
+      "pourquoi": {
+        "déclarative": "elle ne raconte pas simplement un fait ; elle montre une émotion et finit par « ! » : elle est exclamative.",
+        "interrogative": "elle ne pose pas de question ; elle montre une émotion et finit par « ! » : elle est exclamative.",
+        "impérative": "elle ne donne pas d’ordre ; elle montre une émotion et finit par « ! » : elle est exclamative."
+      }
     },
     {
       "id": "type-12",
@@ -202,7 +257,12 @@
         "interrogative",
         "exclamative"
       ],
-      "consigne": "Quel est le type de cette phrase ?"
+      "consigne": "Quel est le type de cette phrase ?",
+      "pourquoi": {
+        "déclarative": "elle ne raconte pas simplement un fait ; elle donne un ordre : elle est impérative.",
+        "interrogative": "elle ne pose pas de question ; elle donne un ordre : elle est impérative.",
+        "exclamative": "elle ne montre pas d’émotion forte ; elle donne un ordre : elle est impérative."
+      }
     },
     {
       "id": "point-interro",
@@ -215,7 +275,12 @@
         "!",
         ","
       ],
-      "consigne": "Par quel signe se termine une phrase interrogative ?"
+      "consigne": "Par quel signe se termine une phrase interrogative ?",
+      "pourquoi": {
+        ".": "le point termine une phrase qui raconte.",
+        "!": "« ! » termine une phrase qui s’exclame.",
+        ",": "la virgule ne termine pas une phrase."
+      }
     },
     {
       "id": "point-exclam",
@@ -228,7 +293,12 @@
         ",",
         ";"
       ],
-      "consigne": "Par quel signe se termine une phrase exclamative ?"
+      "consigne": "Par quel signe se termine une phrase exclamative ?",
+      "pourquoi": {
+        "?": "« ? » termine une question.",
+        ",": "la virgule ne termine pas une phrase.",
+        ";": "le point-virgule ne termine pas une phrase."
+      }
     },
     {
       "id": "majuscule",
@@ -241,7 +311,12 @@
         "un verbe",
         "une virgule"
       ],
-      "consigne": "Une phrase commence toujours par…"
+      "consigne": "Une phrase commence toujours par…",
+      "pourquoi": {
+        "un point": "le point est à la fin de la phrase, pas au début.",
+        "un verbe": "beaucoup de phrases commencent par un sujet, pas un verbe.",
+        "une virgule": "une virgule sépare des mots, elle ne commence pas une phrase."
+      }
     },
     {
       "id": "neg-1",
@@ -254,7 +329,12 @@
         "Je ne mange.",
         "Ne je mange pas."
       ],
-      "consigne": "Choisis la phrase à la forme négative bien écrite."
+      "consigne": "Choisis la phrase à la forme négative bien écrite.",
+      "pourquoi": {
+        "Je mange pas.": "il manque « ne » : à l’écrit, il faut « ne… pas ».",
+        "Je ne mange.": "il manque « pas » : il faut « ne » et « pas » autour du verbe.",
+        "Ne je mange pas.": "« ne » et « pas » entourent le verbe, après le sujet."
+      }
     },
     {
       "id": "neg-2",
@@ -267,7 +347,12 @@
         "Il ne est pas content.",
         "Il n’est content."
       ],
-      "consigne": "Choisis la phrase à la forme négative bien écrite."
+      "consigne": "Choisis la phrase à la forme négative bien écrite.",
+      "pourquoi": {
+        "Il est pas content.": "il manque « ne » : à l’écrit, il faut « ne… pas ».",
+        "Il ne est pas content.": "devant une voyelle, « ne » devient « n’ ».",
+        "Il n’est content.": "il manque « pas » : il faut « ne » et « pas » autour du verbe."
+      }
     },
     {
       "id": "neg-3",
@@ -280,7 +365,12 @@
         "Nous ne jouons dehors.",
         "Ne nous jouons pas dehors."
       ],
-      "consigne": "Choisis la phrase à la forme négative bien écrite."
+      "consigne": "Choisis la phrase à la forme négative bien écrite.",
+      "pourquoi": {
+        "Nous jouons pas dehors.": "il manque « ne » : à l’écrit, il faut « ne… pas ».",
+        "Nous ne jouons dehors.": "il manque « pas » : il faut « ne » et « pas » autour du verbe.",
+        "Ne nous jouons pas dehors.": "« ne » et « pas » entourent le verbe, après le sujet."
+      }
     },
     {
       "id": "neg-4",
@@ -293,7 +383,12 @@
         "Tu ne as pas faim.",
         "Tu n’as faim."
       ],
-      "consigne": "Choisis la phrase à la forme négative bien écrite."
+      "consigne": "Choisis la phrase à la forme négative bien écrite.",
+      "pourquoi": {
+        "Tu as pas faim.": "il manque « ne » : à l’écrit, il faut « ne… pas ».",
+        "Tu ne as pas faim.": "devant une voyelle, « ne » devient « n’ ».",
+        "Tu n’as faim.": "il manque « pas » : il faut « ne » et « pas » autour du verbe."
+      }
     },
     {
       "id": "neg-5",
@@ -306,7 +401,12 @@
         "Elle ne aime pas les épinards.",
         "Elle n’aime les épinards."
       ],
-      "consigne": "Choisis la phrase à la forme négative bien écrite."
+      "consigne": "Choisis la phrase à la forme négative bien écrite.",
+      "pourquoi": {
+        "Elle aime pas les épinards.": "il manque « ne » : à l’écrit, il faut « ne… pas ».",
+        "Elle ne aime pas les épinards.": "devant une voyelle, « ne » devient « n’ ».",
+        "Elle n’aime les épinards.": "il manque « pas » : il faut « ne » et « pas » autour du verbe."
+      }
     },
     {
       "id": "neg-6",
@@ -319,7 +419,12 @@
         "Ils ne regardent la télé.",
         "Ils pas regardent la télé."
       ],
-      "consigne": "Choisis la phrase à la forme négative bien écrite."
+      "consigne": "Choisis la phrase à la forme négative bien écrite.",
+      "pourquoi": {
+        "Ils regardent pas la télé.": "il manque « ne » : à l’écrit, il faut « ne… pas ».",
+        "Ils ne regardent la télé.": "il manque « pas » : il faut « ne » et « pas » autour du verbe.",
+        "Ils pas regardent la télé.": "« ne » et « pas » entourent le verbe, après le sujet."
+      }
     },
     {
       "id": "neg-7",
@@ -332,7 +437,12 @@
         "Je ne vois pas rien.",
         "Je ne vois quelque chose."
       ],
-      "consigne": "Choisis la phrase à la forme négative bien écrite."
+      "consigne": "Choisis la phrase à la forme négative bien écrite.",
+      "pourquoi": {
+        "Je vois rien.": "il manque « ne » : à l’écrit, il faut « ne… rien ».",
+        "Je ne vois pas rien.": "« rien » remplace « pas » : on ne met pas les deux.",
+        "Je ne vois quelque chose.": "la phrase n’est pas négative : « quelque chose » devient « rien »."
+      }
     },
     {
       "id": "neg-8",
@@ -345,7 +455,12 @@
         "Il ne pleut encore.",
         "Il ne pleut pas plus."
       ],
-      "consigne": "Choisis la phrase à la forme négative bien écrite."
+      "consigne": "Choisis la phrase à la forme négative bien écrite.",
+      "pourquoi": {
+        "Il pleut plus.": "il manque « ne » : à l’écrit, il faut « ne… plus ».",
+        "Il ne pleut encore.": "« encore » devient « plus » à la forme négative.",
+        "Il ne pleut pas plus.": "« plus » remplace « pas » : on ne met pas les deux."
+      }
     },
     {
       "id": "neg-ordre-1",
@@ -402,7 +517,12 @@
         "un… une",
         "et… ou"
       ],
-      "consigne": "Quels petits mots entourent le verbe dans une phrase négative ?"
+      "consigne": "Quels petits mots entourent le verbe dans une phrase négative ?",
+      "pourquoi": {
+        "le… la": "« le » et « la » sont des déterminants.",
+        "un… une": "« un » et « une » sont des déterminants.",
+        "et… ou": "« et » et « ou » relient des mots."
+      }
     },
     {
       "id": "verbe-1",
@@ -416,7 +536,12 @@
         "petit"
       ],
       "consigne": "Trouve le verbe de la phrase.",
-      "explication": "Le verbe change quand on change le temps : hier…, demain…"
+      "explication": "Le verbe change quand on change le temps : hier…, demain…",
+      "pourquoi": {
+        "chat": "« chat » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « boit ».",
+        "lait": "« lait » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « boit ».",
+        "petit": "« petit » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « boit »."
+      }
     },
     {
       "id": "sujet-1",
@@ -430,7 +555,12 @@
         "lait"
       ],
       "consigne": "Trouve le sujet du verbe.",
-      "explication": "Le sujet répond à la question : qui est-ce qui… ?"
+      "explication": "Le sujet répond à la question : qui est-ce qui… ?",
+      "pourquoi": {
+        "son lait": "qui est-ce qui boit ? « Le petit chat », pas « son lait ».",
+        "Le petit": "il manque une partie : qui est-ce qui boit ? « Le petit chat ».",
+        "lait": "qui est-ce qui boit ? « Le petit chat », pas « lait »."
+      }
     },
     {
       "id": "verbe-2",
@@ -444,7 +574,12 @@
         "Mes"
       ],
       "consigne": "Trouve le verbe de la phrase.",
-      "explication": "Le verbe change quand on change le temps : hier…, demain…"
+      "explication": "Le verbe change quand on change le temps : hier…, demain…",
+      "pourquoi": {
+        "cousins": "« cousins » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « arrivent ».",
+        "soir": "« soir » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « arrivent ».",
+        "Mes": "« Mes » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « arrivent »."
+      }
     },
     {
       "id": "sujet-2",
@@ -458,7 +593,12 @@
         "soir"
       ],
       "consigne": "Trouve le sujet du verbe.",
-      "explication": "Le sujet répond à la question : qui est-ce qui… ?"
+      "explication": "Le sujet répond à la question : qui est-ce qui… ?",
+      "pourquoi": {
+        "ce soir": "qui est-ce qui arrivent ? « Mes cousins », pas « ce soir ».",
+        "arrivent": "c’est le verbe : le sujet est celui qui fait l’action.",
+        "soir": "qui est-ce qui arrivent ? « Mes cousins », pas « soir »."
+      }
     },
     {
       "id": "verbe-3",
@@ -472,7 +612,12 @@
         "Dans"
       ],
       "consigne": "Trouve le verbe de la phrase.",
-      "explication": "Le verbe change quand on change le temps : hier…, demain…"
+      "explication": "Le verbe change quand on change le temps : hier…, demain…",
+      "pourquoi": {
+        "loup": "« loup » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « hurle ».",
+        "forêt": "« forêt » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « hurle ».",
+        "Dans": "« Dans » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « hurle »."
+      }
     },
     {
       "id": "sujet-3",
@@ -486,7 +631,12 @@
         "hurle"
       ],
       "consigne": "Trouve le sujet du verbe.",
-      "explication": "Le sujet répond à la question : qui est-ce qui… ?"
+      "explication": "Le sujet répond à la question : qui est-ce qui… ?",
+      "pourquoi": {
+        "la forêt": "qui est-ce qui hurle ? « le loup », pas « la forêt ».",
+        "Dans la forêt": "qui est-ce qui hurle ? « le loup », pas « Dans la forêt ».",
+        "hurle": "c’est le verbe : le sujet est celui qui fait l’action."
+      }
     },
     {
       "id": "verbe-4",
@@ -500,7 +650,12 @@
         "Léa"
       ],
       "consigne": "Trouve le verbe de la phrase.",
-      "explication": "Le verbe change quand on change le temps : hier…, demain…"
+      "explication": "Le verbe change quand on change le temps : hier…, demain…",
+      "pourquoi": {
+        "cabane": "« cabane » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « construisent ».",
+        "Tom": "« Tom » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « construisent ».",
+        "Léa": "« Léa » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « construisent »."
+      }
     },
     {
       "id": "sujet-4",
@@ -514,7 +669,12 @@
         "Tom"
       ],
       "consigne": "Trouve le sujet du verbe.",
-      "explication": "Le sujet répond à la question : qui est-ce qui… ?"
+      "explication": "Le sujet répond à la question : qui est-ce qui… ?",
+      "pourquoi": {
+        "une cabane": "qui est-ce qui construisent ? « Tom et Léa », pas « une cabane ».",
+        "Léa": "il manque une partie : qui est-ce qui construisent ? « Tom et Léa ».",
+        "Tom": "il manque une partie : qui est-ce qui construisent ? « Tom et Léa »."
+      }
     },
     {
       "id": "verbe-5",
@@ -527,7 +687,11 @@
         "Le"
       ],
       "consigne": "Trouve le verbe de la phrase.",
-      "explication": "Le verbe change quand on change le temps : hier…, demain…"
+      "explication": "Le verbe change quand on change le temps : hier…, demain…",
+      "pourquoi": {
+        "soleil": "« soleil » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « brille ».",
+        "Le": "« Le » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « brille »."
+      }
     },
     {
       "id": "sujet-5",
@@ -539,7 +703,10 @@
         "brille"
       ],
       "consigne": "Trouve le sujet du verbe.",
-      "explication": "Le sujet répond à la question : qui est-ce qui… ?"
+      "explication": "Le sujet répond à la question : qui est-ce qui… ?",
+      "pourquoi": {
+        "brille": "c’est le verbe : le sujet est celui qui fait l’action."
+      }
     },
     {
       "id": "verbe-6",
@@ -553,7 +720,12 @@
         "nous"
       ],
       "consigne": "Trouve le verbe de la phrase.",
-      "explication": "Le verbe change quand on change le temps : hier…, demain…"
+      "explication": "Le verbe change quand on change le temps : hier…, demain…",
+      "pourquoi": {
+        "matin": "« matin » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « prenons ».",
+        "bus": "« bus » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « prenons ».",
+        "nous": "« nous » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « prenons »."
+      }
     },
     {
       "id": "sujet-6",
@@ -567,7 +739,12 @@
         "prenons"
       ],
       "consigne": "Trouve le sujet du verbe.",
-      "explication": "Le sujet répond à la question : qui est-ce qui… ?"
+      "explication": "Le sujet répond à la question : qui est-ce qui… ?",
+      "pourquoi": {
+        "le bus": "qui est-ce qui prend le bus ? « nous ».",
+        "Chaque matin": "« chaque matin » dit quand, pas qui.",
+        "prenons": "c’est le verbe : le sujet est celui qui fait l’action."
+      }
     },
     {
       "id": "verbe-7",
@@ -581,7 +758,12 @@
         "une"
       ],
       "consigne": "Trouve le verbe de la phrase.",
-      "explication": "Le verbe change quand on change le temps : hier…, demain…"
+      "explication": "Le verbe change quand on change le temps : hier…, demain…",
+      "pourquoi": {
+        "maîtresse": "« maîtresse » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « lit ».",
+        "histoire": "« histoire » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « lit ».",
+        "une": "« une » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « lit »."
+      }
     },
     {
       "id": "sujet-7",
@@ -595,7 +777,12 @@
         "lit"
       ],
       "consigne": "Trouve le sujet du verbe.",
-      "explication": "Le sujet répond à la question : qui est-ce qui… ?"
+      "explication": "Le sujet répond à la question : qui est-ce qui… ?",
+      "pourquoi": {
+        "une histoire": "qui est-ce qui lit ? « La maîtresse », pas « une histoire ».",
+        "histoire": "qui est-ce qui lit ? « La maîtresse », pas « histoire ».",
+        "lit": "c’est le verbe : le sujet est celui qui fait l’action."
+      }
     },
     {
       "id": "verbe-8",
@@ -609,7 +796,12 @@
         "dans"
       ],
       "consigne": "Trouve le verbe de la phrase.",
-      "explication": "Le verbe change quand on change le temps : hier…, demain…"
+      "explication": "Le verbe change quand on change le temps : hier…, demain…",
+      "pourquoi": {
+        "oiseaux": "« oiseaux » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « chantent ».",
+        "arbre": "« arbre » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « chantent ».",
+        "dans": "« dans » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « chantent »."
+      }
     },
     {
       "id": "sujet-8",
@@ -623,7 +815,12 @@
         "chantent"
       ],
       "consigne": "Trouve le sujet du verbe.",
-      "explication": "Le sujet répond à la question : qui est-ce qui… ?"
+      "explication": "Le sujet répond à la question : qui est-ce qui… ?",
+      "pourquoi": {
+        "l’arbre": "qui est-ce qui chantent ? « Les oiseaux », pas « l’arbre ».",
+        "dans l’arbre": "qui est-ce qui chantent ? « Les oiseaux », pas « dans l’arbre ».",
+        "chantent": "c’est le verbe : le sujet est celui qui fait l’action."
+      }
     },
     {
       "id": "verbe-9",
@@ -637,7 +834,12 @@
         "vous"
       ],
       "consigne": "Trouve le verbe de la phrase.",
-      "explication": "Le verbe change quand on change le temps : hier…, demain…"
+      "explication": "Le verbe change quand on change le temps : hier…, demain…",
+      "pourquoi": {
+        "Demain": "« Demain » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « irez ».",
+        "musée": "« musée » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « irez ».",
+        "vous": "« vous » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « irez »."
+      }
     },
     {
       "id": "sujet-9",
@@ -651,7 +853,12 @@
         "irez"
       ],
       "consigne": "Trouve le sujet du verbe.",
-      "explication": "Le sujet répond à la question : qui est-ce qui… ?"
+      "explication": "Le sujet répond à la question : qui est-ce qui… ?",
+      "pourquoi": {
+        "au musée": "« au musée » dit où, pas qui.",
+        "Demain": "« demain » dit quand, pas qui.",
+        "irez": "c’est le verbe : le sujet est celui qui fait l’action."
+      }
     },
     {
       "id": "verbe-10",
@@ -665,7 +872,12 @@
         "grand"
       ],
       "consigne": "Trouve le verbe de la phrase.",
-      "explication": "Le verbe change quand on change le temps : hier…, demain…"
+      "explication": "Le verbe change quand on change le temps : hier…, demain…",
+      "pourquoi": {
+        "frère": "« frère » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « répare ».",
+        "vélo": "« vélo » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « répare ».",
+        "grand": "« grand » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « répare »."
+      }
     },
     {
       "id": "sujet-10",
@@ -679,7 +891,12 @@
         "vélo"
       ],
       "consigne": "Trouve le sujet du verbe.",
-      "explication": "Le sujet répond à la question : qui est-ce qui… ?"
+      "explication": "Le sujet répond à la question : qui est-ce qui… ?",
+      "pourquoi": {
+        "son vélo": "qui est-ce qui répare ? « Mon grand frère », pas « son vélo ».",
+        "Mon grand": "il manque une partie : qui est-ce qui répare ? « Mon grand frère ».",
+        "vélo": "qui est-ce qui répare ? « Mon grand frère », pas « vélo »."
+      }
     },
     {
       "id": "verbe-11",
@@ -693,7 +910,12 @@
         "mère"
       ],
       "consigne": "Trouve le verbe de la phrase.",
-      "explication": "Le verbe change quand on change le temps : hier…, demain…"
+      "explication": "Le verbe change quand on change le temps : hier…, demain…",
+      "pourquoi": {
+        "soir": "« soir » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « prépare ».",
+        "soupe": "« soupe » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « prépare ».",
+        "mère": "« mère » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « prépare »."
+      }
     },
     {
       "id": "sujet-11",
@@ -707,7 +929,12 @@
         "prépare"
       ],
       "consigne": "Trouve le sujet du verbe.",
-      "explication": "Le sujet répond à la question : qui est-ce qui… ?"
+      "explication": "Le sujet répond à la question : qui est-ce qui… ?",
+      "pourquoi": {
+        "une soupe": "qui est-ce qui prépare ? « ma mère », pas « une soupe ».",
+        "Ce soir": "qui est-ce qui prépare ? « ma mère », pas « Ce soir ».",
+        "prépare": "c’est le verbe : le sujet est celui qui fait l’action."
+      }
     },
     {
       "id": "verbe-12",
@@ -721,7 +948,12 @@
         "Sous"
       ],
       "consigne": "Trouve le verbe de la phrase.",
-      "explication": "Le verbe change quand on change le temps : hier…, demain…"
+      "explication": "Le verbe change quand on change le temps : hier…, demain…",
+      "pourquoi": {
+        "pluie": "« pluie » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « sortent ».",
+        "escargots": "« escargots » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « sortent ».",
+        "Sous": "« Sous » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « sortent »."
+      }
     },
     {
       "id": "sujet-12",
@@ -735,7 +967,12 @@
         "sortent"
       ],
       "consigne": "Trouve le sujet du verbe.",
-      "explication": "Le sujet répond à la question : qui est-ce qui… ?"
+      "explication": "Le sujet répond à la question : qui est-ce qui… ?",
+      "pourquoi": {
+        "la pluie": "qui est-ce qui sortent ? « les escargots », pas « la pluie ».",
+        "Sous la pluie": "qui est-ce qui sortent ? « les escargots », pas « Sous la pluie ».",
+        "sortent": "c’est le verbe : le sujet est celui qui fait l’action."
+      }
     },
     {
       "id": "nature-1",
@@ -925,7 +1162,12 @@
         "chat et noir",
         "un et gros"
       ],
-      "consigne": "Dans « un gros chat noir », quels mots sont des adjectifs ?"
+      "consigne": "Dans « un gros chat noir », quels mots sont des adjectifs ?",
+      "pourquoi": {
+        "un et chat": "« un » est un déterminant et « chat » un nom.",
+        "chat et noir": "« chat » est un nom : il dit de qui on parle.",
+        "un et gros": "« un » est un déterminant : il est devant le nom."
+      }
     },
     {
       "id": "nature-det",
@@ -937,7 +1179,11 @@
         "petites",
         "souris"
       ],
-      "consigne": "Dans « les petites souris », quel mot est le déterminant ?"
+      "consigne": "Dans « les petites souris », quel mot est le déterminant ?",
+      "pourquoi": {
+        "petites": "« petites » est un adjectif : il dit comment sont les souris.",
+        "souris": "« souris » est le nom."
+      }
     },
     {
       "id": "nature-nom-propre",
@@ -951,7 +1197,12 @@
         "rivière"
       ],
       "consigne": "Lequel est un nom propre ?",
-      "explication": "Un nom propre prend une majuscule."
+      "explication": "Un nom propre prend une majuscule.",
+      "pourquoi": {
+        "ville": "« ville » est un nom commun : il n’a pas de majuscule.",
+        "maison": "« maison » est un nom commun : il n’a pas de majuscule.",
+        "rivière": "« rivière » est un nom commun : il n’a pas de majuscule."
+      }
     },
     {
       "id": "pronom-1",
@@ -964,7 +1215,12 @@
         "Il",
         "Nous"
       ],
-      "consigne": "Remplace le sujet par un pronom."
+      "consigne": "Remplace le sujet par un pronom.",
+      "pourquoi": {
+        "Elles": "« enfants » est au masculin : on dit « ils ».",
+        "Il": "« les enfants » sont plusieurs : on dit « ils ».",
+        "Nous": "« nous », c’est quand on parle de soi."
+      }
     },
     {
       "id": "pronom-2",
@@ -977,7 +1233,12 @@
         "Elles",
         "Ils"
       ],
-      "consigne": "Remplace le sujet par un pronom."
+      "consigne": "Remplace le sujet par un pronom.",
+      "pourquoi": {
+        "Il": "« ma sœur » est au féminin : on dit « elle ».",
+        "Elles": "« ma sœur » est une seule personne.",
+        "Ils": "« ma sœur » est une seule personne, et une fille."
+      }
     },
     {
       "id": "pronom-3",
@@ -990,7 +1251,12 @@
         "Ils",
         "On"
       ],
-      "consigne": "Remplace le sujet par un pronom."
+      "consigne": "Remplace le sujet par un pronom.",
+      "pourquoi": {
+        "Elle": "« le boulanger » est au masculin.",
+        "Ils": "« le boulanger » est une seule personne.",
+        "On": "« on » ne remplace pas une personne précise."
+      }
     },
     {
       "id": "pronom-4",
@@ -1003,7 +1269,12 @@
         "Elle",
         "Vous"
       ],
-      "consigne": "Remplace le sujet par un pronom."
+      "consigne": "Remplace le sujet par un pronom.",
+      "pourquoi": {
+        "Ils": "« les filles » sont toutes des filles : on dit « elles ».",
+        "Elle": "« les filles » sont plusieurs.",
+        "Vous": "« vous », c’est quand on parle à quelqu’un."
+      }
     },
     {
       "id": "pronom-5",
@@ -1016,7 +1287,12 @@
         "Vous",
         "On"
       ],
-      "consigne": "Remplace le sujet par un pronom."
+      "consigne": "Remplace le sujet par un pronom.",
+      "pourquoi": {
+        "Ils": "avec « moi » dedans, on dit « nous ».",
+        "Vous": "« vous », c’est quand on parle à quelqu’un.",
+        "On": "à l’écrit, avec « moi » dedans, on dit « nous »."
+      }
     },
     {
       "id": "pronom-6",
@@ -1029,7 +1305,12 @@
         "Ils",
         "Tu"
       ],
-      "consigne": "Remplace le sujet par un pronom."
+      "consigne": "Remplace le sujet par un pronom.",
+      "pourquoi": {
+        "Nous": "« nous » ne va pas avec « toi » : il faut « moi » dedans.",
+        "Ils": "avec « toi » dedans, on dit « vous ».",
+        "Tu": "« tu » ne parle qu’à une seule personne."
+      }
     },
     {
       "id": "pronom-7",
@@ -1042,7 +1323,12 @@
         "Il",
         "Nous"
       ],
-      "consigne": "Remplace le sujet par un pronom."
+      "consigne": "Remplace le sujet par un pronom.",
+      "pourquoi": {
+        "Elles": "avec un garçon dans le groupe, on dit « ils ».",
+        "Il": "« Léo et Inès » sont deux.",
+        "Nous": "« nous », c’est quand on parle de soi."
+      }
     },
     {
       "id": "pronom-8",
@@ -1055,7 +1341,12 @@
         "Ils",
         "On"
       ],
-      "consigne": "Remplace le sujet par un pronom."
+      "consigne": "Remplace le sujet par un pronom.",
+      "pourquoi": {
+        "Il": "« la voiture » est au féminin.",
+        "Ils": "« la voiture » est une seule.",
+        "On": "« on » ne remplace pas une chose précise."
+      }
     }
   ]
 }

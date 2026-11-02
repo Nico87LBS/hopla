@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce2-textes",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Comprendre un texte",
   "description": "De petits textes à lire, avec une question ; vrai ou faux ; remettre une histoire dans l'ordre ; deviner ce qui n'est pas écrit.",
   "matiere": "francais",
@@ -54,7 +54,12 @@
         "Il neige.",
         "Il fait très chaud."
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "Il fait beau.": "le ciel est gris et de grosses gouttes tombent : il pleut.",
+        "Il neige.": "on parle de gouttes, pas de flocons.",
+        "Il fait très chaud.": "il prend son parapluie et ses bottes : il ne fait pas chaud."
+      }
     },
     {
       "id": "texte-1-2",
@@ -67,7 +72,12 @@
         "pour jouer",
         "pour faire beau"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "parce qu’il fait nuit": "le texte dit « ce matin » : il fait jour.",
+        "pour jouer": "il part à l’école, pas pour jouer.",
+        "pour faire beau": "un parapluie protège de la pluie : de grosses gouttes tombent."
+      }
     },
     {
       "id": "texte-2-1",
@@ -80,7 +90,12 @@
         "10 ans",
         "on ne sait pas"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "6 ans": "il y a huit bougies sur le gâteau, pas six.",
+        "10 ans": "il y a huit bougies sur le gâteau, pas dix.",
+        "on ne sait pas": "le texte le dit : il y a huit bougies."
+      }
     },
     {
       "id": "texte-2-2",
@@ -93,7 +108,12 @@
         "ses amis",
         "son papa"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "Inès": "c’est l’anniversaire d’Inès : le gâteau est préparé pour elle.",
+        "ses amis": "ses amis sont invités : ce ne sont pas eux.",
+        "son papa": "le texte parle de sa maman, pas de son papa."
+      }
     },
     {
       "id": "texte-3-1",
@@ -106,7 +126,12 @@
         "à midi",
         "l’après-midi"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "le matin": "il sort « quand la nuit tombe », pas le matin.",
+        "à midi": "il sort « quand la nuit tombe », pas à midi.",
+        "l’après-midi": "il sort « quand la nuit tombe », pas l’après-midi."
+      }
     },
     {
       "id": "texte-3-2",
@@ -119,7 +144,12 @@
         "il pleut",
         "il a trouvé à manger"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "il n’a plus faim": "il a toujours faim : il n’a rien mangé.",
+        "il pleut": "le texte ne parle pas de pluie.",
+        "il a trouvé à manger": "il n’a rien trouvé : le chien s’est mis à aboyer."
+      }
     },
     {
       "id": "texte-4-1",
@@ -132,7 +162,12 @@
         "à la piscine",
         "dans la forêt"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "à la plage": "le texte dit « au bord de la rivière ».",
+        "à la piscine": "le texte dit « au bord de la rivière ».",
+        "dans la forêt": "le texte dit « au bord de la rivière »."
+      }
     },
     {
       "id": "texte-4-2",
@@ -145,7 +180,12 @@
         "il le donne au chat",
         "il le garde dans un seau"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "il le mange": "il le remet doucement dans l’eau.",
+        "il le donne au chat": "le texte ne parle pas de chat.",
+        "il le garde dans un seau": "il le remet dans l’eau : il ne le garde pas."
+      }
     },
     {
       "id": "texte-5-1",
@@ -158,7 +198,12 @@
         "sous le lit",
         "dans le garage"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "dans le jardin": "Jade l’a cherchée dans le jardin sans la trouver.",
+        "sous le lit": "Jade a cherché sous les lits sans la trouver.",
+        "dans le garage": "Jade a cherché dans le garage sans la trouver."
+      }
     },
     {
       "id": "texte-5-2",
@@ -171,7 +216,12 @@
         "elle était malade",
         "elle avait froid"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "elle avait peur du chien": "le texte ne parle pas de chien.",
+        "elle était malade": "rien ne dit qu’elle est malade : elle a trois chatons.",
+        "elle avait froid": "elle dort sur les pulls avec ses chatons, pas pour avoir chaud."
+      }
     },
     {
       "id": "texte-6-1",
@@ -184,7 +234,12 @@
         "au printemps",
         "on ne peut pas savoir"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "en été": "il fait froid et il y a de la neige.",
+        "au printemps": "il fait froid et il y a de la neige.",
+        "on ne peut pas savoir": "la neige et le froid nous aident à deviner."
+      }
     },
     {
       "id": "texte-6-2",
@@ -197,7 +252,12 @@
         "avec son papa",
         "tout seul"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "avec son frère": "le texte parle de sa sœur, pas d’un frère.",
+        "avec son papa": "le texte ne parle pas de son papa.",
+        "tout seul": "il joue avec sa sœur."
+      }
     },
     {
       "id": "texte-7-1",
@@ -210,7 +270,12 @@
         "les pommes",
         "la monnaie"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "le melon": "elle a acheté un melon.",
+        "les pommes": "elle a acheté trois pommes.",
+        "la monnaie": "le marchand lui a rendu la monnaie."
+      }
     },
     {
       "id": "texte-7-2",
@@ -223,7 +288,12 @@
         "à la maison",
         "à l’école"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "au marché": "le marché, c’est avant : à la fin elle va chez le boulanger.",
+        "à la maison": "elle était en train de rentrer, puis elle repart.",
+        "à l’école": "le texte ne parle pas d’école."
+      }
     },
     {
       "id": "texte-8-1",
@@ -236,7 +306,12 @@
         "des pommes de terre",
         "un arbre"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "des tulipes": "le texte parle de graines de haricot.",
+        "des pommes de terre": "le texte parle de graines de haricot.",
+        "un arbre": "ce sont des graines dans des pots, pas un arbre."
+      }
     },
     {
       "id": "texte-8-2",
@@ -249,7 +324,12 @@
         "il a gagné un match",
         "il a fini ses devoirs"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "il a eu une bonne note": "le texte ne parle pas de note.",
+        "il a gagné un match": "le texte ne parle pas de match.",
+        "il a fini ses devoirs": "le texte ne parle pas de devoirs : les pousses sortent de la terre."
+      }
     },
     {
       "id": "texte-9-1",
@@ -262,7 +342,12 @@
         "Madame Martin",
         "sa fille"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "le facteur": "le facteur ne fait qu’apporter le paquet.",
+        "Madame Martin": "Madame Martin reçoit le pull : c’est sa sœur qui l’a tricoté.",
+        "sa fille": "le texte dit « sa sœur »."
+      }
     },
     {
       "id": "texte-9-2",
@@ -275,7 +360,12 @@
         "pour l’été",
         "pour le vendre"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "pour son anniversaire": "la carte ne parle pas d’anniversaire.",
+        "pour l’été": "la carte dit « cet hiver », pas l’été.",
+        "pour le vendre": "c’est un cadeau pour sa sœur."
+      }
     },
     {
       "id": "texte-10-1",
@@ -288,7 +378,12 @@
         "de la viande",
         "du pain"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "des cerises": "ce sont des cerises qu’Hugo imagine cueillir.",
+        "de la viande": "la girafe attrape des feuilles.",
+        "du pain": "le texte ne parle pas de pain."
+      }
     },
     {
       "id": "texte-10-2",
@@ -301,7 +396,12 @@
         "pour faire peur",
         "pour manger des feuilles"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "pour voir le zoo": "il pense aux cerises du jardin, pas au zoo.",
+        "pour faire peur": "il ne parle pas de faire peur.",
+        "pour manger des feuilles": "c’est la girafe qui mange des feuilles : Hugo pense aux cerises."
+      }
     },
     {
       "id": "texte-11-1",
@@ -314,7 +414,12 @@
         "l’école est fermée",
         "il est trop tôt"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "c’est dimanche": "Mila va à l’école : ce n’est pas dimanche.",
+        "l’école est fermée": "la directrice vient lui ouvrir : l’école est ouverte.",
+        "il est trop tôt": "le portail est « déjà » fermé : elle est en retard."
+      }
     },
     {
       "id": "texte-11-2",
@@ -327,7 +432,12 @@
         "elle crie",
         "elle punit Mila"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "oui, très fâchée": "elle lui ouvre en souriant.",
+        "elle crie": "elle dit « ce n’est pas grave ».",
+        "elle punit Mila": "elle lui dit seulement de partir plus tôt."
+      }
     },
     {
       "id": "texte-12-1",
@@ -340,7 +450,12 @@
         "un chasseur",
         "une autre fourmi"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "un poisson": "le texte ne parle pas de poisson.",
+        "un chasseur": "le texte ne parle pas de chasseur.",
+        "une autre fourmi": "c’est une colombe qui l’aide."
+      }
     },
     {
       "id": "texte-12-2",
@@ -353,7 +468,12 @@
         "elle vole",
         "la colombe la porte"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "elle nage": "elle grimpe sur une feuille, elle ne nage pas.",
+        "elle vole": "une fourmi ne vole pas : elle grimpe sur une feuille.",
+        "la colombe la porte": "la colombe laisse tomber une feuille, elle ne la porte pas."
+      }
     },
     {
       "id": "histoire-1",
@@ -442,7 +562,10 @@
       "pieges": [
         "Faux"
       ],
-      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?"
+      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?",
+      "pourquoi": {
+        "Faux": "le texte dit qu’elle part à la piscine."
+      }
     },
     {
       "id": "vf-1-2",
@@ -453,7 +576,10 @@
       "pieges": [
         "Vrai"
       ],
-      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?"
+      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?",
+      "pourquoi": {
+        "Vrai": "elle part avec son père, pas sa mère."
+      }
     },
     {
       "id": "vf-2-1",
@@ -464,7 +590,10 @@
       "pieges": [
         "Faux"
       ],
-      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?"
+      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?",
+      "pourquoi": {
+        "Faux": "il se lève à quatre heures du matin : c’est très tôt."
+      }
     },
     {
       "id": "vf-2-2",
@@ -475,7 +604,10 @@
       "pieges": [
         "Vrai"
       ],
-      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?"
+      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?",
+      "pourquoi": {
+        "Vrai": "la boutique ouvre à sept heures."
+      }
     },
     {
       "id": "vf-3-1",
@@ -486,7 +618,10 @@
       "pieges": [
         "Faux"
       ],
-      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?"
+      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?",
+      "pourquoi": {
+        "Faux": "elles partent en automne et reviennent au printemps : l’hiver, elles sont en Afrique."
+      }
     },
     {
       "id": "vf-3-2",
@@ -497,7 +632,10 @@
       "pieges": [
         "Vrai"
       ],
-      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?"
+      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?",
+      "pourquoi": {
+        "Vrai": "elles reviennent au printemps : en automne, elles partent."
+      }
     }
   ]
 }

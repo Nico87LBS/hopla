@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce2-vocabulaire",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Le vocabulaire",
   "description": "Les synonymes, les contraires, les familles de mots, les préfixes et les suffixes, l'ordre alphabétique et le dictionnaire, les mots qui en regroupent d'autres.",
   "matiere": "francais",
@@ -122,7 +122,12 @@
         "drôle",
         "rapide"
       ],
-      "consigne": "Trouve le synonyme."
+      "consigne": "Trouve le synonyme.",
+      "pourquoi": {
+        "heureux": "« heureux » est le contraire de « triste ».",
+        "drôle": "« drôle » fait rire : ce n’est pas triste.",
+        "rapide": "« rapide » parle de vitesse."
+      }
     },
     {
       "id": "syn-q2",
@@ -135,7 +140,12 @@
         "un mur",
         "une voiture"
       ],
-      "consigne": "Trouve le synonyme."
+      "consigne": "Trouve le synonyme.",
+      "pourquoi": {
+        "une rivière": "une rivière, c’est de l’eau qui coule.",
+        "un mur": "un mur ne sert pas à marcher dessus.",
+        "une voiture": "une voiture roule sur le chemin, ce n’est pas un chemin."
+      }
     },
     {
       "id": "syn-q3",
@@ -148,7 +158,12 @@
         "courir",
         "manger"
       ],
-      "consigne": "Trouve le synonyme."
+      "consigne": "Trouve le synonyme.",
+      "pourquoi": {
+        "dormir": "quand on dort, on ne parle pas.",
+        "courir": "courir, c’est avancer vite.",
+        "manger": "manger, c’est avaler."
+      }
     },
     {
       "id": "syn-q4",
@@ -161,7 +176,12 @@
         "bête",
         "mouillé"
       ],
-      "consigne": "Trouve le synonyme."
+      "consigne": "Trouve le synonyme.",
+      "pourquoi": {
+        "lent": "« lent » parle de vitesse.",
+        "bête": "« bête » est le contraire de « malin ».",
+        "mouillé": "« mouillé » veut dire plein d’eau."
+      }
     },
     {
       "id": "syn-q5",
@@ -174,7 +194,12 @@
         "un train",
         "une plage"
       ],
-      "consigne": "Trouve le synonyme."
+      "consigne": "Trouve le synonyme.",
+      "pourquoi": {
+        "un avion": "un avion vole dans le ciel.",
+        "un train": "un train roule sur des rails.",
+        "une plage": "une plage est au bord de la mer."
+      }
     },
     {
       "id": "syn-q6",
@@ -187,7 +212,12 @@
         "écrire",
         "sauter"
       ],
-      "consigne": "Trouve le synonyme."
+      "consigne": "Trouve le synonyme.",
+      "pourquoi": {
+        "se taire": "se taire, c’est le contraire de bavarder.",
+        "écrire": "écrire, ce n’est pas parler.",
+        "sauter": "sauter, ce n’est pas parler."
+      }
     },
     {
       "id": "con-1",
@@ -258,7 +288,12 @@
         "malvisible",
         "revisible"
       ],
-      "consigne": "Trouve le contraire."
+      "consigne": "Trouve le contraire.",
+      "pourquoi": {
+        "dévisible": "« dévisible » n’existe pas : on ajoute « in- ».",
+        "malvisible": "« malvisible » n’existe pas : on ajoute « in- ».",
+        "revisible": "« re- » veut dire encore, pas le contraire."
+      }
     },
     {
       "id": "con-q2",
@@ -271,7 +306,12 @@
         "malcoller",
         "recoller"
       ],
-      "consigne": "Trouve le contraire."
+      "consigne": "Trouve le contraire.",
+      "pourquoi": {
+        "incoller": "« incoller » n’existe pas : on ajoute « dé- ».",
+        "malcoller": "« malcoller » n’existe pas : on ajoute « dé- ».",
+        "recoller": "« recoller » veut dire coller encore."
+      }
     },
     {
       "id": "con-q3",
@@ -284,7 +324,12 @@
         "désadroit",
         "readroit"
       ],
-      "consigne": "Trouve le contraire."
+      "consigne": "Trouve le contraire.",
+      "pourquoi": {
+        "inadroit": "« inadroit » n’existe pas : on ajoute « mal- ».",
+        "désadroit": "« désadroit » n’existe pas : on ajoute « mal- ».",
+        "readroit": "« re- » veut dire encore, pas le contraire."
+      }
     },
     {
       "id": "con-q4",
@@ -297,7 +342,12 @@
         "malpatient",
         "inpatient"
       ],
-      "consigne": "Trouve le contraire."
+      "consigne": "Trouve le contraire.",
+      "pourquoi": {
+        "dépatient": "« dépatient » n’existe pas : on ajoute « im- ».",
+        "malpatient": "« malpatient » n’existe pas : on ajoute « im- ».",
+        "inpatient": "devant un p, « in- » devient « im- »."
+      }
     },
     {
       "id": "con-q5",
@@ -310,7 +360,12 @@
         "parfois",
         "encore"
       ],
-      "consigne": "Trouve le contraire."
+      "consigne": "Trouve le contraire.",
+      "pourquoi": {
+        "souvent": "souvent, ce n’est pas toujours, mais ce n’est pas le contraire.",
+        "parfois": "parfois, c’est entre les deux : le contraire, c’est jamais.",
+        "encore": "encore veut dire une fois de plus."
+      }
     },
     {
       "id": "con-q6",
@@ -323,7 +378,12 @@
         "venir",
         "partir loin"
       ],
-      "consigne": "Trouve le contraire."
+      "consigne": "Trouve le contraire.",
+      "pourquoi": {
+        "rentrer": "rentrer, c’est entrer à nouveau.",
+        "venir": "venir, c’est s’approcher.",
+        "partir loin": "partir loin, ce n’est pas sortir d’un lieu."
+      }
     },
     {
       "id": "fam-1",
@@ -337,7 +397,12 @@
         "terrestre"
       ],
       "consigne": "Trouve l’intrus.",
-      "explication": "Les mots d’une même famille ont un radical commun et un sens proche."
+      "explication": "Les mots d’une même famille ont un radical commun et un sens proche.",
+      "pourquoi": {
+        "terrain": "« terrain » vient de « terre » : il est de la famille.",
+        "enterrer": "« enterrer », c’est mettre dans la terre.",
+        "terrestre": "« terrestre » veut dire de la Terre."
+      }
     },
     {
       "id": "fam-2",
@@ -351,7 +416,12 @@
         "édenté"
       ],
       "consigne": "Trouve l’intrus.",
-      "explication": "Les mots d’une même famille ont un radical commun et un sens proche."
+      "explication": "Les mots d’une même famille ont un radical commun et un sens proche.",
+      "pourquoi": {
+        "dentiste": "le dentiste soigne les dents.",
+        "dentifrice": "le dentifrice lave les dents.",
+        "édenté": "« édenté » veut dire sans dents."
+      }
     },
     {
       "id": "fam-3",
@@ -365,7 +435,12 @@
         "jardiner"
       ],
       "consigne": "Trouve l’intrus.",
-      "explication": "Les mots d’une même famille ont un radical commun et un sens proche."
+      "explication": "Les mots d’une même famille ont un radical commun et un sens proche.",
+      "pourquoi": {
+        "jardinier": "le jardinier s’occupe du jardin.",
+        "jardinage": "le jardinage, c’est le travail du jardin.",
+        "jardiner": "jardiner, c’est travailler au jardin."
+      }
     },
     {
       "id": "fam-4",
@@ -379,7 +454,12 @@
         "fleuri"
       ],
       "consigne": "Trouve l’intrus.",
-      "explication": "Les mots d’une même famille ont un radical commun et un sens proche."
+      "explication": "Les mots d’une même famille ont un radical commun et un sens proche.",
+      "pourquoi": {
+        "fleuriste": "le fleuriste vend des fleurs.",
+        "fleurir": "fleurir, c’est faire des fleurs.",
+        "fleuri": "« fleuri » veut dire plein de fleurs."
+      }
     },
     {
       "id": "fam-5",
@@ -393,7 +473,12 @@
         "allaiter"
       ],
       "consigne": "Trouve l’intrus.",
-      "explication": "Les mots d’une même famille ont un radical commun et un sens proche."
+      "explication": "Les mots d’une même famille ont un radical commun et un sens proche.",
+      "pourquoi": {
+        "laitier": "le laitier vend du lait.",
+        "laiterie": "la laiterie fait des produits avec le lait.",
+        "allaiter": "allaiter, c’est nourrir avec du lait."
+      }
     },
     {
       "id": "fam-6",
@@ -407,7 +492,12 @@
         "chanson"
       ],
       "consigne": "Trouve l’intrus.",
-      "explication": "Les mots d’une même famille ont un radical commun et un sens proche."
+      "explication": "Les mots d’une même famille ont un radical commun et un sens proche.",
+      "pourquoi": {
+        "chanter": "chanter, c’est faire un chant.",
+        "chanteur": "le chanteur fait des chants.",
+        "chanson": "une chanson se chante."
+      }
     },
     {
       "id": "fam-7",
@@ -421,7 +511,12 @@
         "maritime"
       ],
       "consigne": "Trouve l’intrus.",
-      "explication": "Les mots d’une même famille ont un radical commun et un sens proche."
+      "explication": "Les mots d’une même famille ont un radical commun et un sens proche.",
+      "pourquoi": {
+        "marin": "un marin va sur la mer.",
+        "marée": "la marée, c’est la mer qui monte et descend.",
+        "maritime": "« maritime » veut dire de la mer."
+      }
     },
     {
       "id": "fam-meme",
@@ -434,7 +529,12 @@
         "le nez",
         "la neige"
       ],
-      "consigne": "Quel mot est de la même famille que « nager » ?"
+      "consigne": "Quel mot est de la même famille que « nager » ?",
+      "pourquoi": {
+        "la nappe": "« nappe » n’a rien à voir avec nager.",
+        "le nez": "« nez » n’a rien à voir avec nager.",
+        "la neige": "« neige » n’a rien à voir avec nager."
+      }
     },
     {
       "id": "fam-meme-2",
@@ -447,7 +547,12 @@
         "lent",
         "large"
       ],
-      "consigne": "Quel mot est de la même famille que « long » ?"
+      "consigne": "Quel mot est de la même famille que « long » ?",
+      "pourquoi": {
+        "loup": "« loup » commence pareil mais n’a rien à voir avec long.",
+        "lent": "« lent » parle de vitesse, pas de longueur.",
+        "large": "« large » est un autre mot, pas de la famille de « long »."
+      }
     },
     {
       "id": "fam-meme-3",
@@ -460,7 +565,12 @@
         "âme",
         "amande"
       ],
-      "consigne": "Quel mot est de la même famille que « ami » ?"
+      "consigne": "Quel mot est de la même famille que « ami » ?",
+      "pourquoi": {
+        "amer": "« amer » parle d’un goût, pas d’un ami.",
+        "âme": "« âme » n’a rien à voir avec un ami.",
+        "amande": "une amande est un fruit sec."
+      }
     },
     {
       "id": "pre-1",
@@ -474,7 +584,12 @@
         "faire vite"
       ],
       "consigne": "Choisis le bon sens.",
-      "explication": "« re- » change le sens du mot."
+      "explication": "« re- » change le sens du mot.",
+      "pourquoi": {
+        "ne pas faire": "« re- » ne veut pas dire « ne pas ».",
+        "faire mal": "« re- » ne veut pas dire « mal ».",
+        "faire vite": "« re- » ne veut pas dire « vite »."
+      }
     },
     {
       "id": "pre-2",
@@ -488,7 +603,12 @@
         "bien monter"
       ],
       "consigne": "Choisis le bon sens.",
-      "explication": "« dé- » change le sens du mot."
+      "explication": "« dé- » change le sens du mot.",
+      "pourquoi": {
+        "monter encore": "« dé- » ne veut pas dire encore : ce serait « re- ».",
+        "monter vite": "« dé- » ne veut pas dire « vite ».",
+        "bien monter": "« dé- » ne veut pas dire « bien »."
+      }
     },
     {
       "id": "pre-3",
@@ -502,7 +622,12 @@
         "une maison en bois"
       ],
       "consigne": "Choisis le bon sens.",
-      "explication": "« -ette » change le sens du mot."
+      "explication": "« -ette » change le sens du mot.",
+      "pourquoi": {
+        "une grande maison": "« -ette » veut dire petit, pas grand.",
+        "une vieille maison": "« -ette » veut dire petit, pas vieux.",
+        "une maison en bois": "« -ette » ne dit pas en quoi elle est faite."
+      }
     },
     {
       "id": "pre-4",
@@ -516,7 +641,12 @@
         "un chantage"
       ],
       "consigne": "Choisis le bon sens.",
-      "explication": "« -eur » change le sens du mot."
+      "explication": "« -eur » change le sens du mot.",
+      "pourquoi": {
+        "une chanson": "une chanson, c’est ce qu’on chante, pas celui qui chante.",
+        "un chantier": "un chantier, c’est là où on construit.",
+        "un chantage": "un chantage, c’est une menace."
+      }
     },
     {
       "id": "pre-5",
@@ -530,7 +660,12 @@
         "presque possible"
       ],
       "consigne": "Choisis le bon sens.",
-      "explication": "« im- » change le sens du mot."
+      "explication": "« im- » change le sens du mot.",
+      "pourquoi": {
+        "très possible": "« im- » veut dire « pas », pas « très ».",
+        "possible encore": "« im- » ne veut pas dire « encore ».",
+        "presque possible": "« im- » veut dire « pas du tout »."
+      }
     },
     {
       "id": "pre-6",
@@ -544,7 +679,12 @@
         "un fleurier"
       ],
       "consigne": "Choisis le bon sens.",
-      "explication": "« -iste » change le sens du mot."
+      "explication": "« -iste » change le sens du mot.",
+      "pourquoi": {
+        "un fleuret": "un fleuret est une épée.",
+        "une floraison": "la floraison, c’est quand les plantes fleurissent.",
+        "un fleurier": "« fleurier » n’existe pas : on dit fleuriste."
+      }
     },
     {
       "id": "pre-7",
@@ -558,7 +698,12 @@
         "lire mal"
       ],
       "consigne": "Choisis le bon sens.",
-      "explication": "« re- » change le sens du mot."
+      "explication": "« re- » change le sens du mot.",
+      "pourquoi": {
+        "ne pas lire": "« re- » ne veut pas dire « ne pas ».",
+        "lire vite": "« re- » ne veut pas dire « vite ».",
+        "lire mal": "« re- » ne veut pas dire « mal »."
+      }
     },
     {
       "id": "pre-8",
@@ -572,7 +717,12 @@
         "un vieux camion"
       ],
       "consigne": "Choisis le bon sens.",
-      "explication": "« -ette » change le sens du mot."
+      "explication": "« -ette » change le sens du mot.",
+      "pourquoi": {
+        "un gros camion": "« -ette » veut dire petit, pas gros.",
+        "un camion rouge": "« -ette » ne dit pas la couleur.",
+        "un vieux camion": "« -ette » veut dire petit, pas vieux."
+      }
     },
     {
       "id": "alpha-1",
@@ -663,7 +813,12 @@
         "train",
         "vélo"
       ],
-      "consigne": "Dans le dictionnaire, quel mot vient en premier ?"
+      "consigne": "Dans le dictionnaire, quel mot vient en premier ?",
+      "pourquoi": {
+        "bateau": "b vient après a dans l’alphabet.",
+        "train": "t vient après a dans l’alphabet.",
+        "vélo": "v vient après a dans l’alphabet."
+      }
     },
     {
       "id": "dico-2",
@@ -676,7 +831,12 @@
         "pull",
         "plage"
       ],
-      "consigne": "Dans le dictionnaire, quel mot vient en premier ?"
+      "consigne": "Dans le dictionnaire, quel mot vient en premier ?",
+      "pourquoi": {
+        "poire": "« pa » vient avant « po » : on compare la deuxième lettre.",
+        "pull": "« pa » vient avant « pu » : on compare la deuxième lettre.",
+        "plage": "« pa » vient avant « pl » : on compare la deuxième lettre."
+      }
     },
     {
       "id": "dico-3",
@@ -690,7 +850,12 @@
         "chevalier"
       ],
       "consigne": "Dans le dictionnaire, on cherche « chevaux » au mot…",
-      "explication": "On cherche les noms au singulier et les verbes à l’infinitif."
+      "explication": "On cherche les noms au singulier et les verbes à l’infinitif.",
+      "pourquoi": {
+        "chevaux": "« chevaux » est le pluriel : on cherche au singulier.",
+        "chev": "« chev » n’est pas un mot.",
+        "chevalier": "un chevalier est un autre mot."
+      }
     },
     {
       "id": "dico-4",
@@ -703,7 +868,12 @@
         "nous",
         "mange"
       ],
-      "consigne": "Dans le dictionnaire, on cherche « nous mangions » au mot…"
+      "consigne": "Dans le dictionnaire, on cherche « nous mangions » au mot…",
+      "pourquoi": {
+        "mangions": "« mangions » est conjugué : on cherche le verbe à l’infinitif.",
+        "nous": "« nous » n’est pas le verbe.",
+        "mange": "« mange » est conjugué : on cherche l’infinitif, « manger »."
+      }
     },
     {
       "id": "dico-5",
@@ -716,7 +886,12 @@
         "des recettes",
         "des cartes du monde"
       ],
-      "consigne": "Que trouve-t-on dans un dictionnaire ?"
+      "consigne": "Que trouve-t-on dans un dictionnaire ?",
+      "pourquoi": {
+        "des histoires": "les histoires sont dans les livres de contes.",
+        "des recettes": "les recettes sont dans les livres de cuisine.",
+        "des cartes du monde": "les cartes du monde sont dans un atlas."
+      }
     },
     {
       "id": "gen-1",
@@ -729,7 +904,12 @@
         "des fleurs",
         "des outils"
       ],
-      "consigne": "Trouve le mot qui les regroupe."
+      "consigne": "Trouve le mot qui les regroupe.",
+      "pourquoi": {
+        "des légumes": "ce sont des fruits : les légumes, ce sont carotte, poireau…",
+        "des fleurs": "ce sont des fruits, ils se mangent.",
+        "des outils": "ce sont des fruits : on ne bricole pas avec."
+      }
     },
     {
       "id": "gen-2",
@@ -742,7 +922,12 @@
         "des saisons",
         "des heures"
       ],
-      "consigne": "Trouve le mot qui les regroupe."
+      "consigne": "Trouve le mot qui les regroupe.",
+      "pourquoi": {
+        "des mois": "les mois, ce sont janvier, février…",
+        "des saisons": "les saisons, ce sont printemps, été…",
+        "des heures": "les heures se lisent sur une horloge."
+      }
     },
     {
       "id": "gen-3",
@@ -755,7 +940,12 @@
         "des vêtements",
         "des outils"
       ],
-      "consigne": "Trouve le mot qui les regroupe."
+      "consigne": "Trouve le mot qui les regroupe.",
+      "pourquoi": {
+        "des jouets": "on ne joue pas avec : ce sont des meubles.",
+        "des vêtements": "on ne les porte pas sur soi.",
+        "des outils": "on ne bricole pas avec : ce sont des meubles."
+      }
     },
     {
       "id": "gen-4",
@@ -768,7 +958,12 @@
         "des meubles",
         "des jeux"
       ],
-      "consigne": "Trouve le mot qui les regroupe."
+      "consigne": "Trouve le mot qui les regroupe.",
+      "pourquoi": {
+        "des instruments": "un instrument de musique fait des notes : ce sont des outils.",
+        "des meubles": "on ne s’assoit pas dessus : ce sont des outils.",
+        "des jeux": "on ne joue pas avec : ce sont des outils."
+      }
     },
     {
       "id": "gen-5",
@@ -781,7 +976,12 @@
         "des jouets",
         "des sports"
       ],
-      "consigne": "Trouve le mot qui les regroupe."
+      "consigne": "Trouve le mot qui les regroupe.",
+      "pourquoi": {
+        "des outils": "on ne bricole pas avec : on fait de la musique.",
+        "des jouets": "ce sont de vrais instruments, pas des jouets.",
+        "des sports": "ce ne sont pas des sports : on en joue pour faire de la musique."
+      }
     },
     {
       "id": "gen-6",
@@ -794,7 +994,12 @@
         "des arbres",
         "des légumes"
       ],
-      "consigne": "Trouve le mot qui les regroupe."
+      "consigne": "Trouve le mot qui les regroupe.",
+      "pourquoi": {
+        "des fruits": "ce sont des fleurs : on ne les mange pas.",
+        "des arbres": "ce sont des fleurs, plus petites qu’un arbre.",
+        "des légumes": "ce sont des fleurs : on ne les mange pas."
+      }
     },
     {
       "id": "gen-7",
@@ -807,7 +1012,12 @@
         "des fruits",
         "des oiseaux"
       ],
-      "consigne": "Trouve le mot qui les regroupe."
+      "consigne": "Trouve le mot qui les regroupe.",
+      "pourquoi": {
+        "des fleurs": "ce sont des arbres, bien plus grands que des fleurs.",
+        "des fruits": "ce sont des arbres, pas des fruits.",
+        "des oiseaux": "les oiseaux vivent dans les arbres."
+      }
     },
     {
       "id": "gen-8",
@@ -820,7 +1030,12 @@
         "des chaussures",
         "des tissus"
       ],
-      "consigne": "Trouve le mot qui les regroupe."
+      "consigne": "Trouve le mot qui les regroupe.",
+      "pourquoi": {
+        "des meubles": "on les porte sur soi : ce ne sont pas des meubles.",
+        "des chaussures": "les chaussures se mettent aux pieds.",
+        "des tissus": "le tissu sert à fabriquer les vêtements."
+      }
     }
   ]
 }

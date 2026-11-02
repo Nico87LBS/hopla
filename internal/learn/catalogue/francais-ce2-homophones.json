@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce2-homophones",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Les homophones",
   "description": "Des mots qui se disent pareil mais s'écrivent autrement : a ou à, et ou est, son ou sont, on ou ont, ou ou où, ces ou ses.",
   "matiere": "francais",
@@ -63,7 +63,10 @@
         "à"
       ],
       "consigne": "Complète avec « a » ou « à ».",
-      "explication": "On écrit « a » quand on peut dire « avait »."
+      "explication": "On écrit « a » quand on peut dire « avait ».",
+      "pourquoi": {
+        "à": "ici on peut dire « avait » : c’est le verbe avoir, sans accent."
+      }
     },
     {
       "id": "a-a-2",
@@ -75,7 +78,10 @@
         "a"
       ],
       "consigne": "Complète avec « a » ou « à ».",
-      "explication": "On écrit « a » quand on peut dire « avait »."
+      "explication": "On écrit « a » quand on peut dire « avait ».",
+      "pourquoi": {
+        "a": "on ne peut pas dire « avait » ici : c’est « à », avec un accent."
+      }
     },
     {
       "id": "a-a-3",
@@ -87,7 +93,10 @@
         "à"
       ],
       "consigne": "Complète avec « a » ou « à ».",
-      "explication": "On écrit « a » quand on peut dire « avait »."
+      "explication": "On écrit « a » quand on peut dire « avait ».",
+      "pourquoi": {
+        "à": "ici on peut dire « avait » : c’est le verbe avoir, sans accent."
+      }
     },
     {
       "id": "a-a-4",
@@ -99,7 +108,10 @@
         "a"
       ],
       "consigne": "Complète avec « a » ou « à ».",
-      "explication": "On écrit « a » quand on peut dire « avait »."
+      "explication": "On écrit « a » quand on peut dire « avait ».",
+      "pourquoi": {
+        "a": "on ne peut pas dire « avait » ici : c’est « à », avec un accent."
+      }
     },
     {
       "id": "a-a-5",
@@ -111,7 +123,10 @@
         "à"
       ],
       "consigne": "Complète avec « a » ou « à ».",
-      "explication": "On écrit « a » quand on peut dire « avait »."
+      "explication": "On écrit « a » quand on peut dire « avait ».",
+      "pourquoi": {
+        "à": "ici on peut dire « avait » : c’est le verbe avoir, sans accent."
+      }
     },
     {
       "id": "a-a-6",
@@ -123,7 +138,10 @@
         "a"
       ],
       "consigne": "Complète avec « a » ou « à ».",
-      "explication": "On écrit « a » quand on peut dire « avait »."
+      "explication": "On écrit « a » quand on peut dire « avait ».",
+      "pourquoi": {
+        "a": "on ne peut pas dire « avait » ici : c’est « à », avec un accent."
+      }
     },
     {
       "id": "a-a-7",
@@ -135,7 +153,10 @@
         "à"
       ],
       "consigne": "Complète avec « a » ou « à ».",
-      "explication": "On écrit « a » quand on peut dire « avait »."
+      "explication": "On écrit « a » quand on peut dire « avait ».",
+      "pourquoi": {
+        "à": "ici on peut dire « avait » : c’est le verbe avoir, sans accent."
+      }
     },
     {
       "id": "a-a-8",
@@ -147,7 +168,10 @@
         "a"
       ],
       "consigne": "Complète avec « a » ou « à ».",
-      "explication": "On écrit « a » quand on peut dire « avait »."
+      "explication": "On écrit « a » quand on peut dire « avait ».",
+      "pourquoi": {
+        "a": "on ne peut pas dire « avait » ici : c’est « à », avec un accent."
+      }
     },
     {
       "id": "a-a-9",
@@ -159,7 +183,10 @@
         "à"
       ],
       "consigne": "Complète avec « a » ou « à ».",
-      "explication": "On écrit « a » quand on peut dire « avait »."
+      "explication": "On écrit « a » quand on peut dire « avait ».",
+      "pourquoi": {
+        "à": "ici on peut dire « avait » : c’est le verbe avoir, sans accent."
+      }
     },
     {
       "id": "a-a-10",
@@ -171,7 +198,10 @@
         "a"
       ],
       "consigne": "Complète avec « a » ou « à ».",
-      "explication": "On écrit « a » quand on peut dire « avait »."
+      "explication": "On écrit « a » quand on peut dire « avait ».",
+      "pourquoi": {
+        "a": "on ne peut pas dire « avait » ici : c’est « à », avec un accent."
+      }
     },
     {
       "id": "et-est-1",
@@ -183,7 +213,10 @@
         "et"
       ],
       "consigne": "Complète avec « et » ou « est ».",
-      "explication": "On écrit « est » quand on peut dire « était »."
+      "explication": "On écrit « est » quand on peut dire « était ».",
+      "pourquoi": {
+        "et": "on peut dire « était » ici : c’est le verbe être, « est »."
+      }
     },
     {
       "id": "et-est-2",
@@ -195,7 +228,10 @@
         "est"
       ],
       "consigne": "Complète avec « et » ou « est ».",
-      "explication": "On écrit « est » quand on peut dire « était »."
+      "explication": "On écrit « est » quand on peut dire « était ».",
+      "pourquoi": {
+        "est": "on ne peut pas dire « était » ici : c’est « et », qui veut dire « et puis »."
+      }
     },
     {
       "id": "et-est-3",
@@ -207,7 +243,10 @@
         "et"
       ],
       "consigne": "Complète avec « et » ou « est ».",
-      "explication": "On écrit « est » quand on peut dire « était »."
+      "explication": "On écrit « est » quand on peut dire « était ».",
+      "pourquoi": {
+        "et": "on peut dire « était » ici : c’est le verbe être, « est »."
+      }
     },
     {
       "id": "et-est-4",
@@ -219,7 +258,10 @@
         "est"
       ],
       "consigne": "Complète avec « et » ou « est ».",
-      "explication": "On écrit « est » quand on peut dire « était »."
+      "explication": "On écrit « est » quand on peut dire « était ».",
+      "pourquoi": {
+        "est": "on ne peut pas dire « était » ici : c’est « et », qui veut dire « et puis »."
+      }
     },
     {
       "id": "et-est-5",
@@ -231,7 +273,10 @@
         "et"
       ],
       "consigne": "Complète avec « et » ou « est ».",
-      "explication": "On écrit « est » quand on peut dire « était »."
+      "explication": "On écrit « est » quand on peut dire « était ».",
+      "pourquoi": {
+        "et": "on peut dire « était » ici : c’est le verbe être, « est »."
+      }
     },
     {
       "id": "et-est-6",
@@ -243,7 +288,10 @@
         "est"
       ],
       "consigne": "Complète avec « et » ou « est ».",
-      "explication": "On écrit « est » quand on peut dire « était »."
+      "explication": "On écrit « est » quand on peut dire « était ».",
+      "pourquoi": {
+        "est": "on ne peut pas dire « était » ici : c’est « et », qui veut dire « et puis »."
+      }
     },
     {
       "id": "et-est-7",
@@ -255,7 +303,10 @@
         "et"
       ],
       "consigne": "Complète avec « et » ou « est ».",
-      "explication": "On écrit « est » quand on peut dire « était »."
+      "explication": "On écrit « est » quand on peut dire « était ».",
+      "pourquoi": {
+        "et": "on peut dire « était » ici : c’est le verbe être, « est »."
+      }
     },
     {
       "id": "et-est-8",
@@ -267,7 +318,10 @@
         "est"
       ],
       "consigne": "Complète avec « et » ou « est ».",
-      "explication": "On écrit « est » quand on peut dire « était »."
+      "explication": "On écrit « est » quand on peut dire « était ».",
+      "pourquoi": {
+        "est": "on ne peut pas dire « était » ici : c’est « et », qui veut dire « et puis »."
+      }
     },
     {
       "id": "et-est-9",
@@ -279,7 +333,10 @@
         "et"
       ],
       "consigne": "Complète avec « et » ou « est ».",
-      "explication": "On écrit « est » quand on peut dire « était »."
+      "explication": "On écrit « est » quand on peut dire « était ».",
+      "pourquoi": {
+        "et": "on peut dire « était » ici : c’est le verbe être, « est »."
+      }
     },
     {
       "id": "et-est-10",
@@ -291,7 +348,10 @@
         "est"
       ],
       "consigne": "Complète avec « et » ou « est ».",
-      "explication": "On écrit « est » quand on peut dire « était »."
+      "explication": "On écrit « est » quand on peut dire « était ».",
+      "pourquoi": {
+        "est": "on ne peut pas dire « était » ici : c’est « et », qui veut dire « et puis »."
+      }
     },
     {
       "id": "son-sont-1",
@@ -303,7 +363,10 @@
         "son"
       ],
       "consigne": "Complète avec « son » ou « sont ».",
-      "explication": "On écrit « sont » quand on peut dire « étaient »."
+      "explication": "On écrit « sont » quand on peut dire « étaient ».",
+      "pourquoi": {
+        "son": "on peut dire « étaient » ici : c’est le verbe être, « sont »."
+      }
     },
     {
       "id": "son-sont-2",
@@ -315,7 +378,10 @@
         "sont"
       ],
       "consigne": "Complète avec « son » ou « sont ».",
-      "explication": "On écrit « sont » quand on peut dire « étaient »."
+      "explication": "On écrit « sont » quand on peut dire « étaient ».",
+      "pourquoi": {
+        "sont": "on ne peut pas dire « étaient » ici : c’est « son », comme « le sien »."
+      }
     },
     {
       "id": "son-sont-3",
@@ -327,7 +393,10 @@
         "son"
       ],
       "consigne": "Complète avec « son » ou « sont ».",
-      "explication": "On écrit « sont » quand on peut dire « étaient »."
+      "explication": "On écrit « sont » quand on peut dire « étaient ».",
+      "pourquoi": {
+        "son": "on peut dire « étaient » ici : c’est le verbe être, « sont »."
+      }
     },
     {
       "id": "son-sont-4",
@@ -339,7 +408,10 @@
         "sont"
       ],
       "consigne": "Complète avec « son » ou « sont ».",
-      "explication": "On écrit « sont » quand on peut dire « étaient »."
+      "explication": "On écrit « sont » quand on peut dire « étaient ».",
+      "pourquoi": {
+        "sont": "on ne peut pas dire « étaient » ici : c’est « son », comme « le sien »."
+      }
     },
     {
       "id": "son-sont-5",
@@ -351,7 +423,10 @@
         "son"
       ],
       "consigne": "Complète avec « son » ou « sont ».",
-      "explication": "On écrit « sont » quand on peut dire « étaient »."
+      "explication": "On écrit « sont » quand on peut dire « étaient ».",
+      "pourquoi": {
+        "son": "on peut dire « étaient » ici : c’est le verbe être, « sont »."
+      }
     },
     {
       "id": "son-sont-6",
@@ -363,7 +438,10 @@
         "sont"
       ],
       "consigne": "Complète avec « son » ou « sont ».",
-      "explication": "On écrit « sont » quand on peut dire « étaient »."
+      "explication": "On écrit « sont » quand on peut dire « étaient ».",
+      "pourquoi": {
+        "sont": "on ne peut pas dire « étaient » ici : c’est « son », comme « le sien »."
+      }
     },
     {
       "id": "son-sont-7",
@@ -375,7 +453,10 @@
         "son"
       ],
       "consigne": "Complète avec « son » ou « sont ».",
-      "explication": "On écrit « sont » quand on peut dire « étaient »."
+      "explication": "On écrit « sont » quand on peut dire « étaient ».",
+      "pourquoi": {
+        "son": "on peut dire « étaient » ici : c’est le verbe être, « sont »."
+      }
     },
     {
       "id": "son-sont-8",
@@ -387,7 +468,10 @@
         "sont"
       ],
       "consigne": "Complète avec « son » ou « sont ».",
-      "explication": "On écrit « sont » quand on peut dire « étaient »."
+      "explication": "On écrit « sont » quand on peut dire « étaient ».",
+      "pourquoi": {
+        "sont": "on ne peut pas dire « étaient » ici : c’est « son », comme « le sien »."
+      }
     },
     {
       "id": "son-sont-9",
@@ -399,7 +483,10 @@
         "son"
       ],
       "consigne": "Complète avec « son » ou « sont ».",
-      "explication": "On écrit « sont » quand on peut dire « étaient »."
+      "explication": "On écrit « sont » quand on peut dire « étaient ».",
+      "pourquoi": {
+        "son": "on peut dire « étaient » ici : c’est le verbe être, « sont »."
+      }
     },
     {
       "id": "son-sont-10",
@@ -411,7 +498,10 @@
         "sont"
       ],
       "consigne": "Complète avec « son » ou « sont ».",
-      "explication": "On écrit « sont » quand on peut dire « étaient »."
+      "explication": "On écrit « sont » quand on peut dire « étaient ».",
+      "pourquoi": {
+        "sont": "on ne peut pas dire « étaient » ici : c’est « son », comme « le sien »."
+      }
     },
     {
       "id": "on-ont-1",
@@ -423,7 +513,10 @@
         "on"
       ],
       "consigne": "Complète avec « on » ou « ont ».",
-      "explication": "On écrit « ont » quand on peut dire « avaient »."
+      "explication": "On écrit « ont » quand on peut dire « avaient ».",
+      "pourquoi": {
+        "on": "on peut dire « avaient » ici : c’est le verbe avoir, « ont »."
+      }
     },
     {
       "id": "on-ont-2",
@@ -435,7 +528,10 @@
         "Ont"
       ],
       "consigne": "Complète avec « on » ou « ont ».",
-      "explication": "On écrit « ont » quand on peut dire « avaient »."
+      "explication": "On écrit « ont » quand on peut dire « avaient ».",
+      "pourquoi": {
+        "Ont": "on ne peut pas dire « avaient » ici : c’est « on », comme « il »."
+      }
     },
     {
       "id": "on-ont-3",
@@ -447,7 +543,10 @@
         "on"
       ],
       "consigne": "Complète avec « on » ou « ont ».",
-      "explication": "On écrit « ont » quand on peut dire « avaient »."
+      "explication": "On écrit « ont » quand on peut dire « avaient ».",
+      "pourquoi": {
+        "on": "on peut dire « avaient » ici : c’est le verbe avoir, « ont »."
+      }
     },
     {
       "id": "on-ont-4",
@@ -459,7 +558,10 @@
         "ont"
       ],
       "consigne": "Complète avec « on » ou « ont ».",
-      "explication": "On écrit « ont » quand on peut dire « avaient »."
+      "explication": "On écrit « ont » quand on peut dire « avaient ».",
+      "pourquoi": {
+        "ont": "on ne peut pas dire « avaient » ici : c’est « on », comme « il »."
+      }
     },
     {
       "id": "on-ont-5",
@@ -471,7 +573,10 @@
         "on"
       ],
       "consigne": "Complète avec « on » ou « ont ».",
-      "explication": "On écrit « ont » quand on peut dire « avaient »."
+      "explication": "On écrit « ont » quand on peut dire « avaient ».",
+      "pourquoi": {
+        "on": "on peut dire « avaient » ici : c’est le verbe avoir, « ont »."
+      }
     },
     {
       "id": "on-ont-6",
@@ -483,7 +588,10 @@
         "Ont"
       ],
       "consigne": "Complète avec « on » ou « ont ».",
-      "explication": "On écrit « ont » quand on peut dire « avaient »."
+      "explication": "On écrit « ont » quand on peut dire « avaient ».",
+      "pourquoi": {
+        "Ont": "on ne peut pas dire « avaient » ici : c’est « on », comme « il »."
+      }
     },
     {
       "id": "on-ont-7",
@@ -495,7 +603,10 @@
         "on"
       ],
       "consigne": "Complète avec « on » ou « ont ».",
-      "explication": "On écrit « ont » quand on peut dire « avaient »."
+      "explication": "On écrit « ont » quand on peut dire « avaient ».",
+      "pourquoi": {
+        "on": "on peut dire « avaient » ici : c’est le verbe avoir, « ont »."
+      }
     },
     {
       "id": "on-ont-8",
@@ -507,7 +618,10 @@
         "ont"
       ],
       "consigne": "Complète avec « on » ou « ont ».",
-      "explication": "On écrit « ont » quand on peut dire « avaient »."
+      "explication": "On écrit « ont » quand on peut dire « avaient ».",
+      "pourquoi": {
+        "ont": "on ne peut pas dire « avaient » ici : c’est « on », comme « il »."
+      }
     },
     {
       "id": "on-ont-9",
@@ -519,7 +633,10 @@
         "on"
       ],
       "consigne": "Complète avec « on » ou « ont ».",
-      "explication": "On écrit « ont » quand on peut dire « avaient »."
+      "explication": "On écrit « ont » quand on peut dire « avaient ».",
+      "pourquoi": {
+        "on": "on peut dire « avaient » ici : c’est le verbe avoir, « ont »."
+      }
     },
     {
       "id": "on-ont-10",
@@ -531,7 +648,10 @@
         "ont"
       ],
       "consigne": "Complète avec « on » ou « ont ».",
-      "explication": "On écrit « ont » quand on peut dire « avaient »."
+      "explication": "On écrit « ont » quand on peut dire « avaient ».",
+      "pourquoi": {
+        "ont": "on ne peut pas dire « avaient » ici : c’est « on », comme « il »."
+      }
     },
     {
       "id": "ou-ou-1",
@@ -543,7 +663,10 @@
         "où"
       ],
       "consigne": "Complète avec « ou » ou « où ».",
-      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu."
+      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu.",
+      "pourquoi": {
+        "où": "on peut dire « ou bien » ici : pas d’accent sur « ou »."
+      }
     },
     {
       "id": "ou-ou-2",
@@ -555,7 +678,10 @@
         "Ou"
       ],
       "consigne": "Complète avec « ou » ou « où ».",
-      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu."
+      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu.",
+      "pourquoi": {
+        "Ou": "on parle d’un lieu ici : « où » prend un accent."
+      }
     },
     {
       "id": "ou-ou-3",
@@ -567,7 +693,10 @@
         "où"
       ],
       "consigne": "Complète avec « ou » ou « où ».",
-      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu."
+      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu.",
+      "pourquoi": {
+        "où": "on peut dire « ou bien » ici : pas d’accent sur « ou »."
+      }
     },
     {
       "id": "ou-ou-4",
@@ -579,7 +708,10 @@
         "ou"
       ],
       "consigne": "Complète avec « ou » ou « où ».",
-      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu."
+      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu.",
+      "pourquoi": {
+        "ou": "on parle d’un lieu ici : « où » prend un accent."
+      }
     },
     {
       "id": "ou-ou-5",
@@ -591,7 +723,10 @@
         "où"
       ],
       "consigne": "Complète avec « ou » ou « où ».",
-      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu."
+      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu.",
+      "pourquoi": {
+        "où": "on peut dire « ou bien » ici : pas d’accent sur « ou »."
+      }
     },
     {
       "id": "ou-ou-6",
@@ -603,7 +738,10 @@
         "ou"
       ],
       "consigne": "Complète avec « ou » ou « où ».",
-      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu."
+      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu.",
+      "pourquoi": {
+        "ou": "on parle d’un lieu ici : « où » prend un accent."
+      }
     },
     {
       "id": "ou-ou-7",
@@ -615,7 +753,10 @@
         "où"
       ],
       "consigne": "Complète avec « ou » ou « où ».",
-      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu."
+      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu.",
+      "pourquoi": {
+        "où": "on peut dire « ou bien » ici : pas d’accent sur « ou »."
+      }
     },
     {
       "id": "ou-ou-8",
@@ -627,7 +768,10 @@
         "Ou"
       ],
       "consigne": "Complète avec « ou » ou « où ».",
-      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu."
+      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu.",
+      "pourquoi": {
+        "Ou": "on parle d’un lieu ici : « où » prend un accent."
+      }
     },
     {
       "id": "ou-ou-9",
@@ -639,7 +783,10 @@
         "où"
       ],
       "consigne": "Complète avec « ou » ou « où ».",
-      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu."
+      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu.",
+      "pourquoi": {
+        "où": "on peut dire « ou bien » ici : pas d’accent sur « ou »."
+      }
     },
     {
       "id": "ou-ou-10",
@@ -651,7 +798,10 @@
         "ou"
       ],
       "consigne": "Complète avec « ou » ou « où ».",
-      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu."
+      "explication": "On écrit « ou » quand on peut dire « ou bien » ; « où » parle d’un lieu.",
+      "pourquoi": {
+        "ou": "on parle d’un lieu ici : « où » prend un accent."
+      }
     },
     {
       "id": "ces-ses-1",
@@ -663,7 +813,10 @@
         "ces"
       ],
       "consigne": "Complète avec « ces » ou « ses ».",
-      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là."
+      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là.",
+      "pourquoi": {
+        "ces": "ce sont les siens : on écrit « ses »."
+      }
     },
     {
       "id": "ces-ses-2",
@@ -675,7 +828,10 @@
         "ses"
       ],
       "consigne": "Complète avec « ces » ou « ses ».",
-      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là."
+      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là.",
+      "pourquoi": {
+        "ses": "on montre ces choses-là : on écrit « ces »."
+      }
     },
     {
       "id": "ces-ses-3",
@@ -687,7 +843,10 @@
         "ces"
       ],
       "consigne": "Complète avec « ces » ou « ses ».",
-      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là."
+      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là.",
+      "pourquoi": {
+        "ces": "ce sont les siens : on écrit « ses »."
+      }
     },
     {
       "id": "ces-ses-4",
@@ -699,7 +858,10 @@
         "Ses"
       ],
       "consigne": "Complète avec « ces » ou « ses ».",
-      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là."
+      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là.",
+      "pourquoi": {
+        "Ses": "on montre ces choses-là : on écrit « ces »."
+      }
     },
     {
       "id": "ces-ses-5",
@@ -711,7 +873,10 @@
         "ces"
       ],
       "consigne": "Complète avec « ces » ou « ses ».",
-      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là."
+      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là.",
+      "pourquoi": {
+        "ces": "ce sont les siens : on écrit « ses »."
+      }
     },
     {
       "id": "ces-ses-6",
@@ -723,7 +888,10 @@
         "ses"
       ],
       "consigne": "Complète avec « ces » ou « ses ».",
-      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là."
+      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là.",
+      "pourquoi": {
+        "ses": "on montre ces choses-là : on écrit « ces »."
+      }
     },
     {
       "id": "ces-ses-7",
@@ -735,7 +903,10 @@
         "ces"
       ],
       "consigne": "Complète avec « ces » ou « ses ».",
-      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là."
+      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là.",
+      "pourquoi": {
+        "ces": "ce sont les siens : on écrit « ses »."
+      }
     },
     {
       "id": "ces-ses-8",
@@ -747,7 +918,10 @@
         "ses"
       ],
       "consigne": "Complète avec « ces » ou « ses ».",
-      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là."
+      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là.",
+      "pourquoi": {
+        "ses": "on montre ces choses-là : on écrit « ces »."
+      }
     },
     {
       "id": "ces-ses-9",
@@ -759,7 +933,10 @@
         "ces"
       ],
       "consigne": "Complète avec « ces » ou « ses ».",
-      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là."
+      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là.",
+      "pourquoi": {
+        "ces": "ce sont les siens : on écrit « ses »."
+      }
     },
     {
       "id": "ces-ses-10",
@@ -771,7 +948,10 @@
         "ses"
       ],
       "consigne": "Complète avec « ces » ou « ses ».",
-      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là."
+      "explication": "On écrit « ses » quand on peut dire « les siens » ; « ces » montre : ces choses-là.",
+      "pourquoi": {
+        "ses": "on montre ces choses-là : on écrit « ces »."
+      }
     }
   ]
 }
