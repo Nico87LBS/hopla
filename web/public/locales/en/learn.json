@@ -118,7 +118,8 @@
     "seeDetail": "See the detail",
     "tabs": {
       "people": "Per person",
-      "catalogue": "Catalogue"
+      "catalogue": "Catalogue",
+      "voices": "Voices"
     },
     "readAloud": "Read aloud",
     "readAloudHelp": "What the device says in the modules made to be read aloud. Everything: the question, then each answer on the first tap (a second tap chooses it).",
@@ -238,5 +239,47 @@
     "expiredTitle": "This link no longer works",
     "expired": "Open the games again from the family screen.",
     "ended": "The games are closed. Open them again from the family screen."
+  },
+  "voices": {
+    "title": "Voices of this device",
+    "help": "The voice that reads the questions in Learn. Each device has its own voices, so this choice is only for this device. Automatic takes the most natural voice installed.",
+    "auto": "Automatic: {{name}}",
+    "listen": "Listen",
+    "noVoice": "No voice in this language on this device.",
+    "unsupported": "This browser cannot read aloud.",
+    "lang": {
+      "fr": "French",
+      "en": "English"
+    },
+    "sample": {
+      "fr": "Bonjour ! Combien font sept fois huit ?",
+      "en": "Hello! Where is the kitchen?"
+    },
+    "quality": {
+      "novelty": "Novelty",
+      "standard": "Standard",
+      "enhanced": "Enhanced",
+      "premium": "Premium"
+    },
+    "getBetter": "Get a more natural voice",
+    "getBetterHelp": "Apple does not lend Siri voices to web pages: download a “Premium” or “Enhanced” voice, then open Hopla again.",
+    "how": {
+      "ipad": {
+        "title": "iPad and iPhone",
+        "steps": "Settings › Accessibility › Spoken Content › Voices › French: tap a voice (Audrey, Thomas, Aurélie…) then download its Premium or Enhanced version. Same in English for the English modules."
+      },
+      "mac": {
+        "title": "Mac",
+        "steps": "System Settings › Accessibility › Spoken Content › System Voice › Manage Voices: download a French Premium or Enhanced voice."
+      },
+      "android": {
+        "title": "Android",
+        "steps": "Settings › Accessibility › Text-to-speech › Google engine › Install voice data › French: choose a voice."
+      },
+      "windows": {
+        "title": "Windows computer",
+        "steps": "In Edge, the “Natural” (online) voices are already there. Otherwise: Settings › Time & language › Speech › Add voices."
+      }
+    }
   }
 }

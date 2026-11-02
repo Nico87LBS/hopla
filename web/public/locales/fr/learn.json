@@ -118,7 +118,8 @@
     "seeDetail": "Voir le détail",
     "tabs": {
       "people": "Par personne",
-      "catalogue": "Catalogue"
+      "catalogue": "Catalogue",
+      "voices": "Voix"
     },
     "readAloud": "Lire à voix haute",
     "readAloudHelp": "Ce que dit l’appareil dans les modules faits pour être lus à voix haute. Tout : la question, puis chaque réponse au premier toucher (un second toucher la choisit).",
@@ -238,5 +239,47 @@
     "expiredTitle": "Ce lien ne marche plus",
     "expired": "Rouvre les jeux depuis l'écran de la famille.",
     "ended": "Les jeux sont fermés. Rouvre-les depuis l'écran de la famille."
+  },
+  "voices": {
+    "title": "Voix de cet appareil",
+    "help": "La voix qui lit les questions dans Apprendre. Chaque appareil a ses propres voix, donc ce choix ne vaut que pour cet appareil. Automatique prend la voix la plus naturelle installée.",
+    "auto": "Automatique : {{name}}",
+    "listen": "Écouter",
+    "noVoice": "Aucune voix dans cette langue sur cet appareil.",
+    "unsupported": "Ce navigateur ne sait pas lire à voix haute.",
+    "lang": {
+      "fr": "Français",
+      "en": "Anglais"
+    },
+    "sample": {
+      "fr": "Bonjour ! Combien font sept fois huit ?",
+      "en": "Hello! Where is the kitchen?"
+    },
+    "quality": {
+      "novelty": "Fantaisie",
+      "standard": "Standard",
+      "enhanced": "Améliorée",
+      "premium": "Premium"
+    },
+    "getBetter": "Avoir une voix plus naturelle",
+    "getBetterHelp": "Les voix Siri ne sont pas prêtées aux pages web par Apple : il faut télécharger une voix « Premium » ou « Améliorée », puis rouvrir Hopla.",
+    "how": {
+      "ipad": {
+        "title": "iPad et iPhone",
+        "steps": "Réglages › Accessibilité › Contenu énoncé › Voix › Français : touchez une voix (Audrey, Thomas, Aurélie…) puis téléchargez sa version Premium ou Améliorée. Pareil dans Anglais pour les modules d’anglais."
+      },
+      "mac": {
+        "title": "Mac",
+        "steps": "Réglages Système › Accessibilité › Contenu énoncé › Voix du système › Gérer les voix : téléchargez une voix française Premium ou Améliorée."
+      },
+      "android": {
+        "title": "Android",
+        "steps": "Paramètres › Accessibilité › Synthèse vocale › Moteur Google › Installer les données vocales › Français : choisissez une voix."
+      },
+      "windows": {
+        "title": "Ordinateur Windows",
+        "steps": "Dans Edge, les voix « Natural » (en ligne) sont déjà là. Sinon : Paramètres › Heure et langue › Voix › Ajouter des voix."
+      }
+    }
   }
 }

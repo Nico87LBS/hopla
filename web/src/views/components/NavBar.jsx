@@ -53,6 +53,7 @@ const NAVBAR_TITLE_KEYS = {
   '/manage/ranks/rules': 'manage.items.ranks.title',
   '/manage/learn': 'manage.items.learn.title',
   '/manage/learn/catalogue': 'manage.items.learn.title',
+  '/manage/learn/voix': 'manage.items.learn.title',
   '/manage/family': 'manage.items.family.title',
   '/manage/family/children': 'manage.items.family.title',
   '/manage/family/settings': 'manage.items.family.title',
