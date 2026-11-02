@@ -1,0 +1,832 @@
+{
+  "format": "hopla-module/1",
+  "id": "francais-ce1-vocabulaire",
+  "version": "1.0.0",
+  "nom": "Le vocabulaire",
+  "description": "L'ordre alphabétique, les familles de mots, les contraires, les mots de même sens et les mots-étiquettes.",
+  "matiere": "francais",
+  "niveaux": [
+    "CE1"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de français du cycle 2 (2024) et les repères annuels de progression du CE1 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "alphabet",
+      "nom": "L’ordre alphabétique"
+    },
+    {
+      "id": "familles",
+      "nom": "Les familles de mots",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "contraires",
+      "nom": "Les contraires",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "synonymes",
+      "nom": "Les mots de même sens",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "etiquettes",
+      "nom": "Les mots-étiquettes",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 8
+  },
+  "fiches": [
+    {
+      "id": "alpha-1",
+      "chapitre": "alphabet",
+      "type": "ordre",
+      "question": "Range les mots dans l’ordre alphabétique.",
+      "consigne": "Range les mots dans l’ordre alphabétique.",
+      "elements": [
+        "arbre",
+        "lune",
+        "pomme"
+      ]
+    },
+    {
+      "id": "alpha-2",
+      "chapitre": "alphabet",
+      "type": "ordre",
+      "question": "Range les mots dans l’ordre alphabétique.",
+      "consigne": "Range les mots dans l’ordre alphabétique.",
+      "elements": [
+        "chat",
+        "dent",
+        "zèbre"
+      ]
+    },
+    {
+      "id": "alpha-3",
+      "chapitre": "alphabet",
+      "type": "ordre",
+      "question": "Range les mots dans l’ordre alphabétique.",
+      "consigne": "Range les mots dans l’ordre alphabétique.",
+      "elements": [
+        "ballon",
+        "fleur",
+        "maison",
+        "vélo"
+      ]
+    },
+    {
+      "id": "alpha-4",
+      "chapitre": "alphabet",
+      "type": "ordre",
+      "question": "Range les mots dans l’ordre alphabétique.",
+      "consigne": "Range les mots dans l’ordre alphabétique.",
+      "elements": [
+        "avion",
+        "girafe",
+        "orange",
+        "tigre"
+      ]
+    },
+    {
+      "id": "alpha-5",
+      "chapitre": "alphabet",
+      "type": "ordre",
+      "question": "Range les mots dans l’ordre alphabétique.",
+      "consigne": "Range les mots dans l’ordre alphabétique.",
+      "elements": [
+        "bateau",
+        "bonbon",
+        "bus"
+      ]
+    },
+    {
+      "id": "alpha-6",
+      "chapitre": "alphabet",
+      "type": "ordre",
+      "question": "Range les mots dans l’ordre alphabétique.",
+      "consigne": "Range les mots dans l’ordre alphabétique.",
+      "elements": [
+        "carotte",
+        "chien",
+        "cube",
+        "école"
+      ]
+    },
+    {
+      "id": "alpha-7",
+      "chapitre": "alphabet",
+      "type": "ordre",
+      "question": "Range les mots dans l’ordre alphabétique.",
+      "consigne": "Range les mots dans l’ordre alphabétique.",
+      "elements": [
+        "lapin",
+        "lion",
+        "loup"
+      ]
+    },
+    {
+      "id": "alpha-8",
+      "chapitre": "alphabet",
+      "type": "ordre",
+      "question": "Range les mots dans l’ordre alphabétique.",
+      "consigne": "Range les mots dans l’ordre alphabétique.",
+      "elements": [
+        "mer",
+        "moto",
+        "mouton",
+        "nid"
+      ]
+    },
+    {
+      "id": "alpha-9",
+      "chapitre": "alphabet",
+      "type": "ordre",
+      "question": "Range les mots dans l’ordre alphabétique.",
+      "consigne": "Range les mots dans l’ordre alphabétique.",
+      "elements": [
+        "robe",
+        "roi",
+        "rue"
+      ]
+    },
+    {
+      "id": "alpha-10",
+      "chapitre": "alphabet",
+      "type": "ordre",
+      "question": "Range les mots dans l’ordre alphabétique.",
+      "consigne": "Range les mots dans l’ordre alphabétique.",
+      "elements": [
+        "sac",
+        "sel",
+        "soupe",
+        "sucre"
+      ]
+    },
+    {
+      "id": "famille-1",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Quel mot est de la famille de « jardin » ?",
+      "reponse": "jardinier",
+      "pieges": [
+        "jardinet",
+        "jaune",
+        "jamais"
+      ],
+      "consigne": "Quel mot est de la famille de « jardin » ?"
+    },
+    {
+      "id": "famille-2",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Quel mot est de la famille de « dent » ?",
+      "reponse": "dentiste",
+      "pieges": [
+        "danse",
+        "dans",
+        "dindon"
+      ],
+      "consigne": "Quel mot est de la famille de « dent » ?"
+    },
+    {
+      "id": "famille-3",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Quel mot est de la famille de « lait » ?",
+      "reponse": "laitier",
+      "pieges": [
+        "laid",
+        "lapin",
+        "laisser"
+      ],
+      "consigne": "Quel mot est de la famille de « lait » ?"
+    },
+    {
+      "id": "famille-4",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Quel mot est de la famille de « fleur » ?",
+      "reponse": "fleuriste",
+      "pieges": [
+        "flûte",
+        "fleuve",
+        "flamme"
+      ],
+      "consigne": "Quel mot est de la famille de « fleur » ?"
+    },
+    {
+      "id": "famille-5",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Quel mot est de la famille de « boulanger » ?",
+      "reponse": "boulangerie",
+      "pieges": [
+        "boule",
+        "bouger",
+        "bouillir"
+      ],
+      "consigne": "Quel mot est de la famille de « boulanger » ?"
+    },
+    {
+      "id": "famille-6",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Quel mot est de la famille de « chant » ?",
+      "reponse": "chanteur",
+      "pieges": [
+        "chat",
+        "champ",
+        "chanceux"
+      ],
+      "consigne": "Quel mot est de la famille de « chant » ?"
+    },
+    {
+      "id": "famille-7",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Quel mot est de la famille de « terre » ?",
+      "reponse": "terrain",
+      "pieges": [
+        "tarte",
+        "terrible",
+        "tête"
+      ],
+      "consigne": "Quel mot est de la famille de « terre » ?"
+    },
+    {
+      "id": "famille-8",
+      "chapitre": "familles",
+      "type": "choix",
+      "question": "Quel mot est de la famille de « nuit » ?",
+      "reponse": "nuitée",
+      "pieges": [
+        "nuage",
+        "nul",
+        "nid"
+      ],
+      "consigne": "Quel mot est de la famille de « nuit » ?"
+    },
+    {
+      "id": "contraires-1",
+      "chapitre": "contraires",
+      "type": "associer",
+      "question": "Relie chaque mot à son contraire.",
+      "consigne": "Relie chaque mot à son contraire.",
+      "paires": [
+        [
+          "grand",
+          "petit"
+        ],
+        [
+          "chaud",
+          "froid"
+        ],
+        [
+          "rapide",
+          "lent"
+        ],
+        [
+          "lourd",
+          "léger"
+        ],
+        [
+          "ouvrir",
+          "fermer"
+        ]
+      ]
+    },
+    {
+      "id": "contraires-2",
+      "chapitre": "contraires",
+      "type": "associer",
+      "question": "Relie chaque mot à son contraire.",
+      "consigne": "Relie chaque mot à son contraire.",
+      "paires": [
+        [
+          "monter",
+          "descendre"
+        ],
+        [
+          "jour",
+          "nuit"
+        ],
+        [
+          "gagner",
+          "perdre"
+        ],
+        [
+          "plein",
+          "vide"
+        ],
+        [
+          "propre",
+          "sale"
+        ]
+      ]
+    },
+    {
+      "id": "contraires-3",
+      "chapitre": "contraires",
+      "type": "associer",
+      "question": "Relie chaque mot à son contraire.",
+      "consigne": "Relie chaque mot à son contraire.",
+      "paires": [
+        [
+          "allumer",
+          "éteindre"
+        ],
+        [
+          "entrer",
+          "sortir"
+        ],
+        [
+          "toujours",
+          "jamais"
+        ],
+        [
+          "dessus",
+          "dessous"
+        ]
+      ]
+    },
+    {
+      "id": "contraire-1",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « grand »",
+      "reponse": "petit",
+      "pieges": [
+        "lent",
+        "léger",
+        "fermer"
+      ],
+      "consigne": "Le contraire de « grand »"
+    },
+    {
+      "id": "contraire-2",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « chaud »",
+      "reponse": "froid",
+      "pieges": [
+        "léger",
+        "fermer",
+        "descendre"
+      ],
+      "consigne": "Le contraire de « chaud »"
+    },
+    {
+      "id": "contraire-3",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « rapide »",
+      "reponse": "lent",
+      "pieges": [
+        "fermer",
+        "descendre",
+        "nuit"
+      ],
+      "consigne": "Le contraire de « rapide »"
+    },
+    {
+      "id": "contraire-4",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « lourd »",
+      "reponse": "léger",
+      "pieges": [
+        "descendre",
+        "nuit",
+        "perdre"
+      ],
+      "consigne": "Le contraire de « lourd »"
+    },
+    {
+      "id": "contraire-5",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « ouvrir »",
+      "reponse": "fermer",
+      "pieges": [
+        "nuit",
+        "perdre",
+        "vide"
+      ],
+      "consigne": "Le contraire de « ouvrir »"
+    },
+    {
+      "id": "contraire-6",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « monter »",
+      "reponse": "descendre",
+      "pieges": [
+        "perdre",
+        "vide",
+        "sale"
+      ],
+      "consigne": "Le contraire de « monter »"
+    },
+    {
+      "id": "contraire-7",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « jour »",
+      "reponse": "nuit",
+      "pieges": [
+        "vide",
+        "sale",
+        "éteindre"
+      ],
+      "consigne": "Le contraire de « jour »"
+    },
+    {
+      "id": "contraire-8",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « gagner »",
+      "reponse": "perdre",
+      "pieges": [
+        "sale",
+        "éteindre",
+        "sortir"
+      ],
+      "consigne": "Le contraire de « gagner »"
+    },
+    {
+      "id": "contraire-9",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « plein »",
+      "reponse": "vide",
+      "pieges": [
+        "éteindre",
+        "sortir",
+        "jamais"
+      ],
+      "consigne": "Le contraire de « plein »"
+    },
+    {
+      "id": "contraire-10",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « propre »",
+      "reponse": "sale",
+      "pieges": [
+        "petit",
+        "froid",
+        "lent"
+      ],
+      "consigne": "Le contraire de « propre »"
+    },
+    {
+      "id": "contraire-11",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « allumer »",
+      "reponse": "éteindre",
+      "pieges": [
+        "froid",
+        "lent",
+        "léger"
+      ],
+      "consigne": "Le contraire de « allumer »"
+    },
+    {
+      "id": "contraire-12",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « entrer »",
+      "reponse": "sortir",
+      "pieges": [
+        "lent",
+        "léger",
+        "fermer"
+      ],
+      "consigne": "Le contraire de « entrer »"
+    },
+    {
+      "id": "contraire-13",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « toujours »",
+      "reponse": "jamais",
+      "pieges": [
+        "léger",
+        "fermer",
+        "descendre"
+      ],
+      "consigne": "Le contraire de « toujours »"
+    },
+    {
+      "id": "contraire-14",
+      "chapitre": "contraires",
+      "type": "choix",
+      "question": "Le contraire de « dessus »",
+      "reponse": "dessous",
+      "pieges": [
+        "fermer",
+        "descendre",
+        "nuit"
+      ],
+      "consigne": "Le contraire de « dessus »"
+    },
+    {
+      "id": "synonyme-1",
+      "chapitre": "synonymes",
+      "type": "choix",
+      "question": "Quel mot veut dire presque la même chose que « content » ?",
+      "reponse": "joyeux",
+      "pieges": [
+        "triste",
+        "fâché",
+        "fatigué"
+      ],
+      "consigne": "Quel mot veut dire presque la même chose que « content » ?"
+    },
+    {
+      "id": "synonyme-2",
+      "chapitre": "synonymes",
+      "type": "choix",
+      "question": "Quel mot veut dire presque la même chose que « rapide » ?",
+      "reponse": "vite",
+      "pieges": [
+        "lent",
+        "gros",
+        "doux"
+      ],
+      "consigne": "Quel mot veut dire presque la même chose que « rapide » ?"
+    },
+    {
+      "id": "synonyme-3",
+      "chapitre": "synonymes",
+      "type": "choix",
+      "question": "Quel mot veut dire presque la même chose que « maison » ?",
+      "reponse": "logement",
+      "pieges": [
+        "jardin",
+        "route",
+        "école"
+      ],
+      "consigne": "Quel mot veut dire presque la même chose que « maison » ?"
+    },
+    {
+      "id": "synonyme-4",
+      "chapitre": "synonymes",
+      "type": "choix",
+      "question": "Quel mot veut dire presque la même chose que « bavarder » ?",
+      "reponse": "discuter",
+      "pieges": [
+        "dormir",
+        "courir",
+        "manger"
+      ],
+      "consigne": "Quel mot veut dire presque la même chose que « bavarder » ?"
+    },
+    {
+      "id": "synonyme-5",
+      "chapitre": "synonymes",
+      "type": "choix",
+      "question": "Quel mot veut dire presque la même chose que « effrayé » ?",
+      "reponse": "apeuré",
+      "pieges": [
+        "heureux",
+        "calme",
+        "fier"
+      ],
+      "consigne": "Quel mot veut dire presque la même chose que « effrayé » ?"
+    },
+    {
+      "id": "synonyme-6",
+      "chapitre": "synonymes",
+      "type": "choix",
+      "question": "Quel mot veut dire presque la même chose que « joli » ?",
+      "reponse": "beau",
+      "pieges": [
+        "laid",
+        "sale",
+        "triste"
+      ],
+      "consigne": "Quel mot veut dire presque la même chose que « joli » ?"
+    },
+    {
+      "id": "synonyme-7",
+      "chapitre": "synonymes",
+      "type": "choix",
+      "question": "Quel mot veut dire presque la même chose que « commencer » ?",
+      "reponse": "débuter",
+      "pieges": [
+        "finir",
+        "arrêter",
+        "oublier"
+      ],
+      "consigne": "Quel mot veut dire presque la même chose que « commencer » ?"
+    },
+    {
+      "id": "synonyme-8",
+      "chapitre": "synonymes",
+      "type": "choix",
+      "question": "Quel mot veut dire presque la même chose que « auto » ?",
+      "reponse": "voiture",
+      "pieges": [
+        "vélo",
+        "avion",
+        "bateau"
+      ],
+      "consigne": "Quel mot veut dire presque la même chose que « auto » ?"
+    },
+    {
+      "id": "etiquettes-1",
+      "chapitre": "etiquettes",
+      "type": "classer",
+      "question": "Range chaque mot sous son mot-étiquette.",
+      "consigne": "Range chaque mot sous son mot-étiquette.",
+      "boites": [
+        {
+          "nom": "Fruits"
+        },
+        {
+          "nom": "Animaux"
+        },
+        {
+          "nom": "Vêtements"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "la pomme",
+          "boite": "Fruits",
+          "image": "apple"
+        },
+        {
+          "texte": "la poire",
+          "boite": "Fruits",
+          "image": "pear"
+        },
+        {
+          "texte": "la cerise",
+          "boite": "Fruits",
+          "image": "cherry"
+        },
+        {
+          "texte": "le chat",
+          "boite": "Animaux",
+          "image": "cat"
+        },
+        {
+          "texte": "le lion",
+          "boite": "Animaux",
+          "image": "lion"
+        },
+        {
+          "texte": "la vache",
+          "boite": "Animaux",
+          "image": "cow"
+        },
+        {
+          "texte": "la robe",
+          "boite": "Vêtements",
+          "image": "dress"
+        },
+        {
+          "texte": "le manteau",
+          "boite": "Vêtements",
+          "image": "coat"
+        },
+        {
+          "texte": "les chaussettes",
+          "boite": "Vêtements",
+          "image": "socks"
+        }
+      ]
+    },
+    {
+      "id": "etiquettes-2",
+      "chapitre": "etiquettes",
+      "type": "classer",
+      "question": "Range chaque mot sous son mot-étiquette.",
+      "consigne": "Range chaque mot sous son mot-étiquette.",
+      "boites": [
+        {
+          "nom": "Meubles"
+        },
+        {
+          "nom": "Outils de l’école"
+        },
+        {
+          "nom": "Moyens de transport"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "la table",
+          "boite": "Meubles",
+          "image": "table"
+        },
+        {
+          "texte": "le lit",
+          "boite": "Meubles",
+          "image": "bed"
+        },
+        {
+          "texte": "la chaise",
+          "boite": "Meubles",
+          "image": "chair"
+        },
+        {
+          "texte": "le crayon",
+          "boite": "Outils de l’école",
+          "image": "pencil"
+        },
+        {
+          "texte": "la colle",
+          "boite": "Outils de l’école",
+          "image": "glue"
+        },
+        {
+          "texte": "les ciseaux",
+          "boite": "Outils de l’école",
+          "image": "scissors"
+        },
+        {
+          "texte": "le bus",
+          "boite": "Moyens de transport",
+          "image": "bus"
+        },
+        {
+          "texte": "le train",
+          "boite": "Moyens de transport",
+          "image": "train"
+        },
+        {
+          "texte": "l’avion",
+          "boite": "Moyens de transport",
+          "image": "plane"
+        }
+      ]
+    },
+    {
+      "id": "etiquette-1",
+      "chapitre": "etiquettes",
+      "type": "choix",
+      "question": "Quel mot-étiquette va avec « rouge, vert, bleu » ?",
+      "reponse": "les couleurs",
+      "pieges": [
+        "les fruits",
+        "les animaux",
+        "les jours"
+      ],
+      "consigne": "Quel mot-étiquette va avec « rouge, vert, bleu » ?"
+    },
+    {
+      "id": "etiquette-2",
+      "chapitre": "etiquettes",
+      "type": "choix",
+      "question": "Quel mot-étiquette va avec « lundi, mardi, jeudi » ?",
+      "reponse": "les jours",
+      "pieges": [
+        "les mois",
+        "les saisons",
+        "les couleurs"
+      ],
+      "consigne": "Quel mot-étiquette va avec « lundi, mardi, jeudi » ?"
+    },
+    {
+      "id": "etiquette-3",
+      "chapitre": "etiquettes",
+      "type": "choix",
+      "question": "Quel mot-étiquette va avec « chien, chat, lapin » ?",
+      "reponse": "les animaux",
+      "pieges": [
+        "les fleurs",
+        "les jouets",
+        "les fruits"
+      ],
+      "consigne": "Quel mot-étiquette va avec « chien, chat, lapin » ?"
+    },
+    {
+      "id": "etiquette-4",
+      "chapitre": "etiquettes",
+      "type": "choix",
+      "question": "Quel intrus ne va pas avec les autres : pomme, poire, carotte, cerise ?",
+      "reponse": "carotte",
+      "pieges": [
+        "pomme",
+        "poire",
+        "cerise"
+      ],
+      "consigne": "Quel intrus ne va pas avec les autres : pomme, poire, carotte, cerise ?"
+    }
+  ]
+}

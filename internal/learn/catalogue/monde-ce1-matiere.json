@@ -1,0 +1,454 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-ce1-matiere",
+  "version": "1.0.0",
+  "nom": "La matière",
+  "description": "L'eau solide, liquide ou en vapeur, les matériaux, et les mélanges qui se dissolvent ou non.",
+  "matiere": "monde",
+  "niveaux": [
+    "CE1"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de questionner le monde du cycle 2 (2024) et les repères annuels de progression du CE1 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "eau",
+      "nom": "Les états de l’eau"
+    },
+    {
+      "id": "materiaux",
+      "nom": "Les matériaux",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "melanges",
+      "nom": "Les mélanges",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 8
+  },
+  "fiches": [
+    {
+      "id": "etats",
+      "chapitre": "eau",
+      "type": "classer",
+      "question": "L’eau : solide, liquide ou gaz ?",
+      "consigne": "L’eau : solide, liquide ou gaz ?",
+      "boites": [
+        {
+          "nom": "Solide"
+        },
+        {
+          "nom": "Liquide"
+        },
+        {
+          "nom": "Gaz"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le glaçon",
+          "boite": "Solide",
+          "image": "ice-cube"
+        },
+        {
+          "texte": "la neige",
+          "boite": "Solide",
+          "image": "snow"
+        },
+        {
+          "texte": "la banquise",
+          "boite": "Solide"
+        },
+        {
+          "texte": "la grêle",
+          "boite": "Solide"
+        },
+        {
+          "texte": "la pluie",
+          "boite": "Liquide",
+          "image": "rain"
+        },
+        {
+          "texte": "la mer",
+          "boite": "Liquide",
+          "image": "wave"
+        },
+        {
+          "texte": "l’eau du robinet",
+          "boite": "Liquide"
+        },
+        {
+          "texte": "la vapeur de la bouilloire",
+          "boite": "Gaz"
+        },
+        {
+          "texte": "la buée",
+          "boite": "Liquide"
+        },
+        {
+          "texte": "la vapeur de la casserole",
+          "boite": "Gaz"
+        }
+      ]
+    },
+    {
+      "id": "eau-1",
+      "chapitre": "eau",
+      "type": "choix",
+      "question": "L’eau gèle à…",
+      "reponse": "0 degré",
+      "pieges": [
+        "100 degrés",
+        "50 degrés",
+        "20 degrés"
+      ],
+      "consigne": "L’eau gèle à…"
+    },
+    {
+      "id": "eau-2",
+      "chapitre": "eau",
+      "type": "choix",
+      "question": "L’eau bout à…",
+      "reponse": "100 degrés",
+      "pieges": [
+        "0 degré",
+        "10 degrés",
+        "37 degrés"
+      ],
+      "consigne": "L’eau bout à…"
+    },
+    {
+      "id": "eau-3",
+      "chapitre": "eau",
+      "type": "choix",
+      "question": "Quand la glace fond, elle devient…",
+      "reponse": "liquide",
+      "pieges": [
+        "gaz",
+        "solide",
+        "du sable"
+      ],
+      "consigne": "Quand la glace fond, elle devient…"
+    },
+    {
+      "id": "eau-4",
+      "chapitre": "eau",
+      "type": "choix",
+      "question": "Quand l’eau bout, elle devient…",
+      "reponse": "de la vapeur",
+      "pieges": [
+        "de la glace",
+        "du sel",
+        "de la neige"
+      ],
+      "consigne": "Quand l’eau bout, elle devient…"
+    },
+    {
+      "id": "eau-5",
+      "chapitre": "eau",
+      "type": "choix",
+      "question": "Le linge sèche au soleil car l’eau…",
+      "reponse": "s’évapore",
+      "pieges": [
+        "gèle",
+        "devient du sable",
+        "rentre dans le tissu"
+      ],
+      "consigne": "Le linge sèche au soleil car l’eau…"
+    },
+    {
+      "id": "eau-6",
+      "chapitre": "eau",
+      "type": "choix",
+      "question": "La buée sur la vitre froide, c’est…",
+      "reponse": "la vapeur qui redevient liquide",
+      "pieges": [
+        "de la neige",
+        "de la poussière",
+        "du lait"
+      ],
+      "consigne": "La buée sur la vitre froide, c’est…"
+    },
+    {
+      "id": "materiaux-1",
+      "chapitre": "materiaux",
+      "type": "classer",
+      "question": "En quoi est-il fait ?",
+      "consigne": "En quoi est-il fait ?",
+      "boites": [
+        {
+          "nom": "Bois"
+        },
+        {
+          "nom": "Métal"
+        },
+        {
+          "nom": "Verre"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "la bûche",
+          "boite": "Bois",
+          "image": "log"
+        },
+        {
+          "texte": "le crayon",
+          "boite": "Bois",
+          "image": "pencil"
+        },
+        {
+          "texte": "la table de la cuisine",
+          "boite": "Bois"
+        },
+        {
+          "texte": "la clé",
+          "boite": "Métal",
+          "image": "key"
+        },
+        {
+          "texte": "la cuillère",
+          "boite": "Métal",
+          "image": "spoon"
+        },
+        {
+          "texte": "la pièce",
+          "boite": "Métal",
+          "image": "coin"
+        },
+        {
+          "texte": "la bouteille",
+          "boite": "Verre",
+          "image": "bottle"
+        },
+        {
+          "texte": "la fenêtre",
+          "boite": "Verre",
+          "image": "window"
+        },
+        {
+          "texte": "le verre à boire",
+          "boite": "Verre"
+        }
+      ]
+    },
+    {
+      "id": "materiaux-2",
+      "chapitre": "materiaux",
+      "type": "classer",
+      "question": "En quoi est-il fait ?",
+      "consigne": "En quoi est-il fait ?",
+      "boites": [
+        {
+          "nom": "Plastique"
+        },
+        {
+          "nom": "Tissu"
+        },
+        {
+          "nom": "Papier"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le seau de plage",
+          "boite": "Plastique"
+        },
+        {
+          "texte": "la brosse à dents",
+          "boite": "Plastique",
+          "image": "toothbrush"
+        },
+        {
+          "texte": "le tee-shirt",
+          "boite": "Tissu",
+          "image": "t-shirt"
+        },
+        {
+          "texte": "l’écharpe",
+          "boite": "Tissu",
+          "image": "scarf"
+        },
+        {
+          "texte": "les chaussettes",
+          "boite": "Tissu",
+          "image": "socks"
+        },
+        {
+          "texte": "le livre",
+          "boite": "Papier",
+          "image": "book"
+        },
+        {
+          "texte": "le cahier",
+          "boite": "Papier",
+          "image": "notebook"
+        },
+        {
+          "texte": "la colle en tube",
+          "boite": "Plastique"
+        }
+      ]
+    },
+    {
+      "id": "materiau-1",
+      "chapitre": "materiaux",
+      "type": "choix",
+      "question": "Quel matériau est transparent ?",
+      "reponse": "le verre",
+      "pieges": [
+        "le bois",
+        "le métal",
+        "le carton"
+      ],
+      "consigne": "Quel matériau est transparent ?"
+    },
+    {
+      "id": "materiau-2",
+      "chapitre": "materiaux",
+      "type": "choix",
+      "question": "Quel matériau rouille ?",
+      "reponse": "le fer",
+      "pieges": [
+        "le verre",
+        "le plastique",
+        "le tissu"
+      ],
+      "consigne": "Quel matériau rouille ?"
+    },
+    {
+      "id": "materiau-3",
+      "chapitre": "materiaux",
+      "type": "choix",
+      "question": "Quel matériau vient des arbres ?",
+      "reponse": "le bois",
+      "pieges": [
+        "le verre",
+        "le métal",
+        "le plastique"
+      ],
+      "consigne": "Quel matériau vient des arbres ?"
+    },
+    {
+      "id": "materiau-4",
+      "chapitre": "materiaux",
+      "type": "choix",
+      "question": "Pour une casserole, on choisit…",
+      "reponse": "le métal",
+      "pieges": [
+        "le papier",
+        "le tissu",
+        "le plastique fin"
+      ],
+      "consigne": "Pour une casserole, on choisit…"
+    },
+    {
+      "id": "melanges",
+      "chapitre": "melanges",
+      "type": "classer",
+      "question": "Dans l’eau, il se dissout ou non ?",
+      "consigne": "Dans l’eau, il se dissout ou non ?",
+      "boites": [
+        {
+          "nom": "Il disparaît (se dissout)"
+        },
+        {
+          "nom": "Il reste visible"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le sucre",
+          "boite": "Il disparaît (se dissout)"
+        },
+        {
+          "texte": "le sel",
+          "boite": "Il disparaît (se dissout)"
+        },
+        {
+          "texte": "le sirop",
+          "boite": "Il disparaît (se dissout)"
+        },
+        {
+          "texte": "le sable",
+          "boite": "Il reste visible"
+        },
+        {
+          "texte": "l’huile",
+          "boite": "Il reste visible"
+        },
+        {
+          "texte": "les cailloux",
+          "boite": "Il reste visible"
+        },
+        {
+          "texte": "la farine",
+          "boite": "Il reste visible"
+        }
+      ]
+    },
+    {
+      "id": "melange-1",
+      "chapitre": "melanges",
+      "type": "choix",
+      "question": "On mélange de l’eau et du sable, puis on attend. Le sable…",
+      "reponse": "tombe au fond",
+      "pieges": [
+        "disparaît",
+        "flotte",
+        "devient du sucre"
+      ],
+      "consigne": "On mélange de l’eau et du sable, puis on attend. Le sable…"
+    },
+    {
+      "id": "melange-2",
+      "chapitre": "melanges",
+      "type": "choix",
+      "question": "On verse de l’huile dans l’eau. L’huile…",
+      "reponse": "reste au-dessus",
+      "pieges": [
+        "coule au fond",
+        "disparaît",
+        "devient de l’eau"
+      ],
+      "consigne": "On verse de l’huile dans l’eau. L’huile…"
+    },
+    {
+      "id": "melange-3",
+      "chapitre": "melanges",
+      "type": "choix",
+      "question": "Pour séparer l’eau et le sable, on peut…",
+      "reponse": "filtrer avec un tissu",
+      "pieges": [
+        "ajouter du sel",
+        "secouer très fort",
+        "chauffer le verre"
+      ],
+      "consigne": "Pour séparer l’eau et le sable, on peut…"
+    },
+    {
+      "id": "melange-4",
+      "chapitre": "melanges",
+      "type": "choix",
+      "question": "Le sucre dans l’eau a disparu. Comment le savoir encore là ?",
+      "reponse": "l’eau a un goût sucré",
+      "pieges": [
+        "l’eau est rouge",
+        "il y a des bulles",
+        "on ne peut pas"
+      ],
+      "consigne": "Le sucre dans l’eau a disparu. Comment le savoir encore là ?"
+    }
+  ]
+}

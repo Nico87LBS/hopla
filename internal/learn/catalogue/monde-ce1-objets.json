@@ -1,0 +1,327 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-ce1-objets",
+  "version": "1.0.0",
+  "nom": "Objets et électricité",
+  "description": "Ce qui marche avec une pile ou sur une prise, les dangers de l'électricité, et ce qu'attire un aimant.",
+  "matiere": "monde",
+  "niveaux": [
+    "CE1"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de questionner le monde du cycle 2 (2024) et les repères annuels de progression du CE1 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "energie",
+      "nom": "Pile ou prise"
+    },
+    {
+      "id": "dangers",
+      "nom": "Les dangers de l’électricité",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "aimants",
+      "nom": "Les aimants",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 8
+  },
+  "fiches": [
+    {
+      "id": "energie",
+      "chapitre": "energie",
+      "type": "classer",
+      "question": "Comment marche-t-il ?",
+      "consigne": "Comment marche-t-il ?",
+      "boites": [
+        {
+          "nom": "Avec une pile"
+        },
+        {
+          "nom": "Sur une prise"
+        },
+        {
+          "nom": "Sans électricité"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "la lampe de poche",
+          "boite": "Avec une pile"
+        },
+        {
+          "texte": "la télécommande",
+          "boite": "Avec une pile"
+        },
+        {
+          "texte": "la montre",
+          "boite": "Avec une pile"
+        },
+        {
+          "texte": "le frigo",
+          "boite": "Sur une prise"
+        },
+        {
+          "texte": "la machine à laver",
+          "boite": "Sur une prise"
+        },
+        {
+          "texte": "la bouilloire",
+          "boite": "Sur une prise",
+          "image": "kettle"
+        },
+        {
+          "texte": "le vélo",
+          "boite": "Sans électricité",
+          "image": "bike"
+        },
+        {
+          "texte": "les ciseaux",
+          "boite": "Sans électricité",
+          "image": "scissors"
+        },
+        {
+          "texte": "le livre",
+          "boite": "Sans électricité",
+          "image": "book"
+        }
+      ]
+    },
+    {
+      "id": "energie-1",
+      "chapitre": "energie",
+      "type": "choix",
+      "question": "Que faut-il pour allumer l’ampoule de la lampe de poche ?",
+      "reponse": "une pile",
+      "pieges": [
+        "de l’eau",
+        "du sable",
+        "un aimant"
+      ],
+      "consigne": "Que faut-il pour allumer l’ampoule de la lampe de poche ?",
+      "image": "bulb"
+    },
+    {
+      "id": "energie-2",
+      "chapitre": "energie",
+      "type": "choix",
+      "question": "Quand la pile est vide, la lampe…",
+      "reponse": "s’éteint",
+      "pieges": [
+        "brille plus fort",
+        "change de couleur",
+        "chauffe"
+      ],
+      "consigne": "Quand la pile est vide, la lampe…",
+      "image": "battery"
+    },
+    {
+      "id": "energie-3",
+      "chapitre": "energie",
+      "type": "choix",
+      "question": "Le téléphone se recharge…",
+      "reponse": "sur une prise",
+      "pieges": [
+        "dans l’eau",
+        "au congélateur",
+        "au soleil de la fenêtre"
+      ],
+      "consigne": "Le téléphone se recharge…",
+      "image": "phone"
+    },
+    {
+      "id": "danger-1",
+      "chapitre": "dangers",
+      "type": "choix",
+      "question": "Peut-on mettre les doigts dans une prise ?",
+      "reponse": "Non, jamais",
+      "pieges": [
+        "Oui, si on est rapide",
+        "Oui, avec des gants"
+      ],
+      "consigne": "Peut-on mettre les doigts dans une prise ?",
+      "image": "socket"
+    },
+    {
+      "id": "danger-2",
+      "chapitre": "dangers",
+      "type": "choix",
+      "question": "Peut-on toucher un appareil électrique avec les mains mouillées ?",
+      "reponse": "Non, c’est dangereux",
+      "pieges": [
+        "Oui"
+      ],
+      "consigne": "Peut-on toucher un appareil électrique avec les mains mouillées ?",
+      "image": "socket"
+    },
+    {
+      "id": "danger-3",
+      "chapitre": "dangers",
+      "type": "choix",
+      "question": "Un câble électrique est abîmé. Que fais-tu ?",
+      "reponse": "je préviens un adulte",
+      "pieges": [
+        "je le touche",
+        "je le répare",
+        "je le coupe"
+      ],
+      "consigne": "Un câble électrique est abîmé. Que fais-tu ?",
+      "image": "socket"
+    },
+    {
+      "id": "danger-4",
+      "chapitre": "dangers",
+      "type": "choix",
+      "question": "Peut-on jouer près des lignes électriques avec un cerf-volant ?",
+      "reponse": "Non, c’est dangereux",
+      "pieges": [
+        "Oui"
+      ],
+      "consigne": "Peut-on jouer près des lignes électriques avec un cerf-volant ?",
+      "image": "socket"
+    },
+    {
+      "id": "danger-5",
+      "chapitre": "dangers",
+      "type": "choix",
+      "question": "L’électricité de la prise est…",
+      "reponse": "dangereuse, elle peut tuer",
+      "pieges": [
+        "sans danger",
+        "utile seulement le jour",
+        "froide"
+      ],
+      "consigne": "L’électricité de la prise est…",
+      "image": "socket"
+    },
+    {
+      "id": "danger-6",
+      "chapitre": "dangers",
+      "type": "choix",
+      "question": "L’électricité d’une petite pile est…",
+      "reponse": "sans danger pour les mains",
+      "pieges": [
+        "très dangereuse",
+        "interdite",
+        "mouillée"
+      ],
+      "consigne": "L’électricité d’une petite pile est…",
+      "image": "socket"
+    },
+    {
+      "id": "aimant",
+      "chapitre": "aimants",
+      "type": "classer",
+      "question": "L’aimant l’attire-t-il ?",
+      "consigne": "L’aimant l’attire-t-il ?",
+      "boites": [
+        {
+          "nom": "Attiré"
+        },
+        {
+          "nom": "Pas attiré"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le trombone en fer",
+          "boite": "Attiré"
+        },
+        {
+          "texte": "le clou",
+          "boite": "Attiré"
+        },
+        {
+          "texte": "la cuillère en fer",
+          "boite": "Attiré"
+        },
+        {
+          "texte": "la clé en fer",
+          "boite": "Attiré"
+        },
+        {
+          "texte": "le bouchon",
+          "boite": "Pas attiré",
+          "image": "cork"
+        },
+        {
+          "texte": "la gomme",
+          "boite": "Pas attiré"
+        },
+        {
+          "texte": "le crayon en bois",
+          "boite": "Pas attiré"
+        },
+        {
+          "texte": "la feuille de papier",
+          "boite": "Pas attiré"
+        },
+        {
+          "texte": "le verre",
+          "boite": "Pas attiré"
+        }
+      ]
+    },
+    {
+      "id": "aimant-1",
+      "chapitre": "aimants",
+      "type": "choix",
+      "question": "Un aimant attire…",
+      "reponse": "certains métaux, comme le fer",
+      "pieges": [
+        "le bois",
+        "le papier",
+        "tout"
+      ],
+      "consigne": "Un aimant attire…"
+    },
+    {
+      "id": "aimant-2",
+      "chapitre": "aimants",
+      "type": "choix",
+      "question": "Un aimant peut-il attirer un trombone à travers une feuille ?",
+      "reponse": "Oui",
+      "pieges": [
+        "Non"
+      ],
+      "consigne": "Un aimant peut-il attirer un trombone à travers une feuille ?"
+    },
+    {
+      "id": "aimant-3",
+      "chapitre": "aimants",
+      "type": "choix",
+      "question": "Deux aimants qu’on approche peuvent…",
+      "reponse": "s’attirer ou se repousser",
+      "pieges": [
+        "fondre",
+        "s’allumer",
+        "chanter"
+      ],
+      "consigne": "Deux aimants qu’on approche peuvent…"
+    },
+    {
+      "id": "aimant-4",
+      "chapitre": "aimants",
+      "type": "choix",
+      "question": "Où trouve-t-on des aimants à la maison ?",
+      "reponse": "sur la porte du frigo",
+      "pieges": [
+        "dans le pain",
+        "dans le savon",
+        "dans l’eau"
+      ],
+      "consigne": "Où trouve-t-on des aimants à la maison ?"
+    }
+  ]
+}

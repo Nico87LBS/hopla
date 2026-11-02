@@ -1,0 +1,431 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-ce1-corps",
+  "version": "1.0.0",
+  "nom": "Mon corps",
+  "description": "Les dents de lait et les dents définitives, les familles d'aliments et le repas équilibré, les articulations et les muscles.",
+  "matiere": "monde",
+  "niveaux": [
+    "CE1"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de questionner le monde du cycle 2 (2024) et les repères annuels de progression du CE1 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "dents",
+      "nom": "Les dents"
+    },
+    {
+      "id": "aliments",
+      "nom": "Bien manger",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "mouvement",
+      "nom": "Bouger : articulations et muscles",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 8
+  },
+  "fiches": [
+    {
+      "id": "dents-1",
+      "chapitre": "dents",
+      "type": "choix",
+      "question": "Les premières dents s’appellent…",
+      "reponse": "les dents de lait",
+      "pieges": [
+        "les dents de sagesse",
+        "les crocs",
+        "les dents en sucre"
+      ],
+      "consigne": "Les premières dents s’appellent…",
+      "image": "tooth"
+    },
+    {
+      "id": "dents-2",
+      "chapitre": "dents",
+      "type": "choix",
+      "question": "Vers quel âge tombent les dents de lait ?",
+      "reponse": "vers 6 ans",
+      "pieges": [
+        "à la naissance",
+        "vers 30 ans",
+        "jamais"
+      ],
+      "consigne": "Vers quel âge tombent les dents de lait ?",
+      "image": "tooth"
+    },
+    {
+      "id": "dents-3",
+      "chapitre": "dents",
+      "type": "choix",
+      "question": "Combien a-t-on de dents de lait ?",
+      "reponse": "20",
+      "pieges": [
+        "32",
+        "10",
+        "50"
+      ],
+      "consigne": "Combien a-t-on de dents de lait ?",
+      "image": "tooth"
+    },
+    {
+      "id": "dents-4",
+      "chapitre": "dents",
+      "type": "choix",
+      "question": "Combien a-t-on de dents chez l’adulte ?",
+      "reponse": "32",
+      "pieges": [
+        "20",
+        "12",
+        "100"
+      ],
+      "consigne": "Combien a-t-on de dents chez l’adulte ?",
+      "image": "tooth"
+    },
+    {
+      "id": "dents-5",
+      "chapitre": "dents",
+      "type": "choix",
+      "question": "Les dents de devant, qui coupent, s’appellent…",
+      "reponse": "les incisives",
+      "pieges": [
+        "les molaires",
+        "les canines",
+        "les gencives"
+      ],
+      "consigne": "Les dents de devant, qui coupent, s’appellent…",
+      "image": "tooth"
+    },
+    {
+      "id": "dents-6",
+      "chapitre": "dents",
+      "type": "choix",
+      "question": "Les dents du fond, qui écrasent, s’appellent…",
+      "reponse": "les molaires",
+      "pieges": [
+        "les incisives",
+        "les canines",
+        "les lèvres"
+      ],
+      "consigne": "Les dents du fond, qui écrasent, s’appellent…",
+      "image": "tooth"
+    },
+    {
+      "id": "dents-7",
+      "chapitre": "dents",
+      "type": "choix",
+      "question": "Si une dent définitive tombe…",
+      "reponse": "elle ne repousse pas",
+      "pieges": [
+        "elle repousse",
+        "une dent de lait revient",
+        "ce n’est pas grave"
+      ],
+      "consigne": "Si une dent définitive tombe…",
+      "image": "tooth"
+    },
+    {
+      "id": "familles-1",
+      "chapitre": "aliments",
+      "type": "classer",
+      "question": "Dans quelle famille ?",
+      "consigne": "Dans quelle famille ?",
+      "boites": [
+        {
+          "nom": "Fruits et légumes"
+        },
+        {
+          "nom": "Féculents"
+        },
+        {
+          "nom": "Produits laitiers"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "la pomme",
+          "boite": "Fruits et légumes",
+          "image": "apple"
+        },
+        {
+          "texte": "la carotte",
+          "boite": "Fruits et légumes",
+          "image": "carrot"
+        },
+        {
+          "texte": "la tomate",
+          "boite": "Fruits et légumes",
+          "image": "tomato"
+        },
+        {
+          "texte": "la salade",
+          "boite": "Fruits et légumes",
+          "image": "salad"
+        },
+        {
+          "texte": "le pain",
+          "boite": "Féculents",
+          "image": "bread"
+        },
+        {
+          "texte": "les pâtes",
+          "boite": "Féculents",
+          "image": "pasta"
+        },
+        {
+          "texte": "le riz",
+          "boite": "Féculents",
+          "image": "rice"
+        },
+        {
+          "texte": "la pomme de terre",
+          "boite": "Féculents",
+          "image": "potato"
+        },
+        {
+          "texte": "le lait",
+          "boite": "Produits laitiers",
+          "image": "milk"
+        },
+        {
+          "texte": "le fromage",
+          "boite": "Produits laitiers",
+          "image": "cheese"
+        },
+        {
+          "texte": "le yaourt",
+          "boite": "Produits laitiers",
+          "image": "yogurt"
+        }
+      ]
+    },
+    {
+      "id": "familles-2",
+      "chapitre": "aliments",
+      "type": "classer",
+      "question": "Dans quelle famille ?",
+      "consigne": "Dans quelle famille ?",
+      "boites": [
+        {
+          "nom": "Viande, poisson, œufs"
+        },
+        {
+          "nom": "Sucre"
+        },
+        {
+          "nom": "Matières grasses"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "la viande",
+          "boite": "Viande, poisson, œufs",
+          "image": "steak"
+        },
+        {
+          "texte": "le poisson",
+          "boite": "Viande, poisson, œufs",
+          "image": "fish"
+        },
+        {
+          "texte": "l’œuf",
+          "boite": "Viande, poisson, œufs",
+          "image": "egg"
+        },
+        {
+          "texte": "le bonbon",
+          "boite": "Sucre",
+          "image": "candy"
+        },
+        {
+          "texte": "le gâteau",
+          "boite": "Sucre",
+          "image": "cake"
+        },
+        {
+          "texte": "le soda",
+          "boite": "Sucre",
+          "image": "soda"
+        },
+        {
+          "texte": "le miel",
+          "boite": "Sucre",
+          "image": "honey"
+        },
+        {
+          "texte": "le beurre",
+          "boite": "Matières grasses",
+          "image": "butter"
+        }
+      ]
+    },
+    {
+      "id": "repas-1",
+      "chapitre": "aliments",
+      "type": "choix",
+      "question": "Un repas équilibré contient…",
+      "reponse": "un peu de chaque famille",
+      "pieges": [
+        "seulement des gâteaux",
+        "seulement de la viande",
+        "rien"
+      ],
+      "consigne": "Un repas équilibré contient…"
+    },
+    {
+      "id": "repas-2",
+      "chapitre": "aliments",
+      "type": "choix",
+      "question": "Combien de fruits et légumes faut-il manger par jour ?",
+      "reponse": "5",
+      "pieges": [
+        "1",
+        "0",
+        "20"
+      ],
+      "consigne": "Combien de fruits et légumes faut-il manger par jour ?"
+    },
+    {
+      "id": "repas-3",
+      "chapitre": "aliments",
+      "type": "choix",
+      "question": "La seule boisson indispensable, c’est…",
+      "reponse": "l’eau",
+      "pieges": [
+        "le soda",
+        "le sirop",
+        "le jus"
+      ],
+      "consigne": "La seule boisson indispensable, c’est…"
+    },
+    {
+      "id": "repas-4",
+      "chapitre": "aliments",
+      "type": "choix",
+      "question": "Les produits laitiers aident à avoir…",
+      "reponse": "des os solides",
+      "pieges": [
+        "des cheveux bleus",
+        "de la fièvre",
+        "faim"
+      ],
+      "consigne": "Les produits laitiers aident à avoir…"
+    },
+    {
+      "id": "repas-5",
+      "chapitre": "aliments",
+      "type": "choix",
+      "question": "Les féculents donnent…",
+      "reponse": "de l’énergie",
+      "pieges": [
+        "des caries",
+        "froid",
+        "sommeil tout de suite"
+      ],
+      "consigne": "Les féculents donnent…"
+    },
+    {
+      "id": "repas-6",
+      "chapitre": "aliments",
+      "type": "choix",
+      "question": "Les aliments sucrés, on en mange…",
+      "reponse": "un peu, de temps en temps",
+      "pieges": [
+        "à chaque repas",
+        "jamais",
+        "au lieu de l’eau"
+      ],
+      "consigne": "Les aliments sucrés, on en mange…"
+    },
+    {
+      "id": "articulation-1",
+      "chapitre": "mouvement",
+      "type": "choix",
+      "question": "Le coude est…",
+      "reponse": "une articulation",
+      "pieges": [
+        "un muscle",
+        "un os du pied",
+        "une dent"
+      ],
+      "consigne": "Le coude est…"
+    },
+    {
+      "id": "articulation-2",
+      "chapitre": "mouvement",
+      "type": "choix",
+      "question": "Quelle articulation permet de plier la jambe ?",
+      "reponse": "le genou",
+      "pieges": [
+        "le coude",
+        "le poignet",
+        "l’épaule"
+      ],
+      "consigne": "Quelle articulation permet de plier la jambe ?"
+    },
+    {
+      "id": "articulation-3",
+      "chapitre": "mouvement",
+      "type": "choix",
+      "question": "Quelle articulation est entre la main et le bras ?",
+      "reponse": "le poignet",
+      "pieges": [
+        "la cheville",
+        "le genou",
+        "la hanche"
+      ],
+      "consigne": "Quelle articulation est entre la main et le bras ?"
+    },
+    {
+      "id": "articulation-4",
+      "chapitre": "mouvement",
+      "type": "choix",
+      "question": "Quelle articulation est entre le pied et la jambe ?",
+      "reponse": "la cheville",
+      "pieges": [
+        "le poignet",
+        "le coude",
+        "l’épaule"
+      ],
+      "consigne": "Quelle articulation est entre le pied et la jambe ?"
+    },
+    {
+      "id": "articulation-5",
+      "chapitre": "mouvement",
+      "type": "choix",
+      "question": "Ce qui fait bouger les os, ce sont…",
+      "reponse": "les muscles",
+      "pieges": [
+        "les cheveux",
+        "les ongles",
+        "les dents"
+      ],
+      "consigne": "Ce qui fait bouger les os, ce sont…"
+    },
+    {
+      "id": "articulation-6",
+      "chapitre": "mouvement",
+      "type": "choix",
+      "question": "Le squelette sert à…",
+      "reponse": "tenir le corps et protéger les organes",
+      "pieges": [
+        "digérer",
+        "voir",
+        "respirer seulement"
+      ],
+      "consigne": "Le squelette sert à…"
+    }
+  ]
+}

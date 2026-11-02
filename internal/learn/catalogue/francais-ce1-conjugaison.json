@@ -1,0 +1,1396 @@
+{
+  "format": "hopla-module/1",
+  "id": "francais-ce1-conjugaison",
+  "version": "1.0.0",
+  "nom": "Conjuguer au CE1",
+  "description": "Le présent des verbes en -er, être et avoir, aller, faire, dire et venir ; passé, présent ou futur ; puis écrire soi-même le verbe.",
+  "matiere": "francais",
+  "niveaux": [
+    "CE1"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de français du cycle 2 (2024) et les repères annuels de progression du CE1 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "er",
+      "nom": "Le présent des verbes en -er"
+    },
+    {
+      "id": "etre-avoir",
+      "nom": "Être et avoir",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "irreguliers",
+      "nom": "Aller, faire, dire, venir",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "temps",
+      "nom": "Passé, présent ou futur ?",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "ecrire",
+      "nom": "Écrire le verbe",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 8
+  },
+  "fiches": [
+    {
+      "id": "er-chanter-je",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "je ___ (chanter)",
+      "reponse": "chante",
+      "pieges": [
+        "chantes",
+        "chantons",
+        "chantez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-chanter-tu",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "tu ___ (chanter)",
+      "reponse": "chantes",
+      "pieges": [
+        "chante",
+        "chantons",
+        "chantez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-chanter-il",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "il ___ (chanter)",
+      "reponse": "chante",
+      "pieges": [
+        "chantes",
+        "chantons",
+        "chantez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-chanter-nous",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "nous ___ (chanter)",
+      "reponse": "chantons",
+      "pieges": [
+        "chante",
+        "chantes",
+        "chantez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-chanter-vous",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "vous ___ (chanter)",
+      "reponse": "chantez",
+      "pieges": [
+        "chante",
+        "chantes",
+        "chantons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-chanter-ils",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "ils ___ (chanter)",
+      "reponse": "chantent",
+      "pieges": [
+        "chante",
+        "chantes",
+        "chantons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-jouer-je",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "je ___ (jouer)",
+      "reponse": "joue",
+      "pieges": [
+        "joues",
+        "jouons",
+        "jouez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-jouer-tu",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "tu ___ (jouer)",
+      "reponse": "joues",
+      "pieges": [
+        "joue",
+        "jouons",
+        "jouez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-jouer-il",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "il ___ (jouer)",
+      "reponse": "joue",
+      "pieges": [
+        "joues",
+        "jouons",
+        "jouez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-jouer-nous",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "nous ___ (jouer)",
+      "reponse": "jouons",
+      "pieges": [
+        "joue",
+        "joues",
+        "jouez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-jouer-vous",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "vous ___ (jouer)",
+      "reponse": "jouez",
+      "pieges": [
+        "joue",
+        "joues",
+        "jouons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-jouer-ils",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "ils ___ (jouer)",
+      "reponse": "jouent",
+      "pieges": [
+        "joue",
+        "joues",
+        "jouons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-parler-je",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "je ___ (parler)",
+      "reponse": "parle",
+      "pieges": [
+        "parles",
+        "parlons",
+        "parlez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-parler-tu",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "tu ___ (parler)",
+      "reponse": "parles",
+      "pieges": [
+        "parle",
+        "parlons",
+        "parlez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-parler-il",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "il ___ (parler)",
+      "reponse": "parle",
+      "pieges": [
+        "parles",
+        "parlons",
+        "parlez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-parler-nous",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "nous ___ (parler)",
+      "reponse": "parlons",
+      "pieges": [
+        "parle",
+        "parles",
+        "parlez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-parler-vous",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "vous ___ (parler)",
+      "reponse": "parlez",
+      "pieges": [
+        "parle",
+        "parles",
+        "parlons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-parler-ils",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "ils ___ (parler)",
+      "reponse": "parlent",
+      "pieges": [
+        "parle",
+        "parles",
+        "parlons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-danser-je",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "je ___ (danser)",
+      "reponse": "danse",
+      "pieges": [
+        "danses",
+        "dansons",
+        "dansez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-danser-tu",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "tu ___ (danser)",
+      "reponse": "danses",
+      "pieges": [
+        "danse",
+        "dansons",
+        "dansez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-danser-il",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "il ___ (danser)",
+      "reponse": "danse",
+      "pieges": [
+        "danses",
+        "dansons",
+        "dansez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-danser-nous",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "nous ___ (danser)",
+      "reponse": "dansons",
+      "pieges": [
+        "danse",
+        "danses",
+        "dansez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-danser-vous",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "vous ___ (danser)",
+      "reponse": "dansez",
+      "pieges": [
+        "danse",
+        "danses",
+        "dansons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-danser-ils",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "ils ___ (danser)",
+      "reponse": "dansent",
+      "pieges": [
+        "danse",
+        "danses",
+        "dansons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-regarder-je",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "je ___ (regarder)",
+      "reponse": "regarde",
+      "pieges": [
+        "regardes",
+        "regardons",
+        "regardez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-regarder-tu",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "tu ___ (regarder)",
+      "reponse": "regardes",
+      "pieges": [
+        "regarde",
+        "regardons",
+        "regardez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-regarder-il",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "il ___ (regarder)",
+      "reponse": "regarde",
+      "pieges": [
+        "regardes",
+        "regardons",
+        "regardez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-regarder-nous",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "nous ___ (regarder)",
+      "reponse": "regardons",
+      "pieges": [
+        "regarde",
+        "regardes",
+        "regardez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-regarder-vous",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "vous ___ (regarder)",
+      "reponse": "regardez",
+      "pieges": [
+        "regarde",
+        "regardes",
+        "regardons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-regarder-ils",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "ils ___ (regarder)",
+      "reponse": "regardent",
+      "pieges": [
+        "regarde",
+        "regardes",
+        "regardons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-aimer-je",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "j’___ (aimer)",
+      "reponse": "aime",
+      "pieges": [
+        "aimes",
+        "aimons",
+        "aimez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-aimer-tu",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "tu ___ (aimer)",
+      "reponse": "aimes",
+      "pieges": [
+        "aime",
+        "aimons",
+        "aimez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-aimer-il",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "il ___ (aimer)",
+      "reponse": "aime",
+      "pieges": [
+        "aimes",
+        "aimons",
+        "aimez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-aimer-nous",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "nous ___ (aimer)",
+      "reponse": "aimons",
+      "pieges": [
+        "aime",
+        "aimes",
+        "aimez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-aimer-vous",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "vous ___ (aimer)",
+      "reponse": "aimez",
+      "pieges": [
+        "aime",
+        "aimes",
+        "aimons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-aimer-ils",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "ils ___ (aimer)",
+      "reponse": "aiment",
+      "pieges": [
+        "aime",
+        "aimes",
+        "aimons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-marcher-je",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "je ___ (marcher)",
+      "reponse": "marche",
+      "pieges": [
+        "marches",
+        "marchons",
+        "marchez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-marcher-tu",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "tu ___ (marcher)",
+      "reponse": "marches",
+      "pieges": [
+        "marche",
+        "marchons",
+        "marchez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-marcher-il",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "il ___ (marcher)",
+      "reponse": "marche",
+      "pieges": [
+        "marches",
+        "marchons",
+        "marchez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-marcher-nous",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "nous ___ (marcher)",
+      "reponse": "marchons",
+      "pieges": [
+        "marche",
+        "marches",
+        "marchez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-marcher-vous",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "vous ___ (marcher)",
+      "reponse": "marchez",
+      "pieges": [
+        "marche",
+        "marches",
+        "marchons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-marcher-ils",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "ils ___ (marcher)",
+      "reponse": "marchent",
+      "pieges": [
+        "marche",
+        "marches",
+        "marchons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-dessiner-je",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "je ___ (dessiner)",
+      "reponse": "dessine",
+      "pieges": [
+        "dessines",
+        "dessinons",
+        "dessinez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-dessiner-tu",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "tu ___ (dessiner)",
+      "reponse": "dessines",
+      "pieges": [
+        "dessine",
+        "dessinons",
+        "dessinez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-dessiner-il",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "il ___ (dessiner)",
+      "reponse": "dessine",
+      "pieges": [
+        "dessines",
+        "dessinons",
+        "dessinez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-dessiner-nous",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "nous ___ (dessiner)",
+      "reponse": "dessinons",
+      "pieges": [
+        "dessine",
+        "dessines",
+        "dessinez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-dessiner-vous",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "vous ___ (dessiner)",
+      "reponse": "dessinez",
+      "pieges": [
+        "dessine",
+        "dessines",
+        "dessinons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "er-dessiner-ils",
+      "chapitre": "er",
+      "type": "choix",
+      "question": "ils ___ (dessiner)",
+      "reponse": "dessinent",
+      "pieges": [
+        "dessine",
+        "dessines",
+        "dessinons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "etre-je",
+      "chapitre": "etre-avoir",
+      "type": "choix",
+      "question": "je ___ (être)",
+      "reponse": "suis",
+      "pieges": [
+        "es",
+        "est",
+        "sommes"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "etre-tu",
+      "chapitre": "etre-avoir",
+      "type": "choix",
+      "question": "tu ___ (être)",
+      "reponse": "es",
+      "pieges": [
+        "suis",
+        "est",
+        "sommes"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "etre-il",
+      "chapitre": "etre-avoir",
+      "type": "choix",
+      "question": "il ___ (être)",
+      "reponse": "est",
+      "pieges": [
+        "suis",
+        "es",
+        "sommes"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "etre-nous",
+      "chapitre": "etre-avoir",
+      "type": "choix",
+      "question": "nous ___ (être)",
+      "reponse": "sommes",
+      "pieges": [
+        "suis",
+        "es",
+        "est"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "etre-vous",
+      "chapitre": "etre-avoir",
+      "type": "choix",
+      "question": "vous ___ (être)",
+      "reponse": "êtes",
+      "pieges": [
+        "suis",
+        "es",
+        "est"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "etre-ils",
+      "chapitre": "etre-avoir",
+      "type": "choix",
+      "question": "ils ___ (être)",
+      "reponse": "sont",
+      "pieges": [
+        "suis",
+        "es",
+        "est"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "avoir-je",
+      "chapitre": "etre-avoir",
+      "type": "choix",
+      "question": "j’___ (avoir)",
+      "reponse": "ai",
+      "pieges": [
+        "as",
+        "a",
+        "avons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "avoir-tu",
+      "chapitre": "etre-avoir",
+      "type": "choix",
+      "question": "tu ___ (avoir)",
+      "reponse": "as",
+      "pieges": [
+        "ai",
+        "a",
+        "avons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "avoir-il",
+      "chapitre": "etre-avoir",
+      "type": "choix",
+      "question": "il ___ (avoir)",
+      "reponse": "a",
+      "pieges": [
+        "ai",
+        "as",
+        "avons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "avoir-nous",
+      "chapitre": "etre-avoir",
+      "type": "choix",
+      "question": "nous ___ (avoir)",
+      "reponse": "avons",
+      "pieges": [
+        "ai",
+        "as",
+        "a"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "avoir-vous",
+      "chapitre": "etre-avoir",
+      "type": "choix",
+      "question": "vous ___ (avoir)",
+      "reponse": "avez",
+      "pieges": [
+        "ai",
+        "as",
+        "a"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "avoir-ils",
+      "chapitre": "etre-avoir",
+      "type": "choix",
+      "question": "ils ___ (avoir)",
+      "reponse": "ont",
+      "pieges": [
+        "ai",
+        "as",
+        "a"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "aller-je",
+      "chapitre": "irreguliers",
+      "type": "choix",
+      "question": "je ___ (aller)",
+      "reponse": "vais",
+      "pieges": [
+        "vas",
+        "va",
+        "allons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "aller-tu",
+      "chapitre": "irreguliers",
+      "type": "choix",
+      "question": "tu ___ (aller)",
+      "reponse": "vas",
+      "pieges": [
+        "vais",
+        "va",
+        "allons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "aller-il",
+      "chapitre": "irreguliers",
+      "type": "choix",
+      "question": "il ___ (aller)",
+      "reponse": "va",
+      "pieges": [
+        "vais",
+        "vas",
+        "allons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "aller-nous",
+      "chapitre": "irreguliers",
+      "type": "choix",
+      "question": "nous ___ (aller)",
+      "reponse": "allons",
+      "pieges": [
+        "vais",
+        "vas",
+        "va"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "aller-vous",
+      "chapitre": "irreguliers",
+      "type": "choix",
+      "question": "vous ___ (aller)",
+      "reponse": "allez",
+      "pieges": [
+        "vais",
+        "vas",
+        "va"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "aller-ils",
+      "chapitre": "irreguliers",
+      "type": "choix",
+      "question": "ils ___ (aller)",
+      "reponse": "vont",
+      "pieges": [
+        "vais",
+        "vas",
+        "va"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "faire-je",
+      "chapitre": "irreguliers",
+      "type": "choix",
+      "question": "je ___ (faire)",
+      "reponse": "fais",
+      "pieges": [
+        "fait",
+        "faisons",
+        "faites"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "faire-tu",
+      "chapitre": "irreguliers",
+      "type": "choix",
+      "question": "tu ___ (faire)",
+      "reponse": "fais",
+      "pieges": [
+        "fait",
+        "faisons",
+        "faites"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "faire-il",
+      "chapitre": "irreguliers",
+      "type": "choix",
+      "question": "il ___ (faire)",
+      "reponse": "fait",
+      "pieges": [
+        "fais",
+        "faisons",
+        "faites"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "faire-nous",
+      "chapitre": "irreguliers",
+      "type": "choix",
+      "question": "nous ___ (faire)",
+      "reponse": "faisons",
+      "pieges": [
+        "fais",
+        "fait",
+        "faites"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "faire-vous",
+      "chapitre": "irreguliers",
+      "type": "choix",
+      "question": "vous ___ (faire)",
+      "reponse": "faites",
+      "pieges": [
+        "fais",
+        "fait",
+        "faisons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "faire-ils",
+      "chapitre": "irreguliers",
+      "type": "choix",
+      "question": "ils ___ (faire)",
+      "reponse": "font",
+      "pieges": [
+        "fais",
+        "fait",
+        "faisons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "dire-je",
+      "chapitre": "irreguliers",
+      "type": "choix",
+      "question": "je ___ (dire)",
+      "reponse": "dis",
+      "pieges": [
+        "dit",
+        "disons",
+        "dites"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "dire-tu",
+      "chapitre": "irreguliers",
+      "type": "choix",
+      "question": "tu ___ (dire)",
+      "reponse": "dis",
+      "pieges": [
+        "dit",
+        "disons",
+        "dites"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "dire-il",
+      "chapitre": "irreguliers",
+      "type": "choix",
+      "question": "il ___ (dire)",
+      "reponse": "dit",
+      "pieges": [
+        "dis",
+        "disons",
+        "dites"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "dire-nous",
+      "chapitre": "irreguliers",
+      "type": "choix",
+      "question": "nous ___ (dire)",
+      "reponse": "disons",
+      "pieges": [
+        "dis",
+        "dit",
+        "dites"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "dire-vous",
+      "chapitre": "irreguliers",
+      "type": "choix",
+      "question": "vous ___ (dire)",
+      "reponse": "dites",
+      "pieges": [
+        "dis",
+        "dit",
+        "disons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "dire-ils",
+      "chapitre": "irreguliers",
+      "type": "choix",
+      "question": "ils ___ (dire)",
+      "reponse": "disent",
+      "pieges": [
+        "dis",
+        "dit",
+        "disons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "venir-je",
+      "chapitre": "irreguliers",
+      "type": "choix",
+      "question": "je ___ (venir)",
+      "reponse": "viens",
+      "pieges": [
+        "vient",
+        "venons",
+        "venez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "venir-tu",
+      "chapitre": "irreguliers",
+      "type": "choix",
+      "question": "tu ___ (venir)",
+      "reponse": "viens",
+      "pieges": [
+        "vient",
+        "venons",
+        "venez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "venir-il",
+      "chapitre": "irreguliers",
+      "type": "choix",
+      "question": "il ___ (venir)",
+      "reponse": "vient",
+      "pieges": [
+        "viens",
+        "venons",
+        "venez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "venir-nous",
+      "chapitre": "irreguliers",
+      "type": "choix",
+      "question": "nous ___ (venir)",
+      "reponse": "venons",
+      "pieges": [
+        "viens",
+        "vient",
+        "venez"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "venir-vous",
+      "chapitre": "irreguliers",
+      "type": "choix",
+      "question": "vous ___ (venir)",
+      "reponse": "venez",
+      "pieges": [
+        "viens",
+        "vient",
+        "venons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "venir-ils",
+      "chapitre": "irreguliers",
+      "type": "choix",
+      "question": "ils ___ (venir)",
+      "reponse": "viennent",
+      "pieges": [
+        "viens",
+        "vient",
+        "venons"
+      ],
+      "consigne": "Conjugue au présent."
+    },
+    {
+      "id": "temps-1",
+      "chapitre": "temps",
+      "type": "choix",
+      "question": "Hier, j’ai mangé une glace.",
+      "reponse": "passé",
+      "pieges": [
+        "présent",
+        "futur"
+      ],
+      "consigne": "Passé, présent ou futur ?"
+    },
+    {
+      "id": "temps-2",
+      "chapitre": "temps",
+      "type": "choix",
+      "question": "Demain, nous irons à la mer.",
+      "reponse": "futur",
+      "pieges": [
+        "passé",
+        "présent"
+      ],
+      "consigne": "Passé, présent ou futur ?"
+    },
+    {
+      "id": "temps-3",
+      "chapitre": "temps",
+      "type": "choix",
+      "question": "Aujourd’hui, je joue au ballon.",
+      "reponse": "présent",
+      "pieges": [
+        "passé",
+        "futur"
+      ],
+      "consigne": "Passé, présent ou futur ?"
+    },
+    {
+      "id": "temps-4",
+      "chapitre": "temps",
+      "type": "choix",
+      "question": "L’an dernier, il habitait à Lyon.",
+      "reponse": "passé",
+      "pieges": [
+        "présent",
+        "futur"
+      ],
+      "consigne": "Passé, présent ou futur ?"
+    },
+    {
+      "id": "temps-5",
+      "chapitre": "temps",
+      "type": "choix",
+      "question": "Maintenant, tu lis un livre.",
+      "reponse": "présent",
+      "pieges": [
+        "passé",
+        "futur"
+      ],
+      "consigne": "Passé, présent ou futur ?"
+    },
+    {
+      "id": "temps-6",
+      "chapitre": "temps",
+      "type": "choix",
+      "question": "Bientôt, elle aura sept ans.",
+      "reponse": "futur",
+      "pieges": [
+        "passé",
+        "présent"
+      ],
+      "consigne": "Passé, présent ou futur ?"
+    },
+    {
+      "id": "temps-7",
+      "chapitre": "temps",
+      "type": "choix",
+      "question": "Autrefois, on s’éclairait à la bougie.",
+      "reponse": "passé",
+      "pieges": [
+        "présent",
+        "futur"
+      ],
+      "consigne": "Passé, présent ou futur ?"
+    },
+    {
+      "id": "temps-8",
+      "chapitre": "temps",
+      "type": "choix",
+      "question": "En ce moment, il pleut.",
+      "reponse": "présent",
+      "pieges": [
+        "passé",
+        "futur"
+      ],
+      "consigne": "Passé, présent ou futur ?"
+    },
+    {
+      "id": "temps-9",
+      "chapitre": "temps",
+      "type": "choix",
+      "question": "Plus tard, je serai pompier.",
+      "reponse": "futur",
+      "pieges": [
+        "passé",
+        "présent"
+      ],
+      "consigne": "Passé, présent ou futur ?"
+    },
+    {
+      "id": "temps-10",
+      "chapitre": "temps",
+      "type": "choix",
+      "question": "La semaine dernière, nous sommes allés au cinéma.",
+      "reponse": "passé",
+      "pieges": [
+        "présent",
+        "futur"
+      ],
+      "consigne": "Passé, présent ou futur ?"
+    },
+    {
+      "id": "temps-11",
+      "chapitre": "temps",
+      "type": "choix",
+      "question": "Ce soir, vous regarderez un film.",
+      "reponse": "futur",
+      "pieges": [
+        "passé",
+        "présent"
+      ],
+      "consigne": "Passé, présent ou futur ?"
+    },
+    {
+      "id": "temps-12",
+      "chapitre": "temps",
+      "type": "choix",
+      "question": "Je bois mon chocolat.",
+      "reponse": "présent",
+      "pieges": [
+        "passé",
+        "futur"
+      ],
+      "consigne": "Passé, présent ou futur ?"
+    },
+    {
+      "id": "tape-1",
+      "chapitre": "ecrire",
+      "type": "saisie",
+      "question": "nous ___ (chanter)",
+      "reponse": "chantons",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe au présent."
+    },
+    {
+      "id": "tape-2",
+      "chapitre": "ecrire",
+      "type": "saisie",
+      "question": "vous ___ (jouer)",
+      "reponse": "jouez",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe au présent."
+    },
+    {
+      "id": "tape-3",
+      "chapitre": "ecrire",
+      "type": "saisie",
+      "question": "ils ___ (être)",
+      "reponse": "sont",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe au présent."
+    },
+    {
+      "id": "tape-4",
+      "chapitre": "ecrire",
+      "type": "saisie",
+      "question": "tu ___ (avoir)",
+      "reponse": "as",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe au présent."
+    },
+    {
+      "id": "tape-5",
+      "chapitre": "ecrire",
+      "type": "saisie",
+      "question": "je ___ (aller)",
+      "reponse": "vais",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe au présent."
+    },
+    {
+      "id": "tape-6",
+      "chapitre": "ecrire",
+      "type": "saisie",
+      "question": "elles ___ (danser)",
+      "reponse": "dansent",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe au présent."
+    },
+    {
+      "id": "tape-7",
+      "chapitre": "ecrire",
+      "type": "saisie",
+      "question": "nous ___ (faire)",
+      "reponse": "faisons",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe au présent."
+    },
+    {
+      "id": "tape-8",
+      "chapitre": "ecrire",
+      "type": "saisie",
+      "question": "vous ___ (dire)",
+      "reponse": "dites",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe au présent."
+    },
+    {
+      "id": "tape-9",
+      "chapitre": "ecrire",
+      "type": "saisie",
+      "question": "il ___ (venir)",
+      "reponse": "vient",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe au présent."
+    },
+    {
+      "id": "tape-10",
+      "chapitre": "ecrire",
+      "type": "saisie",
+      "question": "tu ___ (regarder)",
+      "reponse": "regardes",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe au présent."
+    },
+    {
+      "id": "tape-11",
+      "chapitre": "ecrire",
+      "type": "saisie",
+      "question": "ils ___ (avoir)",
+      "reponse": "ont",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe au présent."
+    },
+    {
+      "id": "tape-12",
+      "chapitre": "ecrire",
+      "type": "saisie",
+      "question": "nous ___ (être)",
+      "reponse": "sommes",
+      "tolerance": "exacte",
+      "consigne": "Écris le verbe au présent."
+    }
+  ]
+}

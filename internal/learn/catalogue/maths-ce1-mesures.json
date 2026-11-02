@@ -1,0 +1,505 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-ce1-mesures",
+  "version": "1.0.0",
+  "nom": "Mesures et heures",
+  "description": "Lire l'heure, les demies et les quarts sur une horloge, calculer une durée, mesurer un trait avec la règle, choisir entre cm et m, g et kg, et compter les euros et les centimes.",
+  "matiere": "maths",
+  "niveaux": [
+    "CE1"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de mathématiques du cycle 2 (2024) et les repères annuels de progression du CE1 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "heures",
+      "nom": "Heures et demi-heures"
+    },
+    {
+      "id": "quarts",
+      "nom": "Les quarts d’heure",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "durees",
+      "nom": "Les durées",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "regle",
+      "nom": "Mesurer avec la règle",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "longueurs",
+      "nom": "cm ou m",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "masses",
+      "nom": "g ou kg",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "monnaie",
+      "nom": "Euros et centimes",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 8
+  },
+  "fiches": [
+    {
+      "id": "duree-1",
+      "chapitre": "durees",
+      "type": "choix",
+      "question": "Combien de minutes dans une heure ?",
+      "reponse": "60",
+      "pieges": [
+        "100",
+        "30",
+        "24"
+      ],
+      "consigne": "Combien de minutes dans une heure ?"
+    },
+    {
+      "id": "duree-2",
+      "chapitre": "durees",
+      "type": "choix",
+      "question": "Combien d’heures dans une journée ?",
+      "reponse": "24",
+      "pieges": [
+        "12",
+        "60",
+        "7"
+      ],
+      "consigne": "Combien d’heures dans une journée ?"
+    },
+    {
+      "id": "duree-3",
+      "chapitre": "durees",
+      "type": "choix",
+      "question": "Une demi-heure, c’est…",
+      "reponse": "30 minutes",
+      "pieges": [
+        "15 minutes",
+        "50 minutes",
+        "60 minutes"
+      ],
+      "consigne": "Une demi-heure, c’est…"
+    },
+    {
+      "id": "duree-4",
+      "chapitre": "durees",
+      "type": "choix",
+      "question": "Un quart d’heure, c’est…",
+      "reponse": "15 minutes",
+      "pieges": [
+        "30 minutes",
+        "25 minutes",
+        "4 minutes"
+      ],
+      "consigne": "Un quart d’heure, c’est…"
+    },
+    {
+      "id": "duree-5",
+      "chapitre": "durees",
+      "type": "choix",
+      "question": "Le film commence à 3 h et dure 2 heures. Il finit à…",
+      "reponse": "5 h",
+      "pieges": [
+        "4 h",
+        "6 h",
+        "2 h"
+      ],
+      "consigne": "Le film commence à 3 h et dure 2 heures. Il finit à…"
+    },
+    {
+      "id": "duree-6",
+      "chapitre": "durees",
+      "type": "choix",
+      "question": "Il est 8 h. Dans une demi-heure, il sera…",
+      "reponse": "8 h 30",
+      "pieges": [
+        "9 h",
+        "8 h 15",
+        "8 h 50"
+      ],
+      "consigne": "Il est 8 h. Dans une demi-heure, il sera…"
+    },
+    {
+      "id": "duree-7",
+      "chapitre": "durees",
+      "type": "choix",
+      "question": "L’école commence à 8 h 30 et la récréation à 10 h. Combien de temps entre les deux ?",
+      "reponse": "1 h 30",
+      "pieges": [
+        "2 h",
+        "1 h",
+        "30 minutes"
+      ],
+      "consigne": "L’école commence à 8 h 30 et la récréation à 10 h. Combien de temps entre les deux ?"
+    },
+    {
+      "id": "duree-8",
+      "chapitre": "durees",
+      "type": "choix",
+      "question": "Qu’est-ce qui dure à peu près une minute ?",
+      "reponse": "se laver les mains",
+      "pieges": [
+        "dormir la nuit",
+        "une journée d’école",
+        "les vacances"
+      ],
+      "consigne": "Qu’est-ce qui dure à peu près une minute ?"
+    },
+    {
+      "id": "unite-1",
+      "chapitre": "longueurs",
+      "type": "choix",
+      "question": "Une table mesure 1 ___ de long.",
+      "reponse": "m",
+      "pieges": [
+        "cm"
+      ],
+      "consigne": "Quelle unité ?"
+    },
+    {
+      "id": "unite-2",
+      "chapitre": "longueurs",
+      "type": "choix",
+      "question": "Un crayon mesure 15 ___.",
+      "reponse": "cm",
+      "pieges": [
+        "m"
+      ],
+      "consigne": "Quelle unité ?"
+    },
+    {
+      "id": "unite-3",
+      "chapitre": "longueurs",
+      "type": "choix",
+      "question": "La classe mesure 8 ___ de long.",
+      "reponse": "m",
+      "pieges": [
+        "cm"
+      ],
+      "consigne": "Quelle unité ?"
+    },
+    {
+      "id": "unite-4",
+      "chapitre": "longueurs",
+      "type": "choix",
+      "question": "Une gomme mesure 4 ___.",
+      "reponse": "cm",
+      "pieges": [
+        "m"
+      ],
+      "consigne": "Quelle unité ?"
+    },
+    {
+      "id": "unite-5",
+      "chapitre": "longueurs",
+      "type": "choix",
+      "question": "Un bus mesure 12 ___.",
+      "reponse": "m",
+      "pieges": [
+        "cm"
+      ],
+      "consigne": "Quelle unité ?"
+    },
+    {
+      "id": "unite-6",
+      "chapitre": "longueurs",
+      "type": "choix",
+      "question": "Mon cahier mesure 30 ___.",
+      "reponse": "cm",
+      "pieges": [
+        "m"
+      ],
+      "consigne": "Quelle unité ?"
+    },
+    {
+      "id": "unite-7",
+      "chapitre": "masses",
+      "type": "choix",
+      "question": "Une pomme pèse 150 ___.",
+      "reponse": "g",
+      "pieges": [
+        "kg"
+      ],
+      "consigne": "Quelle unité ?"
+    },
+    {
+      "id": "unite-8",
+      "chapitre": "masses",
+      "type": "choix",
+      "question": "Un chien pèse 20 ___.",
+      "reponse": "kg",
+      "pieges": [
+        "g"
+      ],
+      "consigne": "Quelle unité ?"
+    },
+    {
+      "id": "unite-9",
+      "chapitre": "masses",
+      "type": "choix",
+      "question": "Un sac de pommes de terre pèse 5 ___.",
+      "reponse": "kg",
+      "pieges": [
+        "g"
+      ],
+      "consigne": "Quelle unité ?"
+    },
+    {
+      "id": "unite-10",
+      "chapitre": "masses",
+      "type": "choix",
+      "question": "Une plume pèse 1 ___.",
+      "reponse": "g",
+      "pieges": [
+        "kg"
+      ],
+      "consigne": "Quelle unité ?"
+    },
+    {
+      "id": "unite-11",
+      "chapitre": "masses",
+      "type": "choix",
+      "question": "Un enfant de CE1 pèse 25 ___.",
+      "reponse": "kg",
+      "pieges": [
+        "g"
+      ],
+      "consigne": "Quelle unité ?"
+    },
+    {
+      "id": "unite-12",
+      "chapitre": "masses",
+      "type": "choix",
+      "question": "Une lettre pèse 20 ___.",
+      "reponse": "g",
+      "pieges": [
+        "kg"
+      ],
+      "consigne": "Quelle unité ?"
+    },
+    {
+      "id": "conv-1",
+      "chapitre": "longueurs",
+      "type": "choix",
+      "question": "1 m, c’est…",
+      "reponse": "100 cm",
+      "pieges": [
+        "10 cm",
+        "1 000 cm",
+        "50 cm"
+      ],
+      "consigne": "1 m, c’est…"
+    },
+    {
+      "id": "conv-2",
+      "chapitre": "masses",
+      "type": "choix",
+      "question": "1 kg, c’est…",
+      "reponse": "1 000 g",
+      "pieges": [
+        "100 g",
+        "10 g",
+        "500 g"
+      ],
+      "consigne": "1 kg, c’est…"
+    },
+    {
+      "id": "conv-3",
+      "chapitre": "longueurs",
+      "type": "choix",
+      "question": "Quel est le plus long ?",
+      "reponse": "1 m",
+      "pieges": [
+        "90 cm",
+        "50 cm",
+        "9 cm"
+      ],
+      "consigne": "Quel est le plus long ?"
+    },
+    {
+      "id": "conv-4",
+      "chapitre": "masses",
+      "type": "choix",
+      "question": "Quel est le plus lourd ?",
+      "reponse": "1 kg",
+      "pieges": [
+        "900 g",
+        "500 g",
+        "99 g"
+      ],
+      "consigne": "Quel est le plus lourd ?"
+    },
+    {
+      "id": "euros-1",
+      "chapitre": "monnaie",
+      "type": "choix",
+      "question": "1 € + 50 c = ?",
+      "reponse": "1 € 50",
+      "pieges": [
+        "1 € 5",
+        "51 c",
+        "2 €"
+      ],
+      "consigne": "Combien en tout ?"
+    },
+    {
+      "id": "euros-2",
+      "chapitre": "monnaie",
+      "type": "choix",
+      "question": "2 € + 20 c + 10 c = ?",
+      "reponse": "2 € 30",
+      "pieges": [
+        "2 € 3",
+        "2 € 20",
+        "32 c"
+      ],
+      "consigne": "Combien en tout ?"
+    },
+    {
+      "id": "euros-3",
+      "chapitre": "monnaie",
+      "type": "choix",
+      "question": "50 c + 50 c = ?",
+      "reponse": "1 €",
+      "pieges": [
+        "100 €",
+        "50 c",
+        "1 € 50"
+      ],
+      "consigne": "Combien en tout ?"
+    },
+    {
+      "id": "euros-4",
+      "chapitre": "monnaie",
+      "type": "choix",
+      "question": "5 € + 2 € + 50 c = ?",
+      "reponse": "7 € 50",
+      "pieges": [
+        "7 €",
+        "75 c",
+        "8 €"
+      ],
+      "consigne": "Combien en tout ?"
+    },
+    {
+      "id": "euros-5",
+      "chapitre": "monnaie",
+      "type": "choix",
+      "question": "10 € + 5 € + 1 € = ?",
+      "reponse": "16 €",
+      "pieges": [
+        "15 €",
+        "61 €",
+        "17 €"
+      ],
+      "consigne": "Combien en tout ?"
+    },
+    {
+      "id": "euros-6",
+      "chapitre": "monnaie",
+      "type": "choix",
+      "question": "20 c + 20 c + 10 c = ?",
+      "reponse": "50 c",
+      "pieges": [
+        "40 c",
+        "60 c",
+        "5 €"
+      ],
+      "consigne": "Combien en tout ?"
+    },
+    {
+      "id": "euros-7",
+      "chapitre": "monnaie",
+      "type": "choix",
+      "question": "Combien de pièces de 50 c pour faire 1 € ?",
+      "reponse": "2",
+      "pieges": [
+        "5",
+        "10",
+        "50"
+      ],
+      "consigne": "Combien de pièces de 50 c pour faire 1 € ?"
+    },
+    {
+      "id": "euros-8",
+      "chapitre": "monnaie",
+      "type": "choix",
+      "question": "Combien de pièces de 10 c pour faire 1 € ?",
+      "reponse": "10",
+      "pieges": [
+        "5",
+        "100",
+        "2"
+      ],
+      "consigne": "Combien de pièces de 10 c pour faire 1 € ?"
+    }
+  ],
+  "generateurs": [
+    {
+      "id": "heures-demies",
+      "chapitre": "heures",
+      "operation": "heure",
+      "a": [
+        1,
+        12
+      ],
+      "formes": [
+        "pile",
+        "demie"
+      ]
+    },
+    {
+      "id": "quarts",
+      "chapitre": "quarts",
+      "operation": "heure",
+      "a": [
+        1,
+        12
+      ],
+      "formes": [
+        "quart"
+      ]
+    },
+    {
+      "id": "regle",
+      "chapitre": "regle",
+      "operation": "mesurer",
+      "a": [
+        2,
+        14
+      ],
+      "formes": [
+        "zero"
+      ]
+    },
+    {
+      "id": "regle-decalee",
+      "chapitre": "regle",
+      "operation": "mesurer",
+      "a": [
+        2,
+        9
+      ],
+      "formes": [
+        "decale"
+      ]
+    }
+  ]
+}

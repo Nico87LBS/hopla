@@ -1,0 +1,148 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-ce1-calcul-mental",
+  "version": "1.0.0",
+  "nom": "Calcul mental CE1",
+  "description": "Les compléments à 100, les doubles et les moitiés, ajouter ou enlever 10 et 100, ajouter ou enlever 9 et 11.",
+  "matiere": "maths",
+  "niveaux": [
+    "CE1"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de mathématiques du cycle 2 (2024) et les repères annuels de progression du CE1 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "cent",
+      "nom": "Faire 100"
+    },
+    {
+      "id": "doubles",
+      "nom": "Doubles et moitiés",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "dix-cent",
+      "nom": "Ajouter ou enlever 10 et 100",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "neuf",
+      "nom": "Ajouter ou enlever 9 et 11",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 8
+  },
+  "generateurs": [
+    {
+      "id": "faire-100",
+      "chapitre": "cent",
+      "operation": "complement",
+      "cible": "100",
+      "a": [
+        10,
+        90,
+        10
+      ]
+    },
+    {
+      "id": "faire-100-fin",
+      "chapitre": "cent",
+      "operation": "complement",
+      "cible": "100",
+      "a": [
+        11,
+        99
+      ]
+    },
+    {
+      "id": "doubles",
+      "chapitre": "doubles",
+      "operation": "double",
+      "a": [
+        5,
+        50
+      ]
+    },
+    {
+      "id": "moities",
+      "chapitre": "doubles",
+      "operation": "moitie",
+      "a": [
+        10,
+        100,
+        2
+      ]
+    },
+    {
+      "id": "plus-10",
+      "chapitre": "dix-cent",
+      "operation": "addition",
+      "a": [
+        10,
+        989
+      ],
+      "b": {
+        "valeurs": [
+          10,
+          100
+        ]
+      },
+      "resultat_max": 999
+    },
+    {
+      "id": "moins-10",
+      "chapitre": "dix-cent",
+      "operation": "soustraction",
+      "a": [
+        110,
+        999
+      ],
+      "b": {
+        "valeurs": [
+          10,
+          100
+        ]
+      }
+    },
+    {
+      "id": "plus-9",
+      "chapitre": "neuf",
+      "operation": "addition",
+      "a": [
+        10,
+        89
+      ],
+      "b": {
+        "valeurs": [
+          9,
+          11
+        ]
+      }
+    },
+    {
+      "id": "moins-9",
+      "chapitre": "neuf",
+      "operation": "soustraction",
+      "a": [
+        20,
+        99
+      ],
+      "b": {
+        "valeurs": [
+          9,
+          11
+        ]
+      }
+    }
+  ]
+}

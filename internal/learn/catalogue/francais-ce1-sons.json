@@ -1,0 +1,863 @@
+{
+  "format": "hopla-module/1",
+  "id": "francais-ce1-sons",
+  "version": "1.0.0",
+  "nom": "Les sons et leur écriture",
+  "description": "Choisir la bonne écriture d'un son : s ou ss, c ou ç, g ou ge, m devant m, b, p, é, er ou ez, o, au ou eau.",
+  "matiere": "francais",
+  "niveaux": [
+    "CE1"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de français du cycle 2 (2024) et les repères annuels de progression du CE1 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "s-ss",
+      "nom": "s ou ss"
+    },
+    {
+      "id": "c-c",
+      "nom": "c ou ç",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "g-ge",
+      "nom": "g ou ge",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "m-b-p",
+      "nom": "m devant m, b, p",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "e",
+      "nom": "é, er ou ez",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "o",
+      "nom": "o, au ou eau",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 8
+  },
+  "fiches": [
+    {
+      "id": "s-1",
+      "chapitre": "s-ss",
+      "type": "choix",
+      "question": "poi___on",
+      "reponse": "ss",
+      "pieges": [
+        "s"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss."
+    },
+    {
+      "id": "s-2",
+      "chapitre": "s-ss",
+      "type": "choix",
+      "question": "cai___e",
+      "reponse": "ss",
+      "pieges": [
+        "s"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss."
+    },
+    {
+      "id": "s-3",
+      "chapitre": "s-ss",
+      "type": "choix",
+      "question": "ro___e",
+      "reponse": "s",
+      "pieges": [
+        "ss"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss."
+    },
+    {
+      "id": "s-4",
+      "chapitre": "s-ss",
+      "type": "choix",
+      "question": "mai___on",
+      "reponse": "s",
+      "pieges": [
+        "ss"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss."
+    },
+    {
+      "id": "s-5",
+      "chapitre": "s-ss",
+      "type": "choix",
+      "question": "cha___eur",
+      "reponse": "ss",
+      "pieges": [
+        "s"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss."
+    },
+    {
+      "id": "s-6",
+      "chapitre": "s-ss",
+      "type": "choix",
+      "question": "va___e",
+      "reponse": "s",
+      "pieges": [
+        "ss"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss."
+    },
+    {
+      "id": "s-7",
+      "chapitre": "s-ss",
+      "type": "choix",
+      "question": "bro___e",
+      "reponse": "ss",
+      "pieges": [
+        "s"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss."
+    },
+    {
+      "id": "s-8",
+      "chapitre": "s-ss",
+      "type": "choix",
+      "question": "ca___erole",
+      "reponse": "ss",
+      "pieges": [
+        "s"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss."
+    },
+    {
+      "id": "s-9",
+      "chapitre": "s-ss",
+      "type": "choix",
+      "question": "cou___in",
+      "reponse": "ss",
+      "pieges": [
+        "s"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss."
+    },
+    {
+      "id": "s-10",
+      "chapitre": "s-ss",
+      "type": "choix",
+      "question": "ceri___e",
+      "reponse": "s",
+      "pieges": [
+        "ss"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss."
+    },
+    {
+      "id": "s-11",
+      "chapitre": "s-ss",
+      "type": "choix",
+      "question": "chemi___e",
+      "reponse": "s",
+      "pieges": [
+        "ss"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss."
+    },
+    {
+      "id": "c-1",
+      "chapitre": "c-c",
+      "type": "choix",
+      "question": "gar___on",
+      "reponse": "ç",
+      "pieges": [
+        "c",
+        "k"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç."
+    },
+    {
+      "id": "c-2",
+      "chapitre": "c-c",
+      "type": "choix",
+      "question": "le___on",
+      "reponse": "ç",
+      "pieges": [
+        "c",
+        "k"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç."
+    },
+    {
+      "id": "c-3",
+      "chapitre": "c-c",
+      "type": "choix",
+      "question": "ma___on",
+      "reponse": "ç",
+      "pieges": [
+        "c",
+        "k"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç."
+    },
+    {
+      "id": "c-4",
+      "chapitre": "c-c",
+      "type": "choix",
+      "question": "re___u",
+      "reponse": "ç",
+      "pieges": [
+        "c",
+        "k"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç."
+    },
+    {
+      "id": "c-5",
+      "chapitre": "c-c",
+      "type": "choix",
+      "question": "___ola",
+      "reponse": "c",
+      "pieges": [
+        "ç",
+        "k"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç."
+    },
+    {
+      "id": "c-6",
+      "chapitre": "c-c",
+      "type": "choix",
+      "question": "fa___ile",
+      "reponse": "c",
+      "pieges": [
+        "ç",
+        "k"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç."
+    },
+    {
+      "id": "c-7",
+      "chapitre": "c-c",
+      "type": "choix",
+      "question": "___inq",
+      "reponse": "c",
+      "pieges": [
+        "ç",
+        "k"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç."
+    },
+    {
+      "id": "c-8",
+      "chapitre": "c-c",
+      "type": "choix",
+      "question": "balan___oire",
+      "reponse": "ç",
+      "pieges": [
+        "c",
+        "k"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç."
+    },
+    {
+      "id": "c-9",
+      "chapitre": "c-c",
+      "type": "choix",
+      "question": "gla___on",
+      "reponse": "ç",
+      "pieges": [
+        "c",
+        "k"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç."
+    },
+    {
+      "id": "c-10",
+      "chapitre": "c-c",
+      "type": "choix",
+      "question": "___irque",
+      "reponse": "c",
+      "pieges": [
+        "ç",
+        "k"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç."
+    },
+    {
+      "id": "g-1",
+      "chapitre": "g-ge",
+      "type": "choix",
+      "question": "na___eoire",
+      "reponse": "g",
+      "pieges": [
+        "ge",
+        "gu"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant a, o, u, g se dit [g] ; pour entendre [j], on écrit ge."
+    },
+    {
+      "id": "g-2",
+      "chapitre": "g-ge",
+      "type": "choix",
+      "question": "___irafe",
+      "reponse": "g",
+      "pieges": [
+        "ge",
+        "gu"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant a, o, u, g se dit [g] ; pour entendre [j], on écrit ge."
+    },
+    {
+      "id": "g-3",
+      "chapitre": "g-ge",
+      "type": "choix",
+      "question": "pi___on",
+      "reponse": "ge",
+      "pieges": [
+        "g",
+        "gu"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant a, o, u, g se dit [g] ; pour entendre [j], on écrit ge."
+    },
+    {
+      "id": "g-4",
+      "chapitre": "g-ge",
+      "type": "choix",
+      "question": "oran___e",
+      "reponse": "g",
+      "pieges": [
+        "ge",
+        "gu"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant a, o, u, g se dit [g] ; pour entendre [j], on écrit ge."
+    },
+    {
+      "id": "g-5",
+      "chapitre": "g-ge",
+      "type": "choix",
+      "question": "bou___ie",
+      "reponse": "g",
+      "pieges": [
+        "ge",
+        "gu"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant a, o, u, g se dit [g] ; pour entendre [j], on écrit ge."
+    },
+    {
+      "id": "g-6",
+      "chapitre": "g-ge",
+      "type": "choix",
+      "question": "man___ons",
+      "reponse": "ge",
+      "pieges": [
+        "g",
+        "gu"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant a, o, u, g se dit [g] ; pour entendre [j], on écrit ge."
+    },
+    {
+      "id": "g-7",
+      "chapitre": "g-ge",
+      "type": "choix",
+      "question": "___âteau",
+      "reponse": "g",
+      "pieges": [
+        "ge",
+        "gu"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant a, o, u, g se dit [g] ; pour entendre [j], on écrit ge."
+    },
+    {
+      "id": "g-8",
+      "chapitre": "g-ge",
+      "type": "choix",
+      "question": "dra___on",
+      "reponse": "g",
+      "pieges": [
+        "ge",
+        "gu"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant a, o, u, g se dit [g] ; pour entendre [j], on écrit ge."
+    },
+    {
+      "id": "g-9",
+      "chapitre": "g-ge",
+      "type": "choix",
+      "question": "___ilet",
+      "reponse": "g",
+      "pieges": [
+        "ge",
+        "gu"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant a, o, u, g se dit [g] ; pour entendre [j], on écrit ge."
+    },
+    {
+      "id": "mbp-1",
+      "chapitre": "m-b-p",
+      "type": "choix",
+      "question": "la la___pe",
+      "reponse": "m",
+      "pieges": [
+        "n"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant m, b et p, on écrit m au lieu de n."
+    },
+    {
+      "id": "mbp-2",
+      "chapitre": "m-b-p",
+      "type": "choix",
+      "question": "le ca___ion",
+      "reponse": "m",
+      "pieges": [
+        "n"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant m, b et p, on écrit m au lieu de n."
+    },
+    {
+      "id": "mbp-3",
+      "chapitre": "m-b-p",
+      "type": "choix",
+      "question": "la ja___be",
+      "reponse": "m",
+      "pieges": [
+        "n"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant m, b et p, on écrit m au lieu de n."
+    },
+    {
+      "id": "mbp-4",
+      "chapitre": "m-b-p",
+      "type": "choix",
+      "question": "le po___pier",
+      "reponse": "m",
+      "pieges": [
+        "n"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant m, b et p, on écrit m au lieu de n."
+    },
+    {
+      "id": "mbp-5",
+      "chapitre": "m-b-p",
+      "type": "choix",
+      "question": "la cha___bre",
+      "reponse": "m",
+      "pieges": [
+        "n"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant m, b et p, on écrit m au lieu de n."
+    },
+    {
+      "id": "mbp-6",
+      "chapitre": "m-b-p",
+      "type": "choix",
+      "question": "le me___ton",
+      "reponse": "n",
+      "pieges": [
+        "m"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant m, b et p, on écrit m au lieu de n."
+    },
+    {
+      "id": "mbp-7",
+      "chapitre": "m-b-p",
+      "type": "choix",
+      "question": "la co___fiture",
+      "reponse": "n",
+      "pieges": [
+        "m"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant m, b et p, on écrit m au lieu de n."
+    },
+    {
+      "id": "mbp-8",
+      "chapitre": "m-b-p",
+      "type": "choix",
+      "question": "le pi___ceau",
+      "reponse": "n",
+      "pieges": [
+        "m"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant m, b et p, on écrit m au lieu de n."
+    },
+    {
+      "id": "mbp-9",
+      "chapitre": "m-b-p",
+      "type": "choix",
+      "question": "tre___bler",
+      "reponse": "m",
+      "pieges": [
+        "n"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant m, b et p, on écrit m au lieu de n."
+    },
+    {
+      "id": "mbp-10",
+      "chapitre": "m-b-p",
+      "type": "choix",
+      "question": "le ta___bour",
+      "reponse": "m",
+      "pieges": [
+        "n"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant m, b et p, on écrit m au lieu de n."
+    },
+    {
+      "id": "mbp-11",
+      "chapitre": "m-b-p",
+      "type": "choix",
+      "question": "la mo___tagne",
+      "reponse": "n",
+      "pieges": [
+        "m"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant m, b et p, on écrit m au lieu de n."
+    },
+    {
+      "id": "mbp-12",
+      "chapitre": "m-b-p",
+      "type": "choix",
+      "question": "e___porter",
+      "reponse": "m",
+      "pieges": [
+        "n"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Devant m, b et p, on écrit m au lieu de n."
+    },
+    {
+      "id": "e-1",
+      "chapitre": "e",
+      "type": "choix",
+      "question": "le boulang___",
+      "reponse": "er",
+      "pieges": [
+        "é",
+        "ez",
+        "ai"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er."
+    },
+    {
+      "id": "e-2",
+      "chapitre": "e",
+      "type": "choix",
+      "question": "vous all___",
+      "reponse": "ez",
+      "pieges": [
+        "é",
+        "er",
+        "ai"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er."
+    },
+    {
+      "id": "e-3",
+      "chapitre": "e",
+      "type": "choix",
+      "question": "jou___ (verbe)",
+      "reponse": "er",
+      "pieges": [
+        "é",
+        "ez",
+        "ai"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er."
+    },
+    {
+      "id": "e-4",
+      "chapitre": "e",
+      "type": "choix",
+      "question": "l’___t (saison)",
+      "reponse": "é",
+      "pieges": [
+        "er",
+        "ez",
+        "ai"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er."
+    },
+    {
+      "id": "e-5",
+      "chapitre": "e",
+      "type": "choix",
+      "question": "la f___e",
+      "reponse": "é",
+      "pieges": [
+        "er",
+        "ez",
+        "ai"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er."
+    },
+    {
+      "id": "e-6",
+      "chapitre": "e",
+      "type": "choix",
+      "question": "le dîn___",
+      "reponse": "er",
+      "pieges": [
+        "é",
+        "ez",
+        "ai"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er."
+    },
+    {
+      "id": "e-7",
+      "chapitre": "e",
+      "type": "choix",
+      "question": "vous dans___",
+      "reponse": "ez",
+      "pieges": [
+        "é",
+        "er",
+        "ai"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er."
+    },
+    {
+      "id": "e-8",
+      "chapitre": "e",
+      "type": "choix",
+      "question": "le cl___",
+      "reponse": "é",
+      "pieges": [
+        "er",
+        "ez",
+        "ai"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er."
+    },
+    {
+      "id": "e-9",
+      "chapitre": "e",
+      "type": "choix",
+      "question": "j’ai mang___ (passé)",
+      "reponse": "é",
+      "pieges": [
+        "er",
+        "ez",
+        "ai"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er."
+    },
+    {
+      "id": "e-10",
+      "chapitre": "e",
+      "type": "choix",
+      "question": "le caf___",
+      "reponse": "é",
+      "pieges": [
+        "er",
+        "ez",
+        "ai"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er."
+    },
+    {
+      "id": "o-1",
+      "chapitre": "o",
+      "type": "choix",
+      "question": "le chap___",
+      "reponse": "eau",
+      "pieges": [
+        "o",
+        "au"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau."
+    },
+    {
+      "id": "o-2",
+      "chapitre": "o",
+      "type": "choix",
+      "question": "le bat___",
+      "reponse": "eau",
+      "pieges": [
+        "o",
+        "au"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau."
+    },
+    {
+      "id": "o-3",
+      "chapitre": "o",
+      "type": "choix",
+      "question": "le ch___d",
+      "reponse": "au",
+      "pieges": [
+        "o",
+        "eau"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau."
+    },
+    {
+      "id": "o-4",
+      "chapitre": "o",
+      "type": "choix",
+      "question": "le vél___",
+      "reponse": "o",
+      "pieges": [
+        "au",
+        "eau"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau."
+    },
+    {
+      "id": "o-5",
+      "chapitre": "o",
+      "type": "choix",
+      "question": "la ___tomne",
+      "reponse": "au",
+      "pieges": [
+        "o",
+        "eau"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau."
+    },
+    {
+      "id": "o-6",
+      "chapitre": "o",
+      "type": "choix",
+      "question": "le mant___",
+      "reponse": "eau",
+      "pieges": [
+        "o",
+        "au"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau."
+    },
+    {
+      "id": "o-7",
+      "chapitre": "o",
+      "type": "choix",
+      "question": "le r___bot",
+      "reponse": "o",
+      "pieges": [
+        "au",
+        "eau"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau."
+    },
+    {
+      "id": "o-8",
+      "chapitre": "o",
+      "type": "choix",
+      "question": "le rid___",
+      "reponse": "eau",
+      "pieges": [
+        "o",
+        "au"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau."
+    },
+    {
+      "id": "o-9",
+      "chapitre": "o",
+      "type": "choix",
+      "question": "le ch___colat",
+      "reponse": "o",
+      "pieges": [
+        "au",
+        "eau"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau."
+    },
+    {
+      "id": "o-10",
+      "chapitre": "o",
+      "type": "choix",
+      "question": "j___ne",
+      "reponse": "au",
+      "pieges": [
+        "o",
+        "eau"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau."
+    },
+    {
+      "id": "o-11",
+      "chapitre": "o",
+      "type": "choix",
+      "question": "le cout___",
+      "reponse": "eau",
+      "pieges": [
+        "o",
+        "au"
+      ],
+      "consigne": "Quelle écriture manque ?",
+      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau."
+    }
+  ]
+}

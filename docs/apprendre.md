@@ -31,10 +31,13 @@ peuvent aussi partager ce qui est appris grâce à leur clé (voir
 | **Français CP** | Les sept modules d'Apprendre à lire (mêmes progrès), puis Écrire des mots (dictée, accents ignorés), La phrase au CP, Un, une, des | Enfant, CP |
 | **Maths CP** | Les nombres jusqu'à 100, Comparer et ranger, Additions et soustractions, Calcul mental, Problèmes, Monnaie et heures (horloge à aiguilles), Formes et repérage | Enfant, CP |
 | **Questionner le monde CP** | Vivant ou non vivant, Animaux et plantes, Mon corps et ma santé, La matière, Le temps qui passe, L'espace autour de moi | Enfant, CP |
+| **Français CE1** | Lire et comprendre, Les sons et leur écriture, La phrase et les mots, Les accords, Conjuguer au CE1, Le vocabulaire, Dictée CE1 (les accents comptent, une lettre de travers acceptée) | Enfant, CE1 |
+| **Maths CE1** | Les nombres jusqu'à 1 000, Comparer, ranger, encadrer, Additions et soustractions, Calcul mental, La multiplication (tables de 2, 3, 4, 5 et 10), Problèmes, Mesures et heures (horloge avec demies et quarts, règle graduée), Géométrie | Enfant, CE1 |
+| **Questionner le monde CE1** | Le vivant, Mon corps, La matière, Objets et électricité, Le temps, L'espace | Enfant, CE1 |
 | **Français CE2** | Conjugaison (présent, futur, imparfait, passé composé, puis le verbe à écrire soi-même), La phrase, Les accords (avec un chapitre à écrire), Les homophones, Le vocabulaire, Comprendre un texte | Enfant, CE2 |
 | **Questionner le monde CE2** | Le vivant, Mon corps (squelette à toucher), La matière, L'électricité, Se repérer dans l'espace (régions, fleuves, montagnes et villes de France, continents et océans), Se repérer dans le temps | Enfant, CE2 |
 | **Maths CE2** | Nombres jusqu'à 10 000, Calcul mental, Addition et soustraction, Multiplication, Division, Mesures, Problèmes, Géométrie | Enfant, CE2 |
-| **Anglais à l'école** | Anglais GS : mes premiers mots (à l'oreille, avec dessins, sans lire) ; Anglais CP (se présenter, émotions, école, maison, à table, sans lire) ; Anglais CE2 | Enfant, GS, CP et CE2 |
+| **Anglais à l'école** | Anglais GS : mes premiers mots (à l'oreille, avec dessins, sans lire) ; Anglais CP (se présenter, émotions, école, maison, à table, sans lire) ; Anglais CE1 (jours, nombres jusqu'à 20, corps, vêtements, météo, petites phrases) ; Anglais CE2 | Enfant, GS, CP, CE1 et CE2 |
 | **Anglais aéronautique** | Bases radio, Phraséo et au-delà, Systèmes de l'avion, Météo, Aérodrome, Situations anormales, Anglais idiomatique, Compréhension orale, Oral | Adulte, niveau 6 OACI |
 
 ## Installer et choisir qui joue

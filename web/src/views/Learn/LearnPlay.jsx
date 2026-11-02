@@ -47,6 +47,7 @@ import {
   LabelView,
   MatchPairs,
   OrderLabels,
+  Ruler,
   SortBoxes,
   useTwoTaps,
   ZonePicture,
@@ -493,6 +494,7 @@ const Prompt = ({ color, item, say, tell }) => {
     item.subject ||
     item.count ||
     item.clock ||
+    item.ruler ||
     item.zones ||
     item.mode === 'match' ||
     item.mode === 'order'
@@ -513,6 +515,7 @@ const Prompt = ({ color, item, say, tell }) => {
       {item.image && <Drawing id={item.image} />}
       {item.count && <CountPicture count={item.count} />}
       {item.clock && <Clock clock={item.clock} />}
+      {item.ruler && <Ruler ruler={item.ruler} />}
       {item.zones && item.mode === 'choice' && (
         <ZonePicture
           id={item.zones}

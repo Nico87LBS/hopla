@@ -1,0 +1,348 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-ce1-geometrie",
+  "version": "1.0.0",
+  "nom": "Géométrie CE1",
+  "description": "Le carré, le rectangle et le triangle, les angles droits et les instruments, les solides avec leurs faces, sommets et arêtes, et se repérer sur un quadrillage.",
+  "matiere": "maths",
+  "niveaux": [
+    "CE1"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de mathématiques du cycle 2 (2024) et les repères annuels de progression du CE1 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "figures",
+      "nom": "Les figures"
+    },
+    {
+      "id": "solides",
+      "nom": "Les solides",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "quadrillage",
+      "nom": "Le quadrillage",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 8
+  },
+  "fiches": [
+    {
+      "id": "figure-1",
+      "chapitre": "figures",
+      "type": "choix",
+      "question": "Combien d’angles droits a le carré ?",
+      "reponse": "4",
+      "pieges": [
+        "2",
+        "3",
+        "0"
+      ],
+      "consigne": "Combien d’angles droits a le carré ?",
+      "image": "shape-square"
+    },
+    {
+      "id": "figure-2",
+      "chapitre": "figures",
+      "type": "choix",
+      "question": "Combien d’angles droits a le rectangle ?",
+      "reponse": "4",
+      "pieges": [
+        "2",
+        "1",
+        "0"
+      ],
+      "consigne": "Combien d’angles droits a le rectangle ?",
+      "image": "shape-rectangle"
+    },
+    {
+      "id": "figure-3",
+      "chapitre": "figures",
+      "type": "choix",
+      "question": "Le carré a 4 côtés…",
+      "reponse": "de même longueur",
+      "pieges": [
+        "tous différents",
+        "courbes",
+        "de deux longueurs"
+      ],
+      "consigne": "Le carré a 4 côtés…",
+      "image": "shape-square"
+    },
+    {
+      "id": "figure-4",
+      "chapitre": "figures",
+      "type": "choix",
+      "question": "Le rectangle a…",
+      "reponse": "2 grands côtés et 2 petits côtés",
+      "pieges": [
+        "4 côtés pareils",
+        "3 côtés",
+        "5 côtés"
+      ],
+      "consigne": "Le rectangle a…",
+      "image": "shape-rectangle"
+    },
+    {
+      "id": "figure-5",
+      "chapitre": "figures",
+      "type": "choix",
+      "question": "Combien de côtés a le triangle ?",
+      "reponse": "3",
+      "pieges": [
+        "4",
+        "2",
+        "5"
+      ],
+      "consigne": "Combien de côtés a le triangle ?",
+      "image": "shape-triangle"
+    },
+    {
+      "id": "figure-6",
+      "chapitre": "figures",
+      "type": "choix",
+      "question": "Avec quoi vérifie-t-on un angle droit ?",
+      "reponse": "l’équerre",
+      "pieges": [
+        "la gomme",
+        "le compas",
+        "la colle"
+      ],
+      "consigne": "Avec quoi vérifie-t-on un angle droit ?"
+    },
+    {
+      "id": "figure-7",
+      "chapitre": "figures",
+      "type": "choix",
+      "question": "Avec quoi trace-t-on un trait droit ?",
+      "reponse": "la règle",
+      "pieges": [
+        "l’équerre seulement",
+        "le compas",
+        "les ciseaux"
+      ],
+      "consigne": "Avec quoi trace-t-on un trait droit ?"
+    },
+    {
+      "id": "figure-8",
+      "chapitre": "figures",
+      "type": "choix",
+      "question": "Avec quoi trace-t-on un cercle ?",
+      "reponse": "le compas",
+      "pieges": [
+        "la règle",
+        "l’équerre",
+        "le taille-crayon"
+      ],
+      "consigne": "Avec quoi trace-t-on un cercle ?",
+      "image": "shape-circle"
+    },
+    {
+      "id": "solide-1",
+      "chapitre": "solides",
+      "type": "choix",
+      "question": "Combien de faces a le cube ?",
+      "reponse": "6",
+      "pieges": [
+        "4",
+        "8",
+        "12"
+      ],
+      "consigne": "Combien de faces a le cube ?",
+      "image": "shape-cube"
+    },
+    {
+      "id": "solide-2",
+      "chapitre": "solides",
+      "type": "choix",
+      "question": "Combien de sommets a le cube ?",
+      "reponse": "8",
+      "pieges": [
+        "6",
+        "4",
+        "12"
+      ],
+      "consigne": "Combien de sommets a le cube ?",
+      "image": "shape-cube"
+    },
+    {
+      "id": "solide-3",
+      "chapitre": "solides",
+      "type": "choix",
+      "question": "Combien d’arêtes a le cube ?",
+      "reponse": "12",
+      "pieges": [
+        "6",
+        "8",
+        "4"
+      ],
+      "consigne": "Combien d’arêtes a le cube ?",
+      "image": "shape-cube"
+    },
+    {
+      "id": "solide-4",
+      "chapitre": "solides",
+      "type": "choix",
+      "question": "Les faces du cube sont des…",
+      "reponse": "carrés",
+      "pieges": [
+        "triangles",
+        "ronds",
+        "rectangles longs"
+      ],
+      "consigne": "Les faces du cube sont des…",
+      "image": "shape-cube"
+    },
+    {
+      "id": "solide-5",
+      "chapitre": "solides",
+      "type": "choix",
+      "question": "Quel solide n’a ni face plate ni sommet ?",
+      "reponse": "la boule",
+      "pieges": [
+        "le cube",
+        "la pyramide",
+        "le pavé"
+      ],
+      "consigne": "Quel solide n’a ni face plate ni sommet ?",
+      "image": "shape-sphere"
+    },
+    {
+      "id": "solide-6",
+      "chapitre": "solides",
+      "type": "choix",
+      "question": "Quel solide a une face carrée et 4 faces en triangle ?",
+      "reponse": "la pyramide",
+      "pieges": [
+        "le cube",
+        "la boule",
+        "le cylindre"
+      ],
+      "consigne": "Quel solide a une face carrée et 4 faces en triangle ?",
+      "image": "shape-pyramid"
+    },
+    {
+      "id": "solide-7",
+      "chapitre": "solides",
+      "type": "choix",
+      "question": "Combien de faces plates a le cylindre ?",
+      "reponse": "2",
+      "pieges": [
+        "0",
+        "1",
+        "4"
+      ],
+      "consigne": "Combien de faces plates a le cylindre ?",
+      "image": "shape-cylinder"
+    },
+    {
+      "id": "solide-8",
+      "chapitre": "solides",
+      "type": "choix",
+      "question": "Quel solide ressemble à une boîte de conserve ?",
+      "reponse": "le cylindre",
+      "pieges": [
+        "le cube",
+        "la boule",
+        "la pyramide"
+      ],
+      "consigne": "Quel solide ressemble à une boîte de conserve ?",
+      "image": "shape-cylinder"
+    },
+    {
+      "id": "quadrillage-1",
+      "chapitre": "quadrillage",
+      "type": "choix",
+      "question": "Sur un quadrillage, je pars de la case B2 et j’avance d’une case vers la droite. J’arrive en…",
+      "reponse": "C2",
+      "pieges": [
+        "A2",
+        "B3",
+        "B1"
+      ],
+      "consigne": "Sur un quadrillage, je pars de la case B2 et j’avance d’une case vers la droite. J’arrive en…",
+      "explication": "Une case se nomme par sa colonne (lettre) puis sa ligne (chiffre). On monte vers les chiffres plus grands."
+    },
+    {
+      "id": "quadrillage-2",
+      "chapitre": "quadrillage",
+      "type": "choix",
+      "question": "Je pars de A1 et je monte de 2 cases. J’arrive en…",
+      "reponse": "A3",
+      "pieges": [
+        "C1",
+        "A2",
+        "B3"
+      ],
+      "consigne": "Je pars de A1 et je monte de 2 cases. J’arrive en…",
+      "explication": "Une case se nomme par sa colonne (lettre) puis sa ligne (chiffre). On monte vers les chiffres plus grands."
+    },
+    {
+      "id": "quadrillage-3",
+      "chapitre": "quadrillage",
+      "type": "choix",
+      "question": "La case C3 est dans la colonne…",
+      "reponse": "C",
+      "pieges": [
+        "3",
+        "A",
+        "B"
+      ],
+      "consigne": "La case C3 est dans la colonne…",
+      "explication": "Une case se nomme par sa colonne (lettre) puis sa ligne (chiffre). On monte vers les chiffres plus grands."
+    },
+    {
+      "id": "quadrillage-4",
+      "chapitre": "quadrillage",
+      "type": "choix",
+      "question": "La case D2 est sur la ligne…",
+      "reponse": "2",
+      "pieges": [
+        "D",
+        "4",
+        "1"
+      ],
+      "consigne": "La case D2 est sur la ligne…",
+      "explication": "Une case se nomme par sa colonne (lettre) puis sa ligne (chiffre). On monte vers les chiffres plus grands."
+    },
+    {
+      "id": "quadrillage-5",
+      "chapitre": "quadrillage",
+      "type": "choix",
+      "question": "Je pars de B1, j’avance de 2 vers la droite. J’arrive en…",
+      "reponse": "D1",
+      "pieges": [
+        "B3",
+        "C1",
+        "D2"
+      ],
+      "consigne": "Je pars de B1, j’avance de 2 vers la droite. J’arrive en…",
+      "explication": "Une case se nomme par sa colonne (lettre) puis sa ligne (chiffre). On monte vers les chiffres plus grands."
+    },
+    {
+      "id": "quadrillage-6",
+      "chapitre": "quadrillage",
+      "type": "choix",
+      "question": "Je pars de C4 et je descends d’une case. J’arrive en…",
+      "reponse": "C3",
+      "pieges": [
+        "C5",
+        "B4",
+        "D4"
+      ],
+      "consigne": "Je pars de C4 et je descends d’une case. J’arrive en…",
+      "explication": "Une case se nomme par sa colonne (lettre) puis sa ligne (chiffre). On monte vers les chiffres plus grands."
+    }
+  ]
+}
