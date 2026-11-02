@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce2-espace",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "Se repérer dans l'espace",
   "description": "Les points cardinaux, la France (régions, fleuves, montagnes, grandes villes), les paysages, les continents et les océans.",
   "matiere": "monde",
@@ -88,7 +88,12 @@
         "le sud"
       ],
       "consigne": "Le soleil se lève à…",
-      "image": "sun"
+      "image": "sun",
+      "pourquoi": {
+        "l’ouest": "à l’ouest, le soleil se couche.",
+        "le nord": "le soleil ne se lève jamais au nord.",
+        "le sud": "à midi il est au sud, mais il se lève à l’est."
+      }
     },
     {
       "id": "couche",
@@ -101,7 +106,12 @@
         "le nord",
         "le sud"
       ],
-      "consigne": "Le soleil se couche à…"
+      "consigne": "Le soleil se couche à…",
+      "pourquoi": {
+        "l’est": "à l’est, le soleil se lève.",
+        "le nord": "le soleil ne se couche jamais au nord.",
+        "le sud": "à midi il est au sud, mais il se couche à l’ouest."
+      }
     },
     {
       "id": "carte-nord",
@@ -114,7 +124,12 @@
         "à gauche",
         "à droite"
       ],
-      "consigne": "Sur une carte, le nord est en général…"
+      "consigne": "Sur une carte, le nord est en général…",
+      "pourquoi": {
+        "en bas": "en bas, c’est le sud.",
+        "à gauche": "à gauche, c’est l’ouest.",
+        "à droite": "à droite, c’est l’est."
+      }
     },
     {
       "id": "contraire-nord",
@@ -127,7 +142,12 @@
         "l’ouest",
         "le haut"
       ],
-      "consigne": "Le contraire du nord, c’est…"
+      "consigne": "Le contraire du nord, c’est…",
+      "pourquoi": {
+        "l’est": "l’est est à côté du nord, pas en face.",
+        "l’ouest": "l’ouest est à côté du nord, pas en face.",
+        "le haut": "le haut n’est pas un point cardinal."
+      }
     },
     {
       "id": "contraire-est",
@@ -140,7 +160,12 @@
         "le sud",
         "le bas"
       ],
-      "consigne": "Le contraire de l’est, c’est…"
+      "consigne": "Le contraire de l’est, c’est…",
+      "pourquoi": {
+        "le nord": "le nord est à côté de l’est, pas en face.",
+        "le sud": "le sud est à côté de l’est, pas en face.",
+        "le bas": "le bas n’est pas un point cardinal."
+      }
     },
     {
       "id": "boussole",
@@ -153,7 +178,12 @@
         "la règle",
         "le thermomètre"
       ],
-      "consigne": "Quel objet indique le nord ?"
+      "consigne": "Quel objet indique le nord ?",
+      "pourquoi": {
+        "la montre": "la montre donne l’heure.",
+        "la règle": "la règle sert à mesurer.",
+        "le thermomètre": "le thermomètre mesure la température."
+      }
     },
     {
       "id": "lille-nord",
@@ -166,7 +196,12 @@
         "est",
         "ouest"
       ],
-      "consigne": "Lille est en haut de la carte de France. Elle est au…"
+      "consigne": "Lille est en haut de la carte de France. Elle est au…",
+      "pourquoi": {
+        "sud": "le sud est en bas de la carte.",
+        "est": "l’est est à droite de la carte.",
+        "ouest": "l’ouest est à gauche de la carte."
+      }
     },
     {
       "id": "marseille-sud",
@@ -179,7 +214,12 @@
         "est",
         "ouest"
       ],
-      "consigne": "Marseille est en bas de la carte de France, au bord de la mer. Elle est au…"
+      "consigne": "Marseille est en bas de la carte de France, au bord de la mer. Elle est au…",
+      "pourquoi": {
+        "nord": "le nord est en haut de la carte.",
+        "est": "l’est est à droite.",
+        "ouest": "l’ouest est à gauche."
+      }
     },
     {
       "id": "brest-ouest",
@@ -192,7 +232,12 @@
         "le nord",
         "le sud"
       ],
-      "consigne": "Brest est tout à gauche de la carte de France. Elle est à…"
+      "consigne": "Brest est tout à gauche de la carte de France. Elle est à…",
+      "pourquoi": {
+        "l’est": "l’est est à droite de la carte.",
+        "le nord": "le nord est en haut.",
+        "le sud": "le sud est en bas."
+      }
     },
     {
       "id": "strasbourg-est",
@@ -205,7 +250,12 @@
         "le nord",
         "le sud"
       ],
-      "consigne": "Strasbourg est tout à droite de la carte de France. Elle est à…"
+      "consigne": "Strasbourg est tout à droite de la carte de France. Elle est à…",
+      "pourquoi": {
+        "l’ouest": "l’ouest est à gauche de la carte.",
+        "le nord": "le nord est en haut.",
+        "le sud": "le sud est en bas."
+      }
     },
     {
       "id": "region-auvergne-rhone-alpes",
@@ -322,7 +372,12 @@
         "22",
         "101"
       ],
-      "consigne": "Combien de régions compte la France métropolitaine ?"
+      "consigne": "Combien de régions compte la France métropolitaine ?",
+      "pourquoi": {
+        "5": "c’est trop peu : il y en a 13.",
+        "22": "il y en avait 22 avant 2016 ; il en reste 13.",
+        "101": "101, c’est le nombre de départements."
+      }
     },
     {
       "id": "ile",
@@ -335,7 +390,12 @@
         "la Normandie",
         "l’Île-de-France"
       ],
-      "consigne": "Quelle région est une île ?"
+      "consigne": "Quelle région est une île ?",
+      "pourquoi": {
+        "la Bretagne": "la Bretagne est au bord de la mer, mais touche la France.",
+        "la Normandie": "la Normandie est au bord de la mer, mais touche la France.",
+        "l’Île-de-France": "malgré son nom, l’Île-de-France n’est pas une île."
+      }
     },
     {
       "id": "paris-region",
@@ -348,7 +408,12 @@
         "le Grand Est",
         "l’Occitanie"
       ],
-      "consigne": "Dans quelle région se trouve Paris ?"
+      "consigne": "Dans quelle région se trouve Paris ?",
+      "pourquoi": {
+        "la Normandie": "la Normandie est à l’ouest de Paris.",
+        "le Grand Est": "le Grand Est est vers l’Allemagne.",
+        "l’Occitanie": "l’Occitanie est dans le sud."
+      }
     },
     {
       "id": "fleuve-seine",
@@ -401,7 +466,12 @@
         "le Rhône",
         "la Garonne"
       ],
-      "consigne": "Quel fleuve traverse Paris ?"
+      "consigne": "Quel fleuve traverse Paris ?",
+      "pourquoi": {
+        "la Loire": "la Loire passe à Orléans, Tours et Nantes.",
+        "le Rhône": "le Rhône passe à Lyon.",
+        "la Garonne": "la Garonne passe à Toulouse et Bordeaux."
+      }
     },
     {
       "id": "plus-long",
@@ -414,7 +484,12 @@
         "le Rhin",
         "la Garonne"
       ],
-      "consigne": "Quel est le plus long fleuve de France ?"
+      "consigne": "Quel est le plus long fleuve de France ?",
+      "pourquoi": {
+        "la Seine": "la Seine est plus courte que la Loire.",
+        "le Rhin": "le Rhin est plus long, mais il traverse surtout d’autres pays.",
+        "la Garonne": "la Garonne est plus courte."
+      }
     },
     {
       "id": "rhone-mer",
@@ -427,7 +502,12 @@
         "la mer du Nord",
         "l’océan Atlantique"
       ],
-      "consigne": "Dans quelle mer se jette le Rhône ?"
+      "consigne": "Dans quelle mer se jette le Rhône ?",
+      "pourquoi": {
+        "la Manche": "la Manche est au nord-ouest : c’est la Seine qui s’y jette.",
+        "la mer du Nord": "la mer du Nord reçoit le Rhin.",
+        "l’océan Atlantique": "l’Atlantique reçoit la Loire et la Garonne."
+      }
     },
     {
       "id": "garonne-ville",
@@ -440,7 +520,12 @@
         "le Rhin",
         "la Loire"
       ],
-      "consigne": "Quel fleuve passe à Toulouse et à Bordeaux ?"
+      "consigne": "Quel fleuve passe à Toulouse et à Bordeaux ?",
+      "pourquoi": {
+        "la Seine": "la Seine passe à Paris.",
+        "le Rhin": "le Rhin passe à Strasbourg.",
+        "la Loire": "la Loire passe à Nantes."
+      }
     },
     {
       "id": "rhin-frontiere",
@@ -453,7 +538,12 @@
         "la Seine",
         "la Garonne"
       ],
-      "consigne": "Quel fleuve sépare la France de l’Allemagne ?"
+      "consigne": "Quel fleuve sépare la France de l’Allemagne ?",
+      "pourquoi": {
+        "la Loire": "la Loire coule au milieu de la France.",
+        "la Seine": "la Seine coule vers Paris et la Manche.",
+        "la Garonne": "la Garonne coule dans le sud-ouest."
+      }
     },
     {
       "id": "rhone-lyon",
@@ -466,7 +556,12 @@
         "la Garonne",
         "la Loire"
       ],
-      "consigne": "Quel fleuve passe à Lyon ?"
+      "consigne": "Quel fleuve passe à Lyon ?",
+      "pourquoi": {
+        "la Seine": "la Seine passe à Paris.",
+        "la Garonne": "la Garonne passe à Toulouse.",
+        "la Loire": "la Loire passe à Nantes."
+      }
     },
     {
       "id": "fleuve-def",
@@ -480,7 +575,12 @@
         "un étang"
       ],
       "consigne": "Un cours d’eau qui se jette dans la mer s’appelle…",
-      "explication": "Une rivière se jette dans un autre cours d’eau."
+      "explication": "Une rivière se jette dans un autre cours d’eau.",
+      "pourquoi": {
+        "une rivière": "une rivière se jette dans un autre cours d’eau.",
+        "un lac": "un lac ne coule pas vers la mer.",
+        "un étang": "un étang est une petite étendue d’eau qui ne coule pas."
+      }
     },
     {
       "id": "montagne-alpes",
@@ -534,7 +634,12 @@
         "le Jura"
       ],
       "consigne": "Dans quelles montagnes est le mont Blanc, le plus haut sommet de France ?",
-      "image": "mountain"
+      "image": "mountain",
+      "pourquoi": {
+        "les Pyrénées": "les Pyrénées sont entre la France et l’Espagne.",
+        "les Vosges": "les Vosges sont des montagnes plus basses, à l’est.",
+        "le Jura": "le Jura est plus bas, près de la Suisse."
+      }
     },
     {
       "id": "pyrenees-espagne",
@@ -547,7 +652,12 @@
         "les Vosges",
         "le Massif central"
       ],
-      "consigne": "Quelles montagnes séparent la France de l’Espagne ?"
+      "consigne": "Quelles montagnes séparent la France de l’Espagne ?",
+      "pourquoi": {
+        "les Alpes": "les Alpes sont entre la France et l’Italie.",
+        "les Vosges": "les Vosges sont à l’est, vers l’Allemagne.",
+        "le Massif central": "le Massif central est au milieu de la France."
+      }
     },
     {
       "id": "volcans",
@@ -560,7 +670,12 @@
         "en Bretagne",
         "dans le Jura"
       ],
-      "consigne": "Où trouve-t-on de vieux volcans éteints, comme le puy de Dôme ?"
+      "consigne": "Où trouve-t-on de vieux volcans éteints, comme le puy de Dôme ?",
+      "pourquoi": {
+        "dans les Vosges": "les Vosges n’ont pas ces volcans.",
+        "en Bretagne": "la Bretagne n’a pas de volcans.",
+        "dans le Jura": "le Jura n’a pas de volcans."
+      }
     },
     {
       "id": "mont-blanc-haut",
@@ -573,7 +688,12 @@
         "480 mètres",
         "48 000 mètres"
       ],
-      "consigne": "Le mont Blanc mesure environ…"
+      "consigne": "Le mont Blanc mesure environ…",
+      "pourquoi": {
+        "48 mètres": "48 mètres, c’est un immeuble.",
+        "480 mètres": "480 mètres, c’est une colline.",
+        "48 000 mètres": "aucune montagne n’est si haute : l’Everest fait moins de 9 000 mètres."
+      }
     },
     {
       "id": "ville-paris",
@@ -666,7 +786,12 @@
         "Marseille",
         "Bordeaux"
       ],
-      "consigne": "Quelle est la capitale de la France ?"
+      "consigne": "Quelle est la capitale de la France ?",
+      "pourquoi": {
+        "Lyon": "Lyon est une grande ville, mais pas la capitale.",
+        "Marseille": "Marseille est un grand port, pas la capitale.",
+        "Bordeaux": "Bordeaux est une grande ville, pas la capitale."
+      }
     },
     {
       "id": "port-sud",
@@ -679,7 +804,12 @@
         "Strasbourg",
         "Paris"
       ],
-      "consigne": "Quel grand port est au bord de la Méditerranée ?"
+      "consigne": "Quel grand port est au bord de la Méditerranée ?",
+      "pourquoi": {
+        "Lille": "Lille n’est pas au bord de la mer.",
+        "Strasbourg": "Strasbourg est près du Rhin, loin de la mer.",
+        "Paris": "Paris est sur la Seine, loin de la mer."
+      }
     },
     {
       "id": "ville-rhin",
@@ -692,7 +822,12 @@
         "Bordeaux",
         "Nantes"
       ],
-      "consigne": "Quelle grande ville est près du Rhin ?"
+      "consigne": "Quelle grande ville est près du Rhin ?",
+      "pourquoi": {
+        "Brest": "Brest est tout à l’ouest, au bord de la mer.",
+        "Bordeaux": "Bordeaux est sur la Garonne.",
+        "Nantes": "Nantes est sur la Loire."
+      }
     },
     {
       "id": "paysages-1",
@@ -765,7 +900,12 @@
         "le plateau"
       ],
       "consigne": "Un paysage au bord de la mer s’appelle…",
-      "image": "wave"
+      "image": "wave",
+      "pourquoi": {
+        "la plaine": "une plaine est un grand pays plat.",
+        "la vallée": "une vallée est un creux entre des montagnes.",
+        "le plateau": "un plateau est une terre plate en hauteur."
+      }
     },
     {
       "id": "vallee",
@@ -778,7 +918,12 @@
         "une plage",
         "une île"
       ],
-      "consigne": "Le creux entre deux montagnes, où coule souvent une rivière, est…"
+      "consigne": "Le creux entre deux montagnes, où coule souvent une rivière, est…",
+      "pourquoi": {
+        "un sommet": "le sommet est le haut de la montagne.",
+        "une plage": "la plage est au bord de la mer.",
+        "une île": "une île est entourée d’eau."
+      }
     },
     {
       "id": "ile-def",
@@ -791,7 +936,12 @@
         "une vallée",
         "une montagne"
       ],
-      "consigne": "Une terre entourée d’eau de tous les côtés, c’est…"
+      "consigne": "Une terre entourée d’eau de tous les côtés, c’est…",
+      "pourquoi": {
+        "une plage": "une plage est le bord de la mer.",
+        "une vallée": "une vallée est un creux entre des montagnes.",
+        "une montagne": "une montagne est un haut relief."
+      }
     },
     {
       "id": "plaine",
@@ -804,7 +954,12 @@
         "une falaise",
         "une vallée"
       ],
-      "consigne": "Un grand paysage plat, souvent cultivé, c’est…"
+      "consigne": "Un grand paysage plat, souvent cultivé, c’est…",
+      "pourquoi": {
+        "une montagne": "une montagne n’est pas plate.",
+        "une falaise": "une falaise est une paroi qui tombe dans la mer.",
+        "une vallée": "une vallée est un creux entre des montagnes."
+      }
     },
     {
       "id": "port",
@@ -818,7 +973,12 @@
         "dans le champ"
       ],
       "consigne": "Où les bateaux s’abritent-ils sur le littoral ?",
-      "image": "boat"
+      "image": "boat",
+      "pourquoi": {
+        "dans la gare": "la gare est pour les trains.",
+        "dans l’aéroport": "l’aéroport est pour les avions.",
+        "dans le champ": "un champ est pour les cultures."
+      }
     },
     {
       "id": "continent-afrique",
@@ -927,7 +1087,12 @@
         "l’Asie",
         "l’Amérique du Nord"
       ],
-      "consigne": "Sur quel continent se trouve la France ?"
+      "consigne": "Sur quel continent se trouve la France ?",
+      "pourquoi": {
+        "l’Afrique": "l’Afrique est au sud de la Méditerranée.",
+        "l’Asie": "l’Asie est plus à l’est.",
+        "l’Amérique du Nord": "l’Amérique du Nord est de l’autre côté de l’Atlantique."
+      }
     },
     {
       "id": "terre-ronde",
@@ -940,7 +1105,12 @@
         "un cube",
         "un triangle"
       ],
-      "consigne": "Quelle est la forme de la Terre ?"
+      "consigne": "Quelle est la forme de la Terre ?",
+      "pourquoi": {
+        "un disque plat": "les photos de l’espace montrent une boule.",
+        "un cube": "la Terre n’a pas d’angles.",
+        "un triangle": "la Terre n’a pas d’angles."
+      }
     },
     {
       "id": "globe",
@@ -953,7 +1123,12 @@
         "une carte",
         "un plan"
       ],
-      "consigne": "Comment s’appelle la maquette ronde de la Terre ?"
+      "consigne": "Comment s’appelle la maquette ronde de la Terre ?",
+      "pourquoi": {
+        "un ballon": "un ballon n’a pas les pays dessinés.",
+        "une carte": "une carte est plate.",
+        "un plan": "un plan montre un petit lieu vu d’en haut."
+      }
     },
     {
       "id": "eau-terre",
@@ -966,7 +1141,12 @@
         "de villes",
         "de sable"
       ],
-      "consigne": "La Terre est surtout couverte…"
+      "consigne": "La Terre est surtout couverte…",
+      "pourquoi": {
+        "de forêts": "les forêts couvrent une petite partie des terres.",
+        "de villes": "les villes sont toutes petites vues de loin.",
+        "de sable": "les déserts ne couvrent qu’une partie des terres."
+      }
     },
     {
       "id": "plus-grand-ocean",
@@ -979,7 +1159,12 @@
         "l’océan Indien",
         "l’océan Arctique"
       ],
-      "consigne": "Quel est le plus grand océan ?"
+      "consigne": "Quel est le plus grand océan ?",
+      "pourquoi": {
+        "l’océan Atlantique": "l’Atlantique est le deuxième.",
+        "l’océan Indien": "l’océan Indien est plus petit.",
+        "l’océan Arctique": "l’Arctique est le plus petit."
+      }
     },
     {
       "id": "ocean-france",
@@ -992,7 +1177,12 @@
         "l’océan Indien",
         "l’océan Arctique"
       ],
-      "consigne": "Quel océan borde la côte ouest de la France ?"
+      "consigne": "Quel océan borde la côte ouest de la France ?",
+      "pourquoi": {
+        "l’océan Pacifique": "le Pacifique est de l’autre côté de l’Amérique.",
+        "l’océan Indien": "l’océan Indien est au sud de l’Asie.",
+        "l’océan Arctique": "l’Arctique est tout au nord."
+      }
     },
     {
       "id": "pole-sud",
@@ -1006,7 +1196,12 @@
         "l’Afrique"
       ],
       "consigne": "Quel continent glacé est au pôle Sud ?",
-      "image": "penguin"
+      "image": "penguin",
+      "pourquoi": {
+        "l’Europe": "l’Europe est dans le nord.",
+        "l’Asie": "l’Asie est dans le nord.",
+        "l’Afrique": "l’Afrique est chaude, loin du pôle Sud."
+      }
     }
   ]
 }

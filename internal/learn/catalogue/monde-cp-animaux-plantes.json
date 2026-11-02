@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-cp-animaux-plantes",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "Animaux et plantes",
   "description": "Ce dont les animaux et les plantes ont besoin, comment les animaux se déplacent et où ils vivent, et comment une graine devient une plante.",
   "matiere": "monde",
@@ -49,7 +49,12 @@
         "de bonbons",
         "de rien"
       ],
-      "consigne": "De quoi a besoin une plante pour pousser ?"
+      "consigne": "De quoi a besoin une plante pour pousser ?",
+      "pourquoi": {
+        "de lait": "une plante boit de l’eau, pas du lait.",
+        "de bonbons": "les bonbons ne nourrissent pas une plante.",
+        "de rien": "sans eau ni lumière, elle meurt."
+      }
     },
     {
       "id": "besoin-2",
@@ -62,7 +67,12 @@
         "des cailloux",
         "du chocolat"
       ],
-      "consigne": "Que mange le lapin ?"
+      "consigne": "Que mange le lapin ?",
+      "pourquoi": {
+        "des poissons": "le lapin ne mange pas de poisson.",
+        "des cailloux": "les cailloux ne se mangent pas.",
+        "du chocolat": "le chocolat est dangereux pour les animaux."
+      }
     },
     {
       "id": "besoin-3",
@@ -75,7 +85,12 @@
         "des cailloux",
         "du sable"
       ],
-      "consigne": "Que mange le chat ?"
+      "consigne": "Que mange le chat ?",
+      "pourquoi": {
+        "de l’herbe": "le chat mange de la viande, pas de l’herbe.",
+        "des cailloux": "les cailloux ne se mangent pas.",
+        "du sable": "le sable ne se mange pas."
+      }
     },
     {
       "id": "besoin-4",
@@ -88,7 +103,12 @@
         "du soda",
         "du café"
       ],
-      "consigne": "Que boit le chaton ?"
+      "consigne": "Que boit le chaton ?",
+      "pourquoi": {
+        "du jus": "le jus n’est pas pour les chatons.",
+        "du soda": "le soda n’est pas pour les animaux.",
+        "du café": "le café n’est pas pour les animaux."
+      }
     },
     {
       "id": "besoin-5",
@@ -101,7 +121,12 @@
         "sous la terre",
         "dans le ciel"
       ],
-      "consigne": "Où vit le poisson ?"
+      "consigne": "Où vit le poisson ?",
+      "pourquoi": {
+        "dans un arbre": "le poisson ne vit pas dans un arbre : il nage.",
+        "sous la terre": "le poisson a besoin d’eau.",
+        "dans le ciel": "le poisson ne vole pas."
+      }
     },
     {
       "id": "besoin-6",
@@ -114,7 +139,12 @@
         "dans un nid",
         "dans le ciel"
       ],
-      "consigne": "Où vit la taupe ?"
+      "consigne": "Où vit la taupe ?",
+      "pourquoi": {
+        "dans l’eau": "la taupe ne nage pas : elle creuse.",
+        "dans un nid": "la taupe n’est pas un oiseau.",
+        "dans le ciel": "la taupe ne vole pas."
+      }
     },
     {
       "id": "besoin-7",
@@ -127,7 +157,12 @@
         "sous la terre",
         "dans le four"
       ],
-      "consigne": "Où l’oiseau fait-il son nid ?"
+      "consigne": "Où l’oiseau fait-il son nid ?",
+      "pourquoi": {
+        "dans l’eau": "l’oiseau ne fait pas son nid dans l’eau.",
+        "sous la terre": "c’est la taupe qui vit sous la terre.",
+        "dans le four": "un four est bien trop chaud."
+      }
     },
     {
       "id": "besoin-8",
@@ -140,7 +175,12 @@
         "des poissons",
         "des bonbons"
       ],
-      "consigne": "Que mange la vache ?"
+      "consigne": "Que mange la vache ?",
+      "pourquoi": {
+        "de la viande": "la vache ne mange pas de viande.",
+        "des poissons": "la vache ne mange pas de poisson.",
+        "des bonbons": "les bonbons ne sont pas pour les vaches."
+      }
     },
     {
       "id": "besoin-9",
@@ -153,7 +193,12 @@
         "devient bleue",
         "se met à marcher"
       ],
-      "consigne": "Une plante dans le noir…"
+      "consigne": "Une plante dans le noir…",
+      "pourquoi": {
+        "pousse plus vite": "sans lumière, elle ne peut pas pousser.",
+        "devient bleue": "elle jaunit, elle ne devient pas bleue.",
+        "se met à marcher": "une plante ne marche jamais."
+      }
     },
     {
       "id": "besoin-10",
@@ -166,7 +211,12 @@
         "des jouets seulement",
         "du soda"
       ],
-      "consigne": "Que faut-il donner à un animal de la maison ?"
+      "consigne": "Que faut-il donner à un animal de la maison ?",
+      "pourquoi": {
+        "rien": "un animal a besoin qu’on s’occupe de lui.",
+        "des jouets seulement": "les jouets ne suffisent pas : il faut manger et boire.",
+        "du soda": "le soda n’est pas pour les animaux."
+      }
     },
     {
       "id": "mange",
@@ -416,7 +466,12 @@
         "8"
       ],
       "consigne": "Combien de pattes a l’oiseau ?",
-      "image": "bird"
+      "image": "bird",
+      "pourquoi": {
+        "4": "4 pattes, c’est le chien ou le chat.",
+        "6": "6 pattes, c’est l’insecte.",
+        "8": "8 pattes, c’est l’araignée."
+      }
     },
     {
       "id": "pattes-2",
@@ -430,7 +485,12 @@
         "8"
       ],
       "consigne": "Combien de pattes a le chien ?",
-      "image": "dog"
+      "image": "dog",
+      "pourquoi": {
+        "2": "2 pattes, c’est l’oiseau.",
+        "6": "6 pattes, c’est l’insecte.",
+        "8": "8 pattes, c’est l’araignée."
+      }
     },
     {
       "id": "pattes-3",
@@ -444,7 +504,12 @@
         "2"
       ],
       "consigne": "Combien de pattes a l’araignée ?",
-      "image": "spider"
+      "image": "spider",
+      "pourquoi": {
+        "4": "4 pattes, c’est le chien ou le chat.",
+        "6": "6 pattes, c’est l’insecte.",
+        "2": "2 pattes, c’est l’oiseau."
+      }
     },
     {
       "id": "pattes-4",
@@ -458,7 +523,12 @@
         "2"
       ],
       "consigne": "Combien de pattes a l’abeille ?",
-      "image": "bee"
+      "image": "bee",
+      "pourquoi": {
+        "4": "4 pattes, c’est le chien ou le chat.",
+        "8": "8 pattes, c’est l’araignée.",
+        "2": "2 pattes, c’est l’oiseau."
+      }
     },
     {
       "id": "pattes-5",
@@ -472,7 +542,12 @@
         "6"
       ],
       "consigne": "Combien de pattes a le serpent ?",
-      "image": "snake"
+      "image": "snake",
+      "pourquoi": {
+        "2": "le serpent n’a pas de pattes : il rampe.",
+        "4": "le serpent n’a pas de pattes : il rampe.",
+        "6": "le serpent n’a pas de pattes : il rampe."
+      }
     },
     {
       "id": "pousse",
@@ -499,7 +574,12 @@
         "le caillou"
       ],
       "consigne": "Comment s’appelle ce qu’on plante pour avoir une fleur ?",
-      "image": "seed"
+      "image": "seed",
+      "pourquoi": {
+        "la feuille": "la feuille pousse sur la plante.",
+        "la tige": "la tige porte la fleur.",
+        "le caillou": "un caillou ne pousse pas."
+      }
     },
     {
       "id": "graine-2",
@@ -513,7 +593,12 @@
         "un arbre"
       ],
       "consigne": "Qu’est-ce qui sort de la graine en premier ?",
-      "image": "sprout"
+      "image": "sprout",
+      "pourquoi": {
+        "une fleur": "la fleur vient bien plus tard.",
+        "un fruit": "le fruit vient après la fleur.",
+        "un arbre": "l’arbre met des années à pousser."
+      }
     },
     {
       "id": "graine-3",
@@ -527,7 +612,12 @@
         "sur la table"
       ],
       "consigne": "Où plante-t-on une graine ?",
-      "image": "seed"
+      "image": "seed",
+      "pourquoi": {
+        "dans le lait": "une graine ne pousse pas dans le lait.",
+        "dans un sac": "sans terre, elle ne pousse pas.",
+        "sur la table": "sans terre ni eau, elle ne pousse pas."
+      }
     },
     {
       "id": "graine-4",
@@ -541,7 +631,12 @@
         "le pain"
       ],
       "consigne": "Dans quel fruit trouve-t-on des pépins ?",
-      "image": "apple"
+      "image": "apple",
+      "pourquoi": {
+        "la banane": "la banane n’a presque pas de pépins.",
+        "la carotte": "la carotte est une racine, sans pépins.",
+        "le pain": "le pain n’est pas un fruit."
+      }
     },
     {
       "id": "graine-5",
@@ -555,7 +650,12 @@
         "la tige"
       ],
       "consigne": "La graine de la cerise s’appelle…",
-      "image": "cherry"
+      "image": "cherry",
+      "pourquoi": {
+        "la feuille": "la feuille pousse sur l’arbre.",
+        "la racine": "la racine est sous la terre.",
+        "la tige": "la tige porte la cerise."
+      }
     },
     {
       "id": "graine-6",
@@ -569,7 +669,12 @@
         "elle chante"
       ],
       "consigne": "Que fait la racine ?",
-      "image": "sprout"
+      "image": "sprout",
+      "pourquoi": {
+        "elle vole": "une racine ne vole pas : elle reste sous la terre.",
+        "elle fait des fleurs": "ce sont les tiges qui portent les fleurs.",
+        "elle chante": "une racine ne chante pas."
+      }
     },
     {
       "id": "plante-fleur",

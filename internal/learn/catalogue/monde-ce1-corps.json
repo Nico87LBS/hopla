@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce1-corps",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "Mon corps",
   "description": "Les dents de lait et les dents définitives, les familles d'aliments et le repas équilibré, les articulations et les muscles.",
   "matiere": "monde",
@@ -50,7 +50,12 @@
         "les dents en sucre"
       ],
       "consigne": "Les premières dents s’appellent…",
-      "image": "tooth"
+      "image": "tooth",
+      "pourquoi": {
+        "les dents de sagesse": "elles poussent bien plus tard, chez l’adulte.",
+        "les crocs": "ce sont des dents pointues, pas les premières dents.",
+        "les dents en sucre": "aucune dent n’est en sucre : le sucre les abîme."
+      }
     },
     {
       "id": "dents-2",
@@ -64,7 +69,12 @@
         "jamais"
       ],
       "consigne": "Vers quel âge tombent les dents de lait ?",
-      "image": "tooth"
+      "image": "tooth",
+      "pourquoi": {
+        "à la naissance": "un bébé naît presque toujours sans dents.",
+        "vers 30 ans": "à 30 ans, ce sont déjà les dents d’adulte.",
+        "jamais": "elles tombent toutes, pour laisser la place aux dents définitives."
+      }
     },
     {
       "id": "dents-3",
@@ -78,7 +88,12 @@
         "50"
       ],
       "consigne": "Combien a-t-on de dents de lait ?",
-      "image": "tooth"
+      "image": "tooth",
+      "pourquoi": {
+        "32": "32, ce sont les dents de l’adulte.",
+        "10": "c’est trop peu : un enfant en a 20.",
+        "50": "c’est bien trop : il n’y a pas la place dans la bouche."
+      }
     },
     {
       "id": "dents-4",
@@ -92,7 +107,12 @@
         "100"
       ],
       "consigne": "Combien a-t-on de dents chez l’adulte ?",
-      "image": "tooth"
+      "image": "tooth",
+      "pourquoi": {
+        "20": "20, ce sont les dents de lait de l’enfant.",
+        "12": "c’est trop peu : l’adulte en a 32.",
+        "100": "c’est bien trop : il n’y a pas la place dans la bouche."
+      }
     },
     {
       "id": "dents-5",
@@ -106,7 +126,12 @@
         "les gencives"
       ],
       "consigne": "Les dents de devant, qui coupent, s’appellent…",
-      "image": "tooth"
+      "image": "tooth",
+      "pourquoi": {
+        "les molaires": "les molaires sont au fond et écrasent.",
+        "les canines": "les canines sont pointues et déchirent.",
+        "les gencives": "les gencives ne sont pas des dents : elles les tiennent."
+      }
     },
     {
       "id": "dents-6",
@@ -120,7 +145,12 @@
         "les lèvres"
       ],
       "consigne": "Les dents du fond, qui écrasent, s’appellent…",
-      "image": "tooth"
+      "image": "tooth",
+      "pourquoi": {
+        "les incisives": "les incisives sont devant et coupent.",
+        "les canines": "les canines sont pointues et déchirent.",
+        "les lèvres": "les lèvres ne sont pas des dents."
+      }
     },
     {
       "id": "dents-7",
@@ -134,7 +164,12 @@
         "ce n’est pas grave"
       ],
       "consigne": "Si une dent définitive tombe…",
-      "image": "tooth"
+      "image": "tooth",
+      "pourquoi": {
+        "elle repousse": "une dent définitive ne repousse jamais.",
+        "une dent de lait revient": "les dents de lait ne reviennent pas : elles ne poussent qu’une fois.",
+        "ce n’est pas grave": "c’est grave : il faut aller chez le dentiste."
+      }
     },
     {
       "id": "familles-1",
@@ -288,7 +323,12 @@
         "seulement de la viande",
         "rien"
       ],
-      "consigne": "Un repas équilibré contient…"
+      "consigne": "Un repas équilibré contient…",
+      "pourquoi": {
+        "seulement des gâteaux": "trop de sucre abîme les dents et fatigue le corps.",
+        "seulement de la viande": "le corps a besoin aussi de légumes, de fruits et de féculents.",
+        "rien": "sans manger, le corps n’a plus d’énergie."
+      }
     },
     {
       "id": "repas-2",
@@ -301,7 +341,12 @@
         "0",
         "20"
       ],
-      "consigne": "Combien de fruits et légumes faut-il manger par jour ?"
+      "consigne": "Combien de fruits et légumes faut-il manger par jour ?",
+      "pourquoi": {
+        "1": "c’est trop peu : il en faut au moins 5.",
+        "0": "le corps en a besoin chaque jour.",
+        "20": "c’est beaucoup trop pour un enfant."
+      }
     },
     {
       "id": "repas-3",
@@ -314,7 +359,12 @@
         "le sirop",
         "le jus"
       ],
-      "consigne": "La seule boisson indispensable, c’est…"
+      "consigne": "La seule boisson indispensable, c’est…",
+      "pourquoi": {
+        "le soda": "le soda est plein de sucre : ce n’est pas indispensable.",
+        "le sirop": "le sirop est sucré : on peut s’en passer.",
+        "le jus": "le jus est sucré lui aussi : l’eau suffit."
+      }
     },
     {
       "id": "repas-4",
@@ -327,7 +377,12 @@
         "de la fièvre",
         "faim"
       ],
-      "consigne": "Les produits laitiers aident à avoir…"
+      "consigne": "Les produits laitiers aident à avoir…",
+      "pourquoi": {
+        "des cheveux bleus": "aucun aliment ne rend les cheveux bleus.",
+        "de la fièvre": "un aliment ne donne pas de fièvre : c’est une maladie.",
+        "faim": "le lait nourrit, il ne donne pas faim."
+      }
     },
     {
       "id": "repas-5",
@@ -340,7 +395,12 @@
         "froid",
         "sommeil tout de suite"
       ],
-      "consigne": "Les féculents donnent…"
+      "consigne": "Les féculents donnent…",
+      "pourquoi": {
+        "des caries": "ce sont les sucreries qui font des caries.",
+        "froid": "les aliments ne donnent pas froid.",
+        "sommeil tout de suite": "ils donnent de l’énergie pour longtemps, pas sommeil."
+      }
     },
     {
       "id": "repas-6",
@@ -353,7 +413,12 @@
         "jamais",
         "au lieu de l’eau"
       ],
-      "consigne": "Les aliments sucrés, on en mange…"
+      "consigne": "Les aliments sucrés, on en mange…",
+      "pourquoi": {
+        "à chaque repas": "c’est trop : le sucre abîme les dents.",
+        "jamais": "on peut en manger un peu, de temps en temps.",
+        "au lieu de l’eau": "l’eau reste la seule boisson indispensable."
+      }
     },
     {
       "id": "articulation-1",
@@ -366,7 +431,12 @@
         "un os du pied",
         "une dent"
       ],
-      "consigne": "Le coude est…"
+      "consigne": "Le coude est…",
+      "pourquoi": {
+        "un muscle": "un muscle tire sur les os ; le coude est l’endroit où ils se rejoignent.",
+        "un os du pied": "le coude est au milieu du bras, pas dans le pied.",
+        "une dent": "le coude est dans le bras, pas dans la bouche."
+      }
     },
     {
       "id": "articulation-2",
@@ -379,7 +449,12 @@
         "le poignet",
         "l’épaule"
       ],
-      "consigne": "Quelle articulation permet de plier la jambe ?"
+      "consigne": "Quelle articulation permet de plier la jambe ?",
+      "pourquoi": {
+        "le coude": "le coude plie le bras.",
+        "le poignet": "le poignet plie la main.",
+        "l’épaule": "l’épaule fait bouger le bras."
+      }
     },
     {
       "id": "articulation-3",
@@ -392,7 +467,12 @@
         "le genou",
         "la hanche"
       ],
-      "consigne": "Quelle articulation est entre la main et le bras ?"
+      "consigne": "Quelle articulation est entre la main et le bras ?",
+      "pourquoi": {
+        "la cheville": "la cheville est entre le pied et la jambe.",
+        "le genou": "le genou est au milieu de la jambe.",
+        "la hanche": "la hanche est en haut de la jambe."
+      }
     },
     {
       "id": "articulation-4",
@@ -405,7 +485,12 @@
         "le coude",
         "l’épaule"
       ],
-      "consigne": "Quelle articulation est entre le pied et la jambe ?"
+      "consigne": "Quelle articulation est entre le pied et la jambe ?",
+      "pourquoi": {
+        "le poignet": "le poignet est entre la main et le bras.",
+        "le coude": "le coude est au milieu du bras.",
+        "l’épaule": "l’épaule est en haut du bras."
+      }
     },
     {
       "id": "articulation-5",
@@ -418,7 +503,12 @@
         "les ongles",
         "les dents"
       ],
-      "consigne": "Ce qui fait bouger les os, ce sont…"
+      "consigne": "Ce qui fait bouger les os, ce sont…",
+      "pourquoi": {
+        "les cheveux": "les cheveux ne font rien bouger.",
+        "les ongles": "les ongles protègent le bout des doigts.",
+        "les dents": "les dents servent à manger."
+      }
     },
     {
       "id": "articulation-6",
@@ -431,7 +521,12 @@
         "voir",
         "respirer seulement"
       ],
-      "consigne": "Le squelette sert à…"
+      "consigne": "Le squelette sert à…",
+      "pourquoi": {
+        "digérer": "c’est l’estomac et l’intestin qui digèrent.",
+        "voir": "ce sont les yeux qui voient.",
+        "respirer seulement": "le squelette ne respire pas : il tient le corps et protège les organes."
+      }
     }
   ]
 }

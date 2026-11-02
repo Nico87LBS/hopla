@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-gs-animaux",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "Les animaux",
   "description": "Les animaux et leurs petits, où ils vivent et ce qu'ils mangent.",
   "matiere": "monde",
@@ -375,7 +375,12 @@
         "le fromage",
         "le miel",
         "l'herbe"
-      ]
+      ],
+      "pourquoi": {
+        "le fromage": "c’est la souris qui aime le fromage.",
+        "le miel": "c’est l’ours qui aime le miel.",
+        "l'herbe": "le lapin mange de l’herbe aussi, mais il adore la carotte."
+      }
     },
     {
       "id": "mange-souris",
@@ -388,7 +393,12 @@
         "la carotte",
         "le miel",
         "l'herbe"
-      ]
+      ],
+      "pourquoi": {
+        "la carotte": "c’est le lapin qui aime la carotte.",
+        "le miel": "c’est l’ours qui aime le miel.",
+        "l'herbe": "c’est la vache qui mange l’herbe."
+      }
     },
     {
       "id": "mange-ours",
@@ -401,7 +411,12 @@
         "la carotte",
         "le fromage",
         "l'herbe"
-      ]
+      ],
+      "pourquoi": {
+        "la carotte": "c’est le lapin qui aime la carotte.",
+        "le fromage": "c’est la souris qui aime le fromage.",
+        "l'herbe": "c’est la vache qui mange l’herbe."
+      }
     },
     {
       "id": "mange-vache",
@@ -414,7 +429,12 @@
         "la carotte",
         "le fromage",
         "le miel"
-      ]
+      ],
+      "pourquoi": {
+        "la carotte": "c’est le lapin qui aime la carotte.",
+        "le fromage": "c’est la souris qui aime le fromage.",
+        "le miel": "c’est l’ours qui aime le miel."
+      }
     },
     {
       "id": "mange-chien",
@@ -427,7 +447,12 @@
         "la carotte",
         "le fromage",
         "le miel"
-      ]
+      ],
+      "pourquoi": {
+        "la carotte": "c’est le lapin qui aime la carotte.",
+        "le fromage": "c’est la souris qui aime le fromage.",
+        "le miel": "c’est l’ours qui aime le miel."
+      }
     },
     {
       "id": "mange-oiseau",
@@ -440,7 +465,12 @@
         "la carotte",
         "le fromage",
         "le miel"
-      ]
+      ],
+      "pourquoi": {
+        "la carotte": "c’est le lapin qui aime la carotte.",
+        "le fromage": "c’est la souris qui aime le fromage.",
+        "le miel": "c’est l’ours qui aime le miel."
+      }
     }
   ]
 }

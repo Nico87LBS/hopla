@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce2-electricite",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "L'électricité",
   "description": "Les objets électriques, le circuit avec une pile et une ampoule, les conducteurs et les isolants, et les dangers.",
   "matiere": "monde",
@@ -117,7 +117,12 @@
         "à décorer"
       ],
       "consigne": "À quoi sert la pile ?",
-      "image": "battery"
+      "image": "battery",
+      "pourquoi": {
+        "à faire de la lumière": "c’est l’ampoule qui fait la lumière.",
+        "à couper le courant": "c’est l’interrupteur qui coupe le courant.",
+        "à décorer": "la pile donne l’électricité au circuit."
+      }
     },
     {
       "id": "ampoule-role",
@@ -131,7 +136,12 @@
         "elle tourne"
       ],
       "consigne": "Que fait l’ampoule quand le courant passe ?",
-      "image": "bulb"
+      "image": "bulb",
+      "pourquoi": {
+        "elle chauffe l’eau": "l’ampoule éclaire, elle ne chauffe pas l’eau.",
+        "elle sonne": "c’est une sonnette qui sonne.",
+        "elle tourne": "c’est un moteur qui tourne."
+      }
     },
     {
       "id": "interrupteur",
@@ -144,7 +154,12 @@
         "une ampoule",
         "un fil"
       ],
-      "consigne": "Avec quoi allume-t-on et éteint-on la lumière ?"
+      "consigne": "Avec quoi allume-t-on et éteint-on la lumière ?",
+      "pourquoi": {
+        "une pile": "la pile donne le courant, elle n’allume pas et n’éteint pas.",
+        "une ampoule": "l’ampoule s’allume, mais ce n’est pas elle qui commande.",
+        "un fil": "le fil transporte le courant."
+      }
     },
     {
       "id": "fils",
@@ -157,7 +172,12 @@
         "par la table",
         "par la lumière"
       ],
-      "consigne": "Par où passe le courant entre la pile et l’ampoule ?"
+      "consigne": "Par où passe le courant entre la pile et l’ampoule ?",
+      "pourquoi": {
+        "par l’air": "l’air ne laisse pas passer le courant d’une pile.",
+        "par la table": "la table n’est pas dans le circuit.",
+        "par la lumière": "la lumière est le résultat, pas le chemin."
+      }
     },
     {
       "id": "pile-bornes",
@@ -170,7 +190,12 @@
         "les fils",
         "les ampoules"
       ],
-      "consigne": "Les deux bouts d’une pile s’appellent…"
+      "consigne": "Les deux bouts d’une pile s’appellent…",
+      "pourquoi": {
+        "les pieds": "une pile n’a pas de pieds.",
+        "les fils": "les fils se branchent sur les bornes.",
+        "les ampoules": "l’ampoule est un autre objet du circuit."
+      }
     },
     {
       "id": "c-ferme",
@@ -183,7 +208,10 @@
       ],
       "consigne": "L’ampoule s’allume-t-elle ?",
       "explication": "Le circuit est fermé : le courant fait tout le tour.",
-      "image": "circuit-closed"
+      "image": "circuit-closed",
+      "pourquoi": {
+        "Non": "le circuit est fermé : le courant fait tout le tour."
+      }
     },
     {
       "id": "c-ouvert",
@@ -196,7 +224,10 @@
       ],
       "consigne": "L’ampoule s’allume-t-elle ?",
       "explication": "L’interrupteur est ouvert : le courant ne passe pas.",
-      "image": "circuit-open"
+      "image": "circuit-open",
+      "pourquoi": {
+        "Oui": "l’interrupteur est ouvert : le courant ne passe pas."
+      }
     },
     {
       "id": "c-coupe",
@@ -209,7 +240,10 @@
       ],
       "consigne": "L’ampoule s’allume-t-elle ?",
       "explication": "Le fil est coupé : le circuit est ouvert.",
-      "image": "circuit-cut"
+      "image": "circuit-cut",
+      "pourquoi": {
+        "Oui": "le fil est coupé : le circuit est ouvert."
+      }
     },
     {
       "id": "c-meme",
@@ -222,7 +256,10 @@
       ],
       "consigne": "L’ampoule s’allume-t-elle ?",
       "explication": "Les deux fils partent de la même borne : le courant ne fait pas le tour.",
-      "image": "circuit-same"
+      "image": "circuit-same",
+      "pourquoi": {
+        "Oui": "les deux fils partent de la même borne : le courant ne fait pas le tour."
+      }
     },
     {
       "id": "ferme-def",
@@ -235,7 +272,12 @@
         "coupé",
         "mouillé"
       ],
-      "consigne": "Pour que l’ampoule s’allume, le circuit doit être…"
+      "consigne": "Pour que l’ampoule s’allume, le circuit doit être…",
+      "pourquoi": {
+        "ouvert": "ouvert, le courant ne passe pas.",
+        "coupé": "coupé, le courant ne passe pas.",
+        "mouillé": "l’eau ne fait pas marcher le circuit, et c’est dangereux."
+      }
     },
     {
       "id": "ouvrir",
@@ -248,7 +290,12 @@
         "clignote",
         "change de couleur"
       ],
-      "consigne": "Quand on ouvre l’interrupteur, l’ampoule…"
+      "consigne": "Quand on ouvre l’interrupteur, l’ampoule…",
+      "pourquoi": {
+        "s’allume plus fort": "ouvrir coupe le courant.",
+        "clignote": "elle ne clignote pas : elle s’éteint.",
+        "change de couleur": "elle ne change pas de couleur : elle s’éteint."
+      }
     },
     {
       "id": "boucle",
@@ -261,7 +308,12 @@
         "des sauts",
         "rien"
       ],
-      "consigne": "Dans un circuit qui marche, le courant fait…"
+      "consigne": "Dans un circuit qui marche, le courant fait…",
+      "pourquoi": {
+        "un aller simple": "le courant doit revenir à la pile.",
+        "des sauts": "le courant ne saute pas : il suit les fils.",
+        "rien": "il circule tant que la boucle est fermée."
+      }
     },
     {
       "id": "pile-usee",
@@ -274,7 +326,12 @@
         "il fait jour",
         "la table est en bois"
       ],
-      "consigne": "Tout est bien branché mais l’ampoule ne s’allume pas. Peut-être que…"
+      "consigne": "Tout est bien branché mais l’ampoule ne s’allume pas. Peut-être que…",
+      "pourquoi": {
+        "le fil est trop beau": "un beau fil marche comme un autre.",
+        "il fait jour": "le jour ne change rien à l’ampoule.",
+        "la table est en bois": "la table ne fait pas partie du circuit."
+      }
     },
     {
       "id": "conducteurs",
@@ -348,7 +405,12 @@
         "plastique",
         "tissu"
       ],
-      "consigne": "En général, les objets qui laissent passer le courant sont en…"
+      "consigne": "En général, les objets qui laissent passer le courant sont en…",
+      "pourquoi": {
+        "bois": "le bois ne laisse pas passer le courant.",
+        "plastique": "le plastique est isolant.",
+        "tissu": "le tissu sec ne laisse pas passer le courant."
+      }
     },
     {
       "id": "gaine",
@@ -361,7 +423,12 @@
         "pour que le courant aille plus vite",
         "pour qu’ils soient lourds"
       ],
-      "consigne": "Pourquoi les fils électriques sont-ils entourés de plastique ?"
+      "consigne": "Pourquoi les fils électriques sont-ils entourés de plastique ?",
+      "pourquoi": {
+        "pour faire joli": "le plastique a un rôle de sécurité, pas de décoration.",
+        "pour que le courant aille plus vite": "le plastique ne change pas la vitesse du courant.",
+        "pour qu’ils soient lourds": "le plastique les rend plus légers, pas plus lourds."
+      }
     },
     {
       "id": "isolant-def",
@@ -374,7 +441,12 @@
         "transparent",
         "liquide"
       ],
-      "consigne": "Un matériau qui ne laisse pas passer le courant est…"
+      "consigne": "Un matériau qui ne laisse pas passer le courant est…",
+      "pourquoi": {
+        "conducteur": "un conducteur laisse passer le courant.",
+        "transparent": "transparent veut dire qu’on voit à travers.",
+        "liquide": "liquide veut dire qui coule."
+      }
     },
     {
       "id": "conducteur-def",
@@ -387,7 +459,12 @@
         "opaque",
         "fragile"
       ],
-      "consigne": "Un matériau qui laisse passer le courant est…"
+      "consigne": "Un matériau qui laisse passer le courant est…",
+      "pourquoi": {
+        "isolant": "un isolant bloque le courant.",
+        "opaque": "opaque veut dire qu’on ne voit pas à travers.",
+        "fragile": "fragile veut dire qui se casse facilement."
+      }
     },
     {
       "id": "vf-danger-prise",
@@ -399,7 +476,10 @@
         "Vrai"
       ],
       "consigne": "Vrai ou faux ?",
-      "explication": "Jamais : la prise donne un courant dangereux."
+      "explication": "Jamais : la prise donne un courant dangereux.",
+      "pourquoi": {
+        "Vrai": "jamais : la prise donne un courant dangereux."
+      }
     },
     {
       "id": "vf-danger-mains",
@@ -411,7 +491,10 @@
         "Vrai"
       ],
       "consigne": "Vrai ou faux ?",
-      "explication": "L’eau conduit le courant : c’est très dangereux."
+      "explication": "L’eau conduit le courant : c’est très dangereux.",
+      "pourquoi": {
+        "Vrai": "l’eau conduit le courant : c’est très dangereux."
+      }
     },
     {
       "id": "vf-danger-pile",
@@ -422,7 +505,10 @@
       "pieges": [
         "Faux"
       ],
-      "consigne": "Vrai ou faux ?"
+      "consigne": "Vrai ou faux ?",
+      "pourquoi": {
+        "Faux": "une petite pile donne un courant faible, sans danger."
+      }
     },
     {
       "id": "vf-danger-cable",
@@ -434,7 +520,10 @@
         "Vrai"
       ],
       "consigne": "Vrai ou faux ?",
-      "explication": "On s’éloigne et on prévient un adulte."
+      "explication": "On s’éloigne et on prévient un adulte.",
+      "pourquoi": {
+        "Vrai": "on s’éloigne et on prévient un adulte."
+      }
     },
     {
       "id": "vf-danger-tirer",
@@ -446,7 +535,10 @@
         "Vrai"
       ],
       "consigne": "Vrai ou faux ?",
-      "explication": "On tient la prise, pas le fil."
+      "explication": "On tient la prise, pas le fil.",
+      "pourquoi": {
+        "Vrai": "on tient la prise, pas le fil."
+      }
     },
     {
       "id": "vf-danger-pylone",
@@ -457,7 +549,10 @@
       "pieges": [
         "Faux"
       ],
-      "consigne": "Vrai ou faux ?"
+      "consigne": "Vrai ou faux ?",
+      "pourquoi": {
+        "Faux": "les fils en haut d’un pylône sont mortels."
+      }
     },
     {
       "id": "prise-volts",
@@ -471,7 +566,12 @@
         "elle fait du bruit"
       ],
       "consigne": "Pourquoi la prise de la maison est-elle dangereuse ?",
-      "image": "socket"
+      "image": "socket",
+      "pourquoi": {
+        "elle est trop petite": "sa taille ne la rend pas dangereuse.",
+        "elle est en plastique": "le plastique protège, au contraire.",
+        "elle fait du bruit": "elle ne fait pas de bruit : son danger est le courant."
+      }
     },
     {
       "id": "panneau",
@@ -484,7 +584,12 @@
         "sortie de secours",
         "piscine"
       ],
-      "consigne": "Un panneau avec un éclair jaune veut dire…"
+      "consigne": "Un panneau avec un éclair jaune veut dire…",
+      "pourquoi": {
+        "attention, orage": "l’orage a d’autres signes : l’éclair jaune veut dire électricité.",
+        "sortie de secours": "la sortie de secours est verte avec un bonhomme.",
+        "piscine": "la piscine a un panneau bleu avec un nageur."
+      }
     }
   ]
 }

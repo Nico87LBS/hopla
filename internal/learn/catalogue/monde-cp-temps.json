@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-cp-temps",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "Le temps qui passe",
   "description": "Les jours de la semaine, les mois, les saisons, et hier, aujourd'hui, demain.",
   "matiere": "monde",
@@ -93,7 +93,12 @@
         "jeudi",
         "vendredi"
       ],
-      "consigne": "Quel jour vient après lundi ?"
+      "consigne": "Quel jour vient après lundi ?",
+      "pourquoi": {
+        "mercredi": "mercredi vient après mardi, pas après lundi.",
+        "jeudi": "jeudi vient après mercredi, pas après lundi.",
+        "vendredi": "vendredi vient après jeudi, pas après lundi."
+      }
     },
     {
       "id": "apres-mardi",
@@ -106,7 +111,12 @@
         "jeudi",
         "vendredi"
       ],
-      "consigne": "Quel jour vient après mardi ?"
+      "consigne": "Quel jour vient après mardi ?",
+      "pourquoi": {
+        "lundi": "lundi vient après dimanche, pas après mardi.",
+        "jeudi": "jeudi vient après mercredi, pas après mardi.",
+        "vendredi": "vendredi vient après jeudi, pas après mardi."
+      }
     },
     {
       "id": "apres-mercredi",
@@ -119,7 +129,12 @@
         "mardi",
         "vendredi"
       ],
-      "consigne": "Quel jour vient après mercredi ?"
+      "consigne": "Quel jour vient après mercredi ?",
+      "pourquoi": {
+        "lundi": "lundi vient après dimanche, pas après mercredi.",
+        "mardi": "mardi vient après lundi, pas après mercredi.",
+        "vendredi": "vendredi vient après jeudi, pas après mercredi."
+      }
     },
     {
       "id": "apres-jeudi",
@@ -132,7 +147,12 @@
         "mardi",
         "mercredi"
       ],
-      "consigne": "Quel jour vient après jeudi ?"
+      "consigne": "Quel jour vient après jeudi ?",
+      "pourquoi": {
+        "lundi": "lundi vient après dimanche, pas après jeudi.",
+        "mardi": "mardi vient après lundi, pas après jeudi.",
+        "mercredi": "mercredi vient après mardi, pas après jeudi."
+      }
     },
     {
       "id": "apres-vendredi",
@@ -145,7 +165,12 @@
         "mardi",
         "mercredi"
       ],
-      "consigne": "Quel jour vient après vendredi ?"
+      "consigne": "Quel jour vient après vendredi ?",
+      "pourquoi": {
+        "lundi": "lundi vient après dimanche, pas après vendredi.",
+        "mardi": "mardi vient après lundi, pas après vendredi.",
+        "mercredi": "mercredi vient après mardi, pas après vendredi."
+      }
     },
     {
       "id": "apres-samedi",
@@ -158,7 +183,12 @@
         "mardi",
         "mercredi"
       ],
-      "consigne": "Quel jour vient après samedi ?"
+      "consigne": "Quel jour vient après samedi ?",
+      "pourquoi": {
+        "lundi": "lundi vient après dimanche, pas après samedi.",
+        "mardi": "mardi vient après lundi, pas après samedi.",
+        "mercredi": "mercredi vient après mardi, pas après samedi."
+      }
     },
     {
       "id": "apres-dimanche",
@@ -171,7 +201,12 @@
         "mercredi",
         "jeudi"
       ],
-      "consigne": "Quel jour vient après dimanche ?"
+      "consigne": "Quel jour vient après dimanche ?",
+      "pourquoi": {
+        "mardi": "mardi vient après lundi, pas après dimanche.",
+        "mercredi": "mercredi vient après mardi, pas après dimanche.",
+        "jeudi": "jeudi vient après mercredi, pas après dimanche."
+      }
     },
     {
       "id": "semaine-1",
@@ -184,7 +219,12 @@
         "10",
         "12"
       ],
-      "consigne": "Combien y a-t-il de jours dans une semaine ?"
+      "consigne": "Combien y a-t-il de jours dans une semaine ?",
+      "pourquoi": {
+        "5": "5, ce sont les jours d’école dans certaines écoles, pas toute la semaine.",
+        "10": "c’est trop : de lundi à dimanche, il y en a 7.",
+        "12": "12, c’est le nombre de mois."
+      }
     },
     {
       "id": "semaine-2",
@@ -197,7 +237,12 @@
         "jeudi et vendredi",
         "mardi et jeudi"
       ],
-      "consigne": "Quels jours n’a-t-on pas école, souvent ?"
+      "consigne": "Quels jours n’a-t-on pas école, souvent ?",
+      "pourquoi": {
+        "lundi et mardi": "lundi et mardi sont des jours d’école.",
+        "jeudi et vendredi": "jeudi et vendredi sont des jours d’école.",
+        "mardi et jeudi": "mardi et jeudi sont des jours d’école."
+      }
     },
     {
       "id": "semaine-3",
@@ -210,7 +255,12 @@
         "dimanche",
         "jeudi"
       ],
-      "consigne": "Si aujourd’hui c’est mardi, hier c’était…"
+      "consigne": "Si aujourd’hui c’est mardi, hier c’était…",
+      "pourquoi": {
+        "mercredi": "mercredi vient après mardi : c’est demain.",
+        "dimanche": "dimanche, c’était il y a deux jours.",
+        "jeudi": "jeudi, c’est dans deux jours."
+      }
     },
     {
       "id": "semaine-4",
@@ -223,7 +273,12 @@
         "samedi",
         "lundi"
       ],
-      "consigne": "Si aujourd’hui c’est jeudi, demain ce sera…"
+      "consigne": "Si aujourd’hui c’est jeudi, demain ce sera…",
+      "pourquoi": {
+        "mercredi": "mercredi, c’était hier.",
+        "samedi": "samedi, c’est dans deux jours.",
+        "lundi": "lundi est bien plus loin."
+      }
     },
     {
       "id": "mois-0",
@@ -275,7 +330,12 @@
         "avril",
         "mai"
       ],
-      "consigne": "Quel mois vient après janvier ?"
+      "consigne": "Quel mois vient après janvier ?",
+      "pourquoi": {
+        "mars": "mars vient après février, pas après janvier.",
+        "avril": "avril vient après mars, pas après janvier.",
+        "mai": "mai vient après avril, pas après janvier."
+      }
     },
     {
       "id": "apres-fevrier",
@@ -288,7 +348,12 @@
         "mai",
         "juin"
       ],
-      "consigne": "Quel mois vient après février ?"
+      "consigne": "Quel mois vient après février ?",
+      "pourquoi": {
+        "avril": "avril vient après mars, pas après février.",
+        "mai": "mai vient après avril, pas après février.",
+        "juin": "juin vient après mai, pas après février."
+      }
     },
     {
       "id": "apres-mars",
@@ -301,7 +366,12 @@
         "juin",
         "juillet"
       ],
-      "consigne": "Quel mois vient après mars ?"
+      "consigne": "Quel mois vient après mars ?",
+      "pourquoi": {
+        "mai": "mai vient après avril, pas après mars.",
+        "juin": "juin vient après mai, pas après mars.",
+        "juillet": "juillet vient après juin, pas après mars."
+      }
     },
     {
       "id": "apres-avril",
@@ -314,7 +384,12 @@
         "juillet",
         "août"
       ],
-      "consigne": "Quel mois vient après avril ?"
+      "consigne": "Quel mois vient après avril ?",
+      "pourquoi": {
+        "juin": "juin vient après mai, pas après avril.",
+        "juillet": "juillet vient après juin, pas après avril.",
+        "août": "août vient après juillet, pas après avril."
+      }
     },
     {
       "id": "apres-mai",
@@ -327,7 +402,12 @@
         "août",
         "septembre"
       ],
-      "consigne": "Quel mois vient après mai ?"
+      "consigne": "Quel mois vient après mai ?",
+      "pourquoi": {
+        "juillet": "juillet vient après juin, pas après mai.",
+        "août": "août vient après juillet, pas après mai.",
+        "septembre": "septembre vient après août, pas après mai."
+      }
     },
     {
       "id": "apres-juin",
@@ -340,7 +420,12 @@
         "septembre",
         "octobre"
       ],
-      "consigne": "Quel mois vient après juin ?"
+      "consigne": "Quel mois vient après juin ?",
+      "pourquoi": {
+        "août": "août vient après juillet, pas après juin.",
+        "septembre": "septembre vient après août, pas après juin.",
+        "octobre": "octobre vient après septembre, pas après juin."
+      }
     },
     {
       "id": "apres-juillet",
@@ -353,7 +438,12 @@
         "octobre",
         "novembre"
       ],
-      "consigne": "Quel mois vient après juillet ?"
+      "consigne": "Quel mois vient après juillet ?",
+      "pourquoi": {
+        "septembre": "septembre vient après août, pas après juillet.",
+        "octobre": "octobre vient après septembre, pas après juillet.",
+        "novembre": "novembre vient après octobre, pas après juillet."
+      }
     },
     {
       "id": "apres-aout",
@@ -366,7 +456,12 @@
         "novembre",
         "décembre"
       ],
-      "consigne": "Quel mois vient après août ?"
+      "consigne": "Quel mois vient après août ?",
+      "pourquoi": {
+        "octobre": "octobre vient après septembre, pas après août.",
+        "novembre": "novembre vient après octobre, pas après août.",
+        "décembre": "décembre vient après novembre, pas après août."
+      }
     },
     {
       "id": "apres-septembre",
@@ -379,7 +474,12 @@
         "février",
         "mars"
       ],
-      "consigne": "Quel mois vient après septembre ?"
+      "consigne": "Quel mois vient après septembre ?",
+      "pourquoi": {
+        "janvier": "janvier vient après décembre, pas après septembre.",
+        "février": "février vient après janvier, pas après septembre.",
+        "mars": "mars vient après février, pas après septembre."
+      }
     },
     {
       "id": "apres-octobre",
@@ -392,7 +492,12 @@
         "mars",
         "avril"
       ],
-      "consigne": "Quel mois vient après octobre ?"
+      "consigne": "Quel mois vient après octobre ?",
+      "pourquoi": {
+        "février": "février vient après janvier, pas après octobre.",
+        "mars": "mars vient après février, pas après octobre.",
+        "avril": "avril vient après mars, pas après octobre."
+      }
     },
     {
       "id": "apres-novembre",
@@ -405,7 +510,12 @@
         "avril",
         "mai"
       ],
-      "consigne": "Quel mois vient après novembre ?"
+      "consigne": "Quel mois vient après novembre ?",
+      "pourquoi": {
+        "mars": "mars vient après février, pas après novembre.",
+        "avril": "avril vient après mars, pas après novembre.",
+        "mai": "mai vient après avril, pas après novembre."
+      }
     },
     {
       "id": "annee-1",
@@ -418,7 +528,12 @@
         "10",
         "30"
       ],
-      "consigne": "Combien y a-t-il de mois dans une année ?"
+      "consigne": "Combien y a-t-il de mois dans une année ?",
+      "pourquoi": {
+        "7": "7, ce sont les jours d’une semaine.",
+        "10": "il y en a plus : de janvier à décembre, 12.",
+        "30": "30, ce sont les jours d’un mois."
+      }
     },
     {
       "id": "annee-2",
@@ -431,7 +546,12 @@
         "mars",
         "septembre"
       ],
-      "consigne": "Quel est le premier mois de l’année ?"
+      "consigne": "Quel est le premier mois de l’année ?",
+      "pourquoi": {
+        "décembre": "décembre est le dernier mois.",
+        "mars": "mars est le troisième mois.",
+        "septembre": "septembre est le mois de la rentrée."
+      }
     },
     {
       "id": "annee-3",
@@ -444,7 +564,12 @@
         "novembre",
         "août"
       ],
-      "consigne": "Quel est le dernier mois de l’année ?"
+      "consigne": "Quel est le dernier mois de l’année ?",
+      "pourquoi": {
+        "janvier": "janvier est le premier mois.",
+        "novembre": "novembre vient juste avant décembre.",
+        "août": "août est en plein été."
+      }
     },
     {
       "id": "annee-4",
@@ -457,7 +582,12 @@
         "avril",
         "mars"
       ],
-      "consigne": "Noël, c’est en…"
+      "consigne": "Noël, c’est en…",
+      "pourquoi": {
+        "juillet": "en juillet, c’est l’été.",
+        "avril": "en avril, c’est le printemps et Pâques.",
+        "mars": "en mars, c’est la fin de l’hiver."
+      }
     },
     {
       "id": "annee-5",
@@ -470,7 +600,12 @@
         "juillet",
         "mai"
       ],
-      "consigne": "La rentrée des classes, c’est en…"
+      "consigne": "La rentrée des classes, c’est en…",
+      "pourquoi": {
+        "janvier": "en janvier, on rentre après les vacances de Noël.",
+        "juillet": "en juillet, ce sont les grandes vacances.",
+        "mai": "en mai, l’année d’école continue."
+      }
     },
     {
       "id": "saisons",
@@ -497,7 +632,12 @@
         "l’automne"
       ],
       "consigne": "Il neige, on fait un bonhomme de neige : c’est…",
-      "image": "snowman"
+      "image": "snowman",
+      "pourquoi": {
+        "le printemps": "au printemps, la neige a fondu.",
+        "l’été": "en été, il fait chaud.",
+        "l’automne": "en automne, les feuilles tombent."
+      }
     },
     {
       "id": "saison-2",
@@ -511,7 +651,12 @@
         "l’hiver"
       ],
       "consigne": "Les feuilles tombent des arbres : c’est…",
-      "image": "leaf"
+      "image": "leaf",
+      "pourquoi": {
+        "le printemps": "au printemps, les feuilles poussent.",
+        "l’été": "en été, les arbres sont verts.",
+        "l’hiver": "en hiver, elles sont déjà tombées."
+      }
     },
     {
       "id": "saison-3",
@@ -525,7 +670,12 @@
         "l’hiver"
       ],
       "consigne": "Il fait chaud, on va à la mer : c’est…",
-      "image": "sun"
+      "image": "sun",
+      "pourquoi": {
+        "le printemps": "au printemps, il fait doux, pas encore très chaud.",
+        "l’automne": "en automne, il fait plus frais.",
+        "l’hiver": "en hiver, il fait froid."
+      }
     },
     {
       "id": "saison-4",
@@ -539,7 +689,12 @@
         "l’hiver"
       ],
       "consigne": "Les fleurs poussent, les oiseaux reviennent : c’est…",
-      "image": "tulip"
+      "image": "tulip",
+      "pourquoi": {
+        "l’été": "en été, les fleurs sont déjà là.",
+        "l’automne": "en automne, les feuilles tombent.",
+        "l’hiver": "en hiver, il fait froid et rien ne pousse."
+      }
     },
     {
       "id": "saison-5",
@@ -553,7 +708,12 @@
         "l’automne"
       ],
       "consigne": "On met un manteau et une écharpe : c’est…",
-      "image": "scarf"
+      "image": "scarf",
+      "pourquoi": {
+        "le printemps": "au printemps, il fait doux.",
+        "l’été": "en été, il fait chaud.",
+        "l’automne": "en automne, il fait frais, mais l’écharpe, c’est l’hiver."
+      }
     },
     {
       "id": "saison-6",
@@ -567,7 +727,12 @@
         "l’hiver"
       ],
       "consigne": "On ramasse des champignons et des châtaignes : c’est…",
-      "image": "mushroom"
+      "image": "mushroom",
+      "pourquoi": {
+        "le printemps": "au printemps, ce sont les fleurs.",
+        "l’été": "en été, ce sont les fruits.",
+        "l’hiver": "en hiver, il fait trop froid."
+      }
     },
     {
       "id": "temps-1",
@@ -630,7 +795,12 @@
         "maintenant",
         "bientôt"
       ],
-      "consigne": "Le jour d’avant aujourd’hui, c’est…"
+      "consigne": "Le jour d’avant aujourd’hui, c’est…",
+      "pourquoi": {
+        "demain": "demain, c’est le jour d’après.",
+        "maintenant": "maintenant, c’est tout de suite.",
+        "bientôt": "bientôt, c’est plus tard."
+      }
     },
     {
       "id": "quand-2",
@@ -643,7 +813,12 @@
         "avant",
         "jamais"
       ],
-      "consigne": "Le jour d’après aujourd’hui, c’est…"
+      "consigne": "Le jour d’après aujourd’hui, c’est…",
+      "pourquoi": {
+        "hier": "hier, c’est le jour d’avant.",
+        "avant": "avant, c’est dans le passé.",
+        "jamais": "jamais, ce n’est pas un jour."
+      }
     },
     {
       "id": "quand-3",
@@ -656,7 +831,12 @@
         "la nuit",
         "à minuit"
       ],
-      "consigne": "On prend le petit-déjeuner…"
+      "consigne": "On prend le petit-déjeuner…",
+      "pourquoi": {
+        "le soir": "le soir, c’est le dîner.",
+        "la nuit": "la nuit, on dort.",
+        "à minuit": "à minuit, on dort."
+      }
     },
     {
       "id": "quand-4",
@@ -669,7 +849,12 @@
         "à la récréation",
         "à la cantine"
       ],
-      "consigne": "On dort…"
+      "consigne": "On dort…",
+      "pourquoi": {
+        "le midi": "le midi, on déjeune.",
+        "à la récréation": "à la récréation, on joue.",
+        "à la cantine": "à la cantine, on mange."
+      }
     },
     {
       "id": "quand-5",
@@ -682,7 +867,12 @@
         "demain",
         "maintenant"
       ],
-      "consigne": "Quand j’étais bébé, c’était…"
+      "consigne": "Quand j’étais bébé, c’était…",
+      "pourquoi": {
+        "après": "après, c’est plus tard.",
+        "demain": "demain, c’est le jour qui vient.",
+        "maintenant": "maintenant, tu n’es plus un bébé."
+      }
     }
   ]
 }

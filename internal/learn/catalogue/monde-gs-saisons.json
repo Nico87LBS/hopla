@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-gs-saisons",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "Les saisons",
   "description": "Les quatre saisons, le temps qu'il fait et les habits qui vont avec.",
   "matiere": "monde",
@@ -97,7 +97,12 @@
         "l'été",
         "le printemps",
         "l'automne"
-      ]
+      ],
+      "pourquoi": {
+        "l'été": "en été, il fait chaud : la neige fond.",
+        "le printemps": "au printemps, les fleurs poussent.",
+        "l'automne": "en automne, les feuilles tombent."
+      }
     },
     {
       "id": "feuilles",
@@ -110,7 +115,12 @@
         "l'été",
         "le printemps",
         "l'hiver"
-      ]
+      ],
+      "pourquoi": {
+        "l'été": "en été, les arbres sont verts.",
+        "le printemps": "au printemps, les feuilles poussent.",
+        "l'hiver": "en hiver, elles sont déjà tombées."
+      }
     },
     {
       "id": "fleurs",
@@ -123,7 +133,12 @@
         "l'été",
         "l'automne",
         "l'hiver"
-      ]
+      ],
+      "pourquoi": {
+        "l'été": "en été, il y a des fleurs, mais elles poussent au printemps.",
+        "l'automne": "en automne, les feuilles tombent.",
+        "l'hiver": "en hiver, il fait froid."
+      }
     },
     {
       "id": "meteo-il-fait-beau",

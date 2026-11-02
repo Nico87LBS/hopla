@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-gs-corps",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "nom": "Mon corps",
   "description": "Nommer les parties du corps, connaître les cinq sens et prendre soin de soi.",
   "matiere": "monde",
@@ -172,7 +172,12 @@
         "le nez",
         "les yeux",
         "la bouche"
-      ]
+      ],
+      "pourquoi": {
+        "le nez": "le nez sent les odeurs.",
+        "les yeux": "les yeux voient.",
+        "la bouche": "la bouche goûte."
+      }
     },
     {
       "id": "sens-2",
@@ -184,7 +189,12 @@
         "les oreilles",
         "les yeux",
         "la bouche"
-      ]
+      ],
+      "pourquoi": {
+        "les oreilles": "les oreilles entendent.",
+        "les yeux": "les yeux voient.",
+        "la bouche": "la bouche goûte."
+      }
     },
     {
       "id": "sens-3",
@@ -196,7 +206,12 @@
         "les oreilles",
         "le nez",
         "la bouche"
-      ]
+      ],
+      "pourquoi": {
+        "les oreilles": "les oreilles entendent.",
+        "le nez": "le nez sent les odeurs.",
+        "la bouche": "la bouche goûte."
+      }
     },
     {
       "id": "sens-4",
@@ -208,7 +223,12 @@
         "les oreilles",
         "le nez",
         "les yeux"
-      ]
+      ],
+      "pourquoi": {
+        "les oreilles": "les oreilles entendent.",
+        "le nez": "le nez sent l’odeur, mais c’est la bouche qui goûte.",
+        "les yeux": "les yeux voient."
+      }
     },
     {
       "id": "sens-5",
@@ -220,7 +240,12 @@
         "les oreilles",
         "le nez",
         "les yeux"
-      ]
+      ],
+      "pourquoi": {
+        "les oreilles": "les oreilles entendent.",
+        "le nez": "le nez sent les odeurs.",
+        "les yeux": "les yeux voient."
+      }
     },
     {
       "id": "mains",

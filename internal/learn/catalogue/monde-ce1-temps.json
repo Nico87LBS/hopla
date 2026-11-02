@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce1-temps",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "Le temps",
   "description": "Le calendrier, la frise du temps, les générations de la famille, et les objets d'autrefois et d'aujourd'hui.",
   "matiere": "monde",
@@ -54,7 +54,12 @@
         "30",
         "12"
       ],
-      "consigne": "Combien de jours dans une année ?"
+      "consigne": "Combien de jours dans une année ?",
+      "pourquoi": {
+        "100": "c’est trop peu : une année a 12 mois.",
+        "30": "30 jours, c’est un mois.",
+        "12": "12, c’est le nombre de mois."
+      }
     },
     {
       "id": "calendrier-2",
@@ -67,7 +72,12 @@
         "10",
         "12"
       ],
-      "consigne": "Combien de semaines environ dans un mois ?"
+      "consigne": "Combien de semaines environ dans un mois ?",
+      "pourquoi": {
+        "2": "2 semaines, c’est un demi-mois.",
+        "10": "10 semaines, c’est plus de deux mois.",
+        "12": "12, c’est le nombre de mois dans l’année."
+      }
     },
     {
       "id": "calendrier-3",
@@ -80,7 +90,12 @@
         "mars",
         "décembre"
       ],
-      "consigne": "Quel mois a 28 ou 29 jours ?"
+      "consigne": "Quel mois a 28 ou 29 jours ?",
+      "pourquoi": {
+        "janvier": "janvier a 31 jours.",
+        "mars": "mars a 31 jours.",
+        "décembre": "décembre a 31 jours."
+      }
     },
     {
       "id": "calendrier-4",
@@ -93,7 +108,12 @@
         "des mères",
         "de la rentrée"
       ],
-      "consigne": "Le 14 juillet, c’est la fête…"
+      "consigne": "Le 14 juillet, c’est la fête…",
+      "pourquoi": {
+        "de Noël": "Noël, c’est le 25 décembre.",
+        "des mères": "la fête des mères est au printemps, un dimanche de mai ou juin.",
+        "de la rentrée": "la rentrée est en septembre."
+      }
     },
     {
       "id": "calendrier-5",
@@ -106,7 +126,12 @@
         "jeudi",
         "dimanche"
       ],
-      "consigne": "Quel jour vient deux jours après lundi ?"
+      "consigne": "Quel jour vient deux jours après lundi ?",
+      "pourquoi": {
+        "mardi": "mardi vient juste après lundi : c’est un jour après.",
+        "jeudi": "jeudi, c’est trois jours après lundi.",
+        "dimanche": "dimanche vient juste avant lundi."
+      }
     },
     {
       "id": "calendrier-6",
@@ -119,7 +144,12 @@
         "le 1er mars",
         "le 30 janvier"
       ],
-      "consigne": "Sur le calendrier, après le 31 janvier vient…"
+      "consigne": "Sur le calendrier, après le 31 janvier vient…",
+      "pourquoi": {
+        "le 32 janvier": "janvier n’a que 31 jours.",
+        "le 1er mars": "entre janvier et mars, il y a février.",
+        "le 30 janvier": "le 30 janvier vient avant le 31."
+      }
     },
     {
       "id": "calendrier-7",
@@ -132,7 +162,12 @@
         "6",
         "12"
       ],
-      "consigne": "Combien de mois a une saison ?"
+      "consigne": "Combien de mois a une saison ?",
+      "pourquoi": {
+        "4": "4 saisons font l’année, mais une saison dure 3 mois.",
+        "6": "6 mois, c’est une demi-année.",
+        "12": "12 mois, c’est toute l’année."
+      }
     },
     {
       "id": "mois-saison",
@@ -210,7 +245,12 @@
         "mon frère",
         "mon cousin"
       ],
-      "consigne": "Le père de ma mère, c’est…"
+      "consigne": "Le père de ma mère, c’est…",
+      "pourquoi": {
+        "mon oncle": "mon oncle est le frère de mon père ou de ma mère.",
+        "mon frère": "mon frère a les mêmes parents que moi.",
+        "mon cousin": "mon cousin est l’enfant de mon oncle ou de ma tante."
+      }
     },
     {
       "id": "famille-2",
@@ -223,7 +263,12 @@
         "ma cousine",
         "ma sœur"
       ],
-      "consigne": "La sœur de mon père, c’est…"
+      "consigne": "La sœur de mon père, c’est…",
+      "pourquoi": {
+        "ma grand-mère": "ma grand-mère est la mère de mon père ou de ma mère.",
+        "ma cousine": "ma cousine est la fille de mon oncle ou de ma tante.",
+        "ma sœur": "ma sœur a les mêmes parents que moi."
+      }
     },
     {
       "id": "famille-3",
@@ -236,7 +281,12 @@
         "mon neveu",
         "mon père"
       ],
-      "consigne": "Le fils de mon oncle, c’est…"
+      "consigne": "Le fils de mon oncle, c’est…",
+      "pourquoi": {
+        "mon frère": "mon frère a les mêmes parents que moi.",
+        "mon neveu": "mon neveu est le fils de mon frère ou de ma sœur.",
+        "mon père": "mon père est le frère de mon oncle, pas son fils."
+      }
     },
     {
       "id": "famille-4",
@@ -249,7 +299,12 @@
         "mes cousins",
         "mes voisins"
       ],
-      "consigne": "Les parents de mes parents sont…"
+      "consigne": "Les parents de mes parents sont…",
+      "pourquoi": {
+        "mes oncles": "mes oncles sont les frères de mes parents.",
+        "mes cousins": "mes cousins sont les enfants de mes oncles et tantes.",
+        "mes voisins": "mes voisins habitent à côté : ils ne sont pas de la famille."
+      }
     },
     {
       "id": "famille-5",
@@ -262,7 +317,12 @@
         "moi",
         "mon petit frère"
       ],
-      "consigne": "Qui est né en premier ?"
+      "consigne": "Qui est né en premier ?",
+      "pourquoi": {
+        "mon père": "mon père est né après son propre père.",
+        "moi": "je suis né après mon père et mon grand-père.",
+        "mon petit frère": "mon petit frère est né après moi."
+      }
     },
     {
       "id": "autrefois-1",

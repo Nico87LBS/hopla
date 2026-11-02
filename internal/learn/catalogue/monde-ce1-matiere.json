@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce1-matiere",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "La matière",
   "description": "L'eau solide, liquide ou en vapeur, les matériaux, et les mélanges qui se dissolvent ou non.",
   "matiere": "monde",
@@ -116,7 +116,12 @@
         "50 degrés",
         "20 degrés"
       ],
-      "consigne": "L’eau gèle à…"
+      "consigne": "L’eau gèle à…",
+      "pourquoi": {
+        "100 degrés": "à 100 degrés, l’eau bout.",
+        "50 degrés": "à 50 degrés, l’eau est chaude, pas gelée.",
+        "20 degrés": "à 20 degrés, l’eau est liquide."
+      }
     },
     {
       "id": "eau-2",
@@ -129,7 +134,12 @@
         "10 degrés",
         "37 degrés"
       ],
-      "consigne": "L’eau bout à…"
+      "consigne": "L’eau bout à…",
+      "pourquoi": {
+        "0 degré": "à 0 degré, l’eau gèle.",
+        "10 degrés": "à 10 degrés, l’eau est froide.",
+        "37 degrés": "37 degrés, c’est la température du corps."
+      }
     },
     {
       "id": "eau-3",
@@ -142,7 +152,12 @@
         "solide",
         "du sable"
       ],
-      "consigne": "Quand la glace fond, elle devient…"
+      "consigne": "Quand la glace fond, elle devient…",
+      "pourquoi": {
+        "gaz": "la vapeur vient quand l’eau bout.",
+        "solide": "la glace est déjà solide : en fondant, elle devient liquide.",
+        "du sable": "l’eau ne devient jamais du sable."
+      }
     },
     {
       "id": "eau-4",
@@ -155,7 +170,12 @@
         "du sel",
         "de la neige"
       ],
-      "consigne": "Quand l’eau bout, elle devient…"
+      "consigne": "Quand l’eau bout, elle devient…",
+      "pourquoi": {
+        "de la glace": "la glace vient quand l’eau gèle.",
+        "du sel": "le sel ne se fabrique pas en chauffant l’eau.",
+        "de la neige": "la neige vient du froid, pas de la chaleur."
+      }
     },
     {
       "id": "eau-5",
@@ -168,7 +188,12 @@
         "devient du sable",
         "rentre dans le tissu"
       ],
-      "consigne": "Le linge sèche au soleil car l’eau…"
+      "consigne": "Le linge sèche au soleil car l’eau…",
+      "pourquoi": {
+        "gèle": "il fait chaud au soleil : l’eau ne gèle pas.",
+        "devient du sable": "l’eau ne devient jamais du sable.",
+        "rentre dans le tissu": "elle s’en va dans l’air : c’est pour ça que le linge sèche."
+      }
     },
     {
       "id": "eau-6",
@@ -181,7 +206,12 @@
         "de la poussière",
         "du lait"
       ],
-      "consigne": "La buée sur la vitre froide, c’est…"
+      "consigne": "La buée sur la vitre froide, c’est…",
+      "pourquoi": {
+        "de la neige": "la neige se forme dans les nuages, pas sur la vitre.",
+        "de la poussière": "la buée disparaît quand on l’essuie : c’est de l’eau.",
+        "du lait": "aucun lait ne sort de l’air."
+      }
     },
     {
       "id": "materiaux-1",
@@ -321,7 +351,12 @@
         "le métal",
         "le carton"
       ],
-      "consigne": "Quel matériau est transparent ?"
+      "consigne": "Quel matériau est transparent ?",
+      "pourquoi": {
+        "le bois": "le bois ne laisse pas passer la lumière.",
+        "le métal": "le métal est opaque : on ne voit pas à travers.",
+        "le carton": "le carton est opaque."
+      }
     },
     {
       "id": "materiau-2",
@@ -334,7 +369,12 @@
         "le plastique",
         "le tissu"
       ],
-      "consigne": "Quel matériau rouille ?"
+      "consigne": "Quel matériau rouille ?",
+      "pourquoi": {
+        "le verre": "le verre ne rouille pas.",
+        "le plastique": "le plastique ne rouille pas.",
+        "le tissu": "le tissu peut s’abîmer, mais il ne rouille pas."
+      }
     },
     {
       "id": "materiau-3",
@@ -347,7 +387,12 @@
         "le métal",
         "le plastique"
       ],
-      "consigne": "Quel matériau vient des arbres ?"
+      "consigne": "Quel matériau vient des arbres ?",
+      "pourquoi": {
+        "le verre": "le verre se fait avec du sable.",
+        "le métal": "le métal vient des roches de la terre.",
+        "le plastique": "le plastique se fabrique avec du pétrole."
+      }
     },
     {
       "id": "materiau-4",
@@ -360,7 +405,12 @@
         "le tissu",
         "le plastique fin"
       ],
-      "consigne": "Pour une casserole, on choisit…"
+      "consigne": "Pour une casserole, on choisit…",
+      "pourquoi": {
+        "le papier": "le papier brûlerait sur le feu.",
+        "le tissu": "le tissu brûlerait.",
+        "le plastique fin": "le plastique fin fondrait."
+      }
     },
     {
       "id": "melanges",
@@ -420,7 +470,12 @@
         "flotte",
         "devient du sucre"
       ],
-      "consigne": "On mélange de l’eau et du sable, puis on attend. Le sable…"
+      "consigne": "On mélange de l’eau et du sable, puis on attend. Le sable…",
+      "pourquoi": {
+        "disparaît": "il est toujours là : on le voit au fond.",
+        "flotte": "le sable est plus lourd que l’eau : il ne flotte pas.",
+        "devient du sucre": "le sable ne change pas de matière."
+      }
     },
     {
       "id": "melange-2",
@@ -433,7 +488,12 @@
         "disparaît",
         "devient de l’eau"
       ],
-      "consigne": "On verse de l’huile dans l’eau. L’huile…"
+      "consigne": "On verse de l’huile dans l’eau. L’huile…",
+      "pourquoi": {
+        "coule au fond": "l’huile est plus légère que l’eau.",
+        "disparaît": "on la voit en couche au-dessus.",
+        "devient de l’eau": "l’huile et l’eau ne se mélangent pas."
+      }
     },
     {
       "id": "melange-3",
@@ -446,7 +506,12 @@
         "secouer très fort",
         "chauffer le verre"
       ],
-      "consigne": "Pour séparer l’eau et le sable, on peut…"
+      "consigne": "Pour séparer l’eau et le sable, on peut…",
+      "pourquoi": {
+        "ajouter du sel": "le sel se mélange à l’eau, mais le sable reste.",
+        "secouer très fort": "en secouant, on mélange encore plus.",
+        "chauffer le verre": "chauffer n’enlève pas le sable de l’eau."
+      }
     },
     {
       "id": "melange-4",
@@ -459,7 +524,12 @@
         "il y a des bulles",
         "on ne peut pas"
       ],
-      "consigne": "Le sucre dans l’eau a disparu. Comment le savoir encore là ?"
+      "consigne": "Le sucre dans l’eau a disparu. Comment le savoir encore là ?",
+      "pourquoi": {
+        "l’eau est rouge": "le sucre ne change pas la couleur de l’eau.",
+        "il y a des bulles": "le sucre ne fait pas de bulles.",
+        "on ne peut pas": "on peut le goûter : l’eau est sucrée."
+      }
     }
   ]
 }

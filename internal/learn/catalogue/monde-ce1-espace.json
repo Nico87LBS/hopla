@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce1-espace",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "L’espace",
   "description": "Le plan et la carte, les paysages, la France et les continents sur la carte du monde, et les points cardinaux.",
   "matiere": "monde",
@@ -54,7 +54,12 @@
         "de dessous",
         "de loin"
       ],
-      "consigne": "Un plan, c’est un dessin vu…"
+      "consigne": "Un plan, c’est un dessin vu…",
+      "pourquoi": {
+        "de côté": "de côté, c’est une photo ou un dessin de face.",
+        "de dessous": "on ne regarde jamais par en dessous.",
+        "de loin": "un plan montre les choses vues d’en haut, d’assez près."
+      }
     },
     {
       "id": "plan-2",
@@ -67,7 +72,12 @@
         "décorer",
         "écrire son nom"
       ],
-      "consigne": "Sur une carte, la légende sert à…"
+      "consigne": "Sur une carte, la légende sert à…",
+      "pourquoi": {
+        "raconter une histoire": "une carte n’est pas une histoire.",
+        "décorer": "elle ne décore pas : elle explique.",
+        "écrire son nom": "on n’y écrit pas son nom."
+      }
     },
     {
       "id": "plan-3",
@@ -80,7 +90,12 @@
         "les forêts",
         "les villes"
       ],
-      "consigne": "Sur une carte, le bleu représente souvent…"
+      "consigne": "Sur une carte, le bleu représente souvent…",
+      "pourquoi": {
+        "les routes": "les routes sont souvent en rouge, jaune ou blanc.",
+        "les forêts": "les forêts sont en vert.",
+        "les villes": "les villes sont souvent en gris ou en rose."
+      }
     },
     {
       "id": "plan-4",
@@ -93,7 +108,12 @@
         "les routes",
         "la neige"
       ],
-      "consigne": "Sur une carte, le vert représente souvent…"
+      "consigne": "Sur une carte, le vert représente souvent…",
+      "pourquoi": {
+        "la mer": "la mer est en bleu.",
+        "les routes": "les routes sont en rouge, jaune ou blanc.",
+        "la neige": "la neige est en blanc."
+      }
     },
     {
       "id": "plan-5",
@@ -106,7 +126,12 @@
         "une horloge",
         "un thermomètre"
       ],
-      "consigne": "Pour aller dans une ville inconnue, on utilise…"
+      "consigne": "Pour aller dans une ville inconnue, on utilise…",
+      "pourquoi": {
+        "un calendrier": "un calendrier montre les jours, pas les rues.",
+        "une horloge": "une horloge donne l’heure, pas le chemin.",
+        "un thermomètre": "un thermomètre mesure la température."
+      }
     },
     {
       "id": "paysages",
@@ -286,7 +311,12 @@
         "l’Asie",
         "l’Amérique"
       ],
-      "consigne": "Sur quel continent est la France ?"
+      "consigne": "Sur quel continent est la France ?",
+      "pourquoi": {
+        "l’Afrique": "l’Afrique est au sud de la Méditerranée.",
+        "l’Asie": "l’Asie est plus à l’est, avec la Chine et l’Inde.",
+        "l’Amérique": "l’Amérique est de l’autre côté de l’océan Atlantique."
+      }
     },
     {
       "id": "terre-2",
@@ -299,7 +329,12 @@
         "Marseille",
         "Lille"
       ],
-      "consigne": "La capitale de la France est…"
+      "consigne": "La capitale de la France est…",
+      "pourquoi": {
+        "Lyon": "Lyon est une grande ville, mais pas la capitale.",
+        "Marseille": "Marseille est une grande ville au bord de la mer, pas la capitale.",
+        "Lille": "Lille est une grande ville du nord, pas la capitale."
+      }
     },
     {
       "id": "terre-3",
@@ -312,7 +347,12 @@
         "5",
         "12"
       ],
-      "consigne": "Combien y a-t-il de continents ?"
+      "consigne": "Combien y a-t-il de continents ?",
+      "pourquoi": {
+        "3": "il y en a plus : l’Europe, l’Afrique, l’Asie, les Amériques…",
+        "5": "on en compte 7 : les deux Amériques et l’Antarctique s’ajoutent.",
+        "12": "c’est trop : il y en a 7."
+      }
     },
     {
       "id": "terre-4",
@@ -325,7 +365,12 @@
         "de villes",
         "de sable"
       ],
-      "consigne": "La Terre est surtout couverte…"
+      "consigne": "La Terre est surtout couverte…",
+      "pourquoi": {
+        "de forêts": "les forêts couvrent une petite partie des terres.",
+        "de villes": "les villes sont toutes petites vues de loin.",
+        "de sable": "les déserts de sable ne couvrent qu’une partie des terres."
+      }
     },
     {
       "id": "cardinaux-1",
@@ -338,7 +383,12 @@
         "au nord",
         "au sud"
       ],
-      "consigne": "Le soleil se lève à…"
+      "consigne": "Le soleil se lève à…",
+      "pourquoi": {
+        "l’ouest": "à l’ouest, le soleil se couche.",
+        "au nord": "le soleil ne se lève jamais au nord.",
+        "au sud": "à midi, il est vers le sud, mais il se lève à l’est."
+      }
     },
     {
       "id": "cardinaux-2",
@@ -351,7 +401,12 @@
         "au nord",
         "au sud"
       ],
-      "consigne": "Le soleil se couche à…"
+      "consigne": "Le soleil se couche à…",
+      "pourquoi": {
+        "l’est": "à l’est, le soleil se lève.",
+        "au nord": "le soleil ne se couche jamais au nord.",
+        "au sud": "à midi il est vers le sud, mais il se couche à l’ouest."
+      }
     },
     {
       "id": "cardinaux-3",
@@ -364,7 +419,12 @@
         "à gauche",
         "à droite"
       ],
-      "consigne": "Sur une carte, le nord est souvent…"
+      "consigne": "Sur une carte, le nord est souvent…",
+      "pourquoi": {
+        "en bas": "en bas, c’est le sud.",
+        "à gauche": "à gauche, c’est l’ouest.",
+        "à droite": "à droite, c’est l’est."
+      }
     },
     {
       "id": "cardinaux-4",
@@ -377,7 +437,12 @@
         "la règle",
         "le thermomètre"
       ],
-      "consigne": "Quel objet indique le nord ?"
+      "consigne": "Quel objet indique le nord ?",
+      "pourquoi": {
+        "la montre": "la montre donne l’heure.",
+        "la règle": "la règle sert à mesurer.",
+        "le thermomètre": "le thermomètre mesure la température."
+      }
     },
     {
       "id": "cardinaux-5",
@@ -390,7 +455,12 @@
         "été, hiver, printemps, automne",
         "matin, midi, soir, nuit"
       ],
-      "consigne": "Les quatre points cardinaux sont…"
+      "consigne": "Les quatre points cardinaux sont…",
+      "pourquoi": {
+        "haut, bas, gauche, droite": "ce sont des directions sur une feuille, pas des points cardinaux.",
+        "été, hiver, printemps, automne": "ce sont les saisons.",
+        "matin, midi, soir, nuit": "ce sont les moments de la journée."
+      }
     },
     {
       "id": "cardinaux-ordre",

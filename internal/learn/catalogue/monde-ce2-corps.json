@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce2-corps",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "Mon corps",
   "description": "Le squelette, les muscles et les articulations, bien manger, les dents, et les gestes pour rester en bonne santé.",
   "matiere": "monde",
@@ -124,7 +124,12 @@
         "environ 2 000"
       ],
       "consigne": "Combien d’os a le squelette d’un adulte ?",
-      "explication": "Il en a 206 exactement."
+      "explication": "Il en a 206 exactement.",
+      "pourquoi": {
+        "environ 20": "c’est bien trop peu : il y en a 206.",
+        "environ 50": "c’est trop peu : il y en a plus de 200.",
+        "environ 2 000": "c’est dix fois trop : il y en a environ 200."
+      }
     },
     {
       "id": "protege-cerveau",
@@ -137,7 +142,12 @@
         "le bassin",
         "la colonne vertébrale"
       ],
-      "consigne": "Quel os protège le cerveau ?"
+      "consigne": "Quel os protège le cerveau ?",
+      "pourquoi": {
+        "les côtes": "les côtes protègent le cœur et les poumons.",
+        "le bassin": "le bassin tient le bas du corps.",
+        "la colonne vertébrale": "la colonne protège la moelle, dans le dos."
+      }
     },
     {
       "id": "protege-coeur",
@@ -150,7 +160,12 @@
         "les yeux",
         "les pieds"
       ],
-      "consigne": "Que protègent les côtes ?"
+      "consigne": "Que protègent les côtes ?",
+      "pourquoi": {
+        "le cerveau": "c’est le crâne qui protège le cerveau.",
+        "les yeux": "les yeux sont protégés par les os du visage.",
+        "les pieds": "les côtes sont dans la poitrine, loin des pieds."
+      }
     },
     {
       "id": "vertebres",
@@ -163,7 +178,12 @@
         "les phalanges",
         "les dents"
       ],
-      "consigne": "La colonne vertébrale est faite de petits os appelés…"
+      "consigne": "La colonne vertébrale est faite de petits os appelés…",
+      "pourquoi": {
+        "les côtes": "les côtes entourent la poitrine.",
+        "les phalanges": "les phalanges sont les os des doigts.",
+        "les dents": "les dents sont dans la bouche."
+      }
     },
     {
       "id": "femur",
@@ -176,7 +196,12 @@
         "la côte",
         "la vertèbre"
       ],
-      "consigne": "Le plus long os du corps est dans la cuisse. C’est…"
+      "consigne": "Le plus long os du corps est dans la cuisse. C’est…",
+      "pourquoi": {
+        "le crâne": "le crâne est dans la tête.",
+        "la côte": "les côtes sont dans la poitrine.",
+        "la vertèbre": "les vertèbres sont dans le dos."
+      }
     },
     {
       "id": "role-squelette",
@@ -189,7 +214,12 @@
         "à respirer",
         "à voir"
       ],
-      "consigne": "À quoi sert le squelette ?"
+      "consigne": "À quoi sert le squelette ?",
+      "pourquoi": {
+        "à digérer": "ce sont l’estomac et l’intestin qui digèrent.",
+        "à respirer": "ce sont les poumons qui respirent.",
+        "à voir": "ce sont les yeux qui voient."
+      }
     },
     {
       "id": "articulations",
@@ -235,7 +265,12 @@
         "une vertèbre",
         "un organe"
       ],
-      "consigne": "Comment appelle-t-on l’endroit où deux os se rejoignent et peuvent bouger ?"
+      "consigne": "Comment appelle-t-on l’endroit où deux os se rejoignent et peuvent bouger ?",
+      "pourquoi": {
+        "un muscle": "un muscle tire sur les os, ce n’est pas leur jonction.",
+        "une vertèbre": "une vertèbre est un os du dos.",
+        "un organe": "un organe, comme le cœur, a un travail à faire dans le corps."
+      }
     },
     {
       "id": "muscle-role",
@@ -248,7 +283,12 @@
         "le sang",
         "les ongles"
       ],
-      "consigne": "Qu’est-ce qui tire sur les os pour faire bouger le corps ?"
+      "consigne": "Qu’est-ce qui tire sur les os pour faire bouger le corps ?",
+      "pourquoi": {
+        "la peau": "la peau recouvre le corps.",
+        "le sang": "le sang transporte l’oxygène.",
+        "les ongles": "les ongles protègent le bout des doigts."
+      }
     },
     {
       "id": "contracte",
@@ -261,7 +301,12 @@
         "disparaît",
         "ne bouge pas"
       ],
-      "consigne": "Quand on plie le bras, le muscle du dessus (le biceps)…"
+      "consigne": "Quand on plie le bras, le muscle du dessus (le biceps)…",
+      "pourquoi": {
+        "s’allonge et devient mou": "c’est le muscle de l’autre côté qui s’allonge.",
+        "disparaît": "un muscle ne disparaît pas : il se raccourcit.",
+        "ne bouge pas": "le muscle travaille pour plier le bras."
+      }
     },
     {
       "id": "coeur-muscle",
@@ -274,7 +319,12 @@
         "il digère les aliments",
         "il fait penser"
       ],
-      "consigne": "Le cœur est un muscle. Que fait-il ?"
+      "consigne": "Le cœur est un muscle. Que fait-il ?",
+      "pourquoi": {
+        "il sert à respirer": "ce sont les poumons qui respirent.",
+        "il digère les aliments": "ce sont l’estomac et l’intestin qui digèrent.",
+        "il fait penser": "c’est le cerveau qui pense."
+      }
     },
     {
       "id": "poumons",
@@ -287,7 +337,12 @@
         "à marcher",
         "à entendre"
       ],
-      "consigne": "À quoi servent les poumons ?"
+      "consigne": "À quoi servent les poumons ?",
+      "pourquoi": {
+        "à digérer": "ce sont l’estomac et l’intestin qui digèrent.",
+        "à marcher": "ce sont les muscles et les os qui font marcher.",
+        "à entendre": "ce sont les oreilles qui entendent."
+      }
     },
     {
       "id": "sport-coeur",
@@ -300,7 +355,12 @@
         "pareil",
         "il s’arrête"
       ],
-      "consigne": "Après une course, le cœur bat…"
+      "consigne": "Après une course, le cœur bat…",
+      "pourquoi": {
+        "plus lentement": "l’effort demande plus de sang aux muscles.",
+        "pareil": "il change : il accélère pendant l’effort.",
+        "il s’arrête": "il ne s’arrête jamais, il bat plus vite."
+      }
     },
     {
       "id": "vf-muscles-genou",
@@ -311,7 +371,10 @@
       "pieges": [
         "Faux"
       ],
-      "consigne": "Vrai ou faux ?"
+      "consigne": "Vrai ou faux ?",
+      "pourquoi": {
+        "Faux": "il relie le haut et le bas de la jambe, et plie."
+      }
     },
     {
       "id": "vf-muscles-os",
@@ -323,7 +386,10 @@
         "Vrai"
       ],
       "consigne": "Vrai ou faux ?",
-      "explication": "Ce sont les muscles qui tirent sur les os."
+      "explication": "Ce sont les muscles qui tirent sur les os.",
+      "pourquoi": {
+        "Vrai": "ce sont les muscles qui tirent sur les os."
+      }
     },
     {
       "id": "familles-1",
@@ -471,7 +537,12 @@
         "2",
         "10"
       ],
-      "consigne": "Combien de fruits et légumes faut-il manger par jour, au moins ?"
+      "consigne": "Combien de fruits et légumes faut-il manger par jour, au moins ?",
+      "pourquoi": {
+        "1": "c’est trop peu : il en faut au moins 5.",
+        "2": "c’est encore trop peu : au moins 5.",
+        "10": "10, c’est bien, mais il en faut au moins 5."
+      }
     },
     {
       "id": "boisson",
@@ -485,7 +556,12 @@
         "le sirop"
       ],
       "consigne": "Quelle est la seule boisson indispensable ?",
-      "image": "bottle"
+      "image": "bottle",
+      "pourquoi": {
+        "le soda": "le soda est plein de sucre.",
+        "le jus de fruit": "le jus de fruit est sucré : on peut s’en passer.",
+        "le sirop": "le sirop est sucré : on peut s’en passer."
+      }
     },
     {
       "id": "sucre-rarement",
@@ -498,7 +574,12 @@
         "tous les matins",
         "beaucoup"
       ],
-      "consigne": "Les bonbons et les sodas, il faut en manger…"
+      "consigne": "Les bonbons et les sodas, il faut en manger…",
+      "pourquoi": {
+        "à chaque repas": "à chaque repas, c’est trop : le sucre abîme les dents.",
+        "tous les matins": "tous les matins, c’est trop.",
+        "beaucoup": "beaucoup, c’est mauvais pour les dents et le corps."
+      }
     },
     {
       "id": "energie",
@@ -511,7 +592,12 @@
         "des vitamines",
         "rien du tout"
       ],
-      "consigne": "Les féculents (pain, pâtes, riz) donnent surtout…"
+      "consigne": "Les féculents (pain, pâtes, riz) donnent surtout…",
+      "pourquoi": {
+        "du calcium pour les os": "le calcium vient des produits laitiers.",
+        "des vitamines": "les vitamines viennent surtout des fruits et des légumes.",
+        "rien du tout": "ils sont très utiles : ils donnent de l’énergie."
+      }
     },
     {
       "id": "calcium",
@@ -524,7 +610,12 @@
         "courir vite",
         "dormir"
       ],
-      "consigne": "Les produits laitiers donnent du calcium. Il sert à…"
+      "consigne": "Les produits laitiers donnent du calcium. Il sert à…",
+      "pourquoi": {
+        "voir la nuit": "voir la nuit ne dépend pas du calcium.",
+        "courir vite": "courir vite demande surtout des muscles et de l’énergie.",
+        "dormir": "dormir ne dépend pas du calcium."
+      }
     },
     {
       "id": "equilibre",
@@ -537,7 +628,12 @@
         "seulement un dessert",
         "beaucoup de frites"
       ],
-      "consigne": "Un repas équilibré, c’est…"
+      "consigne": "Un repas équilibré, c’est…",
+      "pourquoi": {
+        "seulement des pâtes": "il faut aussi des légumes, des fruits et des laitages.",
+        "seulement un dessert": "un dessert seul ne nourrit pas assez.",
+        "beaucoup de frites": "trop de frites, c’est trop gras."
+      }
     },
     {
       "id": "petit-dej",
@@ -550,7 +646,12 @@
         "seulement un gâteau",
         "rien"
       ],
-      "consigne": "Quel petit-déjeuner est le plus équilibré ?"
+      "consigne": "Quel petit-déjeuner est le plus équilibré ?",
+      "pourquoi": {
+        "un soda et des bonbons": "c’est plein de sucre et ne nourrit pas pour la matinée.",
+        "seulement un gâteau": "un gâteau seul ne suffit pas.",
+        "rien": "sans petit-déjeuner, on a faim et on est fatigué."
+      }
     },
     {
       "id": "dents",
@@ -585,7 +686,12 @@
         "100"
       ],
       "consigne": "Combien un enfant a-t-il de dents de lait ?",
-      "explication": "Elles tombent et laissent la place aux dents définitives : un adulte en a 32."
+      "explication": "Elles tombent et laissent la place aux dents définitives : un adulte en a 32.",
+      "pourquoi": {
+        "10": "c’est trop peu : un enfant en a 20.",
+        "32": "32, ce sont les dents de l’adulte.",
+        "100": "c’est bien trop pour une bouche."
+      }
     },
     {
       "id": "dents-adulte",
@@ -598,7 +704,12 @@
         "12",
         "50"
       ],
-      "consigne": "Combien un adulte a-t-il de dents ?"
+      "consigne": "Combien un adulte a-t-il de dents ?",
+      "pourquoi": {
+        "20": "20, ce sont les dents de lait.",
+        "12": "c’est trop peu : un adulte en a 32.",
+        "50": "c’est trop : il en a 32."
+      }
     },
     {
       "id": "brosser",
@@ -612,7 +723,12 @@
         "10 fois"
       ],
       "consigne": "Combien de fois par jour faut-il se brosser les dents ?",
-      "image": "toothbrush"
+      "image": "toothbrush",
+      "pourquoi": {
+        "1 fois par semaine": "une fois par semaine, les caries arrivent.",
+        "jamais": "sans brossage, les dents s’abîment.",
+        "10 fois": "c’est trop : matin et soir suffisent."
+      }
     },
     {
       "id": "brosser-temps",
@@ -625,7 +741,12 @@
         "20 minutes",
         "1 heure"
       ],
-      "consigne": "Combien de temps dure un bon brossage ?"
+      "consigne": "Combien de temps dure un bon brossage ?",
+      "pourquoi": {
+        "5 secondes": "c’est bien trop court pour tout nettoyer.",
+        "20 minutes": "c’est trop long : 2 minutes suffisent.",
+        "1 heure": "c’est bien trop long."
+      }
     },
     {
       "id": "carie",
@@ -638,7 +759,12 @@
         "des poils",
         "de la fièvre"
       ],
-      "consigne": "Trop de sucre et pas de brossage, cela fait…"
+      "consigne": "Trop de sucre et pas de brossage, cela fait…",
+      "pourquoi": {
+        "des muscles": "les muscles viennent du sport.",
+        "des poils": "le sucre ne fait pas pousser de poils.",
+        "de la fièvre": "la fièvre vient d’une maladie."
+      }
     },
     {
       "id": "dentiste",
@@ -651,7 +777,12 @@
         "le vétérinaire",
         "le pilote"
       ],
-      "consigne": "Qui soigne les dents ?"
+      "consigne": "Qui soigne les dents ?",
+      "pourquoi": {
+        "le boulanger": "le boulanger fait le pain.",
+        "le vétérinaire": "le vétérinaire soigne les animaux.",
+        "le pilote": "le pilote conduit l’avion."
+      }
     },
     {
       "id": "molaires-ou",
@@ -664,7 +795,12 @@
         "sur la langue",
         "sous le nez"
       ],
-      "consigne": "Où sont les molaires ?"
+      "consigne": "Où sont les molaires ?",
+      "pourquoi": {
+        "devant": "devant, ce sont les incisives.",
+        "sur la langue": "il n’y a pas de dents sur la langue.",
+        "sous le nez": "les dents sont dans la bouche, pas sous le nez."
+      }
     },
     {
       "id": "sommeil",
@@ -678,7 +814,12 @@
         "environ 20 heures"
       ],
       "consigne": "Combien d’heures un enfant de 8 ans doit-il dormir par nuit ?",
-      "image": "bed"
+      "image": "bed",
+      "pourquoi": {
+        "environ 3 heures": "c’est bien trop peu pour un enfant.",
+        "environ 6 heures": "c’est encore trop peu : il faut environ 10 heures.",
+        "environ 20 heures": "c’est trop : il ne resterait que 4 heures pour la journée."
+      }
     },
     {
       "id": "mains",
@@ -692,7 +833,12 @@
         "seulement l’été"
       ],
       "consigne": "Quand faut-il se laver les mains ?",
-      "image": "sink"
+      "image": "sink",
+      "pourquoi": {
+        "seulement le dimanche": "les microbes sont là tous les jours.",
+        "jamais": "sans lavage, les microbes passent dans la bouche.",
+        "seulement l’été": "on se lave les mains toute l’année."
+      }
     },
     {
       "id": "microbes",
@@ -705,7 +851,12 @@
         "les muscles",
         "les ongles"
       ],
-      "consigne": "Le savon enlève de nos mains…"
+      "consigne": "Le savon enlève de nos mains…",
+      "pourquoi": {
+        "les os": "les os sont à l’intérieur du corps.",
+        "les muscles": "les muscles sont sous la peau.",
+        "les ongles": "le savon ne fait pas tomber les ongles."
+      }
     },
     {
       "id": "ecrans",
@@ -718,7 +869,12 @@
         "regarder un film effrayant",
         "boire un soda"
       ],
-      "consigne": "Avant de dormir, il vaut mieux…"
+      "consigne": "Avant de dormir, il vaut mieux…",
+      "pourquoi": {
+        "jouer à la console": "les écrans empêchent de bien s’endormir.",
+        "regarder un film effrayant": "un film effrayant empêche de dormir.",
+        "boire un soda": "le soda est sucré et excitant."
+      }
     },
     {
       "id": "bouger",
@@ -731,7 +887,12 @@
         "à moins bien dormir",
         "à rien"
       ],
-      "consigne": "Bouger et faire du sport chaque jour aide…"
+      "consigne": "Bouger et faire du sport chaque jour aide…",
+      "pourquoi": {
+        "à avoir des caries": "ce sont les sucreries qui donnent des caries.",
+        "à moins bien dormir": "bouger aide à mieux dormir.",
+        "à rien": "bouger est très utile pour le corps."
+      }
     },
     {
       "id": "vf-sante-fatigue",
@@ -742,7 +903,10 @@
       "pieges": [
         "Faux"
       ],
-      "consigne": "Vrai ou faux ?"
+      "consigne": "Vrai ou faux ?",
+      "pourquoi": {
+        "Faux": "le sommeil sert à reposer le corps et à retenir ce qu’on a appris."
+      }
     },
     {
       "id": "vf-sante-eau",
@@ -753,7 +917,10 @@
       "pieges": [
         "Faux"
       ],
-      "consigne": "Vrai ou faux ?"
+      "consigne": "Vrai ou faux ?",
+      "pourquoi": {
+        "Faux": "on transpire pendant le sport : le corps perd de l’eau."
+      }
     },
     {
       "id": "vf-sante-sucre",
@@ -764,7 +931,10 @@
       "pieges": [
         "Vrai"
       ],
-      "consigne": "Vrai ou faux ?"
+      "consigne": "Vrai ou faux ?",
+      "pourquoi": {
+        "Vrai": "le sucre à chaque repas abîme les dents et la santé."
+      }
     }
   ]
 }
