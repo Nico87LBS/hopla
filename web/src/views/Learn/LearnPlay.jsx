@@ -36,6 +36,7 @@ import {
   stars,
   totalLeft,
 } from '../../utils/learn/engine'
+import { loadServerVoices } from '../../utils/learn/serverVoice'
 import { canSpeak, speak, stopSpeaking } from '../../utils/learn/speech'
 import { applyResult, playLocally, queueGame } from '../../utils/learn/store'
 import { generateUUID } from '../../utils/UUID'
@@ -755,6 +756,9 @@ const LearnPlay = ({ playMode = false }) => {
   const [reporting, setReporting] = useState(false)
   // The questions of the game just played: playing again asks others first.
   const lastKeys = useRef(new Set())
+  useEffect(() => {
+    loadServerVoices()
+  }, [])
 
   const start = useCallback(
     recent => {

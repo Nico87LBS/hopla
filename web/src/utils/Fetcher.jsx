@@ -1193,6 +1193,23 @@ const ExportLearnReports = async () =>
     }),
   )
 
+const GetLearnVoices = async () =>
+  learnAnswer(
+    inPlayPages()
+      ? await playFetch('/voices', { method: 'GET' })
+      : await Fetch('/learn/voices', { method: 'GET', headers: HEADERS() }),
+  )
+
+// GetLearnSpeech gives a sentence said by a voice of the server, as a sound.
+const GetLearnSpeech = async (text, voice) => {
+  const query = `?text=${encodeURIComponent(text)}&voice=${encodeURIComponent(voice)}`
+  const resp = inPlayPages()
+    ? await playFetch(`/speak${query}`, { method: 'GET' })
+    : await Fetch(`/learn/speak${query}`, { method: 'GET', headers: HEADERS() })
+  if (!resp?.ok) throw new Error(`Error ${resp?.status}`)
+  return resp.blob()
+}
+
 const GetLearnStats = async key =>
   learnAnswer(
     await Fetch(`/learn/stats/${encodeURIComponent(key)}`, {
@@ -1293,7 +1310,9 @@ export {
   GetLearnDetail,
   GetLearnModules,
   GetLearnPlayer,
+  GetLearnSpeech,
   GetLearnStats,
+  GetLearnVoices,
   GetLongLiveTokens,
   GetMFAStatus,
   GetPointsPresets,

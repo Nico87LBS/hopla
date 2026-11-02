@@ -6,7 +6,7 @@ const synth = () =>
     ? window.speechSynthesis
     : null
 
-export const canSpeak = () => !!synth()
+export const canSpeak = () => !!synth() || server.voices.length > 0
 
 const tagOf = voice => (voice?.lang || '').toLowerCase().replace('_', '-')
 
@@ -77,6 +77,56 @@ export const chooseVoice = (lang, voiceURI) => {
   }
 }
 
+// The voices made by the server, when the family set one up: a choice
+// starts with SERVER, then the voice's name. The page that plays them
+// gives them with setServer, so this file needs no network.
+export const SERVER = 'serveur:'
+let server = { play: null, stop: null, voices: [] }
+
+export const setServer = next => {
+  server = { ...server, ...next }
+}
+
+// The server's voices that speak best first: those known to be clear for
+// children, then the better models (high, medium, then low).
+const PREFERRED = {
+  en: ['en_GB-cori-high', 'en_GB-alba-medium', 'en_US-lessac-medium'],
+  fr: ['fr_FR-siwis-medium', 'fr_FR-upmc-medium', 'fr_FR-tom-medium'],
+}
+const MODEL = name => (/-high$/.test(name) ? 0 : /-medium$/.test(name) ? 1 : 2)
+
+// serverVoicesFor lists the server's voices in a language, the best first.
+export const serverVoicesFor = (lang, voices = server.voices) => {
+  const preferred = PREFERRED[baseOf(lang)] || []
+  const rank = name => {
+    const i = preferred.indexOf(name)
+    return i === -1 ? preferred.length : i
+  }
+  return (voices || [])
+    .filter(v => (v.languages || []).some(l => baseOf(l) === baseOf(lang)))
+    .map((voice, i) => ({ voice, i }))
+    .sort(
+      (a, b) =>
+        rank(a.voice.name) - rank(b.voice.name) ||
+        MODEL(a.voice.name) - MODEL(b.voice.name) ||
+        a.i - b.i,
+    )
+    .map(({ voice }) => voice)
+}
+
+// serverVoiceFor tells the server's voice that says a language, or none:
+// the one chosen, or by itself the first of the language, unless a voice of
+// the device was chosen.
+export const serverVoiceFor = (lang, chosen, voices = server.voices) => {
+  const matching = serverVoicesFor(lang, voices)
+  if (chosen?.startsWith(SERVER)) {
+    const name = chosen.slice(SERVER.length)
+    return matching.find(v => v.name === name)?.name || null
+  }
+  if (chosen) return null
+  return matching[0]?.name || null
+}
+
 // pickVoice takes the voice chosen on this device, or else the most natural
 // one in the language.
 export const pickVoice = (voices, lang, chosen = '') => {
@@ -118,8 +168,47 @@ const stopWaiting = () => {
 export const speak = (text, lang, options = {}) => {
   if (Array.isArray(text)) return speakParts(text, lang, options)
   const { onDone, queue = false, voiceURI } = options
+  if (!text) return false
+  const chosen = voiceURI ?? chosenVoice(lang)
+  const fromServer = server.play && serverVoiceFor(lang, chosen)
+  if (fromServer) {
+    if (!queue) stopWaiting()
+    try {
+      synth()?.cancel()
+    } catch {
+      // Nothing was being said.
+    }
+    let done = false
+    const finish = () => {
+      if (!done) {
+        done = true
+        onDone?.()
+      }
+    }
+    server.play(text, fromServer, {
+      queue,
+      onDone: finish,
+      // Offline, or the server down: the device says it.
+      fallback: () =>
+        deviceSpeak(text, lang, { onDone: finish, queue: true, voiceURI: '' }),
+    })
+    return true
+  }
+  if (!queue) server.stop?.()
+  return deviceSpeak(text, lang, {
+    onDone,
+    queue,
+    voiceURI: chosen.startsWith(SERVER) ? '' : chosen,
+  })
+}
+
+// deviceSpeak says a text with a voice of the device.
+const deviceSpeak = (text, lang, { onDone, queue = false, voiceURI = '' }) => {
   const voice = synth()
-  if (!voice || !text) return false
+  if (!voice) {
+    onDone?.()
+    return false
+  }
   try {
     if (!queue) {
       stopWaiting()
@@ -135,11 +224,7 @@ export const speak = (text, lang, options = {}) => {
         }
       }
     }
-    const chosen = pickVoice(
-      voice.getVoices(),
-      lang,
-      voiceURI ?? chosenVoice(lang),
-    )
+    const chosen = pickVoice(voice.getVoices(), lang, voiceURI)
     if (chosen) utterance.voice = chosen
     utterance.lang = chosen?.lang || lang || ''
     utterance.rate = 0.85
@@ -155,6 +240,7 @@ const speakParts = (parts, lang, { queue = false, voiceURI } = {}) => {
   if (!said.length) return false
   if (!queue) {
     stopWaiting()
+    server.stop?.()
     try {
       synth()?.cancel()
     } catch {
@@ -179,6 +265,7 @@ const speakParts = (parts, lang, { queue = false, voiceURI } = {}) => {
 
 export const stopSpeaking = () => {
   stopWaiting()
+  server.stop?.()
   try {
     synth()?.cancel()
   } catch {

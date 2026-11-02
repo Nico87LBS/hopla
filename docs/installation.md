@@ -113,6 +113,39 @@ storage:
   max_user_storage: 21474836480
 ```
 
+### Voix naturelle des jeux
+
+Par défaut, chaque appareil lit les questions d'Apprendre avec sa propre voix.
+Pour une voix plus naturelle, Hopla peut demander les phrases à un serveur
+[Piper](https://github.com/rhasspy/wyoming-piper) qui parle le protocole
+Wyoming. Chaque phrase est fabriquée une seule fois, puis gardée sur le disque.
+
+| Réglage | Rôle |
+| --- | --- |
+| `voice.piper` (`HOPLA_VOICE_PIPER`) | Adresse du serveur Piper, par exemple `tcp://piper:10200`. Vide : voix de l'appareil |
+| `voice.cache_dir` (`HOPLA_VOICE_CACHE_DIR`) | Dossier des phrases gardées. Vide : `voix/` à côté de la base |
+
+Par exemple, avec un conteneur Piper à côté de Hopla :
+
+```yaml
+services:
+  piper:
+    image: rhasspy/wyoming-piper:latest
+    container_name: piper
+    restart: unless-stopped
+    command: --voice fr_FR-siwis-medium
+    volumes:
+      - ./piper:/data
+  hopla:
+    # … comme plus haut, avec en plus :
+    environment:
+      - HOPLA_VOICE_PIPER=tcp://piper:10200
+```
+
+Piper télécharge une voix la première fois qu'on la demande. Le choix de la
+voix, langue par langue, se fait dans Gérer › Modules d'apprentissage › Voix.
+Si le serveur ne répond pas, l'appareil reprend sa propre voix.
+
 ### Variables d'environnement propres
 
 | Variable | Rôle |

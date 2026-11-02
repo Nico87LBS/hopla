@@ -10,11 +10,13 @@ import (
 
 	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
+	"github.com/nico87lbs/hopla/config"
 	auth "github.com/nico87lbs/hopla/internal/auth"
 	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	fRepo "github.com/nico87lbs/hopla/internal/family/repo"
 	"github.com/nico87lbs/hopla/internal/games"
 	"github.com/nico87lbs/hopla/internal/learn"
+	"github.com/nico87lbs/hopla/internal/learn/voice"
 	"github.com/nico87lbs/hopla/logging"
 	"gorm.io/gorm"
 )
@@ -22,10 +24,12 @@ import (
 type Handler struct {
 	db         *gorm.DB
 	familyRepo *fRepo.FamilyRepository
+	piper      *voice.Piper
 }
 
-func NewHandler(db *gorm.DB, familyRepo *fRepo.FamilyRepository) *Handler {
-	return &Handler{db: db, familyRepo: familyRepo}
+func NewHandler(cfg *config.Config, db *gorm.DB, familyRepo *fRepo.FamilyRepository) *Handler {
+	return &Handler{db: db, familyRepo: familyRepo,
+		piper: voice.New(cfg.Voice.Piper, voice.CacheDir(cfg.Voice.CacheDir))}
 }
 
 // caller is who sends a request, and whether they are a parent.
@@ -440,5 +444,44 @@ func Routes(r *gin.Engine, h *Handler, auth *jwt.GinJWTMiddleware) {
 		routes.POST("/reports", h.addReport)
 		routes.PUT("/reports/:id/resolve", h.resolveReport)
 		routes.GET("/reports/export", h.exportReports)
+		routes.GET("/voices", h.getVoices)
+		routes.GET("/speak", h.speak)
+	}
+}
+
+// getVoices lists the voices of the speech server; none when no server is
+// set or it does not answer, and the devices use their own.
+func (h *Handler) getVoices(c *gin.Context) {
+	if _, ok := h.caller(c); !ok {
+		return
+	}
+	voices, err := h.piper.Voices(c)
+	if err != nil {
+		if !errors.Is(err, voice.ErrOff) {
+			logging.FromContext(c).Warnw("The speech server does not answer", "error", err)
+		}
+		voices = []voice.Voice{}
+	}
+	c.JSON(200, gin.H{"res": voices})
+}
+
+// speak answers with a sentence said by a voice of the speech server, as a
+// WAV sound the devices keep.
+func (h *Handler) speak(c *gin.Context) {
+	if _, ok := h.caller(c); !ok {
+		return
+	}
+	sound, err := h.piper.Speak(c, c.Query("text"), c.Query("voice"))
+	switch {
+	case errors.Is(err, voice.ErrOff):
+		c.JSON(404, gin.H{"error": "No speech server"})
+	case errors.Is(err, voice.ErrInvalid):
+		c.JSON(400, gin.H{"error": "Invalid text or voice"})
+	case err != nil:
+		logging.FromContext(c).Warnw("The speech server does not answer", "error", err)
+		c.JSON(502, gin.H{"error": "The speech server does not answer"})
+	default:
+		c.Header("Cache-Control", "private, max-age=31536000, immutable")
+		c.Data(200, "audio/wav", sound)
 	}
 }

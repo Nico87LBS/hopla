@@ -81,3 +81,10 @@ realtime:
   enable_stats: true
   allowed_origins:
     - "*"
+
+# Natural voice of the games: a Piper server speaking the Wyoming protocol,
+# such as the rhasspy/wyoming-piper container. Empty: each device uses its
+# own voice.
+voice:
+  piper: ""
+  # cache_dir: /data/voix

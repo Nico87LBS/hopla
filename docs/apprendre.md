@@ -122,6 +122,15 @@ Dans les modules d'Apprendre à lire, l'appareil ne dit jamais plus que la
 consigne (« Lis le mot, puis touche son dessin ») : ni les mots à lire ni les
 réponses, qu'il dit une fois que l'enfant a répondu.
 
+### La voix
+
+Les questions sont dites par la voix choisie dans Gérer › Modules
+d'apprentissage › Voix, langue par langue et appareil par appareil : une
+voix de l'appareil, ou une voix naturelle fabriquée par le serveur quand un
+serveur Piper est réglé (voir [Installation](installation.md#voix-naturelle-des-jeux)).
+En automatique, la voix du serveur passe en premier. Hors ligne, ou si le
+serveur ne répond pas, l'appareil reprend sa propre voix.
+
 ### Prénom
 
 Certains modules posent des questions sur le prénom de l'enfant (« Mon
