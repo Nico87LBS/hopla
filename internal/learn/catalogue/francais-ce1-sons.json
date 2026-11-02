@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce1-sons",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Les sons et leur écriture",
   "description": "Choisir la bonne écriture d'un son : s ou ss, c ou ç, g ou ge, m devant m, b, p, é, er ou ez, o, au ou eau.",
   "matiere": "francais",
@@ -63,7 +63,10 @@
         "s"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss."
+      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss.",
+      "pourquoi": {
+        "s": "« poison » se lirait avec [z] : entre deux voyelles, il faut « ss » pour [s]."
+      }
     },
     {
       "id": "s-2",
@@ -75,7 +78,10 @@
         "s"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss."
+      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss.",
+      "pourquoi": {
+        "s": "« caise » se lirait avec [z] : entre deux voyelles, il faut « ss » pour [s]."
+      }
     },
     {
       "id": "s-3",
@@ -87,7 +93,10 @@
         "ss"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss."
+      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss.",
+      "pourquoi": {
+        "ss": "« rosse » se lirait avec [s] : on entend [z], donc un seul s."
+      }
     },
     {
       "id": "s-4",
@@ -99,7 +108,10 @@
         "ss"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss."
+      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss.",
+      "pourquoi": {
+        "ss": "« maisson » se lirait avec [s] : on entend [z], donc un seul s."
+      }
     },
     {
       "id": "s-5",
@@ -111,7 +123,10 @@
         "s"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss."
+      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss.",
+      "pourquoi": {
+        "s": "« chaseur » se lirait avec [z] : entre deux voyelles, il faut « ss » pour [s]."
+      }
     },
     {
       "id": "s-6",
@@ -123,7 +138,10 @@
         "ss"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss."
+      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss.",
+      "pourquoi": {
+        "ss": "« vasse » se lirait avec [s] : on entend [z], donc un seul s."
+      }
     },
     {
       "id": "s-7",
@@ -135,7 +153,10 @@
         "s"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss."
+      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss.",
+      "pourquoi": {
+        "s": "« brose » se lirait avec [z] : entre deux voyelles, il faut « ss » pour [s]."
+      }
     },
     {
       "id": "s-8",
@@ -147,7 +168,10 @@
         "s"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss."
+      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss.",
+      "pourquoi": {
+        "s": "« caserole » se lirait avec [z] : entre deux voyelles, il faut « ss » pour [s]."
+      }
     },
     {
       "id": "s-9",
@@ -159,7 +183,10 @@
         "s"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss."
+      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss.",
+      "pourquoi": {
+        "s": "« cousin » se lirait avec [z] : entre deux voyelles, il faut « ss » pour [s]."
+      }
     },
     {
       "id": "s-10",
@@ -171,7 +198,10 @@
         "ss"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss."
+      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss.",
+      "pourquoi": {
+        "ss": "« cerisse » se lirait avec [s] : on entend [z], donc un seul s."
+      }
     },
     {
       "id": "s-11",
@@ -183,7 +213,10 @@
         "ss"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss."
+      "explication": "Entre deux voyelles, s chante [z] ; pour entendre [s], on double : ss.",
+      "pourquoi": {
+        "ss": "« chemisse » se lirait avec [s] : on entend [z], donc un seul s."
+      }
     },
     {
       "id": "c-1",
@@ -196,7 +229,11 @@
         "k"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç."
+      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç.",
+      "pourquoi": {
+        "c": "« garcon » se lirait avec [k] : devant a, o, u, il faut ç pour [s].",
+        "k": "avec un k, on entendrait [k] : ici on entend [s]."
+      }
     },
     {
       "id": "c-2",
@@ -209,7 +246,11 @@
         "k"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç."
+      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç.",
+      "pourquoi": {
+        "c": "« lecon » se lirait avec [k] : devant a, o, u, il faut ç pour [s].",
+        "k": "avec un k, on entendrait [k] : ici on entend [s]."
+      }
     },
     {
       "id": "c-3",
@@ -222,7 +263,11 @@
         "k"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç."
+      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç.",
+      "pourquoi": {
+        "c": "« macon » se lirait avec [k] : devant a, o, u, il faut ç pour [s].",
+        "k": "avec un k, on entendrait [k] : ici on entend [s]."
+      }
     },
     {
       "id": "c-4",
@@ -235,7 +280,11 @@
         "k"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç."
+      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç.",
+      "pourquoi": {
+        "c": "« recu » se lirait avec [k] : devant a, o, u, il faut ç pour [s].",
+        "k": "avec un k, on entendrait [k] : ici on entend [s]."
+      }
     },
     {
       "id": "c-5",
@@ -248,7 +297,11 @@
         "k"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç."
+      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç.",
+      "pourquoi": {
+        "ç": "devant e, i, y, le c se dit déjà [s] : pas de cédille.",
+        "k": "avec un k, on entendrait [k] : ici on entend [s]."
+      }
     },
     {
       "id": "c-6",
@@ -261,7 +314,11 @@
         "k"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç."
+      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç.",
+      "pourquoi": {
+        "ç": "devant e, i, y, le c se dit déjà [s] : pas de cédille.",
+        "k": "avec un k, on entendrait [k] : ici on entend [s]."
+      }
     },
     {
       "id": "c-7",
@@ -274,7 +331,11 @@
         "k"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç."
+      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç.",
+      "pourquoi": {
+        "ç": "devant e, i, y, le c se dit déjà [s] : pas de cédille.",
+        "k": "avec un k, on entendrait [k] : ici on entend [s]."
+      }
     },
     {
       "id": "c-8",
@@ -287,7 +348,11 @@
         "k"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç."
+      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç.",
+      "pourquoi": {
+        "c": "« balancoire » se lirait avec [k] : devant a, o, u, il faut ç pour [s].",
+        "k": "avec un k, on entendrait [k] : ici on entend [s]."
+      }
     },
     {
       "id": "c-9",
@@ -300,7 +365,11 @@
         "k"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç."
+      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç.",
+      "pourquoi": {
+        "c": "« glacon » se lirait avec [k] : devant a, o, u, il faut ç pour [s].",
+        "k": "avec un k, on entendrait [k] : ici on entend [s]."
+      }
     },
     {
       "id": "c-10",
@@ -313,7 +382,11 @@
         "k"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç."
+      "explication": "Devant a, o, u, on met une cédille pour entendre [s] : ç.",
+      "pourquoi": {
+        "ç": "devant e, i, y, le c se dit déjà [s] : pas de cédille.",
+        "k": "avec un k, on entendrait [k] : ici on entend [s]."
+      }
     },
     {
       "id": "g-1",
@@ -326,7 +399,11 @@
         "gu"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant a, o, u, g se dit [g] ; pour entendre [j], on écrit ge."
+      "explication": "Devant a, o, u, g se dit [g] ; pour entendre [j], on écrit ge.",
+      "pourquoi": {
+        "ge": "devant e, le g se dit déjà [j] : pas besoin de e.",
+        "gu": "« gu » ferait [g] : ici on entend [j]."
+      }
     },
     {
       "id": "g-2",
@@ -339,7 +416,11 @@
         "gu"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant a, o, u, g se dit [g] ; pour entendre [j], on écrit ge."
+      "explication": "Devant a, o, u, g se dit [g] ; pour entendre [j], on écrit ge.",
+      "pourquoi": {
+        "ge": "devant i, le g se dit déjà [j] : pas besoin de e.",
+        "gu": "« gu » ferait [g] : ici on entend [j]."
+      }
     },
     {
       "id": "g-3",
@@ -352,7 +433,11 @@
         "gu"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant a, o, u, g se dit [g] ; pour entendre [j], on écrit ge."
+      "explication": "Devant a, o, u, g se dit [g] ; pour entendre [j], on écrit ge.",
+      "pourquoi": {
+        "g": "« pigon » se lirait avec [g] : devant o, il faut « ge » pour [j].",
+        "gu": "« gu » fait [g] : ici on entend [j]."
+      }
     },
     {
       "id": "g-4",
@@ -365,7 +450,11 @@
         "gu"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant a, o, u, g se dit [g] ; pour entendre [j], on écrit ge."
+      "explication": "Devant a, o, u, g se dit [g] ; pour entendre [j], on écrit ge.",
+      "pourquoi": {
+        "ge": "devant e, le g se dit déjà [j] : pas besoin de e.",
+        "gu": "« gu » ferait [g] : ici on entend [j]."
+      }
     },
     {
       "id": "g-5",
@@ -378,7 +467,11 @@
         "gu"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant a, o, u, g se dit [g] ; pour entendre [j], on écrit ge."
+      "explication": "Devant a, o, u, g se dit [g] ; pour entendre [j], on écrit ge.",
+      "pourquoi": {
+        "ge": "devant i, le g se dit déjà [j] : pas besoin de e.",
+        "gu": "« gu » ferait [g] : ici on entend [j]."
+      }
     },
     {
       "id": "g-6",
@@ -391,7 +484,11 @@
         "gu"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant a, o, u, g se dit [g] ; pour entendre [j], on écrit ge."
+      "explication": "Devant a, o, u, g se dit [g] ; pour entendre [j], on écrit ge.",
+      "pourquoi": {
+        "g": "« mangons » se lirait avec [g] : devant o, il faut « ge » pour [j].",
+        "gu": "« gu » fait [g] : ici on entend [j]."
+      }
     },
     {
       "id": "g-7",
@@ -404,7 +501,11 @@
         "gu"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant a, o, u, g se dit [g] ; pour entendre [j], on écrit ge."
+      "explication": "Devant a, o, u, g se dit [g] ; pour entendre [j], on écrit ge.",
+      "pourquoi": {
+        "ge": "« ge » ferait [j] : ici on entend [g].",
+        "gu": "devant â, le g se dit déjà [g] : pas besoin de u."
+      }
     },
     {
       "id": "g-8",
@@ -417,7 +518,11 @@
         "gu"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant a, o, u, g se dit [g] ; pour entendre [j], on écrit ge."
+      "explication": "Devant a, o, u, g se dit [g] ; pour entendre [j], on écrit ge.",
+      "pourquoi": {
+        "ge": "« ge » ferait [j] : ici on entend [g].",
+        "gu": "devant o, le g se dit déjà [g] : pas besoin de u."
+      }
     },
     {
       "id": "g-9",
@@ -430,7 +535,11 @@
         "gu"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant a, o, u, g se dit [g] ; pour entendre [j], on écrit ge."
+      "explication": "Devant a, o, u, g se dit [g] ; pour entendre [j], on écrit ge.",
+      "pourquoi": {
+        "ge": "devant i, le g se dit déjà [j] : pas besoin de e.",
+        "gu": "« gu » ferait [g] : ici on entend [j]."
+      }
     },
     {
       "id": "mbp-1",
@@ -442,7 +551,10 @@
         "n"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant m, b et p, on écrit m au lieu de n."
+      "explication": "Devant m, b et p, on écrit m au lieu de n.",
+      "pourquoi": {
+        "n": "devant p, on écrit m."
+      }
     },
     {
       "id": "mbp-2",
@@ -454,7 +566,10 @@
         "n"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant m, b et p, on écrit m au lieu de n."
+      "explication": "Devant m, b et p, on écrit m au lieu de n.",
+      "pourquoi": {
+        "n": "devant i, on écrit m."
+      }
     },
     {
       "id": "mbp-3",
@@ -466,7 +581,10 @@
         "n"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant m, b et p, on écrit m au lieu de n."
+      "explication": "Devant m, b et p, on écrit m au lieu de n.",
+      "pourquoi": {
+        "n": "devant b, on écrit m."
+      }
     },
     {
       "id": "mbp-4",
@@ -478,7 +596,10 @@
         "n"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant m, b et p, on écrit m au lieu de n."
+      "explication": "Devant m, b et p, on écrit m au lieu de n.",
+      "pourquoi": {
+        "n": "devant p, on écrit m."
+      }
     },
     {
       "id": "mbp-5",
@@ -490,7 +611,10 @@
         "n"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant m, b et p, on écrit m au lieu de n."
+      "explication": "Devant m, b et p, on écrit m au lieu de n.",
+      "pourquoi": {
+        "n": "devant b, on écrit m."
+      }
     },
     {
       "id": "mbp-6",
@@ -502,7 +626,10 @@
         "m"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant m, b et p, on écrit m au lieu de n."
+      "explication": "Devant m, b et p, on écrit m au lieu de n.",
+      "pourquoi": {
+        "m": "devant t, on écrit n : le m, c’est seulement devant m, b, p."
+      }
     },
     {
       "id": "mbp-7",
@@ -514,7 +641,10 @@
         "m"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant m, b et p, on écrit m au lieu de n."
+      "explication": "Devant m, b et p, on écrit m au lieu de n.",
+      "pourquoi": {
+        "m": "devant f, on écrit n : le m, c’est seulement devant m, b, p."
+      }
     },
     {
       "id": "mbp-8",
@@ -526,7 +656,10 @@
         "m"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant m, b et p, on écrit m au lieu de n."
+      "explication": "Devant m, b et p, on écrit m au lieu de n.",
+      "pourquoi": {
+        "m": "devant c, on écrit n : le m, c’est seulement devant m, b, p."
+      }
     },
     {
       "id": "mbp-9",
@@ -538,7 +671,10 @@
         "n"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant m, b et p, on écrit m au lieu de n."
+      "explication": "Devant m, b et p, on écrit m au lieu de n.",
+      "pourquoi": {
+        "n": "devant b, on écrit m."
+      }
     },
     {
       "id": "mbp-10",
@@ -550,7 +686,10 @@
         "n"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant m, b et p, on écrit m au lieu de n."
+      "explication": "Devant m, b et p, on écrit m au lieu de n.",
+      "pourquoi": {
+        "n": "devant b, on écrit m."
+      }
     },
     {
       "id": "mbp-11",
@@ -562,7 +701,10 @@
         "m"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant m, b et p, on écrit m au lieu de n."
+      "explication": "Devant m, b et p, on écrit m au lieu de n.",
+      "pourquoi": {
+        "m": "devant t, on écrit n : le m, c’est seulement devant m, b, p."
+      }
     },
     {
       "id": "mbp-12",
@@ -574,7 +716,10 @@
         "n"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Devant m, b et p, on écrit m au lieu de n."
+      "explication": "Devant m, b et p, on écrit m au lieu de n.",
+      "pourquoi": {
+        "n": "devant p, on écrit m."
+      }
     },
     {
       "id": "e-1",
@@ -588,7 +733,12 @@
         "ai"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er."
+      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er.",
+      "pourquoi": {
+        "é": "à la fin de ce mot, on écrit -er.",
+        "ez": "-ez, c’est pour le verbe après « vous ».",
+        "ai": "« ai » ne fait pas la fin de ce mot : on écrit -er."
+      }
     },
     {
       "id": "e-2",
@@ -602,7 +752,12 @@
         "ai"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er."
+      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er.",
+      "pourquoi": {
+        "é": "après « vous », le verbe finit par -ez.",
+        "er": "-er, c’est le verbe à l’infinitif ; après « vous », on écrit -ez.",
+        "ai": "après « vous », le verbe finit par -ez."
+      }
     },
     {
       "id": "e-3",
@@ -616,7 +771,12 @@
         "ai"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er."
+      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er.",
+      "pourquoi": {
+        "é": "le verbe à l’infinitif finit par -er.",
+        "ez": "-ez, c’est pour le verbe après « vous ».",
+        "ai": "le verbe à l’infinitif finit par -er."
+      }
     },
     {
       "id": "e-4",
@@ -630,7 +790,12 @@
         "ai"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er."
+      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er.",
+      "pourquoi": {
+        "er": "on écrit « ét ».",
+        "ez": "-ez, c’est pour le verbe après « vous ».",
+        "ai": "on écrit « ét », avec é."
+      }
     },
     {
       "id": "e-5",
@@ -644,7 +809,12 @@
         "ai"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er."
+      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er.",
+      "pourquoi": {
+        "er": "on écrit « fée ».",
+        "ez": "-ez, c’est pour le verbe après « vous ».",
+        "ai": "on écrit « fée », avec é."
+      }
     },
     {
       "id": "e-6",
@@ -658,7 +828,12 @@
         "ai"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er."
+      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er.",
+      "pourquoi": {
+        "é": "à la fin de ce mot, on écrit -er.",
+        "ez": "-ez, c’est pour le verbe après « vous ».",
+        "ai": "« ai » ne fait pas la fin de ce mot : on écrit -er."
+      }
     },
     {
       "id": "e-7",
@@ -672,7 +847,12 @@
         "ai"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er."
+      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er.",
+      "pourquoi": {
+        "é": "après « vous », le verbe finit par -ez.",
+        "er": "-er, c’est le verbe à l’infinitif ; après « vous », on écrit -ez.",
+        "ai": "après « vous », le verbe finit par -ez."
+      }
     },
     {
       "id": "e-8",
@@ -686,7 +866,12 @@
         "ai"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er."
+      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er.",
+      "pourquoi": {
+        "er": "on écrit « clé ».",
+        "ez": "-ez, c’est pour le verbe après « vous ».",
+        "ai": "on écrit « clé », avec é."
+      }
     },
     {
       "id": "e-9",
@@ -700,7 +885,12 @@
         "ai"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er."
+      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er.",
+      "pourquoi": {
+        "er": "après « j’ai », c’est le participe : « mangé », avec é.",
+        "ez": "-ez, c’est pour le verbe après « vous ».",
+        "ai": "après « j’ai », on écrit « mangé », avec é."
+      }
     },
     {
       "id": "e-10",
@@ -714,7 +904,12 @@
         "ai"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er."
+      "explication": "Après « vous », le verbe finit par -ez ; un verbe à l’infinitif finit par -er.",
+      "pourquoi": {
+        "er": "on écrit « café ».",
+        "ez": "-ez, c’est pour le verbe après « vous ».",
+        "ai": "on écrit « café », avec é."
+      }
     },
     {
       "id": "o-1",
@@ -727,7 +922,11 @@
         "au"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau."
+      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau.",
+      "pourquoi": {
+        "o": "à la fin d’un nom, [o] s’écrit souvent eau : « chapeau ».",
+        "au": "à la fin d’un nom, [o] s’écrit souvent eau : « chapeau »."
+      }
     },
     {
       "id": "o-2",
@@ -740,7 +939,11 @@
         "au"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau."
+      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau.",
+      "pourquoi": {
+        "o": "à la fin d’un nom, [o] s’écrit souvent eau : « bateau ».",
+        "au": "à la fin d’un nom, [o] s’écrit souvent eau : « bateau »."
+      }
     },
     {
       "id": "o-3",
@@ -753,7 +956,11 @@
         "eau"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau."
+      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau.",
+      "pourquoi": {
+        "o": "on écrit « chaud ».",
+        "eau": "on écrit « chaud »."
+      }
     },
     {
       "id": "o-4",
@@ -766,7 +973,11 @@
         "eau"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau."
+      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau.",
+      "pourquoi": {
+        "au": "on écrit « vélo ».",
+        "eau": "on écrit « vélo »."
+      }
     },
     {
       "id": "o-5",
@@ -779,7 +990,11 @@
         "eau"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau."
+      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau.",
+      "pourquoi": {
+        "o": "on écrit « automne ».",
+        "eau": "on écrit « automne »."
+      }
     },
     {
       "id": "o-6",
@@ -792,7 +1007,11 @@
         "au"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau."
+      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau.",
+      "pourquoi": {
+        "o": "à la fin d’un nom, [o] s’écrit souvent eau : « manteau ».",
+        "au": "à la fin d’un nom, [o] s’écrit souvent eau : « manteau »."
+      }
     },
     {
       "id": "o-7",
@@ -805,7 +1024,11 @@
         "eau"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau."
+      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau.",
+      "pourquoi": {
+        "au": "on écrit « robot ».",
+        "eau": "on écrit « robot »."
+      }
     },
     {
       "id": "o-8",
@@ -818,7 +1041,11 @@
         "au"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau."
+      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau.",
+      "pourquoi": {
+        "o": "à la fin d’un nom, [o] s’écrit souvent eau : « rideau ».",
+        "au": "à la fin d’un nom, [o] s’écrit souvent eau : « rideau »."
+      }
     },
     {
       "id": "o-9",
@@ -831,7 +1058,11 @@
         "eau"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau."
+      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau.",
+      "pourquoi": {
+        "au": "on écrit « chocolat ».",
+        "eau": "on écrit « chocolat »."
+      }
     },
     {
       "id": "o-10",
@@ -844,7 +1075,11 @@
         "eau"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau."
+      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau.",
+      "pourquoi": {
+        "o": "on écrit « jaune ».",
+        "eau": "on écrit « jaune »."
+      }
     },
     {
       "id": "o-11",
@@ -857,7 +1092,11 @@
         "au"
       ],
       "consigne": "Quelle écriture manque ?",
-      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau."
+      "explication": "À la fin d’un nom, [o] s’écrit souvent eau : bateau, chapeau, manteau.",
+      "pourquoi": {
+        "o": "à la fin d’un nom, [o] s’écrit souvent eau : « couteau ».",
+        "au": "à la fin d’un nom, [o] s’écrit souvent eau : « couteau »."
+      }
     }
   ]
 }

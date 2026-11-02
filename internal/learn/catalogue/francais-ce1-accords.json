@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce1-accords",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "Les accords au CE1",
   "description": "Masculin ou féminin, singulier ou pluriel, les pluriels en -s ou -x, accorder le nom et l'adjectif, puis écrire soi-même le mot accordé.",
   "matiere": "francais",
@@ -125,7 +125,12 @@
         "amine",
         "amies"
       ],
-      "consigne": "Écris au féminin."
+      "consigne": "Écris au féminin.",
+      "pourquoi": {
+        "ami": "« ami » est le masculin : au féminin, on dit « une amie ».",
+        "amine": "« amine » n’existe pas : on ajoute juste un e.",
+        "amies": "« amies » est au pluriel : il y a « une »."
+      }
     },
     {
       "id": "fem-2",
@@ -138,7 +143,12 @@
         "chiene",
         "chiennes"
       ],
-      "consigne": "Écris au féminin."
+      "consigne": "Écris au féminin.",
+      "pourquoi": {
+        "chien": "« chien » est le masculin : au féminin, on dit « une chienne ».",
+        "chiene": "« chiene » ne prend qu’un n : on double le n.",
+        "chiennes": "« chiennes » est au pluriel : il y a « une »."
+      }
     },
     {
       "id": "fem-3",
@@ -151,7 +161,12 @@
         "lione",
         "lionnes"
       ],
-      "consigne": "Écris au féminin."
+      "consigne": "Écris au féminin.",
+      "pourquoi": {
+        "lion": "« lion » est le masculin : au féminin, on dit « une lionne ».",
+        "lione": "« lione » ne prend qu’un n : on double le n.",
+        "lionnes": "« lionnes » est au pluriel : il y a « une »."
+      }
     },
     {
       "id": "fem-4",
@@ -164,7 +179,12 @@
         "marchandne",
         "marchandes"
       ],
-      "consigne": "Écris au féminin."
+      "consigne": "Écris au féminin.",
+      "pourquoi": {
+        "marchand": "« marchand » est le masculin : au féminin, on dit « une marchande ».",
+        "marchandne": "« marchandne » n’existe pas : on ajoute juste un e.",
+        "marchandes": "« marchandes » est au pluriel : il y a « une »."
+      }
     },
     {
       "id": "fem-5",
@@ -177,7 +197,12 @@
         "boulangere",
         "boulangères"
       ],
-      "consigne": "Écris au féminin."
+      "consigne": "Écris au féminin.",
+      "pourquoi": {
+        "boulanger": "« boulanger » est le masculin : au féminin, on dit « une boulangère ».",
+        "boulangere": "il manque l’accent : on écrit « boulangère ».",
+        "boulangères": "« boulangères » est au pluriel : il y a « une »."
+      }
     },
     {
       "id": "fem-6",
@@ -190,7 +215,12 @@
         "chanteure",
         "chanteuses"
       ],
-      "consigne": "Écris au féminin."
+      "consigne": "Écris au féminin.",
+      "pourquoi": {
+        "chanteur": "« chanteur » est le masculin : au féminin, on dit « une chanteuse ».",
+        "chanteure": "« chanteure » n’existe pas : -eur devient -euse.",
+        "chanteuses": "« chanteuses » est au pluriel : il y a « une »."
+      }
     },
     {
       "id": "fem-7",
@@ -203,7 +233,12 @@
         "cousinne",
         "cousines"
       ],
-      "consigne": "Écris au féminin."
+      "consigne": "Écris au féminin.",
+      "pourquoi": {
+        "cousin": "« cousin » est le masculin : au féminin, on dit « une cousine ».",
+        "cousinne": "« cousinne » ne prend qu’un n.",
+        "cousines": "« cousines » est au pluriel : il y a « une »."
+      }
     },
     {
       "id": "fem-8",
@@ -216,7 +251,12 @@
         "voisinne",
         "voisines"
       ],
-      "consigne": "Écris au féminin."
+      "consigne": "Écris au féminin.",
+      "pourquoi": {
+        "voisin": "« voisin » est le masculin : au féminin, on dit « une voisine ».",
+        "voisinne": "« voisinne » ne prend qu’un n.",
+        "voisines": "« voisines » est au pluriel : il y a « une »."
+      }
     },
     {
       "id": "fem-9",
@@ -229,7 +269,12 @@
         "chate",
         "chattes"
       ],
-      "consigne": "Écris au féminin."
+      "consigne": "Écris au féminin.",
+      "pourquoi": {
+        "chat": "« chat » est le masculin : au féminin, on dit « une chatte ».",
+        "chate": "« chate » ne prend qu’un t : on double le t.",
+        "chattes": "« chattes » est au pluriel : il y a « une »."
+      }
     },
     {
       "id": "fem-10",
@@ -242,7 +287,12 @@
         "danseure",
         "danseuses"
       ],
-      "consigne": "Écris au féminin."
+      "consigne": "Écris au féminin.",
+      "pourquoi": {
+        "danseur": "« danseur » est le masculin : au féminin, on dit « une danseuse ».",
+        "danseure": "« danseure » n’existe pas : -eur devient -euse.",
+        "danseuses": "« danseuses » est au pluriel : il y a « une »."
+      }
     },
     {
       "id": "pl-1",
@@ -255,7 +305,11 @@
         "chat"
       ],
       "consigne": "Écris au pluriel.",
-      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux.",
+      "pourquoi": {
+        "chatx": "la plupart des noms prennent un s, pas un x.",
+        "chat": "au pluriel, il faut un s à la fin."
+      }
     },
     {
       "id": "pl-2",
@@ -269,7 +323,12 @@
         "cheval"
       ],
       "consigne": "Écris au pluriel.",
-      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux.",
+      "pourquoi": {
+        "chevals": "les mots en -al font -aux au pluriel.",
+        "chevalx": "le -al devient -au, puis on met un x.",
+        "cheval": "au pluriel, il faut un x à la fin."
+      }
     },
     {
       "id": "pl-3",
@@ -282,7 +341,11 @@
         "bateau"
       ],
       "consigne": "Écris au pluriel.",
-      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux.",
+      "pourquoi": {
+        "bateaus": "les mots en -eau prennent un x.",
+        "bateau": "au pluriel, il faut un x à la fin."
+      }
     },
     {
       "id": "pl-4",
@@ -295,7 +358,11 @@
         "jeu"
       ],
       "consigne": "Écris au pluriel.",
-      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux.",
+      "pourquoi": {
+        "jeus": "les mots en -eu prennent un x.",
+        "jeu": "au pluriel, il faut un x à la fin."
+      }
     },
     {
       "id": "pl-5",
@@ -308,7 +375,11 @@
         "chou"
       ],
       "consigne": "Écris au pluriel.",
-      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux.",
+      "pourquoi": {
+        "chous": "« chou » fait partie des sept mots en -ou qui prennent un x.",
+        "chou": "au pluriel, il faut un x à la fin."
+      }
     },
     {
       "id": "pl-6",
@@ -321,7 +392,11 @@
         "sourisx"
       ],
       "consigne": "Écris au pluriel.",
-      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux.",
+      "pourquoi": {
+        "souriss": "un mot qui finit par s ne change pas au pluriel.",
+        "sourisx": "un mot qui finit par s ne change pas au pluriel."
+      }
     },
     {
       "id": "pl-7",
@@ -334,7 +409,11 @@
         "nezx"
       ],
       "consigne": "Écris au pluriel.",
-      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux.",
+      "pourquoi": {
+        "nezs": "un mot qui finit par z ne change pas au pluriel.",
+        "nezx": "un mot qui finit par z ne change pas au pluriel."
+      }
     },
     {
       "id": "pl-8",
@@ -348,7 +427,12 @@
         "journal"
       ],
       "consigne": "Écris au pluriel.",
-      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux.",
+      "pourquoi": {
+        "journals": "les mots en -al font -aux au pluriel.",
+        "journalx": "le -al devient -au, puis on met un x.",
+        "journal": "au pluriel, il faut un x à la fin."
+      }
     },
     {
       "id": "pl-9",
@@ -361,7 +445,11 @@
         "gâteau"
       ],
       "consigne": "Écris au pluriel.",
-      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux.",
+      "pourquoi": {
+        "gâteaus": "les mots en -eau prennent un x.",
+        "gâteau": "au pluriel, il faut un x à la fin."
+      }
     },
     {
       "id": "pl-10",
@@ -374,7 +462,11 @@
         "fleur"
       ],
       "consigne": "Écris au pluriel.",
-      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux.",
+      "pourquoi": {
+        "fleurx": "la plupart des noms prennent un s, pas un x.",
+        "fleur": "au pluriel, il faut un s à la fin."
+      }
     },
     {
       "id": "pl-11",
@@ -387,7 +479,11 @@
         "cadeau"
       ],
       "consigne": "Écris au pluriel.",
-      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux.",
+      "pourquoi": {
+        "cadeaus": "les mots en -eau prennent un x.",
+        "cadeau": "au pluriel, il faut un x à la fin."
+      }
     },
     {
       "id": "pl-12",
@@ -401,7 +497,12 @@
         "animal"
       ],
       "consigne": "Écris au pluriel.",
-      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux.",
+      "pourquoi": {
+        "animals": "les mots en -al font -aux au pluriel.",
+        "animalx": "le -al devient -au, puis on met un x.",
+        "animal": "au pluriel, il faut un x à la fin."
+      }
     },
     {
       "id": "pl-13",
@@ -414,7 +515,11 @@
         "bijou"
       ],
       "consigne": "Écris au pluriel.",
-      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux.",
+      "pourquoi": {
+        "bijous": "« bijou » fait partie des sept mots en -ou qui prennent un x.",
+        "bijou": "au pluriel, il faut un x à la fin."
+      }
     },
     {
       "id": "pl-14",
@@ -427,7 +532,11 @@
         "ballon"
       ],
       "consigne": "Écris au pluriel.",
-      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux.",
+      "pourquoi": {
+        "ballonx": "la plupart des noms prennent un s, pas un x.",
+        "ballon": "au pluriel, il faut un s à la fin."
+      }
     },
     {
       "id": "pl-15",
@@ -440,7 +549,11 @@
         "oiseau"
       ],
       "consigne": "Écris au pluriel.",
-      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux.",
+      "pourquoi": {
+        "oiseaus": "les mots en -eau prennent un x.",
+        "oiseau": "au pluriel, il faut un x à la fin."
+      }
     },
     {
       "id": "pl-16",
@@ -453,7 +566,11 @@
         "busx"
       ],
       "consigne": "Écris au pluriel.",
-      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux.",
+      "pourquoi": {
+        "buss": "un mot qui finit par s ne change pas au pluriel.",
+        "busx": "un mot qui finit par s ne change pas au pluriel."
+      }
     },
     {
       "id": "gn-1",
@@ -467,7 +584,12 @@
         "petites"
       ],
       "consigne": "Accorde l’adjectif.",
-      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel."
+      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel.",
+      "pourquoi": {
+        "petit": "« voiture » est au féminin : il faut un e.",
+        "petits": "« voiture » est au féminin singulier.",
+        "petites": "« voiture » est au singulier : pas de s."
+      }
     },
     {
       "id": "gn-2",
@@ -481,7 +603,12 @@
         "noires"
       ],
       "consigne": "Accorde l’adjectif.",
-      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel."
+      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel.",
+      "pourquoi": {
+        "noir": "« chats » est au pluriel : il faut un s.",
+        "noire": "« chats » est au masculin pluriel.",
+        "noires": "« chats » est au masculin : pas de e."
+      }
     },
     {
       "id": "gn-3",
@@ -495,7 +622,12 @@
         "bleus"
       ],
       "consigne": "Accorde l’adjectif.",
-      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel."
+      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel.",
+      "pourquoi": {
+        "bleu": "« fleurs » est au féminin pluriel.",
+        "bleue": "« fleurs » est au pluriel : il faut un s.",
+        "bleus": "« fleurs » est au féminin : il faut un e."
+      }
     },
     {
       "id": "gn-4",
@@ -509,7 +641,12 @@
         "grandes"
       ],
       "consigne": "Accorde l’adjectif.",
-      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel."
+      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel.",
+      "pourquoi": {
+        "grande": "« garçon » est au masculin : pas de e.",
+        "grands": "« garçon » est au singulier : pas de s.",
+        "grandes": "« garçon » est au masculin singulier."
+      }
     },
     {
       "id": "gn-5",
@@ -523,7 +660,12 @@
         "vertes"
       ],
       "consigne": "Accorde l’adjectif.",
-      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel."
+      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel.",
+      "pourquoi": {
+        "vert": "« robe » est au féminin : il faut un e.",
+        "verts": "« robe » est au féminin singulier.",
+        "vertes": "« robe » est au singulier : pas de s."
+      }
     },
     {
       "id": "gn-6",
@@ -537,7 +679,12 @@
         "rougees"
       ],
       "consigne": "Accorde l’adjectif.",
-      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel."
+      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel.",
+      "pourquoi": {
+        "rouge": "« ballons » est au pluriel : il faut un s.",
+        "rougee": "« rouge » finit déjà par e : on n’en ajoute pas, et « ballons » est au masculin.",
+        "rougees": "« rouge » finit déjà par e : on ajoute seulement un s."
+      }
     },
     {
       "id": "gn-7",
@@ -551,7 +698,12 @@
         "jolies"
       ],
       "consigne": "Accorde l’adjectif.",
-      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel."
+      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel.",
+      "pourquoi": {
+        "joli": "« maison » est au féminin : il faut un e.",
+        "jolis": "« maison » est au féminin singulier.",
+        "jolies": "« maison » est au singulier : pas de s."
+      }
     },
     {
       "id": "gn-8",
@@ -565,7 +717,12 @@
         "gentils"
       ],
       "consigne": "Accorde l’adjectif.",
-      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel."
+      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel.",
+      "pourquoi": {
+        "gentil": "« amies » est au féminin pluriel : il faut « gentilles ».",
+        "gentile": "« gentil » double son l au féminin, et « amies » est au pluriel.",
+        "gentils": "« amies » est au féminin : il faut « gentilles »."
+      }
     },
     {
       "id": "gn-9",
@@ -579,7 +736,12 @@
         "griss"
       ],
       "consigne": "Accorde l’adjectif.",
-      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel."
+      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel.",
+      "pourquoi": {
+        "gris": "« souris » est au féminin pluriel : il faut « grises ».",
+        "grise": "« souris » est ici au pluriel : il faut un s.",
+        "griss": "« gris » au féminin devient « grise », puis un s : « grises »."
+      }
     },
     {
       "id": "gn-10",
@@ -593,7 +755,12 @@
         "méchantes"
       ],
       "consigne": "Accorde l’adjectif.",
-      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel."
+      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel.",
+      "pourquoi": {
+        "méchante": "« chien » est au masculin : pas de e.",
+        "méchants": "« chien » est au singulier : pas de s.",
+        "méchantes": "« chien » est au masculin singulier."
+      }
     },
     {
       "id": "gn-11",
@@ -607,7 +774,12 @@
         "chauds"
       ],
       "consigne": "Accorde l’adjectif.",
-      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel."
+      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel.",
+      "pourquoi": {
+        "chaud": "« tartes » est au féminin pluriel.",
+        "chaude": "« tartes » est au pluriel : il faut un s.",
+        "chauds": "« tartes » est au féminin : il faut un e."
+      }
     },
     {
       "id": "gn-12",
@@ -621,7 +793,12 @@
         "longs"
       ],
       "consigne": "Accorde l’adjectif.",
-      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel."
+      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel.",
+      "pourquoi": {
+        "long": "« nuit » est au féminin : « long » devient « longue ».",
+        "longe": "« longe » se lit [lonje] : il faut un u, « longue ».",
+        "longs": "« nuit » est au féminin singulier."
+      }
     },
     {
       "id": "tape-1",

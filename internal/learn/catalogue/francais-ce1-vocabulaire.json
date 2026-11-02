@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce1-vocabulaire",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "Le vocabulaire",
   "description": "L'ordre alphabétique, les familles de mots, les contraires, les mots de même sens et les mots-étiquettes.",
   "matiere": "francais",
@@ -180,11 +180,16 @@
       "question": "Quel mot est de la famille de « jardin » ?",
       "reponse": "jardinier",
       "pieges": [
-        "jardinet",
+        "jambon",
         "jaune",
         "jamais"
       ],
-      "consigne": "Quel mot est de la famille de « jardin » ?"
+      "consigne": "Quel mot est de la famille de « jardin » ?",
+      "pourquoi": {
+        "jambon": "« jambon » commence pareil mais n’a rien à voir avec le jardin.",
+        "jaune": "« jaune » est une couleur.",
+        "jamais": "« jamais » n’a rien à voir avec le jardin."
+      }
     },
     {
       "id": "famille-2",
@@ -197,7 +202,12 @@
         "dans",
         "dindon"
       ],
-      "consigne": "Quel mot est de la famille de « dent » ?"
+      "consigne": "Quel mot est de la famille de « dent » ?",
+      "pourquoi": {
+        "danse": "« danse » se dit presque pareil mais n’a rien à voir avec les dents.",
+        "dans": "« dans » n’a rien à voir avec les dents.",
+        "dindon": "un dindon est un oiseau."
+      }
     },
     {
       "id": "famille-3",
@@ -210,7 +220,12 @@
         "lapin",
         "laisser"
       ],
-      "consigne": "Quel mot est de la famille de « lait » ?"
+      "consigne": "Quel mot est de la famille de « lait » ?",
+      "pourquoi": {
+        "laid": "« laid » se dit pareil mais veut dire « pas beau ».",
+        "lapin": "un lapin est un animal.",
+        "laisser": "« laisser » n’a rien à voir avec le lait."
+      }
     },
     {
       "id": "famille-4",
@@ -223,7 +238,12 @@
         "fleuve",
         "flamme"
       ],
-      "consigne": "Quel mot est de la famille de « fleur » ?"
+      "consigne": "Quel mot est de la famille de « fleur » ?",
+      "pourquoi": {
+        "flûte": "une flûte est un instrument.",
+        "fleuve": "un fleuve est une grande rivière.",
+        "flamme": "une flamme vient du feu."
+      }
     },
     {
       "id": "famille-5",
@@ -236,7 +256,12 @@
         "bouger",
         "bouillir"
       ],
-      "consigne": "Quel mot est de la famille de « boulanger » ?"
+      "consigne": "Quel mot est de la famille de « boulanger » ?",
+      "pourquoi": {
+        "boule": "une boule est ronde : rien à voir avec le pain.",
+        "bouger": "bouger, c’est faire un mouvement.",
+        "bouillir": "bouillir, c’est quand l’eau est très chaude."
+      }
     },
     {
       "id": "famille-6",
@@ -249,7 +274,12 @@
         "champ",
         "chanceux"
       ],
-      "consigne": "Quel mot est de la famille de « chant » ?"
+      "consigne": "Quel mot est de la famille de « chant » ?",
+      "pourquoi": {
+        "chat": "un chat est un animal.",
+        "champ": "un champ est un terrain cultivé.",
+        "chanceux": "« chanceux » vient de « chance »."
+      }
     },
     {
       "id": "famille-7",
@@ -262,7 +292,12 @@
         "terrible",
         "tête"
       ],
-      "consigne": "Quel mot est de la famille de « terre » ?"
+      "consigne": "Quel mot est de la famille de « terre » ?",
+      "pourquoi": {
+        "tarte": "une tarte se mange.",
+        "terrible": "« terrible » commence pareil mais veut dire « qui fait peur ».",
+        "tête": "la tête est une partie du corps."
+      }
     },
     {
       "id": "famille-8",
@@ -275,7 +310,12 @@
         "nul",
         "nid"
       ],
-      "consigne": "Quel mot est de la famille de « nuit » ?"
+      "consigne": "Quel mot est de la famille de « nuit » ?",
+      "pourquoi": {
+        "nuage": "un nuage est dans le ciel.",
+        "nul": "« nul » veut dire « pas bon ».",
+        "nid": "un nid est la maison des oiseaux."
+      }
     },
     {
       "id": "contraires-1",
@@ -371,7 +411,12 @@
         "léger",
         "fermer"
       ],
-      "consigne": "Le contraire de « grand »"
+      "consigne": "Le contraire de « grand »",
+      "pourquoi": {
+        "lent": "« lent » est le contraire de « rapide ».",
+        "léger": "« léger » est le contraire de « lourd ».",
+        "fermer": "« fermer » est le contraire de « ouvrir »."
+      }
     },
     {
       "id": "contraire-2",
@@ -384,7 +429,12 @@
         "fermer",
         "descendre"
       ],
-      "consigne": "Le contraire de « chaud »"
+      "consigne": "Le contraire de « chaud »",
+      "pourquoi": {
+        "léger": "« léger » est le contraire de « lourd ».",
+        "fermer": "« fermer » est le contraire de « ouvrir ».",
+        "descendre": "« descendre » est le contraire de « monter »."
+      }
     },
     {
       "id": "contraire-3",
@@ -397,7 +447,12 @@
         "descendre",
         "nuit"
       ],
-      "consigne": "Le contraire de « rapide »"
+      "consigne": "Le contraire de « rapide »",
+      "pourquoi": {
+        "fermer": "« fermer » est le contraire de « ouvrir ».",
+        "descendre": "« descendre » est le contraire de « monter ».",
+        "nuit": "« nuit » est le contraire de « jour »."
+      }
     },
     {
       "id": "contraire-4",
@@ -410,7 +465,12 @@
         "nuit",
         "perdre"
       ],
-      "consigne": "Le contraire de « lourd »"
+      "consigne": "Le contraire de « lourd »",
+      "pourquoi": {
+        "descendre": "« descendre » est le contraire de « monter ».",
+        "nuit": "« nuit » est le contraire de « jour ».",
+        "perdre": "« perdre » est le contraire de « gagner »."
+      }
     },
     {
       "id": "contraire-5",
@@ -423,7 +483,12 @@
         "perdre",
         "vide"
       ],
-      "consigne": "Le contraire de « ouvrir »"
+      "consigne": "Le contraire de « ouvrir »",
+      "pourquoi": {
+        "nuit": "« nuit » est le contraire de « jour ».",
+        "perdre": "« perdre » est le contraire de « gagner ».",
+        "vide": "« vide » est le contraire de « plein »."
+      }
     },
     {
       "id": "contraire-6",
@@ -436,7 +501,12 @@
         "vide",
         "sale"
       ],
-      "consigne": "Le contraire de « monter »"
+      "consigne": "Le contraire de « monter »",
+      "pourquoi": {
+        "perdre": "« perdre » est le contraire de « gagner ».",
+        "vide": "« vide » est le contraire de « plein ».",
+        "sale": "« sale » est le contraire de « propre »."
+      }
     },
     {
       "id": "contraire-7",
@@ -449,7 +519,12 @@
         "sale",
         "éteindre"
       ],
-      "consigne": "Le contraire de « jour »"
+      "consigne": "Le contraire de « jour »",
+      "pourquoi": {
+        "vide": "« vide » est le contraire de « plein ».",
+        "sale": "« sale » est le contraire de « propre ».",
+        "éteindre": "« éteindre » est le contraire de « allumer »."
+      }
     },
     {
       "id": "contraire-8",
@@ -462,7 +537,12 @@
         "éteindre",
         "sortir"
       ],
-      "consigne": "Le contraire de « gagner »"
+      "consigne": "Le contraire de « gagner »",
+      "pourquoi": {
+        "sale": "« sale » est le contraire de « propre ».",
+        "éteindre": "« éteindre » est le contraire de « allumer ».",
+        "sortir": "« sortir » est le contraire de « entrer »."
+      }
     },
     {
       "id": "contraire-9",
@@ -475,7 +555,12 @@
         "sortir",
         "jamais"
       ],
-      "consigne": "Le contraire de « plein »"
+      "consigne": "Le contraire de « plein »",
+      "pourquoi": {
+        "éteindre": "« éteindre » est le contraire de « allumer ».",
+        "sortir": "« sortir » est le contraire de « entrer ».",
+        "jamais": "« jamais » est le contraire de « toujours »."
+      }
     },
     {
       "id": "contraire-10",
@@ -488,7 +573,12 @@
         "froid",
         "lent"
       ],
-      "consigne": "Le contraire de « propre »"
+      "consigne": "Le contraire de « propre »",
+      "pourquoi": {
+        "petit": "« petit » est le contraire de « grand ».",
+        "froid": "« froid » est le contraire de « chaud ».",
+        "lent": "« lent » est le contraire de « rapide »."
+      }
     },
     {
       "id": "contraire-11",
@@ -501,7 +591,12 @@
         "lent",
         "léger"
       ],
-      "consigne": "Le contraire de « allumer »"
+      "consigne": "Le contraire de « allumer »",
+      "pourquoi": {
+        "froid": "« froid » est le contraire de « chaud ».",
+        "lent": "« lent » est le contraire de « rapide ».",
+        "léger": "« léger » est le contraire de « lourd »."
+      }
     },
     {
       "id": "contraire-12",
@@ -514,7 +609,12 @@
         "léger",
         "fermer"
       ],
-      "consigne": "Le contraire de « entrer »"
+      "consigne": "Le contraire de « entrer »",
+      "pourquoi": {
+        "lent": "« lent » est le contraire de « rapide ».",
+        "léger": "« léger » est le contraire de « lourd ».",
+        "fermer": "« fermer » est le contraire de « ouvrir »."
+      }
     },
     {
       "id": "contraire-13",
@@ -527,7 +627,12 @@
         "fermer",
         "descendre"
       ],
-      "consigne": "Le contraire de « toujours »"
+      "consigne": "Le contraire de « toujours »",
+      "pourquoi": {
+        "léger": "« léger » est le contraire de « lourd ».",
+        "fermer": "« fermer » est le contraire de « ouvrir ».",
+        "descendre": "« descendre » est le contraire de « monter »."
+      }
     },
     {
       "id": "contraire-14",
@@ -540,7 +645,12 @@
         "descendre",
         "nuit"
       ],
-      "consigne": "Le contraire de « dessus »"
+      "consigne": "Le contraire de « dessus »",
+      "pourquoi": {
+        "fermer": "« fermer » est le contraire de « ouvrir ».",
+        "descendre": "« descendre » est le contraire de « monter ».",
+        "nuit": "« nuit » est le contraire de « jour »."
+      }
     },
     {
       "id": "synonyme-1",
@@ -553,7 +663,12 @@
         "fâché",
         "fatigué"
       ],
-      "consigne": "Quel mot veut dire presque la même chose que « content » ?"
+      "consigne": "Quel mot veut dire presque la même chose que « content » ?",
+      "pourquoi": {
+        "triste": "« triste » est le contraire de « content ».",
+        "fâché": "quand on est fâché, on n’est pas content.",
+        "fatigué": "être fatigué, ce n’est pas être content."
+      }
     },
     {
       "id": "synonyme-2",
@@ -566,7 +681,12 @@
         "gros",
         "doux"
       ],
-      "consigne": "Quel mot veut dire presque la même chose que « rapide » ?"
+      "consigne": "Quel mot veut dire presque la même chose que « rapide » ?",
+      "pourquoi": {
+        "lent": "« lent » est le contraire de « rapide ».",
+        "gros": "« gros » parle de la taille.",
+        "doux": "« doux » parle du toucher."
+      }
     },
     {
       "id": "synonyme-3",
@@ -579,7 +699,12 @@
         "route",
         "école"
       ],
-      "consigne": "Quel mot veut dire presque la même chose que « maison » ?"
+      "consigne": "Quel mot veut dire presque la même chose que « maison » ?",
+      "pourquoi": {
+        "jardin": "le jardin est autour de la maison.",
+        "route": "une route sert à rouler.",
+        "école": "l’école est un lieu pour apprendre."
+      }
     },
     {
       "id": "synonyme-4",
@@ -592,7 +717,12 @@
         "courir",
         "manger"
       ],
-      "consigne": "Quel mot veut dire presque la même chose que « bavarder » ?"
+      "consigne": "Quel mot veut dire presque la même chose que « bavarder » ?",
+      "pourquoi": {
+        "dormir": "quand on dort, on ne parle pas.",
+        "courir": "courir, c’est avancer vite.",
+        "manger": "manger, ce n’est pas parler."
+      }
     },
     {
       "id": "synonyme-5",
@@ -605,7 +735,12 @@
         "calme",
         "fier"
       ],
-      "consigne": "Quel mot veut dire presque la même chose que « effrayé » ?"
+      "consigne": "Quel mot veut dire presque la même chose que « effrayé » ?",
+      "pourquoi": {
+        "heureux": "« heureux » est le contraire d’« effrayé ».",
+        "calme": "quand on est calme, on n’a pas peur.",
+        "fier": "être fier, ce n’est pas avoir peur."
+      }
     },
     {
       "id": "synonyme-6",
@@ -618,7 +753,12 @@
         "sale",
         "triste"
       ],
-      "consigne": "Quel mot veut dire presque la même chose que « joli » ?"
+      "consigne": "Quel mot veut dire presque la même chose que « joli » ?",
+      "pourquoi": {
+        "laid": "« laid » est le contraire de « joli ».",
+        "sale": "« sale » parle de propreté.",
+        "triste": "« triste » parle d’un sentiment."
+      }
     },
     {
       "id": "synonyme-7",
@@ -631,7 +771,12 @@
         "arrêter",
         "oublier"
       ],
-      "consigne": "Quel mot veut dire presque la même chose que « commencer » ?"
+      "consigne": "Quel mot veut dire presque la même chose que « commencer » ?",
+      "pourquoi": {
+        "finir": "« finir » est le contraire de « commencer ».",
+        "arrêter": "« arrêter » est le contraire de « commencer ».",
+        "oublier": "oublier, ce n’est pas commencer."
+      }
     },
     {
       "id": "synonyme-8",
@@ -644,7 +789,12 @@
         "avion",
         "bateau"
       ],
-      "consigne": "Quel mot veut dire presque la même chose que « auto » ?"
+      "consigne": "Quel mot veut dire presque la même chose que « auto » ?",
+      "pourquoi": {
+        "vélo": "un vélo n’a pas de moteur.",
+        "avion": "un avion vole.",
+        "bateau": "un bateau va sur l’eau."
+      }
     },
     {
       "id": "etiquettes-1",
@@ -793,7 +943,12 @@
         "les animaux",
         "les jours"
       ],
-      "consigne": "Quel mot-étiquette va avec « rouge, vert, bleu » ?"
+      "consigne": "Quel mot-étiquette va avec « rouge, vert, bleu » ?",
+      "pourquoi": {
+        "les fruits": "ce sont des couleurs, pas des fruits.",
+        "les animaux": "ce sont des couleurs, pas des animaux.",
+        "les jours": "les jours, ce sont lundi, mardi…"
+      }
     },
     {
       "id": "etiquette-2",
@@ -806,7 +961,12 @@
         "les saisons",
         "les couleurs"
       ],
-      "consigne": "Quel mot-étiquette va avec « lundi, mardi, jeudi » ?"
+      "consigne": "Quel mot-étiquette va avec « lundi, mardi, jeudi » ?",
+      "pourquoi": {
+        "les mois": "les mois, ce sont janvier, février…",
+        "les saisons": "les saisons, ce sont printemps, été…",
+        "les couleurs": "les couleurs, ce sont rouge, bleu…"
+      }
     },
     {
       "id": "etiquette-3",
@@ -819,7 +979,12 @@
         "les jouets",
         "les fruits"
       ],
-      "consigne": "Quel mot-étiquette va avec « chien, chat, lapin » ?"
+      "consigne": "Quel mot-étiquette va avec « chien, chat, lapin » ?",
+      "pourquoi": {
+        "les fleurs": "ce sont des animaux, pas des fleurs.",
+        "les jouets": "ce sont de vrais animaux, pas des jouets.",
+        "les fruits": "ce sont des animaux, pas des fruits."
+      }
     },
     {
       "id": "etiquette-4",
@@ -832,7 +997,12 @@
         "poire",
         "cerise"
       ],
-      "consigne": "Quel intrus ne va pas avec les autres : pomme, poire, carotte, cerise ?"
+      "consigne": "Quel intrus ne va pas avec les autres : pomme, poire, carotte, cerise ?",
+      "pourquoi": {
+        "pomme": "la pomme est un fruit, comme les autres.",
+        "poire": "la poire est un fruit, comme les autres.",
+        "cerise": "la cerise est un fruit, comme les autres."
+      }
     }
   ]
 }

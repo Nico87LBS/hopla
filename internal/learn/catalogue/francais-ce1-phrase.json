@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce1-phrase",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "La phrase et les mots",
   "description": "Les sortes de phrases, trouver le verbe et le sujet, et reconnaître un nom, un verbe ou un adjectif.",
   "matiere": "francais",
@@ -54,7 +54,11 @@
         "exclamative"
       ],
       "consigne": "Quelle sorte de phrase ?",
-      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!)."
+      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!).",
+      "pourquoi": {
+        "interrogative": "elle ne pose pas de question ; elle raconte et finit par un point.",
+        "exclamative": "elle ne finit pas par « ! » ; elle raconte et finit par un point."
+      }
     },
     {
       "id": "type-2",
@@ -67,7 +71,11 @@
         "exclamative"
       ],
       "consigne": "Quelle sorte de phrase ?",
-      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!)."
+      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!).",
+      "pourquoi": {
+        "déclarative": "elle ne raconte pas simplement ; elle pose une question et finit par « ? ».",
+        "exclamative": "elle ne finit pas par « ! » ; elle pose une question et finit par « ? »."
+      }
     },
     {
       "id": "type-3",
@@ -80,7 +88,11 @@
         "interrogative"
       ],
       "consigne": "Quelle sorte de phrase ?",
-      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!)."
+      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!).",
+      "pourquoi": {
+        "déclarative": "elle ne raconte pas simplement ; elle montre une émotion et finit par « ! ».",
+        "interrogative": "elle ne pose pas de question ; elle montre une émotion et finit par « ! »."
+      }
     },
     {
       "id": "type-4",
@@ -93,7 +105,11 @@
         "exclamative"
       ],
       "consigne": "Quelle sorte de phrase ?",
-      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!)."
+      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!).",
+      "pourquoi": {
+        "interrogative": "elle ne pose pas de question ; elle raconte et finit par un point.",
+        "exclamative": "elle ne finit pas par « ! » ; elle raconte et finit par un point."
+      }
     },
     {
       "id": "type-5",
@@ -106,7 +122,11 @@
         "exclamative"
       ],
       "consigne": "Quelle sorte de phrase ?",
-      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!)."
+      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!).",
+      "pourquoi": {
+        "déclarative": "elle ne raconte pas simplement ; elle pose une question et finit par « ? ».",
+        "exclamative": "elle ne finit pas par « ! » ; elle pose une question et finit par « ? »."
+      }
     },
     {
       "id": "type-6",
@@ -119,7 +139,11 @@
         "interrogative"
       ],
       "consigne": "Quelle sorte de phrase ?",
-      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!)."
+      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!).",
+      "pourquoi": {
+        "déclarative": "elle ne raconte pas simplement ; elle montre une émotion et finit par « ! ».",
+        "interrogative": "elle ne pose pas de question ; elle montre une émotion et finit par « ! »."
+      }
     },
     {
       "id": "type-7",
@@ -132,7 +156,11 @@
         "exclamative"
       ],
       "consigne": "Quelle sorte de phrase ?",
-      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!)."
+      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!).",
+      "pourquoi": {
+        "interrogative": "elle ne pose pas de question ; elle raconte et finit par un point.",
+        "exclamative": "elle ne finit pas par « ! » ; elle raconte et finit par un point."
+      }
     },
     {
       "id": "type-8",
@@ -145,7 +173,11 @@
         "exclamative"
       ],
       "consigne": "Quelle sorte de phrase ?",
-      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!)."
+      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!).",
+      "pourquoi": {
+        "déclarative": "elle ne raconte pas simplement ; elle pose une question et finit par « ? ».",
+        "exclamative": "elle ne finit pas par « ! » ; elle pose une question et finit par « ? »."
+      }
     },
     {
       "id": "type-9",
@@ -158,7 +190,11 @@
         "interrogative"
       ],
       "consigne": "Quelle sorte de phrase ?",
-      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!)."
+      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!).",
+      "pourquoi": {
+        "déclarative": "elle ne raconte pas simplement ; elle montre une émotion et finit par « ! ».",
+        "interrogative": "elle ne pose pas de question ; elle montre une émotion et finit par « ! »."
+      }
     },
     {
       "id": "type-10",
@@ -171,7 +207,11 @@
         "exclamative"
       ],
       "consigne": "Quelle sorte de phrase ?",
-      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!)."
+      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!).",
+      "pourquoi": {
+        "interrogative": "elle ne pose pas de question ; elle raconte et finit par un point.",
+        "exclamative": "elle ne finit pas par « ! » ; elle raconte et finit par un point."
+      }
     },
     {
       "id": "type-11",
@@ -184,7 +224,11 @@
         "exclamative"
       ],
       "consigne": "Quelle sorte de phrase ?",
-      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!)."
+      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!).",
+      "pourquoi": {
+        "déclarative": "elle ne raconte pas simplement ; elle pose une question et finit par « ? ».",
+        "exclamative": "elle ne finit pas par « ! » ; elle pose une question et finit par « ? »."
+      }
     },
     {
       "id": "type-12",
@@ -197,7 +241,11 @@
         "interrogative"
       ],
       "consigne": "Quelle sorte de phrase ?",
-      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!)."
+      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!).",
+      "pourquoi": {
+        "déclarative": "elle ne raconte pas simplement ; elle montre une émotion et finit par « ! ».",
+        "interrogative": "elle ne pose pas de question ; elle montre une émotion et finit par « ! »."
+      }
     },
     {
       "id": "verbe-1",
@@ -211,7 +259,12 @@
         "le"
       ],
       "consigne": "Quel est le verbe ?",
-      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain."
+      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain.",
+      "pourquoi": {
+        "chien": "« chien » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « aboie ».",
+        "fort": "« fort » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « aboie ».",
+        "le": "« le » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « aboie »."
+      }
     },
     {
       "id": "verbe-2",
@@ -225,7 +278,12 @@
         "une"
       ],
       "consigne": "Quel est le verbe ?",
-      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain."
+      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain.",
+      "pourquoi": {
+        "Léa": "« Léa » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « mange ».",
+        "pomme": "« pomme » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « mange ».",
+        "une": "« une » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « mange »."
+      }
     },
     {
       "id": "verbe-3",
@@ -239,7 +297,12 @@
         "les"
       ],
       "consigne": "Quel est le verbe ?",
-      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain."
+      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain.",
+      "pourquoi": {
+        "oiseaux": "« oiseaux » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « chantent ».",
+        "matin": "« matin » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « chantent ».",
+        "les": "« les » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « chantent »."
+      }
     },
     {
       "id": "verbe-4",
@@ -253,7 +316,12 @@
         "la"
       ],
       "consigne": "Quel est le verbe ?",
-      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain."
+      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain.",
+      "pourquoi": {
+        "Papa": "« Papa » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « lave ».",
+        "voiture": "« voiture » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « lave ».",
+        "la": "« la » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « lave »."
+      }
     },
     {
       "id": "verbe-5",
@@ -267,7 +335,12 @@
         "dans"
       ],
       "consigne": "Quel est le verbe ?",
-      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain."
+      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain.",
+      "pourquoi": {
+        "nous": "« nous » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « jouons ».",
+        "cour": "« cour » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « jouons ».",
+        "dans": "« dans » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « jouons »."
+      }
     },
     {
       "id": "verbe-6",
@@ -280,7 +353,11 @@
         "le"
       ],
       "consigne": "Quel est le verbe ?",
-      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain."
+      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain.",
+      "pourquoi": {
+        "bébé": "« bébé » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « dort ».",
+        "le": "« le » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « dort »."
+      }
     },
     {
       "id": "verbe-7",
@@ -294,7 +371,12 @@
         "un"
       ],
       "consigne": "Quel est le verbe ?",
-      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain."
+      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain.",
+      "pourquoi": {
+        "Tom": "« Tom » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « dessine ».",
+        "bateau": "« bateau » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « dessine ».",
+        "un": "« un » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « dessine »."
+      }
     },
     {
       "id": "verbe-8",
@@ -307,7 +389,11 @@
         "la"
       ],
       "consigne": "Quel est le verbe ?",
-      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain."
+      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain.",
+      "pourquoi": {
+        "neige": "« neige » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « tombe ».",
+        "la": "« la » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « tombe »."
+      }
     },
     {
       "id": "verbe-9",
@@ -321,7 +407,12 @@
         "les"
       ],
       "consigne": "Quel est le verbe ?",
-      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain."
+      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain.",
+      "pourquoi": {
+        "enfants": "« enfants » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « courent ».",
+        "vite": "« vite » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « courent ».",
+        "les": "« les » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « courent »."
+      }
     },
     {
       "id": "verbe-10",
@@ -335,7 +426,12 @@
         "le"
       ],
       "consigne": "Quel est le verbe ?",
-      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain."
+      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain.",
+      "pourquoi": {
+        "Maman": "« Maman » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « lit ».",
+        "journal": "« journal » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « lit ».",
+        "le": "« le » ne change pas si on dit « hier » ou « demain » : le verbe, c’est « lit »."
+      }
     },
     {
       "id": "sujet-1",
@@ -347,7 +443,11 @@
         "aboie",
         "fort"
       ],
-      "consigne": "Qui fait l’action ? (le sujet)"
+      "consigne": "Qui fait l’action ? (le sujet)",
+      "pourquoi": {
+        "aboie": "c’est le verbe : le sujet est celui qui fait l’action.",
+        "fort": "qui est-ce qui fait l’action ? « le chien », pas « fort »."
+      }
     },
     {
       "id": "sujet-2",
@@ -360,7 +460,12 @@
         "une",
         "pomme"
       ],
-      "consigne": "Qui fait l’action ? (le sujet)"
+      "consigne": "Qui fait l’action ? (le sujet)",
+      "pourquoi": {
+        "mange": "c’est le verbe : le sujet est celui qui fait l’action.",
+        "une": "qui est-ce qui fait l’action ? « Léa », pas « une ».",
+        "pomme": "qui est-ce qui fait l’action ? « Léa », pas « pomme »."
+      }
     },
     {
       "id": "sujet-3",
@@ -373,7 +478,12 @@
         "le",
         "matin"
       ],
-      "consigne": "Qui fait l’action ? (le sujet)"
+      "consigne": "Qui fait l’action ? (le sujet)",
+      "pourquoi": {
+        "chantent": "c’est le verbe : le sujet est celui qui fait l’action.",
+        "le": "qui est-ce qui fait l’action ? « les oiseaux », pas « le ».",
+        "matin": "qui est-ce qui fait l’action ? « les oiseaux », pas « matin »."
+      }
     },
     {
       "id": "sujet-4",
@@ -386,7 +496,12 @@
         "la",
         "voiture"
       ],
-      "consigne": "Qui fait l’action ? (le sujet)"
+      "consigne": "Qui fait l’action ? (le sujet)",
+      "pourquoi": {
+        "lave": "c’est le verbe : le sujet est celui qui fait l’action.",
+        "la": "qui est-ce qui fait l’action ? « Papa », pas « la ».",
+        "voiture": "qui est-ce qui fait l’action ? « Papa », pas « voiture »."
+      }
     },
     {
       "id": "sujet-5",
@@ -399,7 +514,12 @@
         "dans",
         "la"
       ],
-      "consigne": "Qui fait l’action ? (le sujet)"
+      "consigne": "Qui fait l’action ? (le sujet)",
+      "pourquoi": {
+        "jouons": "c’est le verbe : le sujet est celui qui fait l’action.",
+        "dans": "qui est-ce qui fait l’action ? « nous », pas « dans ».",
+        "la": "qui est-ce qui fait l’action ? « nous », pas « la »."
+      }
     },
     {
       "id": "sujet-6",
@@ -410,7 +530,10 @@
       "pieges": [
         "tombe"
       ],
-      "consigne": "Qui fait l’action ? (le sujet)"
+      "consigne": "Qui fait l’action ? (le sujet)",
+      "pourquoi": {
+        "tombe": "c’est le verbe : le sujet est celui qui fait l’action."
+      }
     },
     {
       "id": "sujet-7",
@@ -423,7 +546,12 @@
         "un",
         "film"
       ],
-      "consigne": "Qui fait l’action ? (le sujet)"
+      "consigne": "Qui fait l’action ? (le sujet)",
+      "pourquoi": {
+        "regarde": "c’est le verbe : le sujet est celui qui fait l’action.",
+        "un": "qui est-ce qui fait l’action ? « mon frère », pas « un ».",
+        "film": "qui est-ce qui fait l’action ? « mon frère », pas « film »."
+      }
     },
     {
       "id": "sujet-8",
@@ -435,7 +563,11 @@
         "broutent",
         "l’herbe"
       ],
-      "consigne": "Qui fait l’action ? (le sujet)"
+      "consigne": "Qui fait l’action ? (le sujet)",
+      "pourquoi": {
+        "broutent": "c’est le verbe : le sujet est celui qui fait l’action.",
+        "l’herbe": "qui est-ce qui fait l’action ? « les vaches », pas « l’herbe »."
+      }
     },
     {
       "id": "nature-1",

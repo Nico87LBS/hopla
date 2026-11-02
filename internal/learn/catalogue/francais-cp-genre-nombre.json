@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "francais-cp-genre-nombre",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Un, une, des",
   "description": "Le ou la, un ou une, un ou des, le s du pluriel, et il, elle, ils ou elles pour remplacer un nom.",
   "matiere": "francais",
@@ -58,7 +58,10 @@
         "La"
       ],
       "consigne": "Le ou la ?",
-      "image": "cat"
+      "image": "cat",
+      "pourquoi": {
+        "La": "on dit « le chat » : « chat » est un mot masculin."
+      }
     },
     {
       "id": "lela-chien",
@@ -70,7 +73,10 @@
         "La"
       ],
       "consigne": "Le ou la ?",
-      "image": "dog"
+      "image": "dog",
+      "pourquoi": {
+        "La": "on dit « le chien » : « chien » est un mot masculin."
+      }
     },
     {
       "id": "lela-lapin",
@@ -82,7 +88,10 @@
         "La"
       ],
       "consigne": "Le ou la ?",
-      "image": "rabbit"
+      "image": "rabbit",
+      "pourquoi": {
+        "La": "on dit « le lapin » : « lapin » est un mot masculin."
+      }
     },
     {
       "id": "lela-poisson",
@@ -94,7 +103,10 @@
         "La"
       ],
       "consigne": "Le ou la ?",
-      "image": "fish"
+      "image": "fish",
+      "pourquoi": {
+        "La": "on dit « le poisson » : « poisson » est un mot masculin."
+      }
     },
     {
       "id": "lela-cheval",
@@ -106,7 +118,10 @@
         "La"
       ],
       "consigne": "Le ou la ?",
-      "image": "horse"
+      "image": "horse",
+      "pourquoi": {
+        "La": "on dit « le cheval » : « cheval » est un mot masculin."
+      }
     },
     {
       "id": "lela-canard",
@@ -118,7 +133,10 @@
         "La"
       ],
       "consigne": "Le ou la ?",
-      "image": "duck"
+      "image": "duck",
+      "pourquoi": {
+        "La": "on dit « le canard » : « canard » est un mot masculin."
+      }
     },
     {
       "id": "lela-livre",
@@ -130,7 +148,10 @@
         "La"
       ],
       "consigne": "Le ou la ?",
-      "image": "book"
+      "image": "book",
+      "pourquoi": {
+        "La": "on dit « le livre » : « livre » est un mot masculin."
+      }
     },
     {
       "id": "lela-ballon",
@@ -142,7 +163,10 @@
         "La"
       ],
       "consigne": "Le ou la ?",
-      "image": "ball"
+      "image": "ball",
+      "pourquoi": {
+        "La": "on dit « le ballon » : « ballon » est un mot masculin."
+      }
     },
     {
       "id": "lela-velo",
@@ -154,7 +178,10 @@
         "La"
       ],
       "consigne": "Le ou la ?",
-      "image": "bike"
+      "image": "bike",
+      "pourquoi": {
+        "La": "on dit « le vélo » : « vélo » est un mot masculin."
+      }
     },
     {
       "id": "lela-bateau",
@@ -166,7 +193,10 @@
         "La"
       ],
       "consigne": "Le ou la ?",
-      "image": "boat"
+      "image": "boat",
+      "pourquoi": {
+        "La": "on dit « le bateau » : « bateau » est un mot masculin."
+      }
     },
     {
       "id": "lela-gateau",
@@ -178,7 +208,10 @@
         "La"
       ],
       "consigne": "Le ou la ?",
-      "image": "cake"
+      "image": "cake",
+      "pourquoi": {
+        "La": "on dit « le gâteau » : « gâteau » est un mot masculin."
+      }
     },
     {
       "id": "lela-pain",
@@ -190,7 +223,10 @@
         "La"
       ],
       "consigne": "Le ou la ?",
-      "image": "bread"
+      "image": "bread",
+      "pourquoi": {
+        "La": "on dit « le pain » : « pain » est un mot masculin."
+      }
     },
     {
       "id": "lela-citron",
@@ -202,7 +238,10 @@
         "La"
       ],
       "consigne": "Le ou la ?",
-      "image": "lemon"
+      "image": "lemon",
+      "pourquoi": {
+        "La": "on dit « le citron » : « citron » est un mot masculin."
+      }
     },
     {
       "id": "lela-chapeau",
@@ -214,7 +253,10 @@
         "La"
       ],
       "consigne": "Le ou la ?",
-      "image": "hat"
+      "image": "hat",
+      "pourquoi": {
+        "La": "on dit « le chapeau » : « chapeau » est un mot masculin."
+      }
     },
     {
       "id": "lela-lit",
@@ -226,7 +268,10 @@
         "La"
       ],
       "consigne": "Le ou la ?",
-      "image": "bed"
+      "image": "bed",
+      "pourquoi": {
+        "La": "on dit « le lit » : « lit » est un mot masculin."
+      }
     },
     {
       "id": "lela-sac",
@@ -238,7 +283,10 @@
         "La"
       ],
       "consigne": "Le ou la ?",
-      "image": "bag"
+      "image": "bag",
+      "pourquoi": {
+        "La": "on dit « le sac » : « sac » est un mot masculin."
+      }
     },
     {
       "id": "lela-bol",
@@ -250,7 +298,10 @@
         "La"
       ],
       "consigne": "Le ou la ?",
-      "image": "bowl"
+      "image": "bowl",
+      "pourquoi": {
+        "La": "on dit « le bol » : « bol » est un mot masculin."
+      }
     },
     {
       "id": "lela-robot",
@@ -262,7 +313,10 @@
         "La"
       ],
       "consigne": "Le ou la ?",
-      "image": "robot"
+      "image": "robot",
+      "pourquoi": {
+        "La": "on dit « le robot » : « robot » est un mot masculin."
+      }
     },
     {
       "id": "lela-vache",
@@ -274,7 +328,10 @@
         "Le"
       ],
       "consigne": "Le ou la ?",
-      "image": "cow"
+      "image": "cow",
+      "pourquoi": {
+        "Le": "on dit « la vache » : « vache » est un mot féminin."
+      }
     },
     {
       "id": "lela-souris",
@@ -286,7 +343,10 @@
         "Le"
       ],
       "consigne": "Le ou la ?",
-      "image": "mouse"
+      "image": "mouse",
+      "pourquoi": {
+        "Le": "on dit « la souris » : « souris » est un mot féminin."
+      }
     },
     {
       "id": "lela-poule",
@@ -298,7 +358,10 @@
         "Le"
       ],
       "consigne": "Le ou la ?",
-      "image": "hen"
+      "image": "hen",
+      "pourquoi": {
+        "Le": "on dit « la poule » : « poule » est un mot féminin."
+      }
     },
     {
       "id": "lela-pomme",
@@ -310,7 +373,10 @@
         "Le"
       ],
       "consigne": "Le ou la ?",
-      "image": "apple"
+      "image": "apple",
+      "pourquoi": {
+        "Le": "on dit « la pomme » : « pomme » est un mot féminin."
+      }
     },
     {
       "id": "lela-banane",
@@ -322,7 +388,10 @@
         "Le"
       ],
       "consigne": "Le ou la ?",
-      "image": "banana"
+      "image": "banana",
+      "pourquoi": {
+        "Le": "on dit « la banane » : « banane » est un mot féminin."
+      }
     },
     {
       "id": "lela-fraise",
@@ -334,7 +403,10 @@
         "Le"
       ],
       "consigne": "Le ou la ?",
-      "image": "strawberry"
+      "image": "strawberry",
+      "pourquoi": {
+        "Le": "on dit « la fraise » : « fraise » est un mot féminin."
+      }
     },
     {
       "id": "lela-poire",
@@ -346,7 +418,10 @@
         "Le"
       ],
       "consigne": "Le ou la ?",
-      "image": "pear"
+      "image": "pear",
+      "pourquoi": {
+        "Le": "on dit « la poire » : « poire » est un mot féminin."
+      }
     },
     {
       "id": "lela-carotte",
@@ -358,7 +433,10 @@
         "Le"
       ],
       "consigne": "Le ou la ?",
-      "image": "carrot"
+      "image": "carrot",
+      "pourquoi": {
+        "Le": "on dit « la carotte » : « carotte » est un mot féminin."
+      }
     },
     {
       "id": "lela-poupee",
@@ -370,7 +448,10 @@
         "Le"
       ],
       "consigne": "Le ou la ?",
-      "image": "doll"
+      "image": "doll",
+      "pourquoi": {
+        "Le": "on dit « la poupée » : « poupée » est un mot féminin."
+      }
     },
     {
       "id": "lela-voiture",
@@ -382,7 +463,10 @@
         "Le"
       ],
       "consigne": "Le ou la ?",
-      "image": "car"
+      "image": "car",
+      "pourquoi": {
+        "Le": "on dit « la voiture » : « voiture » est un mot féminin."
+      }
     },
     {
       "id": "lela-maison",
@@ -394,7 +478,10 @@
         "Le"
       ],
       "consigne": "Le ou la ?",
-      "image": "house"
+      "image": "house",
+      "pourquoi": {
+        "Le": "on dit « la maison » : « maison » est un mot féminin."
+      }
     },
     {
       "id": "lela-table",
@@ -406,7 +493,10 @@
         "Le"
       ],
       "consigne": "Le ou la ?",
-      "image": "table"
+      "image": "table",
+      "pourquoi": {
+        "Le": "on dit « la table » : « table » est un mot féminin."
+      }
     },
     {
       "id": "lela-chaise",
@@ -418,7 +508,10 @@
         "Le"
       ],
       "consigne": "Le ou la ?",
-      "image": "chair"
+      "image": "chair",
+      "pourquoi": {
+        "Le": "on dit « la chaise » : « chaise » est un mot féminin."
+      }
     },
     {
       "id": "lela-porte",
@@ -430,7 +523,10 @@
         "Le"
       ],
       "consigne": "Le ou la ?",
-      "image": "door"
+      "image": "door",
+      "pourquoi": {
+        "Le": "on dit « la porte » : « porte » est un mot féminin."
+      }
     },
     {
       "id": "lela-lune",
@@ -442,7 +538,10 @@
         "Le"
       ],
       "consigne": "Le ou la ?",
-      "image": "moon"
+      "image": "moon",
+      "pourquoi": {
+        "Le": "on dit « la lune » : « lune » est un mot féminin."
+      }
     },
     {
       "id": "lela-fleur",
@@ -454,7 +553,10 @@
         "Le"
       ],
       "consigne": "Le ou la ?",
-      "image": "flower"
+      "image": "flower",
+      "pourquoi": {
+        "Le": "on dit « la fleur » : « fleur » est un mot féminin."
+      }
     },
     {
       "id": "lela-robe",
@@ -466,7 +568,10 @@
         "Le"
       ],
       "consigne": "Le ou la ?",
-      "image": "dress"
+      "image": "dress",
+      "pourquoi": {
+        "Le": "on dit « la robe » : « robe » est un mot féminin."
+      }
     },
     {
       "id": "lela-moto",
@@ -478,7 +583,10 @@
         "Le"
       ],
       "consigne": "Le ou la ?",
-      "image": "motorbike"
+      "image": "motorbike",
+      "pourquoi": {
+        "Le": "on dit « la moto » : « moto » est un mot féminin."
+      }
     },
     {
       "id": "unune-chat",
@@ -490,7 +598,10 @@
         "Une"
       ],
       "consigne": "Un ou une ?",
-      "image": "cat"
+      "image": "cat",
+      "pourquoi": {
+        "Une": "on dit « un chat » : « chat » est un mot masculin."
+      }
     },
     {
       "id": "unune-chien",
@@ -502,7 +613,10 @@
         "Une"
       ],
       "consigne": "Un ou une ?",
-      "image": "dog"
+      "image": "dog",
+      "pourquoi": {
+        "Une": "on dit « un chien » : « chien » est un mot masculin."
+      }
     },
     {
       "id": "unune-lapin",
@@ -514,7 +628,10 @@
         "Une"
       ],
       "consigne": "Un ou une ?",
-      "image": "rabbit"
+      "image": "rabbit",
+      "pourquoi": {
+        "Une": "on dit « un lapin » : « lapin » est un mot masculin."
+      }
     },
     {
       "id": "unune-poisson",
@@ -526,7 +643,10 @@
         "Une"
       ],
       "consigne": "Un ou une ?",
-      "image": "fish"
+      "image": "fish",
+      "pourquoi": {
+        "Une": "on dit « un poisson » : « poisson » est un mot masculin."
+      }
     },
     {
       "id": "unune-cheval",
@@ -538,7 +658,10 @@
         "Une"
       ],
       "consigne": "Un ou une ?",
-      "image": "horse"
+      "image": "horse",
+      "pourquoi": {
+        "Une": "on dit « un cheval » : « cheval » est un mot masculin."
+      }
     },
     {
       "id": "unune-canard",
@@ -550,7 +673,10 @@
         "Une"
       ],
       "consigne": "Un ou une ?",
-      "image": "duck"
+      "image": "duck",
+      "pourquoi": {
+        "Une": "on dit « un canard » : « canard » est un mot masculin."
+      }
     },
     {
       "id": "unune-livre",
@@ -562,7 +688,10 @@
         "Une"
       ],
       "consigne": "Un ou une ?",
-      "image": "book"
+      "image": "book",
+      "pourquoi": {
+        "Une": "on dit « un livre » : « livre » est un mot masculin."
+      }
     },
     {
       "id": "unune-ballon",
@@ -574,7 +703,10 @@
         "Une"
       ],
       "consigne": "Un ou une ?",
-      "image": "ball"
+      "image": "ball",
+      "pourquoi": {
+        "Une": "on dit « un ballon » : « ballon » est un mot masculin."
+      }
     },
     {
       "id": "unune-velo",
@@ -586,7 +718,10 @@
         "Une"
       ],
       "consigne": "Un ou une ?",
-      "image": "bike"
+      "image": "bike",
+      "pourquoi": {
+        "Une": "on dit « un vélo » : « vélo » est un mot masculin."
+      }
     },
     {
       "id": "unune-bateau",
@@ -598,7 +733,10 @@
         "Une"
       ],
       "consigne": "Un ou une ?",
-      "image": "boat"
+      "image": "boat",
+      "pourquoi": {
+        "Une": "on dit « un bateau » : « bateau » est un mot masculin."
+      }
     },
     {
       "id": "unune-gateau",
@@ -610,7 +748,10 @@
         "Une"
       ],
       "consigne": "Un ou une ?",
-      "image": "cake"
+      "image": "cake",
+      "pourquoi": {
+        "Une": "on dit « un gâteau » : « gâteau » est un mot masculin."
+      }
     },
     {
       "id": "unune-pain",
@@ -622,7 +763,10 @@
         "Une"
       ],
       "consigne": "Un ou une ?",
-      "image": "bread"
+      "image": "bread",
+      "pourquoi": {
+        "Une": "on dit « un pain » : « pain » est un mot masculin."
+      }
     },
     {
       "id": "unune-citron",
@@ -634,7 +778,10 @@
         "Une"
       ],
       "consigne": "Un ou une ?",
-      "image": "lemon"
+      "image": "lemon",
+      "pourquoi": {
+        "Une": "on dit « un citron » : « citron » est un mot masculin."
+      }
     },
     {
       "id": "unune-chapeau",
@@ -646,7 +793,10 @@
         "Une"
       ],
       "consigne": "Un ou une ?",
-      "image": "hat"
+      "image": "hat",
+      "pourquoi": {
+        "Une": "on dit « un chapeau » : « chapeau » est un mot masculin."
+      }
     },
     {
       "id": "unune-lit",
@@ -658,7 +808,10 @@
         "Une"
       ],
       "consigne": "Un ou une ?",
-      "image": "bed"
+      "image": "bed",
+      "pourquoi": {
+        "Une": "on dit « un lit » : « lit » est un mot masculin."
+      }
     },
     {
       "id": "unune-sac",
@@ -670,7 +823,10 @@
         "Une"
       ],
       "consigne": "Un ou une ?",
-      "image": "bag"
+      "image": "bag",
+      "pourquoi": {
+        "Une": "on dit « un sac » : « sac » est un mot masculin."
+      }
     },
     {
       "id": "unune-bol",
@@ -682,7 +838,10 @@
         "Une"
       ],
       "consigne": "Un ou une ?",
-      "image": "bowl"
+      "image": "bowl",
+      "pourquoi": {
+        "Une": "on dit « un bol » : « bol » est un mot masculin."
+      }
     },
     {
       "id": "unune-robot",
@@ -694,7 +853,10 @@
         "Une"
       ],
       "consigne": "Un ou une ?",
-      "image": "robot"
+      "image": "robot",
+      "pourquoi": {
+        "Une": "on dit « un robot » : « robot » est un mot masculin."
+      }
     },
     {
       "id": "unune-vache",
@@ -706,7 +868,10 @@
         "Un"
       ],
       "consigne": "Un ou une ?",
-      "image": "cow"
+      "image": "cow",
+      "pourquoi": {
+        "Un": "on dit « une vache » : « vache » est un mot féminin."
+      }
     },
     {
       "id": "unune-souris",
@@ -718,7 +883,10 @@
         "Un"
       ],
       "consigne": "Un ou une ?",
-      "image": "mouse"
+      "image": "mouse",
+      "pourquoi": {
+        "Un": "on dit « une souris » : « souris » est un mot féminin."
+      }
     },
     {
       "id": "unune-poule",
@@ -730,7 +898,10 @@
         "Un"
       ],
       "consigne": "Un ou une ?",
-      "image": "hen"
+      "image": "hen",
+      "pourquoi": {
+        "Un": "on dit « une poule » : « poule » est un mot féminin."
+      }
     },
     {
       "id": "unune-pomme",
@@ -742,7 +913,10 @@
         "Un"
       ],
       "consigne": "Un ou une ?",
-      "image": "apple"
+      "image": "apple",
+      "pourquoi": {
+        "Un": "on dit « une pomme » : « pomme » est un mot féminin."
+      }
     },
     {
       "id": "unune-banane",
@@ -754,7 +928,10 @@
         "Un"
       ],
       "consigne": "Un ou une ?",
-      "image": "banana"
+      "image": "banana",
+      "pourquoi": {
+        "Un": "on dit « une banane » : « banane » est un mot féminin."
+      }
     },
     {
       "id": "unune-fraise",
@@ -766,7 +943,10 @@
         "Un"
       ],
       "consigne": "Un ou une ?",
-      "image": "strawberry"
+      "image": "strawberry",
+      "pourquoi": {
+        "Un": "on dit « une fraise » : « fraise » est un mot féminin."
+      }
     },
     {
       "id": "unune-poire",
@@ -778,7 +958,10 @@
         "Un"
       ],
       "consigne": "Un ou une ?",
-      "image": "pear"
+      "image": "pear",
+      "pourquoi": {
+        "Un": "on dit « une poire » : « poire » est un mot féminin."
+      }
     },
     {
       "id": "unune-carotte",
@@ -790,7 +973,10 @@
         "Un"
       ],
       "consigne": "Un ou une ?",
-      "image": "carrot"
+      "image": "carrot",
+      "pourquoi": {
+        "Un": "on dit « une carotte » : « carotte » est un mot féminin."
+      }
     },
     {
       "id": "unune-poupee",
@@ -802,7 +988,10 @@
         "Un"
       ],
       "consigne": "Un ou une ?",
-      "image": "doll"
+      "image": "doll",
+      "pourquoi": {
+        "Un": "on dit « une poupée » : « poupée » est un mot féminin."
+      }
     },
     {
       "id": "unune-voiture",
@@ -814,7 +1003,10 @@
         "Un"
       ],
       "consigne": "Un ou une ?",
-      "image": "car"
+      "image": "car",
+      "pourquoi": {
+        "Un": "on dit « une voiture » : « voiture » est un mot féminin."
+      }
     },
     {
       "id": "unune-maison",
@@ -826,7 +1018,10 @@
         "Un"
       ],
       "consigne": "Un ou une ?",
-      "image": "house"
+      "image": "house",
+      "pourquoi": {
+        "Un": "on dit « une maison » : « maison » est un mot féminin."
+      }
     },
     {
       "id": "unune-table",
@@ -838,7 +1033,10 @@
         "Un"
       ],
       "consigne": "Un ou une ?",
-      "image": "table"
+      "image": "table",
+      "pourquoi": {
+        "Un": "on dit « une table » : « table » est un mot féminin."
+      }
     },
     {
       "id": "unune-chaise",
@@ -850,7 +1048,10 @@
         "Un"
       ],
       "consigne": "Un ou une ?",
-      "image": "chair"
+      "image": "chair",
+      "pourquoi": {
+        "Un": "on dit « une chaise » : « chaise » est un mot féminin."
+      }
     },
     {
       "id": "unune-porte",
@@ -862,7 +1063,10 @@
         "Un"
       ],
       "consigne": "Un ou une ?",
-      "image": "door"
+      "image": "door",
+      "pourquoi": {
+        "Un": "on dit « une porte » : « porte » est un mot féminin."
+      }
     },
     {
       "id": "unune-lune",
@@ -874,7 +1078,10 @@
         "Un"
       ],
       "consigne": "Un ou une ?",
-      "image": "moon"
+      "image": "moon",
+      "pourquoi": {
+        "Un": "on dit « une lune » : « lune » est un mot féminin."
+      }
     },
     {
       "id": "unune-fleur",
@@ -886,7 +1093,10 @@
         "Un"
       ],
       "consigne": "Un ou une ?",
-      "image": "flower"
+      "image": "flower",
+      "pourquoi": {
+        "Un": "on dit « une fleur » : « fleur » est un mot féminin."
+      }
     },
     {
       "id": "unune-robe",
@@ -898,7 +1108,10 @@
         "Un"
       ],
       "consigne": "Un ou une ?",
-      "image": "dress"
+      "image": "dress",
+      "pourquoi": {
+        "Un": "on dit « une robe » : « robe » est un mot féminin."
+      }
     },
     {
       "id": "unune-moto",
@@ -910,7 +1123,10 @@
         "Un"
       ],
       "consigne": "Un ou une ?",
-      "image": "motorbike"
+      "image": "motorbike",
+      "pourquoi": {
+        "Un": "on dit « une moto » : « moto » est un mot féminin."
+      }
     },
     {
       "id": "des-chat",
@@ -923,7 +1139,11 @@
         "Une"
       ],
       "consigne": "Un ou des ?",
-      "explication": "« chats » finit par un s : il y en a plusieurs."
+      "explication": "« chats » finit par un s : il y en a plusieurs.",
+      "pourquoi": {
+        "Un": "« chats » finit par un s : il y en a plusieurs, on dit « des ».",
+        "Une": "« chats » finit par un s : il y en a plusieurs, on dit « des »."
+      }
     },
     {
       "id": "un-chat",
@@ -934,7 +1154,10 @@
       "pieges": [
         "Des"
       ],
-      "consigne": "Un ou des ?"
+      "consigne": "Un ou des ?",
+      "pourquoi": {
+        "Des": "« chat » n’a pas de s : il n’y en a qu’un."
+      }
     },
     {
       "id": "des-chien",
@@ -947,7 +1170,11 @@
         "Une"
       ],
       "consigne": "Un ou des ?",
-      "explication": "« chiens » finit par un s : il y en a plusieurs."
+      "explication": "« chiens » finit par un s : il y en a plusieurs.",
+      "pourquoi": {
+        "Un": "« chiens » finit par un s : il y en a plusieurs, on dit « des ».",
+        "Une": "« chiens » finit par un s : il y en a plusieurs, on dit « des »."
+      }
     },
     {
       "id": "un-chien",
@@ -958,7 +1185,10 @@
       "pieges": [
         "Des"
       ],
-      "consigne": "Un ou des ?"
+      "consigne": "Un ou des ?",
+      "pourquoi": {
+        "Des": "« chien » n’a pas de s : il n’y en a qu’un."
+      }
     },
     {
       "id": "des-pomme",
@@ -971,7 +1201,11 @@
         "Une"
       ],
       "consigne": "Un ou des ?",
-      "explication": "« pommes » finit par un s : il y en a plusieurs."
+      "explication": "« pommes » finit par un s : il y en a plusieurs.",
+      "pourquoi": {
+        "Un": "« pommes » finit par un s : il y en a plusieurs, on dit « des ».",
+        "Une": "« pommes » finit par un s : il y en a plusieurs, on dit « des »."
+      }
     },
     {
       "id": "un-pomme",
@@ -982,7 +1216,10 @@
       "pieges": [
         "Des"
       ],
-      "consigne": "Un ou des ?"
+      "consigne": "Un ou des ?",
+      "pourquoi": {
+        "Des": "« pomme » n’a pas de s : il n’y en a qu’un."
+      }
     },
     {
       "id": "des-fleur",
@@ -995,7 +1232,11 @@
         "Une"
       ],
       "consigne": "Un ou des ?",
-      "explication": "« fleurs » finit par un s : il y en a plusieurs."
+      "explication": "« fleurs » finit par un s : il y en a plusieurs.",
+      "pourquoi": {
+        "Un": "« fleurs » finit par un s : il y en a plusieurs, on dit « des ».",
+        "Une": "« fleurs » finit par un s : il y en a plusieurs, on dit « des »."
+      }
     },
     {
       "id": "un-fleur",
@@ -1006,7 +1247,10 @@
       "pieges": [
         "Des"
       ],
-      "consigne": "Un ou des ?"
+      "consigne": "Un ou des ?",
+      "pourquoi": {
+        "Des": "« fleur » n’a pas de s : il n’y en a qu’un."
+      }
     },
     {
       "id": "des-livre",
@@ -1019,7 +1263,11 @@
         "Une"
       ],
       "consigne": "Un ou des ?",
-      "explication": "« livres » finit par un s : il y en a plusieurs."
+      "explication": "« livres » finit par un s : il y en a plusieurs.",
+      "pourquoi": {
+        "Un": "« livres » finit par un s : il y en a plusieurs, on dit « des ».",
+        "Une": "« livres » finit par un s : il y en a plusieurs, on dit « des »."
+      }
     },
     {
       "id": "un-livre",
@@ -1030,7 +1278,10 @@
       "pieges": [
         "Des"
       ],
-      "consigne": "Un ou des ?"
+      "consigne": "Un ou des ?",
+      "pourquoi": {
+        "Des": "« livre » n’a pas de s : il n’y en a qu’un."
+      }
     },
     {
       "id": "des-ballon",
@@ -1043,7 +1294,11 @@
         "Une"
       ],
       "consigne": "Un ou des ?",
-      "explication": "« ballons » finit par un s : il y en a plusieurs."
+      "explication": "« ballons » finit par un s : il y en a plusieurs.",
+      "pourquoi": {
+        "Un": "« ballons » finit par un s : il y en a plusieurs, on dit « des ».",
+        "Une": "« ballons » finit par un s : il y en a plusieurs, on dit « des »."
+      }
     },
     {
       "id": "un-ballon",
@@ -1054,7 +1309,10 @@
       "pieges": [
         "Des"
       ],
-      "consigne": "Un ou des ?"
+      "consigne": "Un ou des ?",
+      "pourquoi": {
+        "Des": "« ballon » n’a pas de s : il n’y en a qu’un."
+      }
     },
     {
       "id": "des-vélo",
@@ -1067,7 +1325,11 @@
         "Une"
       ],
       "consigne": "Un ou des ?",
-      "explication": "« vélos » finit par un s : il y en a plusieurs."
+      "explication": "« vélos » finit par un s : il y en a plusieurs.",
+      "pourquoi": {
+        "Un": "« vélos » finit par un s : il y en a plusieurs, on dit « des ».",
+        "Une": "« vélos » finit par un s : il y en a plusieurs, on dit « des »."
+      }
     },
     {
       "id": "un-vélo",
@@ -1078,7 +1340,10 @@
       "pieges": [
         "Des"
       ],
-      "consigne": "Un ou des ?"
+      "consigne": "Un ou des ?",
+      "pourquoi": {
+        "Des": "« vélo » n’a pas de s : il n’y en a qu’un."
+      }
     },
     {
       "id": "des-poule",
@@ -1091,7 +1356,11 @@
         "Une"
       ],
       "consigne": "Un ou des ?",
-      "explication": "« poules » finit par un s : il y en a plusieurs."
+      "explication": "« poules » finit par un s : il y en a plusieurs.",
+      "pourquoi": {
+        "Un": "« poules » finit par un s : il y en a plusieurs, on dit « des ».",
+        "Une": "« poules » finit par un s : il y en a plusieurs, on dit « des »."
+      }
     },
     {
       "id": "un-poule",
@@ -1102,7 +1371,10 @@
       "pieges": [
         "Des"
       ],
-      "consigne": "Un ou des ?"
+      "consigne": "Un ou des ?",
+      "pourquoi": {
+        "Des": "« poule » n’a pas de s : il n’y en a qu’un."
+      }
     },
     {
       "id": "des-maison",
@@ -1115,7 +1387,11 @@
         "Une"
       ],
       "consigne": "Un ou des ?",
-      "explication": "« maisons » finit par un s : il y en a plusieurs."
+      "explication": "« maisons » finit par un s : il y en a plusieurs.",
+      "pourquoi": {
+        "Un": "« maisons » finit par un s : il y en a plusieurs, on dit « des ».",
+        "Une": "« maisons » finit par un s : il y en a plusieurs, on dit « des »."
+      }
     },
     {
       "id": "des-lapin",
@@ -1128,7 +1404,11 @@
         "Une"
       ],
       "consigne": "Un ou des ?",
-      "explication": "« lapins » finit par un s : il y en a plusieurs."
+      "explication": "« lapins » finit par un s : il y en a plusieurs.",
+      "pourquoi": {
+        "Un": "« lapins » finit par un s : il y en a plusieurs, on dit « des ».",
+        "Une": "« lapins » finit par un s : il y en a plusieurs, on dit « des »."
+      }
     },
     {
       "id": "des-banane",
@@ -1141,7 +1421,11 @@
         "Une"
       ],
       "consigne": "Un ou des ?",
-      "explication": "« bananes » finit par un s : il y en a plusieurs."
+      "explication": "« bananes » finit par un s : il y en a plusieurs.",
+      "pourquoi": {
+        "Un": "« bananes » finit par un s : il y en a plusieurs, on dit « des ».",
+        "Une": "« bananes » finit par un s : il y en a plusieurs, on dit « des »."
+      }
     },
     {
       "id": "des-voiture",
@@ -1154,7 +1438,11 @@
         "Une"
       ],
       "consigne": "Un ou des ?",
-      "explication": "« voitures » finit par un s : il y en a plusieurs."
+      "explication": "« voitures » finit par un s : il y en a plusieurs.",
+      "pourquoi": {
+        "Un": "« voitures » finit par un s : il y en a plusieurs, on dit « des ».",
+        "Une": "« voitures » finit par un s : il y en a plusieurs, on dit « des »."
+      }
     },
     {
       "id": "s-des-chat",
@@ -1166,7 +1454,10 @@
         "rien"
       ],
       "consigne": "Faut-il un s à la fin ?",
-      "explication": "Après « des », on écrit « chats » avec un s."
+      "explication": "Après « des », on écrit « chats » avec un s.",
+      "pourquoi": {
+        "rien": "après « des », il y en a plusieurs : on met un s."
+      }
     },
     {
       "id": "s-un-chat",
@@ -1178,7 +1469,10 @@
         "s"
       ],
       "consigne": "Faut-il un s à la fin ?",
-      "explication": "Il n’y en a qu’un : « un chat », sans s."
+      "explication": "Il n’y en a qu’un : « un chat », sans s.",
+      "pourquoi": {
+        "s": "après « un », il n’y en a qu’un : pas de s."
+      }
     },
     {
       "id": "s-des-chien",
@@ -1190,7 +1484,10 @@
         "rien"
       ],
       "consigne": "Faut-il un s à la fin ?",
-      "explication": "Après « des », on écrit « chiens » avec un s."
+      "explication": "Après « des », on écrit « chiens » avec un s.",
+      "pourquoi": {
+        "rien": "après « des », il y en a plusieurs : on met un s."
+      }
     },
     {
       "id": "s-un-chien",
@@ -1202,7 +1499,10 @@
         "s"
       ],
       "consigne": "Faut-il un s à la fin ?",
-      "explication": "Il n’y en a qu’un : « un chien », sans s."
+      "explication": "Il n’y en a qu’un : « un chien », sans s.",
+      "pourquoi": {
+        "s": "après « un », il n’y en a qu’un : pas de s."
+      }
     },
     {
       "id": "s-des-pomme",
@@ -1214,7 +1514,10 @@
         "rien"
       ],
       "consigne": "Faut-il un s à la fin ?",
-      "explication": "Après « des », on écrit « pommes » avec un s."
+      "explication": "Après « des », on écrit « pommes » avec un s.",
+      "pourquoi": {
+        "rien": "après « des », il y en a plusieurs : on met un s."
+      }
     },
     {
       "id": "s-un-pomme",
@@ -1226,7 +1529,10 @@
         "s"
       ],
       "consigne": "Faut-il un s à la fin ?",
-      "explication": "Il n’y en a qu’un : « une pomme », sans s."
+      "explication": "Il n’y en a qu’un : « une pomme », sans s.",
+      "pourquoi": {
+        "s": "après « une », il n’y en a qu’un : pas de s."
+      }
     },
     {
       "id": "s-des-fleur",
@@ -1238,7 +1544,10 @@
         "rien"
       ],
       "consigne": "Faut-il un s à la fin ?",
-      "explication": "Après « des », on écrit « fleurs » avec un s."
+      "explication": "Après « des », on écrit « fleurs » avec un s.",
+      "pourquoi": {
+        "rien": "après « des », il y en a plusieurs : on met un s."
+      }
     },
     {
       "id": "s-un-fleur",
@@ -1250,7 +1559,10 @@
         "s"
       ],
       "consigne": "Faut-il un s à la fin ?",
-      "explication": "Il n’y en a qu’un : « une fleur », sans s."
+      "explication": "Il n’y en a qu’un : « une fleur », sans s.",
+      "pourquoi": {
+        "s": "après « une », il n’y en a qu’un : pas de s."
+      }
     },
     {
       "id": "s-des-livre",
@@ -1262,7 +1574,10 @@
         "rien"
       ],
       "consigne": "Faut-il un s à la fin ?",
-      "explication": "Après « des », on écrit « livres » avec un s."
+      "explication": "Après « des », on écrit « livres » avec un s.",
+      "pourquoi": {
+        "rien": "après « des », il y en a plusieurs : on met un s."
+      }
     },
     {
       "id": "s-un-livre",
@@ -1274,7 +1589,10 @@
         "s"
       ],
       "consigne": "Faut-il un s à la fin ?",
-      "explication": "Il n’y en a qu’un : « un livre », sans s."
+      "explication": "Il n’y en a qu’un : « un livre », sans s.",
+      "pourquoi": {
+        "s": "après « un », il n’y en a qu’un : pas de s."
+      }
     },
     {
       "id": "s-des-ballon",
@@ -1286,7 +1604,10 @@
         "rien"
       ],
       "consigne": "Faut-il un s à la fin ?",
-      "explication": "Après « des », on écrit « ballons » avec un s."
+      "explication": "Après « des », on écrit « ballons » avec un s.",
+      "pourquoi": {
+        "rien": "après « des », il y en a plusieurs : on met un s."
+      }
     },
     {
       "id": "s-un-ballon",
@@ -1298,7 +1619,10 @@
         "s"
       ],
       "consigne": "Faut-il un s à la fin ?",
-      "explication": "Il n’y en a qu’un : « un ballon », sans s."
+      "explication": "Il n’y en a qu’un : « un ballon », sans s.",
+      "pourquoi": {
+        "s": "après « un », il n’y en a qu’un : pas de s."
+      }
     },
     {
       "id": "s-des-vélo",
@@ -1310,7 +1634,10 @@
         "rien"
       ],
       "consigne": "Faut-il un s à la fin ?",
-      "explication": "Après « des », on écrit « vélos » avec un s."
+      "explication": "Après « des », on écrit « vélos » avec un s.",
+      "pourquoi": {
+        "rien": "après « des », il y en a plusieurs : on met un s."
+      }
     },
     {
       "id": "s-un-vélo",
@@ -1322,7 +1649,10 @@
         "s"
       ],
       "consigne": "Faut-il un s à la fin ?",
-      "explication": "Il n’y en a qu’un : « un vélo », sans s."
+      "explication": "Il n’y en a qu’un : « un vélo », sans s.",
+      "pourquoi": {
+        "s": "après « un », il n’y en a qu’un : pas de s."
+      }
     },
     {
       "id": "s-des-poule",
@@ -1334,7 +1664,10 @@
         "rien"
       ],
       "consigne": "Faut-il un s à la fin ?",
-      "explication": "Après « des », on écrit « poules » avec un s."
+      "explication": "Après « des », on écrit « poules » avec un s.",
+      "pourquoi": {
+        "rien": "après « des », il y en a plusieurs : on met un s."
+      }
     },
     {
       "id": "s-un-poule",
@@ -1346,7 +1679,10 @@
         "s"
       ],
       "consigne": "Faut-il un s à la fin ?",
-      "explication": "Il n’y en a qu’un : « une poule », sans s."
+      "explication": "Il n’y en a qu’un : « une poule », sans s.",
+      "pourquoi": {
+        "s": "après « une », il n’y en a qu’un : pas de s."
+      }
     },
     {
       "id": "s-des-maison",
@@ -1358,7 +1694,10 @@
         "rien"
       ],
       "consigne": "Faut-il un s à la fin ?",
-      "explication": "Après « des », on écrit « maisons » avec un s."
+      "explication": "Après « des », on écrit « maisons » avec un s.",
+      "pourquoi": {
+        "rien": "après « des », il y en a plusieurs : on met un s."
+      }
     },
     {
       "id": "s-un-maison",
@@ -1370,7 +1709,10 @@
         "s"
       ],
       "consigne": "Faut-il un s à la fin ?",
-      "explication": "Il n’y en a qu’un : « une maison », sans s."
+      "explication": "Il n’y en a qu’un : « une maison », sans s.",
+      "pourquoi": {
+        "s": "après « une », il n’y en a qu’un : pas de s."
+      }
     },
     {
       "id": "s-des-lapin",
@@ -1382,7 +1724,10 @@
         "rien"
       ],
       "consigne": "Faut-il un s à la fin ?",
-      "explication": "Après « des », on écrit « lapins » avec un s."
+      "explication": "Après « des », on écrit « lapins » avec un s.",
+      "pourquoi": {
+        "rien": "après « des », il y en a plusieurs : on met un s."
+      }
     },
     {
       "id": "s-un-lapin",
@@ -1394,7 +1739,10 @@
         "s"
       ],
       "consigne": "Faut-il un s à la fin ?",
-      "explication": "Il n’y en a qu’un : « un lapin », sans s."
+      "explication": "Il n’y en a qu’un : « un lapin », sans s.",
+      "pourquoi": {
+        "s": "après « un », il n’y en a qu’un : pas de s."
+      }
     },
     {
       "id": "s-des-banane",
@@ -1406,7 +1754,10 @@
         "rien"
       ],
       "consigne": "Faut-il un s à la fin ?",
-      "explication": "Après « des », on écrit « bananes » avec un s."
+      "explication": "Après « des », on écrit « bananes » avec un s.",
+      "pourquoi": {
+        "rien": "après « des », il y en a plusieurs : on met un s."
+      }
     },
     {
       "id": "s-un-banane",
@@ -1418,7 +1769,10 @@
         "s"
       ],
       "consigne": "Faut-il un s à la fin ?",
-      "explication": "Il n’y en a qu’un : « une banane », sans s."
+      "explication": "Il n’y en a qu’un : « une banane », sans s.",
+      "pourquoi": {
+        "s": "après « une », il n’y en a qu’un : pas de s."
+      }
     },
     {
       "id": "s-des-voiture",
@@ -1430,7 +1784,10 @@
         "rien"
       ],
       "consigne": "Faut-il un s à la fin ?",
-      "explication": "Après « des », on écrit « voitures » avec un s."
+      "explication": "Après « des », on écrit « voitures » avec un s.",
+      "pourquoi": {
+        "rien": "après « des », il y en a plusieurs : on met un s."
+      }
     },
     {
       "id": "s-un-voiture",
@@ -1442,7 +1799,10 @@
         "s"
       ],
       "consigne": "Faut-il un s à la fin ?",
-      "explication": "Il n’y en a qu’un : « une voiture », sans s."
+      "explication": "Il n’y en a qu’un : « une voiture », sans s.",
+      "pourquoi": {
+        "s": "après « une », il n’y en a qu’un : pas de s."
+      }
     },
     {
       "id": "pronom-1",
@@ -1455,7 +1815,12 @@
         "Ils",
         "Elles"
       ],
-      "consigne": "Il, elle, ils ou elles ?"
+      "consigne": "Il, elle, ils ou elles ?",
+      "pourquoi": {
+        "Elle": "« elle » est pour une seule, au féminin ; « le chat » demande « il ».",
+        "Ils": "« ils » est pour plusieurs, au masculin ; « le chat » demande « il ».",
+        "Elles": "« elles » est pour plusieurs, au féminin ; « le chat » demande « il »."
+      }
     },
     {
       "id": "pronom-2",
@@ -1468,7 +1833,12 @@
         "Ils",
         "Elles"
       ],
-      "consigne": "Il, elle, ils ou elles ?"
+      "consigne": "Il, elle, ils ou elles ?",
+      "pourquoi": {
+        "Il": "« il » est pour un seul, au masculin ; « la poule » demande « elle ».",
+        "Ils": "« ils » est pour plusieurs, au masculin ; « la poule » demande « elle ».",
+        "Elles": "« elles » est pour plusieurs, au féminin ; « la poule » demande « elle »."
+      }
     },
     {
       "id": "pronom-3",
@@ -1481,7 +1851,12 @@
         "Elle",
         "Elles"
       ],
-      "consigne": "Il, elle, ils ou elles ?"
+      "consigne": "Il, elle, ils ou elles ?",
+      "pourquoi": {
+        "Il": "« il » est pour un seul, au masculin ; « les chiens » demande « ils ».",
+        "Elle": "« elle » est pour une seule, au féminin ; « les chiens » demande « ils ».",
+        "Elles": "« elles » est pour plusieurs, au féminin ; « les chiens » demande « ils »."
+      }
     },
     {
       "id": "pronom-4",
@@ -1494,7 +1869,12 @@
         "Elle",
         "Ils"
       ],
-      "consigne": "Il, elle, ils ou elles ?"
+      "consigne": "Il, elle, ils ou elles ?",
+      "pourquoi": {
+        "Il": "« il » est pour un seul, au masculin ; « les filles » demande « elles ».",
+        "Elle": "« elle » est pour une seule, au féminin ; « les filles » demande « elles ».",
+        "Ils": "« ils » est pour plusieurs, au masculin ; « les filles » demande « elles »."
+      }
     },
     {
       "id": "pronom-5",
@@ -1507,7 +1887,12 @@
         "Ils",
         "Elles"
       ],
-      "consigne": "Il, elle, ils ou elles ?"
+      "consigne": "Il, elle, ils ou elles ?",
+      "pourquoi": {
+        "Elle": "« elle » est pour une seule, au féminin ; « Papa » demande « il ».",
+        "Ils": "« ils » est pour plusieurs, au masculin ; « Papa » demande « il ».",
+        "Elles": "« elles » est pour plusieurs, au féminin ; « Papa » demande « il »."
+      }
     },
     {
       "id": "pronom-6",
@@ -1520,7 +1905,12 @@
         "Ils",
         "Elles"
       ],
-      "consigne": "Il, elle, ils ou elles ?"
+      "consigne": "Il, elle, ils ou elles ?",
+      "pourquoi": {
+        "Il": "« il » est pour un seul, au masculin ; « Maman » demande « elle ».",
+        "Ils": "« ils » est pour plusieurs, au masculin ; « Maman » demande « elle ».",
+        "Elles": "« elles » est pour plusieurs, au féminin ; « Maman » demande « elle »."
+      }
     },
     {
       "id": "pronom-7",
@@ -1533,7 +1923,12 @@
         "Elle",
         "Elles"
       ],
-      "consigne": "Il, elle, ils ou elles ?"
+      "consigne": "Il, elle, ils ou elles ?",
+      "pourquoi": {
+        "Il": "« il » est pour un seul, au masculin ; « les garçons » demande « ils ».",
+        "Elle": "« elle » est pour une seule, au féminin ; « les garçons » demande « ils ».",
+        "Elles": "« elles » est pour plusieurs, au féminin ; « les garçons » demande « ils »."
+      }
     },
     {
       "id": "pronom-8",
@@ -1546,7 +1941,12 @@
         "Elle",
         "Ils"
       ],
-      "consigne": "Il, elle, ils ou elles ?"
+      "consigne": "Il, elle, ils ou elles ?",
+      "pourquoi": {
+        "Il": "« il » est pour un seul, au masculin ; « les vaches » demande « elles ».",
+        "Elle": "« elle » est pour une seule, au féminin ; « les vaches » demande « elles ».",
+        "Ils": "« ils » est pour plusieurs, au masculin ; « les vaches » demande « elles »."
+      }
     },
     {
       "id": "pronom-9",
@@ -1559,7 +1959,12 @@
         "Ils",
         "Elles"
       ],
-      "consigne": "Il, elle, ils ou elles ?"
+      "consigne": "Il, elle, ils ou elles ?",
+      "pourquoi": {
+        "Elle": "« elle » est pour une seule, au féminin ; « le bébé » demande « il ».",
+        "Ils": "« ils » est pour plusieurs, au masculin ; « le bébé » demande « il ».",
+        "Elles": "« elles » est pour plusieurs, au féminin ; « le bébé » demande « il »."
+      }
     },
     {
       "id": "pronom-10",
@@ -1572,7 +1977,12 @@
         "Ils",
         "Elles"
       ],
-      "consigne": "Il, elle, ils ou elles ?"
+      "consigne": "Il, elle, ils ou elles ?",
+      "pourquoi": {
+        "Il": "« il » est pour un seul, au masculin ; « ma sœur » demande « elle ».",
+        "Ils": "« ils » est pour plusieurs, au masculin ; « ma sœur » demande « elle ».",
+        "Elles": "« elles » est pour plusieurs, au féminin ; « ma sœur » demande « elle »."
+      }
     },
     {
       "id": "pronom-11",
@@ -1585,7 +1995,12 @@
         "Elle",
         "Elles"
       ],
-      "consigne": "Il, elle, ils ou elles ?"
+      "consigne": "Il, elle, ils ou elles ?",
+      "pourquoi": {
+        "Il": "« il » est pour un seul, au masculin ; « Tom et Léo » demande « ils ».",
+        "Elle": "« elle » est pour une seule, au féminin ; « Tom et Léo » demande « ils ».",
+        "Elles": "« elles » est pour plusieurs, au féminin ; « Tom et Léo » demande « ils »."
+      }
     },
     {
       "id": "pronom-12",
@@ -1598,7 +2013,12 @@
         "Elle",
         "Ils"
       ],
-      "consigne": "Il, elle, ils ou elles ?"
+      "consigne": "Il, elle, ils ou elles ?",
+      "pourquoi": {
+        "Il": "« il » est pour un seul, au masculin ; « Léa et Nina » demande « elles ».",
+        "Elle": "« elle » est pour une seule, au féminin ; « Léa et Nina » demande « elles ».",
+        "Ils": "« ils » est pour plusieurs, au masculin ; « Léa et Nina » demande « elles »."
+      }
     },
     {
       "id": "pronom-13",
@@ -1611,7 +2031,12 @@
         "Ils",
         "Elles"
       ],
-      "consigne": "Il, elle, ils ou elles ?"
+      "consigne": "Il, elle, ils ou elles ?",
+      "pourquoi": {
+        "Elle": "« elle » est pour une seule, au féminin ; « le lapin » demande « il ».",
+        "Ils": "« ils » est pour plusieurs, au masculin ; « le lapin » demande « il ».",
+        "Elles": "« elles » est pour plusieurs, au féminin ; « le lapin » demande « il »."
+      }
     },
     {
       "id": "pronom-14",
@@ -1624,7 +2049,12 @@
         "Ils",
         "Elles"
       ],
-      "consigne": "Il, elle, ils ou elles ?"
+      "consigne": "Il, elle, ils ou elles ?",
+      "pourquoi": {
+        "Il": "« il » est pour un seul, au masculin ; « la lune » demande « elle ».",
+        "Ils": "« ils » est pour plusieurs, au masculin ; « la lune » demande « elle ».",
+        "Elles": "« elles » est pour plusieurs, au féminin ; « la lune » demande « elle »."
+      }
     },
     {
       "id": "pronom-15",
@@ -1637,7 +2067,12 @@
         "Elle",
         "Elles"
       ],
-      "consigne": "Il, elle, ils ou elles ?"
+      "consigne": "Il, elle, ils ou elles ?",
+      "pourquoi": {
+        "Il": "« il » est pour un seul, au masculin ; « les oiseaux » demande « ils ».",
+        "Elle": "« elle » est pour une seule, au féminin ; « les oiseaux » demande « ils ».",
+        "Elles": "« elles » est pour plusieurs, au féminin ; « les oiseaux » demande « ils »."
+      }
     },
     {
       "id": "pronom-16",
@@ -1650,7 +2085,12 @@
         "Elle",
         "Ils"
       ],
-      "consigne": "Il, elle, ils ou elles ?"
+      "consigne": "Il, elle, ils ou elles ?",
+      "pourquoi": {
+        "Il": "« il » est pour un seul, au masculin ; « les fleurs » demande « elles ».",
+        "Elle": "« elle » est pour une seule, au féminin ; « les fleurs » demande « elles ».",
+        "Ils": "« ils » est pour plusieurs, au masculin ; « les fleurs » demande « elles »."
+      }
     },
     {
       "id": "pronom-17",
@@ -1663,7 +2103,12 @@
         "Ils",
         "Elles"
       ],
-      "consigne": "Il, elle, ils ou elles ?"
+      "consigne": "Il, elle, ils ou elles ?",
+      "pourquoi": {
+        "Elle": "« elle » est pour une seule, au féminin ; « mon frère » demande « il ».",
+        "Ils": "« ils » est pour plusieurs, au masculin ; « mon frère » demande « il ».",
+        "Elles": "« elles » est pour plusieurs, au féminin ; « mon frère » demande « il »."
+      }
     },
     {
       "id": "pronom-18",
@@ -1676,7 +2121,12 @@
         "Ils",
         "Elles"
       ],
-      "consigne": "Il, elle, ils ou elles ?"
+      "consigne": "Il, elle, ils ou elles ?",
+      "pourquoi": {
+        "Il": "« il » est pour un seul, au masculin ; « Mamie » demande « elle ».",
+        "Ils": "« ils » est pour plusieurs, au masculin ; « Mamie » demande « elle ».",
+        "Elles": "« elles » est pour plusieurs, au féminin ; « Mamie » demande « elle »."
+      }
     }
   ]
 }
