@@ -310,5 +310,11 @@
       "progress": "Progrès",
       "first": "À jouer d’abord"
     }
+  },
+  "reports": {
+    "title_one": "{{count}} question signalée",
+    "title_other": "{{count}} questions signalées",
+    "help": "Exporte un fichier à envoyer, pour que les questions soient corrigées dans les modules.",
+    "export": "Exporter les signalements"
   }
 }

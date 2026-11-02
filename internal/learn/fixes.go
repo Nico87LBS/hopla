@@ -314,3 +314,56 @@ func OpenReports(db *gorm.DB, familyID int, modules []string) ([]Report, error) 
 	err := query.Order("reported_at").Find(&reports).Error
 	return reports, err
 }
+
+// ExportedReport is a report with what it takes to fix it away from the
+// family's Hopla: the module's name and version and the card as written.
+type ExportedReport struct {
+	Report
+	ModuleName    string          `json:"moduleName"`
+	ModuleVersion string          `json:"moduleVersion"`
+	Written       json.RawMessage `json:"written,omitempty"`
+}
+
+// ExportReports gathers the reports not looked at yet, to send them to
+// whoever writes the modules.
+func ExportReports(db *gorm.DB, familyID int, now time.Time) ([]ExportedReport, error) {
+	reports, err := OpenReports(db, familyID, nil)
+	if err != nil {
+		return nil, err
+	}
+	modules, err := Modules(db, familyID, now)
+	if err != nil {
+		return nil, err
+	}
+	byKey := map[string]Module{}
+	for _, module := range modules {
+		byKey[module.Key] = module
+	}
+	written := map[string]map[string]json.RawMessage{}
+	cardOf := func(module Module, id string) json.RawMessage {
+		cards, ok := written[module.Key]
+		if !ok {
+			cards = map[string]json.RawMessage{}
+			if _, list, err := cardsOf(module.Content); err == nil {
+				for _, raw := range list {
+					card, _ := raw.(map[string]any)
+					if key, _ := card["id"].(string); key != "" {
+						cards[key], _ = json.Marshal(card)
+					}
+				}
+			}
+			written[module.Key] = cards
+		}
+		return cards[id]
+	}
+	out := make([]ExportedReport, 0, len(reports))
+	for _, report := range reports {
+		exported := ExportedReport{Report: report}
+		if module, ok := byKey[report.ModuleKey]; ok {
+			exported.ModuleName, exported.ModuleVersion = module.Name, module.Version
+			exported.Written = cardOf(module, report.Card)
+		}
+		out = append(out, exported)
+	}
+	return out, nil
+}

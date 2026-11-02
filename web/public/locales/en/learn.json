@@ -310,5 +310,11 @@
       "progress": "Progress",
       "first": "Play first"
     }
+  },
+  "reports": {
+    "title_one": "{{count}} question reported",
+    "title_other": "{{count}} questions reported",
+    "help": "Export them in a file, then send it so they get fixed in the modules.",
+    "export": "Export the reports"
   }
 }
