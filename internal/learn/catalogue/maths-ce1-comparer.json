@@ -1,0 +1,596 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-ce1-comparer",
+  "version": "1.0.0",
+  "nom": "Comparer, ranger, encadrer",
+  "description": "Les signes < et >, ranger des nombres, le nombre d'avant ou d'après, et encadrer à la dizaine ou à la centaine, jusqu'à 1 000.",
+  "matiere": "maths",
+  "niveaux": [
+    "CE1"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de mathématiques du cycle 2 (2024) et les repères annuels de progression du CE1 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "signes",
+      "nom": "Les signes < et >"
+    },
+    {
+      "id": "ranger",
+      "nom": "Ranger des nombres",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "avant-apres",
+      "nom": "Avant, après",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "encadrer",
+      "nom": "Encadrer",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 8
+  },
+  "fiches": [
+    {
+      "id": "ranger-1",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "595",
+        "642",
+        "801",
+        "940"
+      ]
+    },
+    {
+      "id": "ranger-2",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "324",
+        "399",
+        "461",
+        "589"
+      ]
+    },
+    {
+      "id": "ranger-3",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "288",
+        "601",
+        "825",
+        "923"
+      ]
+    },
+    {
+      "id": "ranger-4",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "496",
+        "649",
+        "946",
+        "964"
+      ]
+    },
+    {
+      "id": "ranger-5",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "161",
+        "197",
+        "840",
+        "850"
+      ]
+    },
+    {
+      "id": "ranger-6",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "601",
+        "704",
+        "741",
+        "945"
+      ]
+    },
+    {
+      "id": "ranger-7",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "313",
+        "364",
+        "850",
+        "851"
+      ]
+    },
+    {
+      "id": "ranger-8",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "365",
+        "536",
+        "635",
+        "653"
+      ]
+    },
+    {
+      "id": "ranger-9",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "303",
+        "382",
+        "633",
+        "905",
+        "968"
+      ]
+    },
+    {
+      "id": "ranger-10",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "227",
+        "517",
+        "532",
+        "984",
+        "999"
+      ]
+    },
+    {
+      "id": "ranger-11",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "700",
+        "717",
+        "888",
+        "954",
+        "983"
+      ]
+    },
+    {
+      "id": "ranger-12",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "234",
+        "243",
+        "342",
+        "423"
+      ]
+    },
+    {
+      "id": "ranger-13",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "104",
+        "197",
+        "833",
+        "949",
+        "992"
+      ]
+    },
+    {
+      "id": "ranger-14",
+      "chapitre": "ranger",
+      "type": "ordre",
+      "question": "Range du plus petit au plus grand.",
+      "consigne": "Range du plus petit au plus grand.",
+      "elements": [
+        "533",
+        "580",
+        "630",
+        "676",
+        "855"
+      ]
+    },
+    {
+      "id": "dizaine-1",
+      "chapitre": "encadrer",
+      "type": "choix",
+      "question": "338 est entre…",
+      "reponse": "330 et 340",
+      "pieges": [
+        "320 et 330",
+        "340 et 350",
+        "300 et 400"
+      ],
+      "consigne": "Encadre à la dizaine."
+    },
+    {
+      "id": "dizaine-2",
+      "chapitre": "encadrer",
+      "type": "choix",
+      "question": "144 est entre…",
+      "reponse": "140 et 150",
+      "pieges": [
+        "130 et 140",
+        "150 et 160",
+        "100 et 200"
+      ],
+      "consigne": "Encadre à la dizaine."
+    },
+    {
+      "id": "dizaine-3",
+      "chapitre": "encadrer",
+      "type": "choix",
+      "question": "883 est entre…",
+      "reponse": "880 et 890",
+      "pieges": [
+        "870 et 880",
+        "890 et 900",
+        "800 et 900"
+      ],
+      "consigne": "Encadre à la dizaine."
+    },
+    {
+      "id": "dizaine-4",
+      "chapitre": "encadrer",
+      "type": "choix",
+      "question": "943 est entre…",
+      "reponse": "940 et 950",
+      "pieges": [
+        "930 et 940",
+        "950 et 960",
+        "900 et 1000"
+      ],
+      "consigne": "Encadre à la dizaine."
+    },
+    {
+      "id": "dizaine-5",
+      "chapitre": "encadrer",
+      "type": "choix",
+      "question": "837 est entre…",
+      "reponse": "830 et 840",
+      "pieges": [
+        "820 et 830",
+        "840 et 850",
+        "800 et 900"
+      ],
+      "consigne": "Encadre à la dizaine."
+    },
+    {
+      "id": "dizaine-6",
+      "chapitre": "encadrer",
+      "type": "choix",
+      "question": "107 est entre…",
+      "reponse": "100 et 110",
+      "pieges": [
+        "90 et 100",
+        "110 et 120",
+        "100 et 200"
+      ],
+      "consigne": "Encadre à la dizaine."
+    },
+    {
+      "id": "dizaine-7",
+      "chapitre": "encadrer",
+      "type": "choix",
+      "question": "553 est entre…",
+      "reponse": "550 et 560",
+      "pieges": [
+        "540 et 550",
+        "560 et 570",
+        "500 et 600"
+      ],
+      "consigne": "Encadre à la dizaine."
+    },
+    {
+      "id": "dizaine-8",
+      "chapitre": "encadrer",
+      "type": "choix",
+      "question": "558 est entre…",
+      "reponse": "550 et 560",
+      "pieges": [
+        "540 et 550",
+        "560 et 570",
+        "500 et 600"
+      ],
+      "consigne": "Encadre à la dizaine."
+    },
+    {
+      "id": "dizaine-9",
+      "chapitre": "encadrer",
+      "type": "choix",
+      "question": "201 est entre…",
+      "reponse": "200 et 210",
+      "pieges": [
+        "190 et 200",
+        "210 et 220",
+        "200 et 300"
+      ],
+      "consigne": "Encadre à la dizaine."
+    },
+    {
+      "id": "dizaine-10",
+      "chapitre": "encadrer",
+      "type": "choix",
+      "question": "183 est entre…",
+      "reponse": "180 et 190",
+      "pieges": [
+        "170 et 180",
+        "190 et 200",
+        "100 et 200"
+      ],
+      "consigne": "Encadre à la dizaine."
+    },
+    {
+      "id": "dizaine-11",
+      "chapitre": "encadrer",
+      "type": "choix",
+      "question": "926 est entre…",
+      "reponse": "920 et 930",
+      "pieges": [
+        "910 et 920",
+        "930 et 940",
+        "900 et 1000"
+      ],
+      "consigne": "Encadre à la dizaine."
+    },
+    {
+      "id": "dizaine-12",
+      "chapitre": "encadrer",
+      "type": "choix",
+      "question": "814 est entre…",
+      "reponse": "810 et 820",
+      "pieges": [
+        "800 et 810",
+        "820 et 830",
+        "800 et 900"
+      ],
+      "consigne": "Encadre à la dizaine."
+    },
+    {
+      "id": "centaine-1",
+      "chapitre": "encadrer",
+      "type": "choix",
+      "question": "486 est entre…",
+      "reponse": "400 et 500",
+      "pieges": [
+        "300 et 400",
+        "500 et 600",
+        "480 et 490"
+      ],
+      "consigne": "Encadre à la centaine."
+    },
+    {
+      "id": "centaine-2",
+      "chapitre": "encadrer",
+      "type": "choix",
+      "question": "442 est entre…",
+      "reponse": "400 et 500",
+      "pieges": [
+        "300 et 400",
+        "500 et 600",
+        "440 et 450"
+      ],
+      "consigne": "Encadre à la centaine."
+    },
+    {
+      "id": "centaine-3",
+      "chapitre": "encadrer",
+      "type": "choix",
+      "question": "947 est entre…",
+      "reponse": "900 et 1000",
+      "pieges": [
+        "800 et 900",
+        "1000 et 1100",
+        "940 et 950"
+      ],
+      "consigne": "Encadre à la centaine."
+    },
+    {
+      "id": "centaine-4",
+      "chapitre": "encadrer",
+      "type": "choix",
+      "question": "745 est entre…",
+      "reponse": "700 et 800",
+      "pieges": [
+        "600 et 700",
+        "800 et 900",
+        "740 et 750"
+      ],
+      "consigne": "Encadre à la centaine."
+    },
+    {
+      "id": "centaine-5",
+      "chapitre": "encadrer",
+      "type": "choix",
+      "question": "850 est entre…",
+      "reponse": "800 et 900",
+      "pieges": [
+        "700 et 800",
+        "900 et 1000",
+        "850 et 860"
+      ],
+      "consigne": "Encadre à la centaine."
+    },
+    {
+      "id": "centaine-6",
+      "chapitre": "encadrer",
+      "type": "choix",
+      "question": "294 est entre…",
+      "reponse": "200 et 300",
+      "pieges": [
+        "100 et 200",
+        "300 et 400",
+        "290 et 300"
+      ],
+      "consigne": "Encadre à la centaine."
+    },
+    {
+      "id": "centaine-7",
+      "chapitre": "encadrer",
+      "type": "choix",
+      "question": "452 est entre…",
+      "reponse": "400 et 500",
+      "pieges": [
+        "300 et 400",
+        "500 et 600",
+        "450 et 460"
+      ],
+      "consigne": "Encadre à la centaine."
+    },
+    {
+      "id": "centaine-8",
+      "chapitre": "encadrer",
+      "type": "choix",
+      "question": "839 est entre…",
+      "reponse": "800 et 900",
+      "pieges": [
+        "700 et 800",
+        "900 et 1000",
+        "830 et 840"
+      ],
+      "consigne": "Encadre à la centaine."
+    },
+    {
+      "id": "centaine-9",
+      "chapitre": "encadrer",
+      "type": "choix",
+      "question": "738 est entre…",
+      "reponse": "700 et 800",
+      "pieges": [
+        "600 et 700",
+        "800 et 900",
+        "730 et 740"
+      ],
+      "consigne": "Encadre à la centaine."
+    },
+    {
+      "id": "centaine-10",
+      "chapitre": "encadrer",
+      "type": "choix",
+      "question": "900 est entre…",
+      "reponse": "900 et 1000",
+      "pieges": [
+        "800 et 900",
+        "1000 et 1100",
+        "900 et 910"
+      ],
+      "consigne": "Encadre à la centaine."
+    },
+    {
+      "id": "centaine-11",
+      "chapitre": "encadrer",
+      "type": "choix",
+      "question": "871 est entre…",
+      "reponse": "800 et 900",
+      "pieges": [
+        "700 et 800",
+        "900 et 1000",
+        "870 et 880"
+      ],
+      "consigne": "Encadre à la centaine."
+    },
+    {
+      "id": "centaine-12",
+      "chapitre": "encadrer",
+      "type": "choix",
+      "question": "933 est entre…",
+      "reponse": "900 et 1000",
+      "pieges": [
+        "800 et 900",
+        "1000 et 1100",
+        "930 et 940"
+      ],
+      "consigne": "Encadre à la centaine."
+    }
+  ],
+  "generateurs": [
+    {
+      "id": "signes",
+      "chapitre": "signes",
+      "operation": "comparaison",
+      "a": [
+        100,
+        999
+      ]
+    },
+    {
+      "id": "apres",
+      "chapitre": "avant-apres",
+      "operation": "modele",
+      "texte": "Quel nombre vient juste après {n} ?",
+      "variables": {
+        "n": [
+          99,
+          998
+        ]
+      },
+      "reponse": "n+1"
+    },
+    {
+      "id": "avant",
+      "chapitre": "avant-apres",
+      "operation": "modele",
+      "texte": "Quel nombre vient juste avant {n} ?",
+      "variables": {
+        "n": [
+          100,
+          999
+        ]
+      },
+      "reponse": "n-1"
+    },
+    {
+      "id": "dix-de-plus",
+      "chapitre": "avant-apres",
+      "operation": "modele",
+      "texte": "Quel nombre a 10 de plus que {n} ?",
+      "variables": {
+        "n": [
+          100,
+          989
+        ]
+      },
+      "reponse": "n+10"
+    }
+  ]
+}

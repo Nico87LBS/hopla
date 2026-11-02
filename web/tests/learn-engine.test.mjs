@@ -587,3 +587,30 @@ test('a clock is read among times that are easy to mix up', () => {
   assert.equal(source.fromKey('hr:12:15'), null)
   assert.ok(items.every(i => i.choices.includes(i.answer)))
 })
+
+test('a line is measured on a ruler, from 0 or further along', () => {
+  const source = generatorSource(
+    {
+      id: 'm',
+      chapitre: 'c',
+      operation: 'mesurer',
+      a: [1, 10],
+      formes: ['zero', 'decale'],
+    },
+    'essai',
+  )
+  const items = source.list()
+  const fromZero = items.find(i => i.key === 'mes:0:7')
+  assert.equal(fromZero.answer, '7 cm')
+  assert.deepEqual(fromZero.ruler, { start: 0, length: 7, size: 16 })
+  const along = source.fromKey('mes:3:5')
+  assert.equal(along.answer, '5 cm')
+  assert.ok(along.choices.includes('8 cm'), 'the end mark read as the length')
+  assert.ok(items.every(i => i.ruler.start + i.ruler.length <= 15))
+  assert.ok(
+    items.every(
+      i => new Set(i.choices).size === 4 && i.choices.includes(i.answer),
+    ),
+  )
+  assert.equal(source.fromKey('mes:9:9'), null)
+})

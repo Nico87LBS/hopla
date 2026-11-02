@@ -1,0 +1,589 @@
+{
+  "format": "hopla-module/1",
+  "id": "francais-ce1-phrase",
+  "version": "1.0.0",
+  "nom": "La phrase et les mots",
+  "description": "Les sortes de phrases, trouver le verbe et le sujet, et reconnaître un nom, un verbe ou un adjectif.",
+  "matiere": "francais",
+  "niveaux": [
+    "CE1"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de français du cycle 2 (2024) et les repères annuels de progression du CE1 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "types",
+      "nom": "Déclarative, interrogative, exclamative"
+    },
+    {
+      "id": "verbe",
+      "nom": "Le verbe",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "sujet",
+      "nom": "Le sujet",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "nature",
+      "nom": "Nom, verbe ou adjectif",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 8
+  },
+  "fiches": [
+    {
+      "id": "type-1",
+      "chapitre": "types",
+      "type": "choix",
+      "question": "Le chat dort sur le lit.",
+      "reponse": "déclarative",
+      "pieges": [
+        "interrogative",
+        "exclamative"
+      ],
+      "consigne": "Quelle sorte de phrase ?",
+      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!)."
+    },
+    {
+      "id": "type-2",
+      "chapitre": "types",
+      "type": "choix",
+      "question": "Où est mon cartable ?",
+      "reponse": "interrogative",
+      "pieges": [
+        "déclarative",
+        "exclamative"
+      ],
+      "consigne": "Quelle sorte de phrase ?",
+      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!)."
+    },
+    {
+      "id": "type-3",
+      "chapitre": "types",
+      "type": "choix",
+      "question": "Quelle belle fleur !",
+      "reponse": "exclamative",
+      "pieges": [
+        "déclarative",
+        "interrogative"
+      ],
+      "consigne": "Quelle sorte de phrase ?",
+      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!)."
+    },
+    {
+      "id": "type-4",
+      "chapitre": "types",
+      "type": "choix",
+      "question": "Il fait froid ce matin.",
+      "reponse": "déclarative",
+      "pieges": [
+        "interrogative",
+        "exclamative"
+      ],
+      "consigne": "Quelle sorte de phrase ?",
+      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!)."
+    },
+    {
+      "id": "type-5",
+      "chapitre": "types",
+      "type": "choix",
+      "question": "As-tu fini tes devoirs ?",
+      "reponse": "interrogative",
+      "pieges": [
+        "déclarative",
+        "exclamative"
+      ],
+      "consigne": "Quelle sorte de phrase ?",
+      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!)."
+    },
+    {
+      "id": "type-6",
+      "chapitre": "types",
+      "type": "choix",
+      "question": "Comme tu as grandi !",
+      "reponse": "exclamative",
+      "pieges": [
+        "déclarative",
+        "interrogative"
+      ],
+      "consigne": "Quelle sorte de phrase ?",
+      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!)."
+    },
+    {
+      "id": "type-7",
+      "chapitre": "types",
+      "type": "choix",
+      "question": "Nous allons à la piscine.",
+      "reponse": "déclarative",
+      "pieges": [
+        "interrogative",
+        "exclamative"
+      ],
+      "consigne": "Quelle sorte de phrase ?",
+      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!)."
+    },
+    {
+      "id": "type-8",
+      "chapitre": "types",
+      "type": "choix",
+      "question": "Qui a mangé le gâteau ?",
+      "reponse": "interrogative",
+      "pieges": [
+        "déclarative",
+        "exclamative"
+      ],
+      "consigne": "Quelle sorte de phrase ?",
+      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!)."
+    },
+    {
+      "id": "type-9",
+      "chapitre": "types",
+      "type": "choix",
+      "question": "Quel beau dessin !",
+      "reponse": "exclamative",
+      "pieges": [
+        "déclarative",
+        "interrogative"
+      ],
+      "consigne": "Quelle sorte de phrase ?",
+      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!)."
+    },
+    {
+      "id": "type-10",
+      "chapitre": "types",
+      "type": "choix",
+      "question": "Le train part à midi.",
+      "reponse": "déclarative",
+      "pieges": [
+        "interrogative",
+        "exclamative"
+      ],
+      "consigne": "Quelle sorte de phrase ?",
+      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!)."
+    },
+    {
+      "id": "type-11",
+      "chapitre": "types",
+      "type": "choix",
+      "question": "Pourquoi pleures-tu ?",
+      "reponse": "interrogative",
+      "pieges": [
+        "déclarative",
+        "exclamative"
+      ],
+      "consigne": "Quelle sorte de phrase ?",
+      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!)."
+    },
+    {
+      "id": "type-12",
+      "chapitre": "types",
+      "type": "choix",
+      "question": "Attention, ça brûle !",
+      "reponse": "exclamative",
+      "pieges": [
+        "déclarative",
+        "interrogative"
+      ],
+      "consigne": "Quelle sorte de phrase ?",
+      "explication": "Déclarative : elle raconte (.). Interrogative : elle pose une question (?). Exclamative : elle montre une émotion (!)."
+    },
+    {
+      "id": "verbe-1",
+      "chapitre": "verbe",
+      "type": "choix",
+      "question": "Le chien aboie fort.",
+      "reponse": "aboie",
+      "pieges": [
+        "chien",
+        "fort",
+        "le"
+      ],
+      "consigne": "Quel est le verbe ?",
+      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain."
+    },
+    {
+      "id": "verbe-2",
+      "chapitre": "verbe",
+      "type": "choix",
+      "question": "Léa mange une pomme.",
+      "reponse": "mange",
+      "pieges": [
+        "Léa",
+        "pomme",
+        "une"
+      ],
+      "consigne": "Quel est le verbe ?",
+      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain."
+    },
+    {
+      "id": "verbe-3",
+      "chapitre": "verbe",
+      "type": "choix",
+      "question": "Les oiseaux chantent le matin.",
+      "reponse": "chantent",
+      "pieges": [
+        "oiseaux",
+        "matin",
+        "les"
+      ],
+      "consigne": "Quel est le verbe ?",
+      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain."
+    },
+    {
+      "id": "verbe-4",
+      "chapitre": "verbe",
+      "type": "choix",
+      "question": "Papa lave la voiture.",
+      "reponse": "lave",
+      "pieges": [
+        "Papa",
+        "voiture",
+        "la"
+      ],
+      "consigne": "Quel est le verbe ?",
+      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain."
+    },
+    {
+      "id": "verbe-5",
+      "chapitre": "verbe",
+      "type": "choix",
+      "question": "Nous jouons dans la cour.",
+      "reponse": "jouons",
+      "pieges": [
+        "nous",
+        "cour",
+        "dans"
+      ],
+      "consigne": "Quel est le verbe ?",
+      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain."
+    },
+    {
+      "id": "verbe-6",
+      "chapitre": "verbe",
+      "type": "choix",
+      "question": "Le bébé dort.",
+      "reponse": "dort",
+      "pieges": [
+        "bébé",
+        "le"
+      ],
+      "consigne": "Quel est le verbe ?",
+      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain."
+    },
+    {
+      "id": "verbe-7",
+      "chapitre": "verbe",
+      "type": "choix",
+      "question": "Tom dessine un bateau.",
+      "reponse": "dessine",
+      "pieges": [
+        "Tom",
+        "bateau",
+        "un"
+      ],
+      "consigne": "Quel est le verbe ?",
+      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain."
+    },
+    {
+      "id": "verbe-8",
+      "chapitre": "verbe",
+      "type": "choix",
+      "question": "La neige tombe.",
+      "reponse": "tombe",
+      "pieges": [
+        "neige",
+        "la"
+      ],
+      "consigne": "Quel est le verbe ?",
+      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain."
+    },
+    {
+      "id": "verbe-9",
+      "chapitre": "verbe",
+      "type": "choix",
+      "question": "Les enfants courent vite.",
+      "reponse": "courent",
+      "pieges": [
+        "enfants",
+        "vite",
+        "les"
+      ],
+      "consigne": "Quel est le verbe ?",
+      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain."
+    },
+    {
+      "id": "verbe-10",
+      "chapitre": "verbe",
+      "type": "choix",
+      "question": "Maman lit le journal.",
+      "reponse": "lit",
+      "pieges": [
+        "Maman",
+        "journal",
+        "le"
+      ],
+      "consigne": "Quel est le verbe ?",
+      "explication": "Le verbe dit ce que l’on fait ; il change si on dit hier ou demain."
+    },
+    {
+      "id": "sujet-1",
+      "chapitre": "sujet",
+      "type": "choix",
+      "question": "Le chien aboie fort.",
+      "reponse": "le chien",
+      "pieges": [
+        "aboie",
+        "fort"
+      ],
+      "consigne": "Qui fait l’action ? (le sujet)"
+    },
+    {
+      "id": "sujet-2",
+      "chapitre": "sujet",
+      "type": "choix",
+      "question": "Léa mange une pomme.",
+      "reponse": "Léa",
+      "pieges": [
+        "mange",
+        "une",
+        "pomme"
+      ],
+      "consigne": "Qui fait l’action ? (le sujet)"
+    },
+    {
+      "id": "sujet-3",
+      "chapitre": "sujet",
+      "type": "choix",
+      "question": "Les oiseaux chantent le matin.",
+      "reponse": "les oiseaux",
+      "pieges": [
+        "chantent",
+        "le",
+        "matin"
+      ],
+      "consigne": "Qui fait l’action ? (le sujet)"
+    },
+    {
+      "id": "sujet-4",
+      "chapitre": "sujet",
+      "type": "choix",
+      "question": "Papa lave la voiture.",
+      "reponse": "Papa",
+      "pieges": [
+        "lave",
+        "la",
+        "voiture"
+      ],
+      "consigne": "Qui fait l’action ? (le sujet)"
+    },
+    {
+      "id": "sujet-5",
+      "chapitre": "sujet",
+      "type": "choix",
+      "question": "Nous jouons dans la cour.",
+      "reponse": "nous",
+      "pieges": [
+        "jouons",
+        "dans",
+        "la"
+      ],
+      "consigne": "Qui fait l’action ? (le sujet)"
+    },
+    {
+      "id": "sujet-6",
+      "chapitre": "sujet",
+      "type": "choix",
+      "question": "La neige tombe.",
+      "reponse": "la neige",
+      "pieges": [
+        "tombe"
+      ],
+      "consigne": "Qui fait l’action ? (le sujet)"
+    },
+    {
+      "id": "sujet-7",
+      "chapitre": "sujet",
+      "type": "choix",
+      "question": "Mon frère regarde un film.",
+      "reponse": "mon frère",
+      "pieges": [
+        "regarde",
+        "un",
+        "film"
+      ],
+      "consigne": "Qui fait l’action ? (le sujet)"
+    },
+    {
+      "id": "sujet-8",
+      "chapitre": "sujet",
+      "type": "choix",
+      "question": "Les vaches broutent l’herbe.",
+      "reponse": "les vaches",
+      "pieges": [
+        "broutent",
+        "l’herbe"
+      ],
+      "consigne": "Qui fait l’action ? (le sujet)"
+    },
+    {
+      "id": "nature-1",
+      "chapitre": "nature",
+      "type": "classer",
+      "question": "Nom, verbe ou adjectif ?",
+      "consigne": "Nom, verbe ou adjectif ?",
+      "boites": [
+        {
+          "nom": "Nom"
+        },
+        {
+          "nom": "Verbe"
+        },
+        {
+          "nom": "Adjectif"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "chat",
+          "boite": "Nom"
+        },
+        {
+          "texte": "maison",
+          "boite": "Nom"
+        },
+        {
+          "texte": "école",
+          "boite": "Nom"
+        },
+        {
+          "texte": "arbre",
+          "boite": "Nom"
+        },
+        {
+          "texte": "pomme",
+          "boite": "Nom"
+        },
+        {
+          "texte": "courir",
+          "boite": "Verbe"
+        },
+        {
+          "texte": "manger",
+          "boite": "Verbe"
+        },
+        {
+          "texte": "chanter",
+          "boite": "Verbe"
+        },
+        {
+          "texte": "dormir",
+          "boite": "Verbe"
+        },
+        {
+          "texte": "jouer",
+          "boite": "Verbe"
+        },
+        {
+          "texte": "grand",
+          "boite": "Adjectif"
+        },
+        {
+          "texte": "rouge",
+          "boite": "Adjectif"
+        },
+        {
+          "texte": "joli",
+          "boite": "Adjectif"
+        },
+        {
+          "texte": "petit",
+          "boite": "Adjectif"
+        },
+        {
+          "texte": "gentil",
+          "boite": "Adjectif"
+        }
+      ]
+    },
+    {
+      "id": "nature-2",
+      "chapitre": "nature",
+      "type": "classer",
+      "question": "Nom, verbe ou adjectif ?",
+      "consigne": "Nom, verbe ou adjectif ?",
+      "boites": [
+        {
+          "nom": "Nom"
+        },
+        {
+          "nom": "Verbe"
+        },
+        {
+          "nom": "Adjectif"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "vélo",
+          "boite": "Nom"
+        },
+        {
+          "texte": "fleur",
+          "boite": "Nom"
+        },
+        {
+          "texte": "livre",
+          "boite": "Nom"
+        },
+        {
+          "texte": "sauter",
+          "boite": "Verbe"
+        },
+        {
+          "texte": "lire",
+          "boite": "Verbe"
+        },
+        {
+          "texte": "écrire",
+          "boite": "Verbe"
+        },
+        {
+          "texte": "rapide",
+          "boite": "Adjectif"
+        },
+        {
+          "texte": "froid",
+          "boite": "Adjectif"
+        },
+        {
+          "texte": "content",
+          "boite": "Adjectif"
+        },
+        {
+          "texte": "nager",
+          "boite": "Verbe"
+        },
+        {
+          "texte": "soleil",
+          "boite": "Nom"
+        },
+        {
+          "texte": "blanc",
+          "boite": "Adjectif"
+        }
+      ]
+    }
+  ]
+}

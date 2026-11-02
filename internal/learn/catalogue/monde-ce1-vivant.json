@@ -1,0 +1,507 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-ce1-vivant",
+  "version": "1.0.0",
+  "nom": "Le vivant",
+  "description": "Les milieux de vie, qui mange quoi (les chaînes alimentaires) et le cycle de vie des animaux et des plantes.",
+  "matiere": "monde",
+  "niveaux": [
+    "CE1"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de questionner le monde du cycle 2 (2024) et les repères annuels de progression du CE1 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "milieux",
+      "nom": "Les milieux de vie"
+    },
+    {
+      "id": "chaines",
+      "nom": "Qui mange quoi ?",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "cycles",
+      "nom": "Le cycle de vie",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 8
+  },
+  "fiches": [
+    {
+      "id": "milieux-1",
+      "chapitre": "milieux",
+      "type": "classer",
+      "question": "Où vit-il ?",
+      "consigne": "Où vit-il ?",
+      "boites": [
+        {
+          "nom": "Dans l’eau"
+        },
+        {
+          "nom": "Dans la forêt"
+        },
+        {
+          "nom": "Dans la savane"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le dauphin",
+          "boite": "Dans l’eau",
+          "image": "dolphin"
+        },
+        {
+          "texte": "la pieuvre",
+          "boite": "Dans l’eau",
+          "image": "octopus"
+        },
+        {
+          "texte": "le requin",
+          "boite": "Dans l’eau",
+          "image": "shark"
+        },
+        {
+          "texte": "le crabe",
+          "boite": "Dans l’eau",
+          "image": "crab"
+        },
+        {
+          "texte": "le renard",
+          "boite": "Dans la forêt",
+          "image": "fox"
+        },
+        {
+          "texte": "le hibou",
+          "boite": "Dans la forêt",
+          "image": "owl"
+        },
+        {
+          "texte": "le hérisson",
+          "boite": "Dans la forêt",
+          "image": "hedgehog"
+        },
+        {
+          "texte": "l’ours",
+          "boite": "Dans la forêt",
+          "image": "bear"
+        },
+        {
+          "texte": "le lion",
+          "boite": "Dans la savane",
+          "image": "lion"
+        },
+        {
+          "texte": "la girafe",
+          "boite": "Dans la savane",
+          "image": "giraffe"
+        },
+        {
+          "texte": "le zèbre",
+          "boite": "Dans la savane",
+          "image": "zebra"
+        },
+        {
+          "texte": "l’éléphant",
+          "boite": "Dans la savane",
+          "image": "elephant"
+        }
+      ]
+    },
+    {
+      "id": "milieu-1",
+      "chapitre": "milieux",
+      "type": "choix",
+      "question": "Où vit le manchot ?",
+      "reponse": "sur la banquise",
+      "pieges": [
+        "dans le désert",
+        "dans la forêt",
+        "à la ferme"
+      ],
+      "consigne": "Où vit le manchot ?"
+    },
+    {
+      "id": "milieu-2",
+      "chapitre": "milieux",
+      "type": "choix",
+      "question": "Où vit le chameau ?",
+      "reponse": "dans le désert",
+      "pieges": [
+        "sur la banquise",
+        "dans la mer",
+        "dans la forêt"
+      ],
+      "consigne": "Où vit le chameau ?"
+    },
+    {
+      "id": "milieu-3",
+      "chapitre": "milieux",
+      "type": "choix",
+      "question": "Où vit la taupe ?",
+      "reponse": "sous la terre",
+      "pieges": [
+        "dans les arbres",
+        "dans l’eau",
+        "dans le ciel"
+      ],
+      "consigne": "Où vit la taupe ?"
+    },
+    {
+      "id": "milieu-4",
+      "chapitre": "milieux",
+      "type": "choix",
+      "question": "Pourquoi l’ours polaire a-t-il une épaisse fourrure ?",
+      "reponse": "pour avoir chaud dans le froid",
+      "pieges": [
+        "pour nager vite",
+        "pour se cacher dans le désert",
+        "pour voler"
+      ],
+      "consigne": "Pourquoi l’ours polaire a-t-il une épaisse fourrure ?"
+    },
+    {
+      "id": "milieu-5",
+      "chapitre": "milieux",
+      "type": "choix",
+      "question": "Le poisson respire dans l’eau grâce à…",
+      "reponse": "ses branchies",
+      "pieges": [
+        "ses poumons",
+        "son nez",
+        "ses nageoires"
+      ],
+      "consigne": "Le poisson respire dans l’eau grâce à…"
+    },
+    {
+      "id": "milieu-6",
+      "chapitre": "milieux",
+      "type": "choix",
+      "question": "Un milieu de vie, c’est…",
+      "reponse": "l’endroit où vit un animal ou une plante",
+      "pieges": [
+        "un animal",
+        "une saison",
+        "un aliment"
+      ],
+      "consigne": "Un milieu de vie, c’est…"
+    },
+    {
+      "id": "chaine-1",
+      "chapitre": "chaines",
+      "type": "ordre",
+      "question": "Remets la chaîne alimentaire dans l’ordre : qui est mangé par qui ?",
+      "consigne": "Remets la chaîne alimentaire dans l’ordre : qui est mangé par qui ?",
+      "elements": [
+        "l’herbe",
+        "le lapin",
+        "le renard"
+      ]
+    },
+    {
+      "id": "chaine-2",
+      "chapitre": "chaines",
+      "type": "ordre",
+      "question": "Remets la chaîne alimentaire dans l’ordre : qui est mangé par qui ?",
+      "consigne": "Remets la chaîne alimentaire dans l’ordre : qui est mangé par qui ?",
+      "elements": [
+        "la feuille",
+        "la chenille",
+        "l’oiseau"
+      ]
+    },
+    {
+      "id": "chaine-3",
+      "chapitre": "chaines",
+      "type": "ordre",
+      "question": "Remets la chaîne alimentaire dans l’ordre : qui est mangé par qui ?",
+      "consigne": "Remets la chaîne alimentaire dans l’ordre : qui est mangé par qui ?",
+      "elements": [
+        "l’herbe",
+        "la vache",
+        "l’homme"
+      ]
+    },
+    {
+      "id": "chaine-4",
+      "chapitre": "chaines",
+      "type": "ordre",
+      "question": "Remets la chaîne alimentaire dans l’ordre : qui est mangé par qui ?",
+      "consigne": "Remets la chaîne alimentaire dans l’ordre : qui est mangé par qui ?",
+      "elements": [
+        "la graine",
+        "la souris",
+        "le hibou"
+      ]
+    },
+    {
+      "id": "chaine-5",
+      "chapitre": "chaines",
+      "type": "ordre",
+      "question": "Remets la chaîne alimentaire dans l’ordre : qui est mangé par qui ?",
+      "consigne": "Remets la chaîne alimentaire dans l’ordre : qui est mangé par qui ?",
+      "elements": [
+        "les algues",
+        "le petit poisson",
+        "le requin"
+      ]
+    },
+    {
+      "id": "regime",
+      "chapitre": "chaines",
+      "type": "classer",
+      "question": "Que mange-t-il ?",
+      "consigne": "Que mange-t-il ?",
+      "boites": [
+        {
+          "nom": "Des plantes"
+        },
+        {
+          "nom": "Des animaux"
+        },
+        {
+          "nom": "Les deux"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "la vache",
+          "boite": "Des plantes",
+          "image": "cow"
+        },
+        {
+          "texte": "le lapin",
+          "boite": "Des plantes",
+          "image": "rabbit"
+        },
+        {
+          "texte": "la chenille",
+          "boite": "Des plantes",
+          "image": "caterpillar"
+        },
+        {
+          "texte": "le mouton",
+          "boite": "Des plantes",
+          "image": "sheep"
+        },
+        {
+          "texte": "le lion",
+          "boite": "Des animaux",
+          "image": "lion"
+        },
+        {
+          "texte": "le loup",
+          "boite": "Des animaux",
+          "image": "wolf"
+        },
+        {
+          "texte": "le requin",
+          "boite": "Des animaux",
+          "image": "shark"
+        },
+        {
+          "texte": "le hibou",
+          "boite": "Des animaux",
+          "image": "owl"
+        },
+        {
+          "texte": "l’ours",
+          "boite": "Les deux",
+          "image": "bear"
+        },
+        {
+          "texte": "le cochon",
+          "boite": "Les deux",
+          "image": "pig"
+        },
+        {
+          "texte": "la poule",
+          "boite": "Les deux",
+          "image": "hen"
+        }
+      ]
+    },
+    {
+      "id": "regime-1",
+      "chapitre": "chaines",
+      "type": "choix",
+      "question": "Un animal qui mange des plantes est…",
+      "reponse": "herbivore",
+      "pieges": [
+        "carnivore",
+        "omnivore",
+        "végétal"
+      ],
+      "consigne": "Un animal qui mange des plantes est…"
+    },
+    {
+      "id": "regime-2",
+      "chapitre": "chaines",
+      "type": "choix",
+      "question": "Un animal qui mange d’autres animaux est…",
+      "reponse": "carnivore",
+      "pieges": [
+        "herbivore",
+        "omnivore",
+        "végétal"
+      ],
+      "consigne": "Un animal qui mange d’autres animaux est…"
+    },
+    {
+      "id": "regime-3",
+      "chapitre": "chaines",
+      "type": "choix",
+      "question": "Un animal qui mange de tout est…",
+      "reponse": "omnivore",
+      "pieges": [
+        "carnivore",
+        "herbivore",
+        "minéral"
+      ],
+      "consigne": "Un animal qui mange de tout est…"
+    },
+    {
+      "id": "regime-4",
+      "chapitre": "chaines",
+      "type": "choix",
+      "question": "Au début d’une chaîne alimentaire, il y a toujours…",
+      "reponse": "une plante",
+      "pieges": [
+        "un lion",
+        "un requin",
+        "un caillou"
+      ],
+      "consigne": "Au début d’une chaîne alimentaire, il y a toujours…"
+    },
+    {
+      "id": "cycle-1",
+      "chapitre": "cycles",
+      "type": "ordre",
+      "question": "Remets le cycle de vie dans l’ordre.",
+      "consigne": "Remets le cycle de vie dans l’ordre.",
+      "elements": [
+        "l’œuf",
+        "la chenille",
+        "la chrysalide",
+        "le papillon"
+      ]
+    },
+    {
+      "id": "cycle-2",
+      "chapitre": "cycles",
+      "type": "ordre",
+      "question": "Remets le cycle de vie dans l’ordre.",
+      "consigne": "Remets le cycle de vie dans l’ordre.",
+      "elements": [
+        "les œufs",
+        "le têtard",
+        "la grenouille"
+      ]
+    },
+    {
+      "id": "cycle-3",
+      "chapitre": "cycles",
+      "type": "ordre",
+      "question": "Remets le cycle de vie dans l’ordre.",
+      "consigne": "Remets le cycle de vie dans l’ordre.",
+      "elements": [
+        "l’œuf",
+        "le poussin",
+        "la poule"
+      ]
+    },
+    {
+      "id": "cycle-4",
+      "chapitre": "cycles",
+      "type": "ordre",
+      "question": "Remets le cycle de vie dans l’ordre.",
+      "consigne": "Remets le cycle de vie dans l’ordre.",
+      "elements": [
+        "la graine",
+        "la pousse",
+        "la plante en fleur",
+        "le fruit"
+      ]
+    },
+    {
+      "id": "cycle-q1",
+      "chapitre": "cycles",
+      "type": "choix",
+      "question": "Que devient le têtard ?",
+      "reponse": "une grenouille",
+      "pieges": [
+        "un poisson",
+        "un serpent",
+        "un papillon"
+      ],
+      "consigne": "Que devient le têtard ?",
+      "image": "tadpole"
+    },
+    {
+      "id": "cycle-q2",
+      "chapitre": "cycles",
+      "type": "choix",
+      "question": "Que devient la chenille ?",
+      "reponse": "un papillon",
+      "pieges": [
+        "une abeille",
+        "une araignée",
+        "un escargot"
+      ],
+      "consigne": "Que devient la chenille ?",
+      "image": "caterpillar"
+    },
+    {
+      "id": "cycle-q3",
+      "chapitre": "cycles",
+      "type": "choix",
+      "question": "Dans quoi se trouve la graine de la pomme ?",
+      "reponse": "dans le fruit",
+      "pieges": [
+        "dans la racine",
+        "dans la feuille",
+        "dans la tige"
+      ],
+      "consigne": "Dans quoi se trouve la graine de la pomme ?",
+      "image": "apple"
+    },
+    {
+      "id": "cycle-q4",
+      "chapitre": "cycles",
+      "type": "choix",
+      "question": "Comment naît le poussin ?",
+      "reponse": "il sort d’un œuf",
+      "pieges": [
+        "il naît dans le ventre",
+        "il sort d’une graine",
+        "il tombe d’un arbre"
+      ],
+      "consigne": "Comment naît le poussin ?",
+      "image": "chick"
+    },
+    {
+      "id": "cycle-q5",
+      "chapitre": "cycles",
+      "type": "choix",
+      "question": "Comment naît le chaton ?",
+      "reponse": "dans le ventre de sa mère",
+      "pieges": [
+        "dans un œuf",
+        "dans une graine",
+        "dans un nid"
+      ],
+      "consigne": "Comment naît le chaton ?",
+      "image": "kitten"
+    }
+  ]
+}

@@ -1,0 +1,319 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-ce1-problemes",
+  "version": "1.0.0",
+  "nom": "Problèmes CE1",
+  "description": "Des problèmes pour ajouter, enlever, partager, multiplier, et des problèmes en deux étapes.",
+  "matiere": "maths",
+  "niveaux": [
+    "CE1"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de mathématiques du cycle 2 (2024) et les repères annuels de progression du CE1 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "ajouter-enlever",
+      "nom": "Ajouter, enlever"
+    },
+    {
+      "id": "partager",
+      "nom": "Partager",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "multiplier",
+      "nom": "Multiplier",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "deux-etapes",
+      "nom": "En deux étapes",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 8
+  },
+  "generateurs": [
+    {
+      "id": "billes",
+      "chapitre": "ajouter-enlever",
+      "operation": "modele",
+      "texte": "{p} a {a} billes. À la récréation, il en gagne {b}. Combien en a-t-il maintenant ?",
+      "variables": {
+        "p": {
+          "valeurs": [
+            "Léo",
+            "Noah",
+            "Tom",
+            "Malo"
+          ]
+        },
+        "a": [
+          15,
+          60
+        ],
+        "b": [
+          8,
+          35
+        ]
+      },
+      "reponse": "a+b",
+      "unite": "billes"
+    },
+    {
+      "id": "pages",
+      "chapitre": "ajouter-enlever",
+      "operation": "modele",
+      "texte": "Un livre a {a} pages. {p} en a lu {b}. Combien de pages lui reste-t-il à lire ?",
+      "variables": {
+        "p": {
+          "valeurs": [
+            "Léo",
+            "Inès",
+            "Noah",
+            "Jade",
+            "Malo",
+            "Lina",
+            "Tom",
+            "Lou"
+          ]
+        },
+        "a": [
+          60,
+          150
+        ],
+        "b": [
+          15,
+          55
+        ]
+      },
+      "reponse": "a-b",
+      "unite": "pages"
+    },
+    {
+      "id": "ecole",
+      "chapitre": "ajouter-enlever",
+      "operation": "modele",
+      "texte": "Dans l’école, il y a {a} filles et {b} garçons. Combien y a-t-il d’élèves ?",
+      "variables": {
+        "a": [
+          40,
+          120
+        ],
+        "b": [
+          40,
+          120
+        ]
+      },
+      "reponse": "a+b",
+      "unite": "élèves"
+    },
+    {
+      "id": "partage",
+      "chapitre": "partager",
+      "operation": "modele",
+      "texte": "{p} partage {n} bonbons entre {k} amis, autant pour chacun. Combien chacun en a-t-il ?",
+      "variables": {
+        "p": {
+          "valeurs": [
+            "Léo",
+            "Inès",
+            "Noah",
+            "Jade",
+            "Malo",
+            "Lina",
+            "Tom",
+            "Lou"
+          ]
+        },
+        "k": [
+          2,
+          5
+        ],
+        "q": [
+          2,
+          10
+        ]
+      },
+      "calculs": {
+        "n": "k*q"
+      },
+      "reponse": "q",
+      "unite": "bonbons"
+    },
+    {
+      "id": "equipes",
+      "chapitre": "partager",
+      "operation": "modele",
+      "texte": "La classe a {n} élèves. On fait des équipes de {k}. Combien d’équipes ?",
+      "variables": {
+        "k": {
+          "valeurs": [
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "q": [
+          3,
+          8
+        ]
+      },
+      "calculs": {
+        "n": "k*q"
+      },
+      "reponse": "q",
+      "unite": "équipes"
+    },
+    {
+      "id": "boites",
+      "chapitre": "multiplier",
+      "operation": "modele",
+      "texte": "Il y a {k} boîtes de {q} œufs. Combien d’œufs en tout ?",
+      "variables": {
+        "k": [
+          2,
+          5
+        ],
+        "q": {
+          "valeurs": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            10
+          ]
+        }
+      },
+      "reponse": "k*q",
+      "unite": "œufs"
+    },
+    {
+      "id": "pattes",
+      "chapitre": "multiplier",
+      "operation": "modele",
+      "texte": "Dans le pré, il y a {k} vaches. Combien de pattes en tout ?",
+      "variables": {
+        "k": [
+          2,
+          10
+        ]
+      },
+      "reponse": "k*4",
+      "unite": "pattes"
+    },
+    {
+      "id": "velos",
+      "chapitre": "multiplier",
+      "operation": "modele",
+      "texte": "Dans le garage, il y a {k} vélos. Combien de roues en tout ?",
+      "variables": {
+        "k": [
+          2,
+          10
+        ]
+      },
+      "reponse": "k*2",
+      "unite": "roues"
+    },
+    {
+      "id": "achats",
+      "chapitre": "deux-etapes",
+      "operation": "modele",
+      "texte": "{p} a {a} €. Il achète un livre à {b} € et un stylo à {c} €. Combien lui reste-t-il ?",
+      "variables": {
+        "p": {
+          "valeurs": [
+            "Léo",
+            "Noah",
+            "Tom"
+          ]
+        },
+        "a": [
+          20,
+          50
+        ],
+        "b": [
+          5,
+          12
+        ],
+        "c": [
+          1,
+          4
+        ]
+      },
+      "reponse": "a-b-c",
+      "unite": "€"
+    },
+    {
+      "id": "bus",
+      "chapitre": "deux-etapes",
+      "operation": "modele",
+      "texte": "Il y a {a} personnes dans le bus. {b} descendent, puis {c} montent. Combien sont-elles maintenant ?",
+      "variables": {
+        "a": [
+          20,
+          45
+        ],
+        "b": [
+          3,
+          15
+        ],
+        "c": [
+          2,
+          12
+        ]
+      },
+      "reponse": "a-b+c",
+      "unite": "personnes"
+    },
+    {
+      "id": "paquets",
+      "chapitre": "deux-etapes",
+      "operation": "modele",
+      "texte": "{p} a {k} paquets de {q} cartes et encore {r} cartes. Combien de cartes en tout ?",
+      "variables": {
+        "p": {
+          "valeurs": [
+            "Léo",
+            "Inès",
+            "Noah",
+            "Jade",
+            "Malo",
+            "Lina",
+            "Tom",
+            "Lou"
+          ]
+        },
+        "k": [
+          2,
+          5
+        ],
+        "q": {
+          "valeurs": [
+            2,
+            5,
+            10
+          ]
+        },
+        "r": [
+          1,
+          9
+        ]
+      },
+      "reponse": "k*q+r",
+      "unite": "cartes"
+    }
+  ]
+}

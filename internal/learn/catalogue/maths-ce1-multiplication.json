@@ -1,0 +1,336 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-ce1-multiplication",
+  "version": "1.0.0",
+  "nom": "La multiplication",
+  "description": "Comprendre la multiplication comme une addition répétée, les tables de 2, 5 et 10, puis de 3 et 4, et multiplier par 10.",
+  "matiere": "maths",
+  "niveaux": [
+    "CE1"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de mathématiques du cycle 2 (2024) et les repères annuels de progression du CE1 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "sens",
+      "nom": "Additions répétées"
+    },
+    {
+      "id": "tables-2-5-10",
+      "nom": "Tables de 2, 5 et 10",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "tables-3-4",
+      "nom": "Tables de 3 et 4",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "fois-10",
+      "nom": "Multiplier par 10",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 8
+  },
+  "fiches": [
+    {
+      "id": "repete-1",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "5 + 5 + 5 = ?",
+      "reponse": "3 × 5",
+      "pieges": [
+        "3 × 6",
+        "4 × 5",
+        "3 + 5"
+      ],
+      "consigne": "Écris l’addition comme une multiplication."
+    },
+    {
+      "id": "repete-2",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "2 + 2 + 2 + 2 = ?",
+      "reponse": "4 × 2",
+      "pieges": [
+        "4 × 3",
+        "5 × 2",
+        "4 + 2"
+      ],
+      "consigne": "Écris l’addition comme une multiplication."
+    },
+    {
+      "id": "repete-3",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "10 + 10 = ?",
+      "reponse": "2 × 10",
+      "pieges": [
+        "2 × 11",
+        "3 × 10",
+        "2 + 10"
+      ],
+      "consigne": "Écris l’addition comme une multiplication."
+    },
+    {
+      "id": "repete-4",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "3 + 3 + 3 + 3 + 3 = ?",
+      "reponse": "5 × 3",
+      "pieges": [
+        "5 × 4",
+        "6 × 3",
+        "5 + 3"
+      ],
+      "consigne": "Écris l’addition comme une multiplication."
+    },
+    {
+      "id": "repete-5",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "4 + 4 + 4 = ?",
+      "reponse": "3 × 4",
+      "pieges": [
+        "3 × 5",
+        "4 × 4",
+        "3 + 4"
+      ],
+      "consigne": "Écris l’addition comme une multiplication."
+    },
+    {
+      "id": "repete-6",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "5 + 5 + 5 + 5 = ?",
+      "reponse": "4 × 5",
+      "pieges": [
+        "4 × 6",
+        "5 × 5",
+        "4 + 5"
+      ],
+      "consigne": "Écris l’addition comme une multiplication."
+    },
+    {
+      "id": "repete-7",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "7 + 7 = ?",
+      "reponse": "2 × 7",
+      "pieges": [
+        "2 × 8",
+        "3 × 7",
+        "2 + 7"
+      ],
+      "consigne": "Écris l’addition comme une multiplication."
+    },
+    {
+      "id": "repete-8",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "2 + 2 + 2 + 2 + 2 = ?",
+      "reponse": "5 × 2",
+      "pieges": [
+        "5 × 3",
+        "6 × 2",
+        "5 + 2"
+      ],
+      "consigne": "Écris l’addition comme une multiplication."
+    },
+    {
+      "id": "repete-9",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "10 + 10 + 10 = ?",
+      "reponse": "3 × 10",
+      "pieges": [
+        "3 × 11",
+        "4 × 10",
+        "3 + 10"
+      ],
+      "consigne": "Écris l’addition comme une multiplication."
+    },
+    {
+      "id": "repete-10",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "2 + 2 + 2 + 2 + 2 + 2 = ?",
+      "reponse": "6 × 2",
+      "pieges": [
+        "6 × 3",
+        "7 × 2",
+        "6 + 2"
+      ],
+      "consigne": "Écris l’addition comme une multiplication."
+    },
+    {
+      "id": "repete-11",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "3 + 3 + 3 + 3 = ?",
+      "reponse": "4 × 3",
+      "pieges": [
+        "4 × 4",
+        "5 × 3",
+        "4 + 3"
+      ],
+      "consigne": "Écris l’addition comme une multiplication."
+    },
+    {
+      "id": "repete-12",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "9 + 9 = ?",
+      "reponse": "2 × 9",
+      "pieges": [
+        "2 × 10",
+        "3 × 9",
+        "2 + 9"
+      ],
+      "consigne": "Écris l’addition comme une multiplication."
+    },
+    {
+      "id": "paquets-1",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "3 paquets de 2 billes : combien de billes ?",
+      "reponse": "6",
+      "pieges": [
+        "5",
+        "7",
+        "4"
+      ],
+      "consigne": "Combien en tout ?"
+    },
+    {
+      "id": "paquets-2",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "4 paquets de 5 billes : combien de billes ?",
+      "reponse": "20",
+      "pieges": [
+        "9",
+        "21",
+        "15"
+      ],
+      "consigne": "Combien en tout ?"
+    },
+    {
+      "id": "paquets-3",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "2 paquets de 6 billes : combien de billes ?",
+      "reponse": "12",
+      "pieges": [
+        "8",
+        "13",
+        "6"
+      ],
+      "consigne": "Combien en tout ?"
+    },
+    {
+      "id": "paquets-4",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "5 paquets de 3 billes : combien de billes ?",
+      "reponse": "15",
+      "pieges": [
+        "8",
+        "16",
+        "12"
+      ],
+      "consigne": "Combien en tout ?"
+    },
+    {
+      "id": "paquets-5",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "3 paquets de 4 billes : combien de billes ?",
+      "reponse": "12",
+      "pieges": [
+        "7",
+        "13",
+        "8"
+      ],
+      "consigne": "Combien en tout ?"
+    },
+    {
+      "id": "paquets-6",
+      "chapitre": "sens",
+      "type": "choix",
+      "question": "2 paquets de 8 billes : combien de billes ?",
+      "reponse": "16",
+      "pieges": [
+        "10",
+        "17",
+        "8"
+      ],
+      "consigne": "Combien en tout ?"
+    }
+  ],
+  "generateurs": [
+    {
+      "id": "tables-2-5-10",
+      "chapitre": "tables-2-5-10",
+      "operation": "multiplication",
+      "tables": {
+        "valeurs": [
+          2,
+          5,
+          10
+        ]
+      },
+      "b": [
+        1,
+        10
+      ],
+      "formes": [
+        "normal",
+        "trou"
+      ]
+    },
+    {
+      "id": "tables-3-4",
+      "chapitre": "tables-3-4",
+      "operation": "multiplication",
+      "tables": {
+        "valeurs": [
+          3,
+          4
+        ]
+      },
+      "b": [
+        1,
+        10
+      ],
+      "formes": [
+        "normal",
+        "trou"
+      ]
+    },
+    {
+      "id": "fois-10",
+      "chapitre": "fois-10",
+      "operation": "multiplication",
+      "a": [
+        1,
+        99
+      ],
+      "b": {
+        "valeurs": [
+          10
+        ]
+      }
+    }
+  ]
+}

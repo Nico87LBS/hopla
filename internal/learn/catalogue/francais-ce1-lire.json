@@ -1,0 +1,499 @@
+{
+  "format": "hopla-module/1",
+  "id": "francais-ce1-lire",
+  "version": "1.0.0",
+  "nom": "Lire et comprendre",
+  "description": "De petits textes à lire avec une question, vrai ou faux, remettre une histoire dans l'ordre, et trouver qui parle.",
+  "matiere": "francais",
+  "niveaux": [
+    "CE1"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de français du cycle 2 (2024) et les repères annuels de progression du CE1 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "textes",
+      "nom": "Lire et répondre"
+    },
+    {
+      "id": "vrai-faux",
+      "nom": "Vrai ou faux",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "ordre",
+      "nom": "Remettre une histoire dans l’ordre",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "qui",
+      "nom": "Qui parle ?",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 8
+  },
+  "fiches": [
+    {
+      "id": "texte-1-1",
+      "chapitre": "textes",
+      "type": "choix",
+      "question": "Lou met ses bottes et son manteau. Elle prend son seau et sa pelle. Elle va à la plage avec Papi.\n\nOù va Lou ?",
+      "reponse": "à la plage",
+      "pieges": [
+        "à l’école",
+        "au parc",
+        "à la piscine"
+      ],
+      "consigne": "Lis le texte, puis réponds à la question."
+    },
+    {
+      "id": "texte-1-2",
+      "chapitre": "textes",
+      "type": "choix",
+      "question": "Lou met ses bottes et son manteau. Elle prend son seau et sa pelle. Elle va à la plage avec Papi.\n\nAvec qui part Lou ?",
+      "reponse": "avec Papi",
+      "pieges": [
+        "avec Maman",
+        "avec son frère",
+        "toute seule"
+      ],
+      "consigne": "Lis le texte, puis réponds à la question."
+    },
+    {
+      "id": "texte-2-1",
+      "chapitre": "textes",
+      "type": "choix",
+      "question": "Le chat de Sami s’appelle Moustache. Il est tout noir avec une tache blanche sur le nez. Il dort sur le lit.\n\nComment s’appelle le chat ?",
+      "reponse": "Moustache",
+      "pieges": [
+        "Sami",
+        "Minou",
+        "Tache"
+      ],
+      "consigne": "Lis le texte, puis réponds à la question."
+    },
+    {
+      "id": "texte-2-2",
+      "chapitre": "textes",
+      "type": "choix",
+      "question": "Le chat de Sami s’appelle Moustache. Il est tout noir avec une tache blanche sur le nez. Il dort sur le lit.\n\nDe quelle couleur est le chat ?",
+      "reponse": "noir",
+      "pieges": [
+        "blanc",
+        "roux",
+        "gris"
+      ],
+      "consigne": "Lis le texte, puis réponds à la question."
+    },
+    {
+      "id": "texte-3-1",
+      "chapitre": "textes",
+      "type": "choix",
+      "question": "Ce matin, Inès a perdu une dent. Ce soir, elle la met sous son oreiller. Demain, elle trouvera peut-être une pièce.\n\nQu’a perdu Inès ?",
+      "reponse": "une dent",
+      "pieges": [
+        "une pièce",
+        "son oreiller",
+        "sa clé"
+      ],
+      "consigne": "Lis le texte, puis réponds à la question."
+    },
+    {
+      "id": "texte-3-2",
+      "chapitre": "textes",
+      "type": "choix",
+      "question": "Ce matin, Inès a perdu une dent. Ce soir, elle la met sous son oreiller. Demain, elle trouvera peut-être une pièce.\n\nOù met-elle sa dent ?",
+      "reponse": "sous son oreiller",
+      "pieges": [
+        "dans sa poche",
+        "sur la table",
+        "dans un verre"
+      ],
+      "consigne": "Lis le texte, puis réponds à la question."
+    },
+    {
+      "id": "texte-4-1",
+      "chapitre": "textes",
+      "type": "choix",
+      "question": "Noah plante des graines de tomate. Il les arrose tous les jours. Au bout d’un mois, de petites plantes sortent de la terre.\n\nQue plante Noah ?",
+      "reponse": "des graines de tomate",
+      "pieges": [
+        "des fleurs",
+        "des pommes de terre",
+        "un arbre"
+      ],
+      "consigne": "Lis le texte, puis réponds à la question."
+    },
+    {
+      "id": "texte-4-2",
+      "chapitre": "textes",
+      "type": "choix",
+      "question": "Noah plante des graines de tomate. Il les arrose tous les jours. Au bout d’un mois, de petites plantes sortent de la terre.\n\nCombien de temps faut-il attendre ?",
+      "reponse": "un mois",
+      "pieges": [
+        "un jour",
+        "une heure",
+        "un an"
+      ],
+      "consigne": "Lis le texte, puis réponds à la question."
+    },
+    {
+      "id": "texte-5-1",
+      "chapitre": "textes",
+      "type": "choix",
+      "question": "Il pleut. Jade ne peut pas sortir. Alors elle construit une cabane avec des coussins et une couverture dans le salon.\n\nPourquoi Jade reste-t-elle dedans ?",
+      "reponse": "parce qu’il pleut",
+      "pieges": [
+        "parce qu’elle est malade",
+        "parce qu’il fait nuit",
+        "parce qu’elle est punie"
+      ],
+      "consigne": "Lis le texte, puis réponds à la question."
+    },
+    {
+      "id": "texte-5-2",
+      "chapitre": "textes",
+      "type": "choix",
+      "question": "Il pleut. Jade ne peut pas sortir. Alors elle construit une cabane avec des coussins et une couverture dans le salon.\n\nAvec quoi fait-elle sa cabane ?",
+      "reponse": "des coussins et une couverture",
+      "pieges": [
+        "des branches",
+        "des cartons",
+        "des chaises"
+      ],
+      "consigne": "Lis le texte, puis réponds à la question."
+    },
+    {
+      "id": "texte-6-1",
+      "chapitre": "textes",
+      "type": "choix",
+      "question": "Le facteur sonne. Il apporte un gros colis pour Malo. Dans le colis, il y a un ballon rouge et une carte de sa tante.\n\nQui sonne à la porte ?",
+      "reponse": "le facteur",
+      "pieges": [
+        "la tante",
+        "le voisin",
+        "Malo"
+      ],
+      "consigne": "Lis le texte, puis réponds à la question."
+    },
+    {
+      "id": "texte-6-2",
+      "chapitre": "textes",
+      "type": "choix",
+      "question": "Le facteur sonne. Il apporte un gros colis pour Malo. Dans le colis, il y a un ballon rouge et une carte de sa tante.\n\nQu’y a-t-il dans le colis ?",
+      "reponse": "un ballon et une carte",
+      "pieges": [
+        "un livre",
+        "un gâteau",
+        "des bonbons"
+      ],
+      "consigne": "Lis le texte, puis réponds à la question."
+    },
+    {
+      "id": "texte-7-1",
+      "chapitre": "textes",
+      "type": "choix",
+      "question": "Au zoo, Lina regarde les girafes. Elles mangent les feuilles en haut des arbres grâce à leur long cou.\n\nOù est Lina ?",
+      "reponse": "au zoo",
+      "pieges": [
+        "à la ferme",
+        "à l’école",
+        "en forêt"
+      ],
+      "consigne": "Lis le texte, puis réponds à la question."
+    },
+    {
+      "id": "texte-7-2",
+      "chapitre": "textes",
+      "type": "choix",
+      "question": "Au zoo, Lina regarde les girafes. Elles mangent les feuilles en haut des arbres grâce à leur long cou.\n\nPourquoi les girafes attrapent-elles les feuilles hautes ?",
+      "reponse": "grâce à leur long cou",
+      "pieges": [
+        "elles grimpent",
+        "elles sautent",
+        "elles volent"
+      ],
+      "consigne": "Lis le texte, puis réponds à la question."
+    },
+    {
+      "id": "texte-8-1",
+      "chapitre": "textes",
+      "type": "choix",
+      "question": "Tom a oublié son goûter. Léa partage sa pomme avec lui. Tom la remercie et lui prête ses feutres.\n\nQu’a oublié Tom ?",
+      "reponse": "son goûter",
+      "pieges": [
+        "ses feutres",
+        "son cartable",
+        "sa pomme"
+      ],
+      "consigne": "Lis le texte, puis réponds à la question."
+    },
+    {
+      "id": "texte-8-2",
+      "chapitre": "textes",
+      "type": "choix",
+      "question": "Tom a oublié son goûter. Léa partage sa pomme avec lui. Tom la remercie et lui prête ses feutres.\n\nQue fait Tom pour remercier Léa ?",
+      "reponse": "il lui prête ses feutres",
+      "pieges": [
+        "il lui donne un bonbon",
+        "il chante",
+        "il part"
+      ],
+      "consigne": "Lis le texte, puis réponds à la question."
+    },
+    {
+      "id": "vf-1-1",
+      "chapitre": "vrai-faux",
+      "type": "choix",
+      "question": "Le hérisson dort tout l’hiver dans un tas de feuilles. Au printemps, il se réveille et cherche des insectes.\n\n« Le hérisson dort en hiver. »",
+      "reponse": "Vrai",
+      "pieges": [
+        "Faux"
+      ],
+      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?"
+    },
+    {
+      "id": "vf-1-2",
+      "chapitre": "vrai-faux",
+      "type": "choix",
+      "question": "Le hérisson dort tout l’hiver dans un tas de feuilles. Au printemps, il se réveille et cherche des insectes.\n\n« Le hérisson mange des feuilles. »",
+      "reponse": "Faux",
+      "pieges": [
+        "Vrai"
+      ],
+      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?"
+    },
+    {
+      "id": "vf-2-1",
+      "chapitre": "vrai-faux",
+      "type": "choix",
+      "question": "Paul prend le bus à huit heures. Il arrive à l’école à huit heures et demie.\n\n« Paul va à l’école à pied. »",
+      "reponse": "Faux",
+      "pieges": [
+        "Vrai"
+      ],
+      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?"
+    },
+    {
+      "id": "vf-2-2",
+      "chapitre": "vrai-faux",
+      "type": "choix",
+      "question": "Paul prend le bus à huit heures. Il arrive à l’école à huit heures et demie.\n\n« Le trajet dure une demi-heure. »",
+      "reponse": "Vrai",
+      "pieges": [
+        "Faux"
+      ],
+      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?"
+    },
+    {
+      "id": "vf-3-1",
+      "chapitre": "vrai-faux",
+      "type": "choix",
+      "question": "Mamie fait une tarte aux pommes. Elle épluche les pommes, les coupe et les pose sur la pâte.\n\n« Mamie fait un gâteau au chocolat. »",
+      "reponse": "Faux",
+      "pieges": [
+        "Vrai"
+      ],
+      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?"
+    },
+    {
+      "id": "vf-3-2",
+      "chapitre": "vrai-faux",
+      "type": "choix",
+      "question": "Mamie fait une tarte aux pommes. Elle épluche les pommes, les coupe et les pose sur la pâte.\n\n« Elle coupe les pommes. »",
+      "reponse": "Vrai",
+      "pieges": [
+        "Faux"
+      ],
+      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?"
+    },
+    {
+      "id": "vf-4-1",
+      "chapitre": "vrai-faux",
+      "type": "choix",
+      "question": "La chouette chasse la nuit. Le jour, elle dort dans un trou d’arbre.\n\n« La chouette dort la nuit. »",
+      "reponse": "Faux",
+      "pieges": [
+        "Vrai"
+      ],
+      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?"
+    },
+    {
+      "id": "vf-4-2",
+      "chapitre": "vrai-faux",
+      "type": "choix",
+      "question": "La chouette chasse la nuit. Le jour, elle dort dans un trou d’arbre.\n\n« Elle vit dans un arbre. »",
+      "reponse": "Vrai",
+      "pieges": [
+        "Faux"
+      ],
+      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?"
+    },
+    {
+      "id": "histoire-1",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les phrases de l’histoire dans l’ordre.",
+      "consigne": "Remets les phrases de l’histoire dans l’ordre.",
+      "elements": [
+        "Le réveil sonne.",
+        "Léo s’habille.",
+        "Il mange ses céréales.",
+        "Il part à l’école."
+      ]
+    },
+    {
+      "id": "histoire-2",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les phrases de l’histoire dans l’ordre.",
+      "consigne": "Remets les phrases de l’histoire dans l’ordre.",
+      "elements": [
+        "Nina prend un œuf.",
+        "Elle le casse dans le bol.",
+        "Elle le bat.",
+        "Elle fait une omelette."
+      ]
+    },
+    {
+      "id": "histoire-3",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les phrases de l’histoire dans l’ordre.",
+      "consigne": "Remets les phrases de l’histoire dans l’ordre.",
+      "elements": [
+        "Le ciel devient noir.",
+        "Il commence à pleuvoir.",
+        "La pluie s’arrête.",
+        "Le soleil revient."
+      ]
+    },
+    {
+      "id": "histoire-4",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les phrases de l’histoire dans l’ordre.",
+      "consigne": "Remets les phrases de l’histoire dans l’ordre.",
+      "elements": [
+        "Sami trouve une graine.",
+        "Il la plante.",
+        "Une tige pousse.",
+        "Une fleur s’ouvre."
+      ]
+    },
+    {
+      "id": "histoire-5",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les phrases de l’histoire dans l’ordre.",
+      "consigne": "Remets les phrases de l’histoire dans l’ordre.",
+      "elements": [
+        "Lou fait une boule de neige.",
+        "Elle la roule dans la neige.",
+        "Elle pose une tête dessus.",
+        "Elle ajoute une carotte pour le nez."
+      ]
+    },
+    {
+      "id": "histoire-6",
+      "chapitre": "ordre",
+      "type": "ordre",
+      "question": "Remets les phrases de l’histoire dans l’ordre.",
+      "consigne": "Remets les phrases de l’histoire dans l’ordre.",
+      "elements": [
+        "Le chat voit la souris.",
+        "Il s’approche doucement.",
+        "Il saute.",
+        "La souris file dans son trou."
+      ]
+    },
+    {
+      "id": "qui-1",
+      "chapitre": "qui",
+      "type": "choix",
+      "question": "« Je suis fatigué », dit le loup.",
+      "reponse": "le loup",
+      "pieges": [
+        "le petit chaperon",
+        "la grand-mère",
+        "le chasseur"
+      ],
+      "consigne": "Qui parle ?"
+    },
+    {
+      "id": "qui-2",
+      "chapitre": "qui",
+      "type": "choix",
+      "question": "La maîtresse demande : « Qui a fini ? »",
+      "reponse": "la maîtresse",
+      "pieges": [
+        "les élèves",
+        "le directeur",
+        "Maman"
+      ],
+      "consigne": "Qui parle ?"
+    },
+    {
+      "id": "qui-3",
+      "chapitre": "qui",
+      "type": "choix",
+      "question": "« Attends-moi ! » crie Lina à son frère.",
+      "reponse": "Lina",
+      "pieges": [
+        "son frère",
+        "Maman",
+        "le chien"
+      ],
+      "consigne": "Qui parle ?"
+    },
+    {
+      "id": "qui-4",
+      "chapitre": "qui",
+      "type": "choix",
+      "question": "Papa répond : « Nous partons demain. »",
+      "reponse": "Papa",
+      "pieges": [
+        "Maman",
+        "les enfants",
+        "le voisin"
+      ],
+      "consigne": "Qui parle ?"
+    },
+    {
+      "id": "qui-5",
+      "chapitre": "qui",
+      "type": "choix",
+      "question": "« Quelle belle journée ! » s’exclame Mamie.",
+      "reponse": "Mamie",
+      "pieges": [
+        "Papi",
+        "la maîtresse",
+        "Lou"
+      ],
+      "consigne": "Qui parle ?"
+    },
+    {
+      "id": "qui-6",
+      "chapitre": "qui",
+      "type": "choix",
+      "question": "Le boulanger dit : « Voici ta baguette. »",
+      "reponse": "le boulanger",
+      "pieges": [
+        "l’enfant",
+        "la vendeuse",
+        "le client"
+      ],
+      "consigne": "Qui parle ?"
+    }
+  ]
+}

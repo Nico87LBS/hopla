@@ -1,0 +1,404 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-ce1-espace",
+  "version": "1.0.0",
+  "nom": "L’espace",
+  "description": "Le plan et la carte, les paysages, la France et les continents sur la carte du monde, et les points cardinaux.",
+  "matiere": "monde",
+  "niveaux": [
+    "CE1"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de questionner le monde du cycle 2 (2024) et les repères annuels de progression du CE1 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "plan",
+      "nom": "Plan et carte"
+    },
+    {
+      "id": "paysages",
+      "nom": "Les paysages",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "monde",
+      "nom": "La France et les continents",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "cardinaux",
+      "nom": "Les points cardinaux",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 8
+  },
+  "fiches": [
+    {
+      "id": "plan-1",
+      "chapitre": "plan",
+      "type": "choix",
+      "question": "Un plan, c’est un dessin vu…",
+      "reponse": "d’en haut",
+      "pieges": [
+        "de côté",
+        "de dessous",
+        "de loin"
+      ],
+      "consigne": "Un plan, c’est un dessin vu…"
+    },
+    {
+      "id": "plan-2",
+      "chapitre": "plan",
+      "type": "choix",
+      "question": "Sur une carte, la légende sert à…",
+      "reponse": "expliquer les couleurs et les signes",
+      "pieges": [
+        "raconter une histoire",
+        "décorer",
+        "écrire son nom"
+      ],
+      "consigne": "Sur une carte, la légende sert à…"
+    },
+    {
+      "id": "plan-3",
+      "chapitre": "plan",
+      "type": "choix",
+      "question": "Sur une carte, le bleu représente souvent…",
+      "reponse": "l’eau",
+      "pieges": [
+        "les routes",
+        "les forêts",
+        "les villes"
+      ],
+      "consigne": "Sur une carte, le bleu représente souvent…"
+    },
+    {
+      "id": "plan-4",
+      "chapitre": "plan",
+      "type": "choix",
+      "question": "Sur une carte, le vert représente souvent…",
+      "reponse": "les forêts et les prés",
+      "pieges": [
+        "la mer",
+        "les routes",
+        "la neige"
+      ],
+      "consigne": "Sur une carte, le vert représente souvent…"
+    },
+    {
+      "id": "plan-5",
+      "chapitre": "plan",
+      "type": "choix",
+      "question": "Pour aller dans une ville inconnue, on utilise…",
+      "reponse": "une carte",
+      "pieges": [
+        "un calendrier",
+        "une horloge",
+        "un thermomètre"
+      ],
+      "consigne": "Pour aller dans une ville inconnue, on utilise…"
+    },
+    {
+      "id": "paysages",
+      "chapitre": "paysages",
+      "type": "classer",
+      "question": "Dans quel paysage ?",
+      "consigne": "Dans quel paysage ?",
+      "boites": [
+        {
+          "nom": "La mer"
+        },
+        {
+          "nom": "La montagne"
+        },
+        {
+          "nom": "La campagne"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "la plage",
+          "boite": "La mer"
+        },
+        {
+          "texte": "le phare",
+          "boite": "La mer"
+        },
+        {
+          "texte": "le port",
+          "boite": "La mer"
+        },
+        {
+          "texte": "le sommet",
+          "boite": "La montagne"
+        },
+        {
+          "texte": "la piste de ski",
+          "boite": "La montagne"
+        },
+        {
+          "texte": "le chalet",
+          "boite": "La montagne"
+        },
+        {
+          "texte": "le champ",
+          "boite": "La campagne"
+        },
+        {
+          "texte": "la ferme",
+          "boite": "La campagne",
+          "image": "barn"
+        },
+        {
+          "texte": "le tracteur",
+          "boite": "La campagne"
+        }
+      ]
+    },
+    {
+      "id": "ville",
+      "chapitre": "paysages",
+      "type": "classer",
+      "question": "En ville ou à la campagne ?",
+      "consigne": "En ville ou à la campagne ?",
+      "boites": [
+        {
+          "nom": "En ville"
+        },
+        {
+          "nom": "À la campagne"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "les immeubles",
+          "boite": "En ville"
+        },
+        {
+          "texte": "le métro",
+          "boite": "En ville"
+        },
+        {
+          "texte": "les embouteillages",
+          "boite": "En ville"
+        },
+        {
+          "texte": "le grand magasin",
+          "boite": "En ville"
+        },
+        {
+          "texte": "les vaches",
+          "boite": "À la campagne"
+        },
+        {
+          "texte": "les champs de blé",
+          "boite": "À la campagne"
+        },
+        {
+          "texte": "le tracteur",
+          "boite": "À la campagne"
+        },
+        {
+          "texte": "le petit village",
+          "boite": "À la campagne"
+        }
+      ]
+    },
+    {
+      "id": "continent-europe",
+      "chapitre": "monde",
+      "type": "zones",
+      "image": "carte-monde",
+      "question": "europe",
+      "reponse": "l’Europe"
+    },
+    {
+      "id": "continent-afrique",
+      "chapitre": "monde",
+      "type": "zones",
+      "image": "carte-monde",
+      "question": "afrique",
+      "reponse": "l’Afrique"
+    },
+    {
+      "id": "continent-asie",
+      "chapitre": "monde",
+      "type": "zones",
+      "image": "carte-monde",
+      "question": "asie",
+      "reponse": "l’Asie"
+    },
+    {
+      "id": "continent-amerique-du-nord",
+      "chapitre": "monde",
+      "type": "zones",
+      "image": "carte-monde",
+      "question": "amerique-du-nord",
+      "reponse": "l’Amérique du Nord"
+    },
+    {
+      "id": "continent-amerique-du-sud",
+      "chapitre": "monde",
+      "type": "zones",
+      "image": "carte-monde",
+      "question": "amerique-du-sud",
+      "reponse": "l’Amérique du Sud"
+    },
+    {
+      "id": "continent-oceanie",
+      "chapitre": "monde",
+      "type": "zones",
+      "image": "carte-monde",
+      "question": "oceanie",
+      "reponse": "l’Océanie"
+    },
+    {
+      "id": "continent-antarctique",
+      "chapitre": "monde",
+      "type": "zones",
+      "image": "carte-monde",
+      "question": "antarctique",
+      "reponse": "l’Antarctique"
+    },
+    {
+      "id": "terre-1",
+      "chapitre": "monde",
+      "type": "choix",
+      "question": "Sur quel continent est la France ?",
+      "reponse": "l’Europe",
+      "pieges": [
+        "l’Afrique",
+        "l’Asie",
+        "l’Amérique"
+      ],
+      "consigne": "Sur quel continent est la France ?"
+    },
+    {
+      "id": "terre-2",
+      "chapitre": "monde",
+      "type": "choix",
+      "question": "La capitale de la France est…",
+      "reponse": "Paris",
+      "pieges": [
+        "Lyon",
+        "Marseille",
+        "Lille"
+      ],
+      "consigne": "La capitale de la France est…"
+    },
+    {
+      "id": "terre-3",
+      "chapitre": "monde",
+      "type": "choix",
+      "question": "Combien y a-t-il de continents ?",
+      "reponse": "7",
+      "pieges": [
+        "3",
+        "5",
+        "12"
+      ],
+      "consigne": "Combien y a-t-il de continents ?"
+    },
+    {
+      "id": "terre-4",
+      "chapitre": "monde",
+      "type": "choix",
+      "question": "La Terre est surtout couverte…",
+      "reponse": "d’eau",
+      "pieges": [
+        "de forêts",
+        "de villes",
+        "de sable"
+      ],
+      "consigne": "La Terre est surtout couverte…"
+    },
+    {
+      "id": "cardinaux-1",
+      "chapitre": "cardinaux",
+      "type": "choix",
+      "question": "Le soleil se lève à…",
+      "reponse": "l’est",
+      "pieges": [
+        "l’ouest",
+        "au nord",
+        "au sud"
+      ],
+      "consigne": "Le soleil se lève à…"
+    },
+    {
+      "id": "cardinaux-2",
+      "chapitre": "cardinaux",
+      "type": "choix",
+      "question": "Le soleil se couche à…",
+      "reponse": "l’ouest",
+      "pieges": [
+        "l’est",
+        "au nord",
+        "au sud"
+      ],
+      "consigne": "Le soleil se couche à…"
+    },
+    {
+      "id": "cardinaux-3",
+      "chapitre": "cardinaux",
+      "type": "choix",
+      "question": "Sur une carte, le nord est souvent…",
+      "reponse": "en haut",
+      "pieges": [
+        "en bas",
+        "à gauche",
+        "à droite"
+      ],
+      "consigne": "Sur une carte, le nord est souvent…"
+    },
+    {
+      "id": "cardinaux-4",
+      "chapitre": "cardinaux",
+      "type": "choix",
+      "question": "Quel objet indique le nord ?",
+      "reponse": "la boussole",
+      "pieges": [
+        "la montre",
+        "la règle",
+        "le thermomètre"
+      ],
+      "consigne": "Quel objet indique le nord ?"
+    },
+    {
+      "id": "cardinaux-5",
+      "chapitre": "cardinaux",
+      "type": "choix",
+      "question": "Les quatre points cardinaux sont…",
+      "reponse": "nord, sud, est, ouest",
+      "pieges": [
+        "haut, bas, gauche, droite",
+        "été, hiver, printemps, automne",
+        "matin, midi, soir, nuit"
+      ],
+      "consigne": "Les quatre points cardinaux sont…"
+    },
+    {
+      "id": "cardinaux-ordre",
+      "chapitre": "cardinaux",
+      "type": "ordre",
+      "question": "En tournant comme les aiguilles d’une montre, à partir du nord.",
+      "consigne": "En tournant comme les aiguilles d’une montre, à partir du nord.",
+      "elements": [
+        "nord",
+        "est",
+        "sud",
+        "ouest"
+      ]
+    }
+  ]
+}

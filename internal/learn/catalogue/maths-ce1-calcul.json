@@ -1,0 +1,122 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-ce1-calcul",
+  "version": "1.0.0",
+  "nom": "Additions et soustractions",
+  "description": "Additions et soustractions avec retenue jusqu'à 100, puis jusqu'à 1 000. On peut poser l'opération sur une feuille.",
+  "matiere": "maths",
+  "niveaux": [
+    "CE1"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de mathématiques du cycle 2 (2024) et les repères annuels de progression du CE1 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "add-100",
+      "nom": "Additions avec retenue jusqu’à 100"
+    },
+    {
+      "id": "sub-100",
+      "nom": "Soustractions avec retenue jusqu’à 100",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "add-1000",
+      "nom": "Additions jusqu’à 1 000",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "sub-1000",
+      "nom": "Soustractions jusqu’à 1 000",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 8
+  },
+  "generateurs": [
+    {
+      "id": "add-100",
+      "chapitre": "add-100",
+      "operation": "addition",
+      "a": [
+        11,
+        89
+      ],
+      "b": [
+        11,
+        89
+      ],
+      "retenue": "avec",
+      "resultat_max": 99
+    },
+    {
+      "id": "sub-100",
+      "chapitre": "sub-100",
+      "operation": "soustraction",
+      "a": [
+        30,
+        99
+      ],
+      "b": [
+        11,
+        89
+      ],
+      "retenue": "avec",
+      "resultat_min": 1
+    },
+    {
+      "id": "add-1000",
+      "chapitre": "add-1000",
+      "operation": "addition",
+      "a": [
+        100,
+        899
+      ],
+      "b": [
+        10,
+        499
+      ],
+      "resultat_max": 999
+    },
+    {
+      "id": "sub-1000",
+      "chapitre": "sub-1000",
+      "operation": "soustraction",
+      "a": [
+        200,
+        999
+      ],
+      "b": [
+        10,
+        199
+      ],
+      "resultat_min": 1
+    },
+    {
+      "id": "add-trou",
+      "chapitre": "add-100",
+      "operation": "addition",
+      "a": [
+        10,
+        60
+      ],
+      "b": [
+        5,
+        39
+      ],
+      "formes": [
+        "trou"
+      ],
+      "resultat_max": 99
+    }
+  ]
+}

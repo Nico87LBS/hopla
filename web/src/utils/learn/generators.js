@@ -567,6 +567,73 @@ const clockSource = gen => {
   }
 }
 
+// Measuring a line drawn above a ruler, in centimetres. The lengths come
+// from `a` (1 to 15); `formes` says where the line starts: `zero` (at the
+// 0 of the ruler) or `decale` (further along, where reading the end mark
+// is the trap). The answer is picked among four lengths.
+const RULER_CM = 16
+
+const rulerSource = gen => {
+  const A = parseSpec(gen.a ?? [1, 15])
+  const forms = (gen.formes?.length ? gen.formes : ['zero']).filter(form =>
+    ['zero', 'decale'].includes(form),
+  )
+  const starts = form =>
+    form === 'zero' ? [0] : Array.from({ length: 6 }, (_, i) => i + 1)
+  const valid = (start, n) =>
+    Number.isInteger(n) && n >= 1 && start + n <= RULER_CM - 1
+  const item = (start, n) => {
+    const near = [start ? start + n : n + 2, n + 1, n - 1, n + 2, n - 2, n + 3]
+    const choices = [n]
+    for (const m of near) {
+      if (choices.length < 4 && m >= 1 && !choices.includes(m)) choices.push(m)
+    }
+    return {
+      key: `mes:${start}:${n}`,
+      prompt: 'Combien mesure le trait ?',
+      answer: `${n} cm`,
+      ruler: { start, length: n, size: RULER_CM },
+      mode: 'choice',
+      choices: choices.sort((a, b) => a - b).map(m => `${m} cm`),
+      keepOrder: true,
+    }
+  }
+  const all = () =>
+    forms.flatMap(form =>
+      starts(form).flatMap(start =>
+        specAll(A)
+          .filter(n => valid(start, n))
+          .map(n => [start, n]),
+      ),
+    )
+  return {
+    size: forms.length * 6 * specCount(A),
+    list: () => all().map(([start, n]) => item(start, n)),
+    draw: rng => {
+      for (let i = 0; i < DRAW_TRIES; i++) {
+        const form = forms[Math.floor(rng() * forms.length)]
+        const options = starts(form)
+        const start = options[Math.floor(rng() * options.length)]
+        const n = specPick(A, rng)
+        if (valid(start, n)) return item(start, n)
+      }
+      return null
+    },
+    fromKey: key => {
+      const found = /^mes:(\d+):(\d+)$/.exec(key)
+      if (!found) return null
+      const [start, n] = [Number(found[1]), Number(found[2])]
+      const form = start ? 'decale' : 'zero'
+      return forms.includes(form) &&
+        starts(form).includes(start) &&
+        specHas(A, n) &&
+        valid(start, n)
+        ? item(start, n)
+        : null
+    },
+  }
+}
+
 // ── the player's first name ──
 
 // NAME_WORD stands for the player's first name in a card; without one, the
@@ -722,6 +789,7 @@ const SOURCES = {
   compter: countSource,
   prenom: firstNameSource,
   heure: clockSource,
+  mesurer: rulerSource,
 }
 
 // generatorSource turns a generator of a module into a question source.

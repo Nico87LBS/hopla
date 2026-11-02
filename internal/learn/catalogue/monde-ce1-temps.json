@@ -1,0 +1,358 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-ce1-temps",
+  "version": "1.0.0",
+  "nom": "Le temps",
+  "description": "Le calendrier, la frise du temps, les générations de la famille, et les objets d'autrefois et d'aujourd'hui.",
+  "matiere": "monde",
+  "niveaux": [
+    "CE1"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de questionner le monde du cycle 2 (2024) et les repères annuels de progression du CE1 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "calendrier",
+      "nom": "Le calendrier"
+    },
+    {
+      "id": "frise",
+      "nom": "La frise du temps",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "generations",
+      "nom": "Les générations",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "autrefois",
+      "nom": "Autrefois et aujourd’hui",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 8
+  },
+  "fiches": [
+    {
+      "id": "calendrier-1",
+      "chapitre": "calendrier",
+      "type": "choix",
+      "question": "Combien de jours dans une année ?",
+      "reponse": "365",
+      "pieges": [
+        "100",
+        "30",
+        "12"
+      ],
+      "consigne": "Combien de jours dans une année ?"
+    },
+    {
+      "id": "calendrier-2",
+      "chapitre": "calendrier",
+      "type": "choix",
+      "question": "Combien de semaines environ dans un mois ?",
+      "reponse": "4",
+      "pieges": [
+        "2",
+        "10",
+        "12"
+      ],
+      "consigne": "Combien de semaines environ dans un mois ?"
+    },
+    {
+      "id": "calendrier-3",
+      "chapitre": "calendrier",
+      "type": "choix",
+      "question": "Quel mois a 28 ou 29 jours ?",
+      "reponse": "février",
+      "pieges": [
+        "janvier",
+        "mars",
+        "décembre"
+      ],
+      "consigne": "Quel mois a 28 ou 29 jours ?"
+    },
+    {
+      "id": "calendrier-4",
+      "chapitre": "calendrier",
+      "type": "choix",
+      "question": "Le 14 juillet, c’est la fête…",
+      "reponse": "nationale",
+      "pieges": [
+        "de Noël",
+        "des mères",
+        "de la rentrée"
+      ],
+      "consigne": "Le 14 juillet, c’est la fête…"
+    },
+    {
+      "id": "calendrier-5",
+      "chapitre": "calendrier",
+      "type": "choix",
+      "question": "Quel jour vient deux jours après lundi ?",
+      "reponse": "mercredi",
+      "pieges": [
+        "mardi",
+        "jeudi",
+        "dimanche"
+      ],
+      "consigne": "Quel jour vient deux jours après lundi ?"
+    },
+    {
+      "id": "calendrier-6",
+      "chapitre": "calendrier",
+      "type": "choix",
+      "question": "Sur le calendrier, après le 31 janvier vient…",
+      "reponse": "le 1er février",
+      "pieges": [
+        "le 32 janvier",
+        "le 1er mars",
+        "le 30 janvier"
+      ],
+      "consigne": "Sur le calendrier, après le 31 janvier vient…"
+    },
+    {
+      "id": "calendrier-7",
+      "chapitre": "calendrier",
+      "type": "choix",
+      "question": "Combien de mois a une saison ?",
+      "reponse": "3",
+      "pieges": [
+        "4",
+        "6",
+        "12"
+      ],
+      "consigne": "Combien de mois a une saison ?"
+    },
+    {
+      "id": "mois-saison",
+      "chapitre": "calendrier",
+      "type": "ordre",
+      "question": "Remets dans l’ordre les mois de l’été.",
+      "consigne": "Remets dans l’ordre les mois de l’été.",
+      "elements": [
+        "juin",
+        "juillet",
+        "août"
+      ]
+    },
+    {
+      "id": "frise-1",
+      "chapitre": "frise",
+      "type": "ordre",
+      "question": "Place dans l’ordre sur la frise du temps, du plus ancien au plus récent.",
+      "consigne": "Place dans l’ordre sur la frise du temps, du plus ancien au plus récent.",
+      "elements": [
+        "bébé",
+        "enfant",
+        "adolescent",
+        "adulte",
+        "personne âgée"
+      ]
+    },
+    {
+      "id": "frise-2",
+      "chapitre": "frise",
+      "type": "ordre",
+      "question": "Place dans l’ordre sur la frise du temps, du plus ancien au plus récent.",
+      "consigne": "Place dans l’ordre sur la frise du temps, du plus ancien au plus récent.",
+      "elements": [
+        "mes arrière-grands-parents",
+        "mes grands-parents",
+        "mes parents",
+        "moi"
+      ]
+    },
+    {
+      "id": "frise-3",
+      "chapitre": "frise",
+      "type": "ordre",
+      "question": "Place dans l’ordre sur la frise du temps, du plus ancien au plus récent.",
+      "consigne": "Place dans l’ordre sur la frise du temps, du plus ancien au plus récent.",
+      "elements": [
+        "les dinosaures",
+        "les premiers hommes",
+        "les châteaux forts",
+        "aujourd’hui"
+      ]
+    },
+    {
+      "id": "frise-4",
+      "chapitre": "frise",
+      "type": "ordre",
+      "question": "Place dans l’ordre sur la frise du temps, du plus ancien au plus récent.",
+      "consigne": "Place dans l’ordre sur la frise du temps, du plus ancien au plus récent.",
+      "elements": [
+        "hier",
+        "aujourd’hui",
+        "demain",
+        "après-demain"
+      ]
+    },
+    {
+      "id": "famille-1",
+      "chapitre": "generations",
+      "type": "choix",
+      "question": "Le père de ma mère, c’est…",
+      "reponse": "mon grand-père",
+      "pieges": [
+        "mon oncle",
+        "mon frère",
+        "mon cousin"
+      ],
+      "consigne": "Le père de ma mère, c’est…"
+    },
+    {
+      "id": "famille-2",
+      "chapitre": "generations",
+      "type": "choix",
+      "question": "La sœur de mon père, c’est…",
+      "reponse": "ma tante",
+      "pieges": [
+        "ma grand-mère",
+        "ma cousine",
+        "ma sœur"
+      ],
+      "consigne": "La sœur de mon père, c’est…"
+    },
+    {
+      "id": "famille-3",
+      "chapitre": "generations",
+      "type": "choix",
+      "question": "Le fils de mon oncle, c’est…",
+      "reponse": "mon cousin",
+      "pieges": [
+        "mon frère",
+        "mon neveu",
+        "mon père"
+      ],
+      "consigne": "Le fils de mon oncle, c’est…"
+    },
+    {
+      "id": "famille-4",
+      "chapitre": "generations",
+      "type": "choix",
+      "question": "Les parents de mes parents sont…",
+      "reponse": "mes grands-parents",
+      "pieges": [
+        "mes oncles",
+        "mes cousins",
+        "mes voisins"
+      ],
+      "consigne": "Les parents de mes parents sont…"
+    },
+    {
+      "id": "famille-5",
+      "chapitre": "generations",
+      "type": "choix",
+      "question": "Qui est né en premier ?",
+      "reponse": "mon grand-père",
+      "pieges": [
+        "mon père",
+        "moi",
+        "mon petit frère"
+      ],
+      "consigne": "Qui est né en premier ?"
+    },
+    {
+      "id": "autrefois-1",
+      "chapitre": "autrefois",
+      "type": "ordre",
+      "question": "Du plus ancien au plus récent.",
+      "consigne": "Du plus ancien au plus récent.",
+      "elements": [
+        "la bougie",
+        "la lampe à pétrole",
+        "l’ampoule"
+      ]
+    },
+    {
+      "id": "autrefois-2",
+      "chapitre": "autrefois",
+      "type": "ordre",
+      "question": "Du plus ancien au plus récent.",
+      "consigne": "Du plus ancien au plus récent.",
+      "elements": [
+        "la lettre",
+        "le téléphone fixe",
+        "le téléphone portable"
+      ]
+    },
+    {
+      "id": "autrefois-3",
+      "chapitre": "autrefois",
+      "type": "ordre",
+      "question": "Du plus ancien au plus récent.",
+      "consigne": "Du plus ancien au plus récent.",
+      "elements": [
+        "le cheval",
+        "la voiture",
+        "l’avion"
+      ]
+    },
+    {
+      "id": "avant-maintenant",
+      "chapitre": "autrefois",
+      "type": "classer",
+      "question": "Autrefois ou aujourd’hui ?",
+      "consigne": "Autrefois ou aujourd’hui ?",
+      "boites": [
+        {
+          "nom": "Autrefois"
+        },
+        {
+          "nom": "Aujourd’hui"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "la bougie",
+          "boite": "Autrefois",
+          "image": "candle"
+        },
+        {
+          "texte": "le château fort",
+          "boite": "Autrefois",
+          "image": "castle"
+        },
+        {
+          "texte": "le lavoir",
+          "boite": "Autrefois"
+        },
+        {
+          "texte": "la plume et l’encrier",
+          "boite": "Autrefois"
+        },
+        {
+          "texte": "l’ordinateur",
+          "boite": "Aujourd’hui",
+          "image": "computer"
+        },
+        {
+          "texte": "le téléphone",
+          "boite": "Aujourd’hui",
+          "image": "phone"
+        },
+        {
+          "texte": "la tablette",
+          "boite": "Aujourd’hui"
+        },
+        {
+          "texte": "la fusée",
+          "boite": "Aujourd’hui",
+          "image": "rocket"
+        }
+      ]
+    }
+  ]
+}

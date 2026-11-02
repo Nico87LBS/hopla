@@ -1,0 +1,715 @@
+{
+  "format": "hopla-module/1",
+  "id": "francais-ce1-accords",
+  "version": "1.0.0",
+  "nom": "Les accords au CE1",
+  "description": "Masculin ou féminin, singulier ou pluriel, les pluriels en -s ou -x, accorder le nom et l'adjectif, puis écrire soi-même le mot accordé.",
+  "matiere": "francais",
+  "niveaux": [
+    "CE1"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de français du cycle 2 (2024) et les repères annuels de progression du CE1 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "genre",
+      "nom": "Masculin ou féminin"
+    },
+    {
+      "id": "pluriel",
+      "nom": "Le pluriel en -s ou -x",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "accord",
+      "nom": "Accorder l’adjectif",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "ecrire",
+      "nom": "Écrire le mot accordé",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 8
+  },
+  "fiches": [
+    {
+      "id": "genre-1",
+      "chapitre": "genre",
+      "type": "classer",
+      "question": "Masculin ou féminin ?",
+      "consigne": "Masculin ou féminin ?",
+      "boites": [
+        {
+          "nom": "Masculin"
+        },
+        {
+          "nom": "Féminin"
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "un chat",
+          "boite": "Masculin"
+        },
+        {
+          "texte": "une chatte",
+          "boite": "Féminin"
+        },
+        {
+          "texte": "le garçon",
+          "boite": "Masculin"
+        },
+        {
+          "texte": "la fille",
+          "boite": "Féminin"
+        },
+        {
+          "texte": "un lion",
+          "boite": "Masculin"
+        },
+        {
+          "texte": "une lionne",
+          "boite": "Féminin"
+        },
+        {
+          "texte": "le vélo",
+          "boite": "Masculin",
+          "image": "bike"
+        },
+        {
+          "texte": "la table",
+          "boite": "Féminin",
+          "image": "table"
+        },
+        {
+          "texte": "un ami",
+          "boite": "Masculin"
+        },
+        {
+          "texte": "une amie",
+          "boite": "Féminin"
+        },
+        {
+          "texte": "le soleil",
+          "boite": "Masculin",
+          "image": "sun"
+        },
+        {
+          "texte": "la lune",
+          "boite": "Féminin",
+          "image": "moon"
+        }
+      ]
+    },
+    {
+      "id": "fem-1",
+      "chapitre": "genre",
+      "type": "choix",
+      "question": "un ami → une ___",
+      "reponse": "amie",
+      "pieges": [
+        "ami",
+        "amine",
+        "amies"
+      ],
+      "consigne": "Écris au féminin."
+    },
+    {
+      "id": "fem-2",
+      "chapitre": "genre",
+      "type": "choix",
+      "question": "un chien → une ___",
+      "reponse": "chienne",
+      "pieges": [
+        "chien",
+        "chiene",
+        "chiennes"
+      ],
+      "consigne": "Écris au féminin."
+    },
+    {
+      "id": "fem-3",
+      "chapitre": "genre",
+      "type": "choix",
+      "question": "un lion → une ___",
+      "reponse": "lionne",
+      "pieges": [
+        "lion",
+        "lione",
+        "lionnes"
+      ],
+      "consigne": "Écris au féminin."
+    },
+    {
+      "id": "fem-4",
+      "chapitre": "genre",
+      "type": "choix",
+      "question": "un marchand → une ___",
+      "reponse": "marchande",
+      "pieges": [
+        "marchand",
+        "marchandne",
+        "marchandes"
+      ],
+      "consigne": "Écris au féminin."
+    },
+    {
+      "id": "fem-5",
+      "chapitre": "genre",
+      "type": "choix",
+      "question": "un boulanger → une ___",
+      "reponse": "boulangère",
+      "pieges": [
+        "boulanger",
+        "boulangere",
+        "boulangères"
+      ],
+      "consigne": "Écris au féminin."
+    },
+    {
+      "id": "fem-6",
+      "chapitre": "genre",
+      "type": "choix",
+      "question": "un chanteur → une ___",
+      "reponse": "chanteuse",
+      "pieges": [
+        "chanteur",
+        "chanteure",
+        "chanteuses"
+      ],
+      "consigne": "Écris au féminin."
+    },
+    {
+      "id": "fem-7",
+      "chapitre": "genre",
+      "type": "choix",
+      "question": "un cousin → une ___",
+      "reponse": "cousine",
+      "pieges": [
+        "cousin",
+        "cousinne",
+        "cousines"
+      ],
+      "consigne": "Écris au féminin."
+    },
+    {
+      "id": "fem-8",
+      "chapitre": "genre",
+      "type": "choix",
+      "question": "un voisin → une ___",
+      "reponse": "voisine",
+      "pieges": [
+        "voisin",
+        "voisinne",
+        "voisines"
+      ],
+      "consigne": "Écris au féminin."
+    },
+    {
+      "id": "fem-9",
+      "chapitre": "genre",
+      "type": "choix",
+      "question": "un chat → une ___",
+      "reponse": "chatte",
+      "pieges": [
+        "chat",
+        "chate",
+        "chattes"
+      ],
+      "consigne": "Écris au féminin."
+    },
+    {
+      "id": "fem-10",
+      "chapitre": "genre",
+      "type": "choix",
+      "question": "un danseur → une ___",
+      "reponse": "danseuse",
+      "pieges": [
+        "danseur",
+        "danseure",
+        "danseuses"
+      ],
+      "consigne": "Écris au féminin."
+    },
+    {
+      "id": "pl-1",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "un chat → des ___",
+      "reponse": "chats",
+      "pieges": [
+        "chatx",
+        "chat"
+      ],
+      "consigne": "Écris au pluriel.",
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+    },
+    {
+      "id": "pl-2",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "un cheval → des ___",
+      "reponse": "chevaux",
+      "pieges": [
+        "chevals",
+        "chevalx",
+        "cheval"
+      ],
+      "consigne": "Écris au pluriel.",
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+    },
+    {
+      "id": "pl-3",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "un bateau → des ___",
+      "reponse": "bateaux",
+      "pieges": [
+        "bateaus",
+        "bateau"
+      ],
+      "consigne": "Écris au pluriel.",
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+    },
+    {
+      "id": "pl-4",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "un jeu → des ___",
+      "reponse": "jeux",
+      "pieges": [
+        "jeus",
+        "jeu"
+      ],
+      "consigne": "Écris au pluriel.",
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+    },
+    {
+      "id": "pl-5",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "un chou → des ___",
+      "reponse": "choux",
+      "pieges": [
+        "chous",
+        "chou"
+      ],
+      "consigne": "Écris au pluriel.",
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+    },
+    {
+      "id": "pl-6",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "une souris → des ___",
+      "reponse": "souris",
+      "pieges": [
+        "souriss",
+        "sourisx"
+      ],
+      "consigne": "Écris au pluriel.",
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+    },
+    {
+      "id": "pl-7",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "un nez → des ___",
+      "reponse": "nez",
+      "pieges": [
+        "nezs",
+        "nezx"
+      ],
+      "consigne": "Écris au pluriel.",
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+    },
+    {
+      "id": "pl-8",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "un journal → des ___",
+      "reponse": "journaux",
+      "pieges": [
+        "journals",
+        "journalx",
+        "journal"
+      ],
+      "consigne": "Écris au pluriel.",
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+    },
+    {
+      "id": "pl-9",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "un gâteau → des ___",
+      "reponse": "gâteaux",
+      "pieges": [
+        "gâteaus",
+        "gâteau"
+      ],
+      "consigne": "Écris au pluriel.",
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+    },
+    {
+      "id": "pl-10",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "une fleur → des ___",
+      "reponse": "fleurs",
+      "pieges": [
+        "fleurx",
+        "fleur"
+      ],
+      "consigne": "Écris au pluriel.",
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+    },
+    {
+      "id": "pl-11",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "un cadeau → des ___",
+      "reponse": "cadeaux",
+      "pieges": [
+        "cadeaus",
+        "cadeau"
+      ],
+      "consigne": "Écris au pluriel.",
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+    },
+    {
+      "id": "pl-12",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "un animal → des ___",
+      "reponse": "animaux",
+      "pieges": [
+        "animals",
+        "animalx",
+        "animal"
+      ],
+      "consigne": "Écris au pluriel.",
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+    },
+    {
+      "id": "pl-13",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "un bijou → des ___",
+      "reponse": "bijoux",
+      "pieges": [
+        "bijous",
+        "bijou"
+      ],
+      "consigne": "Écris au pluriel.",
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+    },
+    {
+      "id": "pl-14",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "un ballon → des ___",
+      "reponse": "ballons",
+      "pieges": [
+        "ballonx",
+        "ballon"
+      ],
+      "consigne": "Écris au pluriel.",
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+    },
+    {
+      "id": "pl-15",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "un oiseau → des ___",
+      "reponse": "oiseaux",
+      "pieges": [
+        "oiseaus",
+        "oiseau"
+      ],
+      "consigne": "Écris au pluriel.",
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+    },
+    {
+      "id": "pl-16",
+      "chapitre": "pluriel",
+      "type": "choix",
+      "question": "un bus → des ___",
+      "reponse": "bus",
+      "pieges": [
+        "buss",
+        "busx"
+      ],
+      "consigne": "Écris au pluriel.",
+      "explication": "Les noms en -eau, -eu et certains en -ou prennent un x ; -al devient -aux."
+    },
+    {
+      "id": "gn-1",
+      "chapitre": "accord",
+      "type": "choix",
+      "question": "une ___ voiture (petit)",
+      "reponse": "petite",
+      "pieges": [
+        "petit",
+        "petits",
+        "petites"
+      ],
+      "consigne": "Accorde l’adjectif.",
+      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel."
+    },
+    {
+      "id": "gn-2",
+      "chapitre": "accord",
+      "type": "choix",
+      "question": "des ___ chats (noir)",
+      "reponse": "noirs",
+      "pieges": [
+        "noir",
+        "noire",
+        "noires"
+      ],
+      "consigne": "Accorde l’adjectif.",
+      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel."
+    },
+    {
+      "id": "gn-3",
+      "chapitre": "accord",
+      "type": "choix",
+      "question": "des fleurs ___ (bleu)",
+      "reponse": "bleues",
+      "pieges": [
+        "bleu",
+        "bleue",
+        "bleus"
+      ],
+      "consigne": "Accorde l’adjectif.",
+      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel."
+    },
+    {
+      "id": "gn-4",
+      "chapitre": "accord",
+      "type": "choix",
+      "question": "un ___ garçon (grand)",
+      "reponse": "grand",
+      "pieges": [
+        "grande",
+        "grands",
+        "grandes"
+      ],
+      "consigne": "Accorde l’adjectif.",
+      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel."
+    },
+    {
+      "id": "gn-5",
+      "chapitre": "accord",
+      "type": "choix",
+      "question": "une robe ___ (vert)",
+      "reponse": "verte",
+      "pieges": [
+        "vert",
+        "verts",
+        "vertes"
+      ],
+      "consigne": "Accorde l’adjectif.",
+      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel."
+    },
+    {
+      "id": "gn-6",
+      "chapitre": "accord",
+      "type": "choix",
+      "question": "des ballons ___ (rouge)",
+      "reponse": "rouges",
+      "pieges": [
+        "rouge",
+        "rougee",
+        "rougees"
+      ],
+      "consigne": "Accorde l’adjectif.",
+      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel."
+    },
+    {
+      "id": "gn-7",
+      "chapitre": "accord",
+      "type": "choix",
+      "question": "une ___ maison (joli)",
+      "reponse": "jolie",
+      "pieges": [
+        "joli",
+        "jolis",
+        "jolies"
+      ],
+      "consigne": "Accorde l’adjectif.",
+      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel."
+    },
+    {
+      "id": "gn-8",
+      "chapitre": "accord",
+      "type": "choix",
+      "question": "des ___ amies (gentil)",
+      "reponse": "gentilles",
+      "pieges": [
+        "gentil",
+        "gentile",
+        "gentils"
+      ],
+      "consigne": "Accorde l’adjectif.",
+      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel."
+    },
+    {
+      "id": "gn-9",
+      "chapitre": "accord",
+      "type": "choix",
+      "question": "les ___ souris (gris)",
+      "reponse": "grises",
+      "pieges": [
+        "gris",
+        "grise",
+        "griss"
+      ],
+      "consigne": "Accorde l’adjectif.",
+      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel."
+    },
+    {
+      "id": "gn-10",
+      "chapitre": "accord",
+      "type": "choix",
+      "question": "un chien ___ (méchant)",
+      "reponse": "méchant",
+      "pieges": [
+        "méchante",
+        "méchants",
+        "méchantes"
+      ],
+      "consigne": "Accorde l’adjectif.",
+      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel."
+    },
+    {
+      "id": "gn-11",
+      "chapitre": "accord",
+      "type": "choix",
+      "question": "des tartes ___ (chaud)",
+      "reponse": "chaudes",
+      "pieges": [
+        "chaud",
+        "chaude",
+        "chauds"
+      ],
+      "consigne": "Accorde l’adjectif.",
+      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel."
+    },
+    {
+      "id": "gn-12",
+      "chapitre": "accord",
+      "type": "choix",
+      "question": "une ___ nuit (long)",
+      "reponse": "longue",
+      "pieges": [
+        "long",
+        "longe",
+        "longs"
+      ],
+      "consigne": "Accorde l’adjectif.",
+      "explication": "L’adjectif prend le genre et le nombre du nom : e au féminin, s au pluriel."
+    },
+    {
+      "id": "tape-1",
+      "chapitre": "ecrire",
+      "type": "saisie",
+      "question": "un cheval → des ___",
+      "reponse": "chevaux",
+      "tolerance": "exacte",
+      "consigne": "Écris le mot qui manque."
+    },
+    {
+      "id": "tape-2",
+      "chapitre": "ecrire",
+      "type": "saisie",
+      "question": "un bateau → des ___",
+      "reponse": "bateaux",
+      "tolerance": "exacte",
+      "consigne": "Écris le mot qui manque."
+    },
+    {
+      "id": "tape-3",
+      "chapitre": "ecrire",
+      "type": "saisie",
+      "question": "un chien → une ___",
+      "reponse": "chienne",
+      "tolerance": "exacte",
+      "consigne": "Écris le mot qui manque."
+    },
+    {
+      "id": "tape-4",
+      "chapitre": "ecrire",
+      "type": "saisie",
+      "question": "un jeu → des ___",
+      "reponse": "jeux",
+      "tolerance": "exacte",
+      "consigne": "Écris le mot qui manque."
+    },
+    {
+      "id": "tape-5",
+      "chapitre": "ecrire",
+      "type": "saisie",
+      "question": "une fleur bleue → des fleurs ___",
+      "reponse": "bleues",
+      "tolerance": "exacte",
+      "consigne": "Écris le mot qui manque."
+    },
+    {
+      "id": "tape-6",
+      "chapitre": "ecrire",
+      "type": "saisie",
+      "question": "un ami → une ___",
+      "reponse": "amie",
+      "tolerance": "exacte",
+      "consigne": "Écris le mot qui manque."
+    },
+    {
+      "id": "tape-7",
+      "chapitre": "ecrire",
+      "type": "saisie",
+      "question": "un animal → des ___",
+      "reponse": "animaux",
+      "tolerance": "exacte",
+      "consigne": "Écris le mot qui manque."
+    },
+    {
+      "id": "tape-8",
+      "chapitre": "ecrire",
+      "type": "saisie",
+      "question": "un petit garçon → une ___ fille",
+      "reponse": "petite",
+      "tolerance": "exacte",
+      "consigne": "Écris le mot qui manque."
+    },
+    {
+      "id": "tape-9",
+      "chapitre": "ecrire",
+      "type": "saisie",
+      "question": "un gâteau → des ___",
+      "reponse": "gâteaux",
+      "tolerance": "exacte",
+      "consigne": "Écris le mot qui manque."
+    },
+    {
+      "id": "tape-10",
+      "chapitre": "ecrire",
+      "type": "saisie",
+      "question": "un chat noir → des chats ___",
+      "reponse": "noirs",
+      "tolerance": "exacte",
+      "consigne": "Écris le mot qui manque."
+    }
+  ]
+}

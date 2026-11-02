@@ -1,0 +1,744 @@
+{
+  "format": "hopla-module/1",
+  "id": "francais-ce1-dictee",
+  "version": "1.0.0",
+  "nom": "Dictée CE1",
+  "description": "Écrire les mots invariables, les mots fréquents et de petites phrases dictés par l'appareil. Les accents comptent ; une lettre de travers est acceptée.",
+  "matiere": "francais",
+  "niveaux": [
+    "CE1"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de français du cycle 2 (2024) et les repères annuels de progression du CE1 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "invariables",
+      "nom": "Les mots invariables"
+    },
+    {
+      "id": "frequents",
+      "nom": "Les mots fréquents",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "phrases",
+      "nom": "Petites phrases",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 8
+  },
+  "fiches": [
+    {
+      "id": "inv-toujours",
+      "chapitre": "invariables",
+      "type": "ecoute",
+      "question": "toujours",
+      "reponse": "toujours",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:toujours"
+    },
+    {
+      "id": "inv-jamais",
+      "chapitre": "invariables",
+      "type": "ecoute",
+      "question": "jamais",
+      "reponse": "jamais",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:jamais"
+    },
+    {
+      "id": "inv-aujourd-hui",
+      "chapitre": "invariables",
+      "type": "ecoute",
+      "question": "aujourd’hui",
+      "reponse": "aujourd’hui",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:aujourd-hui"
+    },
+    {
+      "id": "inv-beaucoup",
+      "chapitre": "invariables",
+      "type": "ecoute",
+      "question": "beaucoup",
+      "reponse": "beaucoup",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:beaucoup"
+    },
+    {
+      "id": "inv-maintenant",
+      "chapitre": "invariables",
+      "type": "ecoute",
+      "question": "maintenant",
+      "reponse": "maintenant",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:maintenant"
+    },
+    {
+      "id": "inv-souvent",
+      "chapitre": "invariables",
+      "type": "ecoute",
+      "question": "souvent",
+      "reponse": "souvent",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:souvent"
+    },
+    {
+      "id": "inv-bientot",
+      "chapitre": "invariables",
+      "type": "ecoute",
+      "question": "bientôt",
+      "reponse": "bientôt",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:bientot"
+    },
+    {
+      "id": "inv-hier",
+      "chapitre": "invariables",
+      "type": "ecoute",
+      "question": "hier",
+      "reponse": "hier",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:hier"
+    },
+    {
+      "id": "inv-demain",
+      "chapitre": "invariables",
+      "type": "ecoute",
+      "question": "demain",
+      "reponse": "demain",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:demain"
+    },
+    {
+      "id": "inv-parce-que",
+      "chapitre": "invariables",
+      "type": "ecoute",
+      "question": "parce que",
+      "reponse": "parce que",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:parce-que"
+    },
+    {
+      "id": "inv-pendant",
+      "chapitre": "invariables",
+      "type": "ecoute",
+      "question": "pendant",
+      "reponse": "pendant",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:pendant"
+    },
+    {
+      "id": "inv-apres",
+      "chapitre": "invariables",
+      "type": "ecoute",
+      "question": "après",
+      "reponse": "après",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:apres"
+    },
+    {
+      "id": "inv-avant",
+      "chapitre": "invariables",
+      "type": "ecoute",
+      "question": "avant",
+      "reponse": "avant",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:avant"
+    },
+    {
+      "id": "inv-devant",
+      "chapitre": "invariables",
+      "type": "ecoute",
+      "question": "devant",
+      "reponse": "devant",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:devant"
+    },
+    {
+      "id": "inv-derriere",
+      "chapitre": "invariables",
+      "type": "ecoute",
+      "question": "derrière",
+      "reponse": "derrière",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:derriere"
+    },
+    {
+      "id": "inv-dehors",
+      "chapitre": "invariables",
+      "type": "ecoute",
+      "question": "dehors",
+      "reponse": "dehors",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:dehors"
+    },
+    {
+      "id": "inv-longtemps",
+      "chapitre": "invariables",
+      "type": "ecoute",
+      "question": "longtemps",
+      "reponse": "longtemps",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:longtemps"
+    },
+    {
+      "id": "inv-encore",
+      "chapitre": "invariables",
+      "type": "ecoute",
+      "question": "encore",
+      "reponse": "encore",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:encore"
+    },
+    {
+      "id": "inv-deja",
+      "chapitre": "invariables",
+      "type": "ecoute",
+      "question": "déjà",
+      "reponse": "déjà",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:deja"
+    },
+    {
+      "id": "inv-ensuite",
+      "chapitre": "invariables",
+      "type": "ecoute",
+      "question": "ensuite",
+      "reponse": "ensuite",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:ensuite"
+    },
+    {
+      "id": "inv-peut-etre",
+      "chapitre": "invariables",
+      "type": "ecoute",
+      "question": "peut-être",
+      "reponse": "peut-être",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:peut-etre"
+    },
+    {
+      "id": "inv-aussi",
+      "chapitre": "invariables",
+      "type": "ecoute",
+      "question": "aussi",
+      "reponse": "aussi",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:aussi"
+    },
+    {
+      "id": "inv-vite",
+      "chapitre": "invariables",
+      "type": "ecoute",
+      "question": "vite",
+      "reponse": "vite",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:vite"
+    },
+    {
+      "id": "inv-tard",
+      "chapitre": "invariables",
+      "type": "ecoute",
+      "question": "tard",
+      "reponse": "tard",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:tard"
+    },
+    {
+      "id": "mot-la-maison",
+      "chapitre": "frequents",
+      "type": "ecoute",
+      "question": "la maison",
+      "reponse": "la maison",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:la-maison"
+    },
+    {
+      "id": "mot-l-ecole",
+      "chapitre": "frequents",
+      "type": "ecoute",
+      "question": "l’école",
+      "reponse": "l’école",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:l-ecole"
+    },
+    {
+      "id": "mot-le-matin",
+      "chapitre": "frequents",
+      "type": "ecoute",
+      "question": "le matin",
+      "reponse": "le matin",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:le-matin"
+    },
+    {
+      "id": "mot-le-soir",
+      "chapitre": "frequents",
+      "type": "ecoute",
+      "question": "le soir",
+      "reponse": "le soir",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:le-soir"
+    },
+    {
+      "id": "mot-la-famille",
+      "chapitre": "frequents",
+      "type": "ecoute",
+      "question": "la famille",
+      "reponse": "la famille",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:la-famille"
+    },
+    {
+      "id": "mot-un-enfant",
+      "chapitre": "frequents",
+      "type": "ecoute",
+      "question": "un enfant",
+      "reponse": "un enfant",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:un-enfant"
+    },
+    {
+      "id": "mot-les-vacances",
+      "chapitre": "frequents",
+      "type": "ecoute",
+      "question": "les vacances",
+      "reponse": "les vacances",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:les-vacances"
+    },
+    {
+      "id": "mot-le-jardin",
+      "chapitre": "frequents",
+      "type": "ecoute",
+      "question": "le jardin",
+      "reponse": "le jardin",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:le-jardin"
+    },
+    {
+      "id": "mot-la-ville",
+      "chapitre": "frequents",
+      "type": "ecoute",
+      "question": "la ville",
+      "reponse": "la ville",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:la-ville"
+    },
+    {
+      "id": "mot-un-oiseau",
+      "chapitre": "frequents",
+      "type": "ecoute",
+      "question": "un oiseau",
+      "reponse": "un oiseau",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:un-oiseau"
+    },
+    {
+      "id": "mot-la-classe",
+      "chapitre": "frequents",
+      "type": "ecoute",
+      "question": "la classe",
+      "reponse": "la classe",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:la-classe"
+    },
+    {
+      "id": "mot-le-maitre",
+      "chapitre": "frequents",
+      "type": "ecoute",
+      "question": "le maître",
+      "reponse": "le maître",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:le-maitre"
+    },
+    {
+      "id": "mot-la-maitresse",
+      "chapitre": "frequents",
+      "type": "ecoute",
+      "question": "la maîtresse",
+      "reponse": "la maîtresse",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:la-maitresse"
+    },
+    {
+      "id": "mot-un-ami",
+      "chapitre": "frequents",
+      "type": "ecoute",
+      "question": "un ami",
+      "reponse": "un ami",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:un-ami"
+    },
+    {
+      "id": "mot-le-cahier",
+      "chapitre": "frequents",
+      "type": "ecoute",
+      "question": "le cahier",
+      "reponse": "le cahier",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:le-cahier"
+    },
+    {
+      "id": "mot-la-semaine",
+      "chapitre": "frequents",
+      "type": "ecoute",
+      "question": "la semaine",
+      "reponse": "la semaine",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:la-semaine"
+    },
+    {
+      "id": "mot-le-gateau",
+      "chapitre": "frequents",
+      "type": "ecoute",
+      "question": "le gâteau",
+      "reponse": "le gâteau",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:le-gateau"
+    },
+    {
+      "id": "mot-la-foret",
+      "chapitre": "frequents",
+      "type": "ecoute",
+      "question": "la forêt",
+      "reponse": "la forêt",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:la-foret"
+    },
+    {
+      "id": "mot-le-chemin",
+      "chapitre": "frequents",
+      "type": "ecoute",
+      "question": "le chemin",
+      "reponse": "le chemin",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:le-chemin"
+    },
+    {
+      "id": "mot-la-fenetre",
+      "chapitre": "frequents",
+      "type": "ecoute",
+      "question": "la fenêtre",
+      "reponse": "la fenêtre",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute le mot et écris-le.",
+      "cle": "fr:ecrire:la-fenetre"
+    },
+    {
+      "id": "phrase-1",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "Le chat dort sur le lit.",
+      "reponse": "Le chat dort sur le lit.",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute la phrase et écris-la.",
+      "cle": "fr:ecrire-phrase:le-chat-dort-sur-le-lit"
+    },
+    {
+      "id": "phrase-2",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "Nous allons à l’école.",
+      "reponse": "Nous allons à l’école.",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute la phrase et écris-la.",
+      "cle": "fr:ecrire-phrase:nous-allons-a-l-ecole"
+    },
+    {
+      "id": "phrase-3",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "Il fait beau aujourd’hui.",
+      "reponse": "Il fait beau aujourd’hui.",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute la phrase et écris-la.",
+      "cle": "fr:ecrire-phrase:il-fait-beau-aujourd-hui"
+    },
+    {
+      "id": "phrase-4",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "Mes amis jouent dehors.",
+      "reponse": "Mes amis jouent dehors.",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute la phrase et écris-la.",
+      "cle": "fr:ecrire-phrase:mes-amis-jouent-dehors"
+    },
+    {
+      "id": "phrase-5",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "Le soir, je lis un livre.",
+      "reponse": "Le soir, je lis un livre.",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute la phrase et écris-la.",
+      "cle": "fr:ecrire-phrase:le-soir-je-lis-un-livre"
+    },
+    {
+      "id": "phrase-6",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "Maman achète du pain.",
+      "reponse": "Maman achète du pain.",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute la phrase et écris-la.",
+      "cle": "fr:ecrire-phrase:maman-achete-du-pain"
+    },
+    {
+      "id": "phrase-7",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "Les oiseaux chantent.",
+      "reponse": "Les oiseaux chantent.",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute la phrase et écris-la.",
+      "cle": "fr:ecrire-phrase:les-oiseaux-chantent"
+    },
+    {
+      "id": "phrase-8",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "Demain, il va pleuvoir.",
+      "reponse": "Demain, il va pleuvoir.",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute la phrase et écris-la.",
+      "cle": "fr:ecrire-phrase:demain-il-va-pleuvoir"
+    },
+    {
+      "id": "phrase-9",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "Tu as un joli vélo.",
+      "reponse": "Tu as un joli vélo.",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute la phrase et écris-la.",
+      "cle": "fr:ecrire-phrase:tu-as-un-joli-velo"
+    },
+    {
+      "id": "phrase-10",
+      "chapitre": "phrases",
+      "type": "ecoute",
+      "question": "Les enfants sont contents.",
+      "reponse": "Les enfants sont contents.",
+      "sens": [
+        "dictee"
+      ],
+      "tolerance": "une_faute",
+      "consigne": "Écoute la phrase et écris-la.",
+      "cle": "fr:ecrire-phrase:les-enfants-sont-contents"
+    }
+  ]
+}

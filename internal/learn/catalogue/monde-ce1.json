@@ -1,0 +1,23 @@
+{
+  "format": "hopla-module/1",
+  "id": "monde-ce1",
+  "version": "1.0.0",
+  "nom": "Questionner le monde CE1",
+  "description": "Le vivant, le corps, la matière, les objets et l'électricité, le temps et l'espace.",
+  "matiere": "monde",
+  "niveaux": [
+    "CE1"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "auteur": "Hopla",
+  "sources": "D'après le programme de questionner le monde du cycle 2 (2024) et les repères annuels de progression du CE1 (Éduscol).",
+  "modules": [
+    "monde-ce1-vivant",
+    "monde-ce1-corps",
+    "monde-ce1-matiere",
+    "monde-ce1-objets",
+    "monde-ce1-temps",
+    "monde-ce1-espace"
+  ]
+}

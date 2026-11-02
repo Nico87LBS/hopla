@@ -1,0 +1,871 @@
+{
+  "format": "hopla-module/1",
+  "id": "maths-ce1-nombres",
+  "version": "1.0.0",
+  "nom": "Les nombres jusqu’à 1 000",
+  "description": "Centaines, dizaines et unités, écrire un nombre en chiffres ou trouver son écriture en lettres, et entendre un nombre jusqu'à 1 000.",
+  "matiere": "maths",
+  "niveaux": [
+    "CE1"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de mathématiques du cycle 2 (2024) et les repères annuels de progression du CE1 (Éduscol).",
+  "chapitres": [
+    {
+      "id": "cdu",
+      "nom": "Centaines, dizaines, unités"
+    },
+    {
+      "id": "chiffres",
+      "nom": "Écrire en chiffres",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "lettres",
+      "nom": "Écrire en lettres",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "entendre",
+      "nom": "Entendre un nombre",
+      "ouvert_apres": 80
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 8
+  },
+  "fiches": [
+    {
+      "id": "cdu-1",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "4 centaines, 6 dizaines et 4 unités",
+      "reponse": "464",
+      "pieges": [
+        "446",
+        "644",
+        "474"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-2",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "9 centaines, 4 dizaines et 9 unités",
+      "reponse": "949",
+      "pieges": [
+        "994",
+        "499",
+        "959"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-3",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "2 centaines, 8 dizaines et 4 unités",
+      "reponse": "284",
+      "pieges": [
+        "248",
+        "824",
+        "294"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-4",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "8 centaines, 2 dizaines et 4 unités",
+      "reponse": "824",
+      "pieges": [
+        "842",
+        "284",
+        "834"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-5",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "1 centaine, 2 dizaines et 9 unités",
+      "reponse": "129",
+      "pieges": [
+        "192",
+        "219",
+        "139"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-6",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "4 centaines, 8 dizaines et 2 unités",
+      "reponse": "482",
+      "pieges": [
+        "428",
+        "842",
+        "492"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-7",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "4 centaines, 7 dizaines et 1 unité",
+      "reponse": "471",
+      "pieges": [
+        "417",
+        "741",
+        "481"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-8",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "3 centaines, 6 dizaines et 9 unités",
+      "reponse": "369",
+      "pieges": [
+        "396",
+        "639",
+        "379"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-9",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "2 centaines, 6 dizaines et 7 unités",
+      "reponse": "267",
+      "pieges": [
+        "276",
+        "627",
+        "277"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-10",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "7 centaines, 7 dizaines et 3 unités",
+      "reponse": "773",
+      "pieges": [
+        "737",
+        "783",
+        "873"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-11",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "1 centaine, 1 dizaine et 2 unités",
+      "reponse": "112",
+      "pieges": [
+        "121",
+        "122",
+        "212"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-12",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "2 centaines, 9 dizaines et 3 unités",
+      "reponse": "293",
+      "pieges": [
+        "239",
+        "923",
+        "303"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-13",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "4 centaines, 1 dizaine et 7 unités",
+      "reponse": "417",
+      "pieges": [
+        "471",
+        "147",
+        "427"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-14",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "7 centaines, 3 dizaines et 8 unités",
+      "reponse": "738",
+      "pieges": [
+        "783",
+        "378",
+        "748"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-15",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "7 centaines, 2 dizaines et 7 unités",
+      "reponse": "727",
+      "pieges": [
+        "772",
+        "277",
+        "737"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-16",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "4 centaines, 6 dizaines et 5 unités",
+      "reponse": "465",
+      "pieges": [
+        "456",
+        "645",
+        "475"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-17",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "6 centaines, 4 dizaines et 0 unité",
+      "reponse": "640",
+      "pieges": [
+        "604",
+        "460",
+        "650"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-18",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "1 centaine, 0 dizaine et 1 unité",
+      "reponse": "101",
+      "pieges": [
+        "110",
+        "11",
+        "111"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-19",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "6 centaines, 8 dizaines et 3 unités",
+      "reponse": "683",
+      "pieges": [
+        "638",
+        "863",
+        "693"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-20",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "6 centaines, 3 dizaines et 3 unités",
+      "reponse": "633",
+      "pieges": [
+        "363",
+        "643",
+        "733"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-21",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "6 centaines, 6 dizaines et 7 unités",
+      "reponse": "667",
+      "pieges": [
+        "676",
+        "677",
+        "767"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-22",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "1 centaine, 5 dizaines et 9 unités",
+      "reponse": "159",
+      "pieges": [
+        "195",
+        "519",
+        "169"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-23",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "9 centaines, 4 dizaines et 0 unité",
+      "reponse": "940",
+      "pieges": [
+        "904",
+        "490",
+        "950"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-24",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "7 centaines, 3 dizaines et 0 unité",
+      "reponse": "730",
+      "pieges": [
+        "703",
+        "370",
+        "740"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-25",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "3 centaines, 0 dizaine et 7 unités",
+      "reponse": "307",
+      "pieges": [
+        "370",
+        "37",
+        "317"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-26",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "1 centaine, 1 dizaine et 5 unités",
+      "reponse": "115",
+      "pieges": [
+        "151",
+        "125",
+        "215"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-27",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "1 centaine, 0 dizaine et 2 unités",
+      "reponse": "102",
+      "pieges": [
+        "120",
+        "12",
+        "112"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-28",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "4 centaines, 0 dizaine et 9 unités",
+      "reponse": "409",
+      "pieges": [
+        "490",
+        "49",
+        "419"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-29",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "5 centaines, 8 dizaines et 8 unités",
+      "reponse": "588",
+      "pieges": [
+        "858",
+        "598",
+        "688"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "cdu-30",
+      "chapitre": "cdu",
+      "type": "choix",
+      "question": "6 centaines, 9 dizaines et 7 unités",
+      "reponse": "697",
+      "pieges": [
+        "679",
+        "967",
+        "707"
+      ],
+      "consigne": "Quel nombre est-ce ?"
+    },
+    {
+      "id": "entendu-233",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:233",
+      "question": "deux cent trente-trois",
+      "reponse": "233",
+      "pieges": [
+        "243",
+        "223",
+        "333"
+      ]
+    },
+    {
+      "id": "entendu-402",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:402",
+      "question": "quatre cent deux",
+      "reponse": "402",
+      "pieges": [
+        "412",
+        "392",
+        "502"
+      ]
+    },
+    {
+      "id": "entendu-779",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:779",
+      "question": "sept cent soixante-dix-neuf",
+      "reponse": "779",
+      "pieges": [
+        "789",
+        "769",
+        "879"
+      ]
+    },
+    {
+      "id": "entendu-335",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:335",
+      "question": "trois cent trente-cinq",
+      "reponse": "335",
+      "pieges": [
+        "345",
+        "325",
+        "435"
+      ]
+    },
+    {
+      "id": "entendu-981",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:981",
+      "question": "neuf cent quatre-vingt-un",
+      "reponse": "981",
+      "pieges": [
+        "991",
+        "971",
+        "881"
+      ]
+    },
+    {
+      "id": "entendu-526",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:526",
+      "question": "cinq cent vingt-six",
+      "reponse": "526",
+      "pieges": [
+        "536",
+        "516",
+        "626"
+      ]
+    },
+    {
+      "id": "entendu-614",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:614",
+      "question": "six cent quatorze",
+      "reponse": "614",
+      "pieges": [
+        "624",
+        "604",
+        "714"
+      ]
+    },
+    {
+      "id": "entendu-791",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:791",
+      "question": "sept cent quatre-vingt-onze",
+      "reponse": "791",
+      "pieges": [
+        "801",
+        "781",
+        "891"
+      ]
+    },
+    {
+      "id": "entendu-737",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:737",
+      "question": "sept cent trente-sept",
+      "reponse": "737",
+      "pieges": [
+        "747",
+        "727",
+        "837"
+      ]
+    },
+    {
+      "id": "entendu-579",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:579",
+      "question": "cinq cent soixante-dix-neuf",
+      "reponse": "579",
+      "pieges": [
+        "589",
+        "569",
+        "679"
+      ]
+    },
+    {
+      "id": "entendu-193",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:193",
+      "question": "cent quatre-vingt-treize",
+      "reponse": "193",
+      "pieges": [
+        "203",
+        "183",
+        "293"
+      ]
+    },
+    {
+      "id": "entendu-583",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:583",
+      "question": "cinq cent quatre-vingt-trois",
+      "reponse": "583",
+      "pieges": [
+        "593",
+        "573",
+        "683"
+      ]
+    },
+    {
+      "id": "entendu-873",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:873",
+      "question": "huit cent soixante-treize",
+      "reponse": "873",
+      "pieges": [
+        "883",
+        "863",
+        "973"
+      ]
+    },
+    {
+      "id": "entendu-268",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:268",
+      "question": "deux cent soixante-huit",
+      "reponse": "268",
+      "pieges": [
+        "278",
+        "258",
+        "368"
+      ]
+    },
+    {
+      "id": "entendu-522",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:522",
+      "question": "cinq cent vingt-deux",
+      "reponse": "522",
+      "pieges": [
+        "532",
+        "512",
+        "622"
+      ]
+    },
+    {
+      "id": "entendu-488",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:488",
+      "question": "quatre cent quatre-vingt-huit",
+      "reponse": "488",
+      "pieges": [
+        "498",
+        "478",
+        "588"
+      ]
+    },
+    {
+      "id": "entendu-448",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:448",
+      "question": "quatre cent quarante-huit",
+      "reponse": "448",
+      "pieges": [
+        "458",
+        "438",
+        "548"
+      ]
+    },
+    {
+      "id": "entendu-896",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:896",
+      "question": "huit cent quatre-vingt-seize",
+      "reponse": "896",
+      "pieges": [
+        "906",
+        "886",
+        "996"
+      ]
+    },
+    {
+      "id": "entendu-754",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:754",
+      "question": "sept cent cinquante-quatre",
+      "reponse": "754",
+      "pieges": [
+        "764",
+        "744",
+        "854"
+      ]
+    },
+    {
+      "id": "entendu-336",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:336",
+      "question": "trois cent trente-six",
+      "reponse": "336",
+      "pieges": [
+        "346",
+        "326",
+        "436"
+      ]
+    },
+    {
+      "id": "entendu-458",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:458",
+      "question": "quatre cent cinquante-huit",
+      "reponse": "458",
+      "pieges": [
+        "468",
+        "448",
+        "558"
+      ]
+    },
+    {
+      "id": "entendu-677",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:677",
+      "question": "six cent soixante-dix-sept",
+      "reponse": "677",
+      "pieges": [
+        "687",
+        "667",
+        "777"
+      ]
+    },
+    {
+      "id": "entendu-293",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:293",
+      "question": "deux cent quatre-vingt-treize",
+      "reponse": "293",
+      "pieges": [
+        "303",
+        "283",
+        "393"
+      ]
+    },
+    {
+      "id": "entendu-669",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:669",
+      "question": "six cent soixante-neuf",
+      "reponse": "669",
+      "pieges": [
+        "679",
+        "659",
+        "769"
+      ]
+    },
+    {
+      "id": "entendu-280",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:280",
+      "question": "deux cent quatre-vingts",
+      "reponse": "280",
+      "pieges": [
+        "290",
+        "270",
+        "380"
+      ]
+    },
+    {
+      "id": "entendu-481",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:481",
+      "question": "quatre cent quatre-vingt-un",
+      "reponse": "481",
+      "pieges": [
+        "491",
+        "471",
+        "581"
+      ]
+    },
+    {
+      "id": "entendu-344",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:344",
+      "question": "trois cent quarante-quatre",
+      "reponse": "344",
+      "pieges": [
+        "354",
+        "334",
+        "444"
+      ]
+    },
+    {
+      "id": "entendu-384",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:384",
+      "question": "trois cent quatre-vingt-quatre",
+      "reponse": "384",
+      "pieges": [
+        "394",
+        "374",
+        "484"
+      ]
+    },
+    {
+      "id": "entendu-118",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:118",
+      "question": "cent dix-huit",
+      "reponse": "118",
+      "pieges": [
+        "128",
+        "108",
+        "218"
+      ]
+    },
+    {
+      "id": "entendu-839",
+      "chapitre": "entendre",
+      "type": "ecoute",
+      "cle": "fr:nombre-entendu:839",
+      "question": "huit cent trente-neuf",
+      "reponse": "839",
+      "pieges": [
+        "849",
+        "829",
+        "939"
+      ]
+    }
+  ],
+  "generateurs": [
+    {
+      "id": "rangs",
+      "chapitre": "cdu",
+      "operation": "position",
+      "a": [
+        100,
+        999
+      ],
+      "rangs": [
+        "unites",
+        "dizaines",
+        "centaines"
+      ],
+      "formes": [
+        "chiffre",
+        "nombre"
+      ]
+    },
+    {
+      "id": "chiffres",
+      "chapitre": "chiffres",
+      "operation": "lettres",
+      "a": [
+        100,
+        999
+      ],
+      "formes": [
+        "chiffres"
+      ]
+    },
+    {
+      "id": "mots",
+      "chapitre": "lettres",
+      "operation": "lettres",
+      "a": [
+        20,
+        999
+      ],
+      "formes": [
+        "mots"
+      ]
+    }
+  ]
+}

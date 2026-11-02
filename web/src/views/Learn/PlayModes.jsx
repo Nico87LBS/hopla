@@ -576,6 +576,91 @@ export const Clock = ({ clock }) => {
 
 Clock.propTypes = { clock: PropTypes.object.isRequired }
 
+// Ruler draws a line to measure above a ruler in centimetres.
+export const Ruler = ({ ruler }) => {
+  const { length, size, start } = ruler
+  const step = 18
+  const left = 10
+  const width = left * 2 + step * (size - 1)
+  const x = cm => left + cm * step
+  return (
+    <Box
+      component='svg'
+      viewBox={`0 0 ${width} 74`}
+      role='img'
+      aria-label='règle'
+      sx={{ display: 'block', maxWidth: 420, width: '100%' }}
+    >
+      <line
+        x1={x(start)}
+        y1='12'
+        x2={x(start + length)}
+        y2='12'
+        stroke='#E5484D'
+        strokeWidth='5'
+        strokeLinecap='butt'
+      />
+      <line
+        x1={x(start)}
+        y1='4'
+        x2={x(start)}
+        y2='20'
+        stroke='#E5484D'
+        strokeWidth='1.5'
+      />
+      <line
+        x1={x(start + length)}
+        y1='4'
+        x2={x(start + length)}
+        y2='20'
+        stroke='#E5484D'
+        strokeWidth='1.5'
+      />
+      <rect
+        x='2'
+        y='26'
+        width={width - 4}
+        height='44'
+        rx='4'
+        fill='#FFF3C4'
+        stroke='#3E2F86'
+        strokeWidth='2'
+      />
+      {Array.from({ length: (size - 1) * 10 + 1 }, (_, i) => {
+        const cm = i / 10
+        const long = i % 10 === 0
+        const half = i % 5 === 0
+        return (
+          <line
+            key={i}
+            x1={x(cm)}
+            y1='26'
+            x2={x(cm)}
+            y2={long ? 42 : half ? 37 : 33}
+            stroke='#3E2F86'
+            strokeWidth={long ? 1.4 : 0.6}
+          />
+        )
+      })}
+      {Array.from({ length: size }, (_, cm) => (
+        <text
+          key={cm}
+          x={x(cm)}
+          y='58'
+          textAnchor='middle'
+          fontSize='11'
+          fontWeight='700'
+          fill='#3E2F86'
+        >
+          {cm}
+        </text>
+      ))}
+    </Box>
+  )
+}
+
+Ruler.propTypes = { ruler: PropTypes.object.isRequired }
+
 // LabelView shows a label to sort, word and drawing.
 export const LabelView = ({ subject }) => (
   <Stack alignItems='center' gap={0.5}>
