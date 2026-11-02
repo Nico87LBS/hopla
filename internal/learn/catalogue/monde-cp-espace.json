@@ -1,9 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "monde-cp-espace",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "nom": "L’espace autour de moi",
-  "description": "À gauche, à droite, devant, derrière, entre ; les pièces de la maison ; le plan ; traverser la rue.",
+  "description": "Se situer (sur, sous, entre…), passer à la vue d’en haut, lire le plan de la chambre et de la classe, se déplacer sur un quadrillage, reconnaître les paysages, traverser la rue.",
   "matiere": "monde",
   "niveaux": [
     "CP"
@@ -17,11 +17,26 @@
   "chapitres": [
     {
       "id": "positions",
-      "nom": "Où est le lapin ?"
+      "nom": "Où est-ce ?"
     },
     {
-      "id": "maison",
-      "nom": "La maison et le plan",
+      "id": "dessus",
+      "nom": "Vu d’en haut",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "plans",
+      "nom": "Lire un plan",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "quadrillage",
+      "nom": "Se déplacer sur un quadrillage",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "paysages",
+      "nom": "Les paysages",
       "ouvert_apres": 80
     },
     {
@@ -47,9 +62,8 @@
       "reponse": "à gauche",
       "image": "pos-left",
       "sens": [
-        "inverse"
-      ],
-      "question_inverse": "Où est le lapin ?"
+        "direct"
+      ]
     },
     {
       "id": "position-a-droite",
@@ -60,9 +74,8 @@
       "reponse": "à droite",
       "image": "pos-right",
       "sens": [
-        "inverse"
-      ],
-      "question_inverse": "Où est le lapin ?"
+        "direct"
+      ]
     },
     {
       "id": "position-entre",
@@ -73,9 +86,8 @@
       "reponse": "entre",
       "image": "pos-between",
       "sens": [
-        "inverse"
-      ],
-      "question_inverse": "Où est le lapin ?"
+        "direct"
+      ]
     },
     {
       "id": "position-devant",
@@ -86,9 +98,8 @@
       "reponse": "devant",
       "image": "pos-in-front",
       "sens": [
-        "inverse"
-      ],
-      "question_inverse": "Où est le lapin ?"
+        "direct"
+      ]
     },
     {
       "id": "position-derriere",
@@ -99,9 +110,8 @@
       "reponse": "derrière",
       "image": "pos-behind",
       "sens": [
-        "inverse"
-      ],
-      "question_inverse": "Où est le lapin ?"
+        "direct"
+      ]
     },
     {
       "id": "position-dans",
@@ -112,9 +122,8 @@
       "reponse": "dans",
       "image": "pos-in",
       "sens": [
-        "inverse"
-      ],
-      "question_inverse": "Où est le lapin ?"
+        "direct"
+      ]
     },
     {
       "id": "position-sur",
@@ -125,9 +134,8 @@
       "reponse": "sur",
       "image": "pos-on",
       "sens": [
-        "inverse"
-      ],
-      "question_inverse": "Où est le lapin ?"
+        "direct"
+      ]
     },
     {
       "id": "position-sous",
@@ -138,9 +146,8 @@
       "reponse": "sous",
       "image": "pos-under",
       "sens": [
-        "inverse"
-      ],
-      "question_inverse": "Où est le lapin ?"
+        "direct"
+      ]
     },
     {
       "id": "position-a-cote",
@@ -151,78 +158,343 @@
       "reponse": "à côté",
       "image": "pos-next-to",
       "sens": [
-        "inverse"
-      ],
-      "question_inverse": "Où est le lapin ?"
+        "direct"
+      ]
     },
     {
-      "id": "maison-1",
-      "chapitre": "maison",
-      "type": "choix",
-      "question": "Où dort-on ?",
-      "reponse": "dans la chambre",
-      "pieges": [
-        "dans la cuisine",
-        "dans le garage",
-        "dans le jardin"
-      ],
-      "consigne": "Où dort-on ?"
+      "id": "scene-sur",
+      "chapitre": "positions",
+      "type": "zones",
+      "image": "scene-positions",
+      "question": "lapin",
+      "reponse": "le lapin",
+      "question_toucher": "Touche ce qui est sur la table.",
+      "sens": [
+        "toucher"
+      ]
     },
     {
-      "id": "maison-2",
-      "chapitre": "maison",
-      "type": "choix",
-      "question": "Où prépare-t-on le repas ?",
-      "reponse": "dans la cuisine",
-      "pieges": [
-        "dans la chambre",
-        "dans la salle de bains",
-        "dans le grenier"
-      ],
-      "consigne": "Où prépare-t-on le repas ?"
+      "id": "scene-sous",
+      "chapitre": "positions",
+      "type": "zones",
+      "image": "scene-positions",
+      "question": "chat",
+      "reponse": "le chat",
+      "question_toucher": "Touche ce qui est sous la table.",
+      "sens": [
+        "toucher"
+      ]
     },
     {
-      "id": "maison-3",
-      "chapitre": "maison",
-      "type": "choix",
-      "question": "Où prend-on son bain ?",
-      "reponse": "dans la salle de bains",
-      "pieges": [
-        "dans le salon",
-        "dans la cuisine",
-        "dans la chambre"
-      ],
-      "consigne": "Où prend-on son bain ?"
+      "id": "scene-gauche",
+      "chapitre": "positions",
+      "type": "zones",
+      "image": "scene-positions",
+      "question": "ballon",
+      "reponse": "le ballon",
+      "question_toucher": "Touche ce qui est tout à gauche.",
+      "sens": [
+        "toucher"
+      ]
     },
     {
-      "id": "maison-4",
-      "chapitre": "maison",
-      "type": "choix",
-      "question": "Où range-t-on la voiture ?",
-      "reponse": "dans le garage",
-      "pieges": [
-        "dans la chambre",
-        "dans la cuisine",
-        "dans la baignoire"
-      ],
-      "consigne": "Où range-t-on la voiture ?"
+      "id": "scene-droite",
+      "chapitre": "positions",
+      "type": "zones",
+      "image": "scene-positions",
+      "question": "plante",
+      "reponse": "la plante",
+      "question_toucher": "Touche ce qui est à droite de la table.",
+      "sens": [
+        "toucher"
+      ]
     },
     {
-      "id": "maison-5",
-      "chapitre": "maison",
+      "id": "scene-entre",
+      "chapitre": "positions",
+      "type": "zones",
+      "image": "scene-positions",
+      "question": "voiture",
+      "reponse": "la petite voiture",
+      "question_toucher": "Touche ce qui est entre le ballon et la table.",
+      "sens": [
+        "toucher"
+      ]
+    },
+    {
+      "id": "scene-cote-ballon",
+      "chapitre": "positions",
+      "type": "zones",
+      "image": "scene-positions",
+      "question": "voiture",
+      "reponse": "la petite voiture",
+      "question_toucher": "Touche ce qui est à côté du ballon.",
+      "sens": [
+        "toucher"
+      ]
+    },
+    {
+      "id": "dessus-associer",
+      "chapitre": "dessus",
+      "type": "associer",
+      "question": "Relie chaque objet à son dessin vu d’en haut.",
+      "paires": [
+        [
+          {
+            "image": "table"
+          },
+          {
+            "image": "top-table"
+          }
+        ],
+        [
+          {
+            "image": "bed"
+          },
+          {
+            "image": "top-bed"
+          }
+        ],
+        [
+          {
+            "image": "chair"
+          },
+          {
+            "image": "top-chair"
+          }
+        ],
+        [
+          {
+            "image": "car"
+          },
+          {
+            "image": "top-car"
+          }
+        ],
+        [
+          {
+            "image": "bathtub"
+          },
+          {
+            "image": "top-bathtub"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "dessus-bed",
+      "chapitre": "dessus",
       "type": "choix",
-      "question": "Où regarde-t-on la télévision, sur le canapé ?",
-      "reponse": "dans le salon",
+      "question": "Vu d’en haut, qu’est-ce que c’est ?",
+      "reponse": "le lit",
       "pieges": [
-        "dans le garage",
-        "dans la salle de bains",
-        "dans le grenier"
+        "la table",
+        "la chaise",
+        "la voiture"
       ],
-      "consigne": "Où regarde-t-on la télévision, sur le canapé ?"
+      "image": "top-bed"
+    },
+    {
+      "id": "dessus-table",
+      "chapitre": "dessus",
+      "type": "choix",
+      "question": "Vu d’en haut, qu’est-ce que c’est ?",
+      "reponse": "la table",
+      "pieges": [
+        "le lit",
+        "la chaise",
+        "la voiture"
+      ],
+      "image": "top-table"
+    },
+    {
+      "id": "dessus-chair",
+      "chapitre": "dessus",
+      "type": "choix",
+      "question": "Vu d’en haut, qu’est-ce que c’est ?",
+      "reponse": "la chaise",
+      "pieges": [
+        "le lit",
+        "la table",
+        "la voiture"
+      ],
+      "image": "top-chair"
+    },
+    {
+      "id": "dessus-car",
+      "chapitre": "dessus",
+      "type": "choix",
+      "question": "Vu d’en haut, qu’est-ce que c’est ?",
+      "reponse": "la voiture",
+      "pieges": [
+        "le lit",
+        "la table",
+        "la chaise"
+      ],
+      "image": "top-car"
+    },
+    {
+      "id": "dessus-bathtub",
+      "chapitre": "dessus",
+      "type": "choix",
+      "question": "Vu d’en haut, qu’est-ce que c’est ?",
+      "reponse": "la baignoire",
+      "pieges": [
+        "le lit",
+        "la table",
+        "la chaise"
+      ],
+      "image": "top-bathtub"
+    },
+    {
+      "id": "plan-2",
+      "chapitre": "dessus",
+      "type": "choix",
+      "question": "Un plan, c’est…",
+      "reponse": "un dessin vu d’en haut",
+      "pieges": [
+        "une photo de face",
+        "une chanson",
+        "un livre d’histoires"
+      ],
+      "consigne": "Un plan, c’est…"
+    },
+    {
+      "id": "plan-3",
+      "chapitre": "dessus",
+      "type": "choix",
+      "question": "Sur un plan, une table vue d’en haut ressemble à…",
+      "reponse": "un rectangle",
+      "pieges": [
+        "un triangle",
+        "une étoile",
+        "un cœur"
+      ],
+      "consigne": "Sur un plan, une table vue d’en haut ressemble à…"
+    },
+    {
+      "id": "chambre-lit",
+      "chapitre": "plans",
+      "type": "zones",
+      "image": "plan-chambre",
+      "question": "lit",
+      "reponse": "le lit",
+      "consigne": "Voici le plan d’une chambre, vue d’en haut."
+    },
+    {
+      "id": "chambre-armoire",
+      "chapitre": "plans",
+      "type": "zones",
+      "image": "plan-chambre",
+      "question": "armoire",
+      "reponse": "l’armoire",
+      "consigne": "Voici le plan d’une chambre, vue d’en haut."
+    },
+    {
+      "id": "chambre-bureau",
+      "chapitre": "plans",
+      "type": "zones",
+      "image": "plan-chambre",
+      "question": "bureau",
+      "reponse": "le bureau",
+      "consigne": "Voici le plan d’une chambre, vue d’en haut."
+    },
+    {
+      "id": "chambre-tapis",
+      "chapitre": "plans",
+      "type": "zones",
+      "image": "plan-chambre",
+      "question": "tapis",
+      "reponse": "le tapis",
+      "consigne": "Voici le plan d’une chambre, vue d’en haut."
+    },
+    {
+      "id": "chambre-porte",
+      "chapitre": "plans",
+      "type": "zones",
+      "image": "plan-chambre",
+      "question": "porte",
+      "reponse": "la porte",
+      "consigne": "Voici le plan d’une chambre, vue d’en haut."
+    },
+    {
+      "id": "chambre-fenetre",
+      "chapitre": "plans",
+      "type": "zones",
+      "image": "plan-chambre",
+      "question": "fenetre",
+      "reponse": "la fenêtre",
+      "consigne": "Voici le plan d’une chambre, vue d’en haut."
+    },
+    {
+      "id": "classe-tableau",
+      "chapitre": "plans",
+      "type": "zones",
+      "image": "plan-classe",
+      "question": "tableau",
+      "reponse": "le tableau",
+      "consigne": "Voici le plan d’une classe, vue d’en haut."
+    },
+    {
+      "id": "classe-bureau-maitresse",
+      "chapitre": "plans",
+      "type": "zones",
+      "image": "plan-classe",
+      "question": "bureau-maitresse",
+      "reponse": "le bureau de la maîtresse",
+      "consigne": "Voici le plan d’une classe, vue d’en haut."
+    },
+    {
+      "id": "classe-tables",
+      "chapitre": "plans",
+      "type": "zones",
+      "image": "plan-classe",
+      "question": "tables",
+      "reponse": "les tables des élèves",
+      "consigne": "Voici le plan d’une classe, vue d’en haut."
+    },
+    {
+      "id": "classe-porte",
+      "chapitre": "plans",
+      "type": "zones",
+      "image": "plan-classe",
+      "question": "porte",
+      "reponse": "la porte",
+      "consigne": "Voici le plan d’une classe, vue d’en haut."
+    },
+    {
+      "id": "classe-fenetre",
+      "chapitre": "plans",
+      "type": "zones",
+      "image": "plan-classe",
+      "question": "fenetre",
+      "reponse": "les fenêtres",
+      "consigne": "Voici le plan d’une classe, vue d’en haut."
+    },
+    {
+      "id": "classe-coin-lecture",
+      "chapitre": "plans",
+      "type": "zones",
+      "image": "plan-classe",
+      "question": "coin-lecture",
+      "reponse": "le coin lecture",
+      "consigne": "Voici le plan d’une classe, vue d’en haut."
+    },
+    {
+      "id": "classe-pres-tableau",
+      "chapitre": "plans",
+      "type": "choix",
+      "question": "Sur le plan de la classe, qu’est-ce qui est le plus près du tableau ?",
+      "reponse": "le bureau de la maîtresse",
+      "pieges": [
+        "la porte",
+        "le coin lecture",
+        "les fenêtres"
+      ]
     },
     {
       "id": "pieces",
-      "chapitre": "maison",
+      "chapitre": "plans",
       "type": "classer",
       "question": "Dans quelle pièce le trouve-t-on ?",
       "consigne": "Dans quelle pièce le trouve-t-on ?",
@@ -281,6 +553,301 @@
           "boite": "La cuisine",
           "image": "bowl"
         }
+      ]
+    },
+    {
+      "id": "quad-droite-2",
+      "chapitre": "quadrillage",
+      "type": "zones",
+      "image": "quadrillage",
+      "question": "case-d3",
+      "reponse": "la case D3",
+      "question_toucher": "Le lapin avance de 2 cases vers la droite. Touche la case où il arrive.",
+      "sens": [
+        "toucher"
+      ]
+    },
+    {
+      "id": "quad-haut-1",
+      "chapitre": "quadrillage",
+      "type": "zones",
+      "image": "quadrillage",
+      "question": "case-b2",
+      "reponse": "la case B2",
+      "question_toucher": "Le lapin monte d’une case. Touche la case où il arrive.",
+      "sens": [
+        "toucher"
+      ]
+    },
+    {
+      "id": "quad-gauche-1",
+      "chapitre": "quadrillage",
+      "type": "zones",
+      "image": "quadrillage",
+      "question": "case-a3",
+      "reponse": "la case A3",
+      "question_toucher": "Le lapin va d’une case vers la gauche. Touche la case où il arrive.",
+      "sens": [
+        "toucher"
+      ]
+    },
+    {
+      "id": "quad-bas-1",
+      "chapitre": "quadrillage",
+      "type": "zones",
+      "image": "quadrillage",
+      "question": "case-b4",
+      "reponse": "la case B4",
+      "question_toucher": "Le lapin descend d’une case. Touche la case où il arrive.",
+      "sens": [
+        "toucher"
+      ]
+    },
+    {
+      "id": "quad-droite-1-haut-2",
+      "chapitre": "quadrillage",
+      "type": "zones",
+      "image": "quadrillage",
+      "question": "case-c1",
+      "reponse": "la case C1",
+      "question_toucher": "Le lapin va d’une case vers la droite, puis monte de 2 cases. Touche la case où il arrive.",
+      "sens": [
+        "toucher"
+      ]
+    },
+    {
+      "id": "quad-carotte",
+      "chapitre": "quadrillage",
+      "type": "zones",
+      "image": "quadrillage",
+      "question": "case-d1",
+      "reponse": "la case D1",
+      "question_toucher": "Touche la case de la carotte.",
+      "sens": [
+        "toucher"
+      ]
+    },
+    {
+      "id": "quad-lapin",
+      "chapitre": "quadrillage",
+      "type": "zones",
+      "image": "quadrillage",
+      "question": "case-b3",
+      "reponse": "la case B3",
+      "question_toucher": "Touche la case du lapin.",
+      "sens": [
+        "toucher"
+      ]
+    },
+    {
+      "id": "quad-nom-a1",
+      "chapitre": "quadrillage",
+      "type": "zones",
+      "image": "quadrillage",
+      "question": "case-a1",
+      "reponse": "la case A1",
+      "sens": [
+        "nommer"
+      ],
+      "consigne": "D’abord la lettre de la colonne, puis le chiffre de la ligne."
+    },
+    {
+      "id": "quad-nom-c4",
+      "chapitre": "quadrillage",
+      "type": "zones",
+      "image": "quadrillage",
+      "question": "case-c4",
+      "reponse": "la case C4",
+      "sens": [
+        "nommer"
+      ],
+      "consigne": "D’abord la lettre de la colonne, puis le chiffre de la ligne."
+    },
+    {
+      "id": "quad-nom-d2",
+      "chapitre": "quadrillage",
+      "type": "zones",
+      "image": "quadrillage",
+      "question": "case-d2",
+      "reponse": "la case D2",
+      "sens": [
+        "nommer"
+      ],
+      "consigne": "D’abord la lettre de la colonne, puis le chiffre de la ligne."
+    },
+    {
+      "id": "quad-nom-b1",
+      "chapitre": "quadrillage",
+      "type": "zones",
+      "image": "quadrillage",
+      "question": "case-b1",
+      "reponse": "la case B1",
+      "sens": [
+        "nommer"
+      ],
+      "consigne": "D’abord la lettre de la colonne, puis le chiffre de la ligne."
+    },
+    {
+      "id": "quad-chemin",
+      "chapitre": "quadrillage",
+      "type": "choix",
+      "question": "Le lapin est en B3 et la carotte en D1. Quel chemin le mène à la carotte ?",
+      "reponse": "2 cases à droite, puis 2 cases en haut",
+      "pieges": [
+        "2 cases à gauche, puis 2 cases en haut",
+        "2 cases à droite, puis 2 cases en bas",
+        "1 case à droite, puis 1 case en haut"
+      ]
+    },
+    {
+      "id": "paysages-1",
+      "chapitre": "paysages",
+      "type": "classer",
+      "question": "Où le voit-on le plus souvent ?",
+      "boites": [
+        {
+          "nom": "La ville",
+          "regle": "beaucoup de maisons, d’immeubles, de rues, de voitures et de magasins."
+        },
+        {
+          "nom": "La campagne",
+          "regle": "des champs, des fermes et des animaux, peu de maisons."
+        },
+        {
+          "nom": "La mer",
+          "regle": "de l’eau salée, des plages et des bateaux."
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le bus",
+          "boite": "La ville",
+          "image": "bus"
+        },
+        {
+          "texte": "le camion de livraison",
+          "boite": "La ville",
+          "image": "truck"
+        },
+        {
+          "texte": "la vache",
+          "boite": "La campagne",
+          "image": "cow"
+        },
+        {
+          "texte": "la grange",
+          "boite": "La campagne",
+          "image": "barn"
+        },
+        {
+          "texte": "le mouton",
+          "boite": "La campagne",
+          "image": "sheep"
+        },
+        {
+          "texte": "le bateau",
+          "boite": "La mer",
+          "image": "boat"
+        },
+        {
+          "texte": "le crabe",
+          "boite": "La mer",
+          "image": "crab"
+        },
+        {
+          "texte": "la vague",
+          "boite": "La mer",
+          "image": "wave"
+        }
+      ]
+    },
+    {
+      "id": "paysages-2",
+      "chapitre": "paysages",
+      "type": "classer",
+      "question": "À la mer ou à la montagne ?",
+      "boites": [
+        {
+          "nom": "La mer",
+          "regle": "de l’eau salée, des plages et des bateaux."
+        },
+        {
+          "nom": "La montagne",
+          "regle": "des sommets hauts, des sapins et de la neige en hiver."
+        }
+      ],
+      "a_classer": [
+        {
+          "texte": "le sapin",
+          "boite": "La montagne",
+          "image": "fir"
+        },
+        {
+          "texte": "la neige",
+          "boite": "La montagne",
+          "image": "snow"
+        },
+        {
+          "texte": "le sommet",
+          "boite": "La montagne",
+          "image": "mountain"
+        },
+        {
+          "texte": "le bonhomme de neige",
+          "boite": "La montagne",
+          "image": "snowman"
+        },
+        {
+          "texte": "la baleine",
+          "boite": "La mer",
+          "image": "whale"
+        },
+        {
+          "texte": "le dauphin",
+          "boite": "La mer",
+          "image": "dolphin"
+        },
+        {
+          "texte": "le requin",
+          "boite": "La mer",
+          "image": "shark"
+        }
+      ]
+    },
+    {
+      "id": "paysage-ville",
+      "chapitre": "paysages",
+      "type": "choix",
+      "question": "Où trouve-t-on beaucoup d’immeubles et de magasins ?",
+      "reponse": "en ville",
+      "pieges": [
+        "à la campagne",
+        "à la montagne",
+        "à la mer"
+      ]
+    },
+    {
+      "id": "paysage-plage",
+      "chapitre": "paysages",
+      "type": "choix",
+      "question": "Où trouve-t-on une plage ?",
+      "reponse": "au bord de la mer",
+      "pieges": [
+        "en haut d’une montagne",
+        "au milieu d’un champ",
+        "dans une forêt"
+      ]
+    },
+    {
+      "id": "paysage-champs",
+      "chapitre": "paysages",
+      "type": "choix",
+      "question": "Où voit-on surtout des champs et des fermes ?",
+      "reponse": "à la campagne",
+      "pieges": [
+        "en ville",
+        "au bord de la mer",
+        "au sommet d’une montagne"
       ]
     },
     {
@@ -347,94 +914,6 @@
         "dans le coffre"
       ],
       "consigne": "Dans la voiture, l’enfant s’assoit…"
-    },
-    {
-      "id": "ville-campagne",
-      "chapitre": "rue",
-      "type": "classer",
-      "question": "En ville ou à la campagne ?",
-      "consigne": "En ville ou à la campagne ?",
-      "boites": [
-        {
-          "nom": "En ville",
-          "regle": "beaucoup de maisons, d’immeubles, de rues et de magasins."
-        },
-        {
-          "nom": "À la campagne",
-          "regle": "des champs, des fermes, peu de maisons."
-        }
-      ],
-      "a_classer": [
-        {
-          "texte": "le bus",
-          "boite": "En ville",
-          "image": "bus"
-        },
-        {
-          "texte": "le camion",
-          "boite": "En ville",
-          "image": "truck"
-        },
-        {
-          "texte": "la ferme",
-          "boite": "À la campagne",
-          "image": "barn"
-        },
-        {
-          "texte": "la vache",
-          "boite": "À la campagne",
-          "image": "cow"
-        },
-        {
-          "texte": "le mouton",
-          "boite": "À la campagne",
-          "image": "sheep"
-        },
-        {
-          "texte": "le train",
-          "boite": "En ville",
-          "image": "train"
-        }
-      ]
-    },
-    {
-      "id": "plan-1",
-      "chapitre": "maison",
-      "type": "choix",
-      "question": "Sur le plan de la classe, le tableau est devant les élèves. Le bureau de la maîtresse est près…",
-      "reponse": "du tableau",
-      "pieges": [
-        "de la porte du couloir",
-        "des toilettes",
-        "du jardin"
-      ],
-      "consigne": "Sur le plan de la classe, le tableau est devant les élèves. Le bureau de la maîtresse est près…"
-    },
-    {
-      "id": "plan-2",
-      "chapitre": "maison",
-      "type": "choix",
-      "question": "Un plan, c’est…",
-      "reponse": "un dessin vu d’en haut",
-      "pieges": [
-        "une photo de face",
-        "une chanson",
-        "un livre d’histoires"
-      ],
-      "consigne": "Un plan, c’est…"
-    },
-    {
-      "id": "plan-3",
-      "chapitre": "maison",
-      "type": "choix",
-      "question": "Sur un plan, une table vue d’en haut ressemble à…",
-      "reponse": "un rectangle",
-      "pieges": [
-        "un triangle",
-        "une étoile",
-        "un cœur"
-      ],
-      "consigne": "Sur un plan, une table vue d’en haut ressemble à…"
     }
   ]
 }

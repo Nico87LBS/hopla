@@ -1029,7 +1029,13 @@ const zoneItems = (card, moduleId, siblings) => {
         zoneNames: names,
       }
       if (direction === 'toucher') {
-        return { ...base, mode: 'zone', prompt: `Touche : ${card.reponse}` }
+        // A card may say what to touch in its own words: « Le lapin avance de
+        // deux cases… ».
+        return {
+          ...base,
+          mode: 'zone',
+          prompt: card.question_toucher || `Touche : ${card.reponse}`,
+        }
       }
       // The traps come from the same chapter when it has enough of them, so
       // that a river is not mixed with a city on the same map.
