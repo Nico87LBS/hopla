@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce2-conjugaison",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "Conjugaison CE2",
   "description": "Passé, présent ou futur ; le présent, le futur, l'imparfait et le passé composé des verbes du CE2 (être, avoir, aller, faire, dire, venir, pouvoir, voir, vouloir, prendre, partir et les verbes en -er) ; puis écrire soi-même le verbe.",
   "matiere": "francais",
@@ -183,7 +183,12 @@
         "venir"
       ],
       "consigne": "Quel est l’infinitif de « nous irons » ?",
-      "explication": "L’infinitif est le nom du verbe : aller, être, avoir…"
+      "explication": "L’infinitif est le nom du verbe : aller, être, avoir…",
+      "pourquoi": {
+        "irer": "« irer » n’existe pas : « nous irons » vient de « aller ».",
+        "iron": "« iron » n’existe pas : l’infinitif de « nous irons » est « aller ».",
+        "venir": "« venir » donne « nous viendrons »."
+      }
     },
     {
       "id": "infinitif-2",
@@ -196,7 +201,12 @@
         "font",
         "fonter"
       ],
-      "consigne": "Quel est l’infinitif de « elles font » ?"
+      "consigne": "Quel est l’infinitif de « elles font » ?",
+      "pourquoi": {
+        "fondre": "« fondre » donne « elles fondent ».",
+        "font": "« font » est conjugué : l’infinitif est « faire ».",
+        "fonter": "« fonter » n’existe pas."
+      }
     },
     {
       "id": "infinitif-3",
@@ -209,7 +219,12 @@
         "avoir",
         "étais"
       ],
-      "consigne": "Quel est l’infinitif de « tu étais » ?"
+      "consigne": "Quel est l’infinitif de « tu étais » ?",
+      "pourquoi": {
+        "étaier": "« étaier » n’existe pas : « tu étais » vient de « être ».",
+        "avoir": "« avoir » donne « tu avais ».",
+        "étais": "« étais » est conjugué : l’infinitif est « être »."
+      }
     },
     {
       "id": "infinitif-4",
@@ -222,7 +237,12 @@
         "avoir pris",
         "priser"
       ],
-      "consigne": "Quel est l’infinitif de « il a pris » ?"
+      "consigne": "Quel est l’infinitif de « il a pris » ?",
+      "pourquoi": {
+        "prier": "« prier » donne « il a prié ».",
+        "avoir pris": "« a » est l’auxiliaire : le verbe est « prendre ».",
+        "priser": "« priser » n’existe pas ici : « pris » vient de « prendre »."
+      }
     },
     {
       "id": "infinitif-5",
@@ -235,7 +255,12 @@
         "vouloir",
         "voyager"
       ],
-      "consigne": "Quel est l’infinitif de « vous voyez » ?"
+      "consigne": "Quel est l’infinitif de « vous voyez » ?",
+      "pourquoi": {
+        "voyer": "« voyer » n’existe pas : « vous voyez » vient de « voir ».",
+        "vouloir": "« vouloir » donne « vous voulez ».",
+        "voyager": "« voyager » donne « vous voyagez »."
+      }
     },
     {
       "id": "present-etre-1",
@@ -248,7 +273,12 @@
         "j’étais",
         "je sommes"
       ],
-      "consigne": "Choisis le verbe être au présent."
+      "consigne": "Choisis le verbe être au présent.",
+      "pourquoi": {
+        "je serai": "« je serai » est au futur ; « aujourd’hui » demande le présent.",
+        "j’étais": "« j’étais » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "je sommes": "« sommes » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "present-etre-2",
@@ -261,7 +291,12 @@
         "était",
         "sont"
       ],
-      "consigne": "Choisis le verbe être au présent."
+      "consigne": "Choisis le verbe être au présent.",
+      "pourquoi": {
+        "sera": "« sera » est au futur ; « aujourd’hui » demande le présent.",
+        "était": "« était » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "sont": "« sont » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "present-etre-3",
@@ -274,7 +309,12 @@
         "étiez",
         "es"
       ],
-      "consigne": "Choisis le verbe être au présent."
+      "consigne": "Choisis le verbe être au présent.",
+      "pourquoi": {
+        "serez": "« serez » est au futur ; « aujourd’hui » demande le présent.",
+        "étiez": "« étiez » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "es": "« es » va avec « tu », pas avec « vous »."
+      }
     },
     {
       "id": "present-avoir-1",
@@ -287,7 +327,12 @@
         "avais",
         "avez"
       ],
-      "consigne": "Choisis le verbe avoir au présent."
+      "consigne": "Choisis le verbe avoir au présent.",
+      "pourquoi": {
+        "auras": "« auras » est au futur ; « aujourd’hui » demande le présent.",
+        "avais": "« avais » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "avez": "« avez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "present-avoir-2",
@@ -300,7 +345,12 @@
         "avions",
         "ai"
       ],
-      "consigne": "Choisis le verbe avoir au présent."
+      "consigne": "Choisis le verbe avoir au présent.",
+      "pourquoi": {
+        "aurons": "« aurons » est au futur ; « aujourd’hui » demande le présent.",
+        "avions": "« avions » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "ai": "« ai » va avec « je », pas avec « nous »."
+      }
     },
     {
       "id": "present-avoir-3",
@@ -313,7 +363,12 @@
         "avaient",
         "a"
       ],
-      "consigne": "Choisis le verbe avoir au présent."
+      "consigne": "Choisis le verbe avoir au présent.",
+      "pourquoi": {
+        "auront": "« auront » est au futur ; « aujourd’hui » demande le présent.",
+        "avaient": "« avaient » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "a": "« a » va avec « il », pas avec « ils »."
+      }
     },
     {
       "id": "present-aller-1",
@@ -326,7 +381,12 @@
         "allait",
         "vont"
       ],
-      "consigne": "Choisis le verbe aller au présent."
+      "consigne": "Choisis le verbe aller au présent.",
+      "pourquoi": {
+        "ira": "« ira » est au futur ; « aujourd’hui » demande le présent.",
+        "allait": "« allait » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "vont": "« vont » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "present-aller-2",
@@ -339,7 +399,12 @@
         "alliez",
         "vas"
       ],
-      "consigne": "Choisis le verbe aller au présent."
+      "consigne": "Choisis le verbe aller au présent.",
+      "pourquoi": {
+        "irez": "« irez » est au futur ; « aujourd’hui » demande le présent.",
+        "alliez": "« alliez » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "vas": "« vas » va avec « tu », pas avec « vous »."
+      }
     },
     {
       "id": "present-aller-3",
@@ -352,7 +417,12 @@
         "j’allais",
         "j’allons"
       ],
-      "consigne": "Choisis le verbe aller au présent."
+      "consigne": "Choisis le verbe aller au présent.",
+      "pourquoi": {
+        "j’irai": "« j’irai » est au futur ; « aujourd’hui » demande le présent.",
+        "j’allais": "« j’allais » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "j’allons": "« allons » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "present-faire-1",
@@ -365,7 +435,12 @@
         "faisions",
         "fais"
       ],
-      "consigne": "Choisis le verbe faire au présent."
+      "consigne": "Choisis le verbe faire au présent.",
+      "pourquoi": {
+        "ferons": "« ferons » est au futur ; « aujourd’hui » demande le présent.",
+        "faisions": "« faisions » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "fais": "« fais » va avec « je » ou « tu », pas avec « nous »."
+      }
     },
     {
       "id": "present-faire-2",
@@ -378,7 +453,12 @@
         "faisaient",
         "fait"
       ],
-      "consigne": "Choisis le verbe faire au présent."
+      "consigne": "Choisis le verbe faire au présent.",
+      "pourquoi": {
+        "feront": "« feront » est au futur ; « aujourd’hui » demande le présent.",
+        "faisaient": "« faisaient » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "fait": "« fait » va avec « il », pas avec « ils »."
+      }
     },
     {
       "id": "present-faire-3",
@@ -391,7 +471,12 @@
         "faisais",
         "faites"
       ],
-      "consigne": "Choisis le verbe faire au présent."
+      "consigne": "Choisis le verbe faire au présent.",
+      "pourquoi": {
+        "feras": "« feras » est au futur ; « aujourd’hui » demande le présent.",
+        "faisais": "« faisais » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "faites": "« faites » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "present-dire-1",
@@ -404,7 +489,12 @@
         "disiez",
         "dis"
       ],
-      "consigne": "Choisis le verbe dire au présent."
+      "consigne": "Choisis le verbe dire au présent.",
+      "pourquoi": {
+        "direz": "« direz » est au futur ; « aujourd’hui » demande le présent.",
+        "disiez": "« disiez » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "dis": "« dis » va avec « je » ou « tu », pas avec « vous »."
+      }
     },
     {
       "id": "present-dire-2",
@@ -417,7 +507,12 @@
         "je disais",
         "je disons"
       ],
-      "consigne": "Choisis le verbe dire au présent."
+      "consigne": "Choisis le verbe dire au présent.",
+      "pourquoi": {
+        "je dirai": "« je dirai » est au futur ; « aujourd’hui » demande le présent.",
+        "je disais": "« je disais » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "je disons": "« disons » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "present-dire-3",
@@ -430,7 +525,12 @@
         "disait",
         "disent"
       ],
-      "consigne": "Choisis le verbe dire au présent."
+      "consigne": "Choisis le verbe dire au présent.",
+      "pourquoi": {
+        "dira": "« dira » est au futur ; « aujourd’hui » demande le présent.",
+        "disait": "« disait » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "disent": "« disent » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "present-venir-1",
@@ -443,7 +543,12 @@
         "venaient",
         "vient"
       ],
-      "consigne": "Choisis le verbe venir au présent."
+      "consigne": "Choisis le verbe venir au présent.",
+      "pourquoi": {
+        "viendront": "« viendront » est au futur ; « aujourd’hui » demande le présent.",
+        "venaient": "« venaient » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "vient": "« vient » va avec « il », pas avec « ils »."
+      }
     },
     {
       "id": "present-venir-2",
@@ -456,7 +561,12 @@
         "venais",
         "venez"
       ],
-      "consigne": "Choisis le verbe venir au présent."
+      "consigne": "Choisis le verbe venir au présent.",
+      "pourquoi": {
+        "viendras": "« viendras » est au futur ; « aujourd’hui » demande le présent.",
+        "venais": "« venais » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "venez": "« venez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "present-venir-3",
@@ -469,7 +579,12 @@
         "venions",
         "viens"
       ],
-      "consigne": "Choisis le verbe venir au présent."
+      "consigne": "Choisis le verbe venir au présent.",
+      "pourquoi": {
+        "viendrons": "« viendrons » est au futur ; « aujourd’hui » demande le présent.",
+        "venions": "« venions » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "viens": "« viens » va avec « je » ou « tu », pas avec « nous »."
+      }
     },
     {
       "id": "present-pouvoir-1",
@@ -482,7 +597,12 @@
         "je pouvais",
         "je pouvons"
       ],
-      "consigne": "Choisis le verbe pouvoir au présent."
+      "consigne": "Choisis le verbe pouvoir au présent.",
+      "pourquoi": {
+        "je pourrai": "« je pourrai » est au futur ; « aujourd’hui » demande le présent.",
+        "je pouvais": "« je pouvais » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "je pouvons": "« pouvons » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "present-pouvoir-2",
@@ -495,7 +615,12 @@
         "pouvait",
         "peuvent"
       ],
-      "consigne": "Choisis le verbe pouvoir au présent."
+      "consigne": "Choisis le verbe pouvoir au présent.",
+      "pourquoi": {
+        "pourra": "« pourra » est au futur ; « aujourd’hui » demande le présent.",
+        "pouvait": "« pouvait » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "peuvent": "« peuvent » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "present-pouvoir-3",
@@ -508,7 +633,12 @@
         "pouviez",
         "peux"
       ],
-      "consigne": "Choisis le verbe pouvoir au présent."
+      "consigne": "Choisis le verbe pouvoir au présent.",
+      "pourquoi": {
+        "pourrez": "« pourrez » est au futur ; « aujourd’hui » demande le présent.",
+        "pouviez": "« pouviez » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "peux": "« peux » va avec « je » ou « tu », pas avec « vous »."
+      }
     },
     {
       "id": "present-voir-1",
@@ -521,7 +651,12 @@
         "voyais",
         "voyez"
       ],
-      "consigne": "Choisis le verbe voir au présent."
+      "consigne": "Choisis le verbe voir au présent.",
+      "pourquoi": {
+        "verras": "« verras » est au futur ; « aujourd’hui » demande le présent.",
+        "voyais": "« voyais » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "voyez": "« voyez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "present-voir-2",
@@ -534,7 +669,12 @@
         "voyions",
         "vois"
       ],
-      "consigne": "Choisis le verbe voir au présent."
+      "consigne": "Choisis le verbe voir au présent.",
+      "pourquoi": {
+        "verrons": "« verrons » est au futur ; « aujourd’hui » demande le présent.",
+        "voyions": "« voyions » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "vois": "« vois » va avec « je » ou « tu », pas avec « nous »."
+      }
     },
     {
       "id": "present-voir-3",
@@ -547,7 +687,12 @@
         "voyaient",
         "voit"
       ],
-      "consigne": "Choisis le verbe voir au présent."
+      "consigne": "Choisis le verbe voir au présent.",
+      "pourquoi": {
+        "verront": "« verront » est au futur ; « aujourd’hui » demande le présent.",
+        "voyaient": "« voyaient » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "voit": "« voit » va avec « il », pas avec « ils »."
+      }
     },
     {
       "id": "present-vouloir-1",
@@ -560,7 +705,12 @@
         "voulait",
         "veulent"
       ],
-      "consigne": "Choisis le verbe vouloir au présent."
+      "consigne": "Choisis le verbe vouloir au présent.",
+      "pourquoi": {
+        "voudra": "« voudra » est au futur ; « aujourd’hui » demande le présent.",
+        "voulait": "« voulait » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "veulent": "« veulent » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "present-vouloir-2",
@@ -573,7 +723,12 @@
         "vouliez",
         "veux"
       ],
-      "consigne": "Choisis le verbe vouloir au présent."
+      "consigne": "Choisis le verbe vouloir au présent.",
+      "pourquoi": {
+        "voudrez": "« voudrez » est au futur ; « aujourd’hui » demande le présent.",
+        "vouliez": "« vouliez » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "veux": "« veux » va avec « je » ou « tu », pas avec « vous »."
+      }
     },
     {
       "id": "present-vouloir-3",
@@ -586,7 +741,12 @@
         "je voulais",
         "je voulons"
       ],
-      "consigne": "Choisis le verbe vouloir au présent."
+      "consigne": "Choisis le verbe vouloir au présent.",
+      "pourquoi": {
+        "je voudrai": "« je voudrai » est au futur ; « aujourd’hui » demande le présent.",
+        "je voulais": "« je voulais » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "je voulons": "« voulons » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "present-prendre-1",
@@ -599,7 +759,12 @@
         "prenions",
         "prends"
       ],
-      "consigne": "Choisis le verbe prendre au présent."
+      "consigne": "Choisis le verbe prendre au présent.",
+      "pourquoi": {
+        "prendrons": "« prendrons » est au futur ; « aujourd’hui » demande le présent.",
+        "prenions": "« prenions » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "prends": "« prends » va avec « je » ou « tu », pas avec « nous »."
+      }
     },
     {
       "id": "present-prendre-2",
@@ -612,7 +777,12 @@
         "prenaient",
         "prend"
       ],
-      "consigne": "Choisis le verbe prendre au présent."
+      "consigne": "Choisis le verbe prendre au présent.",
+      "pourquoi": {
+        "prendront": "« prendront » est au futur ; « aujourd’hui » demande le présent.",
+        "prenaient": "« prenaient » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "prend": "« prend » va avec « il », pas avec « ils »."
+      }
     },
     {
       "id": "present-prendre-3",
@@ -625,7 +795,12 @@
         "prenais",
         "prenez"
       ],
-      "consigne": "Choisis le verbe prendre au présent."
+      "consigne": "Choisis le verbe prendre au présent.",
+      "pourquoi": {
+        "prendras": "« prendras » est au futur ; « aujourd’hui » demande le présent.",
+        "prenais": "« prenais » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "prenez": "« prenez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "present-partir-1",
@@ -638,7 +813,12 @@
         "partiez",
         "pars"
       ],
-      "consigne": "Choisis le verbe partir au présent."
+      "consigne": "Choisis le verbe partir au présent.",
+      "pourquoi": {
+        "partirez": "« partirez » est au futur ; « aujourd’hui » demande le présent.",
+        "partiez": "« partiez » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "pars": "« pars » va avec « je » ou « tu », pas avec « vous »."
+      }
     },
     {
       "id": "present-partir-2",
@@ -651,7 +831,12 @@
         "je partais",
         "je partons"
       ],
-      "consigne": "Choisis le verbe partir au présent."
+      "consigne": "Choisis le verbe partir au présent.",
+      "pourquoi": {
+        "je partirai": "« je partirai » est au futur ; « aujourd’hui » demande le présent.",
+        "je partais": "« je partais » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "je partons": "« partons » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "present-partir-3",
@@ -664,7 +849,12 @@
         "partait",
         "partent"
       ],
-      "consigne": "Choisis le verbe partir au présent."
+      "consigne": "Choisis le verbe partir au présent.",
+      "pourquoi": {
+        "partira": "« partira » est au futur ; « aujourd’hui » demande le présent.",
+        "partait": "« partait » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "partent": "« partent » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "present-chanter-1",
@@ -677,7 +867,12 @@
         "chantaient",
         "chante"
       ],
-      "consigne": "Choisis le verbe chanter au présent."
+      "consigne": "Choisis le verbe chanter au présent.",
+      "pourquoi": {
+        "chanteront": "« chanteront » est au futur ; « aujourd’hui » demande le présent.",
+        "chantaient": "« chantaient » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "chante": "« chante » va avec « je » ou « il », pas avec « ils »."
+      }
     },
     {
       "id": "present-chanter-2",
@@ -690,7 +885,12 @@
         "chantais",
         "chantez"
       ],
-      "consigne": "Choisis le verbe chanter au présent."
+      "consigne": "Choisis le verbe chanter au présent.",
+      "pourquoi": {
+        "chanteras": "« chanteras » est au futur ; « aujourd’hui » demande le présent.",
+        "chantais": "« chantais » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "chantez": "« chantez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "present-chanter-3",
@@ -703,7 +903,12 @@
         "chantions",
         "chante"
       ],
-      "consigne": "Choisis le verbe chanter au présent."
+      "consigne": "Choisis le verbe chanter au présent.",
+      "pourquoi": {
+        "chanterons": "« chanterons » est au futur ; « aujourd’hui » demande le présent.",
+        "chantions": "« chantions » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "chante": "« chante » va avec « je » ou « il », pas avec « nous »."
+      }
     },
     {
       "id": "present-jouer-1",
@@ -716,7 +921,12 @@
         "je jouais",
         "je jouons"
       ],
-      "consigne": "Choisis le verbe jouer au présent."
+      "consigne": "Choisis le verbe jouer au présent.",
+      "pourquoi": {
+        "je jouerai": "« je jouerai » est au futur ; « aujourd’hui » demande le présent.",
+        "je jouais": "« je jouais » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "je jouons": "« jouons » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "present-jouer-2",
@@ -729,7 +939,12 @@
         "jouait",
         "jouent"
       ],
-      "consigne": "Choisis le verbe jouer au présent."
+      "consigne": "Choisis le verbe jouer au présent.",
+      "pourquoi": {
+        "jouera": "« jouera » est au futur ; « aujourd’hui » demande le présent.",
+        "jouait": "« jouait » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "jouent": "« jouent » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "present-jouer-3",
@@ -742,7 +957,12 @@
         "jouiez",
         "joues"
       ],
-      "consigne": "Choisis le verbe jouer au présent."
+      "consigne": "Choisis le verbe jouer au présent.",
+      "pourquoi": {
+        "jouerez": "« jouerez » est au futur ; « aujourd’hui » demande le présent.",
+        "jouiez": "« jouiez » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "joues": "« joues » va avec « tu », pas avec « vous »."
+      }
     },
     {
       "id": "present-manger-1",
@@ -755,7 +975,12 @@
         "mangeais",
         "mangez"
       ],
-      "consigne": "Choisis le verbe manger au présent."
+      "consigne": "Choisis le verbe manger au présent.",
+      "pourquoi": {
+        "mangeras": "« mangeras » est au futur ; « aujourd’hui » demande le présent.",
+        "mangeais": "« mangeais » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "mangez": "« mangez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "present-manger-2",
@@ -768,7 +993,12 @@
         "mangions",
         "mange"
       ],
-      "consigne": "Choisis le verbe manger au présent."
+      "consigne": "Choisis le verbe manger au présent.",
+      "pourquoi": {
+        "mangerons": "« mangerons » est au futur ; « aujourd’hui » demande le présent.",
+        "mangions": "« mangions » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "mange": "« mange » va avec « je » ou « il », pas avec « nous »."
+      }
     },
     {
       "id": "present-manger-3",
@@ -781,7 +1011,12 @@
         "mangeaient",
         "mange"
       ],
-      "consigne": "Choisis le verbe manger au présent."
+      "consigne": "Choisis le verbe manger au présent.",
+      "pourquoi": {
+        "mangeront": "« mangeront » est au futur ; « aujourd’hui » demande le présent.",
+        "mangeaient": "« mangeaient » est à l’imparfait ; « aujourd’hui » demande le présent.",
+        "mange": "« mange » va avec « je » ou « il », pas avec « ils »."
+      }
     },
     {
       "id": "futur-etre-1",
@@ -794,7 +1029,12 @@
         "étais",
         "serez"
       ],
-      "consigne": "Choisis le verbe être au futur."
+      "consigne": "Choisis le verbe être au futur.",
+      "pourquoi": {
+        "es": "« es » est au présent ; « demain » demande le futur.",
+        "étais": "« étais » est à l’imparfait ; « demain » demande le futur.",
+        "serez": "« serez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "futur-etre-2",
@@ -807,7 +1047,12 @@
         "étions",
         "serai"
       ],
-      "consigne": "Choisis le verbe être au futur."
+      "consigne": "Choisis le verbe être au futur.",
+      "pourquoi": {
+        "sommes": "« sommes » est au présent ; « demain » demande le futur.",
+        "étions": "« étions » est à l’imparfait ; « demain » demande le futur.",
+        "serai": "« serai » va avec « je », pas avec « nous »."
+      }
     },
     {
       "id": "futur-etre-3",
@@ -820,7 +1065,12 @@
         "étaient",
         "sera"
       ],
-      "consigne": "Choisis le verbe être au futur."
+      "consigne": "Choisis le verbe être au futur.",
+      "pourquoi": {
+        "sont": "« sont » est au présent ; « demain » demande le futur.",
+        "étaient": "« étaient » est à l’imparfait ; « demain » demande le futur.",
+        "sera": "« sera » va avec « il », pas avec « ils »."
+      }
     },
     {
       "id": "futur-avoir-1",
@@ -833,7 +1083,12 @@
         "avait",
         "auront"
       ],
-      "consigne": "Choisis le verbe avoir au futur."
+      "consigne": "Choisis le verbe avoir au futur.",
+      "pourquoi": {
+        "a": "« a » est au présent ; « demain » demande le futur.",
+        "avait": "« avait » est à l’imparfait ; « demain » demande le futur.",
+        "auront": "« auront » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "futur-avoir-2",
@@ -846,7 +1101,12 @@
         "aviez",
         "auras"
       ],
-      "consigne": "Choisis le verbe avoir au futur."
+      "consigne": "Choisis le verbe avoir au futur.",
+      "pourquoi": {
+        "avez": "« avez » est au présent ; « demain » demande le futur.",
+        "aviez": "« aviez » est à l’imparfait ; « demain » demande le futur.",
+        "auras": "« auras » va avec « tu », pas avec « vous »."
+      }
     },
     {
       "id": "futur-avoir-3",
@@ -859,7 +1119,12 @@
         "j’avais",
         "j’aurons"
       ],
-      "consigne": "Choisis le verbe avoir au futur."
+      "consigne": "Choisis le verbe avoir au futur.",
+      "pourquoi": {
+        "j’ai": "« j’ai » est au présent ; « demain » demande le futur.",
+        "j’avais": "« j’avais » est à l’imparfait ; « demain » demande le futur.",
+        "j’aurons": "« aurons » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "futur-aller-1",
@@ -872,7 +1137,12 @@
         "allions",
         "irai"
       ],
-      "consigne": "Choisis le verbe aller au futur."
+      "consigne": "Choisis le verbe aller au futur.",
+      "pourquoi": {
+        "allons": "« allons » est au présent ; « demain » demande le futur.",
+        "allions": "« allions » est à l’imparfait ; « demain » demande le futur.",
+        "irai": "« irai » va avec « je », pas avec « nous »."
+      }
     },
     {
       "id": "futur-aller-2",
@@ -885,7 +1155,12 @@
         "allaient",
         "ira"
       ],
-      "consigne": "Choisis le verbe aller au futur."
+      "consigne": "Choisis le verbe aller au futur.",
+      "pourquoi": {
+        "vont": "« vont » est au présent ; « demain » demande le futur.",
+        "allaient": "« allaient » est à l’imparfait ; « demain » demande le futur.",
+        "ira": "« ira » va avec « il », pas avec « ils »."
+      }
     },
     {
       "id": "futur-aller-3",
@@ -898,7 +1173,12 @@
         "allais",
         "irez"
       ],
-      "consigne": "Choisis le verbe aller au futur."
+      "consigne": "Choisis le verbe aller au futur.",
+      "pourquoi": {
+        "vas": "« vas » est au présent ; « demain » demande le futur.",
+        "allais": "« allais » est à l’imparfait ; « demain » demande le futur.",
+        "irez": "« irez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "futur-faire-1",
@@ -911,7 +1191,12 @@
         "faisiez",
         "feras"
       ],
-      "consigne": "Choisis le verbe faire au futur."
+      "consigne": "Choisis le verbe faire au futur.",
+      "pourquoi": {
+        "faites": "« faites » est au présent ; « demain » demande le futur.",
+        "faisiez": "« faisiez » est à l’imparfait ; « demain » demande le futur.",
+        "feras": "« feras » va avec « tu », pas avec « vous »."
+      }
     },
     {
       "id": "futur-faire-2",
@@ -924,7 +1209,12 @@
         "je faisais",
         "je ferons"
       ],
-      "consigne": "Choisis le verbe faire au futur."
+      "consigne": "Choisis le verbe faire au futur.",
+      "pourquoi": {
+        "je fais": "« je fais » est au présent ; « demain » demande le futur.",
+        "je faisais": "« je faisais » est à l’imparfait ; « demain » demande le futur.",
+        "je ferons": "« ferons » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "futur-faire-3",
@@ -937,7 +1227,12 @@
         "faisait",
         "feront"
       ],
-      "consigne": "Choisis le verbe faire au futur."
+      "consigne": "Choisis le verbe faire au futur.",
+      "pourquoi": {
+        "fait": "« fait » est au présent ; « demain » demande le futur.",
+        "faisait": "« faisait » est à l’imparfait ; « demain » demande le futur.",
+        "feront": "« feront » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "futur-dire-1",
@@ -950,7 +1245,12 @@
         "disaient",
         "dira"
       ],
-      "consigne": "Choisis le verbe dire au futur."
+      "consigne": "Choisis le verbe dire au futur.",
+      "pourquoi": {
+        "disent": "« disent » est au présent ; « demain » demande le futur.",
+        "disaient": "« disaient » est à l’imparfait ; « demain » demande le futur.",
+        "dira": "« dira » va avec « il », pas avec « ils »."
+      }
     },
     {
       "id": "futur-dire-2",
@@ -963,7 +1263,12 @@
         "disais",
         "direz"
       ],
-      "consigne": "Choisis le verbe dire au futur."
+      "consigne": "Choisis le verbe dire au futur.",
+      "pourquoi": {
+        "dis": "« dis » est au présent ; « demain » demande le futur.",
+        "disais": "« disais » est à l’imparfait ; « demain » demande le futur.",
+        "direz": "« direz » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "futur-dire-3",
@@ -976,7 +1281,12 @@
         "disions",
         "dirai"
       ],
-      "consigne": "Choisis le verbe dire au futur."
+      "consigne": "Choisis le verbe dire au futur.",
+      "pourquoi": {
+        "disons": "« disons » est au présent ; « demain » demande le futur.",
+        "disions": "« disions » est à l’imparfait ; « demain » demande le futur.",
+        "dirai": "« dirai » va avec « je », pas avec « nous »."
+      }
     },
     {
       "id": "futur-venir-1",
@@ -989,7 +1299,12 @@
         "je venais",
         "je viendrons"
       ],
-      "consigne": "Choisis le verbe venir au futur."
+      "consigne": "Choisis le verbe venir au futur.",
+      "pourquoi": {
+        "je viens": "« je viens » est au présent ; « demain » demande le futur.",
+        "je venais": "« je venais » est à l’imparfait ; « demain » demande le futur.",
+        "je viendrons": "« viendrons » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "futur-venir-2",
@@ -1002,7 +1317,12 @@
         "venait",
         "viendront"
       ],
-      "consigne": "Choisis le verbe venir au futur."
+      "consigne": "Choisis le verbe venir au futur.",
+      "pourquoi": {
+        "vient": "« vient » est au présent ; « demain » demande le futur.",
+        "venait": "« venait » est à l’imparfait ; « demain » demande le futur.",
+        "viendront": "« viendront » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "futur-venir-3",
@@ -1015,7 +1335,12 @@
         "veniez",
         "viendras"
       ],
-      "consigne": "Choisis le verbe venir au futur."
+      "consigne": "Choisis le verbe venir au futur.",
+      "pourquoi": {
+        "venez": "« venez » est au présent ; « demain » demande le futur.",
+        "veniez": "« veniez » est à l’imparfait ; « demain » demande le futur.",
+        "viendras": "« viendras » va avec « tu », pas avec « vous »."
+      }
     },
     {
       "id": "futur-pouvoir-1",
@@ -1028,7 +1353,12 @@
         "pouvais",
         "pourrez"
       ],
-      "consigne": "Choisis le verbe pouvoir au futur."
+      "consigne": "Choisis le verbe pouvoir au futur.",
+      "pourquoi": {
+        "peux": "« peux » est au présent ; « demain » demande le futur.",
+        "pouvais": "« pouvais » est à l’imparfait ; « demain » demande le futur.",
+        "pourrez": "« pourrez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "futur-pouvoir-2",
@@ -1041,7 +1371,12 @@
         "pouvions",
         "pourrai"
       ],
-      "consigne": "Choisis le verbe pouvoir au futur."
+      "consigne": "Choisis le verbe pouvoir au futur.",
+      "pourquoi": {
+        "pouvons": "« pouvons » est au présent ; « demain » demande le futur.",
+        "pouvions": "« pouvions » est à l’imparfait ; « demain » demande le futur.",
+        "pourrai": "« pourrai » va avec « je », pas avec « nous »."
+      }
     },
     {
       "id": "futur-pouvoir-3",
@@ -1054,7 +1389,12 @@
         "pouvaient",
         "pourra"
       ],
-      "consigne": "Choisis le verbe pouvoir au futur."
+      "consigne": "Choisis le verbe pouvoir au futur.",
+      "pourquoi": {
+        "peuvent": "« peuvent » est au présent ; « demain » demande le futur.",
+        "pouvaient": "« pouvaient » est à l’imparfait ; « demain » demande le futur.",
+        "pourra": "« pourra » va avec « il », pas avec « ils »."
+      }
     },
     {
       "id": "futur-voir-1",
@@ -1067,7 +1407,12 @@
         "voyait",
         "verront"
       ],
-      "consigne": "Choisis le verbe voir au futur."
+      "consigne": "Choisis le verbe voir au futur.",
+      "pourquoi": {
+        "voit": "« voit » est au présent ; « demain » demande le futur.",
+        "voyait": "« voyait » est à l’imparfait ; « demain » demande le futur.",
+        "verront": "« verront » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "futur-voir-2",
@@ -1080,7 +1425,12 @@
         "voyiez",
         "verras"
       ],
-      "consigne": "Choisis le verbe voir au futur."
+      "consigne": "Choisis le verbe voir au futur.",
+      "pourquoi": {
+        "voyez": "« voyez » est au présent ; « demain » demande le futur.",
+        "voyiez": "« voyiez » est à l’imparfait ; « demain » demande le futur.",
+        "verras": "« verras » va avec « tu », pas avec « vous »."
+      }
     },
     {
       "id": "futur-voir-3",
@@ -1093,7 +1443,12 @@
         "je voyais",
         "je verrons"
       ],
-      "consigne": "Choisis le verbe voir au futur."
+      "consigne": "Choisis le verbe voir au futur.",
+      "pourquoi": {
+        "je vois": "« je vois » est au présent ; « demain » demande le futur.",
+        "je voyais": "« je voyais » est à l’imparfait ; « demain » demande le futur.",
+        "je verrons": "« verrons » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "futur-vouloir-1",
@@ -1106,7 +1461,12 @@
         "voulions",
         "voudrai"
       ],
-      "consigne": "Choisis le verbe vouloir au futur."
+      "consigne": "Choisis le verbe vouloir au futur.",
+      "pourquoi": {
+        "voulons": "« voulons » est au présent ; « demain » demande le futur.",
+        "voulions": "« voulions » est à l’imparfait ; « demain » demande le futur.",
+        "voudrai": "« voudrai » va avec « je », pas avec « nous »."
+      }
     },
     {
       "id": "futur-vouloir-2",
@@ -1119,7 +1479,12 @@
         "voulaient",
         "voudra"
       ],
-      "consigne": "Choisis le verbe vouloir au futur."
+      "consigne": "Choisis le verbe vouloir au futur.",
+      "pourquoi": {
+        "veulent": "« veulent » est au présent ; « demain » demande le futur.",
+        "voulaient": "« voulaient » est à l’imparfait ; « demain » demande le futur.",
+        "voudra": "« voudra » va avec « il », pas avec « ils »."
+      }
     },
     {
       "id": "futur-vouloir-3",
@@ -1132,7 +1497,12 @@
         "voulais",
         "voudrez"
       ],
-      "consigne": "Choisis le verbe vouloir au futur."
+      "consigne": "Choisis le verbe vouloir au futur.",
+      "pourquoi": {
+        "veux": "« veux » est au présent ; « demain » demande le futur.",
+        "voulais": "« voulais » est à l’imparfait ; « demain » demande le futur.",
+        "voudrez": "« voudrez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "futur-prendre-1",
@@ -1145,7 +1515,12 @@
         "preniez",
         "prendras"
       ],
-      "consigne": "Choisis le verbe prendre au futur."
+      "consigne": "Choisis le verbe prendre au futur.",
+      "pourquoi": {
+        "prenez": "« prenez » est au présent ; « demain » demande le futur.",
+        "preniez": "« preniez » est à l’imparfait ; « demain » demande le futur.",
+        "prendras": "« prendras » va avec « tu », pas avec « vous »."
+      }
     },
     {
       "id": "futur-prendre-2",
@@ -1158,7 +1533,12 @@
         "je prenais",
         "je prendrons"
       ],
-      "consigne": "Choisis le verbe prendre au futur."
+      "consigne": "Choisis le verbe prendre au futur.",
+      "pourquoi": {
+        "je prends": "« je prends » est au présent ; « demain » demande le futur.",
+        "je prenais": "« je prenais » est à l’imparfait ; « demain » demande le futur.",
+        "je prendrons": "« prendrons » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "futur-prendre-3",
@@ -1171,7 +1551,12 @@
         "prenait",
         "prendront"
       ],
-      "consigne": "Choisis le verbe prendre au futur."
+      "consigne": "Choisis le verbe prendre au futur.",
+      "pourquoi": {
+        "prend": "« prend » est au présent ; « demain » demande le futur.",
+        "prenait": "« prenait » est à l’imparfait ; « demain » demande le futur.",
+        "prendront": "« prendront » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "futur-partir-1",
@@ -1184,7 +1569,12 @@
         "partaient",
         "partira"
       ],
-      "consigne": "Choisis le verbe partir au futur."
+      "consigne": "Choisis le verbe partir au futur.",
+      "pourquoi": {
+        "partent": "« partent » est au présent ; « demain » demande le futur.",
+        "partaient": "« partaient » est à l’imparfait ; « demain » demande le futur.",
+        "partira": "« partira » va avec « il », pas avec « ils »."
+      }
     },
     {
       "id": "futur-partir-2",
@@ -1197,7 +1587,12 @@
         "partais",
         "partirez"
       ],
-      "consigne": "Choisis le verbe partir au futur."
+      "consigne": "Choisis le verbe partir au futur.",
+      "pourquoi": {
+        "pars": "« pars » est au présent ; « demain » demande le futur.",
+        "partais": "« partais » est à l’imparfait ; « demain » demande le futur.",
+        "partirez": "« partirez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "futur-partir-3",
@@ -1210,7 +1605,12 @@
         "partions",
         "partirai"
       ],
-      "consigne": "Choisis le verbe partir au futur."
+      "consigne": "Choisis le verbe partir au futur.",
+      "pourquoi": {
+        "partons": "« partons » est au présent ; « demain » demande le futur.",
+        "partions": "« partions » est à l’imparfait ; « demain » demande le futur.",
+        "partirai": "« partirai » va avec « je », pas avec « nous »."
+      }
     },
     {
       "id": "futur-chanter-1",
@@ -1223,7 +1623,12 @@
         "je chantais",
         "je chanterons"
       ],
-      "consigne": "Choisis le verbe chanter au futur."
+      "consigne": "Choisis le verbe chanter au futur.",
+      "pourquoi": {
+        "je chante": "« je chante » est au présent ; « demain » demande le futur.",
+        "je chantais": "« je chantais » est à l’imparfait ; « demain » demande le futur.",
+        "je chanterons": "« chanterons » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "futur-chanter-2",
@@ -1236,7 +1641,12 @@
         "chantait",
         "chanteront"
       ],
-      "consigne": "Choisis le verbe chanter au futur."
+      "consigne": "Choisis le verbe chanter au futur.",
+      "pourquoi": {
+        "chante": "« chante » est au présent ; « demain » demande le futur.",
+        "chantait": "« chantait » est à l’imparfait ; « demain » demande le futur.",
+        "chanteront": "« chanteront » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "futur-chanter-3",
@@ -1249,7 +1659,12 @@
         "chantiez",
         "chanteras"
       ],
-      "consigne": "Choisis le verbe chanter au futur."
+      "consigne": "Choisis le verbe chanter au futur.",
+      "pourquoi": {
+        "chantez": "« chantez » est au présent ; « demain » demande le futur.",
+        "chantiez": "« chantiez » est à l’imparfait ; « demain » demande le futur.",
+        "chanteras": "« chanteras » va avec « tu », pas avec « vous »."
+      }
     },
     {
       "id": "futur-jouer-1",
@@ -1262,7 +1677,12 @@
         "jouais",
         "jouerez"
       ],
-      "consigne": "Choisis le verbe jouer au futur."
+      "consigne": "Choisis le verbe jouer au futur.",
+      "pourquoi": {
+        "joues": "« joues » est au présent ; « demain » demande le futur.",
+        "jouais": "« jouais » est à l’imparfait ; « demain » demande le futur.",
+        "jouerez": "« jouerez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "futur-jouer-2",
@@ -1275,7 +1695,12 @@
         "jouions",
         "jouerai"
       ],
-      "consigne": "Choisis le verbe jouer au futur."
+      "consigne": "Choisis le verbe jouer au futur.",
+      "pourquoi": {
+        "jouons": "« jouons » est au présent ; « demain » demande le futur.",
+        "jouions": "« jouions » est à l’imparfait ; « demain » demande le futur.",
+        "jouerai": "« jouerai » va avec « je », pas avec « nous »."
+      }
     },
     {
       "id": "futur-jouer-3",
@@ -1288,7 +1713,12 @@
         "jouaient",
         "jouera"
       ],
-      "consigne": "Choisis le verbe jouer au futur."
+      "consigne": "Choisis le verbe jouer au futur.",
+      "pourquoi": {
+        "jouent": "« jouent » est au présent ; « demain » demande le futur.",
+        "jouaient": "« jouaient » est à l’imparfait ; « demain » demande le futur.",
+        "jouera": "« jouera » va avec « il », pas avec « ils »."
+      }
     },
     {
       "id": "futur-manger-1",
@@ -1301,7 +1731,12 @@
         "mangeait",
         "mangeront"
       ],
-      "consigne": "Choisis le verbe manger au futur."
+      "consigne": "Choisis le verbe manger au futur.",
+      "pourquoi": {
+        "mange": "« mange » est au présent ; « demain » demande le futur.",
+        "mangeait": "« mangeait » est à l’imparfait ; « demain » demande le futur.",
+        "mangeront": "« mangeront » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "futur-manger-2",
@@ -1314,7 +1749,12 @@
         "mangiez",
         "mangeras"
       ],
-      "consigne": "Choisis le verbe manger au futur."
+      "consigne": "Choisis le verbe manger au futur.",
+      "pourquoi": {
+        "mangez": "« mangez » est au présent ; « demain » demande le futur.",
+        "mangiez": "« mangiez » est à l’imparfait ; « demain » demande le futur.",
+        "mangeras": "« mangeras » va avec « tu », pas avec « vous »."
+      }
     },
     {
       "id": "futur-manger-3",
@@ -1327,7 +1767,12 @@
         "je mangeais",
         "je mangerons"
       ],
-      "consigne": "Choisis le verbe manger au futur."
+      "consigne": "Choisis le verbe manger au futur.",
+      "pourquoi": {
+        "je mange": "« je mange » est au présent ; « demain » demande le futur.",
+        "je mangeais": "« je mangeais » est à l’imparfait ; « demain » demande le futur.",
+        "je mangerons": "« mangerons » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "imparfait-etre-1",
@@ -1340,7 +1785,12 @@
         "sera",
         "étaient"
       ],
-      "consigne": "Choisis le verbe être au imparfait."
+      "consigne": "Choisis le verbe être au imparfait.",
+      "pourquoi": {
+        "est": "« est » est au présent ; « autrefois » demande l’imparfait.",
+        "sera": "« sera » est au futur ; « autrefois » demande l’imparfait.",
+        "étaient": "« étaient » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "imparfait-etre-2",
@@ -1353,7 +1803,12 @@
         "serez",
         "étais"
       ],
-      "consigne": "Choisis le verbe être au imparfait."
+      "consigne": "Choisis le verbe être au imparfait.",
+      "pourquoi": {
+        "êtes": "« êtes » est au présent ; « autrefois » demande l’imparfait.",
+        "serez": "« serez » est au futur ; « autrefois » demande l’imparfait.",
+        "étais": "« étais » va avec « je » ou « tu », pas avec « vous »."
+      }
     },
     {
       "id": "imparfait-etre-3",
@@ -1366,7 +1821,12 @@
         "je serai",
         "j’étions"
       ],
-      "consigne": "Choisis le verbe être au imparfait."
+      "consigne": "Choisis le verbe être au imparfait.",
+      "pourquoi": {
+        "je suis": "« je suis » est au présent ; « autrefois » demande l’imparfait.",
+        "je serai": "« je serai » est au futur ; « autrefois » demande l’imparfait.",
+        "j’étions": "« étions » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "imparfait-avoir-1",
@@ -1379,7 +1839,12 @@
         "aurons",
         "avais"
       ],
-      "consigne": "Choisis le verbe avoir au imparfait."
+      "consigne": "Choisis le verbe avoir au imparfait.",
+      "pourquoi": {
+        "avons": "« avons » est au présent ; « autrefois » demande l’imparfait.",
+        "aurons": "« aurons » est au futur ; « autrefois » demande l’imparfait.",
+        "avais": "« avais » va avec « je » ou « tu », pas avec « nous »."
+      }
     },
     {
       "id": "imparfait-avoir-2",
@@ -1392,7 +1857,12 @@
         "auront",
         "avait"
       ],
-      "consigne": "Choisis le verbe avoir au imparfait."
+      "consigne": "Choisis le verbe avoir au imparfait.",
+      "pourquoi": {
+        "ont": "« ont » est au présent ; « autrefois » demande l’imparfait.",
+        "auront": "« auront » est au futur ; « autrefois » demande l’imparfait.",
+        "avait": "« avait » va avec « il », pas avec « ils »."
+      }
     },
     {
       "id": "imparfait-avoir-3",
@@ -1405,7 +1875,12 @@
         "auras",
         "aviez"
       ],
-      "consigne": "Choisis le verbe avoir au imparfait."
+      "consigne": "Choisis le verbe avoir au imparfait.",
+      "pourquoi": {
+        "as": "« as » est au présent ; « autrefois » demande l’imparfait.",
+        "auras": "« auras » est au futur ; « autrefois » demande l’imparfait.",
+        "aviez": "« aviez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "imparfait-aller-1",
@@ -1418,7 +1893,12 @@
         "irez",
         "allais"
       ],
-      "consigne": "Choisis le verbe aller au imparfait."
+      "consigne": "Choisis le verbe aller au imparfait.",
+      "pourquoi": {
+        "allez": "« allez » est au présent ; « autrefois » demande l’imparfait.",
+        "irez": "« irez » est au futur ; « autrefois » demande l’imparfait.",
+        "allais": "« allais » va avec « je » ou « tu », pas avec « vous »."
+      }
     },
     {
       "id": "imparfait-aller-2",
@@ -1431,7 +1911,12 @@
         "j’irai",
         "j’allions"
       ],
-      "consigne": "Choisis le verbe aller au imparfait."
+      "consigne": "Choisis le verbe aller au imparfait.",
+      "pourquoi": {
+        "je vais": "« je vais » est au présent ; « autrefois » demande l’imparfait.",
+        "j’irai": "« j’irai » est au futur ; « autrefois » demande l’imparfait.",
+        "j’allions": "« allions » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "imparfait-aller-3",
@@ -1444,7 +1929,12 @@
         "ira",
         "allaient"
       ],
-      "consigne": "Choisis le verbe aller au imparfait."
+      "consigne": "Choisis le verbe aller au imparfait.",
+      "pourquoi": {
+        "va": "« va » est au présent ; « autrefois » demande l’imparfait.",
+        "ira": "« ira » est au futur ; « autrefois » demande l’imparfait.",
+        "allaient": "« allaient » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "imparfait-faire-1",
@@ -1457,7 +1947,12 @@
         "feront",
         "faisait"
       ],
-      "consigne": "Choisis le verbe faire au imparfait."
+      "consigne": "Choisis le verbe faire au imparfait.",
+      "pourquoi": {
+        "font": "« font » est au présent ; « autrefois » demande l’imparfait.",
+        "feront": "« feront » est au futur ; « autrefois » demande l’imparfait.",
+        "faisait": "« faisait » va avec « il », pas avec « ils »."
+      }
     },
     {
       "id": "imparfait-faire-2",
@@ -1470,7 +1965,12 @@
         "feras",
         "faisiez"
       ],
-      "consigne": "Choisis le verbe faire au imparfait."
+      "consigne": "Choisis le verbe faire au imparfait.",
+      "pourquoi": {
+        "fais": "« fais » est au présent ; « autrefois » demande l’imparfait.",
+        "feras": "« feras » est au futur ; « autrefois » demande l’imparfait.",
+        "faisiez": "« faisiez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "imparfait-faire-3",
@@ -1483,7 +1983,12 @@
         "ferons",
         "faisais"
       ],
-      "consigne": "Choisis le verbe faire au imparfait."
+      "consigne": "Choisis le verbe faire au imparfait.",
+      "pourquoi": {
+        "faisons": "« faisons » est au présent ; « autrefois » demande l’imparfait.",
+        "ferons": "« ferons » est au futur ; « autrefois » demande l’imparfait.",
+        "faisais": "« faisais » va avec « je » ou « tu », pas avec « nous »."
+      }
     },
     {
       "id": "imparfait-dire-1",
@@ -1496,7 +2001,12 @@
         "je dirai",
         "je disions"
       ],
-      "consigne": "Choisis le verbe dire au imparfait."
+      "consigne": "Choisis le verbe dire au imparfait.",
+      "pourquoi": {
+        "je dis": "« je dis » est au présent ; « autrefois » demande l’imparfait.",
+        "je dirai": "« je dirai » est au futur ; « autrefois » demande l’imparfait.",
+        "je disions": "« disions » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "imparfait-dire-2",
@@ -1509,7 +2019,12 @@
         "dira",
         "disaient"
       ],
-      "consigne": "Choisis le verbe dire au imparfait."
+      "consigne": "Choisis le verbe dire au imparfait.",
+      "pourquoi": {
+        "dit": "« dit » est au présent ; « autrefois » demande l’imparfait.",
+        "dira": "« dira » est au futur ; « autrefois » demande l’imparfait.",
+        "disaient": "« disaient » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "imparfait-dire-3",
@@ -1522,7 +2037,12 @@
         "direz",
         "disais"
       ],
-      "consigne": "Choisis le verbe dire au imparfait."
+      "consigne": "Choisis le verbe dire au imparfait.",
+      "pourquoi": {
+        "dites": "« dites » est au présent ; « autrefois » demande l’imparfait.",
+        "direz": "« direz » est au futur ; « autrefois » demande l’imparfait.",
+        "disais": "« disais » va avec « je » ou « tu », pas avec « vous »."
+      }
     },
     {
       "id": "imparfait-venir-1",
@@ -1535,7 +2055,12 @@
         "viendras",
         "veniez"
       ],
-      "consigne": "Choisis le verbe venir au imparfait."
+      "consigne": "Choisis le verbe venir au imparfait.",
+      "pourquoi": {
+        "viens": "« viens » est au présent ; « autrefois » demande l’imparfait.",
+        "viendras": "« viendras » est au futur ; « autrefois » demande l’imparfait.",
+        "veniez": "« veniez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "imparfait-venir-2",
@@ -1548,7 +2073,12 @@
         "viendrons",
         "venais"
       ],
-      "consigne": "Choisis le verbe venir au imparfait."
+      "consigne": "Choisis le verbe venir au imparfait.",
+      "pourquoi": {
+        "venons": "« venons » est au présent ; « autrefois » demande l’imparfait.",
+        "viendrons": "« viendrons » est au futur ; « autrefois » demande l’imparfait.",
+        "venais": "« venais » va avec « je » ou « tu », pas avec « nous »."
+      }
     },
     {
       "id": "imparfait-venir-3",
@@ -1561,7 +2091,12 @@
         "viendront",
         "venait"
       ],
-      "consigne": "Choisis le verbe venir au imparfait."
+      "consigne": "Choisis le verbe venir au imparfait.",
+      "pourquoi": {
+        "viennent": "« viennent » est au présent ; « autrefois » demande l’imparfait.",
+        "viendront": "« viendront » est au futur ; « autrefois » demande l’imparfait.",
+        "venait": "« venait » va avec « il », pas avec « ils »."
+      }
     },
     {
       "id": "imparfait-pouvoir-1",
@@ -1574,7 +2109,12 @@
         "pourra",
         "pouvaient"
       ],
-      "consigne": "Choisis le verbe pouvoir au imparfait."
+      "consigne": "Choisis le verbe pouvoir au imparfait.",
+      "pourquoi": {
+        "peut": "« peut » est au présent ; « autrefois » demande l’imparfait.",
+        "pourra": "« pourra » est au futur ; « autrefois » demande l’imparfait.",
+        "pouvaient": "« pouvaient » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "imparfait-pouvoir-2",
@@ -1587,7 +2127,12 @@
         "pourrez",
         "pouvais"
       ],
-      "consigne": "Choisis le verbe pouvoir au imparfait."
+      "consigne": "Choisis le verbe pouvoir au imparfait.",
+      "pourquoi": {
+        "pouvez": "« pouvez » est au présent ; « autrefois » demande l’imparfait.",
+        "pourrez": "« pourrez » est au futur ; « autrefois » demande l’imparfait.",
+        "pouvais": "« pouvais » va avec « je » ou « tu », pas avec « vous »."
+      }
     },
     {
       "id": "imparfait-pouvoir-3",
@@ -1600,7 +2145,12 @@
         "je pourrai",
         "je pouvions"
       ],
-      "consigne": "Choisis le verbe pouvoir au imparfait."
+      "consigne": "Choisis le verbe pouvoir au imparfait.",
+      "pourquoi": {
+        "je peux": "« je peux » est au présent ; « autrefois » demande l’imparfait.",
+        "je pourrai": "« je pourrai » est au futur ; « autrefois » demande l’imparfait.",
+        "je pouvions": "« pouvions » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "imparfait-voir-1",
@@ -1613,7 +2163,12 @@
         "verrons",
         "voyais"
       ],
-      "consigne": "Choisis le verbe voir au imparfait."
+      "consigne": "Choisis le verbe voir au imparfait.",
+      "pourquoi": {
+        "voyons": "« voyons » est au présent ; « autrefois » demande l’imparfait.",
+        "verrons": "« verrons » est au futur ; « autrefois » demande l’imparfait.",
+        "voyais": "« voyais » va avec « je » ou « tu », pas avec « nous »."
+      }
     },
     {
       "id": "imparfait-voir-2",
@@ -1626,7 +2181,12 @@
         "verront",
         "voyait"
       ],
-      "consigne": "Choisis le verbe voir au imparfait."
+      "consigne": "Choisis le verbe voir au imparfait.",
+      "pourquoi": {
+        "voient": "« voient » est au présent ; « autrefois » demande l’imparfait.",
+        "verront": "« verront » est au futur ; « autrefois » demande l’imparfait.",
+        "voyait": "« voyait » va avec « il », pas avec « ils »."
+      }
     },
     {
       "id": "imparfait-voir-3",
@@ -1639,7 +2199,12 @@
         "verras",
         "voyiez"
       ],
-      "consigne": "Choisis le verbe voir au imparfait."
+      "consigne": "Choisis le verbe voir au imparfait.",
+      "pourquoi": {
+        "vois": "« vois » est au présent ; « autrefois » demande l’imparfait.",
+        "verras": "« verras » est au futur ; « autrefois » demande l’imparfait.",
+        "voyiez": "« voyiez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "imparfait-vouloir-1",
@@ -1652,7 +2217,12 @@
         "voudrez",
         "voulais"
       ],
-      "consigne": "Choisis le verbe vouloir au imparfait."
+      "consigne": "Choisis le verbe vouloir au imparfait.",
+      "pourquoi": {
+        "voulez": "« voulez » est au présent ; « autrefois » demande l’imparfait.",
+        "voudrez": "« voudrez » est au futur ; « autrefois » demande l’imparfait.",
+        "voulais": "« voulais » va avec « je » ou « tu », pas avec « vous »."
+      }
     },
     {
       "id": "imparfait-vouloir-2",
@@ -1665,7 +2235,12 @@
         "je voudrai",
         "je voulions"
       ],
-      "consigne": "Choisis le verbe vouloir au imparfait."
+      "consigne": "Choisis le verbe vouloir au imparfait.",
+      "pourquoi": {
+        "je veux": "« je veux » est au présent ; « autrefois » demande l’imparfait.",
+        "je voudrai": "« je voudrai » est au futur ; « autrefois » demande l’imparfait.",
+        "je voulions": "« voulions » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "imparfait-vouloir-3",
@@ -1678,7 +2253,12 @@
         "voudra",
         "voulaient"
       ],
-      "consigne": "Choisis le verbe vouloir au imparfait."
+      "consigne": "Choisis le verbe vouloir au imparfait.",
+      "pourquoi": {
+        "veut": "« veut » est au présent ; « autrefois » demande l’imparfait.",
+        "voudra": "« voudra » est au futur ; « autrefois » demande l’imparfait.",
+        "voulaient": "« voulaient » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "imparfait-prendre-1",
@@ -1691,7 +2271,12 @@
         "prendront",
         "prenait"
       ],
-      "consigne": "Choisis le verbe prendre au imparfait."
+      "consigne": "Choisis le verbe prendre au imparfait.",
+      "pourquoi": {
+        "prennent": "« prennent » est au présent ; « autrefois » demande l’imparfait.",
+        "prendront": "« prendront » est au futur ; « autrefois » demande l’imparfait.",
+        "prenait": "« prenait » va avec « il », pas avec « ils »."
+      }
     },
     {
       "id": "imparfait-prendre-2",
@@ -1704,7 +2289,12 @@
         "prendras",
         "preniez"
       ],
-      "consigne": "Choisis le verbe prendre au imparfait."
+      "consigne": "Choisis le verbe prendre au imparfait.",
+      "pourquoi": {
+        "prends": "« prends » est au présent ; « autrefois » demande l’imparfait.",
+        "prendras": "« prendras » est au futur ; « autrefois » demande l’imparfait.",
+        "preniez": "« preniez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "imparfait-prendre-3",
@@ -1717,7 +2307,12 @@
         "prendrons",
         "prenais"
       ],
-      "consigne": "Choisis le verbe prendre au imparfait."
+      "consigne": "Choisis le verbe prendre au imparfait.",
+      "pourquoi": {
+        "prenons": "« prenons » est au présent ; « autrefois » demande l’imparfait.",
+        "prendrons": "« prendrons » est au futur ; « autrefois » demande l’imparfait.",
+        "prenais": "« prenais » va avec « je » ou « tu », pas avec « nous »."
+      }
     },
     {
       "id": "imparfait-partir-1",
@@ -1730,7 +2325,12 @@
         "je partirai",
         "je partions"
       ],
-      "consigne": "Choisis le verbe partir au imparfait."
+      "consigne": "Choisis le verbe partir au imparfait.",
+      "pourquoi": {
+        "je pars": "« je pars » est au présent ; « autrefois » demande l’imparfait.",
+        "je partirai": "« je partirai » est au futur ; « autrefois » demande l’imparfait.",
+        "je partions": "« partions » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "imparfait-partir-2",
@@ -1743,7 +2343,12 @@
         "partira",
         "partaient"
       ],
-      "consigne": "Choisis le verbe partir au imparfait."
+      "consigne": "Choisis le verbe partir au imparfait.",
+      "pourquoi": {
+        "part": "« part » est au présent ; « autrefois » demande l’imparfait.",
+        "partira": "« partira » est au futur ; « autrefois » demande l’imparfait.",
+        "partaient": "« partaient » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "imparfait-partir-3",
@@ -1756,7 +2361,12 @@
         "partirez",
         "partais"
       ],
-      "consigne": "Choisis le verbe partir au imparfait."
+      "consigne": "Choisis le verbe partir au imparfait.",
+      "pourquoi": {
+        "partez": "« partez » est au présent ; « autrefois » demande l’imparfait.",
+        "partirez": "« partirez » est au futur ; « autrefois » demande l’imparfait.",
+        "partais": "« partais » va avec « je » ou « tu », pas avec « vous »."
+      }
     },
     {
       "id": "imparfait-chanter-1",
@@ -1769,7 +2379,12 @@
         "chanteras",
         "chantiez"
       ],
-      "consigne": "Choisis le verbe chanter au imparfait."
+      "consigne": "Choisis le verbe chanter au imparfait.",
+      "pourquoi": {
+        "chantes": "« chantes » est au présent ; « autrefois » demande l’imparfait.",
+        "chanteras": "« chanteras » est au futur ; « autrefois » demande l’imparfait.",
+        "chantiez": "« chantiez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "imparfait-chanter-2",
@@ -1782,7 +2397,12 @@
         "chanterons",
         "chantais"
       ],
-      "consigne": "Choisis le verbe chanter au imparfait."
+      "consigne": "Choisis le verbe chanter au imparfait.",
+      "pourquoi": {
+        "chantons": "« chantons » est au présent ; « autrefois » demande l’imparfait.",
+        "chanterons": "« chanterons » est au futur ; « autrefois » demande l’imparfait.",
+        "chantais": "« chantais » va avec « je » ou « tu », pas avec « nous »."
+      }
     },
     {
       "id": "imparfait-chanter-3",
@@ -1795,7 +2415,12 @@
         "chanteront",
         "chantait"
       ],
-      "consigne": "Choisis le verbe chanter au imparfait."
+      "consigne": "Choisis le verbe chanter au imparfait.",
+      "pourquoi": {
+        "chantent": "« chantent » est au présent ; « autrefois » demande l’imparfait.",
+        "chanteront": "« chanteront » est au futur ; « autrefois » demande l’imparfait.",
+        "chantait": "« chantait » va avec « il », pas avec « ils »."
+      }
     },
     {
       "id": "imparfait-jouer-1",
@@ -1808,7 +2433,12 @@
         "jouera",
         "jouaient"
       ],
-      "consigne": "Choisis le verbe jouer au imparfait."
+      "consigne": "Choisis le verbe jouer au imparfait.",
+      "pourquoi": {
+        "joue": "« joue » est au présent ; « autrefois » demande l’imparfait.",
+        "jouera": "« jouera » est au futur ; « autrefois » demande l’imparfait.",
+        "jouaient": "« jouaient » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "imparfait-jouer-2",
@@ -1821,7 +2451,12 @@
         "jouerez",
         "jouais"
       ],
-      "consigne": "Choisis le verbe jouer au imparfait."
+      "consigne": "Choisis le verbe jouer au imparfait.",
+      "pourquoi": {
+        "jouez": "« jouez » est au présent ; « autrefois » demande l’imparfait.",
+        "jouerez": "« jouerez » est au futur ; « autrefois » demande l’imparfait.",
+        "jouais": "« jouais » va avec « je » ou « tu », pas avec « vous »."
+      }
     },
     {
       "id": "imparfait-jouer-3",
@@ -1834,7 +2469,12 @@
         "je jouerai",
         "je jouions"
       ],
-      "consigne": "Choisis le verbe jouer au imparfait."
+      "consigne": "Choisis le verbe jouer au imparfait.",
+      "pourquoi": {
+        "je joue": "« je joue » est au présent ; « autrefois » demande l’imparfait.",
+        "je jouerai": "« je jouerai » est au futur ; « autrefois » demande l’imparfait.",
+        "je jouions": "« jouions » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "imparfait-manger-1",
@@ -1847,7 +2487,12 @@
         "mangerons",
         "mangeais"
       ],
-      "consigne": "Choisis le verbe manger au imparfait."
+      "consigne": "Choisis le verbe manger au imparfait.",
+      "pourquoi": {
+        "mangeons": "« mangeons » est au présent ; « autrefois » demande l’imparfait.",
+        "mangerons": "« mangerons » est au futur ; « autrefois » demande l’imparfait.",
+        "mangeais": "« mangeais » va avec « je » ou « tu », pas avec « nous »."
+      }
     },
     {
       "id": "imparfait-manger-2",
@@ -1860,7 +2505,12 @@
         "mangeront",
         "mangeait"
       ],
-      "consigne": "Choisis le verbe manger au imparfait."
+      "consigne": "Choisis le verbe manger au imparfait.",
+      "pourquoi": {
+        "mangent": "« mangent » est au présent ; « autrefois » demande l’imparfait.",
+        "mangeront": "« mangeront » est au futur ; « autrefois » demande l’imparfait.",
+        "mangeait": "« mangeait » va avec « il », pas avec « ils »."
+      }
     },
     {
       "id": "imparfait-manger-3",
@@ -1873,7 +2523,12 @@
         "mangeras",
         "mangiez"
       ],
-      "consigne": "Choisis le verbe manger au imparfait."
+      "consigne": "Choisis le verbe manger au imparfait.",
+      "pourquoi": {
+        "manges": "« manges » est au présent ; « autrefois » demande l’imparfait.",
+        "mangeras": "« mangeras » est au futur ; « autrefois » demande l’imparfait.",
+        "mangiez": "« mangiez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "passe-etre-1",
@@ -1886,7 +2541,12 @@
         "serons",
         "ai été"
       ],
-      "consigne": "Choisis le verbe être au passé composé."
+      "consigne": "Choisis le verbe être au passé composé.",
+      "pourquoi": {
+        "sommes": "« sommes » est au présent ; « hier » demande le passé composé.",
+        "serons": "« serons » est au futur ; « hier » demande le passé composé.",
+        "ai été": "« ai été » va avec « je », pas avec « nous »."
+      }
     },
     {
       "id": "passe-etre-2",
@@ -1899,7 +2559,12 @@
         "seront",
         "a été"
       ],
-      "consigne": "Choisis le verbe être au passé composé."
+      "consigne": "Choisis le verbe être au passé composé.",
+      "pourquoi": {
+        "sont": "« sont » est au présent ; « hier » demande le passé composé.",
+        "seront": "« seront » est au futur ; « hier » demande le passé composé.",
+        "a été": "« a été » va avec « il », pas avec « ils »."
+      }
     },
     {
       "id": "passe-etre-3",
@@ -1912,7 +2577,12 @@
         "seras",
         "avez été"
       ],
-      "consigne": "Choisis le verbe être au passé composé."
+      "consigne": "Choisis le verbe être au passé composé.",
+      "pourquoi": {
+        "es": "« es » est au présent ; « hier » demande le passé composé.",
+        "seras": "« seras » est au futur ; « hier » demande le passé composé.",
+        "avez été": "« avez été » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "passe-avoir-1",
@@ -1925,7 +2595,12 @@
         "aurez",
         "as eu"
       ],
-      "consigne": "Choisis le verbe avoir au passé composé."
+      "consigne": "Choisis le verbe avoir au passé composé.",
+      "pourquoi": {
+        "avez": "« avez » est au présent ; « hier » demande le passé composé.",
+        "aurez": "« aurez » est au futur ; « hier » demande le passé composé.",
+        "as eu": "« as eu » va avec « tu », pas avec « vous »."
+      }
     },
     {
       "id": "passe-avoir-2",
@@ -1938,7 +2613,12 @@
         "j’aurai",
         "j’avons eu"
       ],
-      "consigne": "Choisis le verbe avoir au passé composé."
+      "consigne": "Choisis le verbe avoir au passé composé.",
+      "pourquoi": {
+        "j’ai": "« j’ai » est au présent ; « hier » demande le passé composé.",
+        "j’aurai": "« j’aurai » est au futur ; « hier » demande le passé composé.",
+        "j’avons eu": "« avons eu » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "passe-avoir-3",
@@ -1951,7 +2631,12 @@
         "aura",
         "ont eu"
       ],
-      "consigne": "Choisis le verbe avoir au passé composé."
+      "consigne": "Choisis le verbe avoir au passé composé.",
+      "pourquoi": {
+        "a": "« a » est au présent ; « hier » demande le passé composé.",
+        "aura": "« aura » est au futur ; « hier » demande le passé composé.",
+        "ont eu": "« ont eu » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "passe-aller-1",
@@ -1964,7 +2649,12 @@
         "iront",
         "est allé"
       ],
-      "consigne": "Choisis le verbe aller au passé composé."
+      "consigne": "Choisis le verbe aller au passé composé.",
+      "pourquoi": {
+        "vont": "« vont » est au présent ; « hier » demande le passé composé.",
+        "iront": "« iront » est au futur ; « hier » demande le passé composé.",
+        "est allé": "« est allé » va avec « il », pas avec « ils »."
+      }
     },
     {
       "id": "passe-aller-2",
@@ -1977,7 +2667,12 @@
         "iras",
         "êtes allés"
       ],
-      "consigne": "Choisis le verbe aller au passé composé."
+      "consigne": "Choisis le verbe aller au passé composé.",
+      "pourquoi": {
+        "vas": "« vas » est au présent ; « hier » demande le passé composé.",
+        "iras": "« iras » est au futur ; « hier » demande le passé composé.",
+        "êtes allés": "« êtes allés » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "passe-aller-3",
@@ -1990,7 +2685,12 @@
         "irons",
         "suis allé"
       ],
-      "consigne": "Choisis le verbe aller au passé composé."
+      "consigne": "Choisis le verbe aller au passé composé.",
+      "pourquoi": {
+        "allons": "« allons » est au présent ; « hier » demande le passé composé.",
+        "irons": "« irons » est au futur ; « hier » demande le passé composé.",
+        "suis allé": "« suis allé » va avec « je », pas avec « nous »."
+      }
     },
     {
       "id": "passe-faire-1",
@@ -2003,7 +2703,12 @@
         "je ferai",
         "j’avons fait"
       ],
-      "consigne": "Choisis le verbe faire au passé composé."
+      "consigne": "Choisis le verbe faire au passé composé.",
+      "pourquoi": {
+        "je fais": "« je fais » est au présent ; « hier » demande le passé composé.",
+        "je ferai": "« je ferai » est au futur ; « hier » demande le passé composé.",
+        "j’avons fait": "« avons fait » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "passe-faire-2",
@@ -2016,7 +2721,12 @@
         "fera",
         "ont fait"
       ],
-      "consigne": "Choisis le verbe faire au passé composé."
+      "consigne": "Choisis le verbe faire au passé composé.",
+      "pourquoi": {
+        "fait": "« fait » est au présent ; « hier » demande le passé composé.",
+        "fera": "« fera » est au futur ; « hier » demande le passé composé.",
+        "ont fait": "« ont fait » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "passe-faire-3",
@@ -2029,7 +2739,12 @@
         "ferez",
         "as fait"
       ],
-      "consigne": "Choisis le verbe faire au passé composé."
+      "consigne": "Choisis le verbe faire au passé composé.",
+      "pourquoi": {
+        "faites": "« faites » est au présent ; « hier » demande le passé composé.",
+        "ferez": "« ferez » est au futur ; « hier » demande le passé composé.",
+        "as fait": "« as fait » va avec « tu », pas avec « vous »."
+      }
     },
     {
       "id": "passe-dire-1",
@@ -2042,7 +2757,12 @@
         "diras",
         "avez dit"
       ],
-      "consigne": "Choisis le verbe dire au passé composé."
+      "consigne": "Choisis le verbe dire au passé composé.",
+      "pourquoi": {
+        "dis": "« dis » est au présent ; « hier » demande le passé composé.",
+        "diras": "« diras » est au futur ; « hier » demande le passé composé.",
+        "avez dit": "« avez dit » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "passe-dire-2",
@@ -2055,7 +2775,12 @@
         "dirons",
         "ai dit"
       ],
-      "consigne": "Choisis le verbe dire au passé composé."
+      "consigne": "Choisis le verbe dire au passé composé.",
+      "pourquoi": {
+        "disons": "« disons » est au présent ; « hier » demande le passé composé.",
+        "dirons": "« dirons » est au futur ; « hier » demande le passé composé.",
+        "ai dit": "« ai dit » va avec « je », pas avec « nous »."
+      }
     },
     {
       "id": "passe-dire-3",
@@ -2068,7 +2793,12 @@
         "diront",
         "a dit"
       ],
-      "consigne": "Choisis le verbe dire au passé composé."
+      "consigne": "Choisis le verbe dire au passé composé.",
+      "pourquoi": {
+        "disent": "« disent » est au présent ; « hier » demande le passé composé.",
+        "diront": "« diront » est au futur ; « hier » demande le passé composé.",
+        "a dit": "« a dit » va avec « il », pas avec « ils »."
+      }
     },
     {
       "id": "passe-venir-1",
@@ -2081,7 +2811,12 @@
         "viendra",
         "sont venus"
       ],
-      "consigne": "Choisis le verbe venir au passé composé."
+      "consigne": "Choisis le verbe venir au passé composé.",
+      "pourquoi": {
+        "vient": "« vient » est au présent ; « hier » demande le passé composé.",
+        "viendra": "« viendra » est au futur ; « hier » demande le passé composé.",
+        "sont venus": "« sont venus » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "passe-venir-2",
@@ -2094,7 +2829,12 @@
         "viendrez",
         "es venu"
       ],
-      "consigne": "Choisis le verbe venir au passé composé."
+      "consigne": "Choisis le verbe venir au passé composé.",
+      "pourquoi": {
+        "venez": "« venez » est au présent ; « hier » demande le passé composé.",
+        "viendrez": "« viendrez » est au futur ; « hier » demande le passé composé.",
+        "es venu": "« es venu » va avec « tu », pas avec « vous »."
+      }
     },
     {
       "id": "passe-venir-3",
@@ -2107,7 +2847,12 @@
         "je viendrai",
         "je sommes venus"
       ],
-      "consigne": "Choisis le verbe venir au passé composé."
+      "consigne": "Choisis le verbe venir au passé composé.",
+      "pourquoi": {
+        "je viens": "« je viens » est au présent ; « hier » demande le passé composé.",
+        "je viendrai": "« je viendrai » est au futur ; « hier » demande le passé composé.",
+        "je sommes venus": "« sommes venus » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "passe-pouvoir-1",
@@ -2120,7 +2865,12 @@
         "pourrons",
         "ai pu"
       ],
-      "consigne": "Choisis le verbe pouvoir au passé composé."
+      "consigne": "Choisis le verbe pouvoir au passé composé.",
+      "pourquoi": {
+        "pouvons": "« pouvons » est au présent ; « hier » demande le passé composé.",
+        "pourrons": "« pourrons » est au futur ; « hier » demande le passé composé.",
+        "ai pu": "« ai pu » va avec « je », pas avec « nous »."
+      }
     },
     {
       "id": "passe-pouvoir-2",
@@ -2133,7 +2883,12 @@
         "pourront",
         "a pu"
       ],
-      "consigne": "Choisis le verbe pouvoir au passé composé."
+      "consigne": "Choisis le verbe pouvoir au passé composé.",
+      "pourquoi": {
+        "peuvent": "« peuvent » est au présent ; « hier » demande le passé composé.",
+        "pourront": "« pourront » est au futur ; « hier » demande le passé composé.",
+        "a pu": "« a pu » va avec « il », pas avec « ils »."
+      }
     },
     {
       "id": "passe-pouvoir-3",
@@ -2146,7 +2901,12 @@
         "pourras",
         "avez pu"
       ],
-      "consigne": "Choisis le verbe pouvoir au passé composé."
+      "consigne": "Choisis le verbe pouvoir au passé composé.",
+      "pourquoi": {
+        "peux": "« peux » est au présent ; « hier » demande le passé composé.",
+        "pourras": "« pourras » est au futur ; « hier » demande le passé composé.",
+        "avez pu": "« avez pu » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "passe-voir-1",
@@ -2159,7 +2919,12 @@
         "verrez",
         "as vu"
       ],
-      "consigne": "Choisis le verbe voir au passé composé."
+      "consigne": "Choisis le verbe voir au passé composé.",
+      "pourquoi": {
+        "voyez": "« voyez » est au présent ; « hier » demande le passé composé.",
+        "verrez": "« verrez » est au futur ; « hier » demande le passé composé.",
+        "as vu": "« as vu » va avec « tu », pas avec « vous »."
+      }
     },
     {
       "id": "passe-voir-2",
@@ -2172,7 +2937,12 @@
         "je verrai",
         "j’avons vu"
       ],
-      "consigne": "Choisis le verbe voir au passé composé."
+      "consigne": "Choisis le verbe voir au passé composé.",
+      "pourquoi": {
+        "je vois": "« je vois » est au présent ; « hier » demande le passé composé.",
+        "je verrai": "« je verrai » est au futur ; « hier » demande le passé composé.",
+        "j’avons vu": "« avons vu » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "passe-voir-3",
@@ -2185,7 +2955,12 @@
         "verra",
         "ont vu"
       ],
-      "consigne": "Choisis le verbe voir au passé composé."
+      "consigne": "Choisis le verbe voir au passé composé.",
+      "pourquoi": {
+        "voit": "« voit » est au présent ; « hier » demande le passé composé.",
+        "verra": "« verra » est au futur ; « hier » demande le passé composé.",
+        "ont vu": "« ont vu » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "passe-vouloir-1",
@@ -2198,7 +2973,12 @@
         "voudront",
         "a voulu"
       ],
-      "consigne": "Choisis le verbe vouloir au passé composé."
+      "consigne": "Choisis le verbe vouloir au passé composé.",
+      "pourquoi": {
+        "veulent": "« veulent » est au présent ; « hier » demande le passé composé.",
+        "voudront": "« voudront » est au futur ; « hier » demande le passé composé.",
+        "a voulu": "« a voulu » va avec « il », pas avec « ils »."
+      }
     },
     {
       "id": "passe-vouloir-2",
@@ -2211,7 +2991,12 @@
         "voudras",
         "avez voulu"
       ],
-      "consigne": "Choisis le verbe vouloir au passé composé."
+      "consigne": "Choisis le verbe vouloir au passé composé.",
+      "pourquoi": {
+        "veux": "« veux » est au présent ; « hier » demande le passé composé.",
+        "voudras": "« voudras » est au futur ; « hier » demande le passé composé.",
+        "avez voulu": "« avez voulu » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "passe-vouloir-3",
@@ -2224,7 +3009,12 @@
         "voudrons",
         "ai voulu"
       ],
-      "consigne": "Choisis le verbe vouloir au passé composé."
+      "consigne": "Choisis le verbe vouloir au passé composé.",
+      "pourquoi": {
+        "voulons": "« voulons » est au présent ; « hier » demande le passé composé.",
+        "voudrons": "« voudrons » est au futur ; « hier » demande le passé composé.",
+        "ai voulu": "« ai voulu » va avec « je », pas avec « nous »."
+      }
     },
     {
       "id": "passe-prendre-1",
@@ -2237,7 +3027,12 @@
         "je prendrai",
         "j’avons pris"
       ],
-      "consigne": "Choisis le verbe prendre au passé composé."
+      "consigne": "Choisis le verbe prendre au passé composé.",
+      "pourquoi": {
+        "je prends": "« je prends » est au présent ; « hier » demande le passé composé.",
+        "je prendrai": "« je prendrai » est au futur ; « hier » demande le passé composé.",
+        "j’avons pris": "« avons pris » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "passe-prendre-2",
@@ -2250,7 +3045,12 @@
         "prendra",
         "ont pris"
       ],
-      "consigne": "Choisis le verbe prendre au passé composé."
+      "consigne": "Choisis le verbe prendre au passé composé.",
+      "pourquoi": {
+        "prend": "« prend » est au présent ; « hier » demande le passé composé.",
+        "prendra": "« prendra » est au futur ; « hier » demande le passé composé.",
+        "ont pris": "« ont pris » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "passe-prendre-3",
@@ -2263,7 +3063,12 @@
         "prendrez",
         "as pris"
       ],
-      "consigne": "Choisis le verbe prendre au passé composé."
+      "consigne": "Choisis le verbe prendre au passé composé.",
+      "pourquoi": {
+        "prenez": "« prenez » est au présent ; « hier » demande le passé composé.",
+        "prendrez": "« prendrez » est au futur ; « hier » demande le passé composé.",
+        "as pris": "« as pris » va avec « tu », pas avec « vous »."
+      }
     },
     {
       "id": "passe-partir-1",
@@ -2276,7 +3081,12 @@
         "partiras",
         "êtes partis"
       ],
-      "consigne": "Choisis le verbe partir au passé composé."
+      "consigne": "Choisis le verbe partir au passé composé.",
+      "pourquoi": {
+        "pars": "« pars » est au présent ; « hier » demande le passé composé.",
+        "partiras": "« partiras » est au futur ; « hier » demande le passé composé.",
+        "êtes partis": "« êtes partis » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "passe-partir-2",
@@ -2289,7 +3099,12 @@
         "partirons",
         "suis parti"
       ],
-      "consigne": "Choisis le verbe partir au passé composé."
+      "consigne": "Choisis le verbe partir au passé composé.",
+      "pourquoi": {
+        "partons": "« partons » est au présent ; « hier » demande le passé composé.",
+        "partirons": "« partirons » est au futur ; « hier » demande le passé composé.",
+        "suis parti": "« suis parti » va avec « je », pas avec « nous »."
+      }
     },
     {
       "id": "passe-partir-3",
@@ -2302,7 +3117,12 @@
         "partiront",
         "est parti"
       ],
-      "consigne": "Choisis le verbe partir au passé composé."
+      "consigne": "Choisis le verbe partir au passé composé.",
+      "pourquoi": {
+        "partent": "« partent » est au présent ; « hier » demande le passé composé.",
+        "partiront": "« partiront » est au futur ; « hier » demande le passé composé.",
+        "est parti": "« est parti » va avec « il », pas avec « ils »."
+      }
     },
     {
       "id": "passe-chanter-1",
@@ -2315,7 +3135,12 @@
         "chantera",
         "ont chanté"
       ],
-      "consigne": "Choisis le verbe chanter au passé composé."
+      "consigne": "Choisis le verbe chanter au passé composé.",
+      "pourquoi": {
+        "chante": "« chante » est au présent ; « hier » demande le passé composé.",
+        "chantera": "« chantera » est au futur ; « hier » demande le passé composé.",
+        "ont chanté": "« ont chanté » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "passe-chanter-2",
@@ -2328,7 +3153,12 @@
         "chanterez",
         "as chanté"
       ],
-      "consigne": "Choisis le verbe chanter au passé composé."
+      "consigne": "Choisis le verbe chanter au passé composé.",
+      "pourquoi": {
+        "chantez": "« chantez » est au présent ; « hier » demande le passé composé.",
+        "chanterez": "« chanterez » est au futur ; « hier » demande le passé composé.",
+        "as chanté": "« as chanté » va avec « tu », pas avec « vous »."
+      }
     },
     {
       "id": "passe-chanter-3",
@@ -2341,7 +3171,12 @@
         "je chanterai",
         "j’avons chanté"
       ],
-      "consigne": "Choisis le verbe chanter au passé composé."
+      "consigne": "Choisis le verbe chanter au passé composé.",
+      "pourquoi": {
+        "je chante": "« je chante » est au présent ; « hier » demande le passé composé.",
+        "je chanterai": "« je chanterai » est au futur ; « hier » demande le passé composé.",
+        "j’avons chanté": "« avons chanté » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "passe-jouer-1",
@@ -2354,7 +3189,12 @@
         "jouerons",
         "ai joué"
       ],
-      "consigne": "Choisis le verbe jouer au passé composé."
+      "consigne": "Choisis le verbe jouer au passé composé.",
+      "pourquoi": {
+        "jouons": "« jouons » est au présent ; « hier » demande le passé composé.",
+        "jouerons": "« jouerons » est au futur ; « hier » demande le passé composé.",
+        "ai joué": "« ai joué » va avec « je », pas avec « nous »."
+      }
     },
     {
       "id": "passe-jouer-2",
@@ -2367,7 +3207,12 @@
         "joueront",
         "a joué"
       ],
-      "consigne": "Choisis le verbe jouer au passé composé."
+      "consigne": "Choisis le verbe jouer au passé composé.",
+      "pourquoi": {
+        "jouent": "« jouent » est au présent ; « hier » demande le passé composé.",
+        "joueront": "« joueront » est au futur ; « hier » demande le passé composé.",
+        "a joué": "« a joué » va avec « il », pas avec « ils »."
+      }
     },
     {
       "id": "passe-jouer-3",
@@ -2380,7 +3225,12 @@
         "joueras",
         "avez joué"
       ],
-      "consigne": "Choisis le verbe jouer au passé composé."
+      "consigne": "Choisis le verbe jouer au passé composé.",
+      "pourquoi": {
+        "joues": "« joues » est au présent ; « hier » demande le passé composé.",
+        "joueras": "« joueras » est au futur ; « hier » demande le passé composé.",
+        "avez joué": "« avez joué » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "passe-manger-1",
@@ -2393,7 +3243,12 @@
         "mangerez",
         "as mangé"
       ],
-      "consigne": "Choisis le verbe manger au passé composé."
+      "consigne": "Choisis le verbe manger au passé composé.",
+      "pourquoi": {
+        "mangez": "« mangez » est au présent ; « hier » demande le passé composé.",
+        "mangerez": "« mangerez » est au futur ; « hier » demande le passé composé.",
+        "as mangé": "« as mangé » va avec « tu », pas avec « vous »."
+      }
     },
     {
       "id": "passe-manger-2",
@@ -2406,7 +3261,12 @@
         "je mangerai",
         "j’avons mangé"
       ],
-      "consigne": "Choisis le verbe manger au passé composé."
+      "consigne": "Choisis le verbe manger au passé composé.",
+      "pourquoi": {
+        "je mange": "« je mange » est au présent ; « hier » demande le passé composé.",
+        "je mangerai": "« je mangerai » est au futur ; « hier » demande le passé composé.",
+        "j’avons mangé": "« avons mangé » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "passe-manger-3",
@@ -2419,7 +3279,12 @@
         "mangera",
         "ont mangé"
       ],
-      "consigne": "Choisis le verbe manger au passé composé."
+      "consigne": "Choisis le verbe manger au passé composé.",
+      "pourquoi": {
+        "mange": "« mange » est au présent ; « hier » demande le passé composé.",
+        "mangera": "« mangera » est au futur ; « hier » demande le passé composé.",
+        "ont mangé": "« ont mangé » va avec « ils », pas avec « il »."
+      }
     },
     {
       "id": "pc-aux-etre",
@@ -2431,7 +3296,10 @@
         "avoir"
       ],
       "consigne": "Avec quel auxiliaire se conjugue « aller » au passé composé ?",
-      "explication": "Je suis allé, nous sommes allés."
+      "explication": "Je suis allé, nous sommes allés.",
+      "pourquoi": {
+        "avoir": "on ne dit pas « j’ai allé » mais « je suis allé »."
+      }
     },
     {
       "id": "pc-aux-avoir",
@@ -2443,7 +3311,10 @@
         "être"
       ],
       "consigne": "Avec quel auxiliaire se conjugue « manger » au passé composé ?",
-      "explication": "J’ai mangé, nous avons mangé."
+      "explication": "J’ai mangé, nous avons mangé.",
+      "pourquoi": {
+        "être": "on ne dit pas « je suis mangé » mais « j’ai mangé »."
+      }
     },
     {
       "id": "pc-elle",
@@ -2457,7 +3328,12 @@
         "allait"
       ],
       "consigne": "Choisis le verbe aller au passé composé.",
-      "explication": "Avec être, le participe s’accorde avec le sujet : elle est allée."
+      "explication": "Avec être, le participe s’accorde avec le sujet : elle est allée.",
+      "pourquoi": {
+        "est allé": "avec être, le participe s’accorde : « elle » est au féminin, il faut un e.",
+        "a allé": "« aller » se conjugue avec être : « elle est allée ».",
+        "allait": "« allait » est à l’imparfait ; « hier » demande ici le passé composé."
+      }
     },
     {
       "id": "pc-elles",
@@ -2470,7 +3346,12 @@
         "ont parti",
         "partiront"
       ],
-      "consigne": "Choisis le verbe partir au passé composé."
+      "consigne": "Choisis le verbe partir au passé composé.",
+      "pourquoi": {
+        "sont partis": "« elles » est au féminin : il faut « parties », avec un e.",
+        "ont parti": "« partir » se conjugue avec être : « elles sont parties ».",
+        "partiront": "« partiront » est au futur ; « hier » demande le passé."
+      }
     },
     {
       "id": "pc-elle-venir",
@@ -2483,7 +3364,12 @@
         "a venu",
         "venait"
       ],
-      "consigne": "Choisis le verbe venir au passé composé."
+      "consigne": "Choisis le verbe venir au passé composé.",
+      "pourquoi": {
+        "est venu": "« ma tante » est au féminin : il faut un e.",
+        "a venu": "« venir » se conjugue avec être : « elle est venue ».",
+        "venait": "« venait » est à l’imparfait ; « hier » demande ici le passé composé."
+      }
     },
     {
       "id": "tape-1",
