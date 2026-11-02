@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-cp-espace",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "nom": "L’espace autour de moi",
   "description": "Se situer (sur, sous, entre…), passer à la vue d’en haut, lire le plan de la chambre et de la classe, se déplacer sur un quadrillage, reconnaître les paysages, traverser la rue.",
   "matiere": "monde",
@@ -292,7 +292,12 @@
         "la chaise",
         "la voiture"
       ],
-      "image": "top-bed"
+      "image": "top-bed",
+      "pourquoi": {
+        "la table": "la table a quatre pieds et pas d’oreiller.",
+        "la chaise": "la chaise est petite et a un dossier.",
+        "la voiture": "la voiture a des roues."
+      }
     },
     {
       "id": "dessus-table",
@@ -305,7 +310,12 @@
         "la chaise",
         "la voiture"
       ],
-      "image": "top-table"
+      "image": "top-table",
+      "pourquoi": {
+        "le lit": "le lit a un oreiller.",
+        "la chaise": "la chaise a un dossier.",
+        "la voiture": "la voiture a des roues."
+      }
     },
     {
       "id": "dessus-chair",
@@ -318,7 +328,12 @@
         "la table",
         "la voiture"
       ],
-      "image": "top-chair"
+      "image": "top-chair",
+      "pourquoi": {
+        "le lit": "le lit est grand et a un oreiller.",
+        "la table": "la table n’a pas de dossier.",
+        "la voiture": "la voiture a des roues."
+      }
     },
     {
       "id": "dessus-car",
@@ -331,7 +346,12 @@
         "la table",
         "la chaise"
       ],
-      "image": "top-car"
+      "image": "top-car",
+      "pourquoi": {
+        "le lit": "le lit a un oreiller.",
+        "la table": "la table n’a pas de roues.",
+        "la chaise": "la chaise a un dossier."
+      }
     },
     {
       "id": "dessus-bathtub",
@@ -344,7 +364,12 @@
         "la table",
         "la chaise"
       ],
-      "image": "top-bathtub"
+      "image": "top-bathtub",
+      "pourquoi": {
+        "le lit": "le lit a un oreiller.",
+        "la table": "la table n’est pas creuse.",
+        "la chaise": "la chaise a un dossier."
+      }
     },
     {
       "id": "plan-2",
@@ -357,7 +382,12 @@
         "une chanson",
         "un livre d’histoires"
       ],
-      "consigne": "Un plan, c’est…"
+      "consigne": "Un plan, c’est…",
+      "pourquoi": {
+        "une photo de face": "une photo de face, ce n’est pas vu d’en haut.",
+        "une chanson": "une chanson s’écoute, elle ne se dessine pas.",
+        "un livre d’histoires": "un livre d’histoires raconte, il ne montre pas un lieu."
+      }
     },
     {
       "id": "plan-3",
@@ -370,7 +400,12 @@
         "une étoile",
         "un cœur"
       ],
-      "consigne": "Sur un plan, une table vue d’en haut ressemble à…"
+      "consigne": "Sur un plan, une table vue d’en haut ressemble à…",
+      "pourquoi": {
+        "un triangle": "une table a quatre côtés.",
+        "une étoile": "une table n’a pas de pointes.",
+        "un cœur": "une table n’est pas en forme de cœur."
+      }
     },
     {
       "id": "chambre-lit",
@@ -490,7 +525,12 @@
         "la porte",
         "le coin lecture",
         "les fenêtres"
-      ]
+      ],
+      "pourquoi": {
+        "la porte": "la porte est sur le côté de la classe.",
+        "le coin lecture": "le coin lecture est au fond de la classe.",
+        "les fenêtres": "les fenêtres sont sur le côté de la classe."
+      }
     },
     {
       "id": "pieces",
@@ -697,7 +737,12 @@
         "2 cases à gauche, puis 2 cases en haut",
         "2 cases à droite, puis 2 cases en bas",
         "1 case à droite, puis 1 case en haut"
-      ]
+      ],
+      "pourquoi": {
+        "2 cases à gauche, puis 2 cases en haut": "à gauche, le lapin s’éloigne de la carotte.",
+        "2 cases à droite, puis 2 cases en bas": "en bas, il s’éloigne de la ligne 1.",
+        "1 case à droite, puis 1 case en haut": "une seule case ne suffit pas : il faut en faire 2."
+      }
     },
     {
       "id": "paysages-1",
@@ -824,7 +869,12 @@
         "à la campagne",
         "à la montagne",
         "à la mer"
-      ]
+      ],
+      "pourquoi": {
+        "à la campagne": "à la campagne, il y a des champs et des fermes.",
+        "à la montagne": "à la montagne, il y a des sommets et des forêts.",
+        "à la mer": "à la mer, il y a des plages."
+      }
     },
     {
       "id": "paysage-plage",
@@ -836,7 +886,12 @@
         "en haut d’une montagne",
         "au milieu d’un champ",
         "dans une forêt"
-      ]
+      ],
+      "pourquoi": {
+        "en haut d’une montagne": "en haut d’une montagne, il n’y a pas de mer.",
+        "au milieu d’un champ": "au milieu d’un champ, il n’y a pas de sable de mer.",
+        "dans une forêt": "dans une forêt, il y a des arbres."
+      }
     },
     {
       "id": "paysage-champs",
@@ -848,7 +903,12 @@
         "en ville",
         "au bord de la mer",
         "au sommet d’une montagne"
-      ]
+      ],
+      "pourquoi": {
+        "en ville": "en ville, il y a des immeubles et des magasins.",
+        "au bord de la mer": "au bord de la mer, il y a des plages.",
+        "au sommet d’une montagne": "au sommet, il fait trop froid pour cultiver."
+      }
     },
     {
       "id": "rue-1",
@@ -861,7 +921,12 @@
         "en courant n’importe où",
         "derrière le bus"
       ],
-      "consigne": "Pour traverser la rue, on passe…"
+      "consigne": "Pour traverser la rue, on passe…",
+      "pourquoi": {
+        "au milieu des voitures": "les voitures peuvent nous renverser.",
+        "en courant n’importe où": "on ne traverse pas en courant, ni n’importe où.",
+        "derrière le bus": "derrière le bus, les voitures ne nous voient pas."
+      }
     },
     {
       "id": "rue-2",
@@ -874,7 +939,12 @@
         "je cours",
         "je ferme les yeux"
       ],
-      "consigne": "Le petit bonhomme est rouge. Que fais-tu ?"
+      "consigne": "Le petit bonhomme est rouge. Que fais-tu ?",
+      "pourquoi": {
+        "je traverse vite": "rouge, on attend : les voitures passent.",
+        "je cours": "courir, c’est dangereux.",
+        "je ferme les yeux": "il faut regarder la route."
+      }
     },
     {
       "id": "rue-3",
@@ -887,7 +957,12 @@
         "je m’assois",
         "je recule"
       ],
-      "consigne": "Le petit bonhomme est vert. Que fais-tu ?"
+      "consigne": "Le petit bonhomme est vert. Que fais-tu ?",
+      "pourquoi": {
+        "j’attends toujours": "vert, on peut traverser.",
+        "je m’assois": "on ne s’assoit pas au bord de la route.",
+        "je recule": "vert, on avance, après avoir regardé."
+      }
     },
     {
       "id": "rue-4",
@@ -900,7 +975,12 @@
         "sur les rails",
         "au milieu du rond-point"
       ],
-      "consigne": "Où marchent les piétons ?"
+      "consigne": "Où marchent les piétons ?",
+      "pourquoi": {
+        "sur la route": "la route est pour les voitures.",
+        "sur les rails": "les rails sont pour les trains.",
+        "au milieu du rond-point": "le rond-point est pour les voitures."
+      }
     },
     {
       "id": "rue-5",
@@ -913,7 +993,12 @@
         "sur le toit",
         "dans le coffre"
       ],
-      "consigne": "Dans la voiture, l’enfant s’assoit…"
+      "consigne": "Dans la voiture, l’enfant s’assoit…",
+      "pourquoi": {
+        "devant, sans ceinture": "devant et sans ceinture, c’est dangereux.",
+        "sur le toit": "sur le toit, on peut tomber.",
+        "dans le coffre": "le coffre est pour les bagages."
+      }
     }
   ]
 }

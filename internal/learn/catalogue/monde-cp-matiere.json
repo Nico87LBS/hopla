@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-cp-matiere",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "La matière",
   "description": "Solide ou liquide, l'eau qui gèle et la glace qui fond, et ce qui flotte ou coule.",
   "matiere": "monde",
@@ -128,7 +128,12 @@
         "se casse en morceaux",
         "ne coule jamais"
       ],
-      "consigne": "Un liquide…"
+      "consigne": "Un liquide…",
+      "pourquoi": {
+        "garde toujours sa forme": "c’est le solide qui garde sa forme.",
+        "se casse en morceaux": "c’est le solide qui peut se casser.",
+        "ne coule jamais": "un liquide coule toujours."
+      }
     },
     {
       "id": "etat-2",
@@ -141,7 +146,12 @@
         "prend la forme du verre",
         "n’existe pas"
       ],
-      "consigne": "Un solide…"
+      "consigne": "Un solide…",
+      "pourquoi": {
+        "coule partout": "c’est le liquide qui coule.",
+        "prend la forme du verre": "c’est le liquide qui prend la forme du verre.",
+        "n’existe pas": "les solides sont partout : la table, le caillou…"
+      }
     },
     {
       "id": "etat-3",
@@ -152,7 +162,10 @@
       "pieges": [
         "Oui"
       ],
-      "consigne": "Le sable coule entre les doigts. Est-ce un liquide ?"
+      "consigne": "Le sable coule entre les doigts. Est-ce un liquide ?",
+      "pourquoi": {
+        "Oui": "chaque grain est solide : il garde sa forme."
+      }
     },
     {
       "id": "etat-4",
@@ -163,7 +176,10 @@
       "pieges": [
         "Oui, facilement"
       ],
-      "consigne": "Peut-on tenir de l’eau dans sa main fermée ?"
+      "consigne": "Peut-on tenir de l’eau dans sa main fermée ?",
+      "pourquoi": {
+        "Oui, facilement": "l’eau est liquide : elle coule entre les doigts."
+      }
     },
     {
       "id": "eau-1",
@@ -177,7 +193,12 @@
         "elle disparaît"
       ],
       "consigne": "Qu’arrive-t-il à l’eau quand il fait très froid ?",
-      "image": "ice-cube"
+      "image": "ice-cube",
+      "pourquoi": {
+        "elle devient du lait": "l’eau ne devient jamais du lait.",
+        "elle chauffe": "le froid ne chauffe pas.",
+        "elle disparaît": "elle est toujours là, mais en glace."
+      }
     },
     {
       "id": "eau-2",
@@ -191,7 +212,12 @@
         "il gèle encore plus"
       ],
       "consigne": "Qu’arrive-t-il au glaçon au soleil ?",
-      "image": "ice-cube"
+      "image": "ice-cube",
+      "pourquoi": {
+        "il grandit": "la chaleur le fait rétrécir.",
+        "il devient un caillou": "il devient de l’eau, pas un caillou.",
+        "il gèle encore plus": "la chaleur le fait fondre."
+      }
     },
     {
       "id": "eau-3",
@@ -205,7 +231,12 @@
         "dans la baignoire"
       ],
       "consigne": "Où met-on l’eau pour faire des glaçons ?",
-      "image": "ice-cube"
+      "image": "ice-cube",
+      "pourquoi": {
+        "au four": "le four chauffe : l’eau ne gèle pas.",
+        "au soleil": "le soleil chauffe : l’eau ne gèle pas.",
+        "dans la baignoire": "la baignoire n’est pas froide."
+      }
     },
     {
       "id": "eau-4",
@@ -219,7 +250,12 @@
         "du coton"
       ],
       "consigne": "La neige, c’est…",
-      "image": "snow"
+      "image": "snow",
+      "pourquoi": {
+        "du sucre": "le sucre se mange, il ne tombe pas du ciel.",
+        "du sable": "le sable ne vient pas des nuages.",
+        "du coton": "le coton vient d’une plante."
+      }
     },
     {
       "id": "eau-5",
@@ -233,7 +269,12 @@
         "devient du pain"
       ],
       "consigne": "Le bonhomme de neige au printemps…",
-      "image": "snowman"
+      "image": "snowman",
+      "pourquoi": {
+        "grandit": "au printemps, il fait plus chaud : il fond.",
+        "se met à marcher": "un bonhomme de neige ne marche pas.",
+        "devient du pain": "il devient de l’eau, pas du pain."
+      }
     },
     {
       "id": "eau-6",
@@ -247,7 +288,12 @@
         "de la neige"
       ],
       "consigne": "Quand l’eau bout dans la casserole, elle fait…",
-      "image": "kettle"
+      "image": "kettle",
+      "pourquoi": {
+        "de la glace": "la glace vient du froid, pas de la chaleur.",
+        "du sable": "le sable ne vient pas de l’eau.",
+        "de la neige": "la neige vient du froid."
+      }
     },
     {
       "id": "eau-7",
@@ -259,7 +305,10 @@
         "Non"
       ],
       "consigne": "La glace est-elle un solide ?",
-      "image": "ice-cube"
+      "image": "ice-cube",
+      "pourquoi": {
+        "Non": "elle garde sa forme : c’est un solide."
+      }
     },
     {
       "id": "glacon-ordre",
@@ -357,7 +406,10 @@
       "pieges": [
         "flotte"
       ],
-      "consigne": "Le caillou jeté dans l’eau…"
+      "consigne": "Le caillou jeté dans l’eau…",
+      "pourquoi": {
+        "flotte": "il est lourd et plein : il coule."
+      }
     },
     {
       "id": "flotte-q2",
@@ -368,7 +420,10 @@
       "pieges": [
         "coule"
       ],
-      "consigne": "Le bouchon posé sur l’eau…"
+      "consigne": "Le bouchon posé sur l’eau…",
+      "pourquoi": {
+        "coule": "il est léger : il flotte."
+      }
     },
     {
       "id": "flotte-q3",
@@ -379,7 +434,10 @@
       "pieges": [
         "flotte"
       ],
-      "consigne": "La clé en métal posée sur l’eau…"
+      "consigne": "La clé en métal posée sur l’eau…",
+      "pourquoi": {
+        "flotte": "elle est lourde et petite : elle coule."
+      }
     },
     {
       "id": "flotte-q4",
@@ -390,7 +448,10 @@
       "pieges": [
         "coule"
       ],
-      "consigne": "La feuille d’arbre sur la rivière…"
+      "consigne": "La feuille d’arbre sur la rivière…",
+      "pourquoi": {
+        "coule": "elle est légère : elle flotte."
+      }
     },
     {
       "id": "flotte-q5",
@@ -403,7 +464,12 @@
         "il est rouge",
         "il a peur de l’eau"
       ],
-      "consigne": "Pourquoi le bateau flotte-t-il ?"
+      "consigne": "Pourquoi le bateau flotte-t-il ?",
+      "pourquoi": {
+        "il est lourd": "un objet lourd et plein coule.",
+        "il est rouge": "la couleur ne change rien.",
+        "il a peur de l’eau": "un bateau n’a pas peur : c’est un objet."
+      }
     }
   ]
 }

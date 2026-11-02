@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-cp-corps",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "Mon corps, ma santé",
   "description": "Les parties du corps, les cinq sens, et prendre soin de soi : se laver, dormir, bien manger.",
   "matiere": "monde",
@@ -174,7 +174,12 @@
         "le nez",
         "la main"
       ],
-      "consigne": "Avec quoi entends-tu la sonnette ?"
+      "consigne": "Avec quoi entends-tu la sonnette ?",
+      "pourquoi": {
+        "les yeux": "les yeux voient.",
+        "le nez": "le nez sent les odeurs.",
+        "la main": "la main touche."
+      }
     },
     {
       "id": "sens-2",
@@ -187,7 +192,12 @@
         "les yeux",
         "la bouche"
       ],
-      "consigne": "Avec quoi sens-tu le parfum ?"
+      "consigne": "Avec quoi sens-tu le parfum ?",
+      "pourquoi": {
+        "les oreilles": "les oreilles entendent.",
+        "les yeux": "les yeux voient.",
+        "la bouche": "la bouche goûte."
+      }
     },
     {
       "id": "sens-3",
@@ -200,7 +210,12 @@
         "la main",
         "les oreilles"
       ],
-      "consigne": "Avec quoi vois-tu l’arc-en-ciel ?"
+      "consigne": "Avec quoi vois-tu l’arc-en-ciel ?",
+      "pourquoi": {
+        "le nez": "le nez sent les odeurs.",
+        "la main": "la main touche.",
+        "les oreilles": "les oreilles entendent."
+      }
     },
     {
       "id": "sens-4",
@@ -213,7 +228,12 @@
         "les oreilles",
         "le pied"
       ],
-      "consigne": "Avec quoi sais-tu que le citron est acide ?"
+      "consigne": "Avec quoi sais-tu que le citron est acide ?",
+      "pourquoi": {
+        "les yeux": "les yeux voient, ils ne goûtent pas.",
+        "les oreilles": "les oreilles entendent.",
+        "le pied": "le pied ne goûte pas."
+      }
     },
     {
       "id": "sens-5",
@@ -226,7 +246,12 @@
         "les oreilles",
         "les yeux"
       ],
-      "consigne": "Avec quoi sens-tu que le chat est doux ?"
+      "consigne": "Avec quoi sens-tu que le chat est doux ?",
+      "pourquoi": {
+        "le nez": "le nez sent les odeurs.",
+        "les oreilles": "les oreilles entendent.",
+        "les yeux": "les yeux voient la couleur, pas la douceur."
+      }
     },
     {
       "id": "sens-6",
@@ -239,7 +264,12 @@
         "4",
         "10"
       ],
-      "consigne": "Combien avons-nous de sens ?"
+      "consigne": "Combien avons-nous de sens ?",
+      "pourquoi": {
+        "3": "la vue, l’ouïe, l’odorat, le goût et le toucher : ça fait 5.",
+        "4": "il en manque un : on en a 5.",
+        "10": "c’est trop : on en a 5."
+      }
     },
     {
       "id": "sens-7",
@@ -252,7 +282,12 @@
         "le goût",
         "l’odorat"
       ],
-      "consigne": "La musique, c’est pour quel sens ?"
+      "consigne": "La musique, c’est pour quel sens ?",
+      "pourquoi": {
+        "la vue": "la vue, c’est pour les yeux.",
+        "le goût": "le goût, c’est pour la bouche.",
+        "l’odorat": "l’odorat, c’est pour le nez."
+      }
     },
     {
       "id": "sens-8",
@@ -265,7 +300,12 @@
         "le toucher",
         "le goût"
       ],
-      "consigne": "Les couleurs, c’est pour quel sens ?"
+      "consigne": "Les couleurs, c’est pour quel sens ?",
+      "pourquoi": {
+        "l’ouïe": "l’ouïe, c’est pour les oreilles.",
+        "le toucher": "le toucher, c’est pour la peau.",
+        "le goût": "le goût, c’est pour la bouche."
+      }
     },
     {
       "id": "dents",
@@ -355,7 +395,12 @@
         "1 fois par semaine",
         "10 fois"
       ],
-      "consigne": "Combien de fois par jour se brosse-t-on les dents ?"
+      "consigne": "Combien de fois par jour se brosse-t-on les dents ?",
+      "pourquoi": {
+        "jamais": "sans brossage, les dents s’abîment.",
+        "1 fois par semaine": "une fois par semaine, c’est bien trop peu.",
+        "10 fois": "c’est trop : matin et soir suffisent."
+      }
     },
     {
       "id": "sante-2",
@@ -368,7 +413,12 @@
         "après avoir mangé seulement",
         "une fois par mois"
       ],
-      "consigne": "Quand se lave-t-on les mains ?"
+      "consigne": "Quand se lave-t-on les mains ?",
+      "pourquoi": {
+        "jamais": "les microbes passent des mains à la bouche.",
+        "après avoir mangé seulement": "il faut le faire avant de manger.",
+        "une fois par mois": "c’est bien trop peu."
+      }
     },
     {
       "id": "sante-3",
@@ -381,7 +431,12 @@
         "une heure",
         "seulement le dimanche"
       ],
-      "consigne": "Pour bien grandir, un enfant dort…"
+      "consigne": "Pour bien grandir, un enfant dort…",
+      "pourquoi": {
+        "jamais": "sans dormir, on ne peut pas grandir.",
+        "une heure": "une heure, c’est bien trop peu.",
+        "seulement le dimanche": "il faut dormir chaque nuit."
+      }
     },
     {
       "id": "sante-4",
@@ -394,7 +449,12 @@
         "rien du tout",
         "son pied"
       ],
-      "consigne": "Quand on tousse, on met…"
+      "consigne": "Quand on tousse, on met…",
+      "pourquoi": {
+        "sa main sur ses yeux": "les microbes sortent par la bouche, pas par les yeux.",
+        "rien du tout": "sinon, on envoie des microbes aux autres.",
+        "son pied": "le pied ne peut pas arrêter les microbes."
+      }
     },
     {
       "id": "sante-5",
@@ -407,7 +467,12 @@
         "du sirop",
         "du café"
       ],
-      "consigne": "Pour avoir de l’énergie, on boit surtout…"
+      "consigne": "Pour avoir de l’énergie, on boit surtout…",
+      "pourquoi": {
+        "du soda": "le soda est plein de sucre.",
+        "du sirop": "le sirop est sucré.",
+        "du café": "le café n’est pas pour les enfants."
+      }
     },
     {
       "id": "sante-6",
@@ -420,7 +485,12 @@
         "manger des bonbons",
         "ne pas dormir"
       ],
-      "consigne": "Pour être en forme, il faut aussi…"
+      "consigne": "Pour être en forme, il faut aussi…",
+      "pourquoi": {
+        "rester assis tout le temps": "le corps a besoin de bouger.",
+        "manger des bonbons": "les bonbons abîment les dents.",
+        "ne pas dormir": "le sommeil est important pour grandir."
+      }
     }
   ]
 }

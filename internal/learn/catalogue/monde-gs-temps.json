@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-gs-temps",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "nom": "Le temps qui passe",
   "description": "Les moments de la journée, les jours de la semaine, hier, aujourd'hui et demain.",
   "matiere": "monde",
@@ -192,7 +192,12 @@
         "mercredi",
         "jeudi",
         "samedi"
-      ]
+      ],
+      "pourquoi": {
+        "mercredi": "mercredi vient après mardi, pas après lundi.",
+        "jeudi": "jeudi vient après mercredi, pas après lundi.",
+        "samedi": "samedi vient après vendredi, pas après lundi."
+      }
     },
     {
       "id": "demain-lundi",
@@ -204,7 +209,12 @@
         "mercredi",
         "jeudi",
         "samedi"
-      ]
+      ],
+      "pourquoi": {
+        "mercredi": "mercredi vient après mardi, pas après lundi.",
+        "jeudi": "jeudi vient après mercredi, pas après lundi.",
+        "samedi": "samedi vient après vendredi, pas après lundi."
+      }
     },
     {
       "id": "hier-lundi",
@@ -216,7 +226,12 @@
         "lundi",
         "mardi",
         "jeudi"
-      ]
+      ],
+      "pourquoi": {
+        "lundi": "c’est aujourd’hui : hier, c’est le jour d’avant.",
+        "mardi": "mardi vient avant mercredi, pas avant lundi.",
+        "jeudi": "jeudi vient avant vendredi, pas avant lundi."
+      }
     },
     {
       "id": "apres-mardi",
@@ -228,7 +243,12 @@
         "jeudi",
         "vendredi",
         "dimanche"
-      ]
+      ],
+      "pourquoi": {
+        "jeudi": "jeudi vient après mercredi, pas après mardi.",
+        "vendredi": "vendredi vient après jeudi, pas après mardi.",
+        "dimanche": "dimanche vient après samedi, pas après mardi."
+      }
     },
     {
       "id": "demain-mardi",
@@ -240,7 +260,12 @@
         "jeudi",
         "vendredi",
         "dimanche"
-      ]
+      ],
+      "pourquoi": {
+        "jeudi": "jeudi vient après mercredi, pas après mardi.",
+        "vendredi": "vendredi vient après jeudi, pas après mardi.",
+        "dimanche": "dimanche vient après samedi, pas après mardi."
+      }
     },
     {
       "id": "hier-mardi",
@@ -252,7 +277,12 @@
         "mardi",
         "mercredi",
         "vendredi"
-      ]
+      ],
+      "pourquoi": {
+        "mardi": "c’est aujourd’hui : hier, c’est le jour d’avant.",
+        "mercredi": "mercredi vient avant jeudi, pas avant mardi.",
+        "vendredi": "vendredi vient avant samedi, pas avant mardi."
+      }
     },
     {
       "id": "apres-mercredi",
@@ -264,7 +294,12 @@
         "vendredi",
         "samedi",
         "lundi"
-      ]
+      ],
+      "pourquoi": {
+        "vendredi": "vendredi vient après jeudi, pas après mercredi.",
+        "samedi": "samedi vient après vendredi, pas après mercredi.",
+        "lundi": "lundi vient après dimanche, pas après mercredi."
+      }
     },
     {
       "id": "demain-mercredi",
@@ -276,7 +311,12 @@
         "vendredi",
         "samedi",
         "lundi"
-      ]
+      ],
+      "pourquoi": {
+        "vendredi": "vendredi vient après jeudi, pas après mercredi.",
+        "samedi": "samedi vient après vendredi, pas après mercredi.",
+        "lundi": "lundi vient après dimanche, pas après mercredi."
+      }
     },
     {
       "id": "hier-mercredi",
@@ -288,7 +328,12 @@
         "mercredi",
         "jeudi",
         "samedi"
-      ]
+      ],
+      "pourquoi": {
+        "mercredi": "c’est aujourd’hui : hier, c’est le jour d’avant.",
+        "jeudi": "jeudi vient avant vendredi, pas avant mercredi.",
+        "samedi": "samedi vient avant dimanche, pas avant mercredi."
+      }
     },
     {
       "id": "apres-jeudi",
@@ -300,7 +345,12 @@
         "samedi",
         "dimanche",
         "mardi"
-      ]
+      ],
+      "pourquoi": {
+        "samedi": "samedi vient après vendredi, pas après jeudi.",
+        "dimanche": "dimanche vient après samedi, pas après jeudi.",
+        "mardi": "mardi vient après lundi, pas après jeudi."
+      }
     },
     {
       "id": "demain-jeudi",
@@ -312,7 +362,12 @@
         "samedi",
         "dimanche",
         "mardi"
-      ]
+      ],
+      "pourquoi": {
+        "samedi": "samedi vient après vendredi, pas après jeudi.",
+        "dimanche": "dimanche vient après samedi, pas après jeudi.",
+        "mardi": "mardi vient après lundi, pas après jeudi."
+      }
     },
     {
       "id": "hier-jeudi",
@@ -324,7 +379,12 @@
         "jeudi",
         "vendredi",
         "dimanche"
-      ]
+      ],
+      "pourquoi": {
+        "jeudi": "c’est aujourd’hui : hier, c’est le jour d’avant.",
+        "vendredi": "vendredi vient avant samedi, pas avant jeudi.",
+        "dimanche": "dimanche vient avant lundi, pas avant jeudi."
+      }
     },
     {
       "id": "apres-vendredi",
@@ -336,7 +396,12 @@
         "dimanche",
         "lundi",
         "mercredi"
-      ]
+      ],
+      "pourquoi": {
+        "dimanche": "dimanche vient après samedi, pas après vendredi.",
+        "lundi": "lundi vient après dimanche, pas après vendredi.",
+        "mercredi": "mercredi vient après mardi, pas après vendredi."
+      }
     },
     {
       "id": "demain-vendredi",
@@ -348,7 +413,12 @@
         "dimanche",
         "lundi",
         "mercredi"
-      ]
+      ],
+      "pourquoi": {
+        "dimanche": "dimanche vient après samedi, pas après vendredi.",
+        "lundi": "lundi vient après dimanche, pas après vendredi.",
+        "mercredi": "mercredi vient après mardi, pas après vendredi."
+      }
     },
     {
       "id": "hier-vendredi",
@@ -360,7 +430,12 @@
         "vendredi",
         "samedi",
         "lundi"
-      ]
+      ],
+      "pourquoi": {
+        "vendredi": "c’est aujourd’hui : hier, c’est le jour d’avant.",
+        "samedi": "samedi vient avant dimanche, pas avant vendredi.",
+        "lundi": "lundi vient avant mardi, pas avant vendredi."
+      }
     },
     {
       "id": "apres-samedi",
@@ -372,7 +447,12 @@
         "lundi",
         "mardi",
         "jeudi"
-      ]
+      ],
+      "pourquoi": {
+        "lundi": "lundi vient après dimanche, pas après samedi.",
+        "mardi": "mardi vient après lundi, pas après samedi.",
+        "jeudi": "jeudi vient après mercredi, pas après samedi."
+      }
     },
     {
       "id": "demain-samedi",
@@ -384,7 +464,12 @@
         "lundi",
         "mardi",
         "jeudi"
-      ]
+      ],
+      "pourquoi": {
+        "lundi": "lundi vient après dimanche, pas après samedi.",
+        "mardi": "mardi vient après lundi, pas après samedi.",
+        "jeudi": "jeudi vient après mercredi, pas après samedi."
+      }
     },
     {
       "id": "hier-samedi",
@@ -396,7 +481,12 @@
         "samedi",
         "dimanche",
         "mardi"
-      ]
+      ],
+      "pourquoi": {
+        "samedi": "c’est aujourd’hui : hier, c’est le jour d’avant.",
+        "dimanche": "dimanche vient avant lundi, pas avant samedi.",
+        "mardi": "mardi vient avant mercredi, pas avant samedi."
+      }
     },
     {
       "id": "apres-dimanche",
@@ -408,7 +498,12 @@
         "mardi",
         "mercredi",
         "vendredi"
-      ]
+      ],
+      "pourquoi": {
+        "mardi": "mardi vient après lundi, pas après dimanche.",
+        "mercredi": "mercredi vient après mardi, pas après dimanche.",
+        "vendredi": "vendredi vient après jeudi, pas après dimanche."
+      }
     },
     {
       "id": "demain-dimanche",
@@ -420,7 +515,12 @@
         "mardi",
         "mercredi",
         "vendredi"
-      ]
+      ],
+      "pourquoi": {
+        "mardi": "mardi vient après lundi, pas après dimanche.",
+        "mercredi": "mercredi vient après mardi, pas après dimanche.",
+        "vendredi": "vendredi vient après jeudi, pas après dimanche."
+      }
     },
     {
       "id": "hier-dimanche",
@@ -432,7 +532,12 @@
         "dimanche",
         "lundi",
         "mercredi"
-      ]
+      ],
+      "pourquoi": {
+        "dimanche": "c’est aujourd’hui : hier, c’est le jour d’avant.",
+        "lundi": "lundi vient avant mardi, pas avant dimanche.",
+        "mercredi": "mercredi vient avant jeudi, pas avant dimanche."
+      }
     }
   ]
 }

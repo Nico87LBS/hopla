@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce1-objets",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "Objets et électricité",
   "description": "Ce qui marche avec une pile ou sur une prise, les dangers de l'électricité, et ce qu'attire un aimant.",
   "matiere": "monde",
@@ -113,7 +113,12 @@
         "un aimant"
       ],
       "consigne": "Que faut-il pour allumer l’ampoule de la lampe de poche ?",
-      "image": "bulb"
+      "image": "bulb",
+      "pourquoi": {
+        "de l’eau": "l’eau ne donne pas d’électricité, et elle est dangereuse avec l’électricité.",
+        "du sable": "le sable ne donne pas d’électricité.",
+        "un aimant": "un aimant attire le fer, il n’allume pas l’ampoule."
+      }
     },
     {
       "id": "energie-2",
@@ -127,7 +132,12 @@
         "chauffe"
       ],
       "consigne": "Quand la pile est vide, la lampe…",
-      "image": "battery"
+      "image": "battery",
+      "pourquoi": {
+        "brille plus fort": "sans électricité, elle ne peut pas briller plus.",
+        "change de couleur": "elle ne change pas de couleur : elle s’éteint.",
+        "chauffe": "sans électricité, plus rien ne chauffe."
+      }
     },
     {
       "id": "energie-3",
@@ -141,7 +151,12 @@
         "au soleil de la fenêtre"
       ],
       "consigne": "Le téléphone se recharge…",
-      "image": "phone"
+      "image": "phone",
+      "pourquoi": {
+        "dans l’eau": "l’eau abîme le téléphone.",
+        "au congélateur": "le froid ne recharge rien.",
+        "au soleil de la fenêtre": "il faut le brancher sur une prise avec son chargeur."
+      }
     },
     {
       "id": "danger-1",
@@ -154,7 +169,11 @@
         "Oui, avec des gants"
       ],
       "consigne": "Peut-on mettre les doigts dans une prise ?",
-      "image": "socket"
+      "image": "socket",
+      "pourquoi": {
+        "Oui, si on est rapide": "même très vite, on peut être électrocuté.",
+        "Oui, avec des gants": "des gants ne protègent pas assez."
+      }
     },
     {
       "id": "danger-2",
@@ -166,7 +185,10 @@
         "Oui"
       ],
       "consigne": "Peut-on toucher un appareil électrique avec les mains mouillées ?",
-      "image": "socket"
+      "image": "socket",
+      "pourquoi": {
+        "Oui": "l’eau laisse passer le courant : on peut être électrocuté."
+      }
     },
     {
       "id": "danger-3",
@@ -180,7 +202,12 @@
         "je le coupe"
       ],
       "consigne": "Un câble électrique est abîmé. Que fais-tu ?",
-      "image": "socket"
+      "image": "socket",
+      "pourquoi": {
+        "je le touche": "un câble abîmé peut électrocuter.",
+        "je le répare": "c’est le travail d’un adulte, d’un électricien.",
+        "je le coupe": "le couper peut électrocuter."
+      }
     },
     {
       "id": "danger-4",
@@ -192,7 +219,10 @@
         "Oui"
       ],
       "consigne": "Peut-on jouer près des lignes électriques avec un cerf-volant ?",
-      "image": "socket"
+      "image": "socket",
+      "pourquoi": {
+        "Oui": "le fil du cerf-volant peut toucher la ligne : on peut être électrocuté."
+      }
     },
     {
       "id": "danger-5",
@@ -206,7 +236,12 @@
         "froide"
       ],
       "consigne": "L’électricité de la prise est…",
-      "image": "socket"
+      "image": "socket",
+      "pourquoi": {
+        "sans danger": "le courant de la prise est très fort.",
+        "utile seulement le jour": "elle est aussi dangereuse la nuit que le jour.",
+        "froide": "le courant n’est ni chaud ni froid : il est dangereux."
+      }
     },
     {
       "id": "danger-6",
@@ -220,7 +255,12 @@
         "mouillée"
       ],
       "consigne": "L’électricité d’une petite pile est…",
-      "image": "socket"
+      "image": "socket",
+      "pourquoi": {
+        "très dangereuse": "une petite pile donne un courant très faible.",
+        "interdite": "on l’utilise pour les expériences en classe.",
+        "mouillée": "une pile n’est pas mouillée."
+      }
     },
     {
       "id": "aimant",
@@ -289,7 +329,12 @@
         "le papier",
         "tout"
       ],
-      "consigne": "Un aimant attire…"
+      "consigne": "Un aimant attire…",
+      "pourquoi": {
+        "le bois": "le bois n’est pas attiré par un aimant.",
+        "le papier": "le papier n’est pas attiré par un aimant.",
+        "tout": "il n’attire que certains métaux, comme le fer."
+      }
     },
     {
       "id": "aimant-2",
@@ -300,7 +345,10 @@
       "pieges": [
         "Non"
       ],
-      "consigne": "Un aimant peut-il attirer un trombone à travers une feuille ?"
+      "consigne": "Un aimant peut-il attirer un trombone à travers une feuille ?",
+      "pourquoi": {
+        "Non": "la force de l’aimant passe à travers une feuille fine."
+      }
     },
     {
       "id": "aimant-3",
@@ -313,7 +361,12 @@
         "s’allumer",
         "chanter"
       ],
-      "consigne": "Deux aimants qu’on approche peuvent…"
+      "consigne": "Deux aimants qu’on approche peuvent…",
+      "pourquoi": {
+        "fondre": "un aimant ne fond pas en s’approchant d’un autre.",
+        "s’allumer": "un aimant ne fait pas de lumière.",
+        "chanter": "un aimant ne fait pas de bruit."
+      }
     },
     {
       "id": "aimant-4",
@@ -326,7 +379,12 @@
         "dans le savon",
         "dans l’eau"
       ],
-      "consigne": "Où trouve-t-on des aimants à la maison ?"
+      "consigne": "Où trouve-t-on des aimants à la maison ?",
+      "pourquoi": {
+        "dans le pain": "le pain n’a pas d’aimant.",
+        "dans le savon": "le savon n’a pas d’aimant.",
+        "dans l’eau": "l’eau n’a pas d’aimant."
+      }
     }
   ]
 }

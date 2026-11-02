@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce2-vivant",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "Le vivant",
   "description": "Les familles d'animaux, ce qu'ils mangent, les chaînes alimentaires, les cycles de vie et les besoins des plantes.",
   "matiere": "monde",
@@ -1027,7 +1027,12 @@
         "nagent",
         "dorment toujours"
       ],
-      "consigne": "Tous les êtres vivants naissent, grandissent, se reproduisent et…"
+      "consigne": "Tous les êtres vivants naissent, grandissent, se reproduisent et…",
+      "pourquoi": {
+        "volent": "tous ne volent pas.",
+        "nagent": "tous ne nagent pas.",
+        "dorment toujours": "aucun être vivant ne dort pour toujours."
+      }
     },
     {
       "id": "besoins",

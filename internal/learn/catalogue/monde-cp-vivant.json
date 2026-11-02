@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-cp-vivant",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "Vivant ou non vivant",
   "description": "Reconnaître ce qui est vivant ; naître, grandir et mourir ; les petits des animaux ; animal ou végétal.",
   "matiere": "monde",
@@ -148,7 +148,12 @@
         "est toujours en plastique",
         "ne mange pas"
       ],
-      "consigne": "Un être vivant…"
+      "consigne": "Un être vivant…",
+      "pourquoi": {
+        "ne change jamais": "un être vivant change : il grandit.",
+        "est toujours en plastique": "un être vivant n’est pas en plastique.",
+        "ne mange pas": "tous les êtres vivants mangent ou se nourrissent."
+      }
     },
     {
       "id": "vivant-q2",
@@ -159,7 +164,10 @@
       "pieges": [
         "Oui"
       ],
-      "consigne": "Le robot bouge. Est-il vivant ?"
+      "consigne": "Le robot bouge. Est-il vivant ?",
+      "pourquoi": {
+        "Oui": "il bouge grâce à des piles : il ne naît pas et ne grandit pas."
+      }
     },
     {
       "id": "vivant-q3",
@@ -170,7 +178,10 @@
       "pieges": [
         "Non"
       ],
-      "consigne": "L’arbre ne bouge pas. Est-il vivant ?"
+      "consigne": "L’arbre ne bouge pas. Est-il vivant ?",
+      "pourquoi": {
+        "Non": "un arbre naît d’une graine, grandit et meurt : il est vivant."
+      }
     },
     {
       "id": "vivant-q4",
@@ -181,7 +192,10 @@
       "pieges": [
         "Oui"
       ],
-      "consigne": "La voiture avance. Est-elle vivante ?"
+      "consigne": "La voiture avance. Est-elle vivante ?",
+      "pourquoi": {
+        "Oui": "elle avance grâce à un moteur : elle ne grandit pas."
+      }
     },
     {
       "id": "vivant-q5",
@@ -192,7 +206,10 @@
       "pieges": [
         "Non"
       ],
-      "consigne": "Le champignon pousse. Est-il vivant ?"
+      "consigne": "Le champignon pousse. Est-il vivant ?",
+      "pourquoi": {
+        "Non": "il naît, grandit et meurt : il est vivant."
+      }
     },
     {
       "id": "vivant-q6",
@@ -205,7 +222,12 @@
         "d’essence",
         "de rien"
       ],
-      "consigne": "De quoi a besoin un être vivant ?"
+      "consigne": "De quoi a besoin un être vivant ?",
+      "pourquoi": {
+        "de piles": "les piles, c’est pour les objets.",
+        "d’essence": "l’essence, c’est pour les voitures.",
+        "de rien": "sans manger ni boire, un être vivant meurt."
+      }
     },
     {
       "id": "vivant-q7",
@@ -216,7 +238,10 @@
       "pieges": [
         "Oui"
       ],
-      "consigne": "Le feu bouge et grandit. Est-il vivant ?"
+      "consigne": "Le feu bouge et grandit. Est-il vivant ?",
+      "pourquoi": {
+        "Oui": "le feu ne naît pas d’un parent et ne mange pas : il n’est pas vivant."
+      }
     },
     {
       "id": "vivant-q8",
@@ -227,7 +252,10 @@
       "pieges": [
         "Non"
       ],
-      "consigne": "La graine est-elle vivante ?"
+      "consigne": "La graine est-elle vivante ?",
+      "pourquoi": {
+        "Non": "une graine plantée donne une plante : elle est vivante."
+      }
     },
     {
       "id": "cycle-poule",
@@ -372,7 +400,12 @@
         "le chiot"
       ],
       "consigne": "Le petit de la vache s’appelle…",
-      "image": "calf"
+      "image": "calf",
+      "pourquoi": {
+        "le poulain": "le poulain est le petit du cheval.",
+        "l’agneau": "l’agneau est le petit du mouton.",
+        "le chiot": "le chiot est le petit du chien."
+      }
     },
     {
       "id": "grandir-2",
@@ -386,7 +419,12 @@
         "l’agneau"
       ],
       "consigne": "Le petit du cheval s’appelle…",
-      "image": "foal"
+      "image": "foal",
+      "pourquoi": {
+        "le veau": "le veau est le petit de la vache.",
+        "le chaton": "le chaton est le petit du chat.",
+        "l’agneau": "l’agneau est le petit du mouton."
+      }
     },
     {
       "id": "grandir-3",
@@ -400,7 +438,12 @@
         "le chaton"
       ],
       "consigne": "Le petit de la grenouille s’appelle…",
-      "image": "tadpole"
+      "image": "tadpole",
+      "pourquoi": {
+        "la chenille": "la chenille devient un papillon.",
+        "le poussin": "le poussin sort d’un œuf de poule.",
+        "le chaton": "le chaton est le petit du chat."
+      }
     },
     {
       "id": "grandir-4",
@@ -414,7 +457,12 @@
         "une araignée"
       ],
       "consigne": "La chenille devient…",
-      "image": "butterfly"
+      "image": "butterfly",
+      "pourquoi": {
+        "une abeille": "l’abeille vient d’une larve.",
+        "un escargot": "l’escargot naît petit escargot.",
+        "une araignée": "l’araignée naît petite araignée."
+      }
     },
     {
       "id": "grandir-5",
@@ -428,7 +476,12 @@
         "un agneau"
       ],
       "consigne": "Qu’est-ce qui sort de l’œuf de la poule ?",
-      "image": "chick"
+      "image": "chick",
+      "pourquoi": {
+        "un chaton": "le chaton naît dans le ventre de sa mère.",
+        "un têtard": "le têtard sort d’un œuf de grenouille.",
+        "un agneau": "l’agneau naît dans le ventre de la brebis."
+      }
     },
     {
       "id": "animal-vegetal",
@@ -528,7 +581,10 @@
       "pieges": [
         "Oui"
       ],
-      "consigne": "Une plante peut-elle se déplacer toute seule ?"
+      "consigne": "Une plante peut-elle se déplacer toute seule ?",
+      "pourquoi": {
+        "Oui": "une plante a des racines dans la terre : elle reste à sa place."
+      }
     },
     {
       "id": "av-2",
@@ -539,7 +595,10 @@
       "pieges": [
         "Oui"
       ],
-      "consigne": "Les plantes ont des racines. Les animaux aussi ?"
+      "consigne": "Les plantes ont des racines. Les animaux aussi ?",
+      "pourquoi": {
+        "Oui": "les animaux se déplacent : ils n’ont pas de racines."
+      }
     },
     {
       "id": "av-3",
@@ -552,7 +611,12 @@
         "le caillou",
         "le ballon"
       ],
-      "consigne": "Qu’est-ce qui est un végétal ?"
+      "consigne": "Qu’est-ce qui est un végétal ?",
+      "pourquoi": {
+        "le lapin": "le lapin est un animal.",
+        "le caillou": "le caillou n’est pas vivant.",
+        "le ballon": "le ballon est un objet."
+      }
     },
     {
       "id": "av-4",
@@ -565,7 +629,12 @@
         "la pomme",
         "le sapin"
       ],
-      "consigne": "Qu’est-ce qui est un animal ?"
+      "consigne": "Qu’est-ce qui est un animal ?",
+      "pourquoi": {
+        "la fleur": "la fleur est un végétal.",
+        "la pomme": "la pomme est un fruit, un végétal.",
+        "le sapin": "le sapin est un arbre, un végétal."
+      }
     }
   ]
 }

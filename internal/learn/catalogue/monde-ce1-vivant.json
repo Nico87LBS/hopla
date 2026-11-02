@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce1-vivant",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "Le vivant",
   "description": "Les milieux de vie, qui mange quoi (les chaînes alimentaires) et le cycle de vie des animaux et des plantes.",
   "matiere": "monde",
@@ -132,7 +132,12 @@
         "dans la forêt",
         "à la ferme"
       ],
-      "consigne": "Où vit le manchot ?"
+      "consigne": "Où vit le manchot ?",
+      "pourquoi": {
+        "dans le désert": "il ferait bien trop chaud pour lui.",
+        "dans la forêt": "il vit dans le froid, au bord de l’eau glacée.",
+        "à la ferme": "ce n’est pas un animal de la ferme."
+      }
     },
     {
       "id": "milieu-2",
@@ -145,7 +150,12 @@
         "dans la mer",
         "dans la forêt"
       ],
-      "consigne": "Où vit le chameau ?"
+      "consigne": "Où vit le chameau ?",
+      "pourquoi": {
+        "sur la banquise": "le chameau supporte la chaleur, pas la glace.",
+        "dans la mer": "le chameau ne nage pas dans la mer.",
+        "dans la forêt": "le chameau vit là où il y a du sable et peu d’eau."
+      }
     },
     {
       "id": "milieu-3",
@@ -158,7 +168,12 @@
         "dans l’eau",
         "dans le ciel"
       ],
-      "consigne": "Où vit la taupe ?"
+      "consigne": "Où vit la taupe ?",
+      "pourquoi": {
+        "dans les arbres": "la taupe ne grimpe pas : elle creuse.",
+        "dans l’eau": "la taupe ne vit pas dans l’eau.",
+        "dans le ciel": "la taupe ne vole pas."
+      }
     },
     {
       "id": "milieu-4",
@@ -171,7 +186,12 @@
         "pour se cacher dans le désert",
         "pour voler"
       ],
-      "consigne": "Pourquoi l’ours polaire a-t-il une épaisse fourrure ?"
+      "consigne": "Pourquoi l’ours polaire a-t-il une épaisse fourrure ?",
+      "pourquoi": {
+        "pour nager vite": "la fourrure ne fait pas nager plus vite.",
+        "pour se cacher dans le désert": "il vit dans la neige, pas dans le désert.",
+        "pour voler": "un ours ne vole pas."
+      }
     },
     {
       "id": "milieu-5",
@@ -184,7 +204,12 @@
         "son nez",
         "ses nageoires"
       ],
-      "consigne": "Le poisson respire dans l’eau grâce à…"
+      "consigne": "Le poisson respire dans l’eau grâce à…",
+      "pourquoi": {
+        "ses poumons": "les poumons respirent l’air, pas l’eau.",
+        "son nez": "le poisson n’a pas de nez pour respirer.",
+        "ses nageoires": "les nageoires servent à nager."
+      }
     },
     {
       "id": "milieu-6",
@@ -197,7 +222,12 @@
         "une saison",
         "un aliment"
       ],
-      "consigne": "Un milieu de vie, c’est…"
+      "consigne": "Un milieu de vie, c’est…",
+      "pourquoi": {
+        "un animal": "un animal vit dans un milieu, il n’est pas le milieu.",
+        "une saison": "une saison est un moment de l’année.",
+        "un aliment": "un aliment se mange : ce n’est pas un endroit."
+      }
     },
     {
       "id": "chaine-1",
@@ -348,7 +378,12 @@
         "omnivore",
         "végétal"
       ],
-      "consigne": "Un animal qui mange des plantes est…"
+      "consigne": "Un animal qui mange des plantes est…",
+      "pourquoi": {
+        "carnivore": "un carnivore mange de la viande.",
+        "omnivore": "un omnivore mange de tout.",
+        "végétal": "un végétal est une plante, pas un animal."
+      }
     },
     {
       "id": "regime-2",
@@ -361,7 +396,12 @@
         "omnivore",
         "végétal"
       ],
-      "consigne": "Un animal qui mange d’autres animaux est…"
+      "consigne": "Un animal qui mange d’autres animaux est…",
+      "pourquoi": {
+        "herbivore": "un herbivore mange des plantes.",
+        "omnivore": "un omnivore mange de tout.",
+        "végétal": "un végétal est une plante, pas un animal."
+      }
     },
     {
       "id": "regime-3",
@@ -374,7 +414,12 @@
         "herbivore",
         "minéral"
       ],
-      "consigne": "Un animal qui mange de tout est…"
+      "consigne": "Un animal qui mange de tout est…",
+      "pourquoi": {
+        "carnivore": "un carnivore ne mange que de la viande.",
+        "herbivore": "un herbivore ne mange que des plantes.",
+        "minéral": "un minéral n’est pas vivant : c’est un caillou."
+      }
     },
     {
       "id": "regime-4",
@@ -387,7 +432,12 @@
         "un requin",
         "un caillou"
       ],
-      "consigne": "Au début d’une chaîne alimentaire, il y a toujours…"
+      "consigne": "Au début d’une chaîne alimentaire, il y a toujours…",
+      "pourquoi": {
+        "un lion": "le lion mange d’autres animaux : il est en bout de chaîne.",
+        "un requin": "le requin mange d’autres animaux : il est en bout de chaîne.",
+        "un caillou": "un caillou n’est pas vivant, il ne nourrit personne."
+      }
     },
     {
       "id": "cycle-1",
@@ -451,7 +501,12 @@
         "un papillon"
       ],
       "consigne": "Que devient le têtard ?",
-      "image": "tadpole"
+      "image": "tadpole",
+      "pourquoi": {
+        "un poisson": "il vit dans l’eau, mais devient une grenouille.",
+        "un serpent": "un têtard n’a rien à voir avec un serpent.",
+        "un papillon": "c’est la chenille qui devient papillon."
+      }
     },
     {
       "id": "cycle-q2",
@@ -465,7 +520,12 @@
         "un escargot"
       ],
       "consigne": "Que devient la chenille ?",
-      "image": "caterpillar"
+      "image": "caterpillar",
+      "pourquoi": {
+        "une abeille": "l’abeille sort d’une larve, pas d’une chenille.",
+        "une araignée": "l’araignée sort d’un œuf, petite araignée.",
+        "un escargot": "l’escargot sort d’un œuf, petit escargot."
+      }
     },
     {
       "id": "cycle-q3",
@@ -479,7 +539,12 @@
         "dans la tige"
       ],
       "consigne": "Dans quoi se trouve la graine de la pomme ?",
-      "image": "apple"
+      "image": "apple",
+      "pourquoi": {
+        "dans la racine": "la racine est sous la terre ; la graine est dans le fruit.",
+        "dans la feuille": "la feuille ne contient pas de graine.",
+        "dans la tige": "la tige porte le fruit, mais la graine est dedans."
+      }
     },
     {
       "id": "cycle-q4",
@@ -493,7 +558,12 @@
         "il tombe d’un arbre"
       ],
       "consigne": "Comment naît le poussin ?",
-      "image": "chick"
+      "image": "chick",
+      "pourquoi": {
+        "il naît dans le ventre": "les oiseaux naissent dans un œuf, pas dans le ventre.",
+        "il sort d’une graine": "une graine donne une plante.",
+        "il tombe d’un arbre": "un poussin ne pousse pas sur un arbre."
+      }
     },
     {
       "id": "cycle-q5",
@@ -507,7 +577,12 @@
         "dans un nid"
       ],
       "consigne": "Comment naît le chaton ?",
-      "image": "kitten"
+      "image": "kitten",
+      "pourquoi": {
+        "dans un œuf": "le chat est un mammifère : il ne naît pas dans un œuf.",
+        "dans une graine": "une graine donne une plante.",
+        "dans un nid": "un chaton naît dans le ventre de sa mère, pas dans un nid d’oiseau."
+      }
     }
   ]
 }
