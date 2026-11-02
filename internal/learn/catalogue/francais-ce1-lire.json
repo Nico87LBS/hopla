@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce1-lire",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Lire et comprendre",
   "description": "De petits textes à lire avec une question, vrai ou faux, remettre une histoire dans l'ordre, et trouver qui parle.",
   "matiere": "francais",
@@ -54,7 +54,12 @@
         "au parc",
         "à la piscine"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "à l’école": "le texte dit « elle va à la plage ».",
+        "au parc": "le texte dit « elle va à la plage ».",
+        "à la piscine": "le seau et la pelle, c’est pour la plage."
+      }
     },
     {
       "id": "texte-1-2",
@@ -67,7 +72,12 @@
         "avec son frère",
         "toute seule"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "avec Maman": "le texte parle de Papi, pas de Maman.",
+        "avec son frère": "le texte ne parle pas de son frère.",
+        "toute seule": "elle part avec Papi."
+      }
     },
     {
       "id": "texte-2-1",
@@ -80,7 +90,12 @@
         "Minou",
         "Tache"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "Sami": "Sami est le garçon : le chat est à lui.",
+        "Minou": "le texte dit qu’il s’appelle Moustache.",
+        "Tache": "la tache est sur son nez, ce n’est pas son nom."
+      }
     },
     {
       "id": "texte-2-2",
@@ -93,7 +108,12 @@
         "roux",
         "gris"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "blanc": "il est tout noir : seule une tache sur le nez est blanche.",
+        "roux": "le texte dit « tout noir ».",
+        "gris": "le texte dit « tout noir »."
+      }
     },
     {
       "id": "texte-3-1",
@@ -106,7 +126,12 @@
         "son oreiller",
         "sa clé"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "une pièce": "la pièce, elle la trouvera peut-être demain.",
+        "son oreiller": "l’oreiller, c’est là où elle met sa dent.",
+        "sa clé": "le texte ne parle pas de clé."
+      }
     },
     {
       "id": "texte-3-2",
@@ -119,7 +144,12 @@
         "sur la table",
         "dans un verre"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "dans sa poche": "le texte dit « sous son oreiller ».",
+        "sur la table": "le texte dit « sous son oreiller ».",
+        "dans un verre": "le texte dit « sous son oreiller »."
+      }
     },
     {
       "id": "texte-4-1",
@@ -132,7 +162,12 @@
         "des pommes de terre",
         "un arbre"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "des fleurs": "ce sont des graines de tomate.",
+        "des pommes de terre": "ce sont des graines de tomate.",
+        "un arbre": "ce sont des graines de tomate, pas un arbre."
+      }
     },
     {
       "id": "texte-4-2",
@@ -145,7 +180,12 @@
         "une heure",
         "un an"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "un jour": "le texte dit « au bout d’un mois ».",
+        "une heure": "le texte dit « au bout d’un mois ».",
+        "un an": "le texte dit « au bout d’un mois »."
+      }
     },
     {
       "id": "texte-5-1",
@@ -158,7 +198,12 @@
         "parce qu’il fait nuit",
         "parce qu’elle est punie"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "parce qu’elle est malade": "rien ne dit qu’elle est malade : il pleut.",
+        "parce qu’il fait nuit": "rien ne dit qu’il fait nuit : il pleut.",
+        "parce qu’elle est punie": "rien ne dit qu’elle est punie : il pleut."
+      }
     },
     {
       "id": "texte-5-2",
@@ -171,7 +216,12 @@
         "des cartons",
         "des chaises"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "des branches": "elle prend des coussins et une couverture.",
+        "des cartons": "elle prend des coussins et une couverture.",
+        "des chaises": "elle prend des coussins et une couverture."
+      }
     },
     {
       "id": "texte-6-1",
@@ -184,7 +234,12 @@
         "le voisin",
         "Malo"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "la tante": "la tante a écrit la carte, elle n’est pas là.",
+        "le voisin": "le texte ne parle pas de voisin.",
+        "Malo": "Malo reçoit le colis : c’est le facteur qui sonne."
+      }
     },
     {
       "id": "texte-6-2",
@@ -197,7 +252,12 @@
         "un gâteau",
         "des bonbons"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "un livre": "il y a un ballon et une carte.",
+        "un gâteau": "il y a un ballon et une carte.",
+        "des bonbons": "il y a un ballon et une carte."
+      }
     },
     {
       "id": "texte-7-1",
@@ -210,7 +270,12 @@
         "à l’école",
         "en forêt"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "à la ferme": "le texte dit « au zoo ».",
+        "à l’école": "le texte dit « au zoo ».",
+        "en forêt": "le texte dit « au zoo »."
+      }
     },
     {
       "id": "texte-7-2",
@@ -223,7 +288,12 @@
         "elles sautent",
         "elles volent"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "elles grimpent": "les girafes ne grimpent pas : elles ont un long cou.",
+        "elles sautent": "le texte dit que c’est grâce à leur long cou.",
+        "elles volent": "les girafes ne volent pas : elles ont un long cou."
+      }
     },
     {
       "id": "texte-8-1",
@@ -236,7 +306,12 @@
         "son cartable",
         "sa pomme"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "ses feutres": "les feutres, il les prête à Léa.",
+        "son cartable": "le texte ne parle pas de cartable.",
+        "sa pomme": "la pomme est à Léa."
+      }
     },
     {
       "id": "texte-8-2",
@@ -249,7 +324,12 @@
         "il chante",
         "il part"
       ],
-      "consigne": "Lis le texte, puis réponds à la question."
+      "consigne": "Lis le texte, puis réponds à la question.",
+      "pourquoi": {
+        "il lui donne un bonbon": "le texte ne parle pas de bonbon.",
+        "il chante": "le texte ne dit pas qu’il chante.",
+        "il part": "il reste et lui prête ses feutres."
+      }
     },
     {
       "id": "vf-1-1",
@@ -260,7 +340,10 @@
       "pieges": [
         "Faux"
       ],
-      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?"
+      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?",
+      "pourquoi": {
+        "Faux": "le texte dit qu’il dort tout l’hiver."
+      }
     },
     {
       "id": "vf-1-2",
@@ -271,7 +354,10 @@
       "pieges": [
         "Vrai"
       ],
-      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?"
+      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?",
+      "pourquoi": {
+        "Vrai": "il dort dans les feuilles, il mange des insectes."
+      }
     },
     {
       "id": "vf-2-1",
@@ -282,7 +368,10 @@
       "pieges": [
         "Vrai"
       ],
-      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?"
+      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?",
+      "pourquoi": {
+        "Vrai": "il prend le bus."
+      }
     },
     {
       "id": "vf-2-2",
@@ -293,7 +382,10 @@
       "pieges": [
         "Faux"
       ],
-      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?"
+      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?",
+      "pourquoi": {
+        "Faux": "de huit heures à huit heures et demie, ça fait une demi-heure."
+      }
     },
     {
       "id": "vf-3-1",
@@ -304,7 +396,10 @@
       "pieges": [
         "Vrai"
       ],
-      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?"
+      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?",
+      "pourquoi": {
+        "Vrai": "elle fait une tarte aux pommes."
+      }
     },
     {
       "id": "vf-3-2",
@@ -315,7 +410,10 @@
       "pieges": [
         "Faux"
       ],
-      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?"
+      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?",
+      "pourquoi": {
+        "Faux": "le texte dit qu’elle les coupe."
+      }
     },
     {
       "id": "vf-4-1",
@@ -326,7 +424,10 @@
       "pieges": [
         "Vrai"
       ],
-      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?"
+      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?",
+      "pourquoi": {
+        "Vrai": "la nuit, elle chasse : elle dort le jour."
+      }
     },
     {
       "id": "vf-4-2",
@@ -337,7 +438,10 @@
       "pieges": [
         "Faux"
       ],
-      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?"
+      "consigne": "Lis le texte. Cette phrase est-elle vraie ou fausse ?",
+      "pourquoi": {
+        "Faux": "elle dort dans un trou d’arbre."
+      }
     },
     {
       "id": "histoire-1",
@@ -428,7 +532,12 @@
         "la grand-mère",
         "le chasseur"
       ],
-      "consigne": "Qui parle ?"
+      "consigne": "Qui parle ?",
+      "pourquoi": {
+        "le petit chaperon": "le texte dit « dit le loup ».",
+        "la grand-mère": "le texte dit « dit le loup ».",
+        "le chasseur": "le texte dit « dit le loup »."
+      }
     },
     {
       "id": "qui-2",
@@ -441,7 +550,12 @@
         "le directeur",
         "Maman"
       ],
-      "consigne": "Qui parle ?"
+      "consigne": "Qui parle ?",
+      "pourquoi": {
+        "les élèves": "les élèves écoutent : c’est la maîtresse qui demande.",
+        "le directeur": "le texte parle de la maîtresse.",
+        "Maman": "le texte parle de la maîtresse."
+      }
     },
     {
       "id": "qui-3",
@@ -454,7 +568,12 @@
         "Maman",
         "le chien"
       ],
-      "consigne": "Qui parle ?"
+      "consigne": "Qui parle ?",
+      "pourquoi": {
+        "son frère": "Lina parle à son frère : c’est elle qui crie.",
+        "Maman": "le texte dit « crie Lina ».",
+        "le chien": "le texte dit « crie Lina »."
+      }
     },
     {
       "id": "qui-4",
@@ -467,7 +586,12 @@
         "les enfants",
         "le voisin"
       ],
-      "consigne": "Qui parle ?"
+      "consigne": "Qui parle ?",
+      "pourquoi": {
+        "Maman": "le texte dit « Papa répond ».",
+        "les enfants": "le texte dit « Papa répond ».",
+        "le voisin": "le texte dit « Papa répond »."
+      }
     },
     {
       "id": "qui-5",
@@ -480,7 +604,12 @@
         "la maîtresse",
         "Lou"
       ],
-      "consigne": "Qui parle ?"
+      "consigne": "Qui parle ?",
+      "pourquoi": {
+        "Papi": "le texte dit « s’exclame Mamie ».",
+        "la maîtresse": "le texte dit « s’exclame Mamie ».",
+        "Lou": "le texte dit « s’exclame Mamie »."
+      }
     },
     {
       "id": "qui-6",
@@ -493,7 +622,12 @@
         "la vendeuse",
         "le client"
       ],
-      "consigne": "Qui parle ?"
+      "consigne": "Qui parle ?",
+      "pourquoi": {
+        "l’enfant": "le texte dit « le boulanger dit ».",
+        "la vendeuse": "le texte dit « le boulanger dit ».",
+        "le client": "le texte dit « le boulanger dit »."
+      }
     }
   ]
 }

@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce1-conjugaison",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Conjuguer au CE1",
   "description": "Le présent des verbes en -er, être et avoir, aller, faire, dire et venir ; passé, présent ou futur ; puis écrire soi-même le verbe.",
   "matiere": "francais",
@@ -59,7 +59,12 @@
         "chantons",
         "chantez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "chantes": "« chantes » va avec « tu », pas avec « je ».",
+        "chantons": "« chantons » va avec « nous », pas avec « je ».",
+        "chantez": "« chantez » va avec « vous », pas avec « je »."
+      }
     },
     {
       "id": "er-chanter-tu",
@@ -72,7 +77,12 @@
         "chantons",
         "chantez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "chante": "« chante » va avec « je » ou « il », pas avec « tu ».",
+        "chantons": "« chantons » va avec « nous », pas avec « tu ».",
+        "chantez": "« chantez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "er-chanter-il",
@@ -85,7 +95,12 @@
         "chantons",
         "chantez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "chantes": "« chantes » va avec « tu », pas avec « il ».",
+        "chantons": "« chantons » va avec « nous », pas avec « il ».",
+        "chantez": "« chantez » va avec « vous », pas avec « il »."
+      }
     },
     {
       "id": "er-chanter-nous",
@@ -98,7 +113,12 @@
         "chantes",
         "chantez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "chante": "« chante » va avec « je » ou « il », pas avec « nous ».",
+        "chantes": "« chantes » va avec « tu », pas avec « nous ».",
+        "chantez": "« chantez » va avec « vous », pas avec « nous »."
+      }
     },
     {
       "id": "er-chanter-vous",
@@ -111,7 +131,12 @@
         "chantes",
         "chantons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "chante": "« chante » va avec « je » ou « il », pas avec « vous ».",
+        "chantes": "« chantes » va avec « tu », pas avec « vous ».",
+        "chantons": "« chantons » va avec « nous », pas avec « vous »."
+      }
     },
     {
       "id": "er-chanter-ils",
@@ -124,7 +149,12 @@
         "chantes",
         "chantons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "chante": "« chante » va avec « je » ou « il », pas avec « ils ».",
+        "chantes": "« chantes » va avec « tu », pas avec « ils ».",
+        "chantons": "« chantons » va avec « nous », pas avec « ils »."
+      }
     },
     {
       "id": "er-jouer-je",
@@ -137,7 +167,12 @@
         "jouons",
         "jouez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "joues": "« joues » va avec « tu », pas avec « je ».",
+        "jouons": "« jouons » va avec « nous », pas avec « je ».",
+        "jouez": "« jouez » va avec « vous », pas avec « je »."
+      }
     },
     {
       "id": "er-jouer-tu",
@@ -150,7 +185,12 @@
         "jouons",
         "jouez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "joue": "« joue » va avec « je » ou « il », pas avec « tu ».",
+        "jouons": "« jouons » va avec « nous », pas avec « tu ».",
+        "jouez": "« jouez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "er-jouer-il",
@@ -163,7 +203,12 @@
         "jouons",
         "jouez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "joues": "« joues » va avec « tu », pas avec « il ».",
+        "jouons": "« jouons » va avec « nous », pas avec « il ».",
+        "jouez": "« jouez » va avec « vous », pas avec « il »."
+      }
     },
     {
       "id": "er-jouer-nous",
@@ -176,7 +221,12 @@
         "joues",
         "jouez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "joue": "« joue » va avec « je » ou « il », pas avec « nous ».",
+        "joues": "« joues » va avec « tu », pas avec « nous ».",
+        "jouez": "« jouez » va avec « vous », pas avec « nous »."
+      }
     },
     {
       "id": "er-jouer-vous",
@@ -189,7 +239,12 @@
         "joues",
         "jouons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "joue": "« joue » va avec « je » ou « il », pas avec « vous ».",
+        "joues": "« joues » va avec « tu », pas avec « vous ».",
+        "jouons": "« jouons » va avec « nous », pas avec « vous »."
+      }
     },
     {
       "id": "er-jouer-ils",
@@ -202,7 +257,12 @@
         "joues",
         "jouons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "joue": "« joue » va avec « je » ou « il », pas avec « ils ».",
+        "joues": "« joues » va avec « tu », pas avec « ils ».",
+        "jouons": "« jouons » va avec « nous », pas avec « ils »."
+      }
     },
     {
       "id": "er-parler-je",
@@ -215,7 +275,12 @@
         "parlons",
         "parlez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "parles": "« parles » va avec « tu », pas avec « je ».",
+        "parlons": "« parlons » va avec « nous », pas avec « je ».",
+        "parlez": "« parlez » va avec « vous », pas avec « je »."
+      }
     },
     {
       "id": "er-parler-tu",
@@ -228,7 +293,12 @@
         "parlons",
         "parlez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "parle": "« parle » va avec « je » ou « il », pas avec « tu ».",
+        "parlons": "« parlons » va avec « nous », pas avec « tu ».",
+        "parlez": "« parlez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "er-parler-il",
@@ -241,7 +311,12 @@
         "parlons",
         "parlez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "parles": "« parles » va avec « tu », pas avec « il ».",
+        "parlons": "« parlons » va avec « nous », pas avec « il ».",
+        "parlez": "« parlez » va avec « vous », pas avec « il »."
+      }
     },
     {
       "id": "er-parler-nous",
@@ -254,7 +329,12 @@
         "parles",
         "parlez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "parle": "« parle » va avec « je » ou « il », pas avec « nous ».",
+        "parles": "« parles » va avec « tu », pas avec « nous ».",
+        "parlez": "« parlez » va avec « vous », pas avec « nous »."
+      }
     },
     {
       "id": "er-parler-vous",
@@ -267,7 +347,12 @@
         "parles",
         "parlons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "parle": "« parle » va avec « je » ou « il », pas avec « vous ».",
+        "parles": "« parles » va avec « tu », pas avec « vous ».",
+        "parlons": "« parlons » va avec « nous », pas avec « vous »."
+      }
     },
     {
       "id": "er-parler-ils",
@@ -280,7 +365,12 @@
         "parles",
         "parlons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "parle": "« parle » va avec « je » ou « il », pas avec « ils ».",
+        "parles": "« parles » va avec « tu », pas avec « ils ».",
+        "parlons": "« parlons » va avec « nous », pas avec « ils »."
+      }
     },
     {
       "id": "er-danser-je",
@@ -293,7 +383,12 @@
         "dansons",
         "dansez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "danses": "« danses » va avec « tu », pas avec « je ».",
+        "dansons": "« dansons » va avec « nous », pas avec « je ».",
+        "dansez": "« dansez » va avec « vous », pas avec « je »."
+      }
     },
     {
       "id": "er-danser-tu",
@@ -306,7 +401,12 @@
         "dansons",
         "dansez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "danse": "« danse » va avec « je » ou « il », pas avec « tu ».",
+        "dansons": "« dansons » va avec « nous », pas avec « tu ».",
+        "dansez": "« dansez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "er-danser-il",
@@ -319,7 +419,12 @@
         "dansons",
         "dansez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "danses": "« danses » va avec « tu », pas avec « il ».",
+        "dansons": "« dansons » va avec « nous », pas avec « il ».",
+        "dansez": "« dansez » va avec « vous », pas avec « il »."
+      }
     },
     {
       "id": "er-danser-nous",
@@ -332,7 +437,12 @@
         "danses",
         "dansez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "danse": "« danse » va avec « je » ou « il », pas avec « nous ».",
+        "danses": "« danses » va avec « tu », pas avec « nous ».",
+        "dansez": "« dansez » va avec « vous », pas avec « nous »."
+      }
     },
     {
       "id": "er-danser-vous",
@@ -345,7 +455,12 @@
         "danses",
         "dansons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "danse": "« danse » va avec « je » ou « il », pas avec « vous ».",
+        "danses": "« danses » va avec « tu », pas avec « vous ».",
+        "dansons": "« dansons » va avec « nous », pas avec « vous »."
+      }
     },
     {
       "id": "er-danser-ils",
@@ -358,7 +473,12 @@
         "danses",
         "dansons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "danse": "« danse » va avec « je » ou « il », pas avec « ils ».",
+        "danses": "« danses » va avec « tu », pas avec « ils ».",
+        "dansons": "« dansons » va avec « nous », pas avec « ils »."
+      }
     },
     {
       "id": "er-regarder-je",
@@ -371,7 +491,12 @@
         "regardons",
         "regardez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "regardes": "« regardes » va avec « tu », pas avec « je ».",
+        "regardons": "« regardons » va avec « nous », pas avec « je ».",
+        "regardez": "« regardez » va avec « vous », pas avec « je »."
+      }
     },
     {
       "id": "er-regarder-tu",
@@ -384,7 +509,12 @@
         "regardons",
         "regardez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "regarde": "« regarde » va avec « je » ou « il », pas avec « tu ».",
+        "regardons": "« regardons » va avec « nous », pas avec « tu ».",
+        "regardez": "« regardez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "er-regarder-il",
@@ -397,7 +527,12 @@
         "regardons",
         "regardez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "regardes": "« regardes » va avec « tu », pas avec « il ».",
+        "regardons": "« regardons » va avec « nous », pas avec « il ».",
+        "regardez": "« regardez » va avec « vous », pas avec « il »."
+      }
     },
     {
       "id": "er-regarder-nous",
@@ -410,7 +545,12 @@
         "regardes",
         "regardez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "regarde": "« regarde » va avec « je » ou « il », pas avec « nous ».",
+        "regardes": "« regardes » va avec « tu », pas avec « nous ».",
+        "regardez": "« regardez » va avec « vous », pas avec « nous »."
+      }
     },
     {
       "id": "er-regarder-vous",
@@ -423,7 +563,12 @@
         "regardes",
         "regardons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "regarde": "« regarde » va avec « je » ou « il », pas avec « vous ».",
+        "regardes": "« regardes » va avec « tu », pas avec « vous ».",
+        "regardons": "« regardons » va avec « nous », pas avec « vous »."
+      }
     },
     {
       "id": "er-regarder-ils",
@@ -436,7 +581,12 @@
         "regardes",
         "regardons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "regarde": "« regarde » va avec « je » ou « il », pas avec « ils ».",
+        "regardes": "« regardes » va avec « tu », pas avec « ils ».",
+        "regardons": "« regardons » va avec « nous », pas avec « ils »."
+      }
     },
     {
       "id": "er-aimer-je",
@@ -449,7 +599,12 @@
         "aimons",
         "aimez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "aimes": "« aimes » va avec « tu », pas avec « je ».",
+        "aimons": "« aimons » va avec « nous », pas avec « je ».",
+        "aimez": "« aimez » va avec « vous », pas avec « je »."
+      }
     },
     {
       "id": "er-aimer-tu",
@@ -462,7 +617,12 @@
         "aimons",
         "aimez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "aime": "« aime » va avec « je » ou « il », pas avec « tu ».",
+        "aimons": "« aimons » va avec « nous », pas avec « tu ».",
+        "aimez": "« aimez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "er-aimer-il",
@@ -475,7 +635,12 @@
         "aimons",
         "aimez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "aimes": "« aimes » va avec « tu », pas avec « il ».",
+        "aimons": "« aimons » va avec « nous », pas avec « il ».",
+        "aimez": "« aimez » va avec « vous », pas avec « il »."
+      }
     },
     {
       "id": "er-aimer-nous",
@@ -488,7 +653,12 @@
         "aimes",
         "aimez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "aime": "« aime » va avec « je » ou « il », pas avec « nous ».",
+        "aimes": "« aimes » va avec « tu », pas avec « nous ».",
+        "aimez": "« aimez » va avec « vous », pas avec « nous »."
+      }
     },
     {
       "id": "er-aimer-vous",
@@ -501,7 +671,12 @@
         "aimes",
         "aimons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "aime": "« aime » va avec « je » ou « il », pas avec « vous ».",
+        "aimes": "« aimes » va avec « tu », pas avec « vous ».",
+        "aimons": "« aimons » va avec « nous », pas avec « vous »."
+      }
     },
     {
       "id": "er-aimer-ils",
@@ -514,7 +689,12 @@
         "aimes",
         "aimons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "aime": "« aime » va avec « je » ou « il », pas avec « ils ».",
+        "aimes": "« aimes » va avec « tu », pas avec « ils ».",
+        "aimons": "« aimons » va avec « nous », pas avec « ils »."
+      }
     },
     {
       "id": "er-marcher-je",
@@ -527,7 +707,12 @@
         "marchons",
         "marchez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "marches": "« marches » va avec « tu », pas avec « je ».",
+        "marchons": "« marchons » va avec « nous », pas avec « je ».",
+        "marchez": "« marchez » va avec « vous », pas avec « je »."
+      }
     },
     {
       "id": "er-marcher-tu",
@@ -540,7 +725,12 @@
         "marchons",
         "marchez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "marche": "« marche » va avec « je » ou « il », pas avec « tu ».",
+        "marchons": "« marchons » va avec « nous », pas avec « tu ».",
+        "marchez": "« marchez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "er-marcher-il",
@@ -553,7 +743,12 @@
         "marchons",
         "marchez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "marches": "« marches » va avec « tu », pas avec « il ».",
+        "marchons": "« marchons » va avec « nous », pas avec « il ».",
+        "marchez": "« marchez » va avec « vous », pas avec « il »."
+      }
     },
     {
       "id": "er-marcher-nous",
@@ -566,7 +761,12 @@
         "marches",
         "marchez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "marche": "« marche » va avec « je » ou « il », pas avec « nous ».",
+        "marches": "« marches » va avec « tu », pas avec « nous ».",
+        "marchez": "« marchez » va avec « vous », pas avec « nous »."
+      }
     },
     {
       "id": "er-marcher-vous",
@@ -579,7 +779,12 @@
         "marches",
         "marchons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "marche": "« marche » va avec « je » ou « il », pas avec « vous ».",
+        "marches": "« marches » va avec « tu », pas avec « vous ».",
+        "marchons": "« marchons » va avec « nous », pas avec « vous »."
+      }
     },
     {
       "id": "er-marcher-ils",
@@ -592,7 +797,12 @@
         "marches",
         "marchons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "marche": "« marche » va avec « je » ou « il », pas avec « ils ».",
+        "marches": "« marches » va avec « tu », pas avec « ils ».",
+        "marchons": "« marchons » va avec « nous », pas avec « ils »."
+      }
     },
     {
       "id": "er-dessiner-je",
@@ -605,7 +815,12 @@
         "dessinons",
         "dessinez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "dessines": "« dessines » va avec « tu », pas avec « je ».",
+        "dessinons": "« dessinons » va avec « nous », pas avec « je ».",
+        "dessinez": "« dessinez » va avec « vous », pas avec « je »."
+      }
     },
     {
       "id": "er-dessiner-tu",
@@ -618,7 +833,12 @@
         "dessinons",
         "dessinez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "dessine": "« dessine » va avec « je » ou « il », pas avec « tu ».",
+        "dessinons": "« dessinons » va avec « nous », pas avec « tu ».",
+        "dessinez": "« dessinez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "er-dessiner-il",
@@ -631,7 +851,12 @@
         "dessinons",
         "dessinez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "dessines": "« dessines » va avec « tu », pas avec « il ».",
+        "dessinons": "« dessinons » va avec « nous », pas avec « il ».",
+        "dessinez": "« dessinez » va avec « vous », pas avec « il »."
+      }
     },
     {
       "id": "er-dessiner-nous",
@@ -644,7 +869,12 @@
         "dessines",
         "dessinez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "dessine": "« dessine » va avec « je » ou « il », pas avec « nous ».",
+        "dessines": "« dessines » va avec « tu », pas avec « nous ».",
+        "dessinez": "« dessinez » va avec « vous », pas avec « nous »."
+      }
     },
     {
       "id": "er-dessiner-vous",
@@ -657,7 +887,12 @@
         "dessines",
         "dessinons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "dessine": "« dessine » va avec « je » ou « il », pas avec « vous ».",
+        "dessines": "« dessines » va avec « tu », pas avec « vous ».",
+        "dessinons": "« dessinons » va avec « nous », pas avec « vous »."
+      }
     },
     {
       "id": "er-dessiner-ils",
@@ -670,7 +905,12 @@
         "dessines",
         "dessinons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "dessine": "« dessine » va avec « je » ou « il », pas avec « ils ».",
+        "dessines": "« dessines » va avec « tu », pas avec « ils ».",
+        "dessinons": "« dessinons » va avec « nous », pas avec « ils »."
+      }
     },
     {
       "id": "etre-je",
@@ -683,7 +923,12 @@
         "est",
         "sommes"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "es": "« es » va avec « tu », pas avec « je ».",
+        "est": "« est » va avec « il » ou « elle », pas avec « je ».",
+        "sommes": "« sommes » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "etre-tu",
@@ -696,7 +941,12 @@
         "est",
         "sommes"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "suis": "« suis » va avec « je », pas avec « tu ».",
+        "est": "« est » va avec « il » ou « elle », pas avec « tu ».",
+        "sommes": "« sommes » va avec « nous », pas avec « tu »."
+      }
     },
     {
       "id": "etre-il",
@@ -709,7 +959,12 @@
         "es",
         "sommes"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "suis": "« suis » va avec « je », pas avec « il ».",
+        "es": "« es » va avec « tu », pas avec « il ».",
+        "sommes": "« sommes » va avec « nous », pas avec « il »."
+      }
     },
     {
       "id": "etre-nous",
@@ -722,7 +977,12 @@
         "es",
         "est"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "suis": "« suis » va avec « je », pas avec « nous ».",
+        "es": "« es » va avec « tu », pas avec « nous ».",
+        "est": "« est » va avec « il » ou « elle », pas avec « nous »."
+      }
     },
     {
       "id": "etre-vous",
@@ -735,7 +995,12 @@
         "es",
         "est"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "suis": "« suis » va avec « je », pas avec « vous ».",
+        "es": "« es » va avec « tu », pas avec « vous ».",
+        "est": "« est » va avec « il » ou « elle », pas avec « vous »."
+      }
     },
     {
       "id": "etre-ils",
@@ -748,7 +1013,12 @@
         "es",
         "est"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "suis": "« suis » va avec « je », pas avec « ils ».",
+        "es": "« es » va avec « tu », pas avec « ils ».",
+        "est": "« est » va avec « il » ou « elle », pas avec « ils »."
+      }
     },
     {
       "id": "avoir-je",
@@ -761,7 +1031,12 @@
         "a",
         "avons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "as": "« as » va avec « tu », pas avec « je ».",
+        "a": "« a » va avec « il » ou « elle », pas avec « je ».",
+        "avons": "« avons » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "avoir-tu",
@@ -774,7 +1049,12 @@
         "a",
         "avons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "ai": "« ai » va avec « je », pas avec « tu ».",
+        "a": "« a » va avec « il » ou « elle », pas avec « tu ».",
+        "avons": "« avons » va avec « nous », pas avec « tu »."
+      }
     },
     {
       "id": "avoir-il",
@@ -787,7 +1067,12 @@
         "as",
         "avons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "ai": "« ai » va avec « je », pas avec « il ».",
+        "as": "« as » va avec « tu », pas avec « il ».",
+        "avons": "« avons » va avec « nous », pas avec « il »."
+      }
     },
     {
       "id": "avoir-nous",
@@ -800,7 +1085,12 @@
         "as",
         "a"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "ai": "« ai » va avec « je », pas avec « nous ».",
+        "as": "« as » va avec « tu », pas avec « nous ».",
+        "a": "« a » va avec « il » ou « elle », pas avec « nous »."
+      }
     },
     {
       "id": "avoir-vous",
@@ -813,7 +1103,12 @@
         "as",
         "a"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "ai": "« ai » va avec « je », pas avec « vous ».",
+        "as": "« as » va avec « tu », pas avec « vous ».",
+        "a": "« a » va avec « il » ou « elle », pas avec « vous »."
+      }
     },
     {
       "id": "avoir-ils",
@@ -826,7 +1121,12 @@
         "as",
         "a"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "ai": "« ai » va avec « je », pas avec « ils ».",
+        "as": "« as » va avec « tu », pas avec « ils ».",
+        "a": "« a » va avec « il » ou « elle », pas avec « ils »."
+      }
     },
     {
       "id": "aller-je",
@@ -839,7 +1139,12 @@
         "va",
         "allons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "vas": "« vas » va avec « tu », pas avec « je ».",
+        "va": "« va » va avec « il » ou « elle », pas avec « je ».",
+        "allons": "« allons » va avec « nous », pas avec « je »."
+      }
     },
     {
       "id": "aller-tu",
@@ -852,7 +1157,12 @@
         "va",
         "allons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "vais": "« vais » va avec « je », pas avec « tu ».",
+        "va": "« va » va avec « il » ou « elle », pas avec « tu ».",
+        "allons": "« allons » va avec « nous », pas avec « tu »."
+      }
     },
     {
       "id": "aller-il",
@@ -865,7 +1175,12 @@
         "vas",
         "allons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "vais": "« vais » va avec « je », pas avec « il ».",
+        "vas": "« vas » va avec « tu », pas avec « il ».",
+        "allons": "« allons » va avec « nous », pas avec « il »."
+      }
     },
     {
       "id": "aller-nous",
@@ -878,7 +1193,12 @@
         "vas",
         "va"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "vais": "« vais » va avec « je », pas avec « nous ».",
+        "vas": "« vas » va avec « tu », pas avec « nous ».",
+        "va": "« va » va avec « il » ou « elle », pas avec « nous »."
+      }
     },
     {
       "id": "aller-vous",
@@ -891,7 +1211,12 @@
         "vas",
         "va"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "vais": "« vais » va avec « je », pas avec « vous ».",
+        "vas": "« vas » va avec « tu », pas avec « vous ».",
+        "va": "« va » va avec « il » ou « elle », pas avec « vous »."
+      }
     },
     {
       "id": "aller-ils",
@@ -904,7 +1229,12 @@
         "vas",
         "va"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "vais": "« vais » va avec « je », pas avec « ils ».",
+        "vas": "« vas » va avec « tu », pas avec « ils ».",
+        "va": "« va » va avec « il » ou « elle », pas avec « ils »."
+      }
     },
     {
       "id": "faire-je",
@@ -917,7 +1247,12 @@
         "faisons",
         "faites"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "fait": "« fait » va avec « il » ou « elle », pas avec « je ».",
+        "faisons": "« faisons » va avec « nous », pas avec « je ».",
+        "faites": "« faites » va avec « vous », pas avec « je »."
+      }
     },
     {
       "id": "faire-tu",
@@ -930,7 +1265,12 @@
         "faisons",
         "faites"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "fait": "« fait » va avec « il » ou « elle », pas avec « tu ».",
+        "faisons": "« faisons » va avec « nous », pas avec « tu ».",
+        "faites": "« faites » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "faire-il",
@@ -943,7 +1283,12 @@
         "faisons",
         "faites"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "fais": "« fais » va avec « je » ou « tu », pas avec « il ».",
+        "faisons": "« faisons » va avec « nous », pas avec « il ».",
+        "faites": "« faites » va avec « vous », pas avec « il »."
+      }
     },
     {
       "id": "faire-nous",
@@ -956,7 +1301,12 @@
         "fait",
         "faites"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "fais": "« fais » va avec « je » ou « tu », pas avec « nous ».",
+        "fait": "« fait » va avec « il » ou « elle », pas avec « nous ».",
+        "faites": "« faites » va avec « vous », pas avec « nous »."
+      }
     },
     {
       "id": "faire-vous",
@@ -969,7 +1319,12 @@
         "fait",
         "faisons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "fais": "« fais » va avec « je » ou « tu », pas avec « vous ».",
+        "fait": "« fait » va avec « il » ou « elle », pas avec « vous ».",
+        "faisons": "« faisons » va avec « nous », pas avec « vous »."
+      }
     },
     {
       "id": "faire-ils",
@@ -982,7 +1337,12 @@
         "fait",
         "faisons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "fais": "« fais » va avec « je » ou « tu », pas avec « ils ».",
+        "fait": "« fait » va avec « il » ou « elle », pas avec « ils ».",
+        "faisons": "« faisons » va avec « nous », pas avec « ils »."
+      }
     },
     {
       "id": "dire-je",
@@ -995,7 +1355,12 @@
         "disons",
         "dites"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "dit": "« dit » va avec « il » ou « elle », pas avec « je ».",
+        "disons": "« disons » va avec « nous », pas avec « je ».",
+        "dites": "« dites » va avec « vous », pas avec « je »."
+      }
     },
     {
       "id": "dire-tu",
@@ -1008,7 +1373,12 @@
         "disons",
         "dites"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "dit": "« dit » va avec « il » ou « elle », pas avec « tu ».",
+        "disons": "« disons » va avec « nous », pas avec « tu ».",
+        "dites": "« dites » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "dire-il",
@@ -1021,7 +1391,12 @@
         "disons",
         "dites"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "dis": "« dis » va avec « je » ou « tu », pas avec « il ».",
+        "disons": "« disons » va avec « nous », pas avec « il ».",
+        "dites": "« dites » va avec « vous », pas avec « il »."
+      }
     },
     {
       "id": "dire-nous",
@@ -1034,7 +1409,12 @@
         "dit",
         "dites"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "dis": "« dis » va avec « je » ou « tu », pas avec « nous ».",
+        "dit": "« dit » va avec « il » ou « elle », pas avec « nous ».",
+        "dites": "« dites » va avec « vous », pas avec « nous »."
+      }
     },
     {
       "id": "dire-vous",
@@ -1047,7 +1427,12 @@
         "dit",
         "disons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "dis": "« dis » va avec « je » ou « tu », pas avec « vous ».",
+        "dit": "« dit » va avec « il » ou « elle », pas avec « vous ».",
+        "disons": "« disons » va avec « nous », pas avec « vous »."
+      }
     },
     {
       "id": "dire-ils",
@@ -1060,7 +1445,12 @@
         "dit",
         "disons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "dis": "« dis » va avec « je » ou « tu », pas avec « ils ».",
+        "dit": "« dit » va avec « il » ou « elle », pas avec « ils ».",
+        "disons": "« disons » va avec « nous », pas avec « ils »."
+      }
     },
     {
       "id": "venir-je",
@@ -1073,7 +1463,12 @@
         "venons",
         "venez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "vient": "« vient » va avec « il » ou « elle », pas avec « je ».",
+        "venons": "« venons » va avec « nous », pas avec « je ».",
+        "venez": "« venez » va avec « vous », pas avec « je »."
+      }
     },
     {
       "id": "venir-tu",
@@ -1086,7 +1481,12 @@
         "venons",
         "venez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "vient": "« vient » va avec « il » ou « elle », pas avec « tu ».",
+        "venons": "« venons » va avec « nous », pas avec « tu ».",
+        "venez": "« venez » va avec « vous », pas avec « tu »."
+      }
     },
     {
       "id": "venir-il",
@@ -1099,7 +1499,12 @@
         "venons",
         "venez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "viens": "« viens » va avec « je » ou « tu », pas avec « il ».",
+        "venons": "« venons » va avec « nous », pas avec « il ».",
+        "venez": "« venez » va avec « vous », pas avec « il »."
+      }
     },
     {
       "id": "venir-nous",
@@ -1112,7 +1517,12 @@
         "vient",
         "venez"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "viens": "« viens » va avec « je » ou « tu », pas avec « nous ».",
+        "vient": "« vient » va avec « il » ou « elle », pas avec « nous ».",
+        "venez": "« venez » va avec « vous », pas avec « nous »."
+      }
     },
     {
       "id": "venir-vous",
@@ -1125,7 +1535,12 @@
         "vient",
         "venons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "viens": "« viens » va avec « je » ou « tu », pas avec « vous ».",
+        "vient": "« vient » va avec « il » ou « elle », pas avec « vous ».",
+        "venons": "« venons » va avec « nous », pas avec « vous »."
+      }
     },
     {
       "id": "venir-ils",
@@ -1138,7 +1553,12 @@
         "vient",
         "venons"
       ],
-      "consigne": "Conjugue au présent."
+      "consigne": "Conjugue au présent.",
+      "pourquoi": {
+        "viens": "« viens » va avec « je » ou « tu », pas avec « ils ».",
+        "vient": "« vient » va avec « il » ou « elle », pas avec « ils ».",
+        "venons": "« venons » va avec « nous », pas avec « ils »."
+      }
     },
     {
       "id": "temps-1",
@@ -1150,7 +1570,11 @@
         "présent",
         "futur"
       ],
-      "consigne": "Passé, présent ou futur ?"
+      "consigne": "Passé, présent ou futur ?",
+      "pourquoi": {
+        "présent": "« hier » montre que c’est déjà fait : la phrase est au passé.",
+        "futur": "« hier » montre que c’est déjà fait : la phrase est au passé."
+      }
     },
     {
       "id": "temps-2",
@@ -1162,7 +1586,11 @@
         "passé",
         "présent"
       ],
-      "consigne": "Passé, présent ou futur ?"
+      "consigne": "Passé, présent ou futur ?",
+      "pourquoi": {
+        "passé": "« demain » montre que ça n’est pas encore arrivé : la phrase est au futur.",
+        "présent": "« demain » montre que ça n’est pas encore arrivé : la phrase est au futur."
+      }
     },
     {
       "id": "temps-3",
@@ -1174,7 +1602,11 @@
         "passé",
         "futur"
       ],
-      "consigne": "Passé, présent ou futur ?"
+      "consigne": "Passé, présent ou futur ?",
+      "pourquoi": {
+        "passé": "« aujourd’hui » montre que ça se passe maintenant : la phrase est au présent.",
+        "futur": "« aujourd’hui » montre que ça se passe maintenant : la phrase est au présent."
+      }
     },
     {
       "id": "temps-4",
@@ -1186,7 +1618,11 @@
         "présent",
         "futur"
       ],
-      "consigne": "Passé, présent ou futur ?"
+      "consigne": "Passé, présent ou futur ?",
+      "pourquoi": {
+        "présent": "« l’an dernier » montre que c’est déjà fait : la phrase est au passé.",
+        "futur": "« l’an dernier » montre que c’est déjà fait : la phrase est au passé."
+      }
     },
     {
       "id": "temps-5",
@@ -1198,7 +1634,11 @@
         "passé",
         "futur"
       ],
-      "consigne": "Passé, présent ou futur ?"
+      "consigne": "Passé, présent ou futur ?",
+      "pourquoi": {
+        "passé": "« maintenant » montre que ça se passe maintenant : la phrase est au présent.",
+        "futur": "« maintenant » montre que ça se passe maintenant : la phrase est au présent."
+      }
     },
     {
       "id": "temps-6",
@@ -1210,7 +1650,11 @@
         "passé",
         "présent"
       ],
-      "consigne": "Passé, présent ou futur ?"
+      "consigne": "Passé, présent ou futur ?",
+      "pourquoi": {
+        "passé": "« bientôt » montre que ça n’est pas encore arrivé : la phrase est au futur.",
+        "présent": "« bientôt » montre que ça n’est pas encore arrivé : la phrase est au futur."
+      }
     },
     {
       "id": "temps-7",
@@ -1222,7 +1666,11 @@
         "présent",
         "futur"
       ],
-      "consigne": "Passé, présent ou futur ?"
+      "consigne": "Passé, présent ou futur ?",
+      "pourquoi": {
+        "présent": "« autrefois » montre que c’est déjà fait : la phrase est au passé.",
+        "futur": "« autrefois » montre que c’est déjà fait : la phrase est au passé."
+      }
     },
     {
       "id": "temps-8",
@@ -1234,7 +1682,11 @@
         "passé",
         "futur"
       ],
-      "consigne": "Passé, présent ou futur ?"
+      "consigne": "Passé, présent ou futur ?",
+      "pourquoi": {
+        "passé": "« en ce moment » montre que ça se passe maintenant : la phrase est au présent.",
+        "futur": "« en ce moment » montre que ça se passe maintenant : la phrase est au présent."
+      }
     },
     {
       "id": "temps-9",
@@ -1246,7 +1698,11 @@
         "passé",
         "présent"
       ],
-      "consigne": "Passé, présent ou futur ?"
+      "consigne": "Passé, présent ou futur ?",
+      "pourquoi": {
+        "passé": "« plus tard » montre que ça n’est pas encore arrivé : la phrase est au futur.",
+        "présent": "« plus tard » montre que ça n’est pas encore arrivé : la phrase est au futur."
+      }
     },
     {
       "id": "temps-10",
@@ -1258,7 +1714,11 @@
         "présent",
         "futur"
       ],
-      "consigne": "Passé, présent ou futur ?"
+      "consigne": "Passé, présent ou futur ?",
+      "pourquoi": {
+        "présent": "« la semaine dernière » montre que c’est déjà fait : la phrase est au passé.",
+        "futur": "« la semaine dernière » montre que c’est déjà fait : la phrase est au passé."
+      }
     },
     {
       "id": "temps-11",
@@ -1270,7 +1730,11 @@
         "passé",
         "présent"
       ],
-      "consigne": "Passé, présent ou futur ?"
+      "consigne": "Passé, présent ou futur ?",
+      "pourquoi": {
+        "passé": "« ce soir », plus tard aujourd’hui, montre que ça n’est pas encore arrivé : la phrase est au futur.",
+        "présent": "« ce soir », plus tard aujourd’hui, montre que ça n’est pas encore arrivé : la phrase est au futur."
+      }
     },
     {
       "id": "temps-12",
@@ -1282,7 +1746,11 @@
         "passé",
         "futur"
       ],
-      "consigne": "Passé, présent ou futur ?"
+      "consigne": "Passé, présent ou futur ?",
+      "pourquoi": {
+        "passé": "« je bois » se passe maintenant : hier, on dirait « j’ai bu ».",
+        "futur": "« je bois » se passe maintenant : demain, on dirait « je boirai »."
+      }
     },
     {
       "id": "tape-1",

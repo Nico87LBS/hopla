@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "langage-gs-syllabes",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Les syllabes",
   "description": "Découper les mots à l'oral : compter les syllabes d'un mot, trouver les mots qui commencent pareil.",
   "matiere": "francais",
@@ -50,7 +50,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "2": "on tape une fois dans ses mains : « chat ».",
+        "3": "on tape une fois dans ses mains : « chat ».",
+        "4": "on tape une fois dans ses mains : « chat »."
+      }
     },
     {
       "id": "syl-chien",
@@ -64,7 +69,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "2": "on tape une fois dans ses mains : « chien ».",
+        "3": "on tape une fois dans ses mains : « chien ».",
+        "4": "on tape une fois dans ses mains : « chien »."
+      }
     },
     {
       "id": "syl-pain",
@@ -78,7 +88,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "2": "on tape une fois dans ses mains : « pain ».",
+        "3": "on tape une fois dans ses mains : « pain ».",
+        "4": "on tape une fois dans ses mains : « pain »."
+      }
     },
     {
       "id": "syl-lait",
@@ -92,7 +107,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "2": "on tape une fois dans ses mains : « lait ».",
+        "3": "on tape une fois dans ses mains : « lait ».",
+        "4": "on tape une fois dans ses mains : « lait »."
+      }
     },
     {
       "id": "syl-main",
@@ -106,7 +126,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "2": "on tape une fois dans ses mains : « main ».",
+        "3": "on tape une fois dans ses mains : « main ».",
+        "4": "on tape une fois dans ses mains : « main »."
+      }
     },
     {
       "id": "syl-pied",
@@ -120,7 +145,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "2": "on tape une fois dans ses mains : « pied ».",
+        "3": "on tape une fois dans ses mains : « pied ».",
+        "4": "on tape une fois dans ses mains : « pied »."
+      }
     },
     {
       "id": "syl-nez",
@@ -134,7 +164,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "2": "on tape une fois dans ses mains : « nez ».",
+        "3": "on tape une fois dans ses mains : « nez ».",
+        "4": "on tape une fois dans ses mains : « nez »."
+      }
     },
     {
       "id": "syl-ours",
@@ -148,7 +183,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "2": "on tape une fois dans ses mains : « ours ».",
+        "3": "on tape une fois dans ses mains : « ours ».",
+        "4": "on tape une fois dans ses mains : « ours »."
+      }
     },
     {
       "id": "syl-train",
@@ -162,7 +202,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "2": "on tape une fois dans ses mains : « train ».",
+        "3": "on tape une fois dans ses mains : « train ».",
+        "4": "on tape une fois dans ses mains : « train »."
+      }
     },
     {
       "id": "syl-rat",
@@ -176,7 +221,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "2": "on tape une fois dans ses mains : « rat ».",
+        "3": "on tape une fois dans ses mains : « rat ».",
+        "4": "on tape une fois dans ses mains : « rat »."
+      }
     },
     {
       "id": "syl-lapin",
@@ -190,7 +240,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape deux fois dans ses mains : « la-pin ».",
+        "3": "on tape deux fois dans ses mains : « la-pin ».",
+        "4": "on tape deux fois dans ses mains : « la-pin »."
+      }
     },
     {
       "id": "syl-oiseau",
@@ -204,7 +259,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape deux fois dans ses mains : « oi-seau ».",
+        "3": "on tape deux fois dans ses mains : « oi-seau ».",
+        "4": "on tape deux fois dans ses mains : « oi-seau »."
+      }
     },
     {
       "id": "syl-poisson",
@@ -218,7 +278,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape deux fois dans ses mains : « pois-son ».",
+        "3": "on tape deux fois dans ses mains : « pois-son ».",
+        "4": "on tape deux fois dans ses mains : « pois-son »."
+      }
     },
     {
       "id": "syl-cheval",
@@ -232,7 +297,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape deux fois dans ses mains : « che-val ».",
+        "3": "on tape deux fois dans ses mains : « che-val ».",
+        "4": "on tape deux fois dans ses mains : « che-val »."
+      }
     },
     {
       "id": "syl-cochon",
@@ -246,7 +316,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape deux fois dans ses mains : « co-chon ».",
+        "3": "on tape deux fois dans ses mains : « co-chon ».",
+        "4": "on tape deux fois dans ses mains : « co-chon »."
+      }
     },
     {
       "id": "syl-canard",
@@ -260,7 +335,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape deux fois dans ses mains : « ca-nard ».",
+        "3": "on tape deux fois dans ses mains : « ca-nard ».",
+        "4": "on tape deux fois dans ses mains : « ca-nard »."
+      }
     },
     {
       "id": "syl-souris",
@@ -274,7 +354,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape deux fois dans ses mains : « sou-ris ».",
+        "3": "on tape deux fois dans ses mains : « sou-ris ».",
+        "4": "on tape deux fois dans ses mains : « sou-ris »."
+      }
     },
     {
       "id": "syl-mouton",
@@ -288,7 +373,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape deux fois dans ses mains : « mou-ton ».",
+        "3": "on tape deux fois dans ses mains : « mou-ton ».",
+        "4": "on tape deux fois dans ses mains : « mou-ton »."
+      }
     },
     {
       "id": "syl-serpent",
@@ -302,7 +392,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape deux fois dans ses mains : « ser-pent ».",
+        "3": "on tape deux fois dans ses mains : « ser-pent ».",
+        "4": "on tape deux fois dans ses mains : « ser-pent »."
+      }
     },
     {
       "id": "syl-gateau",
@@ -316,7 +411,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape deux fois dans ses mains : « gâ-teau ».",
+        "3": "on tape deux fois dans ses mains : « gâ-teau ».",
+        "4": "on tape deux fois dans ses mains : « gâ-teau »."
+      }
     },
     {
       "id": "syl-ballon",
@@ -330,7 +430,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape deux fois dans ses mains : « bal-lon ».",
+        "3": "on tape deux fois dans ses mains : « bal-lon ».",
+        "4": "on tape deux fois dans ses mains : « bal-lon »."
+      }
     },
     {
       "id": "syl-nounours",
@@ -344,7 +449,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape deux fois dans ses mains : « nou-nours ».",
+        "3": "on tape deux fois dans ses mains : « nou-nours ».",
+        "4": "on tape deux fois dans ses mains : « nou-nours »."
+      }
     },
     {
       "id": "syl-velo",
@@ -358,7 +468,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape deux fois dans ses mains : « vé-lo ».",
+        "3": "on tape deux fois dans ses mains : « vé-lo ».",
+        "4": "on tape deux fois dans ses mains : « vé-lo »."
+      }
     },
     {
       "id": "syl-bateau",
@@ -372,7 +487,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape deux fois dans ses mains : « ba-teau ».",
+        "3": "on tape deux fois dans ses mains : « ba-teau ».",
+        "4": "on tape deux fois dans ses mains : « ba-teau »."
+      }
     },
     {
       "id": "syl-soleil",
@@ -386,7 +506,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape deux fois dans ses mains : « so-leil ».",
+        "3": "on tape deux fois dans ses mains : « so-leil ».",
+        "4": "on tape deux fois dans ses mains : « so-leil »."
+      }
     },
     {
       "id": "syl-chapeau",
@@ -400,7 +525,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape deux fois dans ses mains : « cha-peau ».",
+        "3": "on tape deux fois dans ses mains : « cha-peau ».",
+        "4": "on tape deux fois dans ses mains : « cha-peau »."
+      }
     },
     {
       "id": "syl-manteau",
@@ -414,7 +544,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape deux fois dans ses mains : « man-teau ».",
+        "3": "on tape deux fois dans ses mains : « man-teau ».",
+        "4": "on tape deux fois dans ses mains : « man-teau »."
+      }
     },
     {
       "id": "syl-bebe",
@@ -428,7 +563,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape deux fois dans ses mains : « bé-bé ».",
+        "3": "on tape deux fois dans ses mains : « bé-bé ».",
+        "4": "on tape deux fois dans ses mains : « bé-bé »."
+      }
     },
     {
       "id": "syl-papa",
@@ -442,7 +582,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape deux fois dans ses mains : « pa-pa ».",
+        "3": "on tape deux fois dans ses mains : « pa-pa ».",
+        "4": "on tape deux fois dans ses mains : « pa-pa »."
+      }
     },
     {
       "id": "syl-maman",
@@ -456,7 +601,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape deux fois dans ses mains : « ma-man ».",
+        "3": "on tape deux fois dans ses mains : « ma-man ».",
+        "4": "on tape deux fois dans ses mains : « ma-man »."
+      }
     },
     {
       "id": "syl-camion",
@@ -470,7 +620,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape deux fois dans ses mains : « ca-mion ».",
+        "3": "on tape deux fois dans ses mains : « ca-mion ».",
+        "4": "on tape deux fois dans ses mains : « ca-mion »."
+      }
     },
     {
       "id": "syl-crayon",
@@ -484,7 +639,12 @@
         "3",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape deux fois dans ses mains : « cray-on ».",
+        "3": "on tape deux fois dans ses mains : « cray-on ».",
+        "4": "on tape deux fois dans ses mains : « cray-on »."
+      }
     },
     {
       "id": "syl-elephant",
@@ -498,7 +658,12 @@
         "2",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape trois fois dans ses mains : « é-lé-phant ».",
+        "2": "on tape trois fois dans ses mains : « é-lé-phant ».",
+        "4": "on tape trois fois dans ses mains : « é-lé-phant »."
+      }
     },
     {
       "id": "syl-papillon",
@@ -512,7 +677,12 @@
         "2",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape trois fois dans ses mains : « pa-pi-llon ».",
+        "2": "on tape trois fois dans ses mains : « pa-pi-llon ».",
+        "4": "on tape trois fois dans ses mains : « pa-pi-llon »."
+      }
     },
     {
       "id": "syl-escargot",
@@ -526,7 +696,12 @@
         "2",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape trois fois dans ses mains : « es-car-got ».",
+        "2": "on tape trois fois dans ses mains : « es-car-got ».",
+        "4": "on tape trois fois dans ses mains : « es-car-got »."
+      }
     },
     {
       "id": "syl-herisson",
@@ -540,7 +715,12 @@
         "2",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape trois fois dans ses mains : « hé-ris-son ».",
+        "2": "on tape trois fois dans ses mains : « hé-ris-son ».",
+        "4": "on tape trois fois dans ses mains : « hé-ris-son »."
+      }
     },
     {
       "id": "syl-cerf-volant",
@@ -554,7 +734,12 @@
         "2",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape trois fois dans ses mains : « cerf-vo-lant ».",
+        "2": "on tape trois fois dans ses mains : « cerf-vo-lant ».",
+        "4": "on tape trois fois dans ses mains : « cerf-vo-lant »."
+      }
     },
     {
       "id": "syl-arc-en-ciel",
@@ -568,7 +753,12 @@
         "2",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape trois fois dans ses mains : « arc-en-ciel ».",
+        "2": "on tape trois fois dans ses mains : « arc-en-ciel ».",
+        "4": "on tape trois fois dans ses mains : « arc-en-ciel »."
+      }
     },
     {
       "id": "syl-caneton",
@@ -582,7 +772,12 @@
         "2",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape trois fois dans ses mains : « ca-ne-ton ».",
+        "2": "on tape trois fois dans ses mains : « ca-ne-ton ».",
+        "4": "on tape trois fois dans ses mains : « ca-ne-ton »."
+      }
     },
     {
       "id": "syl-porcelet",
@@ -596,7 +791,12 @@
         "2",
         "4"
       ],
-      "explication": "On tape dans ses mains à chaque syllabe."
+      "explication": "On tape dans ses mains à chaque syllabe.",
+      "pourquoi": {
+        "1": "on tape trois fois dans ses mains : « por-ce-let ».",
+        "2": "on tape trois fois dans ses mains : « por-ce-let ».",
+        "4": "on tape trois fois dans ses mains : « por-ce-let »."
+      }
     },
     {
       "id": "debut-1",

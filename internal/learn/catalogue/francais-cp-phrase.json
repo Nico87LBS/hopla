@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "francais-cp-phrase",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "La phrase au CP",
   "description": "La majuscule et le point, remettre les mots dans l'ordre, reconnaître une phrase et le point d'interrogation.",
   "matiere": "francais",
@@ -55,7 +55,12 @@
         "le chat dort"
       ],
       "consigne": "Quelle phrase est bien écrite ?",
-      "explication": "Une phrase commence par une majuscule et finit par un point."
+      "explication": "Une phrase commence par une majuscule et finit par un point.",
+      "pourquoi": {
+        "le chat dort.": "il manque la majuscule au début.",
+        "Le chat dort": "il manque le point à la fin.",
+        "le chat dort": "il manque la majuscule au début et le point à la fin."
+      }
     },
     {
       "id": "bien-2",
@@ -69,7 +74,12 @@
         "papa lit un livre."
       ],
       "consigne": "Quelle phrase est bien écrite ?",
-      "explication": "Une phrase commence par une majuscule et finit par un point."
+      "explication": "Une phrase commence par une majuscule et finit par un point.",
+      "pourquoi": {
+        "Papa lit un livre": "il manque le point à la fin.",
+        "papa lit un livre": "il manque la majuscule au début et le point à la fin.",
+        "papa lit un livre.": "il manque la majuscule au début."
+      }
     },
     {
       "id": "bien-3",
@@ -83,7 +93,12 @@
         "la moto roule vite"
       ],
       "consigne": "Quelle phrase est bien écrite ?",
-      "explication": "Une phrase commence par une majuscule et finit par un point."
+      "explication": "Une phrase commence par une majuscule et finit par un point.",
+      "pourquoi": {
+        "la moto roule vite.": "il manque la majuscule au début.",
+        "La moto roule vite": "il manque le point à la fin.",
+        "la moto roule vite": "il manque la majuscule au début et le point à la fin."
+      }
     },
     {
       "id": "bien-4",
@@ -97,7 +112,12 @@
         "léa mange une pomme."
       ],
       "consigne": "Quelle phrase est bien écrite ?",
-      "explication": "Une phrase commence par une majuscule et finit par un point."
+      "explication": "Une phrase commence par une majuscule et finit par un point.",
+      "pourquoi": {
+        "Léa mange une pomme": "il manque le point à la fin.",
+        "léa mange une pomme": "il manque la majuscule au début et le point à la fin.",
+        "léa mange une pomme.": "il manque la majuscule au début."
+      }
     },
     {
       "id": "bien-5",
@@ -111,7 +131,12 @@
         "il fait beau"
       ],
       "consigne": "Quelle phrase est bien écrite ?",
-      "explication": "Une phrase commence par une majuscule et finit par un point."
+      "explication": "Une phrase commence par une majuscule et finit par un point.",
+      "pourquoi": {
+        "il fait beau.": "il manque la majuscule au début.",
+        "Il fait beau": "il manque le point à la fin.",
+        "il fait beau": "il manque la majuscule au début et le point à la fin."
+      }
     },
     {
       "id": "bien-6",
@@ -125,7 +150,12 @@
         "le chien court dans le jardin"
       ],
       "consigne": "Quelle phrase est bien écrite ?",
-      "explication": "Une phrase commence par une majuscule et finit par un point."
+      "explication": "Une phrase commence par une majuscule et finit par un point.",
+      "pourquoi": {
+        "le chien court dans le jardin.": "il manque la majuscule au début.",
+        "Le chien court dans le jardin": "il manque le point à la fin.",
+        "le chien court dans le jardin": "il manque la majuscule au début et le point à la fin."
+      }
     },
     {
       "id": "bien-7",
@@ -139,7 +169,12 @@
         "maman chante."
       ],
       "consigne": "Quelle phrase est bien écrite ?",
-      "explication": "Une phrase commence par une majuscule et finit par un point."
+      "explication": "Une phrase commence par une majuscule et finit par un point.",
+      "pourquoi": {
+        "Maman chante": "il manque le point à la fin.",
+        "maman chante": "il manque la majuscule au début et le point à la fin.",
+        "maman chante.": "il manque la majuscule au début."
+      }
     },
     {
       "id": "bien-8",
@@ -153,7 +188,12 @@
         "tom joue au ballon."
       ],
       "consigne": "Quelle phrase est bien écrite ?",
-      "explication": "Une phrase commence par une majuscule et finit par un point."
+      "explication": "Une phrase commence par une majuscule et finit par un point.",
+      "pourquoi": {
+        "Tom joue au ballon": "il manque le point à la fin.",
+        "tom joue au ballon": "il manque la majuscule au début et le point à la fin.",
+        "tom joue au ballon.": "il manque la majuscule au début."
+      }
     },
     {
       "id": "bien-9",
@@ -167,7 +207,12 @@
         "la lune brille"
       ],
       "consigne": "Quelle phrase est bien écrite ?",
-      "explication": "Une phrase commence par une majuscule et finit par un point."
+      "explication": "Une phrase commence par une majuscule et finit par un point.",
+      "pourquoi": {
+        "la lune brille.": "il manque la majuscule au début.",
+        "La lune brille": "il manque le point à la fin.",
+        "la lune brille": "il manque la majuscule au début et le point à la fin."
+      }
     },
     {
       "id": "bien-10",
@@ -181,7 +226,12 @@
         "le bébé dort dans son lit"
       ],
       "consigne": "Quelle phrase est bien écrite ?",
-      "explication": "Une phrase commence par une majuscule et finit par un point."
+      "explication": "Une phrase commence par une majuscule et finit par un point.",
+      "pourquoi": {
+        "le bébé dort dans son lit.": "il manque la majuscule au début.",
+        "Le bébé dort dans son lit": "il manque le point à la fin.",
+        "le bébé dort dans son lit": "il manque la majuscule au début et le point à la fin."
+      }
     },
     {
       "id": "bien-11",
@@ -195,7 +245,12 @@
         "nina a un vélo rouge."
       ],
       "consigne": "Quelle phrase est bien écrite ?",
-      "explication": "Une phrase commence par une majuscule et finit par un point."
+      "explication": "Une phrase commence par une majuscule et finit par un point.",
+      "pourquoi": {
+        "Nina a un vélo rouge": "il manque le point à la fin.",
+        "nina a un vélo rouge": "il manque la majuscule au début et le point à la fin.",
+        "nina a un vélo rouge.": "il manque la majuscule au début."
+      }
     },
     {
       "id": "bien-12",
@@ -209,7 +264,12 @@
         "le lapin mange une carotte"
       ],
       "consigne": "Quelle phrase est bien écrite ?",
-      "explication": "Une phrase commence par une majuscule et finit par un point."
+      "explication": "Une phrase commence par une majuscule et finit par un point.",
+      "pourquoi": {
+        "le lapin mange une carotte.": "il manque la majuscule au début.",
+        "Le lapin mange une carotte": "il manque le point à la fin.",
+        "le lapin mange une carotte": "il manque la majuscule au début et le point à la fin."
+      }
     },
     {
       "id": "bien-13",
@@ -223,7 +283,12 @@
         "il pleut"
       ],
       "consigne": "Quelle phrase est bien écrite ?",
-      "explication": "Une phrase commence par une majuscule et finit par un point."
+      "explication": "Une phrase commence par une majuscule et finit par un point.",
+      "pourquoi": {
+        "il pleut.": "il manque la majuscule au début.",
+        "Il pleut": "il manque le point à la fin.",
+        "il pleut": "il manque la majuscule au début et le point à la fin."
+      }
     },
     {
       "id": "bien-14",
@@ -237,7 +302,12 @@
         "sami va à l’école."
       ],
       "consigne": "Quelle phrase est bien écrite ?",
-      "explication": "Une phrase commence par une majuscule et finit par un point."
+      "explication": "Une phrase commence par une majuscule et finit par un point.",
+      "pourquoi": {
+        "Sami va à l’école": "il manque le point à la fin.",
+        "sami va à l’école": "il manque la majuscule au début et le point à la fin.",
+        "sami va à l’école.": "il manque la majuscule au début."
+      }
     },
     {
       "id": "bien-15",
@@ -251,7 +321,12 @@
         "le roi a une couronne"
       ],
       "consigne": "Quelle phrase est bien écrite ?",
-      "explication": "Une phrase commence par une majuscule et finit par un point."
+      "explication": "Une phrase commence par une majuscule et finit par un point.",
+      "pourquoi": {
+        "le roi a une couronne.": "il manque la majuscule au début.",
+        "Le roi a une couronne": "il manque le point à la fin.",
+        "le roi a une couronne": "il manque la majuscule au début et le point à la fin."
+      }
     },
     {
       "id": "bien-16",
@@ -265,7 +340,12 @@
         "la poule est dans la ferme"
       ],
       "consigne": "Quelle phrase est bien écrite ?",
-      "explication": "Une phrase commence par une majuscule et finit par un point."
+      "explication": "Une phrase commence par une majuscule et finit par un point.",
+      "pourquoi": {
+        "la poule est dans la ferme.": "il manque la majuscule au début.",
+        "La poule est dans la ferme": "il manque le point à la fin.",
+        "la poule est dans la ferme": "il manque la majuscule au début et le point à la fin."
+      }
     },
     {
       "id": "bien-17",
@@ -279,7 +359,12 @@
         "lou lave ses mains."
       ],
       "consigne": "Quelle phrase est bien écrite ?",
-      "explication": "Une phrase commence par une majuscule et finit par un point."
+      "explication": "Une phrase commence par une majuscule et finit par un point.",
+      "pourquoi": {
+        "Lou lave ses mains": "il manque le point à la fin.",
+        "lou lave ses mains": "il manque la majuscule au début et le point à la fin.",
+        "lou lave ses mains.": "il manque la majuscule au début."
+      }
     },
     {
       "id": "bien-18",
@@ -293,7 +378,12 @@
         "le soleil se lève"
       ],
       "consigne": "Quelle phrase est bien écrite ?",
-      "explication": "Une phrase commence par une majuscule et finit par un point."
+      "explication": "Une phrase commence par une majuscule et finit par un point.",
+      "pourquoi": {
+        "le soleil se lève.": "il manque la majuscule au début.",
+        "Le soleil se lève": "il manque le point à la fin.",
+        "le soleil se lève": "il manque la majuscule au début et le point à la fin."
+      }
     },
     {
       "id": "bien-19",
@@ -307,7 +397,12 @@
         "mamie fait un gâteau."
       ],
       "consigne": "Quelle phrase est bien écrite ?",
-      "explication": "Une phrase commence par une majuscule et finit par un point."
+      "explication": "Une phrase commence par une majuscule et finit par un point.",
+      "pourquoi": {
+        "Mamie fait un gâteau": "il manque le point à la fin.",
+        "mamie fait un gâteau": "il manque la majuscule au début et le point à la fin.",
+        "mamie fait un gâteau.": "il manque la majuscule au début."
+      }
     },
     {
       "id": "bien-20",
@@ -321,7 +416,12 @@
         "le poisson nage"
       ],
       "consigne": "Quelle phrase est bien écrite ?",
-      "explication": "Une phrase commence par une majuscule et finit par un point."
+      "explication": "Une phrase commence par une majuscule et finit par un point.",
+      "pourquoi": {
+        "le poisson nage.": "il manque la majuscule au début.",
+        "Le poisson nage": "il manque le point à la fin.",
+        "le poisson nage": "il manque la majuscule au début et le point à la fin."
+      }
     },
     {
       "id": "ordre-1",
@@ -586,7 +686,10 @@
         "Non"
       ],
       "consigne": "Est-ce une phrase ?",
-      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose.",
+      "pourquoi": {
+        "Non": "les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+      }
     },
     {
       "id": "oui-2",
@@ -598,7 +701,10 @@
         "Non"
       ],
       "consigne": "Est-ce une phrase ?",
-      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose.",
+      "pourquoi": {
+        "Non": "les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+      }
     },
     {
       "id": "oui-3",
@@ -610,7 +716,10 @@
         "Non"
       ],
       "consigne": "Est-ce une phrase ?",
-      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose.",
+      "pourquoi": {
+        "Non": "les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+      }
     },
     {
       "id": "oui-4",
@@ -622,7 +731,10 @@
         "Non"
       ],
       "consigne": "Est-ce une phrase ?",
-      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose.",
+      "pourquoi": {
+        "Non": "les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+      }
     },
     {
       "id": "oui-5",
@@ -634,7 +746,10 @@
         "Non"
       ],
       "consigne": "Est-ce une phrase ?",
-      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose.",
+      "pourquoi": {
+        "Non": "les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+      }
     },
     {
       "id": "oui-6",
@@ -646,7 +761,10 @@
         "Non"
       ],
       "consigne": "Est-ce une phrase ?",
-      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose.",
+      "pourquoi": {
+        "Non": "les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+      }
     },
     {
       "id": "oui-7",
@@ -658,7 +776,10 @@
         "Non"
       ],
       "consigne": "Est-ce une phrase ?",
-      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose.",
+      "pourquoi": {
+        "Non": "les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+      }
     },
     {
       "id": "oui-8",
@@ -670,7 +791,10 @@
         "Non"
       ],
       "consigne": "Est-ce une phrase ?",
-      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose.",
+      "pourquoi": {
+        "Non": "les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+      }
     },
     {
       "id": "oui-9",
@@ -682,7 +806,10 @@
         "Non"
       ],
       "consigne": "Est-ce une phrase ?",
-      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose.",
+      "pourquoi": {
+        "Non": "les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+      }
     },
     {
       "id": "oui-10",
@@ -694,7 +821,10 @@
         "Non"
       ],
       "consigne": "Est-ce une phrase ?",
-      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+      "explication": "Les mots sont dans le bon ordre et la phrase veut dire quelque chose.",
+      "pourquoi": {
+        "Non": "les mots sont dans le bon ordre et la phrase veut dire quelque chose."
+      }
     },
     {
       "id": "non-1",
@@ -706,7 +836,10 @@
         "Oui"
       ],
       "consigne": "Est-ce une phrase ?",
-      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque."
+      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque.",
+      "pourquoi": {
+        "Oui": "les mots sont mélangés ou il en manque : la phrase ne veut rien dire."
+      }
     },
     {
       "id": "non-2",
@@ -718,7 +851,10 @@
         "Oui"
       ],
       "consigne": "Est-ce une phrase ?",
-      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque."
+      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque.",
+      "pourquoi": {
+        "Oui": "les mots sont mélangés ou il en manque : la phrase ne veut rien dire."
+      }
     },
     {
       "id": "non-3",
@@ -730,7 +866,10 @@
         "Oui"
       ],
       "consigne": "Est-ce une phrase ?",
-      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque."
+      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque.",
+      "pourquoi": {
+        "Oui": "les mots sont mélangés ou il en manque : la phrase ne veut rien dire."
+      }
     },
     {
       "id": "non-4",
@@ -742,7 +881,10 @@
         "Oui"
       ],
       "consigne": "Est-ce une phrase ?",
-      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque."
+      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque.",
+      "pourquoi": {
+        "Oui": "les mots sont mélangés ou il en manque : la phrase ne veut rien dire."
+      }
     },
     {
       "id": "non-5",
@@ -754,7 +896,10 @@
         "Oui"
       ],
       "consigne": "Est-ce une phrase ?",
-      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque."
+      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque.",
+      "pourquoi": {
+        "Oui": "les mots sont mélangés ou il en manque : la phrase ne veut rien dire."
+      }
     },
     {
       "id": "non-6",
@@ -766,7 +911,10 @@
         "Oui"
       ],
       "consigne": "Est-ce une phrase ?",
-      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque."
+      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque.",
+      "pourquoi": {
+        "Oui": "les mots sont mélangés ou il en manque : la phrase ne veut rien dire."
+      }
     },
     {
       "id": "non-7",
@@ -778,7 +926,10 @@
         "Oui"
       ],
       "consigne": "Est-ce une phrase ?",
-      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque."
+      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque.",
+      "pourquoi": {
+        "Oui": "les mots sont mélangés ou il en manque : la phrase ne veut rien dire."
+      }
     },
     {
       "id": "non-8",
@@ -790,7 +941,10 @@
         "Oui"
       ],
       "consigne": "Est-ce une phrase ?",
-      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque."
+      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque.",
+      "pourquoi": {
+        "Oui": "les mots sont mélangés ou il en manque : la phrase ne veut rien dire."
+      }
     },
     {
       "id": "non-9",
@@ -802,7 +956,10 @@
         "Oui"
       ],
       "consigne": "Est-ce une phrase ?",
-      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque."
+      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque.",
+      "pourquoi": {
+        "Oui": "les mots sont mélangés ou il en manque : la phrase ne veut rien dire."
+      }
     },
     {
       "id": "non-10",
@@ -814,7 +971,10 @@
         "Oui"
       ],
       "consigne": "Est-ce une phrase ?",
-      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque."
+      "explication": "Les mots ne sont pas dans le bon ordre, ou il en manque.",
+      "pourquoi": {
+        "Oui": "les mots sont mélangés ou il en manque : la phrase ne veut rien dire."
+      }
     },
     {
       "id": "question-1",
@@ -826,7 +986,10 @@
         "."
       ],
       "consigne": "Quel signe faut-il à la fin ?",
-      "explication": "Quand on pose une question, on met un point d’interrogation."
+      "explication": "Quand on pose une question, on met un point d’interrogation.",
+      "pourquoi": {
+        ".": "cette phrase pose une question : elle finit par « ? »."
+      }
     },
     {
       "id": "question-2",
@@ -838,7 +1001,10 @@
         "."
       ],
       "consigne": "Quel signe faut-il à la fin ?",
-      "explication": "Quand on pose une question, on met un point d’interrogation."
+      "explication": "Quand on pose une question, on met un point d’interrogation.",
+      "pourquoi": {
+        ".": "cette phrase pose une question : elle finit par « ? »."
+      }
     },
     {
       "id": "question-3",
@@ -850,7 +1016,10 @@
         "."
       ],
       "consigne": "Quel signe faut-il à la fin ?",
-      "explication": "Quand on pose une question, on met un point d’interrogation."
+      "explication": "Quand on pose une question, on met un point d’interrogation.",
+      "pourquoi": {
+        ".": "cette phrase pose une question : elle finit par « ? »."
+      }
     },
     {
       "id": "question-4",
@@ -862,7 +1031,10 @@
         "."
       ],
       "consigne": "Quel signe faut-il à la fin ?",
-      "explication": "Quand on pose une question, on met un point d’interrogation."
+      "explication": "Quand on pose une question, on met un point d’interrogation.",
+      "pourquoi": {
+        ".": "cette phrase pose une question : elle finit par « ? »."
+      }
     },
     {
       "id": "question-5",
@@ -874,7 +1046,10 @@
         "."
       ],
       "consigne": "Quel signe faut-il à la fin ?",
-      "explication": "Quand on pose une question, on met un point d’interrogation."
+      "explication": "Quand on pose une question, on met un point d’interrogation.",
+      "pourquoi": {
+        ".": "cette phrase pose une question : elle finit par « ? »."
+      }
     },
     {
       "id": "question-6",
@@ -886,7 +1061,10 @@
         "."
       ],
       "consigne": "Quel signe faut-il à la fin ?",
-      "explication": "Quand on pose une question, on met un point d’interrogation."
+      "explication": "Quand on pose une question, on met un point d’interrogation.",
+      "pourquoi": {
+        ".": "cette phrase pose une question : elle finit par « ? »."
+      }
     },
     {
       "id": "question-7",
@@ -898,7 +1076,10 @@
         "."
       ],
       "consigne": "Quel signe faut-il à la fin ?",
-      "explication": "Quand on pose une question, on met un point d’interrogation."
+      "explication": "Quand on pose une question, on met un point d’interrogation.",
+      "pourquoi": {
+        ".": "cette phrase pose une question : elle finit par « ? »."
+      }
     },
     {
       "id": "question-8",
@@ -910,7 +1091,10 @@
         "."
       ],
       "consigne": "Quel signe faut-il à la fin ?",
-      "explication": "Quand on pose une question, on met un point d’interrogation."
+      "explication": "Quand on pose une question, on met un point d’interrogation.",
+      "pourquoi": {
+        ".": "cette phrase pose une question : elle finit par « ? »."
+      }
     },
     {
       "id": "question-9",
@@ -922,7 +1106,10 @@
         "."
       ],
       "consigne": "Quel signe faut-il à la fin ?",
-      "explication": "Quand on pose une question, on met un point d’interrogation."
+      "explication": "Quand on pose une question, on met un point d’interrogation.",
+      "pourquoi": {
+        ".": "cette phrase pose une question : elle finit par « ? »."
+      }
     },
     {
       "id": "question-10",
@@ -934,7 +1121,10 @@
         "."
       ],
       "consigne": "Quel signe faut-il à la fin ?",
-      "explication": "Quand on pose une question, on met un point d’interrogation."
+      "explication": "Quand on pose une question, on met un point d’interrogation.",
+      "pourquoi": {
+        ".": "cette phrase pose une question : elle finit par « ? »."
+      }
     },
     {
       "id": "point-1",
@@ -946,7 +1136,10 @@
         "?"
       ],
       "consigne": "Quel signe faut-il à la fin ?",
-      "explication": "Cette phrase ne pose pas de question : elle finit par un point."
+      "explication": "Cette phrase ne pose pas de question : elle finit par un point.",
+      "pourquoi": {
+        "?": "cette phrase ne pose pas de question : elle finit par un point."
+      }
     },
     {
       "id": "point-2",
@@ -958,7 +1151,10 @@
         "?"
       ],
       "consigne": "Quel signe faut-il à la fin ?",
-      "explication": "Cette phrase ne pose pas de question : elle finit par un point."
+      "explication": "Cette phrase ne pose pas de question : elle finit par un point.",
+      "pourquoi": {
+        "?": "cette phrase ne pose pas de question : elle finit par un point."
+      }
     },
     {
       "id": "point-3",
@@ -970,7 +1166,10 @@
         "?"
       ],
       "consigne": "Quel signe faut-il à la fin ?",
-      "explication": "Cette phrase ne pose pas de question : elle finit par un point."
+      "explication": "Cette phrase ne pose pas de question : elle finit par un point.",
+      "pourquoi": {
+        "?": "cette phrase ne pose pas de question : elle finit par un point."
+      }
     },
     {
       "id": "point-4",
@@ -982,7 +1181,10 @@
         "?"
       ],
       "consigne": "Quel signe faut-il à la fin ?",
-      "explication": "Cette phrase ne pose pas de question : elle finit par un point."
+      "explication": "Cette phrase ne pose pas de question : elle finit par un point.",
+      "pourquoi": {
+        "?": "cette phrase ne pose pas de question : elle finit par un point."
+      }
     },
     {
       "id": "point-5",
@@ -994,7 +1196,10 @@
         "?"
       ],
       "consigne": "Quel signe faut-il à la fin ?",
-      "explication": "Cette phrase ne pose pas de question : elle finit par un point."
+      "explication": "Cette phrase ne pose pas de question : elle finit par un point.",
+      "pourquoi": {
+        "?": "cette phrase ne pose pas de question : elle finit par un point."
+      }
     },
     {
       "id": "point-6",
@@ -1006,7 +1211,10 @@
         "?"
       ],
       "consigne": "Quel signe faut-il à la fin ?",
-      "explication": "Cette phrase ne pose pas de question : elle finit par un point."
+      "explication": "Cette phrase ne pose pas de question : elle finit par un point.",
+      "pourquoi": {
+        "?": "cette phrase ne pose pas de question : elle finit par un point."
+      }
     },
     {
       "id": "point-7",
@@ -1018,7 +1226,10 @@
         "?"
       ],
       "consigne": "Quel signe faut-il à la fin ?",
-      "explication": "Cette phrase ne pose pas de question : elle finit par un point."
+      "explication": "Cette phrase ne pose pas de question : elle finit par un point.",
+      "pourquoi": {
+        "?": "cette phrase ne pose pas de question : elle finit par un point."
+      }
     },
     {
       "id": "point-8",
@@ -1030,7 +1241,10 @@
         "?"
       ],
       "consigne": "Quel signe faut-il à la fin ?",
-      "explication": "Cette phrase ne pose pas de question : elle finit par un point."
+      "explication": "Cette phrase ne pose pas de question : elle finit par un point.",
+      "pourquoi": {
+        "?": "cette phrase ne pose pas de question : elle finit par un point."
+      }
     },
     {
       "id": "point-9",
@@ -1042,7 +1256,10 @@
         "?"
       ],
       "consigne": "Quel signe faut-il à la fin ?",
-      "explication": "Cette phrase ne pose pas de question : elle finit par un point."
+      "explication": "Cette phrase ne pose pas de question : elle finit par un point.",
+      "pourquoi": {
+        "?": "cette phrase ne pose pas de question : elle finit par un point."
+      }
     },
     {
       "id": "point-10",
@@ -1054,7 +1271,10 @@
         "?"
       ],
       "consigne": "Quel signe faut-il à la fin ?",
-      "explication": "Cette phrase ne pose pas de question : elle finit par un point."
+      "explication": "Cette phrase ne pose pas de question : elle finit par un point.",
+      "pourquoi": {
+        "?": "cette phrase ne pose pas de question : elle finit par un point."
+      }
     }
   ]
 }
