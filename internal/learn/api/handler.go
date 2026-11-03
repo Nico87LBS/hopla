@@ -569,6 +569,80 @@ func (h *Handler) recordGame(c *gin.Context) {
 	c.JSON(200, gin.H{"res": result})
 }
 
+// setRecre godoc
+//
+//	@Summary		Régler la récré d'une personne (parent)
+//	@Tags			Apprendre
+//	@Accept			json
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			reglage	body	learn.RecreChange	true	"Corps de la requête"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/recre/settings [put]
+func (h *Handler) setRecre(c *gin.Context) {
+	who, ok := h.requireParent(c)
+	if !ok {
+		return
+	}
+	var change learn.RecreChange
+	if err := c.ShouldBindJSON(&change); err != nil {
+		c.JSON(400, gin.H{"error": "Invalid request"})
+		return
+	}
+	now := time.Now().UTC()
+	if err := learn.SetRecre(h.db.WithContext(c), who.familyID, change, now); err != nil {
+		answerError(c, err, "set the récré")
+		return
+	}
+	recre, err := learn.RecreFor(h.db.WithContext(c), who.familyID, change.UserID, now)
+	if err != nil {
+		answerError(c, err, "get the récré")
+		return
+	}
+	c.JSON(200, gin.H{"res": recre})
+}
+
+// recordRecre godoc
+//
+//	@Summary		Enregistrer une partie de récré (score et records)
+//	@Description	Même traitement pour : POST /api/v1/learn/play/recre
+//	@Tags			Apprendre,Session de jeu
+//	@Accept			json
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Security		PlayKeyAuth
+//	@Param			partie	body	learn.RecreGame	true	"Corps de la requête"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/recre [post]
+//	@Router			/api/v1/learn/play/recre [post]
+func (h *Handler) recordRecre(c *gin.Context) {
+	who, ok := h.caller(c)
+	if !ok {
+		return
+	}
+	var game learn.RecreGame
+	if err := c.ShouldBindJSON(&game); err != nil {
+		c.JSON(400, gin.H{"error": "Invalid request"})
+		return
+	}
+	if !mayPlayFor(who, game.UserID) {
+		c.JSON(403, gin.H{"error": "You can only play as yourself"})
+		return
+	}
+	recre, err := learn.RecordRecre(h.db.WithContext(c), who.familyID, game, time.Now().UTC())
+	if errors.Is(err, learn.ErrNoRecre) {
+		c.JSON(409, gin.H{"error": "Pas de récré pour l'instant"})
+		return
+	}
+	if err != nil {
+		answerError(c, err, "record the récré")
+		return
+	}
+	c.JSON(200, gin.H{"res": recre})
+}
+
 func Routes(r *gin.Engine, h *Handler, auth *jwt.GinJWTMiddleware) {
 	routes := r.Group("api/v1/learn")
 	routes.Use(auth.MiddlewareFunc())
@@ -585,6 +659,8 @@ func Routes(r *gin.Engine, h *Handler, auth *jwt.GinJWTMiddleware) {
 		routes.GET("/players/:userId", h.getPlayer)
 		routes.POST("/play-links", h.newPlayLink)
 		routes.POST("/games", h.recordGame)
+		routes.PUT("/recre/settings", h.setRecre)
+		routes.POST("/recre", h.recordRecre)
 		routes.PUT("/cards", h.editCard)
 		routes.POST("/reports", h.addReport)
 		routes.PUT("/reports/:id/resolve", h.resolveReport)

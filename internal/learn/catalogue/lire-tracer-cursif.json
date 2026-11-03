@@ -1,0 +1,357 @@
+{
+  "format": "hopla-module/1",
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "auteur": "Hopla",
+  "id": "lire-tracer-cursif",
+  "version": "1.0.0",
+  "nom": "Tracer en cursif",
+  "description": "Repasser avec le doigt sur les lettres cursives, puis sur des petits mots, sans déborder.",
+  "matiere": "francais",
+  "niveaux": [
+    "CP"
+  ],
+  "lecture_voix_haute": "consigne",
+  "ecriture": "cursive",
+  "sources": "D'après le programme du cycle 2 (CP) : écrire en cursive. Police Playwrite FR Moderne (SIL Open Font License).",
+  "chapitres": [
+    {
+      "id": "voyelles",
+      "nom": "Les voyelles"
+    },
+    {
+      "id": "consonnes-1",
+      "nom": "l, m, n, r, s, f, v",
+      "ouvert_apres": 70
+    },
+    {
+      "id": "consonnes-2",
+      "nom": "p, t, d, b, c, g, j",
+      "ouvert_apres": 70
+    },
+    {
+      "id": "consonnes-3",
+      "nom": "h, k, q, w, x, z",
+      "ouvert_apres": 70
+    },
+    {
+      "id": "mots",
+      "nom": "Des petits mots",
+      "ouvert_apres": 70
+    }
+  ],
+  "fiches": [
+    {
+      "id": "lettre-a",
+      "chapitre": "voyelles",
+      "type": "tracer",
+      "question": "Trace la lettre « a » en cursif.",
+      "reponse": "a",
+      "consigne": "Trace la lettre « a » en cursif."
+    },
+    {
+      "id": "lettre-e",
+      "chapitre": "voyelles",
+      "type": "tracer",
+      "question": "Trace la lettre « e » en cursif.",
+      "reponse": "e",
+      "consigne": "Trace la lettre « e » en cursif."
+    },
+    {
+      "id": "lettre-i",
+      "chapitre": "voyelles",
+      "type": "tracer",
+      "question": "Trace la lettre « i » en cursif.",
+      "reponse": "i",
+      "consigne": "Trace la lettre « i » en cursif."
+    },
+    {
+      "id": "lettre-o",
+      "chapitre": "voyelles",
+      "type": "tracer",
+      "question": "Trace la lettre « o » en cursif.",
+      "reponse": "o",
+      "consigne": "Trace la lettre « o » en cursif."
+    },
+    {
+      "id": "lettre-u",
+      "chapitre": "voyelles",
+      "type": "tracer",
+      "question": "Trace la lettre « u » en cursif.",
+      "reponse": "u",
+      "consigne": "Trace la lettre « u » en cursif."
+    },
+    {
+      "id": "lettre-y",
+      "chapitre": "voyelles",
+      "type": "tracer",
+      "question": "Trace la lettre « y » en cursif.",
+      "reponse": "y",
+      "consigne": "Trace la lettre « y » en cursif."
+    },
+    {
+      "id": "lettre-l",
+      "chapitre": "consonnes-1",
+      "type": "tracer",
+      "question": "Trace la lettre « l » en cursif.",
+      "reponse": "l",
+      "consigne": "Trace la lettre « l » en cursif."
+    },
+    {
+      "id": "lettre-m",
+      "chapitre": "consonnes-1",
+      "type": "tracer",
+      "question": "Trace la lettre « m » en cursif.",
+      "reponse": "m",
+      "consigne": "Trace la lettre « m » en cursif."
+    },
+    {
+      "id": "lettre-n",
+      "chapitre": "consonnes-1",
+      "type": "tracer",
+      "question": "Trace la lettre « n » en cursif.",
+      "reponse": "n",
+      "consigne": "Trace la lettre « n » en cursif."
+    },
+    {
+      "id": "lettre-r",
+      "chapitre": "consonnes-1",
+      "type": "tracer",
+      "question": "Trace la lettre « r » en cursif.",
+      "reponse": "r",
+      "consigne": "Trace la lettre « r » en cursif."
+    },
+    {
+      "id": "lettre-s",
+      "chapitre": "consonnes-1",
+      "type": "tracer",
+      "question": "Trace la lettre « s » en cursif.",
+      "reponse": "s",
+      "consigne": "Trace la lettre « s » en cursif."
+    },
+    {
+      "id": "lettre-f",
+      "chapitre": "consonnes-1",
+      "type": "tracer",
+      "question": "Trace la lettre « f » en cursif.",
+      "reponse": "f",
+      "consigne": "Trace la lettre « f » en cursif."
+    },
+    {
+      "id": "lettre-v",
+      "chapitre": "consonnes-1",
+      "type": "tracer",
+      "question": "Trace la lettre « v » en cursif.",
+      "reponse": "v",
+      "consigne": "Trace la lettre « v » en cursif."
+    },
+    {
+      "id": "lettre-p",
+      "chapitre": "consonnes-2",
+      "type": "tracer",
+      "question": "Trace la lettre « p » en cursif.",
+      "reponse": "p",
+      "consigne": "Trace la lettre « p » en cursif."
+    },
+    {
+      "id": "lettre-t",
+      "chapitre": "consonnes-2",
+      "type": "tracer",
+      "question": "Trace la lettre « t » en cursif.",
+      "reponse": "t",
+      "consigne": "Trace la lettre « t » en cursif."
+    },
+    {
+      "id": "lettre-d",
+      "chapitre": "consonnes-2",
+      "type": "tracer",
+      "question": "Trace la lettre « d » en cursif.",
+      "reponse": "d",
+      "consigne": "Trace la lettre « d » en cursif."
+    },
+    {
+      "id": "lettre-b",
+      "chapitre": "consonnes-2",
+      "type": "tracer",
+      "question": "Trace la lettre « b » en cursif.",
+      "reponse": "b",
+      "consigne": "Trace la lettre « b » en cursif."
+    },
+    {
+      "id": "lettre-c",
+      "chapitre": "consonnes-2",
+      "type": "tracer",
+      "question": "Trace la lettre « c » en cursif.",
+      "reponse": "c",
+      "consigne": "Trace la lettre « c » en cursif."
+    },
+    {
+      "id": "lettre-g",
+      "chapitre": "consonnes-2",
+      "type": "tracer",
+      "question": "Trace la lettre « g » en cursif.",
+      "reponse": "g",
+      "consigne": "Trace la lettre « g » en cursif."
+    },
+    {
+      "id": "lettre-j",
+      "chapitre": "consonnes-2",
+      "type": "tracer",
+      "question": "Trace la lettre « j » en cursif.",
+      "reponse": "j",
+      "consigne": "Trace la lettre « j » en cursif."
+    },
+    {
+      "id": "lettre-h",
+      "chapitre": "consonnes-3",
+      "type": "tracer",
+      "question": "Trace la lettre « h » en cursif.",
+      "reponse": "h",
+      "consigne": "Trace la lettre « h » en cursif."
+    },
+    {
+      "id": "lettre-k",
+      "chapitre": "consonnes-3",
+      "type": "tracer",
+      "question": "Trace la lettre « k » en cursif.",
+      "reponse": "k",
+      "consigne": "Trace la lettre « k » en cursif."
+    },
+    {
+      "id": "lettre-q",
+      "chapitre": "consonnes-3",
+      "type": "tracer",
+      "question": "Trace la lettre « q » en cursif.",
+      "reponse": "q",
+      "consigne": "Trace la lettre « q » en cursif."
+    },
+    {
+      "id": "lettre-w",
+      "chapitre": "consonnes-3",
+      "type": "tracer",
+      "question": "Trace la lettre « w » en cursif.",
+      "reponse": "w",
+      "consigne": "Trace la lettre « w » en cursif."
+    },
+    {
+      "id": "lettre-x",
+      "chapitre": "consonnes-3",
+      "type": "tracer",
+      "question": "Trace la lettre « x » en cursif.",
+      "reponse": "x",
+      "consigne": "Trace la lettre « x » en cursif."
+    },
+    {
+      "id": "lettre-z",
+      "chapitre": "consonnes-3",
+      "type": "tracer",
+      "question": "Trace la lettre « z » en cursif.",
+      "reponse": "z",
+      "consigne": "Trace la lettre « z » en cursif."
+    },
+    {
+      "id": "mot-le",
+      "chapitre": "mots",
+      "type": "tracer",
+      "question": "Trace le mot « le » en cursif.",
+      "reponse": "le",
+      "consigne": "Trace le mot « le » en cursif."
+    },
+    {
+      "id": "mot-la",
+      "chapitre": "mots",
+      "type": "tracer",
+      "question": "Trace le mot « la » en cursif.",
+      "reponse": "la",
+      "consigne": "Trace le mot « la » en cursif."
+    },
+    {
+      "id": "mot-un",
+      "chapitre": "mots",
+      "type": "tracer",
+      "question": "Trace le mot « un » en cursif.",
+      "reponse": "un",
+      "consigne": "Trace le mot « un » en cursif."
+    },
+    {
+      "id": "mot-une",
+      "chapitre": "mots",
+      "type": "tracer",
+      "question": "Trace le mot « une » en cursif.",
+      "reponse": "une",
+      "consigne": "Trace le mot « une » en cursif."
+    },
+    {
+      "id": "mot-et",
+      "chapitre": "mots",
+      "type": "tracer",
+      "question": "Trace le mot « et » en cursif.",
+      "reponse": "et",
+      "consigne": "Trace le mot « et » en cursif."
+    },
+    {
+      "id": "mot-il",
+      "chapitre": "mots",
+      "type": "tracer",
+      "question": "Trace le mot « il » en cursif.",
+      "reponse": "il",
+      "consigne": "Trace le mot « il » en cursif."
+    },
+    {
+      "id": "mot-elle",
+      "chapitre": "mots",
+      "type": "tracer",
+      "question": "Trace le mot « elle » en cursif.",
+      "reponse": "elle",
+      "consigne": "Trace le mot « elle » en cursif."
+    },
+    {
+      "id": "mot-ami",
+      "chapitre": "mots",
+      "type": "tracer",
+      "question": "Trace le mot « ami » en cursif.",
+      "reponse": "ami",
+      "consigne": "Trace le mot « ami » en cursif."
+    },
+    {
+      "id": "mot-papa",
+      "chapitre": "mots",
+      "type": "tracer",
+      "question": "Trace le mot « papa » en cursif.",
+      "reponse": "papa",
+      "consigne": "Trace le mot « papa » en cursif."
+    },
+    {
+      "id": "mot-maman",
+      "chapitre": "mots",
+      "type": "tracer",
+      "question": "Trace le mot « maman » en cursif.",
+      "reponse": "maman",
+      "consigne": "Trace le mot « maman » en cursif."
+    },
+    {
+      "id": "mot-lune",
+      "chapitre": "mots",
+      "type": "tracer",
+      "question": "Trace le mot « lune » en cursif.",
+      "reponse": "lune",
+      "consigne": "Trace le mot « lune » en cursif."
+    },
+    {
+      "id": "mot-moto",
+      "chapitre": "mots",
+      "type": "tracer",
+      "question": "Trace le mot « moto » en cursif.",
+      "reponse": "moto",
+      "consigne": "Trace le mot « moto » en cursif."
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 5,
+    "nouvelles_par_partie": 2,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 5
+  }
+}

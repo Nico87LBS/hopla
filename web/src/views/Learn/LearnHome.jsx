@@ -3,6 +3,7 @@ import {
   CloudOffRounded,
   LockRounded,
   SchoolRounded,
+  SportsEsportsRounded,
 } from '@mui/icons-material'
 import { Box, Button, Container, Sheet, Stack, Typography } from '@mui/joy'
 import { useQueryClient } from '@tanstack/react-query'
@@ -221,6 +222,72 @@ ModuleCard.propTypes = {
   to: PropTypes.string.isRequired,
 }
 
+// RecreCard tells how far the next récré is, and opens it once it is
+// there; the family's records are behind it too.
+const RecreCard = ({ recre, to }) => {
+  const { t } = useTranslation('learn')
+  const ready = recre.since >= recre.every
+  const done = Math.min(recre.since, recre.every)
+  return (
+    <Sheet
+      component={Link}
+      to={to}
+      variant={ready ? 'solid' : 'outlined'}
+      sx={{
+        alignItems: 'center',
+        bgcolor: ready ? HOPLA.green : undefined,
+        borderRadius: 'lg',
+        color: ready ? '#fff' : undefined,
+        display: 'flex',
+        gap: 1.5,
+        mb: 2,
+        p: 1.25,
+        textDecoration: 'none',
+      }}
+    >
+      <SportsEsportsRounded sx={{ color: ready ? '#fff' : HOPLA.green }} />
+      <Box sx={{ flex: 1, minWidth: 0 }}>
+        <Typography level='title-sm' sx={{ color: 'inherit' }}>
+          {ready
+            ? t('recre.ready')
+            : t('recre.notYet', {
+                count: recre.every - recre.since,
+                every: recre.every,
+              })}
+        </Typography>
+        {!ready && (
+          <Stack direction='row' gap={0.5} sx={{ mt: 0.75 }}>
+            {Array.from({ length: recre.every }, (_, i) => (
+              <Box
+                key={i}
+                sx={{
+                  bgcolor: i < done ? HOPLA.green : 'background.level3',
+                  borderRadius: 4,
+                  flex: 1,
+                  height: 6,
+                  maxWidth: 40,
+                }}
+              />
+            ))}
+          </Stack>
+        )}
+      </Box>
+      <Typography
+        level='body-xs'
+        endDecorator={<ChevronRightRounded />}
+        sx={{ color: ready ? '#fff' : 'text.secondary', flexShrink: 0 }}
+      >
+        {ready ? t('recre.go') : t('recre.records')}
+      </Typography>
+    </Sheet>
+  )
+}
+
+RecreCard.propTypes = {
+  recre: PropTypes.object.isRequired,
+  to: PropTypes.string.isRequired,
+}
+
 // groupByPack puts the modules under their pack, in the pack's order; the
 // others come last.
 const groupByPack = player => {
@@ -252,7 +319,13 @@ const BAR_FROM = 6
 // LearnModules is the list of a person's modules, with the day's total. The
 // family screen shows it too, signed in as nobody: it gets the member and
 // where a module opens rather than reading them from the account.
-export const LearnModules = ({ isParent, member, playPath, userId }) => {
+export const LearnModules = ({
+  isParent,
+  member,
+  playPath,
+  recrePath,
+  userId,
+}) => {
   const { t } = useTranslation('learn')
   const queryClient = useQueryClient()
   const { data: player, error, isLoading } = usePlayer(userId)
@@ -354,6 +427,10 @@ export const LearnModules = ({ isParent, member, playPath, userId }) => {
             </Typography>
           )}
         </Sheet>
+      )}
+
+      {player?.recre?.on && count > 0 && (
+        <RecreCard recre={player.recre} to={recrePath} />
       )}
 
       {(player?.offline || waiting > 0) && (
@@ -465,6 +542,7 @@ LearnModules.propTypes = {
   isParent: PropTypes.bool,
   member: PropTypes.object,
   playPath: PropTypes.func.isRequired,
+  recrePath: PropTypes.string.isRequired,
   userId: PropTypes.number.isRequired,
 }
 
@@ -485,6 +563,7 @@ export const LearnHome = () => {
       member={members.find(m => m.userId === userId)}
       isParent={!!isParent}
       playPath={moduleId => `/learn/${userId}/play/${moduleId}`}
+      recrePath={`/learn/${userId}/recre`}
     />
   )
 }

@@ -31,9 +31,10 @@ const (
 // The question types and generators the game knows. A module using another
 // one is refused, rather than shown with questions nobody can answer.
 var (
-	CardTypes      = []string{"choix", "saisie", "retourner", "ecoute", "associer", "ordre", "classer", "zones"}
+	CardTypes      = []string{"choix", "saisie", "retourner", "ecoute", "associer", "ordre", "classer", "zones", "tracer"}
 	GeneratorKinds = []string{"addition", "soustraction", "multiplication", "division", "double", "moitie",
-		"complement", "comparaison", "position", "lettres", "modele", "compter", "prenom", "heure", "mesurer"}
+		"complement", "comparaison", "position", "lettres", "modele", "compter", "prenom", "heure", "mesurer",
+		"regler_heure"}
 	Audiences = []string{"enfant", "adulte", "tous"}
 	// ReservedDomains begin the keys the generators make, such as "mul:7x8":
 	// a written card may not take them, nor a module its id.
@@ -189,6 +190,7 @@ const (
 	minElements, maxElements = 3, 8
 	minBoxes, maxBoxes       = 2, 3
 	minToSort, maxToSort     = 2, 30
+	maxTraced                = 8
 )
 
 // drawingPattern is how a drawing of the catalogue is named.
@@ -276,6 +278,14 @@ func (c CardDef) checkContent() error {
 				return fmt.Errorf("étiquette %q : boîte %q inconnue", item.Text, item.Box)
 			}
 			seen[slug] = true
+		}
+	case "tracer":
+		// What is traced: a letter, a figure or a short word.
+		if n := len([]rune(strings.TrimSpace(c.Answer))); n == 0 || n > maxTraced {
+			return fmt.Errorf("de 1 à %d caractères à tracer", maxTraced)
+		}
+		if len(c.Senses) > 0 {
+			return fmt.Errorf("une fiche tracer n'a qu'un sens")
 		}
 	case "zones":
 		switch {

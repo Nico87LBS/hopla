@@ -376,8 +376,12 @@ const digits = text => String(text ?? '').replace(/[\s\u00a0\u202f]/g, '')
 // turned over is graded by herself: given is then 'oui', 'presque' or 'non'.
 export const checkAnswer = (item, given) => {
   switch (item.mode) {
+    // A tracing is graded by the device the same way: right, almost or not.
+    case 'trace':
     case 'flip':
       return { correct: given === 'oui', almost: given === 'presque' }
+    case 'setclock':
+      return { correct: given === item.answer, almost: false }
     case 'choice':
     case 'sort':
       return { correct: given === item.answer, almost: false }

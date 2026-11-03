@@ -643,8 +643,9 @@ const docTemplate = `{
         },
         "/api/v1/chores/calendar/{token}": {
             "get": {
+                "description": "Les 30 prochains jours (un événement par passage et par créneau) et les tâches faites des 7 derniers jours, barrées. Un enfant ne voit que ses tâches ; un parent peut demander celles d'un membre ou de toute la famille.",
                 "produces": [
-                    "application/json"
+                    "text/plain"
                 ],
                 "tags": [
                     "Agenda"
@@ -657,6 +658,18 @@ const docTemplate = `{
                         "name": "token",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "moi (par défaut), famille ou le numéro d'un membre",
+                        "name": "qui",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Rappel, en minutes avant chaque tâche (0 à 1440)",
+                        "name": "rappel",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -3853,6 +3866,53 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/learn/play/recre": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    },
+                    {
+                        "PlayKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /api/v1/learn/play/recre",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre",
+                    "Session de jeu"
+                ],
+                "summary": "Enregistrer une partie de récré (score et records)",
+                "parameters": [
+                    {
+                        "description": "Corps de la requête",
+                        "name": "partie",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/learn.RecreGame"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/learn/play/reports": {
             "post": {
                 "security": [
@@ -4021,6 +4081,95 @@ const docTemplate = `{
                         "name": "userId",
                         "in": "path",
                         "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/recre": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    },
+                    {
+                        "PlayKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /api/v1/learn/play/recre",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre",
+                    "Session de jeu"
+                ],
+                "summary": "Enregistrer une partie de récré (score et records)",
+                "parameters": [
+                    {
+                        "description": "Corps de la requête",
+                        "name": "partie",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/learn.RecreGame"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/recre/settings": {
+            "put": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre"
+                ],
+                "summary": "Régler la récré d'une personne (parent)",
+                "parameters": [
+                    {
+                        "description": "Corps de la requête",
+                        "name": "reglage",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/learn.RecreChange"
+                        }
                     }
                 ],
                 "responses": {
@@ -7023,6 +7172,46 @@ const docTemplate = `{
                 "EntityTypeChoreAttachmentDraft",
                 "EntityTypeChoreDescriptionDraft"
             ]
+        },
+        "learn.RecreChange": {
+            "type": "object",
+            "properties": {
+                "every": {
+                    "type": "integer"
+                },
+                "games": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "minutes": {
+                    "type": "integer"
+                },
+                "on": {
+                    "type": "boolean"
+                },
+                "userId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "learn.RecreGame": {
+            "type": "object",
+            "properties": {
+                "clientId": {
+                    "type": "string"
+                },
+                "game": {
+                    "type": "string"
+                },
+                "score": {
+                    "type": "integer"
+                },
+                "userId": {
+                    "type": "integer"
+                }
+            }
         },
         "model.AssignmentStrategy": {
             "type": "string",

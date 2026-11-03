@@ -13,6 +13,8 @@ import {
   Divider,
   IconButton,
   Input,
+  Option,
+  Select,
   Stack,
   Typography,
 } from '@mui/joy'
@@ -20,6 +22,8 @@ import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useLocalization } from '../../contexts/LocalizationContext'
+import { useIsParent } from '../../hooks/useIsParent'
+import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries'
 import { useNotification } from '../../service/NotificationProvider'
 import {
   CreateCalendarURL,
@@ -30,6 +34,18 @@ import {
 import ConfirmationModal from '../Modals/Inputs/ConfirmationModal'
 import SettingsLayout from './SettingsLayout'
 
+const REMINDERS = [0, 5, 10, 15, 30, 60]
+
+// feedQuery is what the address asks for: whose tasks and a reminder. A
+// parent can follow one member or the whole family with the same address.
+const feedQuery = ({ reminder, who }) => {
+  const query = new URLSearchParams()
+  if (who !== 'moi') query.set('qui', who)
+  if (reminder > 0) query.set('rappel', String(reminder))
+  const text = query.toString()
+  return text ? `?${text}` : ''
+}
+
 const CalendarSettings = () => {
   const { t } = useTranslation('settings')
   const { fmt } = useLocalization()
@@ -39,6 +55,17 @@ const CalendarSettings = () => {
   const [action, setAction] = useState(null)
   const [loadError, setLoadError] = useState(false)
   const [confirmModalConfig, setConfirmModalConfig] = useState({})
+  const [who, setWho] = useState('moi')
+  const [reminder, setReminder] = useState(0)
+  const isParent = useIsParent()
+  const { data: me } = useUserProfile()
+  const { data: membersData } = useFamilyMembers()
+  const others = (membersData?.res || []).filter(
+    m => m.isActive !== false && m.userId !== me?.id,
+  )
+  const feedURL = calendar?.url
+    ? `${calendar.url}${feedQuery({ reminder, who })}`
+    : ''
 
   const loadCalendar = useCallback(async () => {
     setLoading(true)
@@ -88,7 +115,7 @@ const CalendarSettings = () => {
 
   const copyURL = async () => {
     try {
-      await navigator.clipboard.writeText(calendar.url)
+      await navigator.clipboard.writeText(feedURL)
       showNotification({
         type: 'success',
         message: t('calendar.copied'),
@@ -125,9 +152,9 @@ const CalendarSettings = () => {
   // Calendar resolves webcal to https and never falls back to http. Rewriting a
   // plain-http instance URL (local dev, self-hosted without TLS) would hand the
   // user a link that fails to connect, so only https URLs get the webcal form.
-  const subscribeURL = calendar?.url?.startsWith('https://')
-    ? calendar.url.replace(/^https:\/\//, 'webcal://')
-    : calendar?.url
+  const subscribeURL = feedURL.startsWith('https://')
+    ? feedURL.replace(/^https:\/\//, 'webcal://')
+    : feedURL
 
   return (
     <SettingsLayout title={t('calendar.title')}>
@@ -172,8 +199,64 @@ const CalendarSettings = () => {
                   </Box>
                 </Box>
 
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5}>
+                  <Box sx={{ flex: 1 }}>
+                    <Typography level='body-sm' sx={{ mb: 0.5 }}>
+                      {t('calendar.who')}
+                    </Typography>
+                    <Select
+                      value={who}
+                      onChange={(_, value) => value && setWho(value)}
+                      slotProps={{
+                        button: { 'aria-label': t('calendar.who') },
+                      }}
+                    >
+                      <Option value='moi'>{t('calendar.whoMe')}</Option>
+                      {isParent &&
+                        others.map(member => (
+                          <Option
+                            key={member.userId}
+                            value={String(member.userId)}
+                          >
+                            {member.displayName}
+                          </Option>
+                        ))}
+                      {isParent && (
+                        <Option value='famille'>
+                          {t('calendar.whoFamily')}
+                        </Option>
+                      )}
+                    </Select>
+                  </Box>
+                  <Box sx={{ flex: 1 }}>
+                    <Typography level='body-sm' sx={{ mb: 0.5 }}>
+                      {t('calendar.reminder')}
+                    </Typography>
+                    <Select
+                      value={reminder}
+                      onChange={(_, value) =>
+                        value !== null && setReminder(value)
+                      }
+                      slotProps={{
+                        button: { 'aria-label': t('calendar.reminder') },
+                      }}
+                    >
+                      {REMINDERS.map(minutes => (
+                        <Option key={minutes} value={minutes}>
+                          {minutes === 0
+                            ? t('calendar.noReminder')
+                            : t('calendar.reminderBefore', { count: minutes })}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Box>
+                </Stack>
+                <Typography level='body-xs' color='neutral'>
+                  {t('calendar.contents')}
+                </Typography>
+
                 <Input
-                  value={calendar.url || ''}
+                  value={feedURL}
                   readOnly
                   aria-label={t('calendar.urlLabel')}
                   endDecorator={
@@ -189,7 +272,18 @@ const CalendarSettings = () => {
                 />
 
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
-                  <Button startDecorator={<ContentCopy />} onClick={copyURL}>
+                  <Button
+                    component='a'
+                    href={subscribeURL}
+                    startDecorator={<CalendarMonth />}
+                  >
+                    {t('calendar.subscribe')}
+                  </Button>
+                  <Button
+                    variant='outlined'
+                    startDecorator={<ContentCopy />}
+                    onClick={copyURL}
+                  >
                     {t('calendar.copy')}
                   </Button>
                 </Stack>

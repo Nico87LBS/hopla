@@ -63,6 +63,8 @@ var saved = []table{
 	{"learn_cards", byFamily},
 	{"learn_sessions", byFamily},
 	{"learn_reports", byFamily},
+	{"learn_recre_settings", byFamily},
+	{"learn_recre_plays", byFamily},
 	{"api_tokens", byMember},
 	{"calendar_tokens", byMember},
 	{"storage_files", byMember},

@@ -1,0 +1,117 @@
+{
+  "format": "hopla-module/1",
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "auteur": "Hopla",
+  "id": "maths-gs-tracer-chiffres",
+  "version": "1.0.0",
+  "nom": "Tracer les chiffres",
+  "description": "Repasser avec le doigt sur chaque chiffre, de 0 à 9, sans déborder.",
+  "matiere": "maths",
+  "niveaux": [
+    "GS"
+  ],
+  "lecture_voix_haute": true,
+  "sources": "D'après le programme de l'école maternelle (cycle 1) et ses attendus de fin de GS (Éduscol).",
+  "chapitres": [
+    {
+      "id": "un-cinq",
+      "nom": "De 1 à 5"
+    },
+    {
+      "id": "zero-six-neuf",
+      "nom": "0, puis de 6 à 9",
+      "ouvert_apres": 70
+    }
+  ],
+  "fiches": [
+    {
+      "id": "chiffre-0",
+      "chapitre": "zero-six-neuf",
+      "type": "tracer",
+      "question": "Trace le chiffre 0.",
+      "reponse": "0",
+      "consigne": "Trace le chiffre 0."
+    },
+    {
+      "id": "chiffre-1",
+      "chapitre": "un-cinq",
+      "type": "tracer",
+      "question": "Trace le chiffre 1.",
+      "reponse": "1",
+      "consigne": "Trace le chiffre 1."
+    },
+    {
+      "id": "chiffre-2",
+      "chapitre": "un-cinq",
+      "type": "tracer",
+      "question": "Trace le chiffre 2.",
+      "reponse": "2",
+      "consigne": "Trace le chiffre 2."
+    },
+    {
+      "id": "chiffre-3",
+      "chapitre": "un-cinq",
+      "type": "tracer",
+      "question": "Trace le chiffre 3.",
+      "reponse": "3",
+      "consigne": "Trace le chiffre 3."
+    },
+    {
+      "id": "chiffre-4",
+      "chapitre": "un-cinq",
+      "type": "tracer",
+      "question": "Trace le chiffre 4.",
+      "reponse": "4",
+      "consigne": "Trace le chiffre 4."
+    },
+    {
+      "id": "chiffre-5",
+      "chapitre": "un-cinq",
+      "type": "tracer",
+      "question": "Trace le chiffre 5.",
+      "reponse": "5",
+      "consigne": "Trace le chiffre 5."
+    },
+    {
+      "id": "chiffre-6",
+      "chapitre": "zero-six-neuf",
+      "type": "tracer",
+      "question": "Trace le chiffre 6.",
+      "reponse": "6",
+      "consigne": "Trace le chiffre 6."
+    },
+    {
+      "id": "chiffre-7",
+      "chapitre": "zero-six-neuf",
+      "type": "tracer",
+      "question": "Trace le chiffre 7.",
+      "reponse": "7",
+      "consigne": "Trace le chiffre 7."
+    },
+    {
+      "id": "chiffre-8",
+      "chapitre": "zero-six-neuf",
+      "type": "tracer",
+      "question": "Trace le chiffre 8.",
+      "reponse": "8",
+      "consigne": "Trace le chiffre 8."
+    },
+    {
+      "id": "chiffre-9",
+      "chapitre": "zero-six-neuf",
+      "type": "tracer",
+      "question": "Trace le chiffre 9.",
+      "reponse": "9",
+      "consigne": "Trace le chiffre 9."
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 5,
+    "nouvelles_par_partie": 2,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 5
+  }
+}

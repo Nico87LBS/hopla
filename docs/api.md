@@ -123,7 +123,9 @@ Un client recharge ce qui l'intéresse à chaque événement. Le flux est limit�
 
 Gérer › Avancé › Calendrier crée une adresse privée
 `/api/v1/chores/calendar/<jeton>` à ajouter comme abonnement dans un agenda.
-Elle ne demande pas de connexion : gardez-la privée, changez-la si elle a
+Deux paramètres facultatifs : `qui` (`moi` par défaut, `famille` ou le numéro
+d'un membre, ces deux derniers réservés aux parents) et `rappel` (minutes
+avant chaque tâche, de 0 à 1440). Elle ne demande pas de connexion : gardez-la privée, changez-la si elle a
 fuité.
 
 ## Agir au nom d'un autre membre

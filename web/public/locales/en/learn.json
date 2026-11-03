@@ -38,7 +38,14 @@
     "listen": "Listen again",
     "heard": "You heard: {{word}}",
     "matchHelp": "Tap one card on each side to pair them.",
-    "readAgain": "Read again"
+    "readAgain": "Read again",
+    "setClock": "Clock to set",
+    "setClockHelp": "Turn the hands with your finger.",
+    "traceHelp": "Trace over the model with your finger.",
+    "traceAgain": "Clear",
+    "traceDone": "I'm done",
+    "traceMore": "Trace over the whole letter, without going outside.",
+    "traceAlmost": "Almost! A little closer to the model."
   },
   "end": {
     "title0": "Keep going, you'll get there!",
@@ -318,5 +325,72 @@
     "title_other": "{{count}} questions reported",
     "help": "Export them in a file, then send it so they get fixed in the modules.",
     "export": "Export the reports"
+  },
+  "recre": {
+    "title": "Break time!",
+    "pick": "Pick a little game. It earns no hops, only records!",
+    "notYet_one": "{{count}} more 2-star game before break time",
+    "notYet_other": "{{count}} more 2-star games before break time",
+    "ready": "Break time!",
+    "go": "Play",
+    "records": "Records",
+    "back": "Back",
+    "play": "Play",
+    "stop": "Stop the game",
+    "minutes_one": "{{count}} minute",
+    "minutes_other": "{{count}} minutes",
+    "noRecord": "No record yet: your turn!",
+    "newRecord": "New record!",
+    "wellPlayed": "Well played!",
+    "score_one": "{{count}} point",
+    "score_other": "{{count}} points",
+    "notSaved": "The score could not be saved.",
+    "recordsOf": "Family records: {{game}}",
+    "nextIn_one": "Next break after {{count}} 2-star game.",
+    "nextIn_other": "Next break after {{count}} 2-star games.",
+    "backToLearn": "Back to the games",
+    "game": {
+      "train": "The bunny train",
+      "bulles": "Colour bubbles",
+      "panier": "The carrot basket",
+      "terriers": "Peekaboo bunnies",
+      "sequence": "The colour sequence"
+    },
+    "about": {
+      "train": "Pick up the carrots without bumping.",
+      "bulles": "Aim and group 3 bubbles of one colour.",
+      "panier": "Catch the carrots, dodge the stones.",
+      "terriers": "Tap the bunnies before they hide.",
+      "sequence": "Remember the colours and play them back."
+    },
+    "help": {
+      "train": "Swipe or use the arrows to turn.",
+      "bulles": "Aim with your finger and let go to shoot.",
+      "panier": "Slide the basket left and right.",
+      "terriers": "Tap each bunny coming out of its burrow.",
+      "sequence": "Watch, then tap the colours in the same order."
+    },
+    "hint": {
+      "watch": "Watch closely…",
+      "play": "Your turn!"
+    },
+    "arrow": {
+      "up": "Up",
+      "down": "Down",
+      "left": "Left",
+      "right": "Right"
+    },
+    "settings": {
+      "title": "Break time",
+      "help": "A little game after a few games of Learn played well (at least 2 stars). It earns no hops.",
+      "onFor": "Break time for {{name}}",
+      "every": "A break every",
+      "everyValue_one": "{{count}} game",
+      "everyValue_other": "{{count}} games",
+      "timer": "Timer",
+      "noTimer": "No timer",
+      "games": "Games allowed",
+      "failed": "Break time setting not saved"
+    }
   }
 }

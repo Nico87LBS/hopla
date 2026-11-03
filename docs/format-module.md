@@ -101,7 +101,7 @@ Champs communs :
 | --- | --- |
 | `id` | Unique dans le module |
 | `chapitre` | `id` d'un chapitre du module |
-| `type` | `choix`, `saisie`, `ecoute`, `retourner`, `associer`, `ordre`, `classer` ou `zones` |
+| `type` | `choix`, `saisie`, `ecoute`, `retourner`, `associer`, `ordre`, `classer`, `zones` ou `tracer` |
 | `question` | Obligatoire. Pour `associer`, `ordre` et `classer`, c'est la consigne |
 | `reponse` | Obligatoire, sauf pour `associer`, `ordre` et `classer` |
 | `consigne` | Ce qu'il faut faire, écrit en petit au-dessus de la question. Dans un module `"lecture_voix_haute": "consigne"`, c'est le seul texte dit à l'ouverture |
@@ -120,6 +120,12 @@ mot de son nom dans Hopla, sinon « toi »).
 | --- | --- |
 | `pieges` | Mauvaises réponses proposées. Absent : tirées parmi les réponses des autres fiches du chapitre |
 | `sens` | `direct` (question → réponse) et/ou `inverse` (réponse → question) |
+
+Une question qui contient un seul trou `___`, sans dessin, se joue comme un
+texte à trous à étiquettes : la phrase s'affiche avec le trou, et l'enfant y
+glisse (ou touche) le bon mot parmi les étiquettes, puis valide. Le mot posé
+se reprend d'un toucher. Après la réponse, la phrase se montre complète avec le
+bon mot.
 
 ### `saisie` : taper la réponse
 
@@ -248,6 +254,20 @@ Un module d'essai qui utilise chacun de ces types est fourni :
 [`docs/exemples/essai-nouveaux-jeux.json`](exemples/essai-nouveaux-jeux.json),
 à importer depuis le Catalogue.
 
+### `tracer` : repasser au doigt
+
+```json
+{ "id": "capitale-a", "chapitre": "a-m", "type": "tracer",
+  "question": "Trace la lettre A.", "consigne": "Trace la lettre A.", "reponse": "A" }
+```
+
+`reponse` est ce qu'il faut tracer : une lettre, un chiffre ou un mot court (8
+caractères au plus). Le modèle s'affiche en pâle, en lettres d'imprimerie, ou
+en cursif dans un module `"ecriture": "cursive"`. L'appareil compare le tracé
+au modèle : la partie du modèle couverte et ce qui déborde. Il juge juste,
+presque (la fiche ne recule pas) ou pas encore. L'ordre et le sens des traits
+ne sont pas vérifiés. Une seule direction, pas de `sens`.
+
 ## Générateurs
 
 Un générateur fabrique des questions au hasard dans des bornes. Les nombres se
@@ -274,6 +294,7 @@ Champs communs : `id`, `chapitre`, `operation`.
 | `compter` | `a`, `objets` (dessins à compter, `carrot` par défaut), `formes` (`objets`, `de`) | Une collection dessinée, en rangées de cinq, ou les points d'un dé (1 à 6) : choisir le nombre parmi quatre jusqu'à 10, le taper au-delà |
 | `prenom` | `formes` (`premiere`, `reconnaitre`, `ordre`, `nombre`) | Le prénom de la personne qui joue : sa première lettre, le retrouver parmi des prénoms proches, remettre ses lettres dans l'ordre, compter ses lettres. Sans prénom (ou d'une seule lettre), le chapitre n'a pas de questions |
 | `heure` | `a` (les heures, de 1 à 12), `formes` (`pile`, `demie`, `quart`) | Une horloge à aiguilles dessinée : choisir l'heure parmi quatre (« 3 h », « 3 h 30 »), avec des pièges comme les aiguilles confondues ou une heure de décalage |
+| `regler_heure` | Comme `heure` | L'inverse : « Mets les aiguilles sur 3 h 30 », l'enfant fait tourner les aiguilles au doigt (la grande s'arrête toutes les 5 minutes, la petite sur l'heure) puis valide |
 | `mesurer` | `a` (longueurs en cm, de 1 à 15), `formes` (`zero`, `decale`) | Un trait dessiné au-dessus d'une règle graduée : choisir sa longueur parmi quatre. En `decale`, le trait ne part pas de 0, et lire la graduation de la fin est le piège |
 | `modele` | `texte`, `variables`, `calculs`, `si`, `reponse`, `unite` | Un problème à trous (voir plus bas) |
 

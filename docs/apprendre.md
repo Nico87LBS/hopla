@@ -24,15 +24,15 @@ peuvent aussi partager ce qui est appris grâce à leur clé (voir
 | Paquet | Modules | Public |
 | --- | --- | --- |
 | **Apprendre à lire** | Lettres et sons, Syllabes simples, Sons complexes, Mots outils, Lire des mots, Comprendre une phrase, Mots sans dessin (méthode syllabique) | Enfant, GS et CP |
-| **Apprendre à lire en cursif** | Lettres cursives (la lettre en cursif, la réponse en imprimerie), puis les six autres modules d'Apprendre à lire écrits en cursif, avec leur propre progression | Enfant, CP |
-| **Langage GS** | Les rimes, Les syllabes, Le son du début, Les lettres (avec « Mon prénom »), Les mots en images | Enfant, GS |
-| **Maths GS** | Compter des quantités, La suite des nombres, Lire les nombres, Comparer, Composer 5 et 10, Formes et positions | Enfant, GS |
+| **Apprendre à lire en cursif** | Lettres cursives (la lettre en cursif, la réponse en imprimerie), puis les six autres modules d'Apprendre à lire écrits en cursif, avec leur propre progression, et Tracer en cursif (lettres et petits mots à repasser au doigt) | Enfant, CP |
+| **Langage GS** | Les rimes, Les syllabes, Le son du début, Les lettres (avec « Mon prénom »), Les mots en images, Tracer les lettres (capitales à repasser au doigt) | Enfant, GS |
+| **Maths GS** | Compter des quantités, La suite des nombres, Lire les nombres, Comparer, Composer 5 et 10, Formes et positions, Tracer les chiffres | Enfant, GS |
 | **Explorer le monde GS** | Le temps qui passe, Les saisons, Les animaux, Mon corps, Les plantes, Objets et matières | Enfant, GS |
 | **Français CP** | Les sept modules d'Apprendre à lire (mêmes progrès), puis Écrire des mots (dictée, accents ignorés), La phrase au CP, Un, une, des | Enfant, CP |
-| **Maths CP** | Les nombres jusqu'à 100, Comparer et ranger, Additions et soustractions, Calcul mental, Problèmes, Monnaie et heures (horloge à aiguilles), Formes et repérage | Enfant, CP |
+| **Maths CP** | Les nombres jusqu'à 100, Comparer et ranger, Additions et soustractions, Calcul mental, Problèmes, Monnaie et heures (horloge à aiguilles à lire, puis à régler), Formes et repérage | Enfant, CP |
 | **Questionner le monde CP** | Vivant ou non vivant, Animaux et plantes, Mon corps et ma santé, La matière, Le temps qui passe, L'espace autour de moi | Enfant, CP |
 | **Français CE1** | Lire et comprendre, Les sons et leur écriture, La phrase et les mots, Les accords, Conjuguer au CE1, Le vocabulaire, Dictée CE1 (les accents comptent, une lettre de travers acceptée) | Enfant, CE1 |
-| **Maths CE1** | Les nombres jusqu'à 1 000, Comparer, ranger, encadrer, Additions et soustractions, Calcul mental, La multiplication (tables de 2, 3, 4, 5 et 10), Problèmes, Mesures et heures (horloge avec demies et quarts, règle graduée), Géométrie | Enfant, CE1 |
+| **Maths CE1** | Les nombres jusqu'à 1 000, Comparer, ranger, encadrer, Additions et soustractions, Calcul mental, La multiplication (tables de 2, 3, 4, 5 et 10), Problèmes, Mesures et heures (horloge avec demies et quarts, à lire puis à régler, règle graduée), Géométrie | Enfant, CE1 |
 | **Questionner le monde CE1** | Le vivant, Mon corps, La matière, Objets et électricité, Le temps, L'espace | Enfant, CE1 |
 | **Français CE2** | Conjugaison (présent, futur, imparfait, passé composé, puis le verbe à écrire soi-même), La phrase, Les accords (avec un chapitre à écrire), Les homophones, Le vocabulaire, Comprendre un texte | Enfant, CE2 |
 | **Questionner le monde CE2** | Le vivant, Mon corps (squelette à toucher), La matière, L'électricité, Se repérer dans l'espace (régions, fleuves, montagnes et villes de France, continents et océans), Se repérer dans le temps | Enfant, CE2 |
@@ -103,6 +103,9 @@ questions :
 | Remettre dans l'ordre | touche les étiquettes dans l'ordre pour les placer, puis « Valider » |
 | Classer | met chaque étiquette dans la bonne boîte |
 | Zones | touche une région, un fleuve, une ville, un continent, un os ou une partie du corps ou de la plante, ou nomme celui qui est en couleur |
+| Texte à trous | glisse (ou touche) le bon mot dans le trou de la phrase, puis « Valider » ; toutes les questions à choix qui ont un trou `___` (homophones, accords, conjugaison) se jouent ainsi |
+| Régler l'horloge | fait tourner les aiguilles au doigt jusqu'à l'heure demandée, puis « Valider » |
+| Tracer | repasse au doigt sur une lettre, un chiffre ou un petit mot dessiné en pâle, puis « J'ai fini » ; l'appareil juge si le modèle est couvert sans trop déborder (pas l'ordre des traits) |
 
 ### Lire à voix haute
 
@@ -186,6 +189,44 @@ mauvaises réponses proposées, autres réponses acceptées, et « poser aussi d
 l'autre sens ». La correction se pose par-dessus le catalogue (« Modifiée par
 la famille ») et survit aux mises à jour ; « Revenir à l'original » l'annule.
 Ce que les enfants savaient déjà de la fiche est gardé.
+
+## La récré
+
+Toutes les X parties réussies (au moins 2 étoiles), l'enfant a droit à une
+partie d'un petit jeu. Une carte verte « Récré ! » apparaît en haut de ses
+modules et à la fin de la partie qui l'ouvre. Avant, la même carte compte les
+parties qui restent. La récré ne rapporte aucun hop.
+
+Cinq jeux, faits pour le doigt comme pour la souris :
+
+- **Le train des lapereaux** : le lapin mange les carottes et une file de
+  lapereaux grandit derrière lui ; il ne faut toucher ni la haie ni la file.
+  Il part au premier glissement de doigt ou à la première flèche.
+- **Bulles de couleur** : viser et tirer une bulle ; 3 bulles de la même
+  couleur qui se touchent éclatent, avec celles qu'elles retenaient. Une
+  rangée descend tous les 7 tirs ; une bulle sous la ligne finit la partie.
+- **Le panier à carottes** : attraper les carottes qui tombent (la dorée vaut
+  5) et éviter les cailloux ; trois cœurs.
+- **Coucou les lapins** : toucher les lapins qui sortent des terriers avant
+  qu'ils se cachent ; la partie finit au cinquième lapin manqué.
+- **La séquence des couleurs** : retenir l'ordre des couleurs montré, puis le
+  rejouer ; il s'allonge à chaque tour.
+
+Une partie commencée compte, même arrêtée en route ou quittée. Chaque jeu
+garde les records de la famille, que la page de la récré affiche sous chaque
+jeu, même quand la récré n'est pas encore là.
+
+Les parties qui comptent sont celles jouées depuis la dernière récré, ou
+depuis le début de la journée avant la première.
+
+Dans Gérer › Modules d'apprentissage › Par personne, la carte « Récré » règle
+pour chacun :
+
+- la récré elle-même (coupée ou non) ;
+- toutes les combien de parties (1 à 10, 3 par défaut) ;
+- un minuteur (sans, 1, 2, 3 ou 5 minutes) qui arrête la partie et garde le
+  score atteint ;
+- les jeux permis (au moins un).
 
 ## Jouer sur une tablette partagée
 

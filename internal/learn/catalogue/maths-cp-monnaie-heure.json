@@ -1,9 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "maths-cp-monnaie-heure",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "nom": "Monnaie et heures",
-  "description": "Reconnaître les pièces et les billets, compter une somme, payer le juste prix, et lire l'heure pile sur une horloge à aiguilles.",
+  "description": "Reconnaître les pièces et les billets, compter une somme, payer le juste prix, lire l'heure pile sur une horloge à aiguilles et régler les aiguilles.",
   "matiere": "maths",
   "niveaux": [
     "CP"
@@ -27,6 +27,11 @@
     {
       "id": "heure",
       "nom": "Lire l’heure pile",
+      "ouvert_apres": 80
+    },
+    {
+      "id": "regler",
+      "nom": "Régler l’horloge",
       "ouvert_apres": 80
     }
   ],
@@ -610,6 +615,18 @@
       "id": "heure-pile",
       "chapitre": "heure",
       "operation": "heure",
+      "a": [
+        1,
+        12
+      ],
+      "formes": [
+        "pile"
+      ]
+    },
+    {
+      "id": "regler-pile",
+      "chapitre": "regler",
+      "operation": "regler_heure",
       "a": [
         1,
         12

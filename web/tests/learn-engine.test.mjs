@@ -614,3 +614,15 @@ test('a line is measured on a ruler, from 0 or further along', () => {
   )
   assert.equal(source.fromKey('mes:9:9'), null)
 })
+
+test('a clock set and a tracing are graded', () => {
+  const clock = { mode: 'setclock', answer: '3 h 30' }
+  assert.equal(checkAnswer(clock, '3 h 30').correct, true)
+  assert.equal(checkAnswer(clock, '3 h').correct, false)
+  const trace = { mode: 'trace', answer: 'A' }
+  assert.deepEqual(checkAnswer(trace, 'oui'), { correct: true, almost: false })
+  assert.deepEqual(checkAnswer(trace, 'presque'), {
+    correct: false,
+    almost: true,
+  })
+})
