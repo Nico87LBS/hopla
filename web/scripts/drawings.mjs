@@ -865,11 +865,49 @@ const feeling = (mouth, brows = '', extra = '') =>
   brows +
   extra
 
-// A rabbit and a box, to say where the rabbit is.
-const box = (x, y, w = 34, h = 26) =>
-  rect(x, y, w, h, 2, '#F6C66B') + line(`M${x} ${y + 8} H${x + w}`, 1.6)
-const bunny = (x, y, s = 0.55) =>
-  `<g transform="translate(${x} ${y}) scale(${s}) translate(-50 -50)">${rabbit()}</g>`
+// A box seen from a little above, with its top and its side, so that a
+// rabbit on it, in it or behind it looks different. Open, its top is the
+// dark inside, with its flaps up.
+const BOX = '#F6C66B'
+const BOX_TOP = '#FBDDA0'
+const BOX_SIDE = '#E0A94A'
+const BOX_INSIDE = '#8A5A2B'
+const boxBack = (x, y, w, h, d, open = false) =>
+  shape(
+    `M${x} ${y} L${x + d} ${y - d} H${x + w + d} L${x + w} ${y}Z`,
+    open ? BOX_INSIDE : BOX_TOP,
+  )
+const boxFront = (x, y, w, h, d) =>
+  shape(
+    `M${x + w} ${y} L${x + w + d} ${y - d} V${y + h - d} L${x + w} ${y + h}Z`,
+    BOX_SIDE,
+  ) + rect(x, y, w, h, 1.5, BOX)
+const flaps = (x, y, w, d) =>
+  shape(
+    `M${x} ${y} L${x + d} ${y - d} L${x - 2} ${y - d - 10} L${x - 10} ${y - 8}Z`,
+    BOX,
+  ) +
+  shape(
+    `M${x + w} ${y} L${x + w + d} ${y - d} L${x + w + d + 10} ${y - d - 4} L${x + w + 8} ${y + 4}Z`,
+    BOX,
+  )
+const box3d = (x, y, w = 34, h = 26, d = 8) =>
+  boxBack(x, y, w, h, d) + boxFront(x, y, w, h, d)
+// The shadow on the ground, under what stands on it.
+const ground = (cx, cy, rx) =>
+  `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${rx * 0.18}" fill="${INK}" opacity="0.1"/>`
+// A whole rabbit sitting, its feet on the ground at y: its body says where
+// it stands, which a head alone does not.
+const sitting = (x, y, s = 0.4) =>
+  `<g transform="translate(${x} ${y}) scale(${s}) translate(-50 -104)">` +
+  circle(70, 92, 6, '#fff') +
+  oval(50, 86, 19, 16, CREAM) +
+  oval(40, 100, 8, 4.5, CREAM) +
+  oval(60, 100, 8, 4.5, CREAM) +
+  oval(43, 88, 4, 5.5, CREAM) +
+  oval(57, 88, 4, 5.5, CREAM) +
+  rabbit() +
+  '</g>'
 
 Object.assign(DRAWINGS, {
   // home
@@ -892,12 +930,20 @@ Object.assign(DRAWINGS, {
     rect(70, 48, 6, 32, 1, WOOD) +
     oval(50, 36, 10, 3.5, '#fff') +
     rect(44, 26, 12, 10, 3, '#E5484D'),
+  // A chair seen a little from the side: four legs, a seat and a back.
   chair:
-    rect(32, 18, 6, 64, 1, WOOD) +
-    rect(32, 24, 34, 6, 1, WOOD) +
-    rect(32, 34, 34, 6, 1, WOOD) +
-    rect(30, 52, 40, 7, 1, WOOD) +
-    rect(62, 52, 6, 30, 1, WOOD),
+    ground(52, 84, 26) +
+    shape('M46 50 L49 50 L49 74 L46 74Z', WOOD) +
+    shape('M44 50 L44 14 L49 15 L49 51Z', WOOD) +
+    shape('M71 56 L71 20 L76 21 L76 57Z', WOOD) +
+    shape('M46 20 L74 26 L74 33 L46 27Z', '#D9A06E') +
+    shape('M46 32 L74 38 L74 44 L46 38Z', '#D9A06E') +
+    shape('M26 56 L54 62 L76 52 L48 46Z', '#D9A06E') +
+    shape('M26 56 L54 62 V67 L26 61Z', WOOD) +
+    shape('M54 62 L76 52 V57 L54 67Z', '#A86E43') +
+    shape('M71 56 L76 54 V78 L73 79 L71 78Z', WOOD) +
+    shape('M27 60 L31 61 V84 L27 84Z', WOOD) +
+    shape('M51 66 L55 67 V88 L51 88Z', WOOD),
   door:
     rect(32, 16, 36, 68, 3, WOOD) +
     rect(37, 22, 26, 22, 2, '#D9A06E') +
@@ -935,14 +981,17 @@ Object.assign(DRAWINGS, {
       'M68 22 L72 18 C74 16 78 16 80 18 L82 20 C84 22 84 26 82 28 L78 32Z',
       '#F472B6',
     ),
+  // Scissors, open: two blades crossed at the screw, two rings to hold.
   scissors:
-    circle(32, 70, 9, '#E5484D') +
-    circle(52, 76, 9, '#E5484D') +
-    circle(32, 70, 4, '#fff', false) +
-    circle(52, 76, 4, '#fff', false) +
-    shape('M38 63 L74 22 L78 26 L46 68Z', METAL) +
-    shape('M46 70 L80 34 L82 40 L52 72Z', METAL) +
-    circle(46, 66, 2, INK, false),
+    shape('M47 58 L22 20 L28 18 L53 54Z', METAL) +
+    shape('M53 58 L78 20 L72 18 L47 54Z', METAL) +
+    shape('M46 56 L52 60 L42 72 L37 69Z', '#E5484D') +
+    shape('M54 56 L48 60 L58 72 L63 69Z', '#E5484D') +
+    circle(34, 77, 9, '#E5484D') +
+    circle(66, 77, 9, '#E5484D') +
+    circle(34, 77, 4.2, '#fff', false) +
+    circle(66, 77, 4.2, '#fff', false) +
+    circle(50, 57, 2.6, INK, false),
   glue:
     rect(36, 34, 28, 46, 6, '#fff') +
     rect(36, 46, 28, 20, 2, '#3B82F6') +
@@ -994,18 +1043,31 @@ Object.assign(DRAWINGS, {
   'shape-rectangle': rect(18, 34, 64, 34, 2, '#30A46C'),
   // where the rabbit is
   'pos-in':
-    rect(30, 50, 40, 10, 2, '#B98235') +
-    bunny(50, 48, 0.42) +
-    rect(30, 58, 40, 24, 2, '#F6C66B'),
-  'pos-on': box(33, 58, 34, 24) + bunny(50, 40, 0.42),
+    ground(54, 82, 26) +
+    boxBack(30, 58, 40, 24, 8, true) +
+    sitting(52, 74, 0.4) +
+    boxFront(30, 58, 40, 24, 8) +
+    flaps(30, 58, 40, 8),
+  'pos-on':
+    ground(54, 82, 24) + box3d(32, 58, 36, 24, 8) + sitting(54, 55, 0.36),
   'pos-under':
-    rect(22, 24, 56, 8, 2, WOOD) +
-    rect(26, 32, 5, 46, 1, WOOD) +
-    rect(69, 32, 5, 46, 1, WOOD) +
-    bunny(50, 62, 0.42),
-  'pos-in-front': box(34, 26, 32, 26) + bunny(50, 62, 0.62),
-  'pos-behind': bunny(50, 34, 0.5) + box(24, 46, 52, 36),
-  'pos-next-to': box(18, 52, 32, 30) + bunny(68, 62, 0.42),
+    ground(50, 80, 30) +
+    rect(22, 32, 56, 8, 2, WOOD) +
+    rect(26, 40, 5, 40, 1, WOOD) +
+    rect(69, 40, 5, 40, 1, WOOD) +
+    sitting(50, 80, 0.36),
+  'pos-in-front':
+    ground(54, 70, 22) +
+    box3d(36, 46, 32, 24, 8) +
+    ground(46, 86, 12) +
+    sitting(46, 86, 0.42),
+  'pos-behind':
+    sitting(54, 62, 0.44) + ground(52, 84, 30) + box3d(26, 54, 48, 30, 10),
+  'pos-next-to':
+    ground(32, 82, 18) +
+    box3d(14, 58, 30, 24, 7) +
+    ground(70, 84, 12) +
+    sitting(70, 84, 0.38),
 })
 
 // A little one is its parent drawn smaller, with a bow.
@@ -1980,9 +2042,23 @@ Object.assign(DRAWINGS, {
   'shape-pyramid':
     shape('M50 20 L26 70 L54 80Z', '#FFD23F') +
     shape('M50 20 L54 80 L76 64Z', '#E0A800'),
-  'pos-left': box(54, 52, 32, 30) + bunny(30, 62, 0.42),
-  'pos-right': box(14, 52, 32, 30) + bunny(70, 62, 0.42),
-  'pos-between': box(4, 54, 26, 28) + box(70, 54, 26, 28) + bunny(50, 62, 0.42),
+  'pos-left':
+    ground(70, 82, 18) +
+    box3d(54, 58, 30, 24, 7) +
+    ground(28, 84, 12) +
+    sitting(28, 84, 0.38),
+  'pos-right':
+    ground(30, 82, 18) +
+    box3d(14, 58, 30, 24, 7) +
+    ground(72, 84, 12) +
+    sitting(72, 84, 0.38),
+  'pos-between':
+    ground(18, 82, 13) +
+    box3d(6, 60, 22, 22, 6) +
+    ground(78, 82, 13) +
+    box3d(66, 60, 22, 22, 6) +
+    ground(50, 84, 12) +
+    sitting(50, 84, 0.36),
   seed:
     oval(50, 56, 16, 11, '#B07A4A', true, -20) +
     line('M40 60 C46 54 54 52 60 52', 1.4),
