@@ -146,11 +146,16 @@ Piper télécharge une voix la première fois qu'on la demande. Le choix de la
 voix, langue par langue, se fait dans Gérer › Modules d'apprentissage › Voix.
 Si le serveur ne répond pas, l'appareil reprend sa propre voix.
 
-La voix française Siwis ne connaît pas les sons nasals : elle reçoit « un »
-comme « eu » et « on » comme « o ». Dans une phrase, le reste du mot l'aide à
-deviner, mais un mot seul (« un », « au », une lettre) sort de travers.
-Essayez les voix plus récentes (`fr_FR-tom-medium`, `fr_FR-upmc-medium`,
-`fr_FR-mls-medium`) avec « Écouter les mots difficiles » dans l'onglet Voix.
+Toutes les voix Piper lisent le texte avec le même outil (espeak), qui
+comprend mal un son écrit seul : « in » se lit à l'anglaise, « eu » comme
+« u », « é » est épelé « e accent aigu », « ch » « cé ache ». Pour une voix
+française, Hopla réécrit donc un son seul, ou placé entre « », comme espeak
+le lit bien : « hein » pour « in », « eux » pour « eu », « ée » pour « é »,
+« che » pour « ch », etc. Dans un mot, rien ne change.
+
+La voix Siwis ne connaît pas les sons nasals : elle reçoit « un » comme
+« eu » et « on » comme « o ». À l'essai, les autres voix françaises (Tom,
+UPMC, MLS) ne font pas mieux sur les mots courts.
 
 Piper tire un peu au hasard à chaque phrase. Pour une voix plus régulière,
 ajoutez par exemple `--noise-scale 0.4 --noise-w 0.5` à la commande du

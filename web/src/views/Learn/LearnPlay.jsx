@@ -1099,7 +1099,9 @@ const LearnPlay = ({ playMode = false }) => {
                           ? HOPLA.gold
                           : HOPLA.carrot
                       : i === index
-                        ? color
+                        ? // A neutral dark, never mistaken for an answer:
+                          // some modules are orange, like the wrong ones.
+                          'text.secondary'
                         : 'background.level3',
                     borderRadius: 4,
                     flex: 1,
