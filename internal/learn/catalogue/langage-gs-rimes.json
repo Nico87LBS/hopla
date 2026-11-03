@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "langage-gs-rimes",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "nom": "Les rimes",
   "description": "Entendre que deux mots finissent pareil : classer, relier les dessins qui riment, trouver l'intrus.",
   "matiere": "francais",
@@ -60,62 +60,62 @@
       ],
       "a_classer": [
         {
-          "texte": "le gâteau",
+          "texte": "gâteau",
           "boite": "comme bateau",
           "image": "cake"
         },
         {
-          "texte": "le chapeau",
+          "texte": "chapeau",
           "boite": "comme bateau",
           "image": "hat"
         },
         {
-          "texte": "le manteau",
+          "texte": "manteau",
           "boite": "comme bateau",
           "image": "coat"
         },
         {
-          "texte": "l'oiseau",
+          "texte": "oiseau",
           "boite": "comme bateau",
           "image": "bird"
         },
         {
-          "texte": "le vélo",
+          "texte": "vélo",
           "boite": "comme bateau",
           "image": "bike"
         },
         {
-          "texte": "le seau",
+          "texte": "seau",
           "boite": "comme bateau",
           "image": "bucket"
         },
         {
-          "texte": "le poisson",
+          "texte": "poisson",
           "boite": "comme ballon",
           "image": "fish"
         },
         {
-          "texte": "le cochon",
+          "texte": "cochon",
           "boite": "comme ballon",
           "image": "pig"
         },
         {
-          "texte": "le mouton",
+          "texte": "mouton",
           "boite": "comme ballon",
           "image": "sheep"
         },
         {
-          "texte": "le camion",
+          "texte": "camion",
           "boite": "comme ballon",
           "image": "truck"
         },
         {
-          "texte": "la maison",
+          "texte": "maison",
           "boite": "comme ballon",
           "image": "house"
         },
         {
-          "texte": "le bonbon",
+          "texte": "bonbon",
           "boite": "comme ballon",
           "image": "candy"
         }
@@ -138,42 +138,42 @@
       ],
       "a_classer": [
         {
-          "texte": "le pain",
+          "texte": "pain",
           "boite": "comme lapin",
           "image": "bread"
         },
         {
-          "texte": "la main",
+          "texte": "main",
           "boite": "comme lapin",
           "image": "hand"
         },
         {
-          "texte": "le sapin",
+          "texte": "sapin",
           "boite": "comme lapin",
           "image": "fir"
         },
         {
-          "texte": "le train",
+          "texte": "train",
           "boite": "comme lapin",
           "image": "train"
         },
         {
-          "texte": "le nez",
+          "texte": "nez",
           "boite": "comme bébé",
           "image": "nose"
         },
         {
-          "texte": "le pied",
+          "texte": "pied",
           "boite": "comme bébé",
           "image": "foot"
         },
         {
-          "texte": "la poupée",
+          "texte": "poupée",
           "boite": "comme bébé",
           "image": "doll"
         },
         {
-          "texte": "la clé",
+          "texte": "clé",
           "boite": "comme bébé",
           "image": "key"
         }
@@ -187,51 +187,51 @@
       "paires": [
         [
           {
-            "texte": "le chat",
+            "texte": "chat",
             "image": "cat"
           },
           {
-            "texte": "le rat",
+            "texte": "rat",
             "image": "rat"
           }
         ],
         [
           {
-            "texte": "le bateau",
+            "texte": "bateau",
             "image": "boat"
           },
           {
-            "texte": "le gâteau",
+            "texte": "gâteau",
             "image": "cake"
           }
         ],
         [
           {
-            "texte": "le lapin",
+            "texte": "lapin",
             "image": "rabbit"
           },
           {
-            "texte": "le sapin",
+            "texte": "sapin",
             "image": "fir"
           }
         ],
         [
           {
-            "texte": "le canard",
+            "texte": "canard",
             "image": "duck"
           },
           {
-            "texte": "le renard",
+            "texte": "renard",
             "image": "fox"
           }
         ],
         [
           {
-            "texte": "le bébé",
+            "texte": "bébé",
             "image": "baby"
           },
           {
-            "texte": "la clé",
+            "texte": "clé",
             "image": "key"
           }
         ]
@@ -245,51 +245,51 @@
       "paires": [
         [
           {
-            "texte": "le poisson",
+            "texte": "poisson",
             "image": "fish"
           },
           {
-            "texte": "le mouton",
+            "texte": "mouton",
             "image": "sheep"
           }
         ],
         [
           {
-            "texte": "le chapeau",
+            "texte": "chapeau",
             "image": "hat"
           },
           {
-            "texte": "le manteau",
+            "texte": "manteau",
             "image": "coat"
           }
         ],
         [
           {
-            "texte": "la main",
+            "texte": "main",
             "image": "hand"
           },
           {
-            "texte": "le pain",
+            "texte": "pain",
             "image": "bread"
           }
         ],
         [
           {
-            "texte": "le nez",
+            "texte": "nez",
             "image": "nose"
           },
           {
-            "texte": "le pied",
+            "texte": "pied",
             "image": "foot"
           }
         ],
         [
           {
-            "texte": "le camion",
+            "texte": "camion",
             "image": "truck"
           },
           {
-            "texte": "la maison",
+            "texte": "maison",
             "image": "house"
           }
         ]
@@ -303,51 +303,51 @@
       "paires": [
         [
           {
-            "texte": "l'oiseau",
+            "texte": "oiseau",
             "image": "bird"
           },
           {
-            "texte": "le vélo",
+            "texte": "vélo",
             "image": "bike"
           }
         ],
         [
           {
-            "texte": "la poupée",
+            "texte": "poupée",
             "image": "doll"
           },
           {
-            "texte": "le bébé",
+            "texte": "bébé",
             "image": "baby"
           }
         ],
         [
           {
-            "texte": "le train",
+            "texte": "train",
             "image": "train"
           },
           {
-            "texte": "le lapin",
+            "texte": "lapin",
             "image": "rabbit"
           }
         ],
         [
           {
-            "texte": "le cochon",
+            "texte": "cochon",
             "image": "pig"
           },
           {
-            "texte": "le bonbon",
+            "texte": "bonbon",
             "image": "candy"
           }
         ],
         [
           {
-            "texte": "le seau",
+            "texte": "seau",
             "image": "bucket"
           },
           {
-            "texte": "le bateau",
+            "texte": "bateau",
             "image": "boat"
           }
         ]
@@ -358,16 +358,16 @@
       "chapitre": "intrus",
       "type": "choix",
       "question": "Quel mot ne rime pas avec les autres ?",
-      "reponse": "le lapin",
+      "reponse": "lapin",
       "pieges": [
-        "le bateau",
-        "le gâteau",
-        "le chapeau"
+        "bateau",
+        "gâteau",
+        "chapeau"
       ],
       "pourquoi": {
-        "le bateau": "« le bateau » finit par [o], comme les autres : c’est « le lapin » qui ne rime pas.",
-        "le gâteau": "« le gâteau » finit par [o], comme les autres : c’est « le lapin » qui ne rime pas.",
-        "le chapeau": "« le chapeau » finit par [o], comme les autres : c’est « le lapin » qui ne rime pas."
+        "bateau": "« bateau » finit par [o], comme les autres : c’est « lapin » qui ne rime pas.",
+        "gâteau": "« gâteau » finit par [o], comme les autres : c’est « lapin » qui ne rime pas.",
+        "chapeau": "« chapeau » finit par [o], comme les autres : c’est « lapin » qui ne rime pas."
       }
     },
     {
@@ -375,16 +375,16 @@
       "chapitre": "intrus",
       "type": "choix",
       "question": "Quel mot ne rime pas avec les autres ?",
-      "reponse": "la poire",
+      "reponse": "poire",
       "pieges": [
-        "le poisson",
-        "le mouton",
-        "le cochon"
+        "poisson",
+        "mouton",
+        "cochon"
       ],
       "pourquoi": {
-        "le poisson": "« le poisson » finit par [on], comme les autres : c’est « la poire » qui ne rime pas.",
-        "le mouton": "« le mouton » finit par [on], comme les autres : c’est « la poire » qui ne rime pas.",
-        "le cochon": "« le cochon » finit par [on], comme les autres : c’est « la poire » qui ne rime pas."
+        "poisson": "« poisson » finit par [on], comme les autres : c’est « poire » qui ne rime pas.",
+        "mouton": "« mouton » finit par [on], comme les autres : c’est « poire » qui ne rime pas.",
+        "cochon": "« cochon » finit par [on], comme les autres : c’est « poire » qui ne rime pas."
       }
     },
     {
@@ -392,16 +392,16 @@
       "chapitre": "intrus",
       "type": "choix",
       "question": "Quel mot ne rime pas avec les autres ?",
-      "reponse": "le chat",
+      "reponse": "chat",
       "pieges": [
-        "le lapin",
-        "le pain",
-        "la main"
+        "lapin",
+        "pain",
+        "main"
       ],
       "pourquoi": {
-        "le lapin": "« le lapin » finit par [in], comme les autres : c’est « le chat » qui ne rime pas.",
-        "le pain": "« le pain » finit par [in], comme les autres : c’est « le chat » qui ne rime pas.",
-        "la main": "« la main » finit par [in], comme les autres : c’est « le chat » qui ne rime pas."
+        "lapin": "« lapin » finit par [in], comme les autres : c’est « chat » qui ne rime pas.",
+        "pain": "« pain » finit par [in], comme les autres : c’est « chat » qui ne rime pas.",
+        "main": "« main » finit par [in], comme les autres : c’est « chat » qui ne rime pas."
       }
     },
     {
@@ -409,16 +409,16 @@
       "chapitre": "intrus",
       "type": "choix",
       "question": "Quel mot ne rime pas avec les autres ?",
-      "reponse": "le ballon",
+      "reponse": "ballon",
       "pieges": [
-        "le nez",
-        "le pied",
-        "le bébé"
+        "nez",
+        "pied",
+        "bébé"
       ],
       "pourquoi": {
-        "le nez": "« le nez » finit par [é], comme les autres : c’est « le ballon » qui ne rime pas.",
-        "le pied": "« le pied » finit par [é], comme les autres : c’est « le ballon » qui ne rime pas.",
-        "le bébé": "« le bébé » finit par [é], comme les autres : c’est « le ballon » qui ne rime pas."
+        "nez": "« nez » finit par [é], comme les autres : c’est « ballon » qui ne rime pas.",
+        "pied": "« pied » finit par [é], comme les autres : c’est « ballon » qui ne rime pas.",
+        "bébé": "« bébé » finit par [é], comme les autres : c’est « ballon » qui ne rime pas."
       }
     },
     {
@@ -426,16 +426,16 @@
       "chapitre": "intrus",
       "type": "choix",
       "question": "Quel mot ne rime pas avec les autres ?",
-      "reponse": "le vélo",
+      "reponse": "vélo",
       "pieges": [
-        "le chat",
-        "le rat",
+        "chat",
+        "rat",
         "papa"
       ],
       "pourquoi": {
-        "le chat": "« le chat » finit par [a], comme les autres : c’est « le vélo » qui ne rime pas.",
-        "le rat": "« le rat » finit par [a], comme les autres : c’est « le vélo » qui ne rime pas.",
-        "papa": "« papa » finit par [a], comme les autres : c’est « le vélo » qui ne rime pas."
+        "chat": "« chat » finit par [a], comme les autres : c’est « vélo » qui ne rime pas.",
+        "rat": "« rat » finit par [a], comme les autres : c’est « vélo » qui ne rime pas.",
+        "papa": "« papa » finit par [a], comme les autres : c’est « vélo » qui ne rime pas."
       }
     },
     {
@@ -443,14 +443,14 @@
       "chapitre": "intrus",
       "type": "choix",
       "question": "Quel mot ne rime pas avec les autres ?",
-      "reponse": "la souris",
+      "reponse": "souris",
       "pieges": [
-        "le canard",
-        "le renard"
+        "canard",
+        "renard"
       ],
       "pourquoi": {
-        "le canard": "« le canard » finit par [ar], comme les autres : c’est « la souris » qui ne rime pas.",
-        "le renard": "« le renard » finit par [ar], comme les autres : c’est « la souris » qui ne rime pas."
+        "canard": "« canard » finit par [ar], comme les autres : c’est « souris » qui ne rime pas.",
+        "renard": "« renard » finit par [ar], comme les autres : c’est « souris » qui ne rime pas."
       }
     },
     {
@@ -458,16 +458,16 @@
       "chapitre": "intrus",
       "type": "choix",
       "question": "Quel mot ne rime pas avec les autres ?",
-      "reponse": "le train",
+      "reponse": "train",
       "pieges": [
-        "le manteau",
-        "le seau",
-        "l'oiseau"
+        "manteau",
+        "seau",
+        "oiseau"
       ],
       "pourquoi": {
-        "le manteau": "« le manteau » finit par [o], comme les autres : c’est « le train » qui ne rime pas.",
-        "le seau": "« le seau » finit par [o], comme les autres : c’est « le train » qui ne rime pas.",
-        "l'oiseau": "« l'oiseau » finit par [o], comme les autres : c’est « le train » qui ne rime pas."
+        "manteau": "« manteau » finit par [o], comme les autres : c’est « train » qui ne rime pas.",
+        "seau": "« seau » finit par [o], comme les autres : c’est « train » qui ne rime pas.",
+        "oiseau": "« oiseau » finit par [o], comme les autres : c’est « train » qui ne rime pas."
       }
     },
     {
@@ -475,16 +475,16 @@
       "chapitre": "intrus",
       "type": "choix",
       "question": "Quel mot ne rime pas avec les autres ?",
-      "reponse": "la clé",
+      "reponse": "clé",
       "pieges": [
-        "le camion",
-        "la maison",
-        "le bonbon"
+        "camion",
+        "maison",
+        "bonbon"
       ],
       "pourquoi": {
-        "le camion": "« le camion » finit par [on], comme les autres : c’est « la clé » qui ne rime pas.",
-        "la maison": "« la maison » finit par [on], comme les autres : c’est « la clé » qui ne rime pas.",
-        "le bonbon": "« le bonbon » finit par [on], comme les autres : c’est « la clé » qui ne rime pas."
+        "camion": "« camion » finit par [on], comme les autres : c’est « clé » qui ne rime pas.",
+        "maison": "« maison » finit par [on], comme les autres : c’est « clé » qui ne rime pas.",
+        "bonbon": "« bonbon » finit par [on], comme les autres : c’est « clé » qui ne rime pas."
       }
     }
   ]

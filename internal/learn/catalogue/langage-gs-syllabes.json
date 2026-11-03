@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "langage-gs-syllabes",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "nom": "Les syllabes",
   "description": "Découper les mots à l'oral : compter les syllabes d'un mot, trouver les mots qui commencent pareil.",
   "matiere": "francais",
@@ -806,11 +806,11 @@
       "paires": [
         [
           {
-            "texte": "le soleil",
+            "texte": "soleil",
             "image": "sun"
           },
           {
-            "texte": "le seau",
+            "texte": "seau",
             "image": "bucket"
           }
         ],
@@ -820,37 +820,37 @@
             "image": "dad"
           },
           {
-            "texte": "le papillon",
+            "texte": "papillon",
             "image": "butterfly"
           }
         ],
         [
           {
-            "texte": "le bateau",
+            "texte": "bateau",
             "image": "boat"
           },
           {
-            "texte": "le ballon",
+            "texte": "ballon",
             "image": "ball"
           }
         ],
         [
           {
-            "texte": "le canard",
+            "texte": "canard",
             "image": "duck"
           },
           {
-            "texte": "le camion",
+            "texte": "camion",
             "image": "truck"
           }
         ],
         [
           {
-            "texte": "le chapeau",
+            "texte": "chapeau",
             "image": "hat"
           },
           {
-            "texte": "le chat",
+            "texte": "chat",
             "image": "cat"
           }
         ]
@@ -864,51 +864,51 @@
       "paires": [
         [
           {
-            "texte": "le poisson",
+            "texte": "poisson",
             "image": "fish"
           },
           {
-            "texte": "la poire",
+            "texte": "poire",
             "image": "pear"
           }
         ],
         [
           {
-            "texte": "la poupée",
+            "texte": "poupée",
             "image": "doll"
           },
           {
-            "texte": "le poussin",
+            "texte": "poussin",
             "image": "chick"
           }
         ],
         [
           {
-            "texte": "la banane",
+            "texte": "banane",
             "image": "banana"
           },
           {
-            "texte": "le bateau",
+            "texte": "bateau",
             "image": "boat"
           }
         ],
         [
           {
-            "texte": "la carotte",
+            "texte": "carotte",
             "image": "carrot"
           },
           {
-            "texte": "le canard",
+            "texte": "canard",
             "image": "duck"
           }
         ],
         [
           {
-            "texte": "le livre",
+            "texte": "livre",
             "image": "book"
           },
           {
-            "texte": "le lit",
+            "texte": "lit",
             "image": "bed"
           }
         ]

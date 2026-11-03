@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "langage-gs-sons",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "nom": "Le son du début",
   "description": "Entendre le premier son d'un mot et trouver les mots qui commencent pareil.",
   "matiere": "francais",
@@ -60,47 +60,47 @@
       ],
       "a_classer": [
         {
-          "texte": "la main",
+          "texte": "main",
           "boite": "comme maman",
           "image": "hand"
         },
         {
-          "texte": "la maison",
+          "texte": "maison",
           "boite": "comme maman",
           "image": "house"
         },
         {
-          "texte": "le mouton",
+          "texte": "mouton",
           "boite": "comme maman",
           "image": "sheep"
         },
         {
-          "texte": "le miel",
+          "texte": "miel",
           "boite": "comme maman",
           "image": "honey"
         },
         {
-          "texte": "le lait",
+          "texte": "lait",
           "boite": "comme lapin",
           "image": "milk"
         },
         {
-          "texte": "le lion",
+          "texte": "lion",
           "boite": "comme lapin",
           "image": "lion"
         },
         {
-          "texte": "le livre",
+          "texte": "livre",
           "boite": "comme lapin",
           "image": "book"
         },
         {
-          "texte": "la lune",
+          "texte": "lune",
           "boite": "comme lapin",
           "image": "moon"
         },
         {
-          "texte": "le lit",
+          "texte": "lit",
           "boite": "comme lapin",
           "image": "bed"
         }
@@ -123,47 +123,47 @@
       ],
       "a_classer": [
         {
-          "texte": "la souris",
+          "texte": "souris",
           "boite": "comme soleil",
           "image": "mouse"
         },
         {
-          "texte": "le serpent",
+          "texte": "serpent",
           "boite": "comme soleil",
           "image": "snake"
         },
         {
-          "texte": "le sapin",
+          "texte": "sapin",
           "boite": "comme soleil",
           "image": "fir"
         },
         {
-          "texte": "le seau",
+          "texte": "seau",
           "boite": "comme soleil",
           "image": "bucket"
         },
         {
-          "texte": "la salade",
+          "texte": "salade",
           "boite": "comme soleil",
           "image": "salad"
         },
         {
-          "texte": "la vache",
+          "texte": "vache",
           "boite": "comme vélo",
           "image": "cow"
         },
         {
-          "texte": "la voiture",
+          "texte": "voiture",
           "boite": "comme vélo",
           "image": "car"
         },
         {
-          "texte": "le vent",
+          "texte": "vent",
           "boite": "comme vélo",
           "image": "wind"
         },
         {
-          "texte": "le ver de terre",
+          "texte": "ver de terre",
           "boite": "comme vélo",
           "image": "worm"
         }
@@ -186,57 +186,57 @@
       ],
       "a_classer": [
         {
-          "texte": "le pain",
+          "texte": "pain",
           "boite": "comme papa",
           "image": "bread"
         },
         {
-          "texte": "le poisson",
+          "texte": "poisson",
           "boite": "comme papa",
           "image": "fish"
         },
         {
-          "texte": "la poire",
+          "texte": "poire",
           "boite": "comme papa",
           "image": "pear"
         },
         {
-          "texte": "le pied",
+          "texte": "pied",
           "boite": "comme papa",
           "image": "foot"
         },
         {
-          "texte": "la poupée",
+          "texte": "poupée",
           "boite": "comme papa",
           "image": "doll"
         },
         {
-          "texte": "la pomme",
+          "texte": "pomme",
           "boite": "comme papa",
           "image": "apple"
         },
         {
-          "texte": "la banane",
+          "texte": "banane",
           "boite": "comme ballon",
           "image": "banana"
         },
         {
-          "texte": "le bateau",
+          "texte": "bateau",
           "boite": "comme ballon",
           "image": "boat"
         },
         {
-          "texte": "le bébé",
+          "texte": "bébé",
           "boite": "comme ballon",
           "image": "baby"
         },
         {
-          "texte": "la bouche",
+          "texte": "bouche",
           "boite": "comme ballon",
           "image": "mouth"
         },
         {
-          "texte": "le bonbon",
+          "texte": "bonbon",
           "boite": "comme ballon",
           "image": "candy"
         }
@@ -259,42 +259,42 @@
       ],
       "a_classer": [
         {
-          "texte": "le chien",
+          "texte": "chien",
           "boite": "comme chat",
           "image": "dog"
         },
         {
-          "texte": "le cheval",
+          "texte": "cheval",
           "boite": "comme chat",
           "image": "horse"
         },
         {
-          "texte": "le chapeau",
+          "texte": "chapeau",
           "boite": "comme chat",
           "image": "hat"
         },
         {
-          "texte": "les chaussures",
+          "texte": "chaussures",
           "boite": "comme chat",
           "image": "shoes"
         },
         {
-          "texte": "les chaussettes",
+          "texte": "chaussettes",
           "boite": "comme chat",
           "image": "socks"
         },
         {
-          "texte": "le rat",
+          "texte": "rat",
           "boite": "comme renard",
           "image": "rat"
         },
         {
-          "texte": "la robe",
+          "texte": "robe",
           "boite": "comme renard",
           "image": "dress"
         },
         {
-          "texte": "le raisin",
+          "texte": "raisin",
           "boite": "comme renard",
           "image": "grapes"
         }

@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "lire-sans-dessin",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "nom": "Mots sans dessin",
   "description": "Lire des mots qu'on ne peut pas dessiner : les actions, les contraires, les mots du temps, ranger les mots, et les mots qui se ressemblent.",
   "matiere": "francais",
@@ -55,6 +55,7 @@
       "type": "choix",
       "question": "Avec un livre, on peut ___.",
       "reponse": "lire",
+      "pieges": ["boire", "nager", "couper"],
       "consigne": "Lis la phrase et choisis le mot qui manque."
     },
     {
@@ -63,6 +64,7 @@
       "type": "choix",
       "question": "Dans un lit, on va ___.",
       "reponse": "dormir",
+      "pieges": ["boire", "couper", "voler"],
       "consigne": "Lis la phrase et choisis le mot qui manque."
     },
     {
@@ -71,6 +73,7 @@
       "type": "choix",
       "question": "Avec une fourchette, on peut ___.",
       "reponse": "manger",
+      "pieges": ["chanter", "nager", "dormir"],
       "consigne": "Lis la phrase et choisis le mot qui manque."
     },
     {
@@ -79,6 +82,7 @@
       "type": "choix",
       "question": "Avec un ballon, on peut ___.",
       "reponse": "jouer",
+      "pieges": ["boire", "dormir", "dessiner"],
       "consigne": "Lis la phrase et choisis le mot qui manque."
     },
     {
@@ -87,6 +91,7 @@
       "type": "choix",
       "question": "Dans la piscine, on peut ___.",
       "reponse": "nager",
+      "pieges": ["dessiner", "couper", "dormir"],
       "consigne": "Lis la phrase et choisis le mot qui manque."
     },
     {
@@ -95,6 +100,7 @@
       "type": "choix",
       "question": "Avec ses ailes, l’oiseau peut ___.",
       "reponse": "voler",
+      "pieges": ["lire", "dessiner", "couper"],
       "consigne": "Lis la phrase et choisis le mot qui manque."
     },
     {
@@ -103,6 +109,7 @@
       "type": "choix",
       "question": "Avec ses jambes, on peut ___.",
       "reponse": "courir",
+      "pieges": ["écouter", "dessiner", "boire"],
       "consigne": "Lis la phrase et choisis le mot qui manque."
     },
     {
@@ -111,6 +118,7 @@
       "type": "choix",
       "question": "Avec une chanson, on peut ___.",
       "reponse": "chanter",
+      "pieges": ["couper", "nager", "boire"],
       "consigne": "Lis la phrase et choisis le mot qui manque."
     },
     {
@@ -119,6 +127,7 @@
       "type": "choix",
       "question": "Avec un crayon, on peut ___.",
       "reponse": "dessiner",
+      "pieges": ["boire", "nager", "dormir"],
       "consigne": "Lis la phrase et choisis le mot qui manque."
     },
     {
@@ -127,6 +136,7 @@
       "type": "choix",
       "question": "Avec un verre d’eau, on peut ___.",
       "reponse": "boire",
+      "pieges": ["courir", "couper", "chanter"],
       "consigne": "Lis la phrase et choisis le mot qui manque."
     },
     {
@@ -135,6 +145,7 @@
       "type": "choix",
       "question": "Avec ses oreilles, on peut ___.",
       "reponse": "écouter",
+      "pieges": ["courir", "couper", "dessiner"],
       "consigne": "Lis la phrase et choisis le mot qui manque."
     },
     {
@@ -143,6 +154,7 @@
       "type": "choix",
       "question": "Avec ses yeux, on peut ___.",
       "reponse": "regarder",
+      "pieges": ["écouter", "courir", "couper"],
       "consigne": "Lis la phrase et choisis le mot qui manque."
     },
     {
@@ -151,6 +163,7 @@
       "type": "choix",
       "question": "Avec du savon, on peut se ___.",
       "reponse": "laver",
+      "pieges": ["boire", "chanter", "courir"],
       "consigne": "Lis la phrase et choisis le mot qui manque."
     },
     {
@@ -159,6 +172,7 @@
       "type": "choix",
       "question": "Avec des ciseaux, on peut ___.",
       "reponse": "couper",
+      "pieges": ["boire", "chanter", "nager"],
       "consigne": "Lis la phrase et choisis le mot qui manque."
     },
     {
@@ -167,6 +181,7 @@
       "type": "choix",
       "question": "Avec une corde, on peut ___.",
       "reponse": "sauter",
+      "pieges": ["boire", "lire", "dessiner"],
       "consigne": "Lis la phrase et choisis le mot qui manque."
     },
     {

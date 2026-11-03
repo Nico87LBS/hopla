@@ -496,6 +496,7 @@ export const readsBack = doc =>
 // the words the child had to read, so that they hear them.
 export const readBack = item => {
   if (item.subject?.text) return item.subject.text
+  if (item.word) return item.word
   if (item.mode === 'order') return item.answer.split(' → ').join(' ')
   if (item.prompt === item.instruction) return item.answer
   // A hint in brackets at the end, « (aller, futur) », is not read back.
@@ -634,6 +635,16 @@ const Prompt = ({
           sx={{ fontVariantNumeric: 'tabular-nums' }}
         >
           {item.prompt}
+        </Typography>
+      )}
+      {item.word && (
+        // The word whose sounds are asked, apart and big.
+        <Typography
+          className='hopla-words'
+          level='h1'
+          sx={{ color, fontSize: { xs: 44, sm: 56 }, lineHeight: 1.1 }}
+        >
+          {item.word}
         </Typography>
       )}
       {item.subject && <LabelView subject={item.subject} />}
