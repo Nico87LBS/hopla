@@ -8,7 +8,8 @@ const LETTERS =
 /* eslint-enable max-len */
 
 // The Hopla wordmark: the « o » is the rabbit and the « l » a carrot. The
-// letters follow the color scheme, myrtille on light and cream on dark.
+// letters follow the color scheme, myrtille on light and cream on dark. The
+// carrot leaves go above the box, hence overflow visible.
 const HoplaWordmark = ({ height = 28, sx, ...props }) => (
   <Box
     component='svg'
@@ -19,6 +20,7 @@ const HoplaWordmark = ({ height = 28, sx, ...props }) => (
       {
         color: '#3E2F86',
         display: 'block',
+        overflow: 'visible',
         height,
         width: 'auto',
         '[data-joy-color-scheme="dark"] &': { color: '#FFF4E8' },
