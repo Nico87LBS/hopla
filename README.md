@@ -1,4 +1,11 @@
-# <img src="assets/icon.png" alt="" width="40"/> Hopla
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/logo-fond-sombre.svg"/>
+    <img src="assets/logo.svg" alt="Hopla" width="320"/>
+  </picture>
+</p>
+
+# Hopla
 
 **Les tâches de la famille, en jeu.**
 
