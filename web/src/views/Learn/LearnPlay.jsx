@@ -60,6 +60,8 @@ import {
 import {
   Clock,
   CountPicture,
+  Draggable,
+  DragToBox,
   Drawing,
   LabelView,
   MatchPairs,
@@ -512,6 +514,7 @@ export const readBack = item => {
 const Prompt = ({
   blank,
   color,
+  drag = false,
   item,
   next,
   repeat = true,
@@ -647,7 +650,15 @@ const Prompt = ({
           {item.word}
         </Typography>
       )}
-      {item.subject && <LabelView subject={item.subject} />}
+      {item.subject &&
+        (drag ? (
+          // To sort, the label can also be carried into its box.
+          <Draggable id='subject' data={{ subject: true }}>
+            <LabelView subject={item.subject} />
+          </Draggable>
+        ) : (
+          <LabelView subject={item.subject} />
+        ))}
     </Stack>
   )
 }
@@ -655,6 +666,7 @@ const Prompt = ({
 Prompt.propTypes = {
   blank: PropTypes.object,
   color: PropTypes.string.isRequired,
+  drag: PropTypes.bool,
   item: PropTypes.object.isRequired,
   next: PropTypes.object,
   repeat: PropTypes.bool,
@@ -1121,57 +1133,60 @@ const LearnPlay = ({ playMode = false }) => {
         />
       ) : (
         (item || feedback) && (
-          <Stack gap={3} alignItems='center' className={writingClass(doc)}>
-            <Sheet
-              variant='outlined'
-              sx={{
-                borderRadius: 'xl',
-                borderColor: color,
-                borderWidth: 2,
-                minHeight: 120,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                p: 3,
-                textAlign: 'center',
-                width: '100%',
-              }}
-            >
-              <Prompt
-                blank={blank}
-                item={shown}
-                next={game.questions[game.questions.indexOf(shown) + 1]}
-                repeat={sayAgain(
-                  game.questions,
-                  game.answers,
-                  game.questions.indexOf(shown),
-                )}
-                color={color}
-                say={sayFor(shown)}
-                tell={tell}
-                tellLang={doc.langue || 'fr'}
-              />
-            </Sheet>
-            {feedback ? (
-              <Feedback feedback={feedback} onNext={next} />
-            ) : (
-              <Stack
-                className='hopla-answers'
-                alignItems='center'
-                sx={{ width: '100%' }}
+          <DragToBox onDrop={box => !feedback && answer(box)}>
+            <Stack gap={3} alignItems='center' className={writingClass(doc)}>
+              <Sheet
+                variant='outlined'
+                sx={{
+                  borderRadius: 'xl',
+                  borderColor: color,
+                  borderWidth: 2,
+                  minHeight: 120,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  p: 3,
+                  textAlign: 'center',
+                  width: '100%',
+                }}
               >
-                <Question
-                  key={item.key}
+                <Prompt
                   blank={blank}
-                  cursive={doc.ecriture === 'cursive'}
-                  item={item}
-                  onAnswer={answer}
+                  item={shown}
+                  next={game.questions[game.questions.indexOf(shown) + 1]}
+                  repeat={sayAgain(
+                    game.questions,
+                    game.answers,
+                    game.questions.indexOf(shown),
+                  )}
                   color={color}
-                  say={say}
+                  drag={!feedback && shown.mode === 'sort'}
+                  say={sayFor(shown)}
+                  tell={tell}
+                  tellLang={doc.langue || 'fr'}
                 />
-              </Stack>
-            )}
-          </Stack>
+              </Sheet>
+              {feedback ? (
+                <Feedback feedback={feedback} onNext={next} />
+              ) : (
+                <Stack
+                  className='hopla-answers'
+                  alignItems='center'
+                  sx={{ width: '100%' }}
+                >
+                  <Question
+                    key={item.key}
+                    blank={blank}
+                    cursive={doc.ecriture === 'cursive'}
+                    item={item}
+                    onAnswer={answer}
+                    color={color}
+                    say={say}
+                  />
+                </Stack>
+              )}
+            </Stack>
+          </DragToBox>
         )
       )}
       {reporting && (feedback?.item || item) && (

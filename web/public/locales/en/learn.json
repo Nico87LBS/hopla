@@ -45,7 +45,12 @@
     "traceAgain": "Clear",
     "traceDone": "I'm done",
     "traceMore": "Trace over the whole letter, without going outside.",
-    "traceAlmost": "Almost! A little closer to the model."
+    "traceAlmost": "Almost! A little closer to the model.",
+    "dragHelp": "Drag the label to its box, or tap it and then tap the box.",
+    "dragStart": "Label picked up.",
+    "dragOver": "Over a box.",
+    "dragEnd": "Label put down.",
+    "dragCancel": "Label put back."
   },
   "end": {
     "title0": "Keep going, you'll get there!",

@@ -2,6 +2,14 @@
 // in order or to sort into boxes, zones of a picture to touch, and the
 // collections to count.
 
+import {
+  DndContext,
+  PointerSensor,
+  useDraggable,
+  useDroppable,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core'
 import { Box, Button, Sheet, Stack, Typography } from '@mui/joy'
 import PropTypes from 'prop-types'
 import { useEffect, useRef, useState } from 'react'
@@ -182,84 +190,212 @@ MatchPairs.propTypes = {
   say: PropTypes.func,
 }
 
+// A label carried with a finger or the mouse: a short move starts the drag,
+// so that a touch still chooses.
+export const useDragSensors = () =>
+  useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
+  )
+
+// What a screen reader says while a label is carried, in the child's language.
+export const useDragWords = () => {
+  const { t } = useTranslation('learn')
+  return {
+    announcements: {
+      onDragCancel: () => t('play.dragCancel'),
+      onDragEnd: () => t('play.dragEnd'),
+      onDragOver: ({ over }) => (over ? t('play.dragOver') : undefined),
+      onDragStart: () => t('play.dragStart'),
+    },
+    screenReaderInstructions: { draggable: t('play.dragHelp') },
+  }
+}
+
+export const Draggable = ({ children, data, id }) => {
+  const { isDragging, listeners, setNodeRef, transform } = useDraggable({
+    id,
+    data,
+  })
+  return (
+    <Box
+      ref={setNodeRef}
+      {...listeners}
+      sx={{
+        touchAction: 'none',
+        position: 'relative',
+        zIndex: isDragging ? 10 : undefined,
+        transform: transform
+          ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
+          : undefined,
+        ...(isDragging && { filter: 'drop-shadow(0 6px 12px #0003)' }),
+      }}
+    >
+      {children}
+    </Box>
+  )
+}
+
+Draggable.propTypes = {
+  children: PropTypes.node.isRequired,
+  data: PropTypes.object,
+  id: PropTypes.string.isRequired,
+}
+
+// Droppable gives what is drawn whether a label is held above it.
+export const Droppable = ({ children, data, id }) => {
+  const { isOver, setNodeRef } = useDroppable({ id, data })
+  return children(setNodeRef, isOver)
+}
+
+Droppable.propTypes = {
+  children: PropTypes.func.isRequired,
+  data: PropTypes.object,
+  id: PropTypes.string.isRequired,
+}
+
+// DragToBox lets the label of a question to sort be carried into a box.
+export const DragToBox = ({ children, onDrop }) => {
+  const sensors = useDragSensors()
+  const words = useDragWords()
+  return (
+    <DndContext
+      accessibility={words}
+      sensors={sensors}
+      onDragEnd={({ active, over }) => {
+        if (active.data.current?.subject && over?.data.current?.box) {
+          onDrop(over.data.current.box)
+        }
+      }}
+    >
+      {children}
+    </DndContext>
+  )
+}
+
+DragToBox.propTypes = {
+  children: PropTypes.node.isRequired,
+  onDrop: PropTypes.func.isRequired,
+}
+
 // OrderLabels: the labels, mixed, go up into the boxes in the order they
-// are touched; a box touched sends its label back down.
+// are touched, or are carried into a box; a box touched sends its label
+// back down. A label carried onto another box swaps with it.
 export const OrderLabels = ({ color, item, onAnswer, say }) => {
   const { t } = useTranslation('learn')
-  const [placed, setPlaced] = useState([])
+  const sensors = useDragSensors()
+  const words = useDragWords()
+  // What each box holds: the index of a label, or nothing.
+  const [slots, setSlots] = useState(() => item.mixed.map(() => undefined))
+  const place = (index, slot = slots.indexOf(undefined)) =>
+    setSlots(now => {
+      const next = [...now]
+      const from = next.indexOf(index)
+      const there = next[slot]
+      if (from !== -1) next[from] = there
+      next[slot] = index
+      return next
+    })
+  const takeBack = slot =>
+    setSlots(now => now.map((index, i) => (i === slot ? undefined : index)))
   // With the voice on, a first touch says a label and a second one puts it
   // up, as for the other questions.
-  const [armed, touch] = useTwoTaps(say, index => {
-    setPlaced(now => [...now, index])
-  })
-  const left = item.mixed.map((text, i) => i).filter(i => !placed.includes(i))
-  const full = placed.length === item.mixed.length
+  const [armed, touch] = useTwoTaps(say, index => place(index))
+  const left = item.mixed.map((text, i) => i).filter(i => !slots.includes(i))
+  const full = slots.every(index => index !== undefined)
+  const dropped = ({ active, over }) => {
+    const index = active.data.current?.index
+    if (index === undefined || !over) return
+    if (over.id === 'pool') {
+      const slot = slots.indexOf(index)
+      if (slot !== -1) takeBack(slot)
+    } else if (over.data.current?.slot !== undefined) {
+      place(index, over.data.current.slot)
+    }
+  }
   return (
-    <Stack gap={2} sx={{ width: '100%' }} alignItems='center'>
-      <Stack
-        direction='row'
-        gap={1}
-        flexWrap='wrap'
-        justifyContent='center'
-        sx={{ width: '100%' }}
-      >
-        {item.mixed.map((text, slot) => {
-          const index = placed[slot]
-          return (
-            <Sheet
-              key={slot}
-              variant='outlined'
-              onClick={() =>
-                index !== undefined &&
-                setPlaced(placed.filter((p, i) => i !== slot))
-              }
-              sx={{
-                alignItems: 'center',
-                borderColor: index === undefined ? 'divider' : color,
-                borderRadius: 'lg',
-                borderStyle: index === undefined ? 'dashed' : 'solid',
-                borderWidth: 2,
-                cursor: index === undefined ? 'default' : 'pointer',
-                display: 'flex',
-                gap: 0.75,
-                minHeight: 52,
-                minWidth: 64,
-                px: 1.25,
-              }}
-            >
-              <Typography level='body-xs' sx={{ color: 'text.tertiary' }}>
-                {slot + 1}
-              </Typography>
-              {index !== undefined && (
-                <Typography level='title-md'>{item.mixed[index]}</Typography>
+    <DndContext accessibility={words} sensors={sensors} onDragEnd={dropped}>
+      <Stack gap={2} sx={{ width: '100%' }} alignItems='center'>
+        <Stack
+          direction='row'
+          gap={1}
+          flexWrap='wrap'
+          justifyContent='center'
+          sx={{ width: '100%' }}
+        >
+          {slots.map((index, slot) => (
+            <Droppable key={slot} id={`slot-${slot}`} data={{ slot }}>
+              {(ref, over) => (
+                <Sheet
+                  ref={ref}
+                  variant='outlined'
+                  onClick={() => index !== undefined && takeBack(slot)}
+                  sx={{
+                    alignItems: 'center',
+                    borderColor:
+                      index === undefined && !over ? 'divider' : color,
+                    borderRadius: 'lg',
+                    borderStyle: index === undefined ? 'dashed' : 'solid',
+                    borderWidth: 2,
+                    cursor: index === undefined ? 'default' : 'pointer',
+                    display: 'flex',
+                    gap: 0.75,
+                    minHeight: 52,
+                    minWidth: 64,
+                    px: 1.25,
+                    ...(over && { bgcolor: `${color}1f` }),
+                  }}
+                >
+                  <Typography level='body-xs' sx={{ color: 'text.tertiary' }}>
+                    {slot + 1}
+                  </Typography>
+                  {index !== undefined && (
+                    <Draggable id={`placed-${index}`} data={{ index }}>
+                      <Typography level='title-md'>
+                        {item.mixed[index]}
+                      </Typography>
+                    </Draggable>
+                  )}
+                </Sheet>
               )}
-            </Sheet>
-          )
-        })}
+            </Droppable>
+          ))}
+        </Stack>
+        <Droppable id='pool'>
+          {ref => (
+            <Stack
+              ref={ref}
+              direction='row'
+              gap={1}
+              flexWrap='wrap'
+              justifyContent='center'
+              sx={{ minHeight: 56, minWidth: '60%' }}
+            >
+              {left.map(index => (
+                <Draggable key={index} id={`label-${index}`} data={{ index }}>
+                  <LabelButton
+                    color={color}
+                    item={{ text: item.mixed[index] }}
+                    state={armed === index ? 'picked' : undefined}
+                    onClick={() => touch(index, item.mixed[index])}
+                  />
+                </Draggable>
+              ))}
+            </Stack>
+          )}
+        </Droppable>
+        <Button
+          size='lg'
+          disabled={!full}
+          onClick={() =>
+            onAnswer(slots.map(index => item.mixed[index]).join(' → '))
+          }
+          className='hopla-print'
+          sx={{ bgcolor: color, '&:hover': { bgcolor: color } }}
+        >
+          {t('play.check')}
+        </Button>
       </Stack>
-      <Stack direction='row' gap={1} flexWrap='wrap' justifyContent='center'>
-        {left.map(index => (
-          <LabelButton
-            key={index}
-            color={color}
-            item={{ text: item.mixed[index] }}
-            state={armed === index ? 'picked' : undefined}
-            onClick={() => touch(index, item.mixed[index])}
-          />
-        ))}
-      </Stack>
-      <Button
-        size='lg'
-        disabled={!full}
-        onClick={() =>
-          onAnswer(placed.map(index => item.mixed[index]).join(' → '))
-        }
-        className='hopla-print'
-        sx={{ bgcolor: color, '&:hover': { bgcolor: color } }}
-      >
-        {t('play.check')}
-      </Button>
-    </Stack>
+    </DndContext>
   )
 }
 
@@ -301,28 +437,37 @@ export const SortBoxes = ({ color, item, onAnswer, say }) => {
       }}
     >
       {item.boxes.map(box => (
-        <Button
+        <Droppable
           key={box.name}
-          variant='outlined'
-          color='neutral'
-          onClick={() => touch(box.name)}
-          sx={{
-            borderColor: armed === box.name ? color : undefined,
-            borderRadius: 'xl',
-            borderWidth: 2,
-            flexDirection: 'column',
-            fontSize: 18,
-            gap: 1,
-            minHeight: 120,
-            p: 1.5,
-            whiteSpace: 'normal',
-            ...(armed === box.name && { bgcolor: `${color}1f` }),
-            ...onHover({ borderColor: color }),
-          }}
+          id={`box-${box.name}`}
+          data={{ box: box.name }}
         >
-          {box.image && <Drawing id={box.image} size={72} />}
-          {box.name}
-        </Button>
+          {(ref, over) => (
+            <Button
+              ref={ref}
+              variant='outlined'
+              color='neutral'
+              onClick={() => touch(box.name)}
+              sx={{
+                borderColor: armed === box.name || over ? color : undefined,
+                ...(over && { bgcolor: `${color}1f` }),
+                borderRadius: 'xl',
+                borderWidth: 2,
+                flexDirection: 'column',
+                fontSize: 18,
+                gap: 1,
+                minHeight: 120,
+                p: 1.5,
+                whiteSpace: 'normal',
+                ...(armed === box.name && { bgcolor: `${color}1f` }),
+                ...onHover({ borderColor: color }),
+              }}
+            >
+              {box.image && <Drawing id={box.image} size={72} />}
+              {box.name}
+            </Button>
+          )}
+        </Droppable>
       ))}
     </Box>
   )
