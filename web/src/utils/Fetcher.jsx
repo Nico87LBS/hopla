@@ -1305,6 +1305,41 @@ const SetPlacementKeep = async change =>
     }),
   )
 
+// A pack ticked for a person opens its levels by itself; a parent can only
+// set aside a level or a module open.
+const SetPackPlayer = async change =>
+  learnAnswer(
+    await Fetch(`/learn/packs`, {
+      method: 'PUT',
+      headers: HEADERS(),
+      body: JSON.stringify(change),
+    }),
+  )
+
+const SetPackAside = async change =>
+  learnAnswer(
+    await Fetch(`/learn/packs/aside`, {
+      method: 'PUT',
+      headers: HEADERS(),
+      body: JSON.stringify(change),
+    }),
+  )
+
+// OpenNextLevel opens the next level of a pack once the one before is known.
+const OpenNextLevel = async change =>
+  learnAnswer(
+    inPlayPages()
+      ? await playFetch('/packs/next', {
+          method: 'POST',
+          body: JSON.stringify(change),
+        })
+      : await Fetch(`/learn/packs/next`, {
+          method: 'POST',
+          headers: HEADERS(),
+          body: JSON.stringify(change),
+        }),
+  )
+
 // The récré: a little game after a few games of Apprendre, and its records.
 const SendRecre = async game =>
   learnAnswer(
@@ -1423,6 +1458,7 @@ export {
   login,
   logout,
   MarkChoreComplete,
+  OpenNextLevel,
   RedeemPoints,
   RedeemReward,
   RefreshToken,
@@ -1454,6 +1490,8 @@ export {
   SetLearnActivation,
   SetLearnSetting,
   SetMemberAway,
+  SetPackAside,
+  SetPackPlayer,
   SetPlacementKeep,
   SetRecreSettings,
   SetupMFA,

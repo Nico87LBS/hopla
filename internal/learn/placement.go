@@ -218,7 +218,7 @@ func SavePlacement(db *gorm.DB, familyID int, result PlacementResult, now time.T
 		if err := tx.Save(&saved).Error; err != nil {
 			return err
 		}
-		return applyPlacement(tx, familyID, saved, levels, now)
+		return placePack(tx, familyID, saved, levels, now)
 	})
 	return saved, err
 }
@@ -249,35 +249,17 @@ func SetPlacementKeep(db *gorm.DB, familyID, userID int, pack, keep string, now 
 		if err := tx.Save(&saved).Error; err != nil {
 			return err
 		}
-		return applyPlacement(tx, familyID, saved, levels, now)
-	})
-	return saved, err
-}
-
-// applyPlacement turns on the levels a test gives, and off the others: the
-// levels up to the one reached, or only that one. A pack of modules, or a
-// test skipped, changes nothing.
-func applyPlacement(tx *gorm.DB, familyID int, placement Placement, levels []TestLevel, now time.Time) error {
-	if placement.Status != PlacementDone || len(levels) < 2 {
-		return nil
-	}
-	at := -1
-	for i, level := range levels {
-		if level.ID == placement.Reached {
-			at = i
+		var player PackPlayer
+		err := tx.Where("family_id = ? AND user_id = ? AND pack_key = ?", familyID, userID, pack).First(&player).Error
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil
 		}
-	}
-	if at < 0 {
-		return nil
-	}
-	for i, level := range levels {
-		on := i == at || (placement.Keep == KeepUpTo && i < at)
-		if err := SetActivation(tx, familyID, ActivationChange{UserID: placement.UserID,
-			Modules: []string{level.ID}, Active: on}, now); err != nil {
+		if err != nil {
 			return err
 		}
-	}
-	return nil
+		return syncPack(tx, familyID, player, levels, now)
+	})
+	return saved, err
 }
 
 // placedChapters are the chapters each module has opened by a test.

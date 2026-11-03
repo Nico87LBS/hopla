@@ -95,7 +95,7 @@ func TestAPlacementOpensItsChaptersAndTurnsOnTheLevelsUpToTheOneReached(t *testi
 	require.False(t, on["anglais-ce2-phrases"])
 }
 
-func TestASkippedPlacementChangesNothingButIsNotOfferedAgain(t *testing.T) {
+func TestASkippedPlacementStartsAtTheFirstLevelAndIsNotOfferedAgain(t *testing.T) {
 	db := setup(t)
 	now := time.Now().UTC()
 	require.NoError(t, Install(db, 1, "anglais-ecole", now))
@@ -105,7 +105,7 @@ func TestASkippedPlacementChangesNothingButIsNotOfferedAgain(t *testing.T) {
 	require.NoError(t, err)
 	player, err := PlayerFor(db, 1, anna, now)
 	require.NoError(t, err)
-	require.Len(t, player.Modules, 15, "everything stays on")
+	require.Len(t, player.Modules, 3, "starting at the beginning keeps the first level only")
 	require.Equal(t, PlacementSkipped, player.Placements[0].Status)
 	require.Empty(t, player.Placements[0].Reached)
 

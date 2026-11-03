@@ -3779,6 +3779,137 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/learn/packs": {
+            "put": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre"
+                ],
+                "summary": "Cocher un paquet pour une personne (ses niveaux s'ouvrent seuls)",
+                "parameters": [
+                    {
+                        "description": "Corps de la requête",
+                        "name": "paquet",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/api.PackChange"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/packs/aside": {
+            "put": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre"
+                ],
+                "summary": "Écarter un niveau ou un module ouvert d'un paquet, ou le reprendre",
+                "parameters": [
+                    {
+                        "description": "Corps de la requête",
+                        "name": "ecart",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/api.PackChange"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/packs/next": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    },
+                    {
+                        "PlayKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /api/v1/learn/play/packs/next",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre",
+                    "Session de jeu"
+                ],
+                "summary": "Ouvrir le niveau suivant d'un paquet, celui d'avant étant su",
+                "parameters": [
+                    {
+                        "description": "Corps de la requête",
+                        "name": "paquet",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/api.PackChange"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/learn/placements": {
             "post": {
                 "security": [
@@ -3957,6 +4088,53 @@ const docTemplate = `{
                     "Session de jeu"
                 ],
                 "summary": "Enregistrer une partie",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/play/packs/next": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    },
+                    {
+                        "PlayKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /api/v1/learn/play/packs/next",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre",
+                    "Session de jeu"
+                ],
+                "summary": "Ouvrir le niveau suivant d'un paquet, celui d'avant étant su",
+                "parameters": [
+                    {
+                        "description": "Corps de la requête",
+                        "name": "paquet",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/api.PackChange"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -7006,6 +7184,31 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "api.PackChange": {
+            "type": "object",
+            "required": [
+                "pack",
+                "userId"
+            ],
+            "properties": {
+                "aside": {
+                    "type": "boolean"
+                },
+                "key": {
+                    "description": "Key, Aside: the level or module set aside, or brought back.",
+                    "type": "string"
+                },
+                "on": {
+                    "type": "boolean"
+                },
+                "pack": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "integer"
+                }
+            }
+        },
         "chore.ActionOptions": {
             "type": "object",
             "properties": {

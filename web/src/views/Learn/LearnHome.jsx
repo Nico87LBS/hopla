@@ -9,7 +9,7 @@ import {
 import { Box, Button, Container, Sheet, Stack, Typography } from '@mui/joy'
 import { useQueryClient } from '@tanstack/react-query'
 import PropTypes from 'prop-types'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 
@@ -21,8 +21,9 @@ import {
   usePlayer,
 } from '../../queries/LearnQueries'
 import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries'
-import { SendPlacement } from '../../utils/Fetcher'
+import { OpenNextLevel, SendPlacement } from '../../utils/Fetcher'
 import { moduleLocked, openChapters, totalLeft } from '../../utils/learn/engine'
+import { levelKnown } from '../../utils/learn/levels'
 import { levelsIn, playFirst, shape, toReview } from '../../utils/learn/listing'
 import { loadServerVoices } from '../../utils/learn/serverVoice'
 import { queuedFor } from '../../utils/learn/store'
@@ -432,6 +433,25 @@ export const LearnModules = ({
     levels: [],
     sort: 'level',
   })
+
+  // A level known opens the next one, once.
+  const opening = useRef(new Set())
+  useEffect(() => {
+    if (!player || player.offline) return
+    for (const packPlayer of player.packPlayers || []) {
+      const key = `${packPlayer.pack}:${packPlayer.openTo}`
+      if (opening.current.has(key)) continue
+      if (!levelKnown(player, packPlayer, byId, cards)) continue
+      opening.current.add(key)
+      OpenNextLevel({ userId, pack: packPlayer.pack })
+        .then(() =>
+          queryClient.invalidateQueries({
+            queryKey: learnKeys.player(userId),
+          }),
+        )
+        .catch(() => {})
+    }
+  }, [player, byId, cards, userId, queryClient])
 
   // The natural voice, if any, is ready before the first question.
   useEffect(() => {

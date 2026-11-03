@@ -158,7 +158,13 @@
     "testKeep": "After the test, keep",
     "testKeepUpTo": "Every level up to the one reached",
     "testKeepOnly": "Only the level reached",
-    "byTest": "opened by the test"
+    "byTest": "opened by the test",
+    "levelClosed": "Not open yet: it opens with the level test, or once the level before is known.",
+    "packOff": "Not played: tick the pack to open its first level.",
+    "packOnLevel_one": "Open up to {{level}} · {{count}} module played",
+    "packOnLevel_other": "Open up to {{level}} · {{count}} modules played",
+    "packOn_one": "{{count}} module played",
+    "packOn_other": "{{count}} modules played"
   },
   "stats": {
     "chapters": "Chapters",

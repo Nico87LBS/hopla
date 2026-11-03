@@ -43,8 +43,23 @@ Gérer › Modules d'apprentissage, en deux onglets :
   (modules, chapitres, exemples de fiches). On y importe aussi un module écrit
   à la main (fichier ou texte collé, format `hopla-module/1`).
 - **Par personne** : on choisit une personne en haut, puis on coche les
-  modules auxquels elle joue. La case à droite du nom d'un paquet coche tous
-  ses modules ; celle d'un niveau, tous les modules du niveau.
+  **paquets** auxquels elle joue (case à droite du nom). Les paquets sont
+  pliés : une ligne dit jusqu'à quel niveau le paquet est ouvert et combien
+  de modules sont joués ; un toucher déplie les niveaux et les modules.
+
+Les niveaux d'un paquet coché s'ouvrent tout seuls :
+
+- avant le test de niveau, seul le **premier niveau** est ouvert ;
+- le test ouvre jusqu'au niveau atteint (ou seulement celui-ci, selon le
+  choix fait à la fin du test) ;
+- ensuite, le **niveau suivant s'ouvre** dès que chaque module joué du
+  niveau ouvert le plus haut est su au seuil d'ouverture (80 % par défaut),
+  comme un chapitre ouvre le suivant.
+
+Déplié, chaque niveau et chaque module ouvert a un interrupteur pour
+l'**écarter**, puis le reprendre. Un niveau pas encore ouvert a son
+interrupteur grisé : on ne peut pas l'ouvrir à la main. Les modules hors de
+tout paquet (importés seuls) se cochent toujours un par un.
 
 Retirer un paquet retire aussi ses modules, sauf ceux qu'un autre paquet
 installé contient. Par défaut, ce que chacun a appris est gardé et revient si
@@ -54,9 +69,15 @@ stats » efface tout pour de bon.
 ### Mises à jour du catalogue
 
 Les paquets fournis se mettent à jour avec Hopla. Quand une mise à jour ajoute
-un module à un paquet installé, il est installé tout seul, activé pour
-personne, avec un badge « Nouveau » : il reste à le cocher pour ceux qui
-doivent y jouer.
+un module à un paquet installé, il est installé tout seul, avec un badge
+« Nouveau », et s'ouvre pour ceux qui jouent au paquet si son niveau est
+ouvert.
+
+Lors du passage aux paquets cochés, chaque paquet dont une personne jouait au
+moins un module est coché pour elle. Qui jouait à tous les niveaux repart du
+premier (comme avant un test) ; qui jouait seulement à des niveaux plus hauts
+les garde ouverts, les niveaux du dessous écartés. Un test déjà fait garde
+son niveau atteint.
 
 Une famille qui avait installé un paquet devenu depuis le niveau d'un plus
 grand (Maths CE2, maintenant dans Maths à l'école) reçoit le grand paquet tout

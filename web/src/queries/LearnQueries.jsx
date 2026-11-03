@@ -16,6 +16,8 @@ import {
   SendLearnReport,
   SetLearnActivation,
   SetLearnSetting,
+  SetPackAside,
+  SetPackPlayer,
   SetPlacementKeep,
   SetRecreSettings,
 } from '../utils/Fetcher'
@@ -122,3 +124,5 @@ export const useEditCard = () => useLearnChange(EditLearnCard)
 export const useResolveReport = () => useLearnChange(ResolveLearnReport)
 export const useSetRecre = () => useLearnChange(SetRecreSettings)
 export const useSetPlacementKeep = () => useLearnChange(SetPlacementKeep)
+export const useSetPackPlayer = () => useLearnChange(SetPackPlayer)
+export const useSetAside = () => useLearnChange(SetPackAside)
