@@ -55,6 +55,18 @@ func Catalogue() (map[string]Entry, error) {
 				}
 			}
 		}
+		if catalogueErr == nil {
+			children := func(id string) ([]string, bool) {
+				entry, ok := catalogue[id]
+				return entry.Doc.Modules, ok
+			}
+			for id := range catalogue {
+				if err := CheckTree(id, children); err != nil {
+					catalogueErr = err
+					break
+				}
+			}
+		}
 	})
 	return catalogue, catalogueErr
 }
@@ -77,4 +89,30 @@ func CatalogueIDs() ([]string, error) {
 		return a.Name < b.Name
 	})
 	return ids, nil
+}
+
+// CheckTree refuses a pack that does not follow the shape of every pack:
+// a pack gathers its levels, each a pack of modules, or its modules alone
+// when it has a single level. A pack never mixes levels and modules, and a
+// level holds no pack. children tells the modules a module gathers, and
+// whether it is known; an unknown one is left aside.
+func CheckTree(id string, children func(string) ([]string, bool)) error {
+	kids, _ := children(id)
+	packs := 0
+	for _, child := range kids {
+		grand, ok := children(child)
+		if !ok || len(grand) == 0 {
+			continue
+		}
+		packs++
+		for _, g := range grand {
+			if deeper, ok := children(g); ok && len(deeper) > 0 {
+				return fmt.Errorf("paquet %s : le niveau %s contient le paquet %s, un niveau ne contient que des modules", id, child, g)
+			}
+		}
+	}
+	if packs > 0 && packs < len(kids) {
+		return fmt.Errorf("paquet %s : il mélange des niveaux et des modules, il ne contient que l'un ou l'autre", id)
+	}
+	return nil
 }

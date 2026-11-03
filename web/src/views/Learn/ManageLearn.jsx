@@ -52,6 +52,7 @@ import {
   shape,
   sortItems,
 } from '../../utils/learn/listing'
+import { packsAbove, packTree } from '../../utils/learn/tree'
 import { saveFile } from '../../utils/saveFile'
 import LoadingComponent from '../components/Loading'
 import { MemberAvatar, surfaceSx } from '../Games/GameParts'
@@ -179,16 +180,23 @@ const OWN = {
   dailyCap: 'plafond_jour',
 }
 
-// packLine is what a pack sets for a person: theirs, else the family's, else
-// what all its modules share.
-const packLine = (pack, modules, person, settings, defaults) => {
-  const mine = settings.get(`${person.userId}:${pack.id}`)
-  const family = settings.get(`${FAMILY}:${pack.id}`)
+// packLine is what a pack, or a level then its pack, sets for a person:
+// theirs, else the family's, else what all its modules share. scopes are the
+// packs, the nearest first.
+const packLine = (scopes, modules, person, settings, defaults) => {
+  const first = (userId, name) => {
+    for (const scope of scopes) {
+      const value = settings.get(`${userId}:${scope}`)?.[name]
+      if (isSet(value)) return value
+    }
+    return null
+  }
   const line = {}
   for (const [name] of CHIPS) {
-    if (isSet(mine?.[name])) line[name] = { value: mine[name], from: 'person' }
-    else if (isSet(family?.[name]))
-      line[name] = { value: family[name], from: 'family' }
+    const mine = first(person.userId, name)
+    const family = first(FAMILY, name)
+    if (isSet(mine)) line[name] = { value: mine, from: 'person' }
+    else if (isSet(family)) line[name] = { value: family, from: 'family' }
     else if (OWN[name]) {
       const values = modules.map(m => defaults[m.id]?.[OWN[name]])
       if (isSet(values[0]) && values.every(v => v === values[0]))
@@ -632,6 +640,102 @@ FirstNameCard.propTypes = {
   value: PropTypes.string,
 }
 
+// LevelRow is a level of a pack for one person: its name, its settings and
+// the box of all its modules.
+const LevelRow = ({
+  baseline,
+  group,
+  isOn,
+  onSettings,
+  onToggle,
+  person,
+  section,
+}) => {
+  const { t } = useTranslation('learn')
+  const { level, line, modules, partial } = section
+  const ids = modules.map(m => m.id)
+  const on = ids.filter(isOn).length
+  // Only what is set on the level for the person or the family, other
+  // than on its pack.
+  const chips = CHIPS.filter(
+    ([name]) =>
+      line[name] &&
+      line[name].from !== 'module' &&
+      line[name].value !== baseline?.[name]?.value,
+  )
+  return (
+    <Stack
+      gap={0.75}
+      sx={{ borderTop: '1px solid', borderColor: 'divider', pt: 1.25 }}
+    >
+      <Stack direction='row' alignItems='center' gap={1}>
+        <Typography
+          level='title-md'
+          component={Link}
+          to={`/manage/learn/detail/${group.pack.id}`}
+          sx={{
+            color: 'inherit',
+            flex: 1,
+            minWidth: 0,
+            pl: 4,
+            textDecoration: 'none',
+          }}
+        >
+          {level.name}
+        </Typography>
+        <Slot />
+        <Slot>
+          <IconButton
+            size='sm'
+            variant='plain'
+            color='primary'
+            aria-label={t('manage.levelSettings', { name: level.name })}
+            onClick={() => onSettings(level)}
+          >
+            <TuneRounded />
+          </IconButton>
+        </Slot>
+        <Slot>
+          <Checkbox
+            checked={on === ids.length}
+            indeterminate={on > 0 && on < ids.length}
+            onChange={e =>
+              onToggle(partial ? ids : [level.id], e.target.checked)
+            }
+            slotProps={{
+              input: { 'aria-label': `${level.name} · ${person.displayName}` },
+            }}
+          />
+        </Slot>
+      </Stack>
+      {chips.length > 0 && (
+        <Stack direction='row' gap={0.75} flexWrap='wrap' sx={{ pl: 4 }}>
+          {chips.map(([key, label]) => (
+            <SettingChip
+              key={key}
+              from={line[key].from}
+              label={t(label, {
+                count: line[key].value,
+                value: line[key].value,
+              })}
+            />
+          ))}
+        </Stack>
+      )}
+    </Stack>
+  )
+}
+
+LevelRow.propTypes = {
+  baseline: PropTypes.object,
+  group: PropTypes.object.isRequired,
+  isOn: PropTypes.func.isRequired,
+  onSettings: PropTypes.func.isRequired,
+  onToggle: PropTypes.func.isRequired,
+  person: PropTypes.object.isRequired,
+  section: PropTypes.object.isRequired,
+}
+
 // One installed pack, or the modules outside any pack, for one person: the
 // pack's settings on one line under its name, then each module with only
 // the settings of its own, and at the right the box of who plays it.
@@ -674,9 +778,99 @@ const ModuleGroup = ({
   const on = ids.filter(isOn).length
   const reported = ids.reduce((n, id) => n + (reports?.[id] || 0), 0)
   const line = group.pack
-    ? packLine(group.pack, group.modules, person, settings, defaults)
+    ? packLine([group.pack.id], group.modules, person, settings, defaults)
     : null
   const lineChips = line ? CHIPS.filter(([name]) => line[name]) : []
+  // A pack of levels shows each level with its modules; a pack with a single
+  // level shows its modules alone.
+  const sections = (group.tiers || [])
+    .filter(level => level.pack)
+    .map(level => {
+      const own = new Set(level.modules.map(m => m.id))
+      const modules = group.modules.filter(m => own.has(m.id))
+      return {
+        level: level.pack,
+        modules,
+        partial: modules.length < level.modules.length,
+        line: packLine(
+          [level.pack.id, group.pack.id],
+          modules,
+          person,
+          settings,
+          defaults,
+        ),
+      }
+    })
+    .filter(section => section.modules.length)
+  const indent = sections.length ? 6 : 4
+  // renderModule is the row of a module, its chips against the line above.
+  const renderModule = (module, baseline) => {
+    const playing = isOn(module.id)
+    return (
+      <Stack
+        key={module.id}
+        gap={0.75}
+        sx={{ ...rowSx, opacity: playing ? 1 : 0.6 }}
+      >
+        <Stack direction='row' alignItems='center' gap={1}>
+          <Typography
+            level='body-md'
+            sx={{ flex: 1, minWidth: 0, pl: indent }}
+            endDecorator={
+              isNew(module) && (
+                <Chip size='sm' variant='soft' color='success'>
+                  {t('manage.new')}
+                </Chip>
+              )
+            }
+          >
+            {module.name}
+          </Typography>
+          <Slot>
+            <IconButton
+              size='sm'
+              variant='plain'
+              component={Link}
+              to={`/manage/learn/${module.id}`}
+              aria-label={t('manage.stats', { name: module.name })}
+            >
+              <InsightsRounded />
+            </IconButton>
+          </Slot>
+          <Slot>
+            {playing && (
+              <IconButton
+                size='sm'
+                variant='plain'
+                aria-label={t('manage.moduleSettings', {
+                  name: module.name,
+                })}
+                onClick={() => onSettings(module)}
+              >
+                <TuneRounded />
+              </IconButton>
+            )}
+          </Slot>
+          <Slot>
+            <Checkbox
+              checked={playing}
+              onChange={e => toggle([module.id], e.target.checked)}
+              slotProps={{
+                input: {
+                  'aria-label': `${module.name} · ${person.displayName}`,
+                },
+              }}
+            />
+          </Slot>
+        </Stack>
+        {playing && (
+          <Box sx={{ pl: indent }}>
+            <AppliedChips applied={applied?.[module.id]} baseline={baseline} />
+          </Box>
+        )}
+      </Stack>
+    )
+  }
   const rowSx = { borderTop: '1px solid', borderColor: 'divider', pt: 1.25 }
   const name = group.pack ? group.pack.name : t('manage.others')
   return (
@@ -781,76 +975,24 @@ const ModuleGroup = ({
       )}
 
       <Stack gap={1.25} sx={{ mt: 1.5 }}>
-        {group.modules.map(module => {
-          const playing = isOn(module.id)
-          return (
-            <Stack
-              key={module.id}
-              gap={0.75}
-              sx={{ ...rowSx, opacity: playing ? 1 : 0.6 }}
-            >
-              <Stack direction='row' alignItems='center' gap={1}>
-                <Typography
-                  level='body-md'
-                  sx={{ flex: 1, minWidth: 0, pl: 4 }}
-                  endDecorator={
-                    isNew(module) && (
-                      <Chip size='sm' variant='soft' color='success'>
-                        {t('manage.new')}
-                      </Chip>
-                    )
-                  }
-                >
-                  {module.name}
-                </Typography>
-                <Slot>
-                  <IconButton
-                    size='sm'
-                    variant='plain'
-                    component={Link}
-                    to={`/manage/learn/${module.id}`}
-                    aria-label={t('manage.stats', { name: module.name })}
-                  >
-                    <InsightsRounded />
-                  </IconButton>
-                </Slot>
-                <Slot>
-                  {playing && (
-                    <IconButton
-                      size='sm'
-                      variant='plain'
-                      aria-label={t('manage.moduleSettings', {
-                        name: module.name,
-                      })}
-                      onClick={() => onSettings(module)}
-                    >
-                      <TuneRounded />
-                    </IconButton>
-                  )}
-                </Slot>
-                <Slot>
-                  <Checkbox
-                    checked={playing}
-                    onChange={e => toggle([module.id], e.target.checked)}
-                    slotProps={{
-                      input: {
-                        'aria-label': `${module.name} · ${person.displayName}`,
-                      },
-                    }}
-                  />
-                </Slot>
-              </Stack>
-              {playing && (
-                <Box sx={{ pl: 4 }}>
-                  <AppliedChips
-                    applied={applied?.[module.id]}
-                    baseline={line}
-                  />
-                </Box>
-              )}
-            </Stack>
-          )
-        })}
+        {sections.length
+          ? sections.map(section => (
+              <Fragment key={section.level.id}>
+                <LevelRow
+                  group={group}
+                  person={person}
+                  section={section}
+                  isOn={isOn}
+                  baseline={line}
+                  onSettings={onPackSettings}
+                  onToggle={toggle}
+                />
+                {section.modules.map(module =>
+                  renderModule(module, section.line),
+                )}
+              </Fragment>
+            ))
+          : group.modules.map(module => renderModule(module, line))}
       </Stack>
       {!group.pack && (
         <Stack direction='row' gap={1} flexWrap='wrap' sx={{ mt: 1.5 }}>
@@ -940,15 +1082,20 @@ const CatalogueCard = ({ defaults, installed, settings }) => {
     notInstalled: entry => !installed.has(entry.id),
   }
   const names = new Map(catalogue.map(entry => [entry.id, entry.name]))
+  const byId = new Map(catalogue.map(entry => [entry.id, entry]))
+  // The levels of a pack of levels; 0 for a pack with a single level.
+  const levelCount = entry =>
+    (entry.children || []).filter(id => byId.get(id)?.children?.length).length
+  // Searching a pack finds it by the names of its levels and their modules.
+  const namesIn = entry =>
+    (entry.children || []).flatMap(id => [
+      names.get(id),
+      ...(byId.get(id)?.children || []).map(child => names.get(child)),
+    ])
   const shown = sortItems(
     all.filter(
       entry =>
-        matches(
-          query,
-          entry.name,
-          entry.description,
-          ...(entry.children || []).map(id => names.get(id)),
-        ) &&
+        matches(query, entry.name, entry.description, ...namesIn(entry)) &&
         (!choices.levels?.length ||
           (entry.levels || []).some(l => choices.levels.includes(l))) &&
         (choices.filters || []).every(f => !checks[f] || checks[f](entry)),
@@ -1041,9 +1188,11 @@ const CatalogueCard = ({ defaults, installed, settings }) => {
                   endDecorator={<ChevronRightRounded />}
                   sx={{ color: HOPLA.violet, fontWeight: 600, mt: 0.5 }}
                 >
-                  {entry.children?.length > 0
-                    ? t('manage.seeModules', { count: entry.children.length })
-                    : t('manage.seeDetail')}
+                  {levelCount(entry) > 0
+                    ? t('manage.seeLevels', { count: levelCount(entry) })
+                    : entry.children?.length > 0
+                      ? t('manage.seeModules', { count: entry.children.length })
+                      : t('manage.seeDetail')}
                 </Typography>
               </Box>
               {installed.has(entry.id) ? (
@@ -1292,16 +1441,13 @@ export const ManageLearn = () => {
     [data?.settings],
   )
   const groups = useMemo(() => {
-    const byId = new Map(modules.map(m => [m.id, m]))
-    const inPack = new Set()
-    const out = []
-    for (const pack of modules.filter(m => m.children?.length)) {
-      const children = pack.children.map(id => byId.get(id)).filter(Boolean)
-      children.forEach(m => inPack.add(m.id))
-      out.push({ pack, modules: children })
-    }
-    const others = modules.filter(m => !m.children?.length && !inPack.has(m.id))
-    if (others.length) out.push({ pack: null, modules: others })
+    const tree = packTree(modules)
+    const out = tree.groups.map(({ levels, pack }) => ({
+      pack,
+      tiers: levels,
+      modules: levels.flatMap(level => level.modules),
+    }))
+    if (tree.others.length) out.push({ pack: null, modules: tree.others })
     return out
   }, [modules])
 
@@ -1368,6 +1514,7 @@ export const ManageLearn = () => {
       counts,
       groups: kept.map(g => ({
         pack: g.pack,
+        tiers: g.tiers,
         modules: g.items,
         partial: g.items.length < g.modules.length,
       })),
@@ -1379,9 +1526,7 @@ export const ManageLearn = () => {
   // then the family's module and packs, then the module itself.
   const inherited = (userId, field, moduleId) => {
     const name = FIELDS[field].name
-    const packs = moduleId
-      ? modules.filter(m => m.children?.includes(moduleId))
-      : []
+    const packs = moduleId ? packsAbove(modules, moduleId) : []
     if (userId !== FAMILY) {
       for (const pack of packs) {
         const value = settings.get(`${userId}:${pack.id}`)?.[name]
@@ -1454,13 +1599,19 @@ export const ManageLearn = () => {
         fields={PACK_FIELDS}
         candidates={members}
         current={userId => settings.get(`${userId}:${module.id}`)}
-        placeholder={(_, field) => {
-          const value = settings.get(`${FAMILY}:${module.id}`)?.[
-            FIELDS[field].name
-          ]
-          return isSet(value)
-            ? t('manage.fromFamily', { value })
-            : t('manage.moduleOwn')
+        placeholder={(userId, field) => {
+          // A level takes what is set on its pack.
+          const name = FIELDS[field].name
+          const above = packsAbove(modules, module.id)
+          for (const pack of above) {
+            const value = settings.get(`${userId}:${pack.id}`)?.[name]
+            if (isSet(value)) return t('manage.fromPack', { value })
+          }
+          for (const scope of [module.id, ...above.map(p => p.id)]) {
+            const value = settings.get(`${FAMILY}:${scope}`)?.[name]
+            if (isSet(value)) return t('manage.fromFamily', { value })
+          }
+          return t('manage.moduleOwn')
         }}
         save={(userId, change) =>
           setSetting.mutateAsync({ userId, scope: module.id, ...change })

@@ -99,6 +99,9 @@ func Import(db *gorm.DB, familyID int, raw []byte, now time.Time) (Module, error
 		if err := checkKeys(tx, familyID, doc, entries); err != nil {
 			return err
 		}
+		if err := checkImportTree(tx, familyID, doc, entries); err != nil {
+			return err
+		}
 		for _, child := range doc.Modules {
 			if _, ok := entries[child]; ok {
 				if err := install(tx, entries, familyID, child, now, map[string]bool{}); err != nil {
@@ -118,6 +121,37 @@ func Import(db *gorm.DB, familyID int, raw []byte, now time.Time) (Module, error
 		return save(tx, module)
 	})
 	return module, err
+}
+
+// checkImportTree refuses a pack written by the family whose shape is not
+// that of every pack (see CheckTree), its modules read from the catalogue or
+// the family's.
+func checkImportTree(tx *gorm.DB, familyID int, doc Document, entries map[string]Entry) error {
+	if !doc.IsPack() {
+		return nil
+	}
+	var installed []Module
+	if err := tx.Where("family_id = ?", familyID).Find(&installed).Error; err != nil {
+		return err
+	}
+	byKey := map[string][]string{}
+	for _, module := range installed {
+		byKey[module.Key] = module.Children
+	}
+	children := func(id string) ([]string, bool) {
+		if id == doc.ID {
+			return doc.Modules, true
+		}
+		if entry, ok := entries[id]; ok {
+			return entry.Doc.Modules, true
+		}
+		kids, ok := byKey[id]
+		return kids, ok
+	}
+	if err := CheckTree(doc.ID, children); err != nil {
+		return invalid("%v", err)
+	}
+	return nil
 }
 
 // checkKeys refuses a module whose shared keys clash with the catalogue's or
@@ -205,6 +239,31 @@ func freshModules(db *gorm.DB, familyID int, now time.Time) ([]Module, error) {
 			have[child], added = true, true
 		}
 	}
+	// A catalogue pack now gathered as a level of a bigger one, such as
+	// Maths CE2 in Maths à l'école, brings the bigger one in, so that every
+	// pack has the same shape. What people play and know stays; the levels
+	// it adds are turned on for nobody.
+	for changed := true; changed; {
+		changed = false
+		for id, entry := range entries {
+			if have[id] || !entry.Doc.IsPack() || !gathersInstalledPack(entry.Doc, entries, have) {
+				continue
+			}
+			if err := db.Transaction(func(tx *gorm.DB) error {
+				return install(tx, entries, familyID, id, now, map[string]bool{})
+			}); err != nil {
+				return nil, err
+			}
+			var keys []string
+			if err := db.Model(&Module{}).Where("family_id = ?", familyID).Pluck("module_key", &keys).Error; err != nil {
+				return nil, err
+			}
+			for _, key := range keys {
+				have[key] = true
+			}
+			changed, added = true, true
+		}
+	}
 	if added {
 		modules = nil
 		if err := db.Where("family_id = ?", familyID).Order("name").Find(&modules).Error; err != nil {
@@ -212,6 +271,17 @@ func freshModules(db *gorm.DB, familyID int, now time.Time) ([]Module, error) {
 		}
 	}
 	return modules, nil
+}
+
+// gathersInstalledPack tells whether a catalogue pack gathers a pack the
+// family has.
+func gathersInstalledPack(doc Document, entries map[string]Entry, have map[string]bool) bool {
+	for _, child := range doc.Modules {
+		if have[child] && entries[child].Doc.IsPack() {
+			return true
+		}
+	}
+	return false
 }
 
 // Detail is a module, or a pack with its modules, as a family sees it:
@@ -303,8 +373,13 @@ func ModuleDetail(db *gorm.DB, familyID int, key string, now time.Time) (Detail,
 		return Detail{}, ErrNotFound
 	}
 	_, out.Installed = installed[key]
+	// A pack of levels shows each level, then its modules.
 	for _, child := range doc.Modules {
-		add(child)
+		if level, ok := add(child); ok {
+			for _, grand := range level.Modules {
+				add(grand)
+			}
+		}
 	}
 	if out.Reports, err = OpenReports(db, familyID, keys); err != nil {
 		return Detail{}, err
@@ -747,12 +822,37 @@ func loadLimits(tx *gorm.DB, familyID, userID int, modules []Module) (limits, er
 			l.byScope[row.Scope] = row
 		}
 	}
+	l.packsOf = packsOf(modules)
+	return l, nil
+}
+
+// packsOf lists, for each module, the packs it belongs to: its level first,
+// then the packs above.
+func packsOf(modules []Module) map[string][]string {
+	parents := map[string][]string{}
 	for _, module := range modules {
 		for _, child := range module.Children {
-			l.packsOf[child] = append(l.packsOf[child], module.Key)
+			parents[child] = append(parents[child], module.Key)
 		}
 	}
-	return l, nil
+	out := map[string][]string{}
+	for key := range parents {
+		seen := map[string]bool{}
+		next := parents[key]
+		for depth := 0; len(next) > 0 && depth < 5; depth++ {
+			var above []string
+			for _, pack := range next {
+				if seen[pack] {
+					continue
+				}
+				seen[pack] = true
+				out[key] = append(out[key], pack)
+				above = append(above, parents[pack]...)
+			}
+			next = above
+		}
+	}
+	return out
 }
 
 // Where a setting comes from: the module itself, the family or the person.

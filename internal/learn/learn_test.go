@@ -64,13 +64,18 @@ func TestInstallingAPackInstallsItsModulesAndTurningItOnTurnsThemOn(t *testing.T
 	require.NoError(t, Install(db, 1, "maths-ce2", now), "installing again only updates")
 	modules, err := Modules(db, 1, now)
 	require.NoError(t, err)
-	require.Len(t, modules, 9)
+	keys := map[string]bool{}
+	for _, module := range modules {
+		keys[module.Key] = true
+	}
+	require.True(t, keys["maths-ecole"], "Maths CE2 is a level of Maths à l'école, which comes with it")
+	require.True(t, keys["maths-gs-formes"], "with its other levels")
 
 	require.NoError(t, SetActivation(db, 1, ActivationChange{UserID: anna, Modules: []string{"maths-ce2"}, Active: true}, now))
 	player, err := PlayerFor(db, 1, anna, now)
 	require.NoError(t, err)
-	require.Len(t, player.Modules, 8, "a pack is never played itself")
-	require.Len(t, player.Packs, 1)
+	require.Len(t, player.Modules, 8, "a pack is never played itself, and the other levels are turned on for nobody")
+	require.Len(t, player.Packs, 5)
 
 	cap := 4
 	require.NoError(t, SetActivation(db, 1, ActivationChange{UserID: anna, Modules: []string{"maths-ce2-multiplication"},
@@ -682,4 +687,88 @@ func TestTheFamilyChangesAPackSettingTwice(t *testing.T) {
 	require.Len(t, rows, 1)
 	require.Equal(t, 20, *rows[0].Questions)
 	require.Equal(t, 60, *rows[0].UnlockPercent)
+}
+
+func TestEveryPackGathersLevelsOrModulesNeverBoth(t *testing.T) {
+	tree := map[string][]string{
+		"ecole": {"cp", "ce1"}, "cp": {"a", "b"}, "ce1": {"c"}, "a": nil, "b": nil, "c": nil,
+		"melange": {"cp", "a"}, "profond": {"ecole"}, "seul": {"a", "b"},
+	}
+	children := func(id string) ([]string, bool) {
+		kids, ok := tree[id]
+		return kids, ok
+	}
+	require.NoError(t, CheckTree("ecole", children), "a pack of levels")
+	require.NoError(t, CheckTree("seul", children), "a pack of modules has a single level")
+	require.ErrorContains(t, CheckTree("melange", children), "mélange")
+	require.ErrorContains(t, CheckTree("profond", children), "un niveau ne contient que des modules")
+
+	db := setup(t)
+	now := time.Now().UTC()
+	_, err := Import(db, 1, []byte(`{"format":"hopla-module/1","id":"mon-paquet","version":"1","nom":"Mon paquet","public":"tous",
+		"modules":["maths-ce2","maths-ce2-geometrie"]}`), now)
+	var invalid InvalidError
+	require.ErrorAs(t, err, &invalid)
+	require.Contains(t, invalid.Reason, "mélange")
+	_, err = Import(db, 1, []byte(`{"format":"hopla-module/1","id":"mon-paquet","version":"1","nom":"Mon paquet","public":"tous",
+		"modules":["maths-ecole"]}`), now)
+	require.ErrorAs(t, err, &invalid, "a level holds no pack of levels")
+}
+
+func TestAPackOfLevelsInstallsThemAndItsSettingsReachTheModules(t *testing.T) {
+	db := setup(t)
+	now := time.Now().UTC()
+	require.NoError(t, Install(db, 1, "maths-ecole", now))
+	require.NoError(t, SetActivation(db, 1, ActivationChange{UserID: anna, Modules: []string{"maths-ce2"}, Active: true}, now))
+	player, err := PlayerFor(db, 1, anna, now)
+	require.NoError(t, err)
+	require.Len(t, player.Modules, 8, "turning a level on turns on its modules only")
+
+	five, seven := 5, 7
+	require.NoError(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: "maths-ecole", DailyCap: &five}, now))
+	cap, _ := capOf(t, db, now, "maths-ce2-division")
+	require.Equal(t, 5, cap, "the pack above the level")
+	require.NoError(t, SetPersonSetting(db, 1, SettingChange{UserID: anna, Scope: "maths-ce2", DailyCap: &seven}, now))
+	cap, _ = capOf(t, db, now, "maths-ce2-division")
+	require.Equal(t, 7, cap, "the level before the pack above")
+
+	require.NoError(t, SetActivation(db, 1, ActivationChange{UserID: anna, Modules: []string{"maths-ecole"}, Active: true}, now))
+	player, err = PlayerFor(db, 1, anna, now)
+	require.NoError(t, err)
+	require.Len(t, player.Modules, 30, "turning the whole pack on turns on every level")
+
+	detail, err := ModuleDetail(db, 1, "maths-ecole", now)
+	require.NoError(t, err)
+	require.Len(t, detail.Documents, 1+4+30, "the pack, each level, then its modules")
+
+	require.NoError(t, Remove(db, 1, "maths-ecole", false))
+	modules, err := Modules(db, 1, now)
+	require.NoError(t, err)
+	require.Empty(t, modules, "the pack goes with its levels and their modules")
+}
+
+func TestAFamilyWithAPackNowALevelGetsThePackAboveAndKeepsWhatItPlays(t *testing.T) {
+	db := setup(t)
+	now := time.Now().UTC()
+	entries, err := Catalogue()
+	require.NoError(t, err)
+	// As before Maths à l'école: Maths CE2 and its modules alone.
+	for _, key := range append([]string{"maths-ce2"}, entries["maths-ce2"].Doc.Modules...) {
+		entry := entries[key]
+		require.NoError(t, db.Create(&Module{FamilyID: 1, Key: key, Version: entry.Doc.Version, Name: entry.Doc.Name,
+			Children: entry.Doc.Modules, Builtin: true, Content: string(entry.Raw), InstalledAt: now, UpdatedAt: now}).Error)
+	}
+	require.NoError(t, SetActivation(db, 1, ActivationChange{UserID: anna, Modules: []string{"maths-ce2"}, Active: true}, now))
+
+	modules, err := Modules(db, 1, now)
+	require.NoError(t, err)
+	keys := map[string]bool{}
+	for _, module := range modules {
+		keys[module.Key] = true
+	}
+	require.True(t, keys["maths-ecole"])
+	require.True(t, keys["maths-cp"])
+	player, err := PlayerFor(db, 1, anna, now)
+	require.NoError(t, err)
+	require.Len(t, player.Modules, 8, "what was played stays, the new levels are for nobody")
 }

@@ -1,0 +1,24 @@
+{
+  "format": "hopla-module/1",
+  "version": "1.0.0",
+  "public": "enfant",
+  "langue": "fr",
+  "auteur": "Hopla",
+  "id": "monde-ecole",
+  "nom": "Le monde à l'école",
+  "description": "Explorer puis questionner le monde, de la grande section au CE2 : le vivant, le corps, la matière, les objets, le temps et l'espace.",
+  "matiere": "monde",
+  "niveaux": [
+    "GS",
+    "CP",
+    "CE1",
+    "CE2"
+  ],
+  "sources": "D'après les programmes des cycles 1 et 2 (Éduscol).",
+  "modules": [
+    "monde-gs",
+    "monde-cp",
+    "monde-ce1",
+    "monde-ce2"
+  ]
+}
