@@ -45,7 +45,12 @@
     "traceAgain": "Effacer",
     "traceDone": "J'ai fini",
     "traceMore": "Repasse bien sur toute la lettre, sans déborder.",
-    "traceAlmost": "Presque ! Encore un peu plus près du modèle."
+    "traceAlmost": "Presque ! Encore un peu plus près du modèle.",
+    "dragHelp": "Tu peux faire glisser l’étiquette jusqu’à sa case, ou la toucher puis toucher la case.",
+    "dragStart": "Étiquette prise.",
+    "dragOver": "Au-dessus d’une case.",
+    "dragEnd": "Étiquette posée.",
+    "dragCancel": "Étiquette reposée à sa place."
   },
   "end": {
     "title0": "Continue, ça va venir !",

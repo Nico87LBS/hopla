@@ -100,8 +100,8 @@ questions :
 | Carte à retourner | réfléchit, retourne la carte et dit s'il savait : « Je savais », « Presque », « Pas encore » |
 | Compter | compte une collection dessinée ou les points d'un dé, et touche le nombre (ou le tape au-delà de 10) |
 | Relier | touche une étiquette à gauche puis sa paire à droite, jusqu'à toutes les relier |
-| Remettre dans l'ordre | touche les étiquettes dans l'ordre pour les placer, puis « Valider » |
-| Classer | met chaque étiquette dans la bonne boîte |
+| Remettre dans l'ordre | fait glisser chaque étiquette dans sa case numérotée (ou la touche pour la placer dans la première case libre), puis « Valider » ; une étiquette posée se reprend en la touchant ou en la glissant ailleurs |
+| Classer | fait glisser l'étiquette jusqu'à la bonne boîte, ou touche la boîte |
 | Zones | touche une région, un fleuve, une ville, un continent, un os ou une partie du corps ou de la plante, ou nomme celui qui est en couleur |
 | Texte à trous | glisse (ou touche) le bon mot dans le trou de la phrase, puis « Valider » ; toutes les questions à choix qui ont un trou `___` (homophones, accords, conjugaison) se jouent ainsi |
 | Régler l'horloge | fait tourner les aiguilles au doigt jusqu'à l'heure demandée, puis « Valider » |
