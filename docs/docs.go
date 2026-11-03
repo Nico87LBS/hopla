@@ -7233,6 +7233,13 @@ const docTemplate = `{
                 "on": {
                     "type": "boolean"
                 },
+                "trainSlow": {
+                    "description": "TrainSlow and TrainWrap make le train des lapereaux easier.",
+                    "type": "boolean"
+                },
+                "trainWrap": {
+                    "type": "boolean"
+                },
                 "userId": {
                     "type": "integer"
                 }
@@ -7244,10 +7251,17 @@ const docTemplate = `{
                 "clientId": {
                     "type": "string"
                 },
+                "free": {
+                    "description": "Free plays on the time of récré from the shop, Seconds being how long\nthe game took.",
+                    "type": "boolean"
+                },
                 "game": {
                     "type": "string"
                 },
                 "score": {
+                    "type": "integer"
+                },
+                "seconds": {
                     "type": "integer"
                 },
                 "userId": {

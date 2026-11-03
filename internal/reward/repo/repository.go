@@ -57,6 +57,7 @@ func (r *RewardRepository) UpdateReward(ctx context.Context, reward *rModel.Rewa
 			"quota_count":    reward.QuotaCount,
 			"quota_period":   reward.QuotaPeriod,
 			"quota_timezone": reward.QuotaTimezone,
+			"recre_minutes":  reward.RecreMinutes,
 		}).Error
 }
 
@@ -100,14 +101,15 @@ func (r *RewardRepository) RequestRedemption(ctx context.Context, rewardID int, 
 		}
 
 		redemption = &rModel.RewardRedemption{
-			RewardID:    reward.ID,
-			FamilyID:    familyID,
-			UserID:      userID,
-			RewardName:  reward.Name,
-			PointsCost:  reward.PointsCost,
-			Status:      rModel.RedemptionStatusPending,
-			Note:        note,
-			RequestedAt: time.Now().UTC(),
+			RewardID:     reward.ID,
+			FamilyID:     familyID,
+			UserID:       userID,
+			RewardName:   reward.Name,
+			PointsCost:   reward.PointsCost,
+			RecreMinutes: reward.RecreMinutes,
+			Status:       rModel.RedemptionStatusPending,
+			Note:         note,
+			RequestedAt:  time.Now().UTC(),
 		}
 		return tx.Create(redemption).Error
 	})

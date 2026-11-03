@@ -10,7 +10,9 @@ import {
 } from './common'
 
 // Le train des lapereaux: the rabbit eats carrots and a line of little
-// rabbits grows behind it. Bumping into the hedge or the line ends it.
+// rabbits grows behind it. Bumping into the line ends it, and into the hedge
+// too unless wrap is on: the rabbit then comes out on the other side. slow
+// makes it start slower and speed up half as fast.
 
 const DIRS = {
   up: { x: 0, y: -1 },
@@ -21,7 +23,16 @@ const DIRS = {
 
 const BABIES = ['#FFFFFF', '#F3E7DA', '#E9E1F7']
 
-export const startTrain = (canvas, { onEnd, onScore }) => {
+// The time between two steps, in seconds, after so many carrots.
+export const trainStep = (score, slow) =>
+  slow
+    ? Math.max(0.2, 0.36 - score * 0.004)
+    : Math.max(0.1, 0.26 - score * 0.008)
+
+export const startTrain = (
+  canvas,
+  { onEnd, onScore, options: { slow = true, wrap = true } = {} },
+) => {
   const { ctx, h, w } = setupCanvas(canvas)
   const cols = 12
   const cell = Math.floor(Math.min(w / cols, h / 12))
@@ -51,7 +62,10 @@ export const startTrain = (canvas, { onEnd, onScore }) => {
 
   const step = () => {
     dir = next
-    const head = { x: body[0].x + dir.x, y: body[0].y + dir.y }
+    let head = { x: body[0].x + dir.x, y: body[0].y + dir.y }
+    if (wrap) {
+      head = { x: (head.x + cols) % cols, y: (head.y + rows) % rows }
+    }
     const ate = head.x === carrot.x && head.y === carrot.y
     const rest = ate ? body : body.slice(0, -1)
     if (
@@ -85,7 +99,10 @@ export const startTrain = (canvas, { onEnd, onScore }) => {
         }
     ctx.strokeStyle = HOPLA.green
     ctx.lineWidth = 3
+    // A dotted hedge lets the rabbit through.
+    ctx.setLineDash(wrap ? [cell * 0.3, cell * 0.25] : [])
     ctx.strokeRect(ox, oy, cols * cell, rows * cell)
+    ctx.setLineDash([])
     const at = p => ({
       x: ox + p.x * cell + cell / 2,
       y: oy + p.y * cell + cell / 2,
@@ -112,7 +129,7 @@ export const startTrain = (canvas, { onEnd, onScore }) => {
     wait -= dt
     if (started && wait <= 0) {
       step()
-      wait = Math.max(0.1, 0.26 - score * 0.008)
+      wait = trainStep(score, slow)
     }
     draw()
     if (over) {

@@ -15,6 +15,10 @@ import (
 // La récré : toutes les X parties d'Apprendre réussies (au moins
 // RecreMinStars étoiles), l'enfant a droit à une partie d'un petit jeu. Elle
 // ne rapporte aucun hop ; chaque jeu garde les records de la famille.
+//
+// Une récompense de la boutique peut aussi donner du temps de récré : les
+// minutes accordées s'ajoutent à une réserve, que l'enfant dépense en jouant
+// librement, le chrono ne tournant que pendant les parties.
 
 // RecreGames are the little games, in the order the page shows them.
 var RecreGames = []string{"train", "bulles", "panier", "terriers", "sequence"}
@@ -42,20 +46,29 @@ type RecreSetting struct {
 	// Minutes stops a game after that long; 0 lets it run to its end.
 	Minutes int `json:"minutes" gorm:"column:minutes;not null;default:0"`
 	// Games lists the games allowed, separated by commas; empty is all.
-	Games     string    `json:"games" gorm:"column:games;size:200"`
-	UpdatedAt time.Time `json:"updatedAt" gorm:"column:updated_at"`
+	Games string `json:"games" gorm:"column:games;size:200"`
+	// TrainFast and TrainHedge make le train des lapereaux as hard as it
+	// was: full speed, and the hedge ends the game. By default it goes
+	// slower and the rabbit comes out on the other side.
+	TrainFast  bool      `json:"trainFast" gorm:"column:train_fast;not null;default:false"`
+	TrainHedge bool      `json:"trainHedge" gorm:"column:train_hedge;not null;default:false"`
+	UpdatedAt  time.Time `json:"updatedAt" gorm:"column:updated_at"`
 }
 
 func (RecreSetting) TableName() string { return "learn_recre_settings" }
 
 // RecrePlay is one récré played, with its score.
 type RecrePlay struct {
-	ID       int       `json:"id" gorm:"primaryKey"`
-	FamilyID int       `json:"-" gorm:"column:family_id;not null;uniqueIndex:idx_learn_recre_play;index:idx_learn_recre_user"`
-	ClientID string    `json:"clientId" gorm:"column:client_id;size:64;not null;uniqueIndex:idx_learn_recre_play"`
-	UserID   int       `json:"userId" gorm:"column:user_id;not null;index:idx_learn_recre_user"`
-	Game     string    `json:"game" gorm:"column:game;size:20;not null"`
-	Score    int       `json:"score" gorm:"column:score;not null"`
+	ID       int    `json:"id" gorm:"primaryKey"`
+	FamilyID int    `json:"-" gorm:"column:family_id;not null;uniqueIndex:idx_learn_recre_play;index:idx_learn_recre_user"`
+	ClientID string `json:"clientId" gorm:"column:client_id;size:64;not null;uniqueIndex:idx_learn_recre_play"`
+	UserID   int    `json:"userId" gorm:"column:user_id;not null;index:idx_learn_recre_user"`
+	Game     string `json:"game" gorm:"column:game;size:20;not null"`
+	Score    int    `json:"score" gorm:"column:score;not null"`
+	// Free is a game played on the time of récré from the shop; Seconds is
+	// the time it took from that time.
+	Free     bool      `json:"free" gorm:"column:free;not null;default:false"`
+	Seconds  int       `json:"seconds" gorm:"column:seconds;not null;default:0"`
 	PlayedAt time.Time `json:"playedAt" gorm:"column:played_at;not null"`
 }
 
@@ -79,6 +92,11 @@ type Recre struct {
 	// Since counts the games of Apprendre with RecreMinStars stars or more
 	// since the last récré (since the start of the day before the first).
 	Since int `json:"since"`
+	// Bank is the time of récré left from the shop, in seconds.
+	Bank int `json:"bank"`
+	// TrainSlow and TrainWrap make le train des lapereaux easier.
+	TrainSlow bool `json:"trainSlow"`
+	TrainWrap bool `json:"trainWrap"`
 	// Records are the best scores of everyone in the family, game by game.
 	Records []RecreRecord `json:"records"`
 }
@@ -115,7 +133,8 @@ func RecreFor(db *gorm.DB, familyID, userID int, now time.Time) (Recre, error) {
 		return Recre{}, err
 	}
 	r := Recre{On: !setting.Off, Every: setting.Every, Minutes: setting.Minutes,
-		Games: allowedGames(setting.Games), Records: []RecreRecord{}}
+		Games: allowedGames(setting.Games), Records: []RecreRecord{},
+		TrainSlow: !setting.TrainFast, TrainWrap: !setting.TrainHedge}
 	if r.Every < 1 {
 		r.Every = RecreEvery
 	}
@@ -124,7 +143,7 @@ func RecreFor(db *gorm.DB, familyID, userID int, now time.Time) (Recre, error) {
 	}
 	from := zone.StartOfDay(now, zone.Of(familyID)).UTC()
 	var last RecrePlay
-	if err := db.Where("family_id = ? AND user_id = ?", familyID, userID).
+	if err := db.Where("family_id = ? AND user_id = ? AND free = ?", familyID, userID, false).
 		Order("played_at DESC").Limit(1).Find(&last).Error; err != nil {
 		return r, err
 	}
@@ -138,12 +157,32 @@ func RecreFor(db *gorm.DB, familyID, userID int, now time.Time) (Recre, error) {
 		return r, err
 	}
 	r.Since = int(since)
+	if r.Bank, err = recreBank(db, familyID, userID); err != nil {
+		return r, err
+	}
 	err = db.Table("learn_recre_plays AS p").
 		Select("p.game, p.user_id, MAX(p.score) AS score, u.display_name, u.image").
 		Joins("LEFT JOIN users u ON u.id = p.user_id").
 		Where("p.family_id = ?", familyID).Group("p.game, p.user_id, u.display_name, u.image").
 		Order("p.game, score DESC").Scan(&r.Records).Error
 	return r, err
+}
+
+// recreBank is the time of récré from the shop not played yet, in seconds:
+// the minutes of the approved rewards, less the free games played.
+func recreBank(db *gorm.DB, familyID, userID int) (int, error) {
+	var given, spent int64
+	if err := db.Table("reward_redemptions").Select("COALESCE(SUM(recre_minutes), 0)").
+		Where("family_id = ? AND user_id = ? AND status = ?", familyID, userID, 1). // 1 : accordée
+		Scan(&given).Error; err != nil {
+		return 0, err
+	}
+	if err := db.Model(&RecrePlay{}).Select("COALESCE(SUM(seconds), 0)").
+		Where("family_id = ? AND user_id = ? AND free = ?", familyID, userID, true).
+		Scan(&spent).Error; err != nil {
+		return 0, err
+	}
+	return max(0, int(given*60-spent)), nil
 }
 
 // RecreChange is what a parent changes in a person's récré; nil leaves a
@@ -154,6 +193,9 @@ type RecreChange struct {
 	Every   *int     `json:"every"`
 	Minutes *int     `json:"minutes"`
 	Games   []string `json:"games"`
+	// TrainSlow and TrainWrap make le train des lapereaux easier.
+	TrainSlow *bool `json:"trainSlow"`
+	TrainWrap *bool `json:"trainWrap"`
 }
 
 // SetRecre applies a parent's change.
@@ -201,6 +243,12 @@ func SetRecre(db *gorm.DB, familyID int, change RecreChange, now time.Time) erro
 				row.Games = strings.Join(allowedGames(strings.Join(change.Games, ",")), ",")
 			}
 		}
+		if change.TrainSlow != nil {
+			row.TrainFast = !*change.TrainSlow
+		}
+		if change.TrainWrap != nil {
+			row.TrainHedge = !*change.TrainWrap
+		}
 		row.UpdatedAt = now
 		return tx.Clauses(clause.OnConflict{
 			Columns:   []clause.Column{{Name: "family_id"}, {Name: "user_id"}},
@@ -215,12 +263,17 @@ type RecreGame struct {
 	UserID   int    `json:"userId"`
 	Game     string `json:"game"`
 	Score    int    `json:"score"`
+	// Free plays on the time of récré from the shop, Seconds being how long
+	// the game took.
+	Free    bool `json:"free"`
+	Seconds int  `json:"seconds"`
 }
 
 // RecordRecre keeps a récré played and answers with the récré after it. A
 // récré sent twice counts once.
 func RecordRecre(db *gorm.DB, familyID int, game RecreGame, now time.Time) (Recre, error) {
-	if game.ClientID == "" || len(game.ClientID) > 64 || game.Score < 0 || game.Score > 1_000_000 {
+	if game.ClientID == "" || len(game.ClientID) > 64 || game.Score < 0 || game.Score > 1_000_000 ||
+		game.Seconds < 0 {
 		return Recre{}, invalid("partie de récré invalide")
 	}
 	var known int64
@@ -235,7 +288,7 @@ func RecordRecre(db *gorm.DB, familyID int, game RecreGame, now time.Time) (Recr
 	if err != nil {
 		return r, err
 	}
-	if !r.Ready() {
+	if game.Free && r.Bank <= 0 || !game.Free && !r.Ready() {
 		return r, ErrNoRecre
 	}
 	if !slices.Contains(r.Games, game.Game) {
@@ -243,6 +296,10 @@ func RecordRecre(db *gorm.DB, familyID int, game RecreGame, now time.Time) (Recr
 	}
 	play := RecrePlay{FamilyID: familyID, ClientID: game.ClientID, UserID: game.UserID,
 		Game: game.Game, Score: game.Score, PlayedAt: now}
+	if game.Free {
+		// A game takes at least a second, and never more than the time left.
+		play.Free, play.Seconds = true, min(max(game.Seconds, 1), r.Bank)
+	}
 	if err := db.Create(&play).Error; err != nil {
 		return r, err
 	}

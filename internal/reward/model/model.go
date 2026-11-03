@@ -20,6 +20,10 @@ type Reward struct {
 	QuotaCount    int    `json:"quotaCount" gorm:"column:quota_count;default:0"`
 	QuotaPeriod   string `json:"quotaPeriod" gorm:"column:quota_period"`
 	QuotaTimezone string `json:"quotaTimezone" gorm:"column:quota_timezone"`
+	// RecreMinutes, when above 0, makes the reward time of récré: once the
+	// redemption is approved, the member has that many minutes more to play
+	// the little games of Apprendre.
+	RecreMinutes int `json:"recreMinutes" gorm:"column:recre_minutes;not null;default:0"`
 	// Filled in when listing: redemptions per member in the current period
 	// and when that period ends.
 	QuotaUsed     map[int]int `json:"quotaUsed,omitempty" gorm:"-"`
@@ -37,15 +41,17 @@ const (
 // RewardRedemption is a member's request to spend points on a Reward, subject
 // to admin/manager approval — mirrors the chore ApproveChore/RejectChore flow.
 type RewardRedemption struct {
-	ID          int              `json:"id" gorm:"primary_key"`
-	RewardID    int              `json:"rewardId" gorm:"column:reward_id;index"`
-	FamilyID    int              `json:"familyId" gorm:"column:family_id;index"`
-	UserID      int              `json:"userId" gorm:"column:user_id;index"`
-	RewardName  string           `json:"rewardName" gorm:"column:reward_name"` // snapshot, survives reward edits/deletes
-	PointsCost  int              `json:"pointsCost" gorm:"column:points_cost"` // snapshot at request time
-	Status      RedemptionStatus `json:"status" gorm:"column:status"`
-	Note        *string          `json:"note" gorm:"column:note"`
-	RequestedAt time.Time        `json:"requestedAt" gorm:"column:requested_at"`
-	ResolvedAt  *time.Time       `json:"resolvedAt" gorm:"column:resolved_at"`
-	ResolvedBy  *int             `json:"resolvedBy" gorm:"column:resolved_by"`
+	ID         int    `json:"id" gorm:"primary_key"`
+	RewardID   int    `json:"rewardId" gorm:"column:reward_id;index"`
+	FamilyID   int    `json:"familyId" gorm:"column:family_id;index"`
+	UserID     int    `json:"userId" gorm:"column:user_id;index"`
+	RewardName string `json:"rewardName" gorm:"column:reward_name"` // snapshot, survives reward edits/deletes
+	PointsCost int    `json:"pointsCost" gorm:"column:points_cost"` // snapshot at request time
+	// RecreMinutes is the reward's time of récré, kept at request time.
+	RecreMinutes int              `json:"recreMinutes" gorm:"column:recre_minutes;not null;default:0"`
+	Status       RedemptionStatus `json:"status" gorm:"column:status"`
+	Note         *string          `json:"note" gorm:"column:note"`
+	RequestedAt  time.Time        `json:"requestedAt" gorm:"column:requested_at"`
+	ResolvedAt   *time.Time       `json:"resolvedAt" gorm:"column:resolved_at"`
+	ResolvedBy   *int             `json:"resolvedBy" gorm:"column:resolved_by"`
 }

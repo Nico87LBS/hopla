@@ -26,6 +26,7 @@ import { loadServerVoices } from '../../utils/learn/serverVoice'
 import { queuedFor } from '../../utils/learn/store'
 import LoadingComponent from '../components/Loading'
 import { MemberAvatar } from '../Games/GameParts'
+import { clock } from '../Recre/games/common'
 import { Progress, subjectColor, useCompiled } from './LearnParts'
 import ListBar, { useListChoices } from './ListBar'
 
@@ -223,10 +224,12 @@ ModuleCard.propTypes = {
 }
 
 // RecreCard tells how far the next récré is, and opens it once it is
-// there; the family's records are behind it too.
+// there, or as soon as time of récré from the shop is waiting; the family's
+// records are behind it too.
 const RecreCard = ({ recre, to }) => {
   const { t } = useTranslation('learn')
-  const ready = recre.since >= recre.every
+  const earned = recre.on && recre.since >= recre.every
+  const ready = earned || recre.bank > 0
   const done = Math.min(recre.since, recre.every)
   return (
     <Sheet
@@ -248,12 +251,15 @@ const RecreCard = ({ recre, to }) => {
       <SportsEsportsRounded sx={{ color: ready ? '#fff' : HOPLA.green }} />
       <Box sx={{ flex: 1, minWidth: 0 }}>
         <Typography level='title-sm' sx={{ color: 'inherit' }}>
-          {ready
-            ? t('recre.ready')
-            : t('recre.notYet', {
-                count: recre.every - recre.since,
-                every: recre.every,
-              })}
+          {earned && t('recre.ready')}
+          {!earned &&
+            recre.bank > 0 &&
+            t('recre.bankReady', { time: clock(recre.bank) })}
+          {!ready &&
+            t('recre.notYet', {
+              count: recre.every - recre.since,
+              every: recre.every,
+            })}
         </Typography>
         {!ready && (
           <Stack direction='row' gap={0.5} sx={{ mt: 0.75 }}>
@@ -429,7 +435,7 @@ export const LearnModules = ({
         </Sheet>
       )}
 
-      {player?.recre?.on && count > 0 && (
+      {((player?.recre?.on && count > 0) || player?.recre?.bank > 0) && (
         <RecreCard recre={player.recre} to={recrePath} />
       )}
 
