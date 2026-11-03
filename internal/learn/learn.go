@@ -205,10 +205,15 @@ func freshModules(db *gorm.DB, familyID int, now time.Time) ([]Module, error) {
 	for _, module := range modules {
 		have[module.Key] = true
 	}
+	// The catalogue modules cut into several, now packs of them.
+	var split []string
 	for i, module := range modules {
 		entry, ok := entries[module.Key]
 		if !module.Builtin || !ok || entry.Doc.Version == module.Version {
 			continue
+		}
+		if !module.IsPack() && entry.Doc.IsPack() {
+			split = append(split, module.Key)
 		}
 		fresh := moduleFrom(familyID, entry.Doc, entry.Raw, true, now)
 		if err := save(db, fresh); err != nil {
@@ -237,6 +242,11 @@ func freshModules(db *gorm.DB, familyID int, now time.Time) ([]Module, error) {
 				return nil, err
 			}
 			have[child], added = true, true
+		}
+	}
+	for _, key := range split {
+		if err := splitModule(db, familyID, key, entries, now); err != nil {
+			return nil, err
 		}
 	}
 	// A catalogue pack now gathered as a level of a bigger one, such as
@@ -271,6 +281,82 @@ func freshModules(db *gorm.DB, familyID int, now time.Time) ([]Module, error) {
 		}
 	}
 	return modules, nil
+}
+
+// splitModule carries what a catalogue module held over to the modules it
+// was cut into, now that it is a pack of them: whoever played it plays them
+// all, with the settings they had on it set on the pack, and the family's
+// corrections and reports follow their cards. What people know stays, by
+// the keys of the cards; the games played stay under the old module.
+func splitModule(db *gorm.DB, familyID int, key string, entries map[string]Entry, now time.Time) error {
+	children := entries[key].Doc.Modules
+	owner := map[string]string{}
+	for _, child := range children {
+		for _, card := range entries[child].Doc.Cards {
+			owner[card.ID] = child
+		}
+	}
+	return db.Transaction(func(tx *gorm.DB) error {
+		var activations []Activation
+		if err := tx.Where("family_id = ? AND module_key = ?", familyID, key).Find(&activations).Error; err != nil {
+			return err
+		}
+		for _, a := range activations {
+			if a.DailyCap != nil || a.UnlockPercent != nil || !a.GameSettings.empty() {
+				row := PersonSetting{FamilyID: familyID, UserID: a.UserID, Scope: key}
+				if err := tx.Where(&row).FirstOrInit(&row).Error; err != nil {
+					return err
+				}
+				for _, f := range []struct{ to, from **int }{
+					{&row.DailyCap, &a.DailyCap}, {&row.UnlockPercent, &a.UnlockPercent},
+					{&row.Questions, &a.Questions}, {&row.Threshold, &a.Threshold}, {&row.HopsByStar, &a.HopsByStar},
+				} {
+					if *f.to == nil {
+						*f.to = *f.from
+					}
+				}
+				row.UpdatedAt = now
+				if err := tx.Save(&row).Error; err != nil {
+					return err
+				}
+			}
+			for _, child := range children {
+				if err := tx.Clauses(clause.OnConflict{DoNothing: true}).Create(&Activation{
+					FamilyID: familyID, UserID: a.UserID, ModuleKey: child, CreatedAt: a.CreatedAt,
+				}).Error; err != nil {
+					return err
+				}
+			}
+		}
+		if err := tx.Where("family_id = ? AND module_key = ?", familyID, key).Delete(&Activation{}).Error; err != nil {
+			return err
+		}
+		var edits []CardEdit
+		if err := tx.Where("family_id = ? AND module_key = ?", familyID, key).Find(&edits).Error; err != nil {
+			return err
+		}
+		for _, edit := range edits {
+			child, ok := owner[edit.CardID]
+			if !ok {
+				continue
+			}
+			if err := tx.Where("family_id = ? AND module_key = ? AND card_id = ?", familyID, key, edit.CardID).
+				Delete(&CardEdit{}).Error; err != nil {
+				return err
+			}
+			edit.ModuleKey = child
+			if err := tx.Clauses(clause.OnConflict{DoNothing: true}).Create(&edit).Error; err != nil {
+				return err
+			}
+		}
+		for card, child := range owner {
+			if err := tx.Model(&Report{}).Where("family_id = ? AND module_key = ? AND card_id = ?", familyID, key, card).
+				Update("module_key", child).Error; err != nil {
+				return err
+			}
+		}
+		return nil
+	})
 }
 
 // gathersInstalledPack tells whether a catalogue pack gathers a pack the

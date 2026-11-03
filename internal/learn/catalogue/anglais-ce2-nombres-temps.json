@@ -1,0 +1,929 @@
+{
+  "format": "hopla-module/1",
+  "id": "anglais-ce2-nombres-temps",
+  "version": "1.0.0",
+  "nom": "Nombres et temps",
+  "description": "Les nombres jusqu'à 20, Les nombres jusqu'à 100, Les jours, Les mois et les saisons et Le temps qu'il fait.",
+  "matiere": "anglais",
+  "niveaux": [
+    "CE2"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "en",
+  "icone": "langue",
+  "couleur": "#3B82F6",
+  "auteur": "Hopla",
+  "sources": "D'après le programme de langues vivantes du cycle 2 et les repères de progression en anglais (Éduscol).",
+  "reglages": {
+    "questions_par_partie": 10,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 3
+  },
+  "chapitres": [
+    {
+      "id": "numbers-20",
+      "nom": "Les nombres jusqu'à 20"
+    },
+    {
+      "id": "numbers-100",
+      "nom": "Les nombres jusqu'à 100",
+      "ouvert_apres": 60
+    },
+    {
+      "id": "days",
+      "nom": "Les jours",
+      "ouvert_apres": 60
+    },
+    {
+      "id": "months",
+      "nom": "Les mois et les saisons",
+      "ouvert_apres": 60
+    },
+    {
+      "id": "weather",
+      "nom": "Le temps qu'il fait",
+      "ouvert_apres": 60
+    }
+  ],
+  "fiches": [
+    {
+      "id": "number-one",
+      "chapitre": "numbers-20",
+      "type": "ecoute",
+      "cle": "en:nombre:one",
+      "question": "one",
+      "reponse": "un",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-two",
+      "chapitre": "numbers-20",
+      "type": "ecoute",
+      "cle": "en:nombre:two",
+      "question": "two",
+      "reponse": "deux",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-three",
+      "chapitre": "numbers-20",
+      "type": "ecoute",
+      "cle": "en:nombre:three",
+      "question": "three",
+      "reponse": "trois",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-four",
+      "chapitre": "numbers-20",
+      "type": "ecoute",
+      "cle": "en:nombre:four",
+      "question": "four",
+      "reponse": "quatre",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-five",
+      "chapitre": "numbers-20",
+      "type": "ecoute",
+      "cle": "en:nombre:five",
+      "question": "five",
+      "reponse": "cinq",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-six",
+      "chapitre": "numbers-20",
+      "type": "ecoute",
+      "cle": "en:nombre:six",
+      "question": "six",
+      "reponse": "six",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-seven",
+      "chapitre": "numbers-20",
+      "type": "ecoute",
+      "cle": "en:nombre:seven",
+      "question": "seven",
+      "reponse": "sept",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-eight",
+      "chapitre": "numbers-20",
+      "type": "ecoute",
+      "cle": "en:nombre:eight",
+      "question": "eight",
+      "reponse": "huit",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-nine",
+      "chapitre": "numbers-20",
+      "type": "ecoute",
+      "cle": "en:nombre:nine",
+      "question": "nine",
+      "reponse": "neuf",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-ten",
+      "chapitre": "numbers-20",
+      "type": "ecoute",
+      "cle": "en:nombre:ten",
+      "question": "ten",
+      "reponse": "dix",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-eleven",
+      "chapitre": "numbers-20",
+      "type": "ecoute",
+      "cle": "en:nombre:eleven",
+      "question": "eleven",
+      "reponse": "onze",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-twelve",
+      "chapitre": "numbers-20",
+      "type": "ecoute",
+      "cle": "en:nombre:twelve",
+      "question": "twelve",
+      "reponse": "douze",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-thirteen",
+      "chapitre": "numbers-20",
+      "type": "ecoute",
+      "cle": "en:nombre:thirteen",
+      "question": "thirteen",
+      "reponse": "treize",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-fourteen",
+      "chapitre": "numbers-20",
+      "type": "ecoute",
+      "cle": "en:nombre:fourteen",
+      "question": "fourteen",
+      "reponse": "quatorze",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-fifteen",
+      "chapitre": "numbers-20",
+      "type": "ecoute",
+      "cle": "en:nombre:fifteen",
+      "question": "fifteen",
+      "reponse": "quinze",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-sixteen",
+      "chapitre": "numbers-20",
+      "type": "ecoute",
+      "cle": "en:nombre:sixteen",
+      "question": "sixteen",
+      "reponse": "seize",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-seventeen",
+      "chapitre": "numbers-20",
+      "type": "ecoute",
+      "cle": "en:nombre:seventeen",
+      "question": "seventeen",
+      "reponse": "dix-sept",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-eighteen",
+      "chapitre": "numbers-20",
+      "type": "ecoute",
+      "cle": "en:nombre:eighteen",
+      "question": "eighteen",
+      "reponse": "dix-huit",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-nineteen",
+      "chapitre": "numbers-20",
+      "type": "ecoute",
+      "cle": "en:nombre:nineteen",
+      "question": "nineteen",
+      "reponse": "dix-neuf",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-twenty",
+      "chapitre": "numbers-20",
+      "type": "ecoute",
+      "cle": "en:nombre:twenty",
+      "question": "twenty",
+      "reponse": "vingt",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-thirty",
+      "chapitre": "numbers-100",
+      "type": "ecoute",
+      "cle": "en:nombre:thirty",
+      "question": "thirty",
+      "reponse": "trente",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-forty",
+      "chapitre": "numbers-100",
+      "type": "ecoute",
+      "cle": "en:nombre:forty",
+      "question": "forty",
+      "reponse": "quarante",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-fifty",
+      "chapitre": "numbers-100",
+      "type": "ecoute",
+      "cle": "en:nombre:fifty",
+      "question": "fifty",
+      "reponse": "cinquante",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-sixty",
+      "chapitre": "numbers-100",
+      "type": "ecoute",
+      "cle": "en:nombre:sixty",
+      "question": "sixty",
+      "reponse": "soixante",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-seventy",
+      "chapitre": "numbers-100",
+      "type": "ecoute",
+      "cle": "en:nombre:seventy",
+      "question": "seventy",
+      "reponse": "soixante-dix",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-eighty",
+      "chapitre": "numbers-100",
+      "type": "ecoute",
+      "cle": "en:nombre:eighty",
+      "question": "eighty",
+      "reponse": "quatre-vingts",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-ninety",
+      "chapitre": "numbers-100",
+      "type": "ecoute",
+      "cle": "en:nombre:ninety",
+      "question": "ninety",
+      "reponse": "quatre-vingt-dix",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-a-hundred",
+      "chapitre": "numbers-100",
+      "type": "ecoute",
+      "cle": "en:nombre:a-hundred",
+      "question": "a hundred",
+      "reponse": "cent",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-twenty-one",
+      "chapitre": "numbers-100",
+      "type": "ecoute",
+      "cle": "en:nombre:twenty-one",
+      "question": "twenty-one",
+      "reponse": "vingt et un",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-thirty-five",
+      "chapitre": "numbers-100",
+      "type": "ecoute",
+      "cle": "en:nombre:thirty-five",
+      "question": "thirty-five",
+      "reponse": "trente-cinq",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-forty-two",
+      "chapitre": "numbers-100",
+      "type": "ecoute",
+      "cle": "en:nombre:forty-two",
+      "question": "forty-two",
+      "reponse": "quarante-deux",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-fifty-eight",
+      "chapitre": "numbers-100",
+      "type": "ecoute",
+      "cle": "en:nombre:fifty-eight",
+      "question": "fifty-eight",
+      "reponse": "cinquante-huit",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-sixty-three",
+      "chapitre": "numbers-100",
+      "type": "ecoute",
+      "cle": "en:nombre:sixty-three",
+      "question": "sixty-three",
+      "reponse": "soixante-trois",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-seventy-six",
+      "chapitre": "numbers-100",
+      "type": "ecoute",
+      "cle": "en:nombre:seventy-six",
+      "question": "seventy-six",
+      "reponse": "soixante-seize",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-eighty-four",
+      "chapitre": "numbers-100",
+      "type": "ecoute",
+      "cle": "en:nombre:eighty-four",
+      "question": "eighty-four",
+      "reponse": "quatre-vingt-quatre",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "number-ninety-nine",
+      "chapitre": "numbers-100",
+      "type": "ecoute",
+      "cle": "en:nombre:ninety-nine",
+      "question": "ninety-nine",
+      "reponse": "quatre-vingt-dix-neuf",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "monday",
+      "chapitre": "days",
+      "type": "ecoute",
+      "cle": "en:mot:monday",
+      "question": "Monday",
+      "reponse": "lundi",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "tuesday",
+      "chapitre": "days",
+      "type": "ecoute",
+      "cle": "en:mot:tuesday",
+      "question": "Tuesday",
+      "reponse": "mardi",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "wednesday",
+      "chapitre": "days",
+      "type": "ecoute",
+      "cle": "en:mot:wednesday",
+      "question": "Wednesday",
+      "reponse": "mercredi",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "thursday",
+      "chapitre": "days",
+      "type": "ecoute",
+      "cle": "en:mot:thursday",
+      "question": "Thursday",
+      "reponse": "jeudi",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "friday",
+      "chapitre": "days",
+      "type": "ecoute",
+      "cle": "en:mot:friday",
+      "question": "Friday",
+      "reponse": "vendredi",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "saturday",
+      "chapitre": "days",
+      "type": "ecoute",
+      "cle": "en:mot:saturday",
+      "question": "Saturday",
+      "reponse": "samedi",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "sunday",
+      "chapitre": "days",
+      "type": "ecoute",
+      "cle": "en:mot:sunday",
+      "question": "Sunday",
+      "reponse": "dimanche",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "today",
+      "chapitre": "days",
+      "type": "ecoute",
+      "cle": "en:mot:today",
+      "question": "today",
+      "reponse": "aujourd'hui",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "tomorrow",
+      "chapitre": "days",
+      "type": "ecoute",
+      "cle": "en:mot:tomorrow",
+      "question": "tomorrow",
+      "reponse": "demain",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "yesterday",
+      "chapitre": "days",
+      "type": "ecoute",
+      "cle": "en:mot:yesterday",
+      "question": "yesterday",
+      "reponse": "hier",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "week",
+      "chapitre": "days",
+      "type": "ecoute",
+      "cle": "en:mot:week",
+      "question": "week",
+      "reponse": "semaine",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "january",
+      "chapitre": "months",
+      "type": "ecoute",
+      "cle": "en:mot:january",
+      "question": "January",
+      "reponse": "janvier",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "february",
+      "chapitre": "months",
+      "type": "ecoute",
+      "cle": "en:mot:february",
+      "question": "February",
+      "reponse": "février",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "march",
+      "chapitre": "months",
+      "type": "ecoute",
+      "cle": "en:mot:march",
+      "question": "March",
+      "reponse": "mars",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "april",
+      "chapitre": "months",
+      "type": "ecoute",
+      "cle": "en:mot:april",
+      "question": "April",
+      "reponse": "avril",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "may",
+      "chapitre": "months",
+      "type": "ecoute",
+      "cle": "en:mot:may",
+      "question": "May",
+      "reponse": "mai",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "june",
+      "chapitre": "months",
+      "type": "ecoute",
+      "cle": "en:mot:june",
+      "question": "June",
+      "reponse": "juin",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "july",
+      "chapitre": "months",
+      "type": "ecoute",
+      "cle": "en:mot:july",
+      "question": "July",
+      "reponse": "juillet",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "august",
+      "chapitre": "months",
+      "type": "ecoute",
+      "cle": "en:mot:august",
+      "question": "August",
+      "reponse": "août",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "september",
+      "chapitre": "months",
+      "type": "ecoute",
+      "cle": "en:mot:september",
+      "question": "September",
+      "reponse": "septembre",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "october",
+      "chapitre": "months",
+      "type": "ecoute",
+      "cle": "en:mot:october",
+      "question": "October",
+      "reponse": "octobre",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "november",
+      "chapitre": "months",
+      "type": "ecoute",
+      "cle": "en:mot:november",
+      "question": "November",
+      "reponse": "novembre",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "december",
+      "chapitre": "months",
+      "type": "ecoute",
+      "cle": "en:mot:december",
+      "question": "December",
+      "reponse": "décembre",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "spring",
+      "chapitre": "months",
+      "type": "ecoute",
+      "cle": "en:mot:spring",
+      "question": "spring",
+      "reponse": "printemps",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "summer",
+      "chapitre": "months",
+      "type": "ecoute",
+      "cle": "en:mot:summer",
+      "question": "summer",
+      "reponse": "été",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "autumn",
+      "chapitre": "months",
+      "type": "ecoute",
+      "cle": "en:mot:autumn",
+      "question": "autumn",
+      "reponse": "automne",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "winter",
+      "chapitre": "months",
+      "type": "ecoute",
+      "cle": "en:mot:winter",
+      "question": "winter",
+      "reponse": "hiver",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "sun",
+      "chapitre": "weather",
+      "type": "ecoute",
+      "cle": "en:mot:sun",
+      "question": "sun",
+      "reponse": "soleil",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "rain",
+      "chapitre": "weather",
+      "type": "ecoute",
+      "cle": "en:mot:rain",
+      "question": "rain",
+      "reponse": "pluie",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "snow",
+      "chapitre": "weather",
+      "type": "ecoute",
+      "cle": "en:mot:snow",
+      "question": "snow",
+      "reponse": "neige",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "wind",
+      "chapitre": "weather",
+      "type": "ecoute",
+      "cle": "en:mot:wind",
+      "question": "wind",
+      "reponse": "vent",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "cloud",
+      "chapitre": "weather",
+      "type": "ecoute",
+      "cle": "en:mot:cloud",
+      "question": "cloud",
+      "reponse": "nuage",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "phrase-its-sunny",
+      "chapitre": "weather",
+      "type": "ecoute",
+      "cle": "en:phrase:its-sunny",
+      "question": "It's sunny.",
+      "reponse": "Il fait beau.",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "phrase-its-raining",
+      "chapitre": "weather",
+      "type": "ecoute",
+      "cle": "en:phrase:its-raining",
+      "question": "It's raining.",
+      "reponse": "Il pleut.",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "phrase-its-snowing",
+      "chapitre": "weather",
+      "type": "ecoute",
+      "cle": "en:phrase:its-snowing",
+      "question": "It's snowing.",
+      "reponse": "Il neige.",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "phrase-its-cold",
+      "chapitre": "weather",
+      "type": "ecoute",
+      "cle": "en:phrase:its-cold",
+      "question": "It's cold.",
+      "reponse": "Il fait froid.",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "phrase-its-hot",
+      "chapitre": "weather",
+      "type": "ecoute",
+      "cle": "en:phrase:its-hot",
+      "question": "It's hot.",
+      "reponse": "Il fait chaud.",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    }
+  ]
+}

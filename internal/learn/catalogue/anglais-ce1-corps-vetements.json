@@ -1,0 +1,260 @@
+{
+  "format": "hopla-module/1",
+  "id": "anglais-ce1-corps-vetements",
+  "version": "1.0.0",
+  "nom": "Corps, vêtements, météo",
+  "description": "Le corps, Les vêtements et La météo.",
+  "matiere": "anglais",
+  "niveaux": [
+    "CE1"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "en",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de langues vivantes du cycle 2 et les repères de progression en anglais du CE1 (Éduscol).",
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 3
+  },
+  "icone": "langue",
+  "couleur": "#10B981",
+  "chapitres": [
+    {
+      "id": "body",
+      "nom": "Le corps"
+    },
+    {
+      "id": "clothes",
+      "nom": "Les vêtements",
+      "ouvert_apres": 60
+    },
+    {
+      "id": "weather",
+      "nom": "La météo",
+      "ouvert_apres": 60
+    }
+  ],
+  "fiches": [
+    {
+      "id": "head",
+      "chapitre": "body",
+      "type": "ecoute",
+      "question": "head",
+      "reponse": "tête",
+      "cle": "en:mot:head",
+      "image": "head"
+    },
+    {
+      "id": "eye",
+      "chapitre": "body",
+      "type": "ecoute",
+      "question": "eye",
+      "reponse": "œil",
+      "cle": "en:mot:eye",
+      "image": "eye"
+    },
+    {
+      "id": "ear",
+      "chapitre": "body",
+      "type": "ecoute",
+      "question": "ear",
+      "reponse": "oreille",
+      "cle": "en:mot:ear",
+      "image": "ear"
+    },
+    {
+      "id": "nose",
+      "chapitre": "body",
+      "type": "ecoute",
+      "question": "nose",
+      "reponse": "nez",
+      "cle": "en:mot:nose",
+      "image": "nose"
+    },
+    {
+      "id": "mouth",
+      "chapitre": "body",
+      "type": "ecoute",
+      "question": "mouth",
+      "reponse": "bouche",
+      "cle": "en:mot:mouth",
+      "image": "mouth"
+    },
+    {
+      "id": "teeth",
+      "chapitre": "body",
+      "type": "ecoute",
+      "question": "teeth",
+      "reponse": "dents",
+      "cle": "en:mot:teeth",
+      "image": "tooth"
+    },
+    {
+      "id": "hand",
+      "chapitre": "body",
+      "type": "ecoute",
+      "question": "hand",
+      "reponse": "main",
+      "cle": "en:mot:hand",
+      "image": "hand"
+    },
+    {
+      "id": "foot",
+      "chapitre": "body",
+      "type": "ecoute",
+      "question": "foot",
+      "reponse": "pied",
+      "cle": "en:mot:foot",
+      "image": "foot"
+    },
+    {
+      "id": "t-shirt",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "question": "T-shirt",
+      "reponse": "tee-shirt",
+      "cle": "en:mot:t-shirt",
+      "image": "t-shirt"
+    },
+    {
+      "id": "skirt",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "question": "skirt",
+      "reponse": "jupe",
+      "cle": "en:mot:skirt",
+      "image": "skirt"
+    },
+    {
+      "id": "dress",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "question": "dress",
+      "reponse": "robe",
+      "cle": "en:mot:dress",
+      "image": "dress"
+    },
+    {
+      "id": "coat",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "question": "coat",
+      "reponse": "manteau",
+      "cle": "en:mot:coat",
+      "image": "coat"
+    },
+    {
+      "id": "shoes",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "question": "shoes",
+      "reponse": "chaussures",
+      "cle": "en:mot:shoes",
+      "image": "shoes"
+    },
+    {
+      "id": "socks",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "question": "socks",
+      "reponse": "chaussettes",
+      "cle": "en:mot:socks",
+      "image": "socks"
+    },
+    {
+      "id": "hat",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "question": "hat",
+      "reponse": "chapeau",
+      "cle": "en:mot:hat",
+      "image": "hat"
+    },
+    {
+      "id": "scarf",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "question": "scarf",
+      "reponse": "écharpe",
+      "cle": "en:mot:scarf",
+      "image": "scarf"
+    },
+    {
+      "id": "sun",
+      "chapitre": "weather",
+      "type": "ecoute",
+      "question": "sun",
+      "reponse": "soleil",
+      "cle": "en:mot:sun",
+      "image": "sun"
+    },
+    {
+      "id": "rain",
+      "chapitre": "weather",
+      "type": "ecoute",
+      "question": "rain",
+      "reponse": "pluie",
+      "cle": "en:mot:rain",
+      "image": "rain"
+    },
+    {
+      "id": "snow",
+      "chapitre": "weather",
+      "type": "ecoute",
+      "question": "snow",
+      "reponse": "neige",
+      "cle": "en:mot:snow",
+      "image": "snow"
+    },
+    {
+      "id": "wind",
+      "chapitre": "weather",
+      "type": "ecoute",
+      "question": "wind",
+      "reponse": "vent",
+      "cle": "en:mot:wind",
+      "image": "wind"
+    },
+    {
+      "id": "cloud",
+      "chapitre": "weather",
+      "type": "ecoute",
+      "question": "cloud",
+      "reponse": "nuage",
+      "cle": "en:mot:cloud",
+      "image": "cloud"
+    },
+    {
+      "id": "phrase-its-sunny",
+      "chapitre": "weather",
+      "type": "ecoute",
+      "question": "It’s sunny.",
+      "reponse": "Il fait beau.",
+      "cle": "en:phrase:its-sunny",
+      "image": "sun"
+    },
+    {
+      "id": "phrase-its-raining",
+      "chapitre": "weather",
+      "type": "ecoute",
+      "question": "It’s raining.",
+      "reponse": "Il pleut.",
+      "cle": "en:phrase:its-raining",
+      "image": "rain"
+    },
+    {
+      "id": "phrase-its-snowing",
+      "chapitre": "weather",
+      "type": "ecoute",
+      "question": "It’s snowing.",
+      "reponse": "Il neige.",
+      "cle": "en:phrase:its-snowing",
+      "image": "snowman"
+    }
+  ]
+}

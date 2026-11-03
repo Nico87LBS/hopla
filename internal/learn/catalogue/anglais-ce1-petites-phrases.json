@@ -1,0 +1,134 @@
+{
+  "format": "hopla-module/1",
+  "id": "anglais-ce1-petites-phrases",
+  "version": "1.0.0",
+  "nom": "Petites phrases",
+  "description": "J’ai… (I’ve got) et Demander et aimer.",
+  "matiere": "anglais",
+  "niveaux": [
+    "CE1"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "en",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de langues vivantes du cycle 2 et les repères de progression en anglais du CE1 (Éduscol).",
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 3
+  },
+  "icone": "langue",
+  "couleur": "#10B981",
+  "chapitres": [
+    {
+      "id": "got",
+      "nom": "J’ai… (I’ve got)"
+    },
+    {
+      "id": "ask",
+      "nom": "Demander et aimer"
+    }
+  ],
+  "fiches": [
+    {
+      "id": "got-i-ve-got-a-dog",
+      "chapitre": "got",
+      "type": "ecoute",
+      "question": "I’ve got a dog.",
+      "reponse": "J’ai un chien.",
+      "cle": "en:phrase:i-ve-got-a-dog"
+    },
+    {
+      "id": "got-i-ve-got-a-sister",
+      "chapitre": "got",
+      "type": "ecoute",
+      "question": "I’ve got a sister.",
+      "reponse": "J’ai une sœur.",
+      "cle": "en:phrase:i-ve-got-a-sister"
+    },
+    {
+      "id": "got-i-ve-got-blue-eyes",
+      "chapitre": "got",
+      "type": "ecoute",
+      "question": "I’ve got blue eyes.",
+      "reponse": "J’ai les yeux bleus.",
+      "cle": "en:phrase:i-ve-got-blue-eyes"
+    },
+    {
+      "id": "got-i-ve-got-a-red-bike",
+      "chapitre": "got",
+      "type": "ecoute",
+      "question": "I’ve got a red bike.",
+      "reponse": "J’ai un vélo rouge.",
+      "cle": "en:phrase:i-ve-got-a-red-bike"
+    },
+    {
+      "id": "ask-can-i-have-an-apple-please",
+      "chapitre": "ask",
+      "type": "ecoute",
+      "question": "Can I have an apple, please?",
+      "reponse": "Est-ce que je peux avoir une pomme, s’il te plaît ?",
+      "cle": "en:phrase:can-i-have-an-apple-please"
+    },
+    {
+      "id": "ask-can-i-have-some-milk-please",
+      "chapitre": "ask",
+      "type": "ecoute",
+      "question": "Can I have some milk, please?",
+      "reponse": "Est-ce que je peux avoir du lait, s’il te plaît ?",
+      "cle": "en:phrase:can-i-have-some-milk-please"
+    },
+    {
+      "id": "ask-can-i-have-a-pencil-please",
+      "chapitre": "ask",
+      "type": "ecoute",
+      "question": "Can I have a pencil, please?",
+      "reponse": "Est-ce que je peux avoir un crayon, s’il te plaît ?",
+      "cle": "en:phrase:can-i-have-a-pencil-please"
+    },
+    {
+      "id": "ask-can-i-go-to-the-toilet-please",
+      "chapitre": "ask",
+      "type": "ecoute",
+      "question": "Can I go to the toilet, please?",
+      "reponse": "Est-ce que je peux aller aux toilettes, s’il te plaît ?",
+      "cle": "en:phrase:can-i-go-to-the-toilet-please"
+    },
+    {
+      "id": "ask-i-like-chocolate",
+      "chapitre": "ask",
+      "type": "ecoute",
+      "question": "I like chocolate.",
+      "reponse": "J’aime le chocolat.",
+      "cle": "en:phrase:i-like-chocolate"
+    },
+    {
+      "id": "ask-i-don-t-like-carrots",
+      "chapitre": "ask",
+      "type": "ecoute",
+      "question": "I don’t like carrots.",
+      "reponse": "Je n’aime pas les carottes.",
+      "cle": "en:phrase:i-don-t-like-carrots"
+    },
+    {
+      "id": "ask-i-like-football",
+      "chapitre": "ask",
+      "type": "ecoute",
+      "question": "I like football.",
+      "reponse": "J’aime le football.",
+      "cle": "en:phrase:i-like-football"
+    },
+    {
+      "id": "ask-i-don-t-like-rain",
+      "chapitre": "ask",
+      "type": "ecoute",
+      "question": "I don’t like rain.",
+      "reponse": "Je n’aime pas la pluie.",
+      "cle": "en:phrase:i-don-t-like-rain"
+    }
+  ]
+}

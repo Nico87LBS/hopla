@@ -1,0 +1,341 @@
+{
+  "format": "hopla-module/1",
+  "id": "anglais-cp-autour-de-moi",
+  "version": "1.0.0",
+  "nom": "Autour de moi",
+  "description": "Les animaux, La maison et À table.",
+  "matiere": "anglais",
+  "niveaux": [
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "en",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de langues vivantes du cycle 2 et les repères de progression en anglais du CP (Éduscol).",
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 3
+  },
+  "icone": "langue",
+  "couleur": "#F59E0B",
+  "chapitres": [
+    {
+      "id": "animals",
+      "nom": "Les animaux"
+    },
+    {
+      "id": "house",
+      "nom": "La maison",
+      "ouvert_apres": 60
+    },
+    {
+      "id": "food",
+      "nom": "À table",
+      "ouvert_apres": 60
+    }
+  ],
+  "fiches": [
+    {
+      "id": "animal-giraffe",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "question": "giraffe",
+      "reponse": "girafe",
+      "cle": "en:mot:giraffe",
+      "image": "giraffe"
+    },
+    {
+      "id": "animal-zebra",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "question": "zebra",
+      "reponse": "zèbre",
+      "cle": "en:mot:zebra",
+      "image": "zebra"
+    },
+    {
+      "id": "animal-panda",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "question": "panda",
+      "reponse": "panda",
+      "cle": "en:mot:panda",
+      "image": "panda"
+    },
+    {
+      "id": "animal-turtle",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "question": "turtle",
+      "reponse": "tortue",
+      "cle": "en:mot:turtle",
+      "image": "turtle"
+    },
+    {
+      "id": "animal-whale",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "question": "whale",
+      "reponse": "baleine",
+      "cle": "en:mot:whale",
+      "image": "whale"
+    },
+    {
+      "id": "animal-owl",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "question": "owl",
+      "reponse": "hibou",
+      "cle": "en:mot:owl",
+      "image": "owl"
+    },
+    {
+      "id": "animal-spider",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "question": "spider",
+      "reponse": "araignée",
+      "cle": "en:mot:spider",
+      "image": "spider"
+    },
+    {
+      "id": "animal-bee",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "question": "bee",
+      "reponse": "abeille",
+      "cle": "en:mot:bee",
+      "image": "bee"
+    },
+    {
+      "id": "animal-hen",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "question": "hen",
+      "reponse": "poule",
+      "cle": "en:mot:hen",
+      "image": "hen"
+    },
+    {
+      "id": "animal-fox",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "question": "fox",
+      "reponse": "renard",
+      "cle": "en:mot:fox",
+      "image": "fox"
+    },
+    {
+      "id": "animal-snail",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "question": "snail",
+      "reponse": "escargot",
+      "cle": "en:mot:snail",
+      "image": "snail"
+    },
+    {
+      "id": "animal-cat",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "question": "cat",
+      "reponse": "chat",
+      "cle": "en:mot:cat",
+      "image": "cat"
+    },
+    {
+      "id": "animal-dog",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "question": "dog",
+      "reponse": "chien",
+      "cle": "en:mot:dog",
+      "image": "dog"
+    },
+    {
+      "id": "animal-rabbit",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "question": "rabbit",
+      "reponse": "lapin",
+      "cle": "en:mot:rabbit",
+      "image": "rabbit"
+    },
+    {
+      "id": "animal-fish",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "question": "fish",
+      "reponse": "poisson",
+      "cle": "en:mot:fish",
+      "image": "fish"
+    },
+    {
+      "id": "house-house",
+      "chapitre": "house",
+      "type": "ecoute",
+      "question": "house",
+      "reponse": "maison",
+      "cle": "en:mot:house",
+      "image": "house"
+    },
+    {
+      "id": "house-bed",
+      "chapitre": "house",
+      "type": "ecoute",
+      "question": "bed",
+      "reponse": "lit",
+      "cle": "en:mot:bed",
+      "image": "bed"
+    },
+    {
+      "id": "house-table",
+      "chapitre": "house",
+      "type": "ecoute",
+      "question": "table",
+      "reponse": "table",
+      "cle": "en:mot:table",
+      "image": "table"
+    },
+    {
+      "id": "house-chair",
+      "chapitre": "house",
+      "type": "ecoute",
+      "question": "chair",
+      "reponse": "chaise",
+      "cle": "en:mot:chair",
+      "image": "chair"
+    },
+    {
+      "id": "house-door",
+      "chapitre": "house",
+      "type": "ecoute",
+      "question": "door",
+      "reponse": "porte",
+      "cle": "en:mot:door",
+      "image": "door"
+    },
+    {
+      "id": "house-window",
+      "chapitre": "house",
+      "type": "ecoute",
+      "question": "window",
+      "reponse": "fenêtre",
+      "cle": "en:mot:window",
+      "image": "window"
+    },
+    {
+      "id": "house-lamp",
+      "chapitre": "house",
+      "type": "ecoute",
+      "question": "lamp",
+      "reponse": "lampe",
+      "cle": "en:mot:lamp",
+      "image": "lamp"
+    },
+    {
+      "id": "house-sofa",
+      "chapitre": "house",
+      "type": "ecoute",
+      "question": "sofa",
+      "reponse": "canapé",
+      "cle": "en:mot:sofa",
+      "image": "sofa"
+    },
+    {
+      "id": "food-tomato",
+      "chapitre": "food",
+      "type": "ecoute",
+      "question": "tomato",
+      "reponse": "tomate",
+      "cle": "en:mot:tomato",
+      "image": "tomato"
+    },
+    {
+      "id": "food-potato",
+      "chapitre": "food",
+      "type": "ecoute",
+      "question": "potato",
+      "reponse": "pomme de terre",
+      "cle": "en:mot:potato",
+      "image": "potato"
+    },
+    {
+      "id": "food-soup",
+      "chapitre": "food",
+      "type": "ecoute",
+      "question": "soup",
+      "reponse": "soupe",
+      "cle": "en:mot:soup",
+      "image": "soup"
+    },
+    {
+      "id": "food-juice",
+      "chapitre": "food",
+      "type": "ecoute",
+      "question": "juice",
+      "reponse": "jus de fruits",
+      "cle": "en:mot:juice",
+      "image": "juice"
+    },
+    {
+      "id": "food-apple",
+      "chapitre": "food",
+      "type": "ecoute",
+      "question": "apple",
+      "reponse": "pomme",
+      "cle": "en:mot:apple",
+      "image": "apple"
+    },
+    {
+      "id": "food-banana",
+      "chapitre": "food",
+      "type": "ecoute",
+      "question": "banana",
+      "reponse": "banane",
+      "cle": "en:mot:banana",
+      "image": "banana"
+    },
+    {
+      "id": "food-bread",
+      "chapitre": "food",
+      "type": "ecoute",
+      "question": "bread",
+      "reponse": "pain",
+      "cle": "en:mot:bread",
+      "image": "bread"
+    },
+    {
+      "id": "food-cheese",
+      "chapitre": "food",
+      "type": "ecoute",
+      "question": "cheese",
+      "reponse": "fromage",
+      "cle": "en:mot:cheese",
+      "image": "cheese"
+    },
+    {
+      "id": "food-rice",
+      "chapitre": "food",
+      "type": "ecoute",
+      "question": "rice",
+      "reponse": "riz",
+      "cle": "en:mot:rice",
+      "image": "rice"
+    },
+    {
+      "id": "food-pasta",
+      "chapitre": "food",
+      "type": "ecoute",
+      "question": "pasta",
+      "reponse": "pâtes",
+      "cle": "en:mot:pasta",
+      "image": "pasta"
+    }
+  ]
+}

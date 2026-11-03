@@ -1,0 +1,217 @@
+{
+  "format": "hopla-module/1",
+  "id": "anglais-gs-couleurs-nombres",
+  "version": "1.0.0",
+  "nom": "Couleurs et nombres",
+  "description": "Les couleurs et Les nombres jusqu'à 10.",
+  "matiere": "anglais",
+  "niveaux": [
+    "GS"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "en",
+  "icone": "langue",
+  "couleur": "#E5484D",
+  "auteur": "Hopla",
+  "sources": "D'après le programme de langues vivantes du cycle 1 (découvrir la langue par l'oral) et le vocabulaire courant de maternelle.",
+  "reglages": {
+    "questions_par_partie": 6,
+    "nouvelles_par_partie": 2,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 3
+  },
+  "chapitres": [
+    {
+      "id": "colours",
+      "nom": "Les couleurs"
+    },
+    {
+      "id": "numbers",
+      "nom": "Les nombres jusqu'à 10"
+    }
+  ],
+  "fiches": [
+    {
+      "id": "colour-red",
+      "chapitre": "colours",
+      "type": "ecoute",
+      "cle": "en:mot:red",
+      "question": "red",
+      "reponse": "rouge",
+      "image": "colour-red"
+    },
+    {
+      "id": "colour-blue",
+      "chapitre": "colours",
+      "type": "ecoute",
+      "cle": "en:mot:blue",
+      "question": "blue",
+      "reponse": "bleu",
+      "image": "colour-blue"
+    },
+    {
+      "id": "colour-green",
+      "chapitre": "colours",
+      "type": "ecoute",
+      "cle": "en:mot:green",
+      "question": "green",
+      "reponse": "vert",
+      "image": "colour-green"
+    },
+    {
+      "id": "colour-yellow",
+      "chapitre": "colours",
+      "type": "ecoute",
+      "cle": "en:mot:yellow",
+      "question": "yellow",
+      "reponse": "jaune",
+      "image": "colour-yellow"
+    },
+    {
+      "id": "colour-orange",
+      "chapitre": "colours",
+      "type": "ecoute",
+      "cle": "en:mot:orange-couleur",
+      "question": "orange",
+      "reponse": "orange",
+      "image": "colour-orange"
+    },
+    {
+      "id": "colour-pink",
+      "chapitre": "colours",
+      "type": "ecoute",
+      "cle": "en:mot:pink",
+      "question": "pink",
+      "reponse": "rose",
+      "image": "colour-pink"
+    },
+    {
+      "id": "colour-purple",
+      "chapitre": "colours",
+      "type": "ecoute",
+      "cle": "en:mot:purple",
+      "question": "purple",
+      "reponse": "violet",
+      "image": "colour-purple"
+    },
+    {
+      "id": "colour-black",
+      "chapitre": "colours",
+      "type": "ecoute",
+      "cle": "en:mot:black",
+      "question": "black",
+      "reponse": "noir",
+      "image": "colour-black"
+    },
+    {
+      "id": "colour-white",
+      "chapitre": "colours",
+      "type": "ecoute",
+      "cle": "en:mot:white",
+      "question": "white",
+      "reponse": "blanc",
+      "image": "colour-white"
+    },
+    {
+      "id": "colour-brown",
+      "chapitre": "colours",
+      "type": "ecoute",
+      "cle": "en:mot:brown",
+      "question": "brown",
+      "reponse": "marron",
+      "image": "colour-brown"
+    },
+    {
+      "id": "number-one",
+      "chapitre": "numbers",
+      "type": "ecoute",
+      "cle": "en:nombre:one",
+      "question": "one",
+      "reponse": "un",
+      "image": "number-1"
+    },
+    {
+      "id": "number-two",
+      "chapitre": "numbers",
+      "type": "ecoute",
+      "cle": "en:nombre:two",
+      "question": "two",
+      "reponse": "deux",
+      "image": "number-2"
+    },
+    {
+      "id": "number-three",
+      "chapitre": "numbers",
+      "type": "ecoute",
+      "cle": "en:nombre:three",
+      "question": "three",
+      "reponse": "trois",
+      "image": "number-3"
+    },
+    {
+      "id": "number-four",
+      "chapitre": "numbers",
+      "type": "ecoute",
+      "cle": "en:nombre:four",
+      "question": "four",
+      "reponse": "quatre",
+      "image": "number-4"
+    },
+    {
+      "id": "number-five",
+      "chapitre": "numbers",
+      "type": "ecoute",
+      "cle": "en:nombre:five",
+      "question": "five",
+      "reponse": "cinq",
+      "image": "number-5"
+    },
+    {
+      "id": "number-six",
+      "chapitre": "numbers",
+      "type": "ecoute",
+      "cle": "en:nombre:six",
+      "question": "six",
+      "reponse": "six",
+      "image": "number-6"
+    },
+    {
+      "id": "number-seven",
+      "chapitre": "numbers",
+      "type": "ecoute",
+      "cle": "en:nombre:seven",
+      "question": "seven",
+      "reponse": "sept",
+      "image": "number-7"
+    },
+    {
+      "id": "number-eight",
+      "chapitre": "numbers",
+      "type": "ecoute",
+      "cle": "en:nombre:eight",
+      "question": "eight",
+      "reponse": "huit",
+      "image": "number-8"
+    },
+    {
+      "id": "number-nine",
+      "chapitre": "numbers",
+      "type": "ecoute",
+      "cle": "en:nombre:nine",
+      "question": "nine",
+      "reponse": "neuf",
+      "image": "number-9"
+    },
+    {
+      "id": "number-ten",
+      "chapitre": "numbers",
+      "type": "ecoute",
+      "cle": "en:nombre:ten",
+      "question": "ten",
+      "reponse": "dix",
+      "image": "number-10"
+    }
+  ]
+}

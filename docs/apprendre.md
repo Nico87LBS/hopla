@@ -32,7 +32,7 @@ peuvent aussi partager ce qui est appris grâce à leur clé (voir
 | **Français à l'école** | **Langage GS** : Les rimes, Les syllabes, Le son du début, Les lettres (avec « Mon prénom »), Les mots en images, Tracer les lettres (capitales à repasser au doigt). **Français CP** : les sept modules de Lire en lettres d'imprimerie (mêmes progrès), puis Écrire des mots (dictée, accents ignorés), La phrase au CP, Un, une, des. **Français CE1** : Lire et comprendre, Les sons et leur écriture, La phrase et les mots, Les accords, Conjuguer au CE1, Le vocabulaire, Dictée CE1 (les accents comptent, une lettre de travers acceptée). **Français CE2** : Conjugaison (présent, futur, imparfait, passé composé, puis le verbe à écrire soi-même), La phrase, Les accords (avec un chapitre à écrire), Les homophones, Le vocabulaire, Comprendre un texte | Enfant, GS à CE2 |
 | **Maths à l'école** | **Maths GS** : Compter des quantités, La suite des nombres, Lire les nombres, Comparer, Composer 5 et 10, Formes et positions, Tracer les chiffres. **Maths CP** : Les nombres jusqu'à 100, Comparer et ranger, Additions et soustractions, Calcul mental, Problèmes, Monnaie et heures (horloge à aiguilles à lire, puis à régler), Formes et repérage. **Maths CE1** : Les nombres jusqu'à 1 000, Comparer, ranger, encadrer, Additions et soustractions, Calcul mental, La multiplication (tables de 2, 3, 4, 5 et 10), Problèmes, Mesures et heures (horloge avec demies et quarts, à lire puis à régler, règle graduée), Géométrie. **Maths CE2** : Nombres jusqu'à 10 000, Calcul mental, Addition et soustraction, Multiplication, Division, Mesures, Problèmes, Géométrie | Enfant, GS à CE2 |
 | **Le monde à l'école** | **Explorer le monde GS** : Le temps qui passe, Les saisons, Les animaux, Mon corps, Les plantes, Objets et matières. **Questionner le monde CP** : Vivant ou non vivant, Animaux et plantes, Mon corps et ma santé, La matière, Le temps qui passe, L'espace autour de moi. **CE1** : Le vivant, Mon corps, La matière, Objets et électricité, Le temps, L'espace. **CE2** : Le vivant, Mon corps (squelette à toucher), La matière, L'électricité, Se repérer dans l'espace (régions, fleuves, montagnes et villes de France, continents et océans), Se repérer dans le temps | Enfant, GS à CE2 |
-| **Anglais à l'école** | Anglais GS : mes premiers mots (à l'oreille, avec dessins, sans lire) ; Anglais CP (se présenter, émotions, école, maison, à table, sans lire) ; Anglais CE1 (jours, nombres jusqu'à 20, corps, vêtements, météo, petites phrases) ; Anglais CE2. Pour l'instant un module par niveau | Enfant, GS, CP, CE1 et CE2 |
+| **Anglais à l'école** | **Anglais GS** (à l'oreille, avec dessins, sans lire) : Couleurs et nombres, Les animaux, la famille, le corps, Ma journée. **Anglais CP** (sans lire) : Se présenter, Révisions couleurs et nombres, À l'école, Autour de moi. **Anglais CE1** : Les jours et les nombres, Corps, vêtements, météo, Petites phrases. **Anglais CE2** : Se présenter et la famille, Nombres et temps, Le quotidien, Maison, école, animaux, Phrases et écriture | Enfant, GS, CP, CE1 et CE2 |
 | **Anglais aéronautique** | Un seul niveau, OACI 6 : Bases radio, Phraséo et au-delà, Systèmes de l'avion, Météo, Aérodrome, Situations anormales, Anglais idiomatique, Compréhension orale, Oral | Adulte, niveau 6 OACI |
 
 ## Installer et choisir qui joue
@@ -62,6 +62,12 @@ Une famille qui avait installé un paquet devenu depuis le niveau d'un plus
 grand (Maths CE2, maintenant dans Maths à l'école) reçoit le grand paquet tout
 seul, avec ses autres niveaux activés pour personne. Ce que chacun joue, sait
 et a réglé reste comme avant.
+
+De même, un module du catalogue découpé en plusieurs (Anglais CE2, devenu un
+niveau de cinq modules) : qui y jouait joue à tous ses nouveaux modules, ses
+réglages sur l'ancien module passent sur le niveau, et les corrections et
+signalements de la famille suivent leurs fiches. Ce que chacun sait reste,
+par les clés des fiches ; les parties déjà jouées restent sous l'ancien module.
 
 ## Les réglages
 

@@ -772,3 +772,40 @@ func TestAFamilyWithAPackNowALevelGetsThePackAboveAndKeepsWhatItPlays(t *testing
 	require.NoError(t, err)
 	require.Len(t, player.Modules, 8, "what was played stays, the new levels are for nobody")
 }
+
+func TestAModuleCutIntoSeveralKeepsWhoPlaysItTheirSettingsAndTheCorrections(t *testing.T) {
+	db := setup(t)
+	now := time.Now().UTC()
+	// As before the cut: Anglais CE2, one module.
+	old := `{"format":"hopla-module/1","id":"anglais-ce2","version":"1.0.0","nom":"Anglais CE2","public":"enfant",
+		"chapitres":[{"id":"colours","nom":"Les couleurs"}],"fiches":[{"id":"red","chapitre":"colours","type":"choix","question":"red","reponse":"rouge"}]}`
+	require.NoError(t, db.Create(&Module{FamilyID: 1, Key: "anglais-ce2", Version: "1.0.0", Name: "Anglais CE2",
+		Builtin: true, Content: old, InstalledAt: now, UpdatedAt: now}).Error)
+	cap := 4
+	require.NoError(t, db.Create(&Activation{FamilyID: 1, UserID: anna, ModuleKey: "anglais-ce2", DailyCap: &cap, CreatedAt: now}).Error)
+	entries, err := Catalogue()
+	require.NoError(t, err)
+	var card, owner string
+	for _, child := range entries["anglais-ce2"].Doc.Modules {
+		if cards := entries[child].Doc.Cards; len(cards) > 0 && card == "" {
+			card, owner = cards[0].ID, child
+		}
+	}
+	require.NoError(t, db.Create(&CardEdit{FamilyID: 1, ModuleKey: "anglais-ce2", CardID: card, UpdatedAt: now}).Error)
+	require.NoError(t, db.Create(&Report{FamilyID: 1, ClientID: "r1", ModuleKey: "anglais-ce2", Card: card}).Error)
+
+	_, err = Modules(db, 1, now)
+	require.NoError(t, err)
+	player, err := PlayerFor(db, 1, anna, now)
+	require.NoError(t, err)
+	require.Len(t, player.Modules, len(entries["anglais-ce2"].Doc.Modules), "who played it plays every part")
+	for _, module := range player.Modules {
+		require.Equal(t, 4, module.DailyCap, "the cap set on the module is now set on its level")
+	}
+	var edit CardEdit
+	require.NoError(t, db.Where("family_id = 1 AND card_id = ?", card).First(&edit).Error)
+	require.Equal(t, owner, edit.ModuleKey)
+	var report Report
+	require.NoError(t, db.Where("client_id = ?", "r1").First(&report).Error)
+	require.Equal(t, owner, report.ModuleKey)
+}

@@ -1,0 +1,381 @@
+{
+  "format": "hopla-module/1",
+  "id": "anglais-gs-ma-journee",
+  "version": "1.0.0",
+  "nom": "Ma journée",
+  "description": "À table, Les jouets, Les vêtements et La météo.",
+  "matiere": "anglais",
+  "niveaux": [
+    "GS"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "en",
+  "icone": "langue",
+  "couleur": "#E5484D",
+  "auteur": "Hopla",
+  "sources": "D'après le programme de langues vivantes du cycle 1 (découvrir la langue par l'oral) et le vocabulaire courant de maternelle.",
+  "reglages": {
+    "questions_par_partie": 6,
+    "nouvelles_par_partie": 2,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 3
+  },
+  "chapitres": [
+    {
+      "id": "food",
+      "nom": "À table"
+    },
+    {
+      "id": "toys",
+      "nom": "Les jouets",
+      "ouvert_apres": 60
+    },
+    {
+      "id": "clothes",
+      "nom": "Les vêtements",
+      "ouvert_apres": 60
+    },
+    {
+      "id": "weather",
+      "nom": "La météo",
+      "ouvert_apres": 60
+    }
+  ],
+  "fiches": [
+    {
+      "id": "apple",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:apple",
+      "question": "apple",
+      "reponse": "pomme",
+      "image": "apple"
+    },
+    {
+      "id": "banana",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:banana",
+      "question": "banana",
+      "reponse": "banane",
+      "image": "banana"
+    },
+    {
+      "id": "orange",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:orange-fruit",
+      "question": "orange",
+      "reponse": "orange",
+      "image": "orange"
+    },
+    {
+      "id": "strawberry",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:strawberry",
+      "question": "strawberry",
+      "reponse": "fraise",
+      "image": "strawberry"
+    },
+    {
+      "id": "pear",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:pear",
+      "question": "pear",
+      "reponse": "poire",
+      "image": "pear"
+    },
+    {
+      "id": "cherry",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:cherry",
+      "question": "cherry",
+      "reponse": "cerise",
+      "image": "cherry"
+    },
+    {
+      "id": "grapes",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:grapes",
+      "question": "grapes",
+      "reponse": "raisin",
+      "image": "grapes"
+    },
+    {
+      "id": "lemon",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:lemon",
+      "question": "lemon",
+      "reponse": "citron",
+      "image": "lemon"
+    },
+    {
+      "id": "carrot",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:carrot",
+      "question": "carrot",
+      "reponse": "carotte",
+      "image": "carrot"
+    },
+    {
+      "id": "bread",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:bread",
+      "question": "bread",
+      "reponse": "pain",
+      "image": "bread"
+    },
+    {
+      "id": "milk",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:milk",
+      "question": "milk",
+      "reponse": "lait",
+      "image": "milk"
+    },
+    {
+      "id": "cake",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:cake",
+      "question": "cake",
+      "reponse": "gâteau",
+      "image": "cake"
+    },
+    {
+      "id": "egg",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:egg",
+      "question": "egg",
+      "reponse": "œuf",
+      "image": "egg"
+    },
+    {
+      "id": "cheese",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:cheese",
+      "question": "cheese",
+      "reponse": "fromage",
+      "image": "cheese"
+    },
+    {
+      "id": "ice-cream",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:ice-cream",
+      "question": "ice cream",
+      "reponse": "glace",
+      "image": "ice-cream"
+    },
+    {
+      "id": "ball",
+      "chapitre": "toys",
+      "type": "ecoute",
+      "cle": "en:mot:ball",
+      "question": "ball",
+      "reponse": "ballon",
+      "image": "ball"
+    },
+    {
+      "id": "doll",
+      "chapitre": "toys",
+      "type": "ecoute",
+      "cle": "en:mot:doll",
+      "question": "doll",
+      "reponse": "poupée",
+      "image": "doll"
+    },
+    {
+      "id": "teddy-bear",
+      "chapitre": "toys",
+      "type": "ecoute",
+      "cle": "en:mot:teddy-bear",
+      "question": "teddy bear",
+      "reponse": "nounours",
+      "image": "teddy"
+    },
+    {
+      "id": "car",
+      "chapitre": "toys",
+      "type": "ecoute",
+      "cle": "en:mot:car",
+      "question": "car",
+      "reponse": "voiture",
+      "image": "car"
+    },
+    {
+      "id": "kite",
+      "chapitre": "toys",
+      "type": "ecoute",
+      "cle": "en:mot:kite",
+      "question": "kite",
+      "reponse": "cerf-volant",
+      "image": "kite"
+    },
+    {
+      "id": "book",
+      "chapitre": "toys",
+      "type": "ecoute",
+      "cle": "en:mot:book",
+      "question": "book",
+      "reponse": "livre",
+      "image": "book"
+    },
+    {
+      "id": "train",
+      "chapitre": "toys",
+      "type": "ecoute",
+      "cle": "en:mot:train",
+      "question": "train",
+      "reponse": "train",
+      "image": "train"
+    },
+    {
+      "id": "bike",
+      "chapitre": "toys",
+      "type": "ecoute",
+      "cle": "en:mot:bike",
+      "question": "bike",
+      "reponse": "vélo",
+      "image": "bike"
+    },
+    {
+      "id": "boat",
+      "chapitre": "toys",
+      "type": "ecoute",
+      "cle": "en:mot:boat",
+      "question": "boat",
+      "reponse": "bateau",
+      "image": "boat"
+    },
+    {
+      "id": "hat",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "cle": "en:mot:hat",
+      "question": "hat",
+      "reponse": "chapeau",
+      "image": "hat"
+    },
+    {
+      "id": "shoes",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "cle": "en:mot:shoes",
+      "question": "shoes",
+      "reponse": "chaussures",
+      "image": "shoes"
+    },
+    {
+      "id": "socks",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "cle": "en:mot:socks",
+      "question": "socks",
+      "reponse": "chaussettes",
+      "image": "socks"
+    },
+    {
+      "id": "coat",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "cle": "en:mot:coat",
+      "question": "coat",
+      "reponse": "manteau",
+      "image": "coat"
+    },
+    {
+      "id": "t-shirt",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "cle": "en:mot:t-shirt",
+      "question": "T-shirt",
+      "reponse": "tee-shirt",
+      "image": "t-shirt"
+    },
+    {
+      "id": "dress",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "cle": "en:mot:dress",
+      "question": "dress",
+      "reponse": "robe",
+      "image": "dress"
+    },
+    {
+      "id": "scarf",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "cle": "en:mot:scarf",
+      "question": "scarf",
+      "reponse": "écharpe",
+      "image": "scarf"
+    },
+    {
+      "id": "sun",
+      "chapitre": "weather",
+      "type": "ecoute",
+      "cle": "en:mot:sun",
+      "question": "sun",
+      "reponse": "soleil",
+      "image": "sun"
+    },
+    {
+      "id": "rain",
+      "chapitre": "weather",
+      "type": "ecoute",
+      "cle": "en:mot:rain",
+      "question": "rain",
+      "reponse": "pluie",
+      "image": "rain"
+    },
+    {
+      "id": "snow",
+      "chapitre": "weather",
+      "type": "ecoute",
+      "cle": "en:mot:snow",
+      "question": "snow",
+      "reponse": "neige",
+      "image": "snow"
+    },
+    {
+      "id": "wind",
+      "chapitre": "weather",
+      "type": "ecoute",
+      "cle": "en:mot:wind",
+      "question": "wind",
+      "reponse": "vent",
+      "image": "wind"
+    },
+    {
+      "id": "cloud",
+      "chapitre": "weather",
+      "type": "ecoute",
+      "cle": "en:mot:cloud",
+      "question": "cloud",
+      "reponse": "nuage",
+      "image": "cloud"
+    },
+    {
+      "id": "rainbow",
+      "chapitre": "weather",
+      "type": "ecoute",
+      "cle": "en:mot:rainbow",
+      "question": "rainbow",
+      "reponse": "arc-en-ciel",
+      "image": "rainbow"
+    }
+  ]
+}

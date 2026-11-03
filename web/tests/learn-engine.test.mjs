@@ -260,7 +260,7 @@ test('a card without traps of its own draws them from its chapter, game after ga
 })
 
 test('the youngest hear a word and pick one drawing among three', () => {
-  const compiled = compile(catalogue['anglais-gs'])
+  const compiled = compile(catalogue['anglais-gs-couleurs-nombres'])
   const questions = pickQuestions(compiled, new Map(), {
     rng: seededRandom(3),
   })
@@ -304,9 +304,11 @@ test('every drawing a card names is in the app', () => {
 })
 
 test('a listening card is heard, read, or written down', () => {
-  const compiled = compile(catalogue['anglais-ce2'])
-  const items = compiled.chapters.flatMap(c =>
-    c.sources.flatMap(source => source.list()),
+  const items = ['anglais-ce2-maison-ecole', 'anglais-ce2-phrases'].flatMap(
+    id =>
+      compile(catalogue[id]).chapters.flatMap(c =>
+        c.sources.flatMap(source => source.list()),
+      ),
   )
   const heard = items.find(i => i.key === 'en:mot:cat')
   assert.deepEqual([heard.listen, heard.answer], ['cat', 'chat'])
