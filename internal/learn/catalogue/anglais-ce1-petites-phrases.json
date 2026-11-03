@@ -30,8 +30,7 @@
     },
     {
       "id": "ask",
-      "nom": "Demander et aimer",
-      "ouvert_apres": 60
+      "nom": "Demander et aimer"
     }
   ],
   "fiches": [
