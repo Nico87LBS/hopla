@@ -21,6 +21,7 @@ import RewardsView from '../Rewards/RewardsView'
 import AccountSettings from '../Settings/AccountSettings'
 import AdvancedSettings from '../Settings/AdvancedSettings'
 import APITokenSettings from '../Settings/APITokenSettings'
+import BackupCard from '../Settings/BackupCard'
 import CalendarSettings from '../Settings/CalendarSettings'
 import ChildUserSettings from '../Settings/ChildUserSettings'
 import CurrencyCard from '../Settings/CurrencyCard'
@@ -170,6 +171,7 @@ export const ManageFamily = ({ tab }) => (
           <CurrencyCard />
           <PodiumCard />
           <FamilyTimezoneCard />
+          <BackupCard />
         </Stack>
       )}
     </Embedded>

@@ -1908,6 +1908,60 @@ paths:
       summary: Retirer des hops à un membre
       tags:
       - Famille
+  /api/v1/families/backup:
+    get:
+      description: 'Un fichier .hopla-famille (zip) : toute la famille, ses comptes
+        et ses fichiers. Réservé aux parents.'
+      produces:
+      - application/zip
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: file
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Télécharger la sauvegarde de la famille
+      tags:
+      - Sauvegarde
+  /api/v1/families/backups:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Sauvegardes de nuit gardées sur le serveur
+      tags:
+      - Sauvegarde
+  /api/v1/families/backups/{name}:
+    get:
+      parameters:
+      - description: Nom du fichier
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/zip
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: file
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Télécharger une sauvegarde de nuit
+      tags:
+      - Sauvegarde
   /api/v1/families/currency:
     get:
       produces:
@@ -2143,6 +2197,32 @@ paths:
       summary: Changer le rôle d'un membre
       tags:
       - Famille
+  /api/v1/families/restore:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Remplace toute la famille par celle du fichier. Tout le monde se
+        reconnecte ensuite avec ses identifiants de la sauvegarde.
+      parameters:
+      - description: Fichier .hopla-famille
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Restaurer la famille depuis une sauvegarde
+      tags:
+      - Sauvegarde
   /api/v1/families/timezone:
     get:
       produces:

@@ -12,6 +12,7 @@ import (
 	docs "github.com/nico87lbs/hopla/docs"
 	"github.com/nico87lbs/hopla/frontend"
 	auth "github.com/nico87lbs/hopla/internal/auth"
+	"github.com/nico87lbs/hopla/internal/backup"
 	"github.com/nico87lbs/hopla/internal/calendar"
 	calRepo "github.com/nico87lbs/hopla/internal/calendar/repo"
 	"github.com/nico87lbs/hopla/internal/chore"
@@ -135,9 +136,9 @@ func main() {
 		fx.Provide(storage.NewDraftCleanupService),
 		fx.Provide(storageRepo.NewStorageRepository),
 
-		// backup service
-		// fx.Provide(backup.NewService),
-		// fx.Provide(backup.NewHandler),
+		// Family backups: download, restore, one each night.
+		fx.Provide(backup.NewService),
+		fx.Provide(backup.NewHandler),
 
 		// Real-time service and components
 		fx.Provide(realtime.NewRealTimeService),
@@ -169,7 +170,8 @@ func main() {
 			frontend.Routes,
 			docs.Routes,
 			resource.Routes,
-			// backup.Routes,
+			backup.Routes,
+			backup.Run,
 
 			dsync.Routes,
 			realtime.Routes, // (router, rtAuthMiddleware, pollingHandler, jwtAuth)

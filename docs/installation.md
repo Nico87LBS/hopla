@@ -204,11 +204,42 @@ famille à chaque connexion des membres de ces groupes.
 
 ## Sauvegarde
 
+### Sauvegarde de la famille
+
+Gérer › Famille › Réglages › Sauvegarde (parents seulement) :
+
+- **Télécharger la sauvegarde** donne un fichier `.hopla-famille` : un zip
+  avec toute la famille (membres et comptes avec leurs mots de passe chiffrés,
+  jetons d'accès, tâches et historique, hops et journal, récompenses, jeux,
+  Apprendre avec les progrès, corrections et signalements) et ses photos et
+  pièces jointes ;
+- **chaque nuit**, vers 3 h dans le fuseau de la famille, le serveur écrit
+  `famille-<n°>-AAAA-MM-JJ.hopla-famille` dans `sauvegardes/` à côté de la
+  base, et garde les 14 dernières. Elles se téléchargent depuis la même carte ;
+- **Restaurer une sauvegarde…** remplace toute la famille par celle du fichier,
+  après avoir tapé RESTAURER. Ce qui a été fait depuis est perdu, et tout le
+  monde se reconnecte avec les identifiants de la sauvegarde. La carte de la
+  tablette continue de marcher : son jeton revient avec la sauvegarde.
+
+Sur un nouveau serveur : créez un compte (il crée une famille vide), puis
+restaurez le fichier depuis ce compte. Les lignes gardent leurs numéros : une
+restauration est refusée, sans rien changer, si une autre famille du serveur
+occupe déjà ces numéros.
+
+| Réglage | Variable | Par défaut | Rôle |
+| --- | --- | --- | --- |
+| `backup.dir` | `HOPLA_BACKUP_DIR` | `sauvegardes` à côté de la base | Dossier des sauvegardes de nuit |
+| `backup.keep` | | `14` | Nombre de sauvegardes de nuit gardées par famille |
+| `backup.disable_nightly` | `HOPLA_BACKUP_DISABLE_NIGHTLY` | `false` | `true` coupe les sauvegardes de nuit (le téléchargement reste) |
+
+### Tout le serveur
+
 Tout ce qui compte est dans le volume `data` :
 
 - `hopla.db`, la base : familles, tâches, historique, hops, jeux, progrès
   d'Apprendre ;
-- `files/`, les photos et pièces jointes.
+- `files/`, les photos et pièces jointes ;
+- `sauvegardes/`, les sauvegardes de nuit de chaque famille.
 
 Pour une copie fiable, arrêtez le conteneur le temps de copier, ou utilisez
 `sqlite3 hopla.db ".backup hopla-copie.db"` pendant qu'il tourne. Gardez aussi

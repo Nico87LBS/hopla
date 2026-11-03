@@ -1760,6 +1760,98 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/families/backup": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Un fichier .hopla-famille (zip) : toute la famille, ses comptes et ses fichiers. Réservé aux parents.",
+                "produces": [
+                    "application/zip"
+                ],
+                "tags": [
+                    "Sauvegarde"
+                ],
+                "summary": "Télécharger la sauvegarde de la famille",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/families/backups": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sauvegarde"
+                ],
+                "summary": "Sauvegardes de nuit gardées sur le serveur",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/families/backups/{name}": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/zip"
+                ],
+                "tags": [
+                    "Sauvegarde"
+                ],
+                "summary": "Télécharger une sauvegarde de nuit",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Nom du fichier",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/families/currency": {
             "get": {
                 "security": [
@@ -2153,6 +2245,47 @@ const docTemplate = `{
                             "additionalProperties": {
                                 "type": "string"
                             }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/families/restore": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Remplace toute la famille par celle du fichier. Tout le monde se reconnecte ensuite avec ses identifiants de la sauvegarde.",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sauvegarde"
+                ],
+                "summary": "Restaurer la famille depuis une sauvegarde",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "Fichier .hopla-famille",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
                         }
                     }
                 }

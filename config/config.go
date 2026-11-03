@@ -39,6 +39,7 @@ type Config struct {
 	SingleFamilyInstance   bool           `mapstructure:"single_family_instance" yaml:"single_family_instance"`
 	DisablePasswordAuth    bool           `mapstructure:"disable_password_auth" yaml:"disable_password_auth"`
 	Voice                  VoiceConfig    `mapstructure:"voice" yaml:"voice"`
+	Backup                 BackupConfig   `mapstructure:"backup" yaml:"backup"`
 	Info                   Info
 }
 
@@ -58,6 +59,17 @@ type VoiceConfig struct {
 	// CacheDir keeps the sentences made, so each is made once. Empty keeps
 	// them in "voix" next to the SQLite database.
 	CacheDir string `mapstructure:"cache_dir" yaml:"cache_dir"`
+}
+
+// BackupConfig sets the nightly backups of each family.
+type BackupConfig struct {
+	// Dir keeps the backups. Empty keeps them in "sauvegardes" next to the
+	// SQLite database.
+	Dir string `mapstructure:"dir" yaml:"dir"`
+	// Keep is how many nightly backups each family keeps.
+	Keep int `mapstructure:"keep" yaml:"keep" default:"14"`
+	// DisableNightly stops the nightly backups; the download stays.
+	DisableNightly bool `mapstructure:"disable_nightly" yaml:"disable_nightly"`
 }
 
 type StorageConfig struct {
@@ -215,6 +227,12 @@ func configEnvironmentOverrides(config *Config) {
 	}
 	if dir := os.Getenv("HOPLA_VOICE_CACHE_DIR"); dir != "" {
 		config.Voice.CacheDir = dir
+	}
+	if dir := os.Getenv("HOPLA_BACKUP_DIR"); dir != "" {
+		config.Backup.Dir = dir
+	}
+	if os.Getenv("HOPLA_BACKUP_DISABLE_NIGHTLY") == "true" {
+		config.Backup.DisableNightly = true
 	}
 	// Logging environment overrides
 	if os.Getenv("HOPLA_LOG_LEVEL") != "" {
