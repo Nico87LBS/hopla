@@ -62,6 +62,7 @@ func Migration(db *gorm.DB) error {
 		learn.Activation{},
 		learn.PersonSetting{},
 		learn.Placement{},
+		learn.PackPlayer{},
 		learn.Session{},
 		learn.RecreSetting{},
 		learn.RecrePlay{},
@@ -82,7 +83,10 @@ func Migration(db *gorm.DB) error {
 		return err
 	}
 
-	return learn.FoldAllPacks(db)
+	if err := learn.FoldAllPacks(db); err != nil {
+		return err
+	}
+	return learn.MigratePackPlayers(db)
 }
 
 func MigrationScripts(gormDB *gorm.DB, cfg *config.Config) error {

@@ -207,6 +207,7 @@ func freshModules(db *gorm.DB, familyID int, now time.Time) ([]Module, error) {
 	}
 	// The catalogue modules cut into several, now packs of them.
 	var split []string
+	updated := false
 	for i, module := range modules {
 		entry, ok := entries[module.Key]
 		if !module.Builtin || !ok || entry.Doc.Version == module.Version {
@@ -221,6 +222,7 @@ func freshModules(db *gorm.DB, familyID int, now time.Time) ([]Module, error) {
 		}
 		fresh.ID, fresh.InstalledAt = module.ID, module.InstalledAt
 		modules[i] = fresh
+		updated = true
 	}
 	// A catalogue pack that gained modules in an update gets them installed,
 	// turned on for nobody: the parents choose who plays them.
@@ -277,6 +279,15 @@ func freshModules(db *gorm.DB, familyID int, now time.Time) ([]Module, error) {
 	if added {
 		modules = nil
 		if err := db.Where("family_id = ?", familyID).Order("name").Find(&modules).Error; err != nil {
+			return nil, err
+		}
+	}
+	// What a pack brings in an update opens for whoever plays it, as its
+	// levels say.
+	if added || updated {
+		if err := db.Transaction(func(tx *gorm.DB) error {
+			return syncPacks(tx, familyID, modules, now)
+		}); err != nil {
 			return nil, err
 		}
 	}
@@ -519,6 +530,9 @@ func Remove(db *gorm.DB, familyID int, key string, forget bool) error {
 			return err
 		}
 		if err := tx.Where("family_id = ? AND pack_key IN ?", familyID, keys).Delete(&Placement{}).Error; err != nil {
+			return err
+		}
+		if err := tx.Where("family_id = ? AND pack_key IN ?", familyID, keys).Delete(&PackPlayer{}).Error; err != nil {
 			return err
 		}
 		if !forget {
@@ -1192,6 +1206,9 @@ type Player struct {
 	// Placements are the person's placement tests, to offer one in a pack
 	// never tested.
 	Placements []Placement `json:"placements"`
+	// PackPlayers are the packs the person plays and the levels open, so
+	// that the device opens the next level once one is known.
+	PackPlayers []PackPlayer `json:"packPlayers"`
 }
 
 // PlayerFor gathers what a person plays.
@@ -1244,6 +1261,10 @@ func PlayerFor(db *gorm.DB, familyID, userID int, now time.Time) (Player, error)
 		return player, err
 	}
 	placed := placedChapters(player.Placements)
+	player.PackPlayers, err = PackPlayers(db, familyID, &userID)
+	if err != nil {
+		return player, err
+	}
 	for _, module := range modules {
 		if module.IsPack() {
 			player.Packs = append(player.Packs, module)

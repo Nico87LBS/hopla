@@ -1,5 +1,22 @@
 basePath: /
 definitions:
+  api.PackChange:
+    properties:
+      aside:
+        type: boolean
+      key:
+        description: 'Key, Aside: the level or module set aside, or brought back.'
+        type: string
+      "on":
+        type: boolean
+      pack:
+        type: string
+      userId:
+        type: integer
+    required:
+    - pack
+    - userId
+    type: object
   chore.ActionOptions:
     properties:
       createdAt:
@@ -3089,6 +3106,84 @@ paths:
       summary: Installer un module du catalogue
       tags:
       - Apprendre
+  /api/v1/learn/packs:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Corps de la requête
+        in: body
+        name: paquet
+        required: true
+        schema:
+          $ref: '#/definitions/api.PackChange'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Cocher un paquet pour une personne (ses niveaux s'ouvrent seuls)
+      tags:
+      - Apprendre
+  /api/v1/learn/packs/aside:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Corps de la requête
+        in: body
+        name: ecart
+        required: true
+        schema:
+          $ref: '#/definitions/api.PackChange'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Écarter un niveau ou un module ouvert d'un paquet, ou le reprendre
+      tags:
+      - Apprendre
+  /api/v1/learn/packs/next:
+    post:
+      consumes:
+      - application/json
+      description: 'Même traitement pour : POST /api/v1/learn/play/packs/next'
+      parameters:
+      - description: Corps de la requête
+        in: body
+        name: paquet
+        required: true
+        schema:
+          $ref: '#/definitions/api.PackChange'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      - PlayKeyAuth: []
+      summary: Ouvrir le niveau suivant d'un paquet, celui d'avant étant su
+      tags:
+      - Apprendre
+      - Session de jeu
   /api/v1/learn/placements:
     post:
       consumes:
@@ -3199,6 +3294,34 @@ paths:
       - APIKeyAuth: []
       - PlayKeyAuth: []
       summary: Enregistrer une partie
+      tags:
+      - Apprendre
+      - Session de jeu
+  /api/v1/learn/play/packs/next:
+    post:
+      consumes:
+      - application/json
+      description: 'Même traitement pour : POST /api/v1/learn/play/packs/next'
+      parameters:
+      - description: Corps de la requête
+        in: body
+        name: paquet
+        required: true
+        schema:
+          $ref: '#/definitions/api.PackChange'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      - PlayKeyAuth: []
+      summary: Ouvrir le niveau suivant d'un paquet, celui d'avant étant su
       tags:
       - Apprendre
       - Session de jeu

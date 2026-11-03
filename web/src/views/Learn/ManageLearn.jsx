@@ -2,6 +2,8 @@ import {
   ChevronRightRounded,
   DeleteOutlineRounded,
   DownloadDoneRounded,
+  ExpandLessRounded,
+  ExpandMoreRounded,
   FactCheckOutlined,
   FileDownloadRounded,
   InsightsRounded,
@@ -21,6 +23,7 @@ import {
   Select,
   Sheet,
   Stack,
+  Switch,
   Textarea,
   Typography,
 } from '@mui/joy'
@@ -41,6 +44,8 @@ import {
   usePlayer,
   useRemoveModule,
   useSetActivation,
+  useSetAside,
+  useSetPackPlayer,
   useSetPlacementKeep,
   useSetSetting,
 } from '../../queries/LearnQueries'
@@ -647,16 +652,13 @@ FirstNameCard.propTypes = {
 const LevelRow = ({
   baseline,
   group,
-  isOn,
+  onAside,
   onSettings,
-  onToggle,
   person,
   section,
 }) => {
   const { t } = useTranslation('learn')
-  const { level, line, modules, partial } = section
-  const ids = modules.map(m => m.id)
-  const on = ids.filter(isOn).length
+  const { aside, level, line, open } = section
   // Only what is set on the level for the person or the family, other
   // than on its pack.
   const chips = CHIPS.filter(
@@ -698,18 +700,21 @@ const LevelRow = ({
           </IconButton>
         </Slot>
         <Slot>
-          <Checkbox
-            checked={on === ids.length}
-            indeterminate={on > 0 && on < ids.length}
-            onChange={e =>
-              onToggle(partial ? ids : [level.id], e.target.checked)
-            }
+          <Switch
+            checked={open && !aside}
+            disabled={!open}
+            onChange={e => onAside(level.id, !e.target.checked)}
             slotProps={{
               input: { 'aria-label': `${level.name} · ${person.displayName}` },
             }}
           />
         </Slot>
       </Stack>
+      {!open && (
+        <Typography level='body-xs' sx={{ color: 'text.tertiary', pl: 4 }}>
+          {t('manage.levelClosed')}
+        </Typography>
+      )}
       {chips.length > 0 && (
         <Stack direction='row' gap={0.75} flexWrap='wrap' sx={{ pl: 4 }}>
           {chips.map(([key, label]) => (
@@ -729,11 +734,10 @@ const LevelRow = ({
 }
 
 LevelRow.propTypes = {
+  onAside: PropTypes.func.isRequired,
   baseline: PropTypes.object,
   group: PropTypes.object.isRequired,
-  isOn: PropTypes.func.isRequired,
   onSettings: PropTypes.func.isRequired,
-  onToggle: PropTypes.func.isRequired,
   person: PropTypes.object.isRequired,
   section: PropTypes.object.isRequired,
 }
@@ -835,6 +839,7 @@ const ModuleGroup = ({
   onPackSettings,
   onRemove,
   onSettings,
+  packPlayers,
   person,
   placements,
   reports,
@@ -842,7 +847,11 @@ const ModuleGroup = ({
 }) => {
   const { t } = useTranslation('learn')
   const setActivation = useSetActivation()
+  const setPack = useSetPackPlayer()
+  const setAside = useSetAside()
   const notify = useNotify()
+  // A pack is folded at first, to keep the page short.
+  const [unfolded, setUnfolded] = useState(false)
   const isOn = id => activations.has(`${person.userId}:${id}`)
   // A module a pack gained in an update, which nobody plays yet.
   const playedBy = new Set([...activations.keys()].map(k => k.split(':')[1]))
@@ -862,6 +871,32 @@ const ModuleGroup = ({
       notify('error', err.message)
     }
   }
+
+  const run = async promise => {
+    try {
+      await promise
+    } catch (err) {
+      notify('error', err.message)
+    }
+  }
+  // The pack is ticked, not its levels: they open by themselves, and a
+  // parent can only set aside what is open.
+  const member = group.pack
+    ? (packPlayers || []).find(
+        p => p.userId === person.userId && p.pack === group.pack.id,
+      )
+    : null
+  const asideKeys = new Set(member?.excluded || [])
+  const tiers = (group.tiers || []).filter(level => level.pack)
+  const onAside = (key, aside) =>
+    run(
+      setAside.mutateAsync({
+        userId: person.userId,
+        pack: group.pack.id,
+        key,
+        aside,
+      }),
+    )
 
   const ids = group.modules.map(m => m.id)
   const on = ids.filter(isOn).length
@@ -897,6 +932,30 @@ const ModuleGroup = ({
         p => p.userId === person.userId && p.pack === group.pack.id,
       )
     : null
+  const openTo = Math.max(
+    0,
+    tiers.findIndex(level => level.pack.id === member?.openTo),
+  )
+  const openFrom =
+    placement?.status === 'done' && placement.keep === 'only' ? openTo : 0
+  const levelOpen = id => {
+    const i = tiers.findIndex(level => level.pack.id === id)
+    return !!member && i >= openFrom && i <= openTo
+  }
+  sections.forEach(section => {
+    section.open = levelOpen(section.level.id)
+    section.aside = asideKeys.has(section.level.id)
+  })
+  // moduleOpen tells whether a module of the pack can be played: its
+  // level open and not set aside.
+  const levelOf = new Map(
+    sections.flatMap(section => section.modules.map(m => [m.id, section])),
+  )
+  const moduleOpen = module => {
+    if (!group.pack) return true
+    const section = levelOf.get(module.id)
+    return !!member && (!section || (section.open && !section.aside))
+  }
   const placedIn = new Set(
     (placement?.opened || []).map(chapter => chapter.split('/')[0]),
   )
@@ -914,7 +973,8 @@ const ModuleGroup = ({
             <Typography
               level='body-md'
               endDecorator={
-                isNew(module) && (
+                isNew(module) &&
+                moduleOpen(module) && (
                   <Chip size='sm' variant='soft' color='success'>
                     {t('manage.new')}
                   </Chip>
@@ -958,15 +1018,28 @@ const ModuleGroup = ({
             )}
           </Slot>
           <Slot>
-            <Checkbox
-              checked={playing}
-              onChange={e => toggle([module.id], e.target.checked)}
-              slotProps={{
-                input: {
-                  'aria-label': `${module.name} · ${person.displayName}`,
-                },
-              }}
-            />
+            {group.pack ? (
+              <Switch
+                checked={playing}
+                disabled={!moduleOpen(module)}
+                onChange={e => onAside(module.id, !e.target.checked)}
+                slotProps={{
+                  input: {
+                    'aria-label': `${module.name} · ${person.displayName}`,
+                  },
+                }}
+              />
+            ) : (
+              <Checkbox
+                checked={playing}
+                onChange={e => toggle([module.id], e.target.checked)}
+                slotProps={{
+                  input: {
+                    'aria-label': `${module.name} · ${person.displayName}`,
+                  },
+                }}
+              />
+            )}
           </Slot>
         </Stack>
         {playing && (
@@ -1050,19 +1123,32 @@ const ModuleGroup = ({
           )}
         </Slot>
         <Slot>
-          <Checkbox
-            checked={on === ids.length}
-            indeterminate={on > 0 && on < ids.length}
-            onChange={e =>
-              toggle(
-                group.pack && !group.partial ? [group.pack.id] : ids,
-                e.target.checked,
-              )
-            }
-            slotProps={{
-              input: { 'aria-label': `${name} · ${person.displayName}` },
-            }}
-          />
+          {group.pack ? (
+            <Checkbox
+              checked={!!member}
+              onChange={e =>
+                run(
+                  setPack.mutateAsync({
+                    userId: person.userId,
+                    pack: group.pack.id,
+                    on: e.target.checked,
+                  }),
+                )
+              }
+              slotProps={{
+                input: { 'aria-label': `${name} · ${person.displayName}` },
+              }}
+            />
+          ) : (
+            <Checkbox
+              checked={on === ids.length}
+              indeterminate={on > 0 && on < ids.length}
+              onChange={e => toggle(ids, e.target.checked)}
+              slotProps={{
+                input: { 'aria-label': `${name} · ${person.displayName}` },
+              }}
+            />
+          )}
         </Slot>
       </Stack>
       {lineChips.length > 0 && (
@@ -1080,11 +1166,42 @@ const ModuleGroup = ({
         </Stack>
       )}
 
-      {group.pack && on > 0 && (
+      {group.pack && (
+        <Button
+          variant='plain'
+          color='neutral'
+          size='sm'
+          onClick={() => setUnfolded(!unfolded)}
+          aria-expanded={unfolded}
+          endDecorator={
+            unfolded ? <ExpandLessRounded /> : <ExpandMoreRounded />
+          }
+          sx={{ justifyContent: 'flex-start', mt: 1, pl: 4, width: '100%' }}
+        >
+          <Typography
+            level='body-sm'
+            sx={{ color: 'text.secondary', flex: 1, textAlign: 'left' }}
+          >
+            {!member
+              ? t('manage.packOff')
+              : tiers.length
+                ? t('manage.packOnLevel', {
+                    count: on,
+                    level: tiers[openTo]?.pack.name,
+                  })
+                : t('manage.packOn', { count: on })}
+          </Typography>
+        </Button>
+      )}
+
+      {group.pack && member && unfolded && (
         <PlacementBox group={group} person={person} placement={placement} />
       )}
 
-      <Stack gap={1.25} sx={{ mt: 1.5 }}>
+      <Stack
+        gap={1.25}
+        sx={{ mt: 1.5, display: !group.pack || unfolded ? 'flex' : 'none' }}
+      >
         {sections.length
           ? sections.map(section => (
               <Fragment key={section.level.id}>
@@ -1092,10 +1209,9 @@ const ModuleGroup = ({
                   group={group}
                   person={person}
                   section={section}
-                  isOn={isOn}
                   baseline={line}
                   onSettings={onPackSettings}
-                  onToggle={toggle}
+                  onAside={onAside}
                 />
                 {section.modules.map(module =>
                   renderModule(module, section.line),
@@ -1132,6 +1248,7 @@ ModuleGroup.propTypes = {
   onPackSettings: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
   onSettings: PropTypes.func.isRequired,
+  packPlayers: PropTypes.array,
   person: PropTypes.object.isRequired,
   placements: PropTypes.array,
   reports: PropTypes.object,
@@ -1824,6 +1941,7 @@ export const ManageLearn = () => {
               defaults={defaults}
               reports={data?.reports}
               placements={data?.placements}
+              packPlayers={data?.packPlayers}
               settings={settings}
               onRemove={askRemove}
               onSettings={module => setSettingsFor({ scope: 'module', module })}

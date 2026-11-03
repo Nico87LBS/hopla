@@ -150,6 +150,9 @@ type Installed struct {
 	Day        string                    `json:"day"`
 	// Placements are the placement tests of each person.
 	Placements []learn.Placement `json:"placements"`
+	// PackPlayers are the packs each person plays, their levels open and
+	// what is set aside.
+	PackPlayers []learn.PackPlayer `json:"packPlayers"`
 }
 
 // getModules godoc
@@ -217,9 +220,14 @@ func (h *Handler) getModules(c *gin.Context) {
 		answerError(c, err, "list the placement tests")
 		return
 	}
+	packPlayers, err := learn.PackPlayers(db, who.familyID, nil)
+	if err != nil {
+		answerError(c, err, "list who plays the packs")
+		return
+	}
 	c.JSON(200, gin.H{"res": Installed{Modules: modules, Activations: activations, Settings: settings,
 		Defaults: defaults, Applied: applied, Reports: counts, LastPlayed: lastPlayed,
-		Day: learn.Day(who.familyID, time.Now().UTC()), Placements: placements}})
+		Day: learn.Day(who.familyID, time.Now().UTC()), Placements: placements, PackPlayers: packPlayers}})
 }
 
 // install godoc
@@ -323,6 +331,109 @@ func (h *Handler) setActivation(c *gin.Context) {
 		return
 	}
 	h.getModules(c)
+}
+
+// PackChange ticks a pack for a person, or sets a level or a module of it
+// aside.
+type PackChange struct {
+	UserID int    `json:"userId" binding:"required"`
+	Pack   string `json:"pack" binding:"required"`
+	On     bool   `json:"on"`
+	// Key, Aside: the level or module set aside, or brought back.
+	Key   string `json:"key"`
+	Aside bool   `json:"aside"`
+}
+
+// setPackPlayer godoc
+//
+//	@Summary		Cocher un paquet pour une personne (ses niveaux s'ouvrent seuls)
+//	@Tags			Apprendre
+//	@Accept			json
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			paquet	body	PackChange	true	"Corps de la requête"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/packs [put]
+func (h *Handler) setPackPlayer(c *gin.Context) {
+	who, ok := h.requireParent(c)
+	if !ok {
+		return
+	}
+	var change PackChange
+	if err := c.ShouldBindJSON(&change); err != nil {
+		c.JSON(400, gin.H{"error": "Invalid request"})
+		return
+	}
+	if err := learn.SetPackPlayer(h.db.WithContext(c), who.familyID, change.UserID, change.Pack, change.On, time.Now().UTC()); err != nil {
+		answerError(c, err, "change the pack")
+		return
+	}
+	h.getModules(c)
+}
+
+// setAside godoc
+//
+//	@Summary		Écarter un niveau ou un module ouvert d'un paquet, ou le reprendre
+//	@Tags			Apprendre
+//	@Accept			json
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			ecart	body	PackChange	true	"Corps de la requête"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/packs/aside [put]
+func (h *Handler) setAside(c *gin.Context) {
+	who, ok := h.requireParent(c)
+	if !ok {
+		return
+	}
+	var change PackChange
+	if err := c.ShouldBindJSON(&change); err != nil || change.Key == "" {
+		c.JSON(400, gin.H{"error": "Invalid request"})
+		return
+	}
+	if err := learn.SetAside(h.db.WithContext(c), who.familyID, change.UserID, change.Pack, change.Key, change.Aside, time.Now().UTC()); err != nil {
+		answerError(c, err, "set aside")
+		return
+	}
+	h.getModules(c)
+}
+
+// openNextLevel godoc
+//
+//	@Summary		Ouvrir le niveau suivant d'un paquet, celui d'avant étant su
+//	@Description	Même traitement pour : POST /api/v1/learn/play/packs/next
+//	@Tags			Apprendre,Session de jeu
+//	@Accept			json
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Security		PlayKeyAuth
+//	@Param			paquet	body	PackChange	true	"Corps de la requête"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/packs/next [post]
+//	@Router			/api/v1/learn/play/packs/next [post]
+func (h *Handler) openNextLevel(c *gin.Context) {
+	who, ok := h.caller(c)
+	if !ok {
+		return
+	}
+	var change PackChange
+	if err := c.ShouldBindJSON(&change); err != nil {
+		c.JSON(400, gin.H{"error": "Invalid request"})
+		return
+	}
+	if !mayPlayFor(who, change.UserID) {
+		c.JSON(403, gin.H{"error": "You can only play as yourself"})
+		return
+	}
+	player, err := learn.OpenNextLevel(h.db.WithContext(c), who.familyID, change.UserID, change.Pack, time.Now().UTC())
+	if err != nil {
+		answerError(c, err, "open the next level")
+		return
+	}
+	c.JSON(200, gin.H{"res": player})
 }
 
 // setSetting godoc
@@ -762,6 +873,9 @@ func Routes(r *gin.Engine, h *Handler, auth *jwt.GinJWTMiddleware) {
 		routes.POST("/modules/import", h.importModule)
 		routes.DELETE("/modules/:key", h.remove)
 		routes.PUT("/activations", h.setActivation)
+		routes.PUT("/packs", h.setPackPlayer)
+		routes.PUT("/packs/aside", h.setAside)
+		routes.POST("/packs/next", h.openNextLevel)
 		routes.PUT("/settings", h.setSetting)
 		routes.GET("/stats/:key", h.getStats)
 		routes.GET("/players/:userId", h.getPlayer)
