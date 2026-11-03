@@ -146,6 +146,17 @@ Piper télécharge une voix la première fois qu'on la demande. Le choix de la
 voix, langue par langue, se fait dans Gérer › Modules d'apprentissage › Voix.
 Si le serveur ne répond pas, l'appareil reprend sa propre voix.
 
+La voix française Siwis ne connaît pas les sons nasals : elle reçoit « un »
+comme « eu » et « on » comme « o ». Dans une phrase, le reste du mot l'aide à
+deviner, mais un mot seul (« un », « au », une lettre) sort de travers.
+Essayez les voix plus récentes (`fr_FR-tom-medium`, `fr_FR-upmc-medium`,
+`fr_FR-mls-medium`) avec « Écouter les mots difficiles » dans l'onglet Voix.
+
+Piper tire un peu au hasard à chaque phrase. Pour une voix plus régulière,
+ajoutez par exemple `--noise-scale 0.4 --noise-w 0.5` à la commande du
+conteneur. Hopla ajoute lui-même un court silence avant et après chaque
+phrase, pour qu'une tablette n'en coupe ni le début ni la fin.
+
 ### Variables d'environnement propres
 
 | Variable | Rôle |

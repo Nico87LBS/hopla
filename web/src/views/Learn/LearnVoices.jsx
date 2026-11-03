@@ -1,6 +1,7 @@
-import { VolumeUpRounded } from '@mui/icons-material'
+import { RecordVoiceOverRounded, VolumeUpRounded } from '@mui/icons-material'
 import {
   Box,
+  Button,
   Chip,
   IconButton,
   Option,
@@ -165,6 +166,21 @@ const LangVoice = ({ lang, server, voices }) => {
           <VolumeUpRounded />
         </IconButton>
       </Stack>
+      {/* Short words alone are where a voice goes wrong: hear them to
+          compare the voices. */}
+      <Button
+        size='sm'
+        variant='plain'
+        startDecorator={<RecordVoiceOverRounded />}
+        onClick={() =>
+          speak(t(`voices.hardSample.${lang}`).split('|'), lang, {
+            voiceURI: value,
+          })
+        }
+        sx={{ mt: 0.5, px: 1 }}
+      >
+        {t('voices.hard')}
+      </Button>
     </Box>
   )
 }

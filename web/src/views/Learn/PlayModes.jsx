@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { HOPLA } from '../../constants/theme'
+import { whenSilent } from '../../utils/learn/speech'
 
 // onHover styles a pointer passing over; on a touch screen, Safari keeps it
 // on what was touched last, which then looks chosen at the next question.
@@ -104,7 +105,8 @@ export const MatchPairs = ({ color, item, onAnswer, say }) => {
 
   const touch = (side, index) => {
     const own = item.pairs[index][sides[side]]
-    if (say && own.text) say(own.text)
+    // Each name touched is heard to the end: the next one waits its turn.
+    if (say && own.text) say(own.text, { queue: true })
     if (!picked || picked.side === side) {
       setPicked({ side, index })
       return
@@ -114,7 +116,11 @@ export const MatchPairs = ({ color, item, onAnswer, say }) => {
       const next = new Set(matched).add(index)
       setMatched(next)
       if (next.size === item.pairs.length) {
-        setTimeout(() => onAnswer(mistakes.current[0] || ''), 350)
+        // The last name is heard before the answer shows.
+        setTimeout(
+          () => whenSilent(() => onAnswer(mistakes.current[0] || '')),
+          350,
+        )
       }
       return
     }

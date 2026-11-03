@@ -150,7 +150,7 @@ export const deviceVoices = onChange => {
 // A text in parts is said with a short silence between them, such as an
 // instruction, then the word it is about: « Solide ou liquide ? … la
 // cuillère ». What is said next cancels the parts still to come.
-export const PAUSE_MS = 700
+export const PAUSE_MS = 250
 let waiting = []
 // Each new text said, not queued, starts a new turn: a part of an older
 // turn that ends, even cut short, says nothing more.
@@ -248,6 +248,8 @@ const speakParts = (parts, lang, { queue = false, voiceURI } = {}) => {
     }
   }
   const mine = turn
+  // The server makes all the parts at once, not one after the other.
+  prepareSpeech(said, lang, voiceURI)
   // A part may be in another language: { text, lang }.
   const sayFrom = (i, queued) =>
     speak(said[i].text ?? said[i], said[i].lang || lang, {
@@ -256,11 +258,58 @@ const speakParts = (parts, lang, { queue = false, voiceURI } = {}) => {
       ...(i + 1 < said.length && {
         onDone: () => {
           if (turn !== mine) return
-          waiting.push(setTimeout(() => sayFrom(i + 1, true), PAUSE_MS))
+          const timer = setTimeout(() => {
+            waiting = waiting.filter(t => t !== timer)
+            sayFrom(i + 1, true)
+          }, PAUSE_MS)
+          waiting.push(timer)
         },
       }),
     })
   return sayFrom(0, true)
+}
+
+// prepareSpeech has the server's voice make texts ahead, such as the parts
+// of the next question; the device's voice needs nothing.
+export const prepareSpeech = (parts, lang, voiceURI) => {
+  if (!server.prepare) return
+  const byVoice = new Map()
+  for (const part of parts || []) {
+    if (!part) continue
+    const partLang = part.lang || lang
+    const voice = serverVoiceFor(partLang, voiceURI ?? chosenVoice(partLang))
+    if (!voice) continue
+    byVoice.set(voice, [...(byVoice.get(voice) || []), part.text ?? part])
+  }
+  for (const [voice, texts] of byVoice) server.prepare(texts, voice)
+}
+
+// isSpeaking tells whether something is being said, or is about to be.
+export const isSpeaking = () => {
+  if (waiting.length > 0 || server.playing?.()) return true
+  try {
+    const voice = synth()
+    return !!voice && (voice.speaking || voice.pending)
+  } catch {
+    return false
+  }
+}
+
+// whenSilent calls back once nothing is said any more, or after maxMs at
+// the latest, so that a voice that never ends stops nothing. It gives a
+// function that cancels it.
+export const whenSilent = (callback, maxMs = 4000) => {
+  const started = Date.now()
+  let timer = null
+  const check = () => {
+    if (!isSpeaking() || Date.now() - started >= maxMs) {
+      timer = null
+      callback()
+    } else timer = setTimeout(check, 100)
+  }
+  // What was just asked may take a moment to start.
+  timer = setTimeout(check, 150)
+  return () => timer && clearTimeout(timer)
 }
 
 export const stopSpeaking = () => {

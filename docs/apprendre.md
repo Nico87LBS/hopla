@@ -125,6 +125,16 @@ Dans les modules d'Apprendre à lire, l'appareil ne dit jamais plus que la
 consigne (« Lis le mot, puis touche son dessin ») : ni les mots à lire ni les
 réponses, qu'il dit une fois que l'enfant a répondu.
 
+Une consigne qui ne change pas d'une question à l'autre (« Vivant ou non
+vivant ? », « Lis la phrase et choisis le mot qui manque ») n'est dite qu'à
+la première question, puis de nouveau quand elle change ou après une erreur.
+Entre-temps, seul ce sur quoi porte la question est dit (« la fleur »). La
+consigne reste écrite, et le haut-parleur la redit toujours.
+
+Quand une phrase est relue une fois la réponse donnée, « Continuer »
+attend la fin de la phrase (4 secondes au plus). Dans « Relie », chaque nom
+touché est dit en entier avant le suivant.
+
 ### La voix
 
 Les questions sont dites par la voix choisie dans Gérer › Modules
@@ -133,6 +143,15 @@ voix de l'appareil, ou une voix naturelle fabriquée par le serveur quand un
 serveur Piper est réglé (voir [Installation](installation.md#voix-naturelle-des-jeux)).
 En automatique, la voix du serveur passe en premier. Hors ligne, ou si le
 serveur ne répond pas, l'appareil reprend sa propre voix.
+
+« Écouter les mots difficiles », sous chaque langue, fait dire des mots courts
+où une voix se trompe souvent (« au », « un », « A », « le hibou »…), pour
+comparer les voix à l'oreille.
+
+La voix du serveur tire un peu au hasard, et chaque phrase est gardée une
+fois fabriquée. Si une phrase est mal dite, un parent peut toucher le drapeau
+de la question, puis « Refaire les sons de cette question » : ses sons sont
+fabriqués de nouveau la prochaine fois, sur tous les appareils.
 
 ### Prénom
 

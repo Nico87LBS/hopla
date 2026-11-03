@@ -37,8 +37,15 @@ import {
   stars,
   totalLeft,
 } from '../../utils/learn/engine'
-import { loadServerVoices } from '../../utils/learn/serverVoice'
-import { canSpeak, speak, stopSpeaking } from '../../utils/learn/speech'
+import { consigneOf, partsOf, sayAgain, spoken } from '../../utils/learn/saying'
+import { loadServerVoices, newQuestion } from '../../utils/learn/serverVoice'
+import {
+  canSpeak,
+  prepareSpeech,
+  speak,
+  stopSpeaking,
+  whenSilent,
+} from '../../utils/learn/speech'
 import { applyResult, playLocally, queueGame } from '../../utils/learn/store'
 import { generateUUID } from '../../utils/UUID'
 import LoadingComponent from '../components/Loading'
@@ -342,6 +349,17 @@ FlipCard.propTypes = {
 const Feedback = ({ feedback, onNext }) => {
   const { t } = useTranslation('learn')
   const { correct, given, item, typo } = feedback
+  // The words said again once answered are heard to the end: « Next »
+  // waits for them, a few seconds at most.
+  const [ready, setReady] = useState(!feedback.reading)
+  useEffect(
+    () => (feedback.reading ? whenSilent(() => setReady(true)) : undefined),
+    [feedback],
+  )
+  const readyRef = useRef(ready)
+  useEffect(() => {
+    readyRef.current = ready
+  }, [ready])
   // When wrong: why the answer given is not right, the rules of the boxes
   // concerned, and the steps of a calculation.
   const helps = correct
@@ -369,7 +387,7 @@ const Feedback = ({ feedback, onNext }) => {
     const up = e => {
       if (e.key === 'Enter' && armed) {
         armed = false
-        onNext()
+        if (readyRef.current) onNext()
       }
     }
     window.addEventListener('keydown', down)
@@ -441,6 +459,7 @@ const Feedback = ({ feedback, onNext }) => {
       )}
       <Button
         onClick={onNext}
+        disabled={!ready}
         sx={{ mt: 1.5 }}
         color={correct ? 'success' : 'warning'}
       >
@@ -454,19 +473,6 @@ Feedback.propTypes = {
   feedback: PropTypes.object.isRequired,
   onNext: PropTypes.func.isRequired,
 }
-
-// spoken is what is said of a question when it is read aloud, in parts
-// said with a short silence between them: the instruction, the question,
-// then what it is about (« Solide ou liquide ? … la cuillère »).
-export const spoken = item =>
-  [
-    item.instruction !== item.prompt && item.instruction,
-    item.prompt,
-    item.subject?.text,
-  ]
-    .filter(Boolean)
-    // A blank to fill is said as a pause, not as its dashes.
-    .map(part => part.replace(/_{2,}/g, '…'))
 
 // writingClass shows the words of a module written in cursive: all of them,
 // or only those of the question, to read them in cursive and answer in print.
@@ -502,23 +508,51 @@ export const readBack = item => {
 // speaker button. Without a voice on the device, the words are shown
 // instead. Read aloud, the question is said as it opens. In a module that
 // teaches reading, tell says only the instruction, written above it.
-const Prompt = ({ blank, color, item, say, tell, tellLang }) => {
+const Prompt = ({
+  blank,
+  color,
+  item,
+  next,
+  repeat = true,
+  say,
+  tell,
+  tellLang,
+}) => {
   const { t } = useTranslation('learn')
   const voice = item.listen && canSpeak()
   const instruction = item.instruction !== item.prompt && item.instruction
   const telling = !say && tell && item.instruction
   useEffect(() => {
+    newQuestion()
     if (voice) {
       // The instruction, a short silence, then the word to listen to.
       speak(
-        [
-          telling && { text: item.instruction, lang: tellLang },
-          { text: item.listen, lang: item.lang },
-        ],
+        partsOf(
+          { ...item, instruction: telling && item.instruction },
+          repeat,
+          tellLang,
+        ),
         item.lang,
       )
-    } else if (say) say(spoken(item))
-    else if (telling) tell(item.instruction)
+    } else if (say) {
+      const parts = partsOf(item, repeat, tellLang)
+      if (parts.length) say(parts)
+    } else if (telling && repeat) tell(item.instruction)
+    // The next question is made ready while this one is played.
+    if (next && (say || tell)) {
+      prepareSpeech(
+        next.listen
+          ? partsOf(
+              { ...next, instruction: !say && next.instruction },
+              true,
+              tellLang,
+            )
+          : say
+            ? spoken(next)
+            : [next.instruction],
+        tellLang,
+      )
+    }
     return stopSpeaking
     // Said once, as the question opens.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -611,6 +645,8 @@ Prompt.propTypes = {
   blank: PropTypes.object,
   color: PropTypes.string.isRequired,
   item: PropTypes.object.isRequired,
+  next: PropTypes.object,
+  repeat: PropTypes.bool,
   say: PropTypes.func,
   tell: PropTypes.func,
   tellLang: PropTypes.string,
@@ -871,7 +907,9 @@ const LearnPlay = ({ playMode = false }) => {
   const doc = compiled.doc
   const personVoice = player.voice || (player.readAloud ? 'tout' : 'rien')
   const voice = personVoice !== 'rien' && canSpeak() && doc.lecture_voix_haute
-  const tell = voice ? text => speak(text, doc.langue || 'fr') : undefined
+  const tell = voice
+    ? (text, options) => speak(text, doc.langue || 'fr', options)
+    : undefined
   // In a module that teaches reading, a question with an instruction has
   // only it said: its words and its choices would give the answer away.
   // A person who reads alone may hear only the instructions everywhere.
@@ -964,10 +1002,11 @@ const LearnPlay = ({ playMode = false }) => {
     const check = checkAnswer(item, given)
     // Once answered, the words are said again where hearing them teaches
     // something: an English word, a word the child had to read.
+    let reading = false
     if (readsBack(doc)) {
-      if (item.said) speak(item.said.listen, item.said.lang)
+      if (item.said) reading = speak(item.said.listen, item.said.lang)
       else if (tell && !say && item.instruction && !item.listen)
-        tell(readBack(item))
+        reading = tell(readBack(item))
     }
     const answers = [
       ...game.answers,
@@ -983,7 +1022,7 @@ const LearnPlay = ({ playMode = false }) => {
       if (answers.length === game.questions.length) finish(answers)
       return
     }
-    setFeedback({ ...check, given: String(given), item })
+    setFeedback({ ...check, given: String(given), item, reading })
   }
 
   const next = () => {
@@ -1089,9 +1128,15 @@ const LearnPlay = ({ playMode = false }) => {
             >
               <Prompt
                 blank={blank}
-                item={feedback?.item || item}
+                item={shown}
+                next={game.questions[game.questions.indexOf(shown) + 1]}
+                repeat={sayAgain(
+                  game.questions,
+                  game.answers,
+                  game.questions.indexOf(shown),
+                )}
                 color={color}
-                say={sayFor(feedback?.item || item)}
+                say={sayFor(shown)}
                 tell={tell}
                 tellLang={doc.langue || 'fr'}
               />

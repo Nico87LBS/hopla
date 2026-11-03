@@ -1217,14 +1217,26 @@ const GetLearnVoices = async () =>
   )
 
 // GetLearnSpeech gives a sentence said by a voice of the server, as a sound.
+// s=2: the sounds with their silences, which the devices kept before them
+// do not have.
 const GetLearnSpeech = async (text, voice) => {
-  const query = `?text=${encodeURIComponent(text)}&voice=${encodeURIComponent(voice)}`
+  const query = `?text=${encodeURIComponent(text)}&voice=${encodeURIComponent(voice)}&s=2`
   const resp = inPlayPages()
     ? await playFetch(`/speak${query}`, { method: 'GET' })
     : await Fetch(`/learn/speak${query}`, { method: 'GET', headers: HEADERS() })
   if (!resp?.ok) throw new Error(`Error ${resp?.status}`)
   return resp.blob()
 }
+
+// DeleteLearnSpeech has the server make a sentence again, the next time it
+// is said.
+const DeleteLearnSpeech = async (text, voice) =>
+  learnAnswer(
+    await Fetch(
+      `/learn/speak?text=${encodeURIComponent(text)}&voice=${encodeURIComponent(voice)}`,
+      { method: 'DELETE', headers: HEADERS() },
+    ),
+  )
 
 const GetLearnStats = async key =>
   learnAnswer(
@@ -1312,6 +1324,7 @@ export {
   DeleteDraftAttachment,
   DeleteFamilyMember,
   DeleteLabel,
+  DeleteLearnSpeech,
   DeleteLongLiveToken,
   DeletePointsPreset,
   DeleteQuest,

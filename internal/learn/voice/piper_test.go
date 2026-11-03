@@ -75,7 +75,11 @@ func TestASentenceIsMadeOnceThenKept(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, "RIFF", string(sound[:4]))
 	require.Equal(t, "WAVE", string(sound[8:12]))
-	require.Equal(t, "Solide ou liquide ?fr_FR-siwis-medium", string(sound[44:]), "the chunks in order, after the header")
+	// 16 000 sounds a second of 2 bytes: 150 ms of silence before, 250 after.
+	before, after := 150*16*2, 250*16*2
+	require.Equal(t, "Solide ou liquide ?fr_FR-siwis-medium", string(sound[44+before:len(sound)-after]), "the chunks in order, after the header and the silence")
+	require.Equal(t, make([]byte, before), sound[44:44+before])
+	require.Equal(t, make([]byte, after), sound[len(sound)-after:])
 
 	again, err := piper.Speak(context.Background(), "Solide ou liquide ?", "fr_FR-siwis-medium")
 	require.NoError(t, err)
@@ -92,4 +96,17 @@ func TestPiperRefusesWhatItShouldNotSend(t *testing.T) {
 	require.ErrorIs(t, err, ErrInvalid)
 	_, err = New("", "").Speak(context.Background(), "Bonjour", "fr_FR-siwis-medium")
 	require.ErrorIs(t, err, ErrOff)
+}
+
+func TestASentenceForgottenIsMadeAgain(t *testing.T) {
+	addr, made := fakeServer(t)
+	piper := New(addr, t.TempDir())
+	_, err := piper.Speak(context.Background(), "le hibou", "fr_FR-siwis-medium")
+	require.NoError(t, err)
+	require.NoError(t, piper.Forget("le hibou", "fr_FR-siwis-medium"))
+	require.NoError(t, piper.Forget("jamais dit", "fr_FR-siwis-medium"), "nothing to forget is not an error")
+	_, err = piper.Speak(context.Background(), "le hibou", "fr_FR-siwis-medium")
+	require.NoError(t, err)
+	require.EqualValues(t, 2, atomic.LoadInt32(made))
+	require.ErrorIs(t, piper.Forget("le hibou", "../x"), ErrInvalid)
 }

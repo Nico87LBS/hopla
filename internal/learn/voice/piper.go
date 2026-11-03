@@ -123,20 +123,55 @@ func (p *Piper) Voices(ctx context.Context) ([]Voice, error) {
 }
 
 // Speak gives a sentence said by a voice, as a WAV sound: from the disk
-// when it was made before, else from the server.
+// when it was made before, else from the server. A short silence goes
+// before and after it: a tablet cuts the very start of a sound, and some
+// words end so abruptly that they seem cut.
 func (p *Piper) Speak(ctx context.Context, text, voice string) ([]byte, error) {
+	sound, err := p.made(ctx, text, voice)
+	if err != nil {
+		return nil, err
+	}
+	return padded(sound), nil
+}
+
+// pathOf tells where a sentence is kept, or why it is not said.
+func (p *Piper) pathOf(text, voice string) (string, string, error) {
 	if !p.Enabled() {
-		return nil, ErrOff
+		return "", "", ErrOff
 	}
 	text = strings.TrimSpace(text)
 	if text == "" || utf8.RuneCountInString(text) > MaxText || !voiceName.MatchString(voice) {
-		return nil, ErrInvalid
+		return "", "", ErrInvalid
+	}
+	if p.dir == "" {
+		return text, "", nil
 	}
 	sum := sha256.Sum256([]byte(voice + "\x00" + text))
 	key := hex.EncodeToString(sum[:])
-	path := ""
-	if p.dir != "" {
-		path = filepath.Join(p.dir, voice, key[:2], key+".wav")
+	return text, filepath.Join(p.dir, voice, key[:2], key+".wav"), nil
+}
+
+// Forget throws away a sentence kept, so that it is made again the next
+// time: the voice draws a little at random, and a sentence badly said
+// would otherwise stay so.
+func (p *Piper) Forget(text, voice string) error {
+	_, path, err := p.pathOf(text, voice)
+	if err != nil || path == "" {
+		return err
+	}
+	if err := os.Remove(path); err != nil && !errors.Is(err, os.ErrNotExist) {
+		return err
+	}
+	return nil
+}
+
+// made is the sentence as the server said it, without the silences.
+func (p *Piper) made(ctx context.Context, text, voice string) ([]byte, error) {
+	text, path, err := p.pathOf(text, voice)
+	if err != nil {
+		return nil, err
+	}
+	if path != "" {
 		if sound, err := os.ReadFile(path); err == nil {
 			return sound, nil
 		}
@@ -152,7 +187,7 @@ func (p *Piper) Speak(ctx context.Context, text, voice string) ([]byte, error) {
 	request, _ := json.Marshal(map[string]any{"text": text, "voice": map[string]string{"name": voice}})
 	var pcm bytes.Buffer
 	rate, width, channels := 22050, 2, 1
-	err := p.talk(ctx, event{Type: "synthesize", Data: request}, func(e event) (bool, error) {
+	err = p.talk(ctx, event{Type: "synthesize", Data: request}, func(e event) (bool, error) {
 		switch e.Type {
 		case "audio-start", "audio-chunk":
 			var format struct {
@@ -311,6 +346,36 @@ func (p *Piper) talk(ctx context.Context, request event, done func(event) (bool,
 			return err
 		}
 	}
+}
+
+// The silences around a sentence.
+const (
+	silenceBefore = 150 * time.Millisecond
+	silenceAfter  = 250 * time.Millisecond
+)
+
+// padded puts the silences around a WAV sound made by wav.
+func padded(sound []byte) []byte {
+	if len(sound) < 44 || string(sound[:4]) != "RIFF" || string(sound[36:40]) != "data" {
+		return sound
+	}
+	le := binary.LittleEndian
+	channels := int(le.Uint16(sound[22:24]))
+	rate := int(le.Uint32(sound[24:28]))
+	width := int(le.Uint16(sound[34:36])) / 8
+	frame := channels * width
+	if frame <= 0 || rate <= 0 {
+		return sound
+	}
+	silence := func(d time.Duration) []byte {
+		return make([]byte, int(d.Milliseconds())*rate/1000*frame)
+	}
+	pcm := sound[44:]
+	all := make([]byte, 0, len(pcm)+len(silence(silenceBefore))+len(silence(silenceAfter)))
+	all = append(all, silence(silenceBefore)...)
+	all = append(all, pcm...)
+	all = append(all, silence(silenceAfter)...)
+	return wav(all, rate, width, channels)
 }
 
 // wav wraps raw sound in a WAV file, which every browser plays.
