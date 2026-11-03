@@ -1177,11 +1177,9 @@ const ImportCard = () => {
 
 // /manage/learn: the modules of the family, who plays them and the settings
 // of each person.
-// ReportsCard sends the questions reported in the games, in one file, to
-// whoever writes the modules.
-const ReportsCard = ({ count }) => {
-  const { t } = useTranslation('learn')
-  const notify = useNotify()
+// useExportReports sends the questions reported in the games, in one file,
+// to whoever writes the modules.
+export const useExportReports = () => {
   const [busy, setBusy] = useState(false)
   const exportAll = async () => {
     setBusy(true)
@@ -1198,12 +1196,18 @@ const ReportsCard = ({ count }) => {
         `hopla-signalements-${now.toISOString().slice(0, 10)}.json`,
         `${JSON.stringify(file, null, 2)}\n`,
       )
-    } catch (err) {
-      notify('error', err.message)
     } finally {
       setBusy(false)
     }
   }
+  return [exportAll, busy]
+}
+
+// ReportsCard leads to the questions reported in the games.
+const ReportsCard = ({ count }) => {
+  const { t } = useTranslation('learn')
+  const notify = useNotify()
+  const [exportAll, busy] = useExportReports()
   return (
     <Sheet sx={surfaceSx}>
       <Stack direction='row' gap={1.5} alignItems='center' flexWrap='wrap'>
@@ -1218,11 +1222,15 @@ const ReportsCard = ({ count }) => {
         </Box>
         <Button
           variant='soft'
+          color='neutral'
           startDecorator={<FileDownloadRounded />}
           loading={busy}
-          onClick={exportAll}
+          onClick={() => exportAll().catch(err => notify('error', err.message))}
         >
           {t('reports.export')}
+        </Button>
+        <Button component={Link} to='/manage/learn/signalements'>
+          {t('reports.open')}
         </Button>
       </Stack>
     </Sheet>

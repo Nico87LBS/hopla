@@ -206,6 +206,14 @@ En jeu, le drapeau permet de signaler une question : pas claire, réponse
 fausse, faute d'orthographe, ou autre, avec un commentaire. Les signalements
 s'affichent dans le détail du module, où un parent les marque comme traités.
 
+Tous les signalements sont aussi réunis sur une page : Gérer › Apprendre, carte
+« questions signalées », bouton « Voir et corriger ». Ils y sont rangés par
+module puis par question. « Corriger » ouvre la correction de la fiche sur place
+(voir plus bas), et « Traité » fait disparaître le signalement. Une question
+fabriquée par le jeu (calcul, lettre tirée au hasard…) ne se corrige pas dans
+Hopla : on la marque comme traitée ou on l'exporte avec « Exporter les
+signalements ».
+
 Dans le détail d'un module du catalogue, le crayon d'une fiche permet de la
 corriger pour la famille : question, réponse, exemple montré après la réponse,
 mauvaises réponses proposées, autres réponses acceptées, et « poser aussi dans

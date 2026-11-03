@@ -221,7 +221,7 @@
       "faute": "Faute d'orthographe",
       "autre": "Autre"
     },
-    "by": "{{name}}, le {{date}} :",
+    "by": "{{name}}, le {{date}}",
     "given": "(réponse donnée : {{given}})",
     "resolve": "Marquer comme traité",
     "redo": "Refaire les sons de cette question",
@@ -336,8 +336,15 @@
   "reports": {
     "title_one": "{{count}} question signalée",
     "title_other": "{{count}} questions signalées",
-    "help": "Exporte un fichier à envoyer, pour que les questions soient corrigées dans les modules.",
-    "export": "Exporter les signalements"
+    "help": "Ouvre la liste pour corriger les questions, ou exporte un fichier à envoyer.",
+    "export": "Exporter les signalements",
+    "open": "Voir et corriger",
+    "pageTitle": "Questions signalées",
+    "none": "Aucune question signalée : tout est traité.",
+    "fix": "Corriger",
+    "generated": "Question fabriquée par le jeu : elle ne se corrige pas ici. Exporte-la pour la faire corriger.",
+    "seeModule": "Voir le module",
+    "back": "Apprendre"
   },
   "recre": {
     "title": "Récré !",

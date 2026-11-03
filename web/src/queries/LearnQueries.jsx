@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 import {
   EditLearnCard,
+  ExportLearnReports,
   GetLearnCatalogue,
   GetLearnDetail,
   GetLearnModules,
@@ -90,6 +91,11 @@ export const useLearnDetail = key =>
     queryKey: learnKeys.detail(key),
     queryFn: () => GetLearnDetail(key),
   })
+
+// useLearnReports: every question reported and not looked at yet, with its
+// module and the card as written.
+export const useLearnReports = () =>
+  useQuery({ queryKey: ['learn', 'reports'], queryFn: ExportLearnReports })
 
 export const useLearnModules = () =>
   useQuery({ queryKey: learnKeys.modules, queryFn: GetLearnModules })
