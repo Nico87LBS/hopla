@@ -23,19 +23,15 @@ func NewHandler(cr *chRepo.ChoreRepository) *SyncHandler {
 
 // GetChanges godoc
 //
-//	@Summary		Get sync changes
-//	@Description	Returns chores and chore histories that have changed since the given sync version cursor, along with deleted entity IDs. Paginated — call repeatedly while hasMore is true using the returned cursor.
-//	@Tags			sync
+//	@Summary		Changements depuis la dernière synchro (hors ligne)
+//	@Tags			Système
 //	@Accept			json
 //	@Produce		json
 //	@Security		JWTKeyAuth
 //	@Security		APIKeyAuth
-//	@Param			since	query		int64		false	"Sync version cursor (0 for initial full sync)"	default(0)
-//	@Success		200		{object}	map[string]interface{}	"changes, deletions, cursor, hasMore"
-//	@Failure		400		{object}	map[string]string		"error: Invalid 'since' parameter"
-//	@Failure		401		{object}	map[string]string		"error: Authentication failed"
-//	@Failure		500		{object}	map[string]string		"error: Failed to fetch changes"
-//	@Router			/sync/changes [get]
+//	@Param			since	query	int64	false	"Paramètre since"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/sync/changes [get]
 func (h *SyncHandler) GetChanges(c *gin.Context) {
 	currentUser := auth.MustCurrentUser(c)
 	familyID := currentUser.FamilyID

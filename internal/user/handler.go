@@ -70,6 +70,15 @@ func NewHandler(ur *uRepo.UserRepository, cr *fRepo.FamilyRepository,
 	}
 }
 
+// GetAllUsers godoc
+//
+//	@Summary		Lister les utilisateurs de la famille
+//	@Tags			Utilisateurs
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/users [get]
 func (h *Handler) GetAllUsers() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		currentUser, ok := auth.CurrentUser(c)
@@ -98,6 +107,13 @@ func (h *Handler) GetAllUsers() gin.HandlerFunc {
 	}
 }
 
+// signUp godoc
+//
+//	@Summary		Créer un compte
+//	@Tags			Connexion
+//	@Produce		json
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/auth [post]
 func (h *Handler) signUp(c *gin.Context) {
 	if h.IsUserCreationDisabled {
 		c.JSON(403, gin.H{
@@ -217,6 +233,15 @@ func (h *Handler) signUp(c *gin.Context) {
 	c.JSON(201, gin.H{})
 }
 
+// GetUserProfile godoc
+//
+//	@Summary		Profil de l'utilisateur connecté
+//	@Tags			Utilisateurs
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/users/profile [get]
 func (h *Handler) GetUserProfile(c *gin.Context) {
 	user, ok := auth.CurrentUser(c)
 	if !ok {
@@ -255,6 +280,14 @@ func (h *Handler) syncOIDCRole(c *gin.Context, userID, familyID int, groups []st
 	logger.Infow("OIDC role sync", "userID", userID, "familyID", familyID, "oldRole", currentRole, "newRole", resolvedRole, "groups", groups)
 }
 
+// thirdPartyAuthCallback godoc
+//
+//	@Summary		Retour de connexion par un fournisseur externe
+//	@Tags			Connexion
+//	@Produce		json
+//	@Param			provider	path	string	true	"Fournisseur de connexion"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/auth/{provider}/callback [post]
 func (h *Handler) thirdPartyAuthCallback(c *gin.Context) {
 
 	// read :provider from path param, if param is google check the token with google if it's valid and fetch the user details:
@@ -480,6 +513,13 @@ func (h *Handler) thirdPartyAuthCallback(c *gin.Context) {
 	}
 }
 
+// resetPassword godoc
+//
+//	@Summary		Demander un nouveau mot de passe
+//	@Tags			Connexion
+//	@Produce		json
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/auth/reset [post]
 func (h *Handler) resetPassword(c *gin.Context) {
 	log := logging.FromContext(c)
 	type ResetPasswordReq struct {
@@ -544,6 +584,13 @@ func (h *Handler) resetPassword(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{})
 }
 
+// updateUserPassword godoc
+//
+//	@Summary		Choisir un nouveau mot de passe avec le lien reçu
+//	@Tags			Connexion
+//	@Produce		json
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/auth/password [post]
 func (h *Handler) updateUserPassword(c *gin.Context) {
 	logger := logging.FromContext(c)
 	// read the code from query param:
@@ -590,6 +637,15 @@ func (h *Handler) updateUserPassword(c *gin.Context) {
 
 }
 
+// UpdateUserDetails godoc
+//
+//	@Summary		Modifier son profil
+//	@Tags			Utilisateurs
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/users [put]
 func (h *Handler) UpdateUserDetails(c *gin.Context) {
 	type UpdateUserReq struct {
 		DisplayName *string `json:"displayName" binding:"omitempty"`
@@ -636,6 +692,15 @@ func (h *Handler) UpdateUserDetails(c *gin.Context) {
 	c.JSON(200, user)
 }
 
+// CreateLongLivedToken godoc
+//
+//	@Summary		Créer un jeton d'accès longue durée
+//	@Tags			Utilisateurs
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/users/tokens [post]
 func (h *Handler) CreateLongLivedToken(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -725,6 +790,15 @@ func (h *Handler) CreateLongLivedToken(c *gin.Context) {
 
 const tokenMask = "********" // Used for masking the token to display it after creation (8 asterisks)
 
+// GetAllUserToken godoc
+//
+//	@Summary		Lister ses jetons d'accès
+//	@Tags			Utilisateurs
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/users/tokens [get]
 func (h *Handler) GetAllUserToken(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -763,6 +837,16 @@ func (h *Handler) GetAllUserToken(c *gin.Context) {
 
 }
 
+// DeleteUserToken godoc
+//
+//	@Summary		Supprimer un jeton d'accès
+//	@Tags			Utilisateurs
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/users/tokens/{id} [delete]
 func (h *Handler) DeleteUserToken(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -781,6 +865,15 @@ func (h *Handler) DeleteUserToken(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{})
 }
 
+// updateUserPasswordLoggedInOnly godoc
+//
+//	@Summary		Changer son mot de passe
+//	@Tags			Utilisateurs
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/users/change_password [put]
 func (h *Handler) updateUserPasswordLoggedInOnly(c *gin.Context) {
 	logger := logging.FromContext(c)
 	type RequestBody struct {
@@ -820,6 +913,15 @@ func (h *Handler) updateUserPasswordLoggedInOnly(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{})
 }
 
+// updateProfilePhoto godoc
+//
+//	@Summary		Changer sa photo
+//	@Tags			Utilisateurs
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/users/profile_photo [post]
 func (h *Handler) updateProfilePhoto(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -831,6 +933,15 @@ func (h *Handler) updateProfilePhoto(c *gin.Context) {
 
 // updateChildProfilePhoto lets a parent set the photo of one of their child
 // accounts, which cannot sign in to do it themselves.
+//
+//	@Summary		Changer la photo d'un compte géré
+//	@Tags			Utilisateurs
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/users/subaccounts/{id}/profile_photo [post]
 func (h *Handler) updateChildProfilePhoto(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -942,6 +1053,15 @@ func (h *Handler) saveProfilePhoto(c *gin.Context, userID int, previousImage str
 	c.JSON(http.StatusOK, gin.H{"sign": h.signer.SignIfLocal(photoURL)})
 }
 
+// getStorageUsage godoc
+//
+//	@Summary		Place utilisée par les fichiers
+//	@Tags			Utilisateurs
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/users/storage [get]
 func (h *Handler) getStorageUsage(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -974,6 +1094,15 @@ type AccountDeletionCheckRequest struct {
 	Password string `json:"password" binding:"required"`
 }
 
+// checkAccountDeletion godoc
+//
+//	@Summary		Vérifier ce que la suppression du compte efface
+//	@Tags			Utilisateurs
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/users/delete/check [post]
 func (h *Handler) checkAccountDeletion(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -1003,6 +1132,15 @@ func (h *Handler) checkAccountDeletion(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
+// deleteAccount godoc
+//
+//	@Summary		Supprimer son compte
+//	@Tags			Utilisateurs
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/users/delete [delete]
 func (h *Handler) deleteAccount(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -1072,6 +1210,15 @@ type ChildUserResponse struct {
 	Image       string `json:"image,omitempty"`
 }
 
+// createChildUser godoc
+//
+//	@Summary		Créer un compte géré (enfant)
+//	@Tags			Utilisateurs
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/users/subaccounts [post]
 func (h *Handler) createChildUser(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -1165,6 +1312,15 @@ func (h *Handler) createChildUser(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"res": response})
 }
 
+// updateChildPassword godoc
+//
+//	@Summary		Changer le mot de passe d'un compte géré
+//	@Tags			Utilisateurs
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/users/subaccounts/password [put]
 func (h *Handler) updateChildPassword(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -1213,6 +1369,16 @@ func (h *Handler) updateChildPassword(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Child user password updated successfully"})
 }
 
+// deleteChildUser godoc
+//
+//	@Summary		Supprimer un compte géré
+//	@Tags			Utilisateurs
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/users/subaccounts/{id} [delete]
 func (h *Handler) deleteChildUser(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -1266,6 +1432,15 @@ func (h *Handler) deleteChildUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Child user deleted successfully"})
 }
 
+// getChildUsers godoc
+//
+//	@Summary		Lister les comptes gérés
+//	@Tags			Utilisateurs
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/users/subaccounts [get]
 func (h *Handler) getChildUsers(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -1306,6 +1481,14 @@ type RefreshRequest struct {
 }
 
 // logout handles user logout by clearing cookies and revoking refresh tokens
+//
+//	@Summary		Se déconnecter
+//	@Tags			Utilisateurs
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/users/logout [post]
 func (h *Handler) logout(c *gin.Context) {
 	logger := logging.FromContext(c)
 
@@ -1390,7 +1573,6 @@ func Routes(router *gin.Engine, h *Handler, jwtAuth *jwt.GinJWTMiddleware, multi
 		userRoutes.POST("/mfa/setup", h.setupMFA)
 		userRoutes.POST("/mfa/confirm", h.confirmMFA)
 		userRoutes.POST("/mfa/disable", h.disableMFA)
-		// userRoutes.POST("/mfa/regenerate-backup-codes", h.regenerateBackupCodes)
 
 		// Account deletion endpoints
 		userRoutes.POST("/delete/check", h.checkAccountDeletion)

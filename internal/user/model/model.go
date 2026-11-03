@@ -158,15 +158,6 @@ func IsValidChildUsername(username string) bool {
 	return len(parts) >= 2
 }
 
-// ExtractParentUsernameFromChild extracts parent username from child username
-func ExtractParentUsernameFromChild(childUsername string) string {
-	parts := strings.Split(childUsername, "_")
-	if len(parts) >= 2 {
-		return strings.Join(parts[:len(parts)-1], "_")
-	}
-	return ""
-}
-
 // ValidateChildUser validates a child user before creation
 func (u User) ValidateChildUser() error {
 	if u.UserType != UserTypeChild {

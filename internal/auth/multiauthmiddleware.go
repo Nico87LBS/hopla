@@ -47,7 +47,7 @@ func (h *MultiAuthMiddleware) MiddlewareFunc() gin.HandlerFunc {
 
 		// If neither succeeded, return unauthorized
 		if !authenticated {
-			logger.Error("Authentication failed:", err) //TODO: Check logging levels, error might be overkill
+			logger.Debug("Authentication failed:", err) // jeton absent ou expiré : cas normal, pas une erreur du serveur
 			c.JSON(http.StatusUnauthorized, gin.H{
 				"error": "Authentication required. Provide either a valid JWT token or API key.",
 			})

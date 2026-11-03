@@ -84,6 +84,7 @@ Ce que la CI lance sur chaque pull request :
 
 ```sh
 bash scripts/check-time-utc.sh
+bash scripts/check-swagger.sh
 go vet ./...
 go test ./...
 
@@ -108,6 +109,11 @@ npx vite build --mode selfhosted
   photos des membres avec pastilles d'état, couleurs des modes, icônes.
 - **Heures** : le serveur utilise `time.Now().UTC()` (vérifié par la CI) ;
   le jour de la famille se calcule dans son fuseau.
+- **API** : chaque nouvelle adresse reçoit au-dessus de sa fonction un bloc
+  Swagger en français (`@Summary`, `@Tags`, `@Security`, `@Router`), puis
+  `bash scripts/check-swagger.sh` régénère `docs/swagger.*` (la CI vérifie
+  qu'ils sont à jour). Les adresses servies hors de `internal/` ont leur bloc
+  dans `swagger_autres.go`.
 - **Base de données** : un changement de données passe par une migration
   datée dans `migrations/`, avec un test.
 

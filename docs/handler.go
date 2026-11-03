@@ -31,24 +31,29 @@ func NewHandler(config *config.Config) *Handler {
 	return handler
 }
 
-//	@title			Hopla Swagger API
+//	@title			API de Hopla
 //	@version		1.0
-//	@description	Hopla swagger documentation.
+//	@description	Toutes les adresses du serveur Hopla. Les adresses /api/v1 servent l'interface web, /eapi/v1 les intégrations avec un jeton (en-tête secretkey).
 
 //	@license.name	GNU Affero General Public License v3.0
 //	@license.url	https://github.com/Nico87LBS/hopla/blob/main/LICENSE
 
-//	@BasePath	/api/v1
+//	@BasePath	/
 
 //	@securityDefinitions.apikey	JWTKeyAuth
 //	@in							header
 //	@name						Authorization
-//	@description				Type "Bearer" followed by a space and JWT token.
+//	@description				« Bearer » suivi d'une espace et du jeton de connexion.
 
 //	@securityDefinitions.apikey	APIKeyAuth
 //	@in							header
 //	@name						secretkey
-//	@description				hopla issued apikey
+//	@description				Jeton d'accès longue durée créé dans les réglages du compte.
+
+//	@securityDefinitions.apikey	PlayKeyAuth
+//	@in							header
+//	@name						X-Hopla-Play
+//	@description				Session « jeux seulement » ouverte par un lien de jeu.
 
 func Routes(router *gin.Engine, h *Handler) {
 	if h.ServeSwagger {

@@ -68,6 +68,14 @@ func NewPollingHandler(
 // EventSource clients exchange for an authenticated SSE connection. This
 // endpoint is protected by the standard JWT middleware, so the token is sent in
 // the Authorization header and never exposed in a URL.
+//
+//	@Summary		Ticket pour ouvrir le flux temps réel
+//	@Tags			Système
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/realtime/sse/ticket [get]
 func (h *PollingHandler) HandleSSETicket(c *gin.Context) {
 	logger := logging.FromContext(c.Request.Context())
 
@@ -117,6 +125,12 @@ func (h *PollingHandler) HandleSSETicket(c *gin.Context) {
 }
 
 // HandleSSE handles Server-Sent Events connections
+//
+//	@Summary		Flux temps réel (SSE)
+//	@Tags			Système
+//	@Produce		json
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/realtime/sse [get]
 func (h *PollingHandler) HandleSSE(c *gin.Context) {
 	// Check if SSE is enabled
 	if !h.config.RealTimeConfig.Enabled || !h.config.RealTimeConfig.SSEEnabled {
@@ -302,24 +316,6 @@ func (h *PollingHandler) sendSSEEvent(c *gin.Context, event *Event) bool {
 	}
 
 	return true
-}
-
-// heartbeatLoop sends periodic heartbeat events
-func (h *PollingHandler) heartbeatLoop(ctx context.Context, c *gin.Context, familyID int) {
-	ticker := time.NewTicker(h.config.RealTimeConfig.HeartbeatInterval)
-	defer ticker.Stop()
-
-	for {
-		select {
-		case <-ctx.Done():
-			return
-		case <-ticker.C:
-			heartbeatEvent := NewHeartbeatEvent(familyID)
-			if !h.sendSSEEvent(c, heartbeatEvent) {
-				return
-			}
-		}
-	}
 }
 
 // sseEventLoop manages the main event loop for SSE connections

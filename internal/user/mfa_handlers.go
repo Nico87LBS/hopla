@@ -10,6 +10,14 @@ import (
 )
 
 // setupMFA initiates MFA setup for the current user
+//
+//	@Summary		Préparer la double authentification
+//	@Tags			Utilisateurs
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/users/mfa/setup [post]
 func (h *Handler) setupMFA(c *gin.Context) {
 	logger := logging.FromContext(c)
 	currentUser, ok := auth.CurrentUser(c)
@@ -50,6 +58,14 @@ func (h *Handler) setupMFA(c *gin.Context) {
 }
 
 // confirmMFA confirms and enables MFA for the current user
+//
+//	@Summary		Activer la double authentification
+//	@Tags			Utilisateurs
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/users/mfa/confirm [post]
 func (h *Handler) confirmMFA(c *gin.Context) {
 	logger := logging.FromContext(c)
 	currentUser, ok := auth.CurrentUser(c)
@@ -93,6 +109,14 @@ func (h *Handler) confirmMFA(c *gin.Context) {
 }
 
 // disableMFA disables MFA for the current user
+//
+//	@Summary		Désactiver la double authentification
+//	@Tags			Utilisateurs
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/users/mfa/disable [post]
 func (h *Handler) disableMFA(c *gin.Context) {
 	logger := logging.FromContext(c)
 	currentUser, ok := auth.CurrentUser(c)
@@ -150,6 +174,12 @@ func (h *Handler) disableMFA(c *gin.Context) {
 }
 
 // verifyMFA verifies MFA code during login process
+//
+//	@Summary		Vérifier le code de double authentification
+//	@Tags			Connexion
+//	@Produce		json
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/auth/mfa/verify [post]
 func (h *Handler) verifyMFA(c *gin.Context) {
 	logger := logging.FromContext(c)
 
@@ -223,6 +253,14 @@ func (h *Handler) verifyMFA(c *gin.Context) {
 }
 
 // getMFAStatus returns the current MFA status for the user
+//
+//	@Summary		État de la double authentification
+//	@Tags			Utilisateurs
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/users/mfa/status [get]
 func (h *Handler) getMFAStatus(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -232,52 +270,5 @@ func (h *Handler) getMFAStatus(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"mfaEnabled": currentUser.MFAEnabled,
-	})
-}
-
-// regenerateBackupCodes generates new backup codes for the user
-func (h *Handler) regenerateBackupCodes(c *gin.Context) {
-	logger := logging.FromContext(c)
-	currentUser, ok := auth.CurrentUser(c)
-	if !ok {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get current user"})
-		return
-	}
-
-	// Check if MFA is enabled
-	if !currentUser.MFAEnabled {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "MFA is not enabled"})
-		return
-	}
-
-	var req uModel.MFAVerifyRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
-		return
-	}
-
-	// Verify the current TOTP code
-	if !h.mfaService.VerifyTOTP(currentUser.MFASecret, req.Code) {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid verification code"})
-		return
-	}
-
-	// Generate new backup codes
-	newBackupCodes, err := h.mfaService.GenerateBackupCodes(8)
-	if err != nil {
-		logger.Errorw("Failed to generate backup codes", "error", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate backup codes"})
-		return
-	}
-
-	// Update backup codes in database
-	if err := h.userRepo.EnableMFA(c, currentUser.ID, currentUser.MFASecret, newBackupCodes); err != nil {
-		logger.Errorw("Failed to update backup codes", "error", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update backup codes"})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{
-		"backupCodes": newBackupCodes,
 	})
 }

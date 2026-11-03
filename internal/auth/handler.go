@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"time"
@@ -33,6 +32,12 @@ func NewAuthHandler(tokenService *TokenService, userRepo *uRepo.UserRepository, 
 }
 
 // RefreshTokenHandler handles POST /auth/refresh
+//
+//	@Summary		Renouveler le jeton de connexion
+//	@Tags			Connexion
+//	@Produce		json
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/auth/refresh [post]
 func (h *AuthHandler) RefreshTokenHandler(c *gin.Context) {
 	// Try to get refresh token from cookie first (httpOnly), fallback to body (legacy)
 	refreshToken, err := c.Cookie("refresh_token")
@@ -73,6 +78,14 @@ func (h *AuthHandler) RefreshTokenHandler(c *gin.Context) {
 }
 
 // LogoutHandler handles POST /auth/logout
+//
+//	@Summary		Se déconnecter
+//	@Tags			Connexion
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/auth/logout [post]
 func (h *AuthHandler) LogoutHandler(c *gin.Context) {
 	// Try to get refresh token from cookie first (httpOnly), fallback to body (legacy)
 	refreshToken, err := c.Cookie("refresh_token")
@@ -104,6 +117,14 @@ func (h *AuthHandler) LogoutHandler(c *gin.Context) {
 }
 
 // RevokeAllHandler handles POST /auth/revoke-all
+//
+//	@Summary		Déconnecter tous les appareils
+//	@Tags			Connexion
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/auth/revoke-all [post]
 func (h *AuthHandler) RevokeAllHandler(c *gin.Context) {
 	// Get current user from JWT token
 	currentUser, ok := CurrentUser(c)
@@ -132,6 +153,12 @@ func (h *AuthHandler) RevokeAllHandler(c *gin.Context) {
 }
 
 // EnhancedLoginHandler provides enhanced login with refresh tokens
+//
+//	@Summary		Se connecter
+//	@Tags			Connexion
+//	@Produce		json
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/auth/login [post]
 func (h *AuthHandler) EnhancedLoginHandler(c *gin.Context) {
 	logger := logging.FromContext(c)
 	var loginReq struct {
@@ -213,9 +240,4 @@ func (h *AuthHandler) authenticateUser(c *gin.Context, username, password string
 	}
 
 	return user, nil
-}
-
-// CleanupExpiredSessions runs periodic cleanup of expired sessions
-func (h *AuthHandler) CleanupExpiredSessions(ctx context.Context) error {
-	return h.userRepo.CleanupExpiredSessions(ctx)
 }

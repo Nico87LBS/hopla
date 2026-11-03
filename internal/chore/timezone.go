@@ -78,10 +78,24 @@ func SetFamilyTimezone(c *gin.Context, familyRepo *fRepo.FamilyRepository, chore
 }
 
 // GetFamilyTimezone answers with the family's time zone through the API.
+//
+//	@Summary		Fuseau de la famille (intégration)
+//	@Tags			Famille
+//	@Produce		json
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/eapi/v1/family/timezone [get]
 func (h *API) GetFamilyTimezone(c *gin.Context) { GetFamilyTimezone(c) }
 
 // SetFamilyTimezone moves the family to another time zone through the API,
 // with {"timezone": "Europe/Lisbon"}, or "" to come back home.
+//
+//	@Summary		Changer le fuseau de la famille (intégration)
+//	@Tags			Famille
+//	@Produce		json
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/eapi/v1/family/timezone [put]
 func (h *API) SetFamilyTimezone(c *gin.Context) {
 	SetFamilyTimezone(c, h.familyRepo, h.choreRepo)
 }

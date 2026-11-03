@@ -1,3 +1,4 @@
+basePath: /
 definitions:
   chore.ActionOptions:
     properties:
@@ -128,8 +129,7 @@ definitions:
         description: Completion date in RFC3339 format (defaults to now).
         type: string
       note:
-        description: This is going to be deprecated in future release, use "Notes"
-          instead.
+        description: ancien nom de « notes », encore envoyé par la carte de la tablette
         minLength: 1
         type: string
       notes:
@@ -171,8 +171,7 @@ definitions:
       actionOptions:
         $ref: '#/definitions/chore.ActionOptions'
       note:
-        description: This is going to be deprecated in future release, use "Notes"
-          instead.
+        description: ancien nom de « notes », encore envoyé par la carte de la tablette
         minLength: 1
         type: string
       notes:
@@ -783,19 +782,228 @@ definitions:
     - WeekPatternWeekOfQuarter
 info:
   contact: {}
+  description: Toutes les adresses du serveur Hopla. Les adresses /api/v1 servent
+    l'interface web, /eapi/v1 les intégrations avec un jeton (en-tête secretkey).
+  license:
+    name: GNU Affero General Public License v3.0
+    url: https://github.com/Nico87LBS/hopla/blob/main/LICENSE
+  title: API de Hopla
+  version: "1.0"
 paths:
-  /chores:
+  /api/v1/assets/{filepath}:
+    get:
+      parameters:
+      - description: Chemin du fichier
+        in: path
+        name: filepath
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Télécharger un fichier enregistré
+      tags:
+      - Fichiers
+  /api/v1/assets/chore:
+    delete:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Supprimer une pièce jointe pas encore enregistrée
+      tags:
+      - Fichiers
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Envoyer une pièce jointe de tâche
+      tags:
+      - Fichiers
+  /api/v1/auth:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Créer un compte
+      tags:
+      - Connexion
+  /api/v1/auth/{provider}/callback:
+    post:
+      parameters:
+      - description: Fournisseur de connexion
+        in: path
+        name: provider
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Retour de connexion par un fournisseur externe
+      tags:
+      - Connexion
+  /api/v1/auth/login:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Se connecter
+      tags:
+      - Connexion
+  /api/v1/auth/login/legacy:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Nom d'utilisateur et mot de passe
+        in: body
+        name: identifiants
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Se connecter (ancienne méthode)
+      tags:
+      - Connexion
+  /api/v1/auth/logout:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Se déconnecter
+      tags:
+      - Connexion
+  /api/v1/auth/mfa/verify:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Vérifier le code de double authentification
+      tags:
+      - Connexion
+  /api/v1/auth/password:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Choisir un nouveau mot de passe avec le lien reçu
+      tags:
+      - Connexion
+  /api/v1/auth/refresh:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Renouveler le jeton de connexion
+      tags:
+      - Connexion
+  /api/v1/auth/reset:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Demander un nouveau mot de passe
+      tags:
+      - Connexion
+  /api/v1/auth/revoke-all:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Déconnecter tous les appareils
+      tags:
+      - Connexion
+  /api/v1/chores:
     get:
       consumes:
       - application/json
-      description: Retrieves all chores for the current user's family with optional
-        archived chores
       parameters:
-      - description: Include archived chores
+      - description: Paramètre includeArchived
         in: query
         name: includeArchived
         type: boolean
-      - description: Include subtasks for chore
+      - description: Paramètre includeSubtasks
         in: query
         name: includeSubtasks
         type: boolean
@@ -803,37 +1011,24 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'res: array of chores'
+          description: OK
           schema:
             additionalProperties:
               items:
                 $ref: '#/definitions/model.Chore'
               type: array
             type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Failed to retrieve chores'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Get all chores
+      summary: Lister les tâches de la famille
       tags:
-      - chores
+      - Tâches
     post:
       consumes:
       - application/json
-      description: Creates a new chore with assignees, labels, and optional configurations
       parameters:
-      - description: Chore creation request
+      - description: Corps de la requête
         in: body
         name: chore
         required: true
@@ -843,44 +1038,22 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'res: created chore ID'
+          description: OK
           schema:
             additionalProperties:
               type: integer
             type: object
-        "400":
-          description: 'error: Invalid request format | Assignee not found in family
-            | Invalid date'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Failed to create chore | Error adding labels | Error
-            adding chore assignees'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Create a new chore
+      summary: Créer une tâche
       tags:
-      - chores
+      - Tâches
     put:
       consumes:
       - application/json
-      description: Updates chore details including assignees, labels, subtasks, and
-        metadata
       parameters:
-      - description: Chore update request
+      - description: Corps de la requête
         in: body
         name: chore
         required: true
@@ -890,33 +1063,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'message: Chore updated successfully'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "400":
-          description: 'error: Invalid request format | Invalid date | Assignee not
-            found in family | Assigned to not found in assignees'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: 'error: You cannot edit this chore'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Failed to retrieve chore | Error adding chore | Error
-            adding subtasks'
+          description: OK
           schema:
             additionalProperties:
               type: string
@@ -924,16 +1071,15 @@ paths:
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Edit an existing chore
+      summary: Modifier une tâche
       tags:
-      - chores
-  /chores/{id}:
+      - Tâches
+  /api/v1/chores/{id}:
     delete:
       consumes:
       - application/json
-      description: Deletes a chore and associated notifications (owner only)
       parameters:
-      - description: Chore ID
+      - description: Identifiant
         in: path
         name: id
         required: true
@@ -942,31 +1088,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'message: Chore deleted successfully'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "400":
-          description: 'error: Invalid ID'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: 'error: You are not allowed to delete this chore'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Failed to retrieve chore | Failed to delete chore'
+          description: OK
           schema:
             additionalProperties:
               type: string
@@ -974,15 +1096,14 @@ paths:
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Delete a chore
+      summary: Supprimer une tâche
       tags:
-      - chores
+      - Tâches
     get:
       consumes:
       - application/json
-      description: Retrieves detailed information about a specific chore by ID
       parameters:
-      - description: Chore ID
+      - description: Identifiant
         in: path
         name: id
         required: true
@@ -991,48 +1112,24 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'res: chore object'
+          description: OK
           schema:
             additionalProperties:
               $ref: '#/definitions/model.Chore'
             type: object
-        "400":
-          description: 'error: Invalid chore ID'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: 'error: You are not allowed to view this chore'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Failed to retrieve chore'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Get a specific chore
+      summary: Lire une tâche
       tags:
-      - chores
-  /chores/{id}/approve:
+      - Tâches
+  /api/v1/chores/{id}/approve:
     post:
       consumes:
       - application/json
-      description: Approves a pending chore completion (admin/manager only)
+      description: 'Même traitement pour : POST /eapi/v1/chore/{id}/approve'
       parameters:
-      - description: Chore ID
+      - description: Identifiant
         in: path
         name: id
         required: true
@@ -1041,48 +1138,23 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'res: updated chore'
+          description: OK
           schema:
             additionalProperties:
               $ref: '#/definitions/model.Chore'
             type: object
-        "400":
-          description: 'error: Invalid ID | Chore is not pending approval'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: 'error: Only admins can approve chores'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Failed to retrieve chore | Error approving chore'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Approve a chore completion
+      summary: Valider une tâche faite
       tags:
-      - chores
-  /chores/{id}/archive:
+      - Tâches
+  /api/v1/chores/{id}/archive:
     put:
       consumes:
       - application/json
-      description: Archives a chore, hiding it from the main list
       parameters:
-      - description: Chore ID
+      - description: Identifiant
         in: path
         name: id
         required: true
@@ -1091,25 +1163,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'message: Chore archived successfully'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "400":
-          description: 'error: Invalid ID'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Error archiving chore'
+          description: OK
           schema:
             additionalProperties:
               type: string
@@ -1117,21 +1171,20 @@ paths:
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Archive a chore
+      summary: Archiver une tâche
       tags:
-      - chores
-  /chores/{id}/assignee:
+      - Tâches
+  /api/v1/chores/{id}/assignee:
     put:
       consumes:
       - application/json
-      description: Updates the currently assigned user for a chore
       parameters:
-      - description: Chore ID
+      - description: Identifiant
         in: path
         name: id
         required: true
         type: integer
-      - description: Assignee update request
+      - description: Corps de la requête
         in: body
         name: assignee
         required: true
@@ -1141,49 +1194,21 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'res: updated chore'
+          description: OK
           schema:
             additionalProperties:
               $ref: '#/definitions/model.Chore'
             type: object
-        "400":
-          description: 'error: Invalid ID | Invalid request | Assignee not found in
-            assignees'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: 'error: You cannot edit this chore'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Failed to retrieve chore | Error updating assignee'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Update chore assignee
+      summary: Changer la personne d'une tâche
       tags:
-      - chores
-  /chores/{id}/details:
-    get:
-      consumes:
-      - application/json
-      description: Retrieves comprehensive details about a chore including metadata
+      - Tâches
+  /api/v1/chores/{id}/attachments:
+    delete:
       parameters:
-      - description: Chore ID
+      - description: Identifiant
         in: path
         name: id
         required: true
@@ -1192,47 +1217,72 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'res: detailed chore information'
+          description: OK
           schema:
             additionalProperties: true
-            type: object
-        "400":
-          description: 'error: Invalid ID'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Failed to fetch chore details'
-          schema:
-            additionalProperties:
-              type: string
             type: object
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Get chore details
+      summary: Supprimer une pièce jointe d'une tâche
       tags:
-      - chores
-  /chores/{id}/do:
-    post:
-      consumes:
-      - application/json
-      description: Marks a chore as completed and schedules the next occurrence (supports
-        impersonation)
+      - Fichiers
+    get:
       parameters:
-      - description: Chore ID
+      - description: Identifiant
         in: path
         name: id
         required: true
         type: integer
-      - description: Completion details
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Pièces jointes d'une tâche
+      tags:
+      - Fichiers
+  /api/v1/chores/{id}/details:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Détail d'une tâche (dernière réalisation, statistiques)
+      tags:
+      - Tâches
+  /api/v1/chores/{id}/do:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Corps de la requête
         in: body
         name: completion
         schema:
@@ -1241,54 +1291,28 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'res: updated chore'
+          description: OK
           schema:
             additionalProperties:
               $ref: '#/definitions/model.Chore'
             type: object
-        "400":
-          description: 'error: Invalid ID | Invalid date | User is not assigned to
-            chore | Chore is out of completion window'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: 'error: You are not allowed to complete this action'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Failed to retrieve chore | Error completing chore'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Complete a chore
+      summary: Marquer une tâche comme faite
       tags:
-      - chores
-  /chores/{id}/dueDate:
+      - Tâches
+  /api/v1/chores/{id}/dueDate:
     put:
       consumes:
       - application/json
-      description: Updates the next due date for a chore (can be set to null)
       parameters:
-      - description: Chore ID
+      - description: Identifiant
         in: path
         name: id
         required: true
         type: integer
-      - description: Due date update request
+      - description: Corps de la requête
         in: body
         name: dueDate
         required: true
@@ -1298,48 +1322,23 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'res: updated chore'
+          description: OK
           schema:
             additionalProperties:
               $ref: '#/definitions/model.Chore'
             type: object
-        "400":
-          description: 'error: Invalid ID | Invalid request | Invalid date'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: 'error: You cannot edit this chore'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Failed to retrieve chore | Error updating due date'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Update chore due date
+      summary: Changer l'échéance d'une tâche
       tags:
-      - chores
-  /chores/{id}/history:
+      - Tâches
+  /api/v1/chores/{id}/history:
     get:
       consumes:
       - application/json
-      description: Retrieves the completion history for a specific chore
       parameters:
-      - description: Chore ID
+      - description: Identifiant
         in: path
         name: id
         required: true
@@ -1348,43 +1347,30 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'res: array of chore history entries'
+          description: OK
           schema:
             additionalProperties:
               items:
                 $ref: '#/definitions/model.ChoreHistory'
               type: array
             type: object
-        "400":
-          description: 'error: Invalid ID'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Failed to fetch chore history'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Get chore history
+      summary: Historique d'une tâche
       tags:
-      - chores
-  /chores/{id}/history/{history_id}:
+      - Tâches
+  /api/v1/chores/{id}/history/{history_id}:
     delete:
       consumes:
       - application/json
-      description: Deletes a specific chore history entry (creator only)
       parameters:
-      - description: Chore ID
+      - description: Identifiant
         in: path
         name: id
         required: true
         type: integer
-      - description: History ID
+      - description: Identifiant de la ligne d'historique
         in: path
         name: history_id
         required: true
@@ -1393,32 +1379,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'message: History deleted successfully'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "400":
-          description: 'error: Invalid Chore ID | Invalid History ID'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: 'error: You are not allowed to delete this history'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Failed to fetch chore history entry | Error deleting
-            history'
+          description: OK
           schema:
             additionalProperties:
               type: string
@@ -1426,26 +1387,24 @@ paths:
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Delete chore history entry
+      summary: Supprimer une ligne d'historique
       tags:
-      - chores
+      - Tâches
     put:
       consumes:
       - application/json
-      description: Updates a specific chore history entry (performed date, due date,
-        notes)
       parameters:
-      - description: Chore ID
+      - description: Identifiant
         in: path
         name: id
         required: true
         type: integer
-      - description: History ID
+      - description: Identifiant de la ligne d'historique
         in: path
         name: history_id
         required: true
         type: integer
-      - description: History modification request
+      - description: Corps de la requête
         in: body
         name: history
         required: true
@@ -1455,55 +1414,29 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'res: updated history entry'
+          description: OK
           schema:
             additionalProperties:
               $ref: '#/definitions/model.ChoreHistory'
             type: object
-        "400":
-          description: 'error: Invalid Chore ID | Invalid History ID | Invalid request'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: 'error: You are not allowed to modify this history'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Failed to fetch chore history entry | Error updating
-            history'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Modify chore history entry
+      summary: Modifier une ligne d'historique
       tags:
-      - chores
-  /chores/{id}/reject:
+      - Tâches
+  /api/v1/chores/{id}/reject:
     post:
       consumes:
       - application/json
-      description: Rejects a pending chore completion and returns it to no status
-        (admin/manager only)
+      description: 'Même traitement pour : POST /eapi/v1/chore/{id}/reject'
       parameters:
-      - description: Chore ID
+      - description: Identifiant
         in: path
         name: id
         required: true
         type: integer
-      - description: Rejection details
+      - description: Corps de la requête
         in: body
         name: rejection
         schema:
@@ -1512,48 +1445,22 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'res: updated chore, message: Chore rejected successfully'
+          description: OK
           schema:
             additionalProperties: true
-            type: object
-        "400":
-          description: 'error: Invalid ID | Chore is not pending approval'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: 'error: Only admins can reject chores'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Failed to retrieve chore | Error rejecting chore'
-          schema:
-            additionalProperties:
-              type: string
             type: object
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Reject a chore completion
+      summary: Refuser une tâche faite
       tags:
-      - chores
-  /chores/{id}/skip:
+      - Tâches
+  /api/v1/chores/{id}/skip:
     post:
       consumes:
       - application/json
-      description: Skips the current chore iteration and schedules the next due date
-        (supports impersonation)
       parameters:
-      - description: Chore ID
+      - description: Identifiant
         in: path
         name: id
         required: true
@@ -1562,118 +1469,119 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'res: updated chore'
+          description: OK
           schema:
             additionalProperties:
               $ref: '#/definitions/model.Chore'
             type: object
-        "400":
-          description: 'error: Invalid ID'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Failed to retrieve chore | Error scheduling next due
-            date | Error completing chore'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Skip a chore
+      summary: Passer une tâche
       tags:
-      - chores
-  /chores/{id}/slots/{slot}/approve:
+      - Tâches
+  /api/v1/chores/{id}/slots/{slot}/approve:
     post:
-      description: Approves a slot ticked by a child that waits for a parent (admin/manager
-        only)
+      description: 'Même traitement pour : POST /eapi/v1/chore/{id}/slots/{slot}/approve'
       parameters:
-      - description: Chore ID
+      - description: Identifiant
         in: path
         name: id
         required: true
         type: integer
-      - description: Slot index
+      - description: Numéro du créneau
         in: path
         name: slot
         required: true
         type: integer
       produces:
       - application/json
-      responses: {}
-      summary: Approve a slot of the day
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Valider un créneau
       tags:
-      - chores
-  /chores/{id}/slots/{slot}/catchup:
+      - Tâches
+  /api/v1/chores/{id}/slots/{slot}/catchup:
     post:
       consumes:
       - application/json
-      description: Marks an open or missed slot of today done for a child, without
-        approval (admin/manager only)
+      description: 'Même traitement pour : POST /eapi/v1/chore/{id}/slots/{slot}/catchup'
       parameters:
-      - description: Chore ID
+      - description: Identifiant
         in: path
         name: id
         required: true
         type: integer
-      - description: Slot index
+      - description: Numéro du créneau
         in: path
         name: slot
         required: true
         type: integer
-      - description: Who did it
+      - description: Corps de la requête
         in: body
         name: body
         schema:
           $ref: '#/definitions/chore.CatchUpSlotReq'
       produces:
       - application/json
-      responses: {}
-      summary: Tick a slot of the day as a parent
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Rattraper un créneau oublié
       tags:
-      - chores
-  /chores/{id}/slots/{slot}/reject:
+      - Tâches
+  /api/v1/chores/{id}/slots/{slot}/reject:
     post:
-      description: 'Turns down a slot ticked by a child: it is to do again while open
-        (admin/manager only)'
+      description: 'Même traitement pour : POST /eapi/v1/chore/{id}/slots/{slot}/reject'
       parameters:
-      - description: Chore ID
+      - description: Identifiant
         in: path
         name: id
         required: true
         type: integer
-      - description: Slot index
+      - description: Numéro du créneau
         in: path
         name: slot
         required: true
         type: integer
       produces:
       - application/json
-      responses: {}
-      summary: Reject a slot of the day
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Refuser un créneau
       tags:
-      - chores
-  /chores/{id}/subtask:
+      - Tâches
+  /api/v1/chores/{id}/subtask:
     put:
       consumes:
       - application/json
-      description: Marks a subtask as completed or uncompleted (supports impersonation)
       parameters:
-      - description: Chore ID
+      - description: Identifiant
         in: path
         name: id
         required: true
         type: integer
-      - description: Subtask completion request
+      - description: Corps de la requête
         in: body
         name: subtask
         required: true
@@ -1683,42 +1591,22 @@ paths:
       - application/json
       responses:
         "200":
-          description: Empty success response
+          description: OK
           schema:
             additionalProperties: true
-            type: object
-        "400":
-          description: 'error: Invalid Chore ID | Invalid request | User is not assigned
-            to chore'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Failed to retrieve chore | Error getting subtask'
-          schema:
-            additionalProperties:
-              type: string
             type: object
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Update subtask completion status
+      summary: Cocher ou décocher une sous-tâche
       tags:
-      - chores
-  /chores/{id}/unarchive:
+      - Tâches
+  /api/v1/chores/{id}/unarchive:
     put:
       consumes:
       - application/json
-      description: Restores an archived chore to the main list
       parameters:
-      - description: Chore ID
+      - description: Identifiant
         in: path
         name: id
         required: true
@@ -1727,25 +1615,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'message: Chore unarchived successfully'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "400":
-          description: 'error: Invalid ID'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Error unarchiving chore'
+          description: OK
           schema:
             additionalProperties:
               type: string
@@ -1753,17 +1623,15 @@ paths:
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Unarchive a chore
+      summary: Désarchiver une tâche
       tags:
-      - chores
-  /chores/{id}/undo:
+      - Tâches
+  /api/v1/chores/{id}/undo:
     post:
       consumes:
       - application/json
-      description: Undoes the most recent action (completion, skip, approval submission,
-        or rejection) performed by the current user on a chore within the last 5 minutes
       parameters:
-      - description: Chore ID
+      - description: Identifiant
         in: path
         name: id
         required: true
@@ -1772,143 +1640,76 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'message: Successfully undid {action} action, res: updated
-            chore object'
+          description: OK
           schema:
             additionalProperties: true
-            type: object
-        "400":
-          description: 'error: Invalid chore ID | No recent action found to undo |
-            Cannot undo this type of action'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Failed to retrieve chore | Failed to check recent actions
-            | Failed to undo action | Failed to restore pending approval status |
-            Failed to retrieve updated chore'
-          schema:
-            additionalProperties:
-              type: string
             type: object
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Undo a chore action
+      summary: Annuler la dernière réalisation
       tags:
-      - chores
-  /chores/archived:
+      - Tâches
+  /api/v1/chores/archived:
     get:
       consumes:
       - application/json
-      description: Retrieves all archived chores for the current user's family
       produces:
       - application/json
       responses:
         "200":
-          description: 'res: array of archived chores'
+          description: OK
           schema:
             additionalProperties:
               items:
                 $ref: '#/definitions/model.Chore'
               type: array
             type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Failed to retrieve archived chores'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Get archived chores
+      summary: Lister les tâches archivées
       tags:
-      - chores
-  /chores/calendar/{token}:
+      - Tâches
+  /api/v1/chores/calendar/{token}:
     get:
-      description: Serves an iCal (.ics) calendar file containing the user's chores.
-        Authenticated via a revocable token in the URL.
       parameters:
-      - description: Calendar token (obtained from /chores/calendar/url)
+      - description: Jeton secret de l'agenda
         in: path
         name: token
         required: true
         type: string
       produces:
-      - text/calendar
+      - application/json
       responses:
         "200":
-          description: iCal calendar data
+          description: OK
           schema:
             type: string
-        "403":
-          description: Invalid calendar token
-          schema:
-            type: string
-        "500":
-          description: Failed to generate calendar
-          schema:
-            type: string
-      summary: Serve iCal calendar feed
+      summary: Agenda des tâches au format iCalendar
       tags:
-      - chores
-  /chores/calendar/url:
+      - Agenda
+  /api/v1/chores/calendar/url:
     delete:
-      description: Revokes the current user's calendar subscription URL. Existing
-        subscriptions stop working immediately.
       produces:
       - application/json
       responses:
         "204":
-          description: No content
+          description: No Content
           schema:
             type: string
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Revoke calendar subscription URL
+      summary: Supprimer l'adresse de l'agenda
       tags:
-      - chores
+      - Agenda
     get:
-      description: Returns the current user's existing iCal calendar subscription
-        URL. Returns 404 if none has been generated yet.
       produces:
       - application/json
       responses:
         "200":
-          description: 'url: calendar subscription URL'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "404":
-          description: 'error: No calendar URL generated'
+          description: OK
           schema:
             additionalProperties:
               type: string
@@ -1916,29 +1717,21 @@ paths:
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Get calendar subscription URL
+      summary: Lire l'adresse de l'agenda
       tags:
-      - chores
+      - Agenda
     post:
-      description: 'Generates a calendar subscription URL for the current user. Idempotent:
-        returns the existing URL if one was already generated.'
       produces:
       - application/json
       responses:
         "200":
-          description: 'url: existing calendar subscription URL'
+          description: OK
           schema:
             additionalProperties:
               type: string
             type: object
         "201":
-          description: 'url: newly generated calendar subscription URL'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
+          description: Created
           schema:
             additionalProperties:
               type: string
@@ -1946,24 +1739,16 @@ paths:
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Generate calendar subscription URL
+      summary: Créer l'adresse de l'agenda
       tags:
-      - chores
-  /chores/calendar/url/rotate:
+      - Agenda
+  /api/v1/chores/calendar/url/rotate:
     post:
-      description: Issues a new calendar subscription URL and immediately invalidates
-        the previous one.
       produces:
       - application/json
       responses:
         "200":
-          description: 'url: new calendar subscription URL'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
+          description: OK
           schema:
             additionalProperties:
               type: string
@@ -1971,29 +1756,35 @@ paths:
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Rotate calendar subscription URL
+      summary: Changer l'adresse de l'agenda
       tags:
-      - chores
-  /chores/flashes:
+      - Agenda
+  /api/v1/chores/flashes:
     get:
-      description: The speed bonus open now on each task that has one, by task
       produces:
       - application/json
-      responses: {}
-      summary: Speed bonuses open now
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Bonus chrono en cours sur les tâches
       tags:
-      - chores
-  /chores/history:
+      - Tâches
+  /api/v1/chores/history:
     get:
       consumes:
       - application/json
-      description: Retrieves completion history for all chores for the current user
       parameters:
-      - description: 'Number of days to retrieve history (default: 7)'
+      - description: Paramètre limit
         in: query
         name: limit
         type: integer
-      - description: Include other family members' history
+      - description: Paramètre members
         in: query
         name: members
         type: boolean
@@ -2001,92 +1792,67 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'res: array of chore history entries'
+          description: OK
           schema:
             additionalProperties:
               items:
                 $ref: '#/definitions/model.ChoreHistory'
               type: array
             type: object
-        "400":
-          description: 'error: Invalid duration'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Failed to fetch user''s chore history'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Get chores history for user
+      summary: Historique de toutes les tâches
       tags:
-      - chores
-  /chores/slots:
+      - Tâches
+  /api/v1/chores/slots:
     get:
-      description: Today's slots of every task done several times a day, by task
-      produces:
-      - application/json
-      responses: {}
-      summary: Today's slots
-      tags:
-      - chores
-  /families:
-    get:
-      consumes:
-      - application/json
-      description: Retrieves all families the current user belongs to
       produces:
       - application/json
       responses:
         "200":
-          description: 'res: array of families'
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Créneaux du jour de chaque tâche
+      tags:
+      - Tâches
+  /api/v1/families:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
           schema:
             additionalProperties:
               items:
                 $ref: '#/definitions/family.Family'
               type: array
             type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Error getting user families'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Get user families
+      summary: Familles de l'utilisateur
       tags:
-      - families
-  /families/{id}/members/delete:
+      - Famille
+  /api/v1/families/{id}/members/delete:
     delete:
       consumes:
       - application/json
-      description: Removes a member from a family (admin only)
       parameters:
-      - description: Family ID
+      - description: Identifiant
         in: path
         name: id
         required: true
         type: integer
-      - description: Member ID to delete
+      - description: Paramètre member_id
         in: query
         name: member_id
         required: true
@@ -2095,31 +1861,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'res: User deleted from family successfully'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "400":
-          description: 'error: Invalid request'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: 'error: You are not an admin of this family'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Error deleting family member'
+          description: OK
           schema:
             additionalProperties:
               type: string
@@ -2127,21 +1869,20 @@ paths:
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Delete a family member
+      summary: Retirer un membre de la famille
       tags:
-      - families
-  /families/{id}/members/points/redeem:
+      - Famille
+  /api/v1/families/{id}/members/points/redeem:
     post:
       consumes:
       - application/json
-      description: Redeems points for a family member (admin only)
       parameters:
-      - description: Family ID
+      - description: Identifiant
         in: path
         name: id
         required: true
         type: integer
-      - description: Points redemption request
+      - description: Corps de la requête
         in: body
         name: points
         required: true
@@ -2156,32 +1897,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'res: Points redeemed successfully'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "400":
-          description: 'error: Invalid request / User does not have enough points
-            / User is not a member of this family'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: 'error: You are not an admin of this family'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Error redeeming points'
+          description: OK
           schema:
             additionalProperties:
               type: string
@@ -2189,16 +1905,46 @@ paths:
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Redeem member points
+      summary: Retirer des hops à un membre
       tags:
-      - families
-  /families/join:
+      - Famille
+  /api/v1/families/currency:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Monnaie de la famille (hops, points…)
+      tags:
+      - Famille
+    put:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Changer la monnaie de la famille
+      tags:
+      - Famille
+  /api/v1/families/join:
     post:
       consumes:
       - application/json
-      description: Requests to join a family using an invite code
       parameters:
-      - description: Invite code
+      - description: Paramètre invite_code
         in: query
         name: invite_code
         required: true
@@ -2207,31 +1953,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'res: User Requested to join family successfully'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "400":
-          description: 'error: Invalid request'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "409":
-          description: 'error: You are already a member of this family'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Error adding user to family'
+          description: OK
           schema:
             additionalProperties:
               type: string
@@ -2239,17 +1961,15 @@ paths:
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Request to join a family
+      summary: Rejoindre une famille avec son code
       tags:
-      - families
-  /families/leave:
+      - Famille
+  /api/v1/families/leave:
     delete:
       consumes:
       - application/json
-      description: Removes the current user from a family and restores their original
-        family
       parameters:
-      - description: Family ID
+      - description: Paramètre family_id
         in: query
         name: family_id
         required: true
@@ -2258,25 +1978,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'res: User left family successfully'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "400":
-          description: 'error: Invalid request'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Error leaving family'
+          description: OK
           schema:
             additionalProperties:
               type: string
@@ -2284,46 +1986,36 @@ paths:
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Leave a family
+      summary: Quitter la famille
       tags:
-      - families
-  /families/members:
+      - Famille
+  /api/v1/families/members:
     get:
       consumes:
       - application/json
-      description: Retrieves all members of the current user's family
       produces:
       - application/json
       responses:
         "200":
-          description: 'res: array of family members'
+          description: OK
           schema:
             additionalProperties:
               items:
                 $ref: '#/definitions/family.UserFamilyDetail'
               type: array
             type: object
-        "500":
-          description: 'error: Error getting family members'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Get family members
+      summary: Membres de la famille
       tags:
-      - families
-  /families/members/away:
+      - Famille
+  /api/v1/families/members/away:
     put:
       consumes:
       - application/json
-      description: Pauses a member's tasks, streak and quests while they are away,
-        such as a child at the other parent's home (admin/manager only). Coming back
-        makes the tasks that fell due meanwhile due today.
       parameters:
-      - description: Who and where
+      - description: Corps de la requête
         in: body
         name: away
         required: true
@@ -2338,82 +2030,44 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'res: whether anything changed'
+          description: OK
           schema:
             additionalProperties:
               type: boolean
             type: object
-        "400":
-          description: 'error: Invalid request / User is not a member of this family'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: 'error: Only parents can do this'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Error changing the member''s presence'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Mark a member away or back home
+      summary: Mettre un membre en « Pas là »
       tags:
-      - families
-  /families/members/requests:
+      - Famille
+  /api/v1/families/members/requests:
     get:
       consumes:
       - application/json
-      description: Retrieves pending family join requests (admin only)
       produces:
       - application/json
       responses:
         "200":
-          description: 'res: array of pending members'
+          description: OK
           schema:
             additionalProperties:
               items:
                 $ref: '#/definitions/family.UserFamilyDetail'
               type: array
             type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: 'error: You are not an admin of this family'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Error getting pending family members'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Get pending join requests
+      summary: Demandes pour rejoindre la famille
       tags:
-      - families
-  /families/members/requests/accept:
+      - Famille
+  /api/v1/families/members/requests/accept:
     put:
       consumes:
       - application/json
-      description: Accepts a pending family join request (admin only)
       parameters:
-      - description: Request ID
+      - description: Paramètre requestId
         in: query
         name: requestId
         required: true
@@ -2422,31 +2076,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'res: Join request accepted successfully'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "400":
-          description: 'error: Invalid request / Family is full'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: 'error: You are not an admin of this family'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Error accepting join request'
+          description: OK
           schema:
             additionalProperties:
               type: string
@@ -2454,17 +2084,15 @@ paths:
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Accept a join request
+      summary: Accepter une demande
       tags:
-      - families
-  /families/members/requests/decline:
+      - Famille
+  /api/v1/families/members/requests/decline:
     delete:
       consumes:
       - application/json
-      description: Declines a pending family join request (admin only). The request
-        is removed, so the user may request to join again later.
       parameters:
-      - description: Request ID
+      - description: Paramètre requestId
         in: query
         name: requestId
         required: true
@@ -2473,31 +2101,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'res: Join request declined successfully'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "400":
-          description: 'error: Invalid request'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: 'error: You are not an admin of this family'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Error declining join request'
+          description: OK
           schema:
             additionalProperties:
               type: string
@@ -2505,16 +2109,15 @@ paths:
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Decline a join request
+      summary: Refuser une demande
       tags:
-      - families
-  /families/members/role:
+      - Famille
+  /api/v1/families/members/role:
     put:
       consumes:
       - application/json
-      description: Changes the role of a family member (admin only)
       parameters:
-      - description: Role change request
+      - description: Corps de la requête
         in: body
         name: role
         required: true
@@ -2529,32 +2132,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'res: Member role changed successfully'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "400":
-          description: 'error: Invalid request / Invalid role / User is not a member
-            of this family'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: 'error: You are not an admin of this family'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Error changing member role'
+          description: OK
           schema:
             additionalProperties:
               type: string
@@ -2562,18 +2140,16 @@ paths:
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Change member role
+      summary: Changer le rôle d'un membre
       tags:
-      - families
-  /families/timezone:
+      - Famille
+  /api/v1/families/timezone:
     get:
-      description: Every date of the family follows this zone, whatever the device's.
-        It is the server's unless the family moved, such as on holiday.
       produces:
       - application/json
       responses:
         "200":
-          description: 'res: the family''s zone'
+          description: OK
           schema:
             additionalProperties:
               $ref: '#/definitions/chore.FamilyTimezone'
@@ -2581,17 +2157,14 @@ paths:
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Get the family's time zone
+      summary: Fuseau de la famille
       tags:
-      - families
+      - Famille
     put:
       consumes:
       - application/json
-      description: Sets the zone every date of the family follows, such as on holiday
-        (admin/manager only). Tasks keep their time of day. An empty zone, or the
-        server's, brings the family back home.
       parameters:
-      - description: IANA zone, such as Europe/Lisbon
+      - description: Corps de la requête
         in: body
         name: timezone
         required: true
@@ -2604,39 +2177,1414 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'res: the family''s zone'
+          description: OK
           schema:
             additionalProperties:
               $ref: '#/definitions/chore.FamilyTimezone'
             type: object
-        "400":
-          description: 'error: Invalid request / Invalid timezone'
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Changer le fuseau de la famille
+      tags:
+      - Famille
+  /api/v1/files:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
           schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: 'error: Only parents can do this'
-          schema:
-            additionalProperties:
-              type: string
+            additionalProperties: true
             type: object
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Move the family to another time zone
+      summary: Ouvrir un fichier
       tags:
-      - families
-  /sync/changes:
+      - Fichiers
+  /api/v1/files/sign:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Obtenir une adresse signée pour un fichier
+      tags:
+      - Fichiers
+  /api/v1/games/challenges:
+    get:
+      description: 'Même traitement pour : GET /eapi/v1/games/challenges'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Lister les défis
+      tags:
+      - Jeux
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Créer un défi
+      tags:
+      - Jeux
+  /api/v1/games/challenges/{id}:
+    delete:
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Supprimer un défi
+      tags:
+      - Jeux
+    put:
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Modifier un défi
+      tags:
+      - Jeux
+  /api/v1/games/flashes:
+    get:
+      description: 'Même traitement pour : GET /eapi/v1/games/flashes'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Bonus chrono lancés
+      tags:
+      - Jeux
+    post:
+      description: 'Même traitement pour : POST /eapi/v1/games/flashes'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Lancer un bonus chrono
+      tags:
+      - Jeux
+  /api/v1/games/flashes/{id}:
+    delete:
+      description: 'Même traitement pour : DELETE /eapi/v1/games/flashes/{id}'
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Arrêter un bonus chrono
+      tags:
+      - Jeux
+  /api/v1/games/periods:
+    get:
+      description: 'Même traitement pour : GET /eapi/v1/games/periods'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Lister les périodes bonus
+      tags:
+      - Jeux
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Créer une période bonus
+      tags:
+      - Jeux
+  /api/v1/games/periods/{id}:
+    delete:
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Supprimer une période bonus
+      tags:
+      - Jeux
+    put:
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Modifier une période bonus
+      tags:
+      - Jeux
+  /api/v1/games/podium:
+    put:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Régler le podium
+      tags:
+      - Jeux
+  /api/v1/games/quests:
+    get:
+      description: 'Même traitement pour : GET /eapi/v1/games/quests'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Lister les quêtes
+      tags:
+      - Jeux
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Créer une quête
+      tags:
+      - Jeux
+  /api/v1/games/quests/{id}:
+    delete:
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Supprimer une quête
+      tags:
+      - Jeux
+    put:
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Modifier une quête
+      tags:
+      - Jeux
+  /api/v1/games/ranks:
+    get:
+      description: 'Même traitement pour : GET /eapi/v1/games/ranks'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Rangs de la famille
+      tags:
+      - Jeux
+    put:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Changer les rangs
+      tags:
+      - Jeux
+  /api/v1/games/ranks/defaults:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Rangs proposés par défaut
+      tags:
+      - Jeux
+  /api/v1/games/routines:
+    get:
+      description: 'Même traitement pour : GET /eapi/v1/games/routines'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Lister les routines
+      tags:
+      - Jeux
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Créer une routine
+      tags:
+      - Jeux
+  /api/v1/games/routines/{id}:
+    delete:
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Supprimer une routine
+      tags:
+      - Jeux
+    put:
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Modifier une routine
+      tags:
+      - Jeux
+  /api/v1/games/rules:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Règles des jeux
+      tags:
+      - Jeux
+    put:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Changer les règles des jeux
+      tags:
+      - Jeux
+  /api/v1/games/today:
+    get:
+      description: 'Même traitement pour : GET /eapi/v1/games/today'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: 'Résumé du jour : podium, rangs, quêtes, défis, routines'
+      tags:
+      - Jeux
+  /api/v1/games/week:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Résumé des 7 derniers jours
+      tags:
+      - Jeux
+  /api/v1/health:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: État du serveur (prêt ou non)
+      tags:
+      - Système
+  /api/v1/labels:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Lister les étiquettes
+      tags:
+      - Étiquettes
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Créer une étiquette
+      tags:
+      - Étiquettes
+    put:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Modifier une étiquette
+      tags:
+      - Étiquettes
+  /api/v1/labels/{id}:
+    delete:
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Supprimer une étiquette
+      tags:
+      - Étiquettes
+  /api/v1/learn/activations:
+    put:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Activer ou couper un module pour une personne
+      tags:
+      - Apprendre
+  /api/v1/learn/cards:
+    put:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Corriger une fiche pour la famille
+      tags:
+      - Apprendre
+  /api/v1/learn/catalogue:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Catalogue des modules Apprendre
+      tags:
+      - Apprendre
+  /api/v1/learn/games:
+    post:
+      description: 'Même traitement pour : POST /api/v1/learn/play/games'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      - PlayKeyAuth: []
+      summary: Enregistrer une partie
+      tags:
+      - Apprendre
+      - Session de jeu
+  /api/v1/learn/modules:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Modules installés, activations et réglages
+      tags:
+      - Apprendre
+  /api/v1/learn/modules/{key}:
+    delete:
+      parameters:
+      - description: Clé du module
+        in: path
+        name: key
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Désinstaller un module
+      tags:
+      - Apprendre
+    get:
+      parameters:
+      - description: Clé du module
+        in: path
+        name: key
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Détail d'un module (chapitres et fiches)
+      tags:
+      - Apprendre
+  /api/v1/learn/modules/import:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Importer un fichier de module
+      tags:
+      - Apprendre
+  /api/v1/learn/modules/install:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Installer un module du catalogue
+      tags:
+      - Apprendre
+  /api/v1/learn/play-links:
+    post:
+      description: 'Même traitement pour : POST /eapi/v1/learn/play-links'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Créer un lien de jeu à usage unique
+      tags:
+      - Apprendre
+  /api/v1/learn/play/games:
+    post:
+      description: 'Même traitement pour : POST /api/v1/learn/play/games'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      - PlayKeyAuth: []
+      summary: Enregistrer une partie
+      tags:
+      - Apprendre
+      - Session de jeu
+  /api/v1/learn/play/player:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - PlayKeyAuth: []
+      summary: Modules et progrès du joueur (session de jeu)
+      tags:
+      - Session de jeu
+  /api/v1/learn/play/reports:
+    post:
+      description: 'Même traitement pour : POST /api/v1/learn/play/reports'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      - PlayKeyAuth: []
+      summary: Signaler une fiche
+      tags:
+      - Apprendre
+      - Session de jeu
+  /api/v1/learn/play/session:
+    delete:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - PlayKeyAuth: []
+      summary: Fermer la session de jeu
+      tags:
+      - Session de jeu
+  /api/v1/learn/play/speak:
+    get:
+      description: 'Même traitement pour : GET /api/v1/learn/play/speak'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      - PlayKeyAuth: []
+      summary: Lire un texte avec la voix du serveur
+      tags:
+      - Apprendre
+      - Session de jeu
+  /api/v1/learn/play/start:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Ouvrir une session « jeux seulement » avec un lien de jeu
+      tags:
+      - Session de jeu
+  /api/v1/learn/play/voices:
+    get:
+      description: 'Même traitement pour : GET /api/v1/learn/play/voices'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      - PlayKeyAuth: []
+      summary: Voix du serveur
+      tags:
+      - Apprendre
+      - Session de jeu
+  /api/v1/learn/players/{userId}:
+    get:
+      parameters:
+      - description: Identifiant de la personne
+        in: path
+        name: userId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Modules, réglages et progrès d'une personne
+      tags:
+      - Apprendre
+  /api/v1/learn/reports:
+    post:
+      description: 'Même traitement pour : POST /api/v1/learn/play/reports'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      - PlayKeyAuth: []
+      summary: Signaler une fiche
+      tags:
+      - Apprendre
+      - Session de jeu
+  /api/v1/learn/reports/{id}/resolve:
+    put:
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Marquer un signalement comme traité
+      tags:
+      - Apprendre
+  /api/v1/learn/reports/export:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Exporter les signalements
+      tags:
+      - Apprendre
+  /api/v1/learn/settings:
+    put:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Changer un réglage Apprendre
+      tags:
+      - Apprendre
+  /api/v1/learn/speak:
+    get:
+      description: 'Même traitement pour : GET /api/v1/learn/play/speak'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      - PlayKeyAuth: []
+      summary: Lire un texte avec la voix du serveur
+      tags:
+      - Apprendre
+      - Session de jeu
+  /api/v1/learn/stats/{key}:
+    get:
+      parameters:
+      - description: Clé du module
+        in: path
+        name: key
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Statistiques d'un module
+      tags:
+      - Apprendre
+  /api/v1/learn/voices:
+    get:
+      description: 'Même traitement pour : GET /api/v1/learn/play/voices'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      - PlayKeyAuth: []
+      summary: Voix du serveur
+      tags:
+      - Apprendre
+      - Session de jeu
+  /api/v1/points/adjust:
+    post:
+      description: 'Même traitement pour : POST /eapi/v1/points/adjust'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Donner un bonus ou une pénalité
+      tags:
+      - Hops
+  /api/v1/points/history:
+    get:
+      description: 'Même traitement pour : GET /eapi/v1/points/history'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Historique des hops d'une personne
+      tags:
+      - Hops
+  /api/v1/points/journal:
+    get:
+      description: 'Même traitement pour : GET /eapi/v1/points/journal'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Journal de la famille
+      tags:
+      - Hops
+  /api/v1/points/presets:
+    get:
+      description: 'Même traitement pour : GET /eapi/v1/points/presets'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Bonus et pénalités tout prêts
+      tags:
+      - Hops
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Créer un bonus ou une pénalité tout prêt
+      tags:
+      - Hops
+  /api/v1/points/presets/{id}:
+    delete:
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Supprimer un bonus ou une pénalité tout prêt
+      tags:
+      - Hops
+    put:
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Modifier un bonus ou une pénalité tout prêt
+      tags:
+      - Hops
+  /api/v1/points/reset:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Remettre les hops à zéro
+      tags:
+      - Hops
+  /api/v1/realtime/sse:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Flux temps réel (SSE)
+      tags:
+      - Système
+  /api/v1/realtime/sse/ticket:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Ticket pour ouvrir le flux temps réel
+      tags:
+      - Système
+  /api/v1/resource:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Réglages publics du serveur (connexions disponibles…)
+      tags:
+      - Système
+  /api/v1/rewards:
+    get:
+      description: 'Même traitement pour : GET /eapi/v1/rewards'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Lister les récompenses
+      tags:
+      - Récompenses
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Créer une récompense
+      tags:
+      - Récompenses
+  /api/v1/rewards/{id}:
+    delete:
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Supprimer une récompense
+      tags:
+      - Récompenses
+    put:
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Modifier une récompense
+      tags:
+      - Récompenses
+  /api/v1/rewards/{id}/redeem:
+    post:
+      description: 'Même traitement pour : POST /eapi/v1/rewards/{id}/redeem'
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Demander une récompense
+      tags:
+      - Récompenses
+  /api/v1/rewards/redemptions:
+    get:
+      description: 'Même traitement pour : GET /eapi/v1/rewards/redemptions'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Récompenses demandées
+      tags:
+      - Récompenses
+  /api/v1/rewards/redemptions/{id}/approve:
+    post:
+      description: 'Même traitement pour : POST /eapi/v1/rewards/redemptions/{id}/approve'
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Accorder une récompense demandée
+      tags:
+      - Récompenses
+  /api/v1/rewards/redemptions/{id}/reject:
+    post:
+      description: 'Même traitement pour : POST /eapi/v1/rewards/redemptions/{id}/reject'
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Refuser une récompense demandée
+      tags:
+      - Récompenses
+  /api/v1/sync/changes:
     get:
       consumes:
       - application/json
-      description: Returns chores and chore histories that have changed since the
-        given sync version cursor, along with deleted entity IDs. Paginated — call
-        repeatedly while hasMore is true using the returned cursor.
       parameters:
-      - default: 0
-        description: Sync version cursor (0 for initial full sync)
+      - description: Paramètre since
         format: int64
         in: query
         name: since
@@ -2645,32 +3593,1043 @@ paths:
       - application/json
       responses:
         "200":
-          description: changes, deletions, cursor, hasMore
+          description: OK
           schema:
             additionalProperties: true
-            type: object
-        "400":
-          description: 'error: Invalid ''since'' parameter'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: 'error: Authentication failed'
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 'error: Failed to fetch changes'
-          schema:
-            additionalProperties:
-              type: string
             type: object
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Get sync changes
+      summary: Changements depuis la dernière synchro (hors ligne)
       tags:
-      - sync
+      - Système
+  /api/v1/users:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Lister les utilisateurs de la famille
+      tags:
+      - Utilisateurs
+    put:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Modifier son profil
+      tags:
+      - Utilisateurs
+  /api/v1/users/change_password:
+    put:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Changer son mot de passe
+      tags:
+      - Utilisateurs
+  /api/v1/users/delete:
+    delete:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Supprimer son compte
+      tags:
+      - Utilisateurs
+  /api/v1/users/delete/check:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Vérifier ce que la suppression du compte efface
+      tags:
+      - Utilisateurs
+  /api/v1/users/logout:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Se déconnecter
+      tags:
+      - Utilisateurs
+  /api/v1/users/mfa/confirm:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Activer la double authentification
+      tags:
+      - Utilisateurs
+  /api/v1/users/mfa/disable:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Désactiver la double authentification
+      tags:
+      - Utilisateurs
+  /api/v1/users/mfa/setup:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Préparer la double authentification
+      tags:
+      - Utilisateurs
+  /api/v1/users/mfa/status:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: État de la double authentification
+      tags:
+      - Utilisateurs
+  /api/v1/users/profile:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Profil de l'utilisateur connecté
+      tags:
+      - Utilisateurs
+  /api/v1/users/profile_photo:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Changer sa photo
+      tags:
+      - Utilisateurs
+  /api/v1/users/storage:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Place utilisée par les fichiers
+      tags:
+      - Utilisateurs
+  /api/v1/users/subaccounts:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Lister les comptes gérés
+      tags:
+      - Utilisateurs
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Créer un compte géré (enfant)
+      tags:
+      - Utilisateurs
+  /api/v1/users/subaccounts/{id}:
+    delete:
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Supprimer un compte géré
+      tags:
+      - Utilisateurs
+  /api/v1/users/subaccounts/{id}/profile_photo:
+    post:
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Changer la photo d'un compte géré
+      tags:
+      - Utilisateurs
+  /api/v1/users/subaccounts/password:
+    put:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Changer le mot de passe d'un compte géré
+      tags:
+      - Utilisateurs
+  /api/v1/users/tokens:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Lister ses jetons d'accès
+      tags:
+      - Utilisateurs
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Créer un jeton d'accès longue durée
+      tags:
+      - Utilisateurs
+  /api/v1/users/tokens/{id}:
+    delete:
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Supprimer un jeton d'accès
+      tags:
+      - Utilisateurs
+  /eapi/v1/chore:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - APIKeyAuth: []
+      summary: Lister les tâches (intégration)
+      tags:
+      - Tâches
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - APIKeyAuth: []
+      summary: Créer une tâche (intégration)
+      tags:
+      - Tâches
+  /eapi/v1/chore/{id}:
+    delete:
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - APIKeyAuth: []
+      summary: Supprimer une tâche (intégration)
+      tags:
+      - Tâches
+    put:
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - APIKeyAuth: []
+      summary: Modifier une tâche (intégration)
+      tags:
+      - Tâches
+  /eapi/v1/chore/{id}/approve:
+    post:
+      consumes:
+      - application/json
+      description: 'Même traitement pour : POST /eapi/v1/chore/{id}/approve'
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              $ref: '#/definitions/model.Chore'
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Valider une tâche faite
+      tags:
+      - Tâches
+  /eapi/v1/chore/{id}/complete:
+    post:
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - APIKeyAuth: []
+      summary: Marquer une tâche comme faite (intégration)
+      tags:
+      - Tâches
+  /eapi/v1/chore/{id}/reject:
+    post:
+      consumes:
+      - application/json
+      description: 'Même traitement pour : POST /eapi/v1/chore/{id}/reject'
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Corps de la requête
+        in: body
+        name: rejection
+        schema:
+          $ref: '#/definitions/chore.RejectChoreReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Refuser une tâche faite
+      tags:
+      - Tâches
+  /eapi/v1/chore/{id}/slots/{slot}/approve:
+    post:
+      description: 'Même traitement pour : POST /eapi/v1/chore/{id}/slots/{slot}/approve'
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Numéro du créneau
+        in: path
+        name: slot
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Valider un créneau
+      tags:
+      - Tâches
+  /eapi/v1/chore/{id}/slots/{slot}/catchup:
+    post:
+      consumes:
+      - application/json
+      description: 'Même traitement pour : POST /eapi/v1/chore/{id}/slots/{slot}/catchup'
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Numéro du créneau
+        in: path
+        name: slot
+        required: true
+        type: integer
+      - description: Corps de la requête
+        in: body
+        name: body
+        schema:
+          $ref: '#/definitions/chore.CatchUpSlotReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Rattraper un créneau oublié
+      tags:
+      - Tâches
+  /eapi/v1/chore/{id}/slots/{slot}/reject:
+    post:
+      description: 'Même traitement pour : POST /eapi/v1/chore/{id}/slots/{slot}/reject'
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Numéro du créneau
+        in: path
+        name: slot
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Refuser un créneau
+      tags:
+      - Tâches
+  /eapi/v1/family/members:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - APIKeyAuth: []
+      summary: Membres de la famille (intégration)
+      tags:
+      - Famille
+  /eapi/v1/family/members/{id}/away:
+    put:
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - APIKeyAuth: []
+      summary: Mettre un membre en « Pas là » (intégration)
+      tags:
+      - Famille
+  /eapi/v1/family/timezone:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - APIKeyAuth: []
+      summary: Fuseau de la famille (intégration)
+      tags:
+      - Famille
+    put:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - APIKeyAuth: []
+      summary: Changer le fuseau de la famille (intégration)
+      tags:
+      - Famille
+  /eapi/v1/games/challenges:
+    get:
+      description: 'Même traitement pour : GET /eapi/v1/games/challenges'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Lister les défis
+      tags:
+      - Jeux
+  /eapi/v1/games/flashes:
+    get:
+      description: 'Même traitement pour : GET /eapi/v1/games/flashes'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Bonus chrono lancés
+      tags:
+      - Jeux
+    post:
+      description: 'Même traitement pour : POST /eapi/v1/games/flashes'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Lancer un bonus chrono
+      tags:
+      - Jeux
+  /eapi/v1/games/flashes/{id}:
+    delete:
+      description: 'Même traitement pour : DELETE /eapi/v1/games/flashes/{id}'
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Arrêter un bonus chrono
+      tags:
+      - Jeux
+  /eapi/v1/games/periods:
+    get:
+      description: 'Même traitement pour : GET /eapi/v1/games/periods'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Lister les périodes bonus
+      tags:
+      - Jeux
+  /eapi/v1/games/quests:
+    get:
+      description: 'Même traitement pour : GET /eapi/v1/games/quests'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Lister les quêtes
+      tags:
+      - Jeux
+  /eapi/v1/games/ranks:
+    get:
+      description: 'Même traitement pour : GET /eapi/v1/games/ranks'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Rangs de la famille
+      tags:
+      - Jeux
+  /eapi/v1/games/routines:
+    get:
+      description: 'Même traitement pour : GET /eapi/v1/games/routines'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Lister les routines
+      tags:
+      - Jeux
+  /eapi/v1/games/today:
+    get:
+      description: 'Même traitement pour : GET /eapi/v1/games/today'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: 'Résumé du jour : podium, rangs, quêtes, défis, routines'
+      tags:
+      - Jeux
+  /eapi/v1/learn/play-links:
+    post:
+      description: 'Même traitement pour : POST /eapi/v1/learn/play-links'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Créer un lien de jeu à usage unique
+      tags:
+      - Apprendre
+  /eapi/v1/points/adjust:
+    post:
+      description: 'Même traitement pour : POST /eapi/v1/points/adjust'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Donner un bonus ou une pénalité
+      tags:
+      - Hops
+  /eapi/v1/points/history:
+    get:
+      description: 'Même traitement pour : GET /eapi/v1/points/history'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Historique des hops d'une personne
+      tags:
+      - Hops
+  /eapi/v1/points/journal:
+    get:
+      description: 'Même traitement pour : GET /eapi/v1/points/journal'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Journal de la famille
+      tags:
+      - Hops
+  /eapi/v1/points/presets:
+    get:
+      description: 'Même traitement pour : GET /eapi/v1/points/presets'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Bonus et pénalités tout prêts
+      tags:
+      - Hops
+  /eapi/v1/rewards:
+    get:
+      description: 'Même traitement pour : GET /eapi/v1/rewards'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Lister les récompenses
+      tags:
+      - Récompenses
+  /eapi/v1/rewards/{id}/redeem:
+    post:
+      description: 'Même traitement pour : POST /eapi/v1/rewards/{id}/redeem'
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Demander une récompense
+      tags:
+      - Récompenses
+  /eapi/v1/rewards/redemptions:
+    get:
+      description: 'Même traitement pour : GET /eapi/v1/rewards/redemptions'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Récompenses demandées
+      tags:
+      - Récompenses
+  /eapi/v1/rewards/redemptions/{id}/approve:
+    post:
+      description: 'Même traitement pour : POST /eapi/v1/rewards/redemptions/{id}/approve'
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Accorder une récompense demandée
+      tags:
+      - Récompenses
+  /eapi/v1/rewards/redemptions/{id}/reject:
+    post:
+      description: 'Même traitement pour : POST /eapi/v1/rewards/redemptions/{id}/reject'
+      parameters:
+      - description: Identifiant
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Refuser une récompense demandée
+      tags:
+      - Récompenses
+  /health:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: État du serveur
+      tags:
+      - Système
+securityDefinitions:
+  APIKeyAuth:
+    description: Jeton d'accès longue durée créé dans les réglages du compte.
+    in: header
+    name: secretkey
+    type: apiKey
+  JWTKeyAuth:
+    description: « Bearer » suivi d'une espace et du jeton de connexion.
+    in: header
+    name: Authorization
+    type: apiKey
+  PlayKeyAuth:
+    description: Session « jeux seulement » ouverte par un lien de jeu.
+    in: header
+    name: X-Hopla-Play
+    type: apiKey
 swagger: "2.0"

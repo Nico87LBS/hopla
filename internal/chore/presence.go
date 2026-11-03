@@ -50,6 +50,14 @@ func SetMemberAway(c *gin.Context, familyRepo *fRepo.FamilyRepository, choreRepo
 
 // SetMemberAway marks a member away or back home through the API, with
 // {"away": true} or {"away": false}.
+//
+//	@Summary		Mettre un membre en « Pas là » (intégration)
+//	@Tags			Famille
+//	@Produce		json
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/eapi/v1/family/members/{id}/away [put]
 func (h *API) SetMemberAway(c *gin.Context) {
 	memberID, err := strconv.Atoi(c.Param("id"))
 	var req struct {

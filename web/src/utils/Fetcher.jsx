@@ -539,14 +539,6 @@ const DisableMFA = code => {
   })
 }
 
-const RegenerateBackupCodes = code => {
-  return Fetch(`/users/mfa/regenerate-backup-codes`, {
-    method: 'POST',
-    headers: HEADERS(),
-    body: JSON.stringify({ code }),
-  })
-}
-
 const VerifyMFA = (sessionToken, code) => {
   const baseURL = apiManager.getApiURL()
   return fetch(`${baseURL}/auth/mfa/verify`, {
@@ -1337,7 +1329,6 @@ export {
   RedeemPoints,
   RedeemReward,
   RefreshToken,
-  RegenerateBackupCodes,
   RejectChore,
   RejectRedemption,
   RemoveLearnModule,

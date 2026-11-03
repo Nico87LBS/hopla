@@ -21,6 +21,16 @@ const PlayHeader = "X-Hopla-Play"
 
 // newPlayLink gives a link for a member to play, such as from the family
 // screen: the member themselves, or anyone of the family for a parent.
+//
+//	@Summary		Créer un lien de jeu à usage unique
+//	@Description	Même traitement pour : POST /eapi/v1/learn/play-links
+//	@Tags			Apprendre
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/play-links [post]
+//	@Router			/eapi/v1/learn/play-links [post]
 func (h *Handler) newPlayLink(c *gin.Context) {
 	who, ok := h.caller(c)
 	if !ok {
@@ -59,6 +69,12 @@ func (h *Handler) newPlayLink(c *gin.Context) {
 }
 
 // startPlay trades a play link for a play session.
+//
+//	@Summary		Ouvrir une session « jeux seulement » avec un lien de jeu
+//	@Tags			Session de jeu
+//	@Produce		json
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/play/start [post]
 func (h *Handler) startPlay(c *gin.Context) {
 	var req struct {
 		Code string `json:"code" binding:"required"`
@@ -108,6 +124,13 @@ func (h *Handler) playAuth(c *gin.Context) {
 }
 
 // getPlaySelf answers with the player of the session.
+//
+//	@Summary		Modules et progrès du joueur (session de jeu)
+//	@Tags			Session de jeu
+//	@Produce		json
+//	@Security		PlayKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/play/player [get]
 func (h *Handler) getPlaySelf(c *gin.Context) {
 	who, ok := h.caller(c)
 	if !ok {
@@ -122,6 +145,13 @@ func (h *Handler) getPlaySelf(c *gin.Context) {
 }
 
 // endPlay closes the play session.
+//
+//	@Summary		Fermer la session de jeu
+//	@Tags			Session de jeu
+//	@Produce		json
+//	@Security		PlayKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/play/session [delete]
 func (h *Handler) endPlay(c *gin.Context) {
 	if err := learn.EndPlay(h.db.WithContext(c), c.GetHeader(PlayHeader)); err != nil {
 		logging.FromContext(c).Error("Failed to end a play session", "error", err)

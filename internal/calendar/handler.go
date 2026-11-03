@@ -111,16 +111,13 @@ func (h *Handler) issueToken(c *gin.Context, userID int) (*calModel.CalendarToke
 
 // GetCalendarURL godoc
 //
-//	@Summary		Get calendar subscription URL
-//	@Description	Returns the current user's existing iCal calendar subscription URL. Returns 404 if none has been generated yet.
-//	@Tags			chores
+//	@Summary		Lire l'adresse de l'agenda
+//	@Tags			Agenda
 //	@Produce		json
 //	@Security		JWTKeyAuth
 //	@Security		APIKeyAuth
-//	@Success		200	{object}	map[string]string	"url: calendar subscription URL"
-//	@Failure		401	{object}	map[string]string	"error: Authentication failed"
-//	@Failure		404	{object}	map[string]string	"error: No calendar URL generated"
-//	@Router			/chores/calendar/url [get]
+//	@Success		200	{object}	map[string]string
+//	@Router			/api/v1/chores/calendar/url [get]
 func (h *Handler) GetCalendarURL(c *gin.Context) {
 	logger := logging.FromContext(c)
 	currentUser, ok := auth.CurrentUser(c)
@@ -146,16 +143,14 @@ func (h *Handler) GetCalendarURL(c *gin.Context) {
 
 // CreateCalendarURL godoc
 //
-//	@Summary		Generate calendar subscription URL
-//	@Description	Generates a calendar subscription URL for the current user. Idempotent: returns the existing URL if one was already generated.
-//	@Tags			chores
+//	@Summary		Créer l'adresse de l'agenda
+//	@Tags			Agenda
 //	@Produce		json
 //	@Security		JWTKeyAuth
 //	@Security		APIKeyAuth
-//	@Success		200	{object}	map[string]string	"url: existing calendar subscription URL"
-//	@Success		201	{object}	map[string]string	"url: newly generated calendar subscription URL"
-//	@Failure		401	{object}	map[string]string	"error: Authentication failed"
-//	@Router			/chores/calendar/url [post]
+//	@Success		200	{object}	map[string]string
+//	@Success		201	{object}	map[string]string
+//	@Router			/api/v1/chores/calendar/url [post]
 func (h *Handler) CreateCalendarURL(c *gin.Context) {
 	logger := logging.FromContext(c)
 	currentUser, ok := auth.CurrentUser(c)
@@ -189,15 +184,13 @@ func (h *Handler) CreateCalendarURL(c *gin.Context) {
 
 // RotateCalendarURL godoc
 //
-//	@Summary		Rotate calendar subscription URL
-//	@Description	Issues a new calendar subscription URL and immediately invalidates the previous one.
-//	@Tags			chores
+//	@Summary		Changer l'adresse de l'agenda
+//	@Tags			Agenda
 //	@Produce		json
 //	@Security		JWTKeyAuth
 //	@Security		APIKeyAuth
-//	@Success		200	{object}	map[string]string	"url: new calendar subscription URL"
-//	@Failure		401	{object}	map[string]string	"error: Authentication failed"
-//	@Router			/chores/calendar/url/rotate [post]
+//	@Success		200	{object}	map[string]string
+//	@Router			/api/v1/chores/calendar/url/rotate [post]
 func (h *Handler) RotateCalendarURL(c *gin.Context) {
 	logger := logging.FromContext(c)
 	currentUser, ok := auth.CurrentUser(c)
@@ -220,15 +213,13 @@ func (h *Handler) RotateCalendarURL(c *gin.Context) {
 
 // RevokeCalendarURL godoc
 //
-//	@Summary		Revoke calendar subscription URL
-//	@Description	Revokes the current user's calendar subscription URL. Existing subscriptions stop working immediately.
-//	@Tags			chores
+//	@Summary		Supprimer l'adresse de l'agenda
+//	@Tags			Agenda
 //	@Produce		json
 //	@Security		JWTKeyAuth
 //	@Security		APIKeyAuth
-//	@Success		204	{string}	string	"No content"
-//	@Failure		401	{object}	map[string]string	"error: Authentication failed"
-//	@Router			/chores/calendar/url [delete]
+//	@Success		204	{string}	string
+//	@Router			/api/v1/chores/calendar/url [delete]
 func (h *Handler) RevokeCalendarURL(c *gin.Context) {
 	logger := logging.FromContext(c)
 	currentUser, ok := auth.CurrentUser(c)
@@ -250,15 +241,12 @@ func (h *Handler) RevokeCalendarURL(c *gin.Context) {
 
 // ServeCalendar godoc
 //
-//	@Summary		Serve iCal calendar feed
-//	@Description	Serves an iCal (.ics) calendar file containing the user's chores. Authenticated via a revocable token in the URL.
-//	@Tags			chores
-//	@Produce		text/calendar
-//	@Param			token	path		string	true	"Calendar token (obtained from /chores/calendar/url)"
-//	@Success		200		{string}	string	"iCal calendar data"
-//	@Failure		403		{string}	string	"Invalid calendar token"
-//	@Failure		500		{string}	string	"Failed to generate calendar"
-//	@Router			/chores/calendar/{token} [get]
+//	@Summary		Agenda des tâches au format iCalendar
+//	@Tags			Agenda
+//	@Produce		json
+//	@Param			token	path	string	true	"Jeton secret de l'agenda"
+//	@Success		200	{string}	string
+//	@Router			/api/v1/chores/calendar/{token} [get]
 func (h *Handler) ServeCalendar(c *gin.Context) {
 	logger := logging.FromContext(c)
 	ctx := c.Request.Context()

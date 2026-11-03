@@ -54,6 +54,17 @@ func answerFindError(c *gin.Context, err error, what string) {
 	c.JSON(500, gin.H{"error": "Error getting the " + strings.ToLower(what)})
 }
 
+// getRanks godoc
+//
+//	@Summary		Rangs de la famille
+//	@Description	Même traitement pour : GET /eapi/v1/games/ranks
+//	@Tags			Jeux
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/games/ranks [get]
+//	@Router			/eapi/v1/games/ranks [get]
 func (h *Handler) getRanks(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -70,10 +81,27 @@ func (h *Handler) getRanks(c *gin.Context) {
 
 // getDefaultRanks gives the drawn ranks of the tribe, for parents who want
 // them back in place of their own.
+//
+//	@Summary		Rangs proposés par défaut
+//	@Tags			Jeux
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/games/ranks/defaults [get]
 func (h *Handler) getDefaultRanks(c *gin.Context) {
 	c.JSON(200, gin.H{"res": games.DefaultRanks()})
 }
 
+// updateRanks godoc
+//
+//	@Summary		Changer les rangs
+//	@Tags			Jeux
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/games/ranks [put]
 func (h *Handler) updateRanks(c *gin.Context) {
 	_, familyID, ok := h.requireParent(c)
 	if !ok {
@@ -201,6 +229,17 @@ func (req QuestReq) apply(quest *games.Quest) {
 		req.Name, req.Kind, req.ChoreID, req.Module, req.Target, req.Reward, req.Period, req.UserIDs
 }
 
+// getQuests godoc
+//
+//	@Summary		Lister les quêtes
+//	@Description	Même traitement pour : GET /eapi/v1/games/quests
+//	@Tags			Jeux
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/games/quests [get]
+//	@Router			/eapi/v1/games/quests [get]
 func (h *Handler) getQuests(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -216,6 +255,15 @@ func (h *Handler) getQuests(c *gin.Context) {
 	c.JSON(200, gin.H{"res": quests})
 }
 
+// createQuest godoc
+//
+//	@Summary		Créer une quête
+//	@Tags			Jeux
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/games/quests [post]
 func (h *Handler) createQuest(c *gin.Context) {
 	_, familyID, ok := h.requireParent(c)
 	if !ok {
@@ -234,6 +282,16 @@ func (h *Handler) createQuest(c *gin.Context) {
 	c.JSON(200, gin.H{"res": quest})
 }
 
+// updateQuest godoc
+//
+//	@Summary		Modifier une quête
+//	@Tags			Jeux
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/games/quests/{id} [put]
 func (h *Handler) updateQuest(c *gin.Context) {
 	_, familyID, ok := h.requireParent(c)
 	if !ok {
@@ -256,6 +314,16 @@ func (h *Handler) updateQuest(c *gin.Context) {
 	c.JSON(200, gin.H{"res": quest})
 }
 
+// deleteQuest godoc
+//
+//	@Summary		Supprimer une quête
+//	@Tags			Jeux
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/games/quests/{id} [delete]
 func (h *Handler) deleteQuest(c *gin.Context) {
 	_, familyID, ok := h.requireParent(c)
 	if !ok {
@@ -304,6 +372,16 @@ func (req ChallengeReq) apply(challenge *games.Challenge) {
 }
 
 // getChallenges lists the challenges to come, running or ended lately.
+//
+//	@Summary		Lister les défis
+//	@Description	Même traitement pour : GET /eapi/v1/games/challenges
+//	@Tags			Jeux
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/games/challenges [get]
+//	@Router			/eapi/v1/games/challenges [get]
 func (h *Handler) getChallenges(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -319,6 +397,15 @@ func (h *Handler) getChallenges(c *gin.Context) {
 	c.JSON(200, gin.H{"res": challenges})
 }
 
+// createChallenge godoc
+//
+//	@Summary		Créer un défi
+//	@Tags			Jeux
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/games/challenges [post]
 func (h *Handler) createChallenge(c *gin.Context) {
 	parentID, familyID, ok := h.requireParent(c)
 	if !ok {
@@ -337,6 +424,16 @@ func (h *Handler) createChallenge(c *gin.Context) {
 	c.JSON(200, gin.H{"res": challenge})
 }
 
+// updateChallenge godoc
+//
+//	@Summary		Modifier un défi
+//	@Tags			Jeux
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/games/challenges/{id} [put]
 func (h *Handler) updateChallenge(c *gin.Context) {
 	_, familyID, ok := h.requireParent(c)
 	if !ok {
@@ -359,6 +456,16 @@ func (h *Handler) updateChallenge(c *gin.Context) {
 	c.JSON(200, gin.H{"res": challenge})
 }
 
+// deleteChallenge godoc
+//
+//	@Summary		Supprimer un défi
+//	@Tags			Jeux
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/games/challenges/{id} [delete]
 func (h *Handler) deleteChallenge(c *gin.Context) {
 	_, familyID, ok := h.requireParent(c)
 	if !ok {

@@ -256,7 +256,9 @@ type ChoreLabels struct {
 	UserID  int `json:"userId" gorm:"primaryKey;autoIncrement:false;not null"`
 	Label   lModel.Label
 }
-type ChoreLiteReq struct { // TODO: Remove this when api is removed.
+
+// ChoreLiteReq est la requête simplifiée de l'API des intégrations (/eapi/v1/chore).
+type ChoreLiteReq struct {
 	Name           string  `json:"name" binding:"omitempty"`
 	Description    *string `json:"description,omitempty"`
 	ID             int     `json:"id"`
@@ -303,7 +305,7 @@ func (c *Chore) CanEdit(userID int, familyUsers []*fModel.UserFamilyDetail, upda
 		}
 	}
 
-	// TODO: Remove this, moved to validator
+	// Refuse une date de modification venue du futur (horloge décalée).
 	cooldown := time.Second * 30
 	if updatedAt != nil {
 		// if the chore was updated after the user fetched it for editing, then do not allow editing

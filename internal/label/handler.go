@@ -29,6 +29,15 @@ func NewHandler(lRepo *lRepo.LabelRepository) *Handler {
 	}
 }
 
+// getLabels godoc
+//
+//	@Summary		Lister les étiquettes
+//	@Tags			Étiquettes
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/labels [get]
 func (h *Handler) getLabels(c *gin.Context) {
 	// get current user:
 	currentUser, ok := auth.CurrentUser(c)
@@ -51,6 +60,15 @@ func (h *Handler) getLabels(c *gin.Context) {
 	)
 }
 
+// createLabel godoc
+//
+//	@Summary		Créer une étiquette
+//	@Tags			Étiquettes
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/labels [post]
 func (h *Handler) createLabel(c *gin.Context) {
 	// get current user:
 	currentUser, ok := auth.CurrentUser(c)
@@ -87,6 +105,15 @@ func (h *Handler) createLabel(c *gin.Context) {
 	})
 }
 
+// updateLabel godoc
+//
+//	@Summary		Modifier une étiquette
+//	@Tags			Étiquettes
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/labels [put]
 func (h *Handler) updateLabel(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -122,6 +149,16 @@ func (h *Handler) updateLabel(c *gin.Context) {
 	})
 }
 
+// deleteLabel godoc
+//
+//	@Summary		Supprimer une étiquette
+//	@Tags			Étiquettes
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/labels/{id} [delete]
 func (h *Handler) deleteLabel(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	// read label id from path:

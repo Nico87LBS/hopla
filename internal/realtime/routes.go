@@ -23,12 +23,4 @@ func Routes(
 	// SSE ticket endpoint (header-authenticated). Native EventSource clients that
 	// cannot send custom headers call this first, then open /sse?ticket=...
 	rtGroup.GET("/sse/ticket", jwtAuth.MiddlewareFunc(), pollingHandler.HandleSSETicket)
-
-	// Admin endpoints (require authentication)
-	adminGroup := rtGroup.Group("/admin")
-	adminGroup.Use(jwtAuth.MiddlewareFunc())
-	{
-		// adminGroup.GET("/stats", wsHandler.HandleHealthCheck)
-		// adminGroup.GET("/connections/:familyId", wsHandler.HandleConnectionStats)
-	}
 }

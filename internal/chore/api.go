@@ -43,6 +43,14 @@ func NewAPI(cr *chRepo.ChoreRepository, userRepo *uRepo.UserRepository, familyRe
 	}
 }
 
+// GetAllChores godoc
+//
+//	@Summary		Lister les tâches (intégration)
+//	@Tags			Tâches
+//	@Produce		json
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/eapi/v1/chore [get]
 func (h *API) GetAllChores(c *gin.Context) {
 	user := auth.MustCurrentUser(c)
 
@@ -63,6 +71,14 @@ func (h *API) GetAllChores(c *gin.Context) {
 	c.JSON(200, chores)
 }
 
+// CreateChore godoc
+//
+//	@Summary		Créer une tâche (intégration)
+//	@Tags			Tâches
+//	@Produce		json
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/eapi/v1/chore [post]
 func (h *API) CreateChore(c *gin.Context) {
 	log := logging.FromContext(c)
 	var choreRequest chModel.ChoreLiteReq
@@ -158,6 +174,15 @@ func (h *API) CreateChore(c *gin.Context) {
 	c.JSON(201, createdChore)
 }
 
+// UpdateChore godoc
+//
+//	@Summary		Modifier une tâche (intégration)
+//	@Tags			Tâches
+//	@Produce		json
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/eapi/v1/chore/{id} [put]
 func (h *API) UpdateChore(c *gin.Context) {
 	log := logging.FromContext(c)
 	var choreRequest chModel.ChoreLiteReq
@@ -262,6 +287,15 @@ func (h *API) UpdateChore(c *gin.Context) {
 	c.JSON(200, updatedChore)
 }
 
+// CompleteChore godoc
+//
+//	@Summary		Marquer une tâche comme faite (intégration)
+//	@Tags			Tâches
+//	@Produce		json
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/eapi/v1/chore/{id}/complete [post]
 func (h *API) CompleteChore(c *gin.Context) {
 	log := logging.FromContext(c)
 	completedDate := time.Now().UTC()
@@ -421,6 +455,14 @@ func (h *API) CompleteChore(c *gin.Context) {
 	)
 }
 
+// GetFamilyMembers godoc
+//
+//	@Summary		Membres de la famille (intégration)
+//	@Tags			Famille
+//	@Produce		json
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/eapi/v1/family/members [get]
 func (h *API) GetFamilyMembers(c *gin.Context) {
 	currentUser := auth.MustCurrentUser(c)
 	users, err := h.familyRepo.GetFamilyUsers(c, currentUser.FamilyID)
@@ -437,6 +479,16 @@ func (h *API) GetFamilyMembers(c *gin.Context) {
 	}
 	c.JSON(200, users)
 }
+
+// DeleteChore godoc
+//
+//	@Summary		Supprimer une tâche (intégration)
+//	@Tags			Tâches
+//	@Produce		json
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/eapi/v1/chore/{id} [delete]
 func (h *API) DeleteChore(c *gin.Context) {
 	choreIDRaw := c.Param("id")
 	choreID, err := strconv.Atoi(choreIDRaw)
