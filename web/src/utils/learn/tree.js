@@ -84,3 +84,36 @@ export const shortLevel = (level, siblings = []) => {
   )
   return shared.length ? level.name : own[0]
 }
+
+// byRootPack gathers groups of modules, one by level, under the pack on top
+// of them, in the order they come: a section { id, name, pack, levels },
+// each level { group, title }, with no title for a pack of a single level.
+// A group of no pack, or a group already made (the sorted list), stands on
+// its own.
+export const byRootPack = (groups, packs) => {
+  const sections = []
+  const byId = new Map()
+  for (const group of groups) {
+    const root = group.id ? rootOf(packs, group.id) : null
+    if (!root) {
+      sections.push({
+        id: group.id,
+        name: group.name,
+        pack: null,
+        levels: [{ group, title: null }],
+      })
+      continue
+    }
+    let section = byId.get(root.id)
+    if (!section) {
+      section = { id: root.id, name: root.name, pack: root, levels: [] }
+      byId.set(root.id, section)
+      sections.push(section)
+    }
+    section.levels.push({
+      group,
+      title: group.id === root.id ? null : group.name,
+    })
+  }
+  return sections
+}
