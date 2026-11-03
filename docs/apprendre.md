@@ -131,6 +131,10 @@ la première question, puis de nouveau quand elle change ou après une erreur.
 Entre-temps, seul ce sur quoi porte la question est dit (« la fleur »). La
 consigne reste écrite, et le haut-parleur la redit toujours.
 
+Dans les questions sur les sons d'un mot (« Combien de syllabes dans ce
+mot ? », « Quel son entends-tu dans ce mot ? »), le mot est écrit à part, en
+gros, et dit à part après la question.
+
 Quand une phrase est relue une fois la réponse donnée, « Continuer »
 attend la fin de la phrase (4 secondes au plus). Dans « Relie », chaque nom
 touché est dit en entier avant le suivant.

@@ -7,6 +7,7 @@ export const spoken = item =>
   [
     item.instruction !== item.prompt && item.instruction,
     item.prompt,
+    item.word,
     item.subject?.text,
   ]
     .filter(Boolean)
@@ -53,5 +54,5 @@ export const partsOf = (item, repeat, tellLang) => {
   if (item.instruction && item.instruction !== item.prompt) {
     return parts.slice(1)
   }
-  return item.subject?.text ? parts.slice(-1) : []
+  return item.subject?.text || item.word ? parts.slice(-1) : []
 }

@@ -120,3 +120,43 @@ test('the size of a question depends on what it is, not its length', () => {
     false,
   )
 })
+
+test('the word whose sounds are asked is apart, and the question the same for all', async () => {
+  const { wordAsked } = await import('../src/utils/learn/generators.js')
+  assert.deepEqual(wordAsked('Combien de syllabes dans « crayon » ?'), {
+    prompt: 'Combien de syllabes dans ce mot ?',
+    word: 'crayon',
+  })
+  assert.equal(
+    wordAsked('Par quelles lettres commence « chat » ?').prompt,
+    'Par quelles lettres commence ce mot ?',
+  )
+  assert.equal(wordAsked('Le contraire de « grand », c’est ___.'), null)
+})
+
+test('the words to hear the start or the end of have no article', () => {
+  const article = /^(le|la|les|un|une|des) |^l['’]/
+  const texts = []
+  for (const id of ['langage-gs-sons', 'langage-gs-rimes']) {
+    for (const card of read(id).fiches) {
+      for (const x of card.a_classer || []) texts.push(x.texte)
+      for (const pair of card.paires || [])
+        for (const x of pair) texts.push(x.texte)
+      if (card.type === 'choix')
+        texts.push(card.reponse, ...(card.pieges || []))
+    }
+  }
+  assert.ok(texts.length > 50)
+  assert.deepEqual(
+    texts.filter(t => t && article.test(t)),
+    [],
+  )
+})
+
+test('the actions to read have traps that are wrong', () => {
+  for (const card of read('lire-sans-dessin').fiches.filter(
+    c => c.chapitre === 'actions',
+  )) {
+    assert.equal(card.pieges?.length, 3, card.id)
+  }
+})

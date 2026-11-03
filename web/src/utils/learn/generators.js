@@ -1079,11 +1079,23 @@ const zoneItems = (card, moduleId, siblings) => {
       return {
         ...base,
         mode: 'choice',
-        prompt: 'Comment s’appelle la zone en couleur ?',
+        prompt: 'Comment s’appelle la partie en couleur ?',
         choices: [card.reponse, ...traps.slice(0, 3)],
         trapPool: traps,
       }
     })
+}
+
+// A question about the sounds of one word, « Combien de syllabes dans
+// « crayon » ? », shows the word apart, big, and says it apart: the
+// question becomes the same for all (« …dans ce mot ? »), and only the
+// word changes.
+const SOUND_QUESTION =
+  /^(Combien de syllabes dans|Quel son entends-tu dans|Par quelles? (?:lettres?|syllabe) commence) «\s*([^»\s]+)\s*» \?$/
+
+export const wordAsked = prompt => {
+  const found = SOUND_QUESTION.exec(prompt || '')
+  return found ? { prompt: `${found[1]} ce mot ?`, word: found[2] } : null
 }
 
 // cardItems lists the questions of a written card, one per direction asked.
@@ -1155,6 +1167,7 @@ export const cardItems = (card, moduleId, siblings, lang) => {
         ]
         return {
           ...base,
+          ...(!inverse && wordAsked(prompt)),
           // Why each wrong answer is wrong, said when it was picked.
           ...(!inverse && card.pourquoi && { whyNot: card.pourquoi }),
           mode: 'choice',
