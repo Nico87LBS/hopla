@@ -105,6 +105,15 @@ type CatalogueEntry struct {
 	Children    []string `json:"children"`
 }
 
+// getCatalogue godoc
+//
+//	@Summary		Catalogue des modules Apprendre
+//	@Tags			Apprendre
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/catalogue [get]
 func (h *Handler) getCatalogue(c *gin.Context) {
 	ids, err := learn.CatalogueIDs()
 	if err != nil {
@@ -139,6 +148,15 @@ type Installed struct {
 	Day        string                    `json:"day"`
 }
 
+// getModules godoc
+//
+//	@Summary		Modules installés, activations et réglages
+//	@Tags			Apprendre
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/modules [get]
 func (h *Handler) getModules(c *gin.Context) {
 	who, ok := h.caller(c)
 	if !ok {
@@ -195,6 +213,15 @@ func (h *Handler) getModules(c *gin.Context) {
 		Day: learn.Day(who.familyID, time.Now().UTC())}})
 }
 
+// install godoc
+//
+//	@Summary		Installer un module du catalogue
+//	@Tags			Apprendre
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/modules/install [post]
 func (h *Handler) install(c *gin.Context) {
 	who, ok := h.requireParent(c)
 	if !ok {
@@ -215,6 +242,14 @@ func (h *Handler) install(c *gin.Context) {
 }
 
 // importModule takes a module document written by the family, as the body.
+//
+//	@Summary		Importer un fichier de module
+//	@Tags			Apprendre
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/modules/import [post]
 func (h *Handler) importModule(c *gin.Context) {
 	who, ok := h.requireParent(c)
 	if !ok {
@@ -233,6 +268,16 @@ func (h *Handler) importModule(c *gin.Context) {
 	c.JSON(200, gin.H{"res": module})
 }
 
+// remove godoc
+//
+//	@Summary		Désinstaller un module
+//	@Tags			Apprendre
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			key	path	string	true	"Clé du module"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/modules/{key} [delete]
 func (h *Handler) remove(c *gin.Context) {
 	who, ok := h.requireParent(c)
 	if !ok {
@@ -245,6 +290,15 @@ func (h *Handler) remove(c *gin.Context) {
 	c.JSON(200, gin.H{"res": "ok"})
 }
 
+// setActivation godoc
+//
+//	@Summary		Activer ou couper un module pour une personne
+//	@Tags			Apprendre
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/activations [put]
 func (h *Handler) setActivation(c *gin.Context) {
 	who, ok := h.requireParent(c)
 	if !ok {
@@ -262,6 +316,15 @@ func (h *Handler) setActivation(c *gin.Context) {
 	h.getModules(c)
 }
 
+// setSetting godoc
+//
+//	@Summary		Changer un réglage Apprendre
+//	@Tags			Apprendre
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/settings [put]
 func (h *Handler) setSetting(c *gin.Context) {
 	who, ok := h.requireParent(c)
 	if !ok {
@@ -279,6 +342,16 @@ func (h *Handler) setSetting(c *gin.Context) {
 	h.getModules(c)
 }
 
+// getStats godoc
+//
+//	@Summary		Statistiques d'un module
+//	@Tags			Apprendre
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			key	path	string	true	"Clé du module"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/stats/{key} [get]
 func (h *Handler) getStats(c *gin.Context) {
 	who, ok := h.requireParent(c)
 	if !ok {
@@ -292,6 +365,16 @@ func (h *Handler) getStats(c *gin.Context) {
 	c.JSON(200, gin.H{"res": stats})
 }
 
+// getDetail godoc
+//
+//	@Summary		Détail d'un module (chapitres et fiches)
+//	@Tags			Apprendre
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			key	path	string	true	"Clé du module"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/modules/{key} [get]
 func (h *Handler) getDetail(c *gin.Context) {
 	who, ok := h.requireParent(c)
 	if !ok {
@@ -305,6 +388,15 @@ func (h *Handler) getDetail(c *gin.Context) {
 	c.JSON(200, gin.H{"res": detail})
 }
 
+// editCard godoc
+//
+//	@Summary		Corriger une fiche pour la famille
+//	@Tags			Apprendre
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/cards [put]
 func (h *Handler) editCard(c *gin.Context) {
 	who, ok := h.requireParent(c)
 	if !ok {
@@ -328,6 +420,18 @@ func (h *Handler) editCard(c *gin.Context) {
 	c.JSON(200, gin.H{"res": detail})
 }
 
+// addReport godoc
+//
+//	@Summary		Signaler une fiche
+//	@Description	Même traitement pour : POST /api/v1/learn/play/reports
+//	@Tags			Apprendre,Session de jeu
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Security		PlayKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/reports [post]
+//	@Router			/api/v1/learn/play/reports [post]
 func (h *Handler) addReport(c *gin.Context) {
 	who, ok := h.caller(c)
 	if !ok {
@@ -349,6 +453,15 @@ func (h *Handler) addReport(c *gin.Context) {
 	c.JSON(200, gin.H{"res": "ok"})
 }
 
+// exportReports godoc
+//
+//	@Summary		Exporter les signalements
+//	@Tags			Apprendre
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/reports/export [get]
 func (h *Handler) exportReports(c *gin.Context) {
 	who, ok := h.requireParent(c)
 	if !ok {
@@ -362,6 +475,16 @@ func (h *Handler) exportReports(c *gin.Context) {
 	c.JSON(200, gin.H{"res": reports})
 }
 
+// resolveReport godoc
+//
+//	@Summary		Marquer un signalement comme traité
+//	@Tags			Apprendre
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/reports/{id}/resolve [put]
 func (h *Handler) resolveReport(c *gin.Context) {
 	who, ok := h.requireParent(c)
 	if !ok {
@@ -379,6 +502,16 @@ func (h *Handler) resolveReport(c *gin.Context) {
 	c.JSON(200, gin.H{"res": "ok"})
 }
 
+// getPlayer godoc
+//
+//	@Summary		Modules, réglages et progrès d'une personne
+//	@Tags			Apprendre
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			userId	path	integer	true	"Identifiant de la personne"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/players/{userId} [get]
 func (h *Handler) getPlayer(c *gin.Context) {
 	who, ok := h.caller(c)
 	if !ok {
@@ -397,6 +530,18 @@ func (h *Handler) getPlayer(c *gin.Context) {
 	c.JSON(200, gin.H{"res": player})
 }
 
+// recordGame godoc
+//
+//	@Summary		Enregistrer une partie
+//	@Description	Même traitement pour : POST /api/v1/learn/play/games
+//	@Tags			Apprendre,Session de jeu
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Security		PlayKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/games [post]
+//	@Router			/api/v1/learn/play/games [post]
 func (h *Handler) recordGame(c *gin.Context) {
 	who, ok := h.caller(c)
 	if !ok {
@@ -451,6 +596,17 @@ func Routes(r *gin.Engine, h *Handler, auth *jwt.GinJWTMiddleware) {
 
 // getVoices lists the voices of the speech server; none when no server is
 // set or it does not answer, and the devices use their own.
+//
+//	@Summary		Voix du serveur
+//	@Description	Même traitement pour : GET /api/v1/learn/play/voices
+//	@Tags			Apprendre,Session de jeu
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Security		PlayKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/voices [get]
+//	@Router			/api/v1/learn/play/voices [get]
 func (h *Handler) getVoices(c *gin.Context) {
 	if _, ok := h.caller(c); !ok {
 		return
@@ -467,6 +623,17 @@ func (h *Handler) getVoices(c *gin.Context) {
 
 // speak answers with a sentence said by a voice of the speech server, as a
 // WAV sound the devices keep.
+//
+//	@Summary		Lire un texte avec la voix du serveur
+//	@Description	Même traitement pour : GET /api/v1/learn/play/speak
+//	@Tags			Apprendre,Session de jeu
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Security		PlayKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/speak [get]
+//	@Router			/api/v1/learn/play/speak [get]
 func (h *Handler) speak(c *gin.Context) {
 	if _, ok := h.caller(c); !ok {
 		return

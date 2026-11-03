@@ -33,6 +33,8 @@ jobs:
           go-version-file: go.mod
       - name: Check time.Now().UTC() usage
         run: bash scripts/check-time-utc.sh
+      - name: Swagger description is up to date
+        run: bash scripts/check-swagger.sh
       - run: go vet ./...
       - run: go test ./...
 

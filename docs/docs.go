@@ -10,12 +10,70 @@ const docTemplate = `{
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
         "contact": {},
+        "license": {
+            "name": "GNU Affero General Public License v3.0",
+            "url": "https://github.com/Nico87LBS/hopla/blob/main/LICENSE"
+        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/chores": {
+        "/api/v1/assets/chore": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Fichiers"
+                ],
+                "summary": "Envoyer une pièce jointe de tâche",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Fichiers"
+                ],
+                "summary": "Supprimer une pièce jointe pas encore enregistrée",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/assets/{filepath}": {
             "get": {
                 "security": [
                     {
@@ -25,7 +83,75 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Retrieves all chores for the current user's family with optional archived chores",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Fichiers"
+                ],
+                "summary": "Télécharger un fichier enregistré",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Chemin du fichier",
+                        "name": "filepath",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Connexion"
+                ],
+                "summary": "Créer un compte",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/login": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Connexion"
+                ],
+                "summary": "Se connecter",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/login/legacy": {
+            "post": {
                 "consumes": [
                     "application/json"
                 ],
@@ -33,26 +159,233 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Connexion"
                 ],
-                "summary": "Get all chores",
+                "summary": "Se connecter (ancienne méthode)",
+                "parameters": [
+                    {
+                        "description": "Nom d'utilisateur et mot de passe",
+                        "name": "identifiants",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/logout": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Connexion"
+                ],
+                "summary": "Se déconnecter",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/mfa/verify": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Connexion"
+                ],
+                "summary": "Vérifier le code de double authentification",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/password": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Connexion"
+                ],
+                "summary": "Choisir un nouveau mot de passe avec le lien reçu",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/refresh": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Connexion"
+                ],
+                "summary": "Renouveler le jeton de connexion",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/reset": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Connexion"
+                ],
+                "summary": "Demander un nouveau mot de passe",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/revoke-all": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Connexion"
+                ],
+                "summary": "Déconnecter tous les appareils",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/{provider}/callback": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Connexion"
+                ],
+                "summary": "Retour de connexion par un fournisseur externe",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Fournisseur de connexion",
+                        "name": "provider",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/chores": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tâches"
+                ],
+                "summary": "Lister les tâches de la famille",
                 "parameters": [
                     {
                         "type": "boolean",
-                        "description": "Include archived chores",
+                        "description": "Paramètre includeArchived",
                         "name": "includeArchived",
                         "in": "query"
                     },
                     {
                         "type": "boolean",
-                        "description": "Include subtasks for chore",
+                        "description": "Paramètre includeSubtasks",
                         "name": "includeSubtasks",
                         "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "res: array of chores",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -60,24 +393,6 @@ const docTemplate = `{
                                 "items": {
                                     "$ref": "#/definitions/model.Chore"
                                 }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to retrieve chores",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
                             }
                         }
                     }
@@ -92,7 +407,6 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Updates chore details including assignees, labels, subtasks, and metadata",
                 "consumes": [
                     "application/json"
                 ],
@@ -100,12 +414,12 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Tâches"
                 ],
-                "summary": "Edit an existing chore",
+                "summary": "Modifier une tâche",
                 "parameters": [
                     {
-                        "description": "Chore update request",
+                        "description": "Corps de la requête",
                         "name": "chore",
                         "in": "body",
                         "required": true,
@@ -116,43 +430,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "message: Chore updated successfully",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid request format | Invalid date | Assignee not found in family | Assigned to not found in assignees",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: You cannot edit this chore",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to retrieve chore | Error adding chore | Error adding subtasks",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -171,7 +449,6 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Creates a new chore with assignees, labels, and optional configurations",
                 "consumes": [
                     "application/json"
                 ],
@@ -179,12 +456,12 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Tâches"
                 ],
-                "summary": "Create a new chore",
+                "summary": "Créer une tâche",
                 "parameters": [
                     {
-                        "description": "Chore creation request",
+                        "description": "Corps de la requête",
                         "name": "chore",
                         "in": "body",
                         "required": true,
@@ -195,45 +472,18 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "res: created chore ID",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
                                 "type": "integer"
                             }
                         }
-                    },
-                    "400": {
-                        "description": "error: Invalid request format | Assignee not found in family | Invalid date",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to create chore | Error adding labels | Error adding chore assignees",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
                     }
                 }
             }
         },
-        "/chores/archived": {
+        "/api/v1/chores/archived": {
             "get": {
                 "security": [
                     {
@@ -243,7 +493,6 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Retrieves all archived chores for the current user's family",
                 "consumes": [
                     "application/json"
                 ],
@@ -251,12 +500,12 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Tâches"
                 ],
-                "summary": "Get archived chores",
+                "summary": "Lister les tâches archivées",
                 "responses": {
                     "200": {
-                        "description": "res: array of archived chores",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -266,29 +515,11 @@ const docTemplate = `{
                                 }
                             }
                         }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to retrieve archived chores",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
                     }
                 }
             }
         },
-        "/chores/calendar/url": {
+        "/api/v1/chores/calendar/url": {
             "get": {
                 "security": [
                     {
@@ -298,35 +529,16 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Returns the current user's existing iCal calendar subscription URL. Returns 404 if none has been generated yet.",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Agenda"
                 ],
-                "summary": "Get calendar subscription URL",
+                "summary": "Lire l'adresse de l'agenda",
                 "responses": {
                     "200": {
-                        "description": "url: calendar subscription URL",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "error: No calendar URL generated",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -345,17 +557,16 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Generates a calendar subscription URL for the current user. Idempotent: returns the existing URL if one was already generated.",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Agenda"
                 ],
-                "summary": "Generate calendar subscription URL",
+                "summary": "Créer l'adresse de l'agenda",
                 "responses": {
                     "200": {
-                        "description": "url: existing calendar subscription URL",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -364,16 +575,7 @@ const docTemplate = `{
                         }
                     },
                     "201": {
-                        "description": "url: newly generated calendar subscription URL",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
+                        "description": "Created",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -392,34 +594,24 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Revokes the current user's calendar subscription URL. Existing subscriptions stop working immediately.",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Agenda"
                 ],
-                "summary": "Revoke calendar subscription URL",
+                "summary": "Supprimer l'adresse de l'agenda",
                 "responses": {
                     "204": {
-                        "description": "No content",
+                        "description": "No Content",
                         "schema": {
                             "type": "string"
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
                         }
                     }
                 }
             }
         },
-        "/chores/calendar/url/rotate": {
+        "/api/v1/chores/calendar/url/rotate": {
             "post": {
                 "security": [
                     {
@@ -429,26 +621,16 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Issues a new calendar subscription URL and immediately invalidates the previous one.",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Agenda"
                 ],
-                "summary": "Rotate calendar subscription URL",
+                "summary": "Changer l'adresse de l'agenda",
                 "responses": {
                     "200": {
-                        "description": "url: new calendar subscription URL",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -459,20 +641,19 @@ const docTemplate = `{
                 }
             }
         },
-        "/chores/calendar/{token}": {
+        "/api/v1/chores/calendar/{token}": {
             "get": {
-                "description": "Serves an iCal (.ics) calendar file containing the user's chores. Authenticated via a revocable token in the URL.",
                 "produces": [
-                    "text/calendar"
+                    "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Agenda"
                 ],
-                "summary": "Serve iCal calendar feed",
+                "summary": "Agenda des tâches au format iCalendar",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Calendar token (obtained from /chores/calendar/url)",
+                        "description": "Jeton secret de l'agenda",
                         "name": "token",
                         "in": "path",
                         "required": true
@@ -480,19 +661,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "iCal calendar data",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "403": {
-                        "description": "Invalid calendar token",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Failed to generate calendar",
+                        "description": "OK",
                         "schema": {
                             "type": "string"
                         }
@@ -500,20 +669,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/chores/flashes": {
-            "get": {
-                "description": "The speed bonus open now on each task that has one, by task",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "chores"
-                ],
-                "summary": "Speed bonuses open now",
-                "responses": {}
-            }
-        },
-        "/chores/history": {
+        "/api/v1/chores/flashes": {
             "get": {
                 "security": [
                     {
@@ -523,7 +679,34 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Retrieves completion history for all chores for the current user",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tâches"
+                ],
+                "summary": "Bonus chrono en cours sur les tâches",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/chores/history": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -531,26 +714,26 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Tâches"
                 ],
-                "summary": "Get chores history for user",
+                "summary": "Historique de toutes les tâches",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Number of days to retrieve history (default: 7)",
+                        "description": "Paramètre limit",
                         "name": "limit",
                         "in": "query"
                     },
                     {
                         "type": "boolean",
-                        "description": "Include other family members' history",
+                        "description": "Paramètre members",
                         "name": "members",
                         "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "res: array of chore history entries",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -560,51 +743,11 @@ const docTemplate = `{
                                 }
                             }
                         }
-                    },
-                    "400": {
-                        "description": "error: Invalid duration",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to fetch user's chore history",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
                     }
                 }
             }
         },
-        "/chores/slots": {
-            "get": {
-                "description": "Today's slots of every task done several times a day, by task",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "chores"
-                ],
-                "summary": "Today's slots",
-                "responses": {}
-            }
-        },
-        "/chores/{id}": {
+        "/api/v1/chores/slots": {
             "get": {
                 "security": [
                     {
@@ -614,7 +757,34 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Retrieves detailed information about a specific chore by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tâches"
+                ],
+                "summary": "Créneaux du jour de chaque tâche",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/chores/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -622,13 +792,13 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Tâches"
                 ],
-                "summary": "Get a specific chore",
+                "summary": "Lire une tâche",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Chore ID",
+                        "description": "Identifiant",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -636,47 +806,11 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "res: chore object",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
                                 "$ref": "#/definitions/model.Chore"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid chore ID",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: You are not allowed to view this chore",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to retrieve chore",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
                             }
                         }
                     }
@@ -691,7 +825,6 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Deletes a chore and associated notifications (owner only)",
                 "consumes": [
                     "application/json"
                 ],
@@ -699,13 +832,13 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Tâches"
                 ],
-                "summary": "Delete a chore",
+                "summary": "Supprimer une tâche",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Chore ID",
+                        "description": "Identifiant",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -713,43 +846,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "message: Chore deleted successfully",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid ID",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: You are not allowed to delete this chore",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to retrieve chore | Failed to delete chore",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -760,7 +857,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/chores/{id}/approve": {
+        "/api/v1/chores/{id}/approve": {
             "post": {
                 "security": [
                     {
@@ -770,7 +867,7 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Approves a pending chore completion (admin/manager only)",
+                "description": "Même traitement pour : POST /eapi/v1/chore/{id}/approve",
                 "consumes": [
                     "application/json"
                 ],
@@ -778,13 +875,13 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Tâches"
                 ],
-                "summary": "Approve a chore completion",
+                "summary": "Valider une tâche faite",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Chore ID",
+                        "description": "Identifiant",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -792,54 +889,18 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "res: updated chore",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
                                 "$ref": "#/definitions/model.Chore"
                             }
                         }
-                    },
-                    "400": {
-                        "description": "error: Invalid ID | Chore is not pending approval",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: Only admins can approve chores",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to retrieve chore | Error approving chore",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
                     }
                 }
             }
         },
-        "/chores/{id}/archive": {
+        "/api/v1/chores/{id}/archive": {
             "put": {
                 "security": [
                     {
@@ -849,7 +910,6 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Archives a chore, hiding it from the main list",
                 "consumes": [
                     "application/json"
                 ],
@@ -857,13 +917,13 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Tâches"
                 ],
-                "summary": "Archive a chore",
+                "summary": "Archiver une tâche",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Chore ID",
+                        "description": "Identifiant",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -871,34 +931,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "message: Chore archived successfully",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid ID",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Error archiving chore",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -909,7 +942,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/chores/{id}/assignee": {
+        "/api/v1/chores/{id}/assignee": {
             "put": {
                 "security": [
                     {
@@ -919,7 +952,6 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Updates the currently assigned user for a chore",
                 "consumes": [
                     "application/json"
                 ],
@@ -927,19 +959,19 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Tâches"
                 ],
-                "summary": "Update chore assignee",
+                "summary": "Changer la personne d'une tâche",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Chore ID",
+                        "description": "Identifiant",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "Assignee update request",
+                        "description": "Corps de la requête",
                         "name": "assignee",
                         "in": "body",
                         "required": true,
@@ -950,54 +982,18 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "res: updated chore",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
                                 "$ref": "#/definitions/model.Chore"
                             }
                         }
-                    },
-                    "400": {
-                        "description": "error: Invalid ID | Invalid request | Assignee not found in assignees",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: You cannot edit this chore",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to retrieve chore | Error updating assignee",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
                     }
                 }
             }
         },
-        "/chores/{id}/details": {
+        "/api/v1/chores/{id}/attachments": {
             "get": {
                 "security": [
                     {
@@ -1007,21 +1003,17 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Retrieves comprehensive details about a chore including metadata",
-                "consumes": [
-                    "application/json"
-                ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Fichiers"
                 ],
-                "summary": "Get chore details",
+                "summary": "Pièces jointes d'une tâche",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Chore ID",
+                        "description": "Identifiant",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -1029,43 +1021,91 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "res: detailed chore information",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": true
                         }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
                     },
-                    "400": {
-                        "description": "error: Invalid ID",
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Fichiers"
+                ],
+                "summary": "Supprimer une pièce jointe d'une tâche",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
                         "schema": {
                             "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to fetch chore details",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "additionalProperties": true
                         }
                     }
                 }
             }
         },
-        "/chores/{id}/do": {
+        "/api/v1/chores/{id}/details": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tâches"
+                ],
+                "summary": "Détail d'une tâche (dernière réalisation, statistiques)",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/chores/{id}/do": {
             "post": {
                 "security": [
                     {
@@ -1075,7 +1115,6 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Marks a chore as completed and schedules the next occurrence (supports impersonation)",
                 "consumes": [
                     "application/json"
                 ],
@@ -1083,19 +1122,19 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Tâches"
                 ],
-                "summary": "Complete a chore",
+                "summary": "Marquer une tâche comme faite",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Chore ID",
+                        "description": "Identifiant",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "Completion details",
+                        "description": "Corps de la requête",
                         "name": "completion",
                         "in": "body",
                         "schema": {
@@ -1105,54 +1144,18 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "res: updated chore",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
                                 "$ref": "#/definitions/model.Chore"
                             }
                         }
-                    },
-                    "400": {
-                        "description": "error: Invalid ID | Invalid date | User is not assigned to chore | Chore is out of completion window",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: You are not allowed to complete this action",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to retrieve chore | Error completing chore",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
                     }
                 }
             }
         },
-        "/chores/{id}/dueDate": {
+        "/api/v1/chores/{id}/dueDate": {
             "put": {
                 "security": [
                     {
@@ -1162,7 +1165,6 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Updates the next due date for a chore (can be set to null)",
                 "consumes": [
                     "application/json"
                 ],
@@ -1170,19 +1172,19 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Tâches"
                 ],
-                "summary": "Update chore due date",
+                "summary": "Changer l'échéance d'une tâche",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Chore ID",
+                        "description": "Identifiant",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "Due date update request",
+                        "description": "Corps de la requête",
                         "name": "dueDate",
                         "in": "body",
                         "required": true,
@@ -1193,54 +1195,18 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "res: updated chore",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
                                 "$ref": "#/definitions/model.Chore"
                             }
                         }
-                    },
-                    "400": {
-                        "description": "error: Invalid ID | Invalid request | Invalid date",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: You cannot edit this chore",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to retrieve chore | Error updating due date",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
                     }
                 }
             }
         },
-        "/chores/{id}/history": {
+        "/api/v1/chores/{id}/history": {
             "get": {
                 "security": [
                     {
@@ -1250,7 +1216,6 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Retrieves the completion history for a specific chore",
                 "consumes": [
                     "application/json"
                 ],
@@ -1258,13 +1223,13 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Tâches"
                 ],
-                "summary": "Get chore history",
+                "summary": "Historique d'une tâche",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Chore ID",
+                        "description": "Identifiant",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -1272,7 +1237,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "res: array of chore history entries",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -1282,29 +1247,11 @@ const docTemplate = `{
                                 }
                             }
                         }
-                    },
-                    "400": {
-                        "description": "error: Invalid ID",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to fetch chore history",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
                     }
                 }
             }
         },
-        "/chores/{id}/history/{history_id}": {
+        "/api/v1/chores/{id}/history/{history_id}": {
             "put": {
                 "security": [
                     {
@@ -1314,7 +1261,6 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Updates a specific chore history entry (performed date, due date, notes)",
                 "consumes": [
                     "application/json"
                 ],
@@ -1322,26 +1268,26 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Tâches"
                 ],
-                "summary": "Modify chore history entry",
+                "summary": "Modifier une ligne d'historique",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Chore ID",
+                        "description": "Identifiant",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "integer",
-                        "description": "History ID",
+                        "description": "Identifiant de la ligne d'historique",
                         "name": "history_id",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "History modification request",
+                        "description": "Corps de la requête",
                         "name": "history",
                         "in": "body",
                         "required": true,
@@ -1352,47 +1298,11 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "res: updated history entry",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
                                 "$ref": "#/definitions/model.ChoreHistory"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid Chore ID | Invalid History ID | Invalid request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: You are not allowed to modify this history",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to fetch chore history entry | Error updating history",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
                             }
                         }
                     }
@@ -1407,7 +1317,6 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Deletes a specific chore history entry (creator only)",
                 "consumes": [
                     "application/json"
                 ],
@@ -1415,20 +1324,20 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Tâches"
                 ],
-                "summary": "Delete chore history entry",
+                "summary": "Supprimer une ligne d'historique",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Chore ID",
+                        "description": "Identifiant",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "integer",
-                        "description": "History ID",
+                        "description": "Identifiant de la ligne d'historique",
                         "name": "history_id",
                         "in": "path",
                         "required": true
@@ -1436,43 +1345,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "message: History deleted successfully",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid Chore ID | Invalid History ID",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: You are not allowed to delete this history",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to fetch chore history entry | Error deleting history",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -1483,7 +1356,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/chores/{id}/reject": {
+        "/api/v1/chores/{id}/reject": {
             "post": {
                 "security": [
                     {
@@ -1493,7 +1366,7 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Rejects a pending chore completion and returns it to no status (admin/manager only)",
+                "description": "Même traitement pour : POST /eapi/v1/chore/{id}/reject",
                 "consumes": [
                     "application/json"
                 ],
@@ -1501,19 +1374,19 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Tâches"
                 ],
-                "summary": "Reject a chore completion",
+                "summary": "Refuser une tâche faite",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Chore ID",
+                        "description": "Identifiant",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "Rejection details",
+                        "description": "Corps de la requête",
                         "name": "rejection",
                         "in": "body",
                         "schema": {
@@ -1523,52 +1396,16 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "res: updated chore, message: Chore rejected successfully",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": true
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid ID | Chore is not pending approval",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: Only admins can reject chores",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to retrieve chore | Error rejecting chore",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
                         }
                     }
                 }
             }
         },
-        "/chores/{id}/skip": {
+        "/api/v1/chores/{id}/skip": {
             "post": {
                 "security": [
                     {
@@ -1578,7 +1415,6 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Skips the current chore iteration and schedules the next due date (supports impersonation)",
                 "consumes": [
                     "application/json"
                 ],
@@ -1586,13 +1422,13 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Tâches"
                 ],
-                "summary": "Skip a chore",
+                "summary": "Passer une tâche",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Chore ID",
+                        "description": "Identifiant",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -1600,76 +1436,73 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "res: updated chore",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
                                 "$ref": "#/definitions/model.Chore"
                             }
                         }
-                    },
-                    "400": {
-                        "description": "error: Invalid ID",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to retrieve chore | Error scheduling next due date | Error completing chore",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
                     }
                 }
             }
         },
-        "/chores/{id}/slots/{slot}/approve": {
+        "/api/v1/chores/{id}/slots/{slot}/approve": {
             "post": {
-                "description": "Approves a slot ticked by a child that waits for a parent (admin/manager only)",
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /eapi/v1/chore/{id}/slots/{slot}/approve",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Tâches"
                 ],
-                "summary": "Approve a slot of the day",
+                "summary": "Valider un créneau",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Chore ID",
+                        "description": "Identifiant",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "integer",
-                        "description": "Slot index",
+                        "description": "Numéro du créneau",
                         "name": "slot",
                         "in": "path",
                         "required": true
                     }
                 ],
-                "responses": {}
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
             }
         },
-        "/chores/{id}/slots/{slot}/catchup": {
+        "/api/v1/chores/{id}/slots/{slot}/catchup": {
             "post": {
-                "description": "Marks an open or missed slot of today done for a child, without approval (admin/manager only)",
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /eapi/v1/chore/{id}/slots/{slot}/catchup",
                 "consumes": [
                     "application/json"
                 ],
@@ -1677,26 +1510,26 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Tâches"
                 ],
-                "summary": "Tick a slot of the day as a parent",
+                "summary": "Rattraper un créneau oublié",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Chore ID",
+                        "description": "Identifiant",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "integer",
-                        "description": "Slot index",
+                        "description": "Numéro du créneau",
                         "name": "slot",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "Who did it",
+                        "description": "Corps de la requête",
                         "name": "body",
                         "in": "body",
                         "schema": {
@@ -1704,39 +1537,63 @@ const docTemplate = `{
                         }
                     }
                 ],
-                "responses": {}
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
             }
         },
-        "/chores/{id}/slots/{slot}/reject": {
+        "/api/v1/chores/{id}/slots/{slot}/reject": {
             "post": {
-                "description": "Turns down a slot ticked by a child: it is to do again while open (admin/manager only)",
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /eapi/v1/chore/{id}/slots/{slot}/reject",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Tâches"
                 ],
-                "summary": "Reject a slot of the day",
+                "summary": "Refuser un créneau",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Chore ID",
+                        "description": "Identifiant",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "integer",
-                        "description": "Slot index",
+                        "description": "Numéro du créneau",
                         "name": "slot",
                         "in": "path",
                         "required": true
                     }
                 ],
-                "responses": {}
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
             }
         },
-        "/chores/{id}/subtask": {
+        "/api/v1/chores/{id}/subtask": {
             "put": {
                 "security": [
                     {
@@ -1746,7 +1603,6 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Marks a subtask as completed or uncompleted (supports impersonation)",
                 "consumes": [
                     "application/json"
                 ],
@@ -1754,19 +1610,19 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Tâches"
                 ],
-                "summary": "Update subtask completion status",
+                "summary": "Cocher ou décocher une sous-tâche",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Chore ID",
+                        "description": "Identifiant",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "Subtask completion request",
+                        "description": "Corps de la requête",
                         "name": "subtask",
                         "in": "body",
                         "required": true,
@@ -1777,43 +1633,16 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "Empty success response",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": true
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid Chore ID | Invalid request | User is not assigned to chore",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to retrieve chore | Error getting subtask",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
                         }
                     }
                 }
             }
         },
-        "/chores/{id}/unarchive": {
+        "/api/v1/chores/{id}/unarchive": {
             "put": {
                 "security": [
                     {
@@ -1823,7 +1652,6 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Restores an archived chore to the main list",
                 "consumes": [
                     "application/json"
                 ],
@@ -1831,13 +1659,13 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Tâches"
                 ],
-                "summary": "Unarchive a chore",
+                "summary": "Désarchiver une tâche",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Chore ID",
+                        "description": "Identifiant",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -1845,34 +1673,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "message: Chore unarchived successfully",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid ID",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Error unarchiving chore",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -1883,7 +1684,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/chores/{id}/undo": {
+        "/api/v1/chores/{id}/undo": {
             "post": {
                 "security": [
                     {
@@ -1893,7 +1694,6 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Undoes the most recent action (completion, skip, approval submission, or rejection) performed by the current user on a chore within the last 5 minutes",
                 "consumes": [
                     "application/json"
                 ],
@@ -1901,13 +1701,13 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "chores"
+                    "Tâches"
                 ],
-                "summary": "Undo a chore action",
+                "summary": "Annuler la dernière réalisation",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Chore ID",
+                        "description": "Identifiant",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -1915,43 +1715,16 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "message: Successfully undid {action} action, res: updated chore object",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": true
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid chore ID | No recent action found to undo | Cannot undo this type of action",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Failed to retrieve chore | Failed to check recent actions | Failed to undo action | Failed to restore pending approval status | Failed to retrieve updated chore",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
                         }
                     }
                 }
             }
         },
-        "/families": {
+        "/api/v1/families": {
             "get": {
                 "security": [
                     {
@@ -1961,7 +1734,6 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Retrieves all families the current user belongs to",
                 "consumes": [
                     "application/json"
                 ],
@@ -1969,12 +1741,12 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "families"
+                    "Famille"
                 ],
-                "summary": "Get user families",
+                "summary": "Familles de l'utilisateur",
                 "responses": {
                     "200": {
-                        "description": "res: array of families",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -1984,178 +1756,11 @@ const docTemplate = `{
                                 }
                             }
                         }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Error getting user families",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
                     }
                 }
             }
         },
-        "/families/join": {
-            "post": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Requests to join a family using an invite code",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "families"
-                ],
-                "summary": "Request to join a family",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Invite code",
-                        "name": "invite_code",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "res: User Requested to join family successfully",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "409": {
-                        "description": "error: You are already a member of this family",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Error adding user to family",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/families/leave": {
-            "delete": {
-                "security": [
-                    {
-                        "JWTKeyAuth": []
-                    },
-                    {
-                        "APIKeyAuth": []
-                    }
-                ],
-                "description": "Removes the current user from a family and restores their original family",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "families"
-                ],
-                "summary": "Leave a family",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Family ID",
-                        "name": "family_id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "res: User left family successfully",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Error leaving family",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/families/members": {
+        "/api/v1/families/currency": {
             "get": {
                 "security": [
                     {
@@ -2165,7 +1770,60 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Retrieves all members of the current user's family",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Famille"
+                ],
+                "summary": "Monnaie de la famille (hops, points…)",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Famille"
+                ],
+                "summary": "Changer la monnaie de la famille",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/families/join": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -2173,24 +1831,21 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "families"
+                    "Famille"
                 ],
-                "summary": "Get family members",
+                "summary": "Rejoindre une famille avec son code",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Paramètre invite_code",
+                        "name": "invite_code",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "res: array of family members",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/definitions/family.UserFamilyDetail"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Error getting family members",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -2201,7 +1856,85 @@ const docTemplate = `{
                 }
             }
         },
-        "/families/members/away": {
+        "/api/v1/families/leave": {
+            "delete": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Famille"
+                ],
+                "summary": "Quitter la famille",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Paramètre family_id",
+                        "name": "family_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/families/members": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Famille"
+                ],
+                "summary": "Membres de la famille",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/family.UserFamilyDetail"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/families/members/away": {
             "put": {
                 "security": [
                     {
@@ -2211,7 +1944,6 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Pauses a member's tasks, streak and quests while they are away, such as a child at the other parent's home (admin/manager only). Coming back makes the tasks that fell due meanwhile due today.",
                 "consumes": [
                     "application/json"
                 ],
@@ -2219,12 +1951,12 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "families"
+                    "Famille"
                 ],
-                "summary": "Mark a member away or back home",
+                "summary": "Mettre un membre en « Pas là »",
                 "parameters": [
                     {
-                        "description": "Who and where",
+                        "description": "Corps de la requête",
                         "name": "away",
                         "in": "body",
                         "required": true,
@@ -2243,45 +1975,18 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "res: whether anything changed",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
                                 "type": "boolean"
                             }
                         }
-                    },
-                    "400": {
-                        "description": "error: Invalid request / User is not a member of this family",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: Only parents can do this",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Error changing the member's presence",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
                     }
                 }
             }
         },
-        "/families/members/requests": {
+        "/api/v1/families/members/requests": {
             "get": {
                 "security": [
                     {
@@ -2291,7 +1996,6 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Retrieves pending family join requests (admin only)",
                 "consumes": [
                     "application/json"
                 ],
@@ -2299,12 +2003,12 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "families"
+                    "Famille"
                 ],
-                "summary": "Get pending join requests",
+                "summary": "Demandes pour rejoindre la famille",
                 "responses": {
                     "200": {
-                        "description": "res: array of pending members",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -2314,38 +2018,11 @@ const docTemplate = `{
                                 }
                             }
                         }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: You are not an admin of this family",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Error getting pending family members",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
                     }
                 }
             }
         },
-        "/families/members/requests/accept": {
+        "/api/v1/families/members/requests/accept": {
             "put": {
                 "security": [
                     {
@@ -2355,7 +2032,6 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Accepts a pending family join request (admin only)",
                 "consumes": [
                     "application/json"
                 ],
@@ -2363,13 +2039,13 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "families"
+                    "Famille"
                 ],
-                "summary": "Accept a join request",
+                "summary": "Accepter une demande",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Request ID",
+                        "description": "Paramètre requestId",
                         "name": "requestId",
                         "in": "query",
                         "required": true
@@ -2377,43 +2053,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "res: Join request accepted successfully",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid request / Family is full",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: You are not an admin of this family",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Error accepting join request",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -2424,7 +2064,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/families/members/requests/decline": {
+        "/api/v1/families/members/requests/decline": {
             "delete": {
                 "security": [
                     {
@@ -2434,7 +2074,6 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Declines a pending family join request (admin only). The request is removed, so the user may request to join again later.",
                 "consumes": [
                     "application/json"
                 ],
@@ -2442,13 +2081,13 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "families"
+                    "Famille"
                 ],
-                "summary": "Decline a join request",
+                "summary": "Refuser une demande",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Request ID",
+                        "description": "Paramètre requestId",
                         "name": "requestId",
                         "in": "query",
                         "required": true
@@ -2456,43 +2095,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "res: Join request declined successfully",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: You are not an admin of this family",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Error declining join request",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -2503,7 +2106,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/families/members/role": {
+        "/api/v1/families/members/role": {
             "put": {
                 "security": [
                     {
@@ -2513,7 +2116,6 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Changes the role of a family member (admin only)",
                 "consumes": [
                     "application/json"
                 ],
@@ -2521,12 +2123,12 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "families"
+                    "Famille"
                 ],
-                "summary": "Change member role",
+                "summary": "Changer le rôle d'un membre",
                 "parameters": [
                     {
-                        "description": "Role change request",
+                        "description": "Corps de la requête",
                         "name": "role",
                         "in": "body",
                         "required": true,
@@ -2545,43 +2147,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "res: Member role changed successfully",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid request / Invalid role / User is not a member of this family",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: You are not an admin of this family",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Error changing member role",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -2592,7 +2158,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/families/timezone": {
+        "/api/v1/families/timezone": {
             "get": {
                 "security": [
                     {
@@ -2602,17 +2168,16 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Every date of the family follows this zone, whatever the device's. It is the server's unless the family moved, such as on holiday.",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "families"
+                    "Famille"
                 ],
-                "summary": "Get the family's time zone",
+                "summary": "Fuseau de la famille",
                 "responses": {
                     "200": {
-                        "description": "res: the family's zone",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -2631,7 +2196,6 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Sets the zone every date of the family follows, such as on holiday (admin/manager only). Tasks keep their time of day. An empty zone, or the server's, brings the family back home.",
                 "consumes": [
                     "application/json"
                 ],
@@ -2639,12 +2203,12 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "families"
+                    "Famille"
                 ],
-                "summary": "Move the family to another time zone",
+                "summary": "Changer le fuseau de la famille",
                 "parameters": [
                     {
-                        "description": "IANA zone, such as Europe/Lisbon",
+                        "description": "Corps de la requête",
                         "name": "timezone",
                         "in": "body",
                         "required": true,
@@ -2660,36 +2224,18 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "res: the family's zone",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
                                 "$ref": "#/definitions/chore.FamilyTimezone"
                             }
                         }
-                    },
-                    "400": {
-                        "description": "error: Invalid request / Invalid timezone",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: Only parents can do this",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
                     }
                 }
             }
         },
-        "/families/{id}/members/delete": {
+        "/api/v1/families/{id}/members/delete": {
             "delete": {
                 "security": [
                     {
@@ -2699,7 +2245,6 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Removes a member from a family (admin only)",
                 "consumes": [
                     "application/json"
                 ],
@@ -2707,20 +2252,20 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "families"
+                    "Famille"
                 ],
-                "summary": "Delete a family member",
+                "summary": "Retirer un membre de la famille",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Family ID",
+                        "description": "Identifiant",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "integer",
-                        "description": "Member ID to delete",
+                        "description": "Paramètre member_id",
                         "name": "member_id",
                         "in": "query",
                         "required": true
@@ -2728,43 +2273,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "res: User deleted from family successfully",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: You are not an admin of this family",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Error deleting family member",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -2775,7 +2284,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/families/{id}/members/points/redeem": {
+        "/api/v1/families/{id}/members/points/redeem": {
             "post": {
                 "security": [
                     {
@@ -2785,7 +2294,6 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Redeems points for a family member (admin only)",
                 "consumes": [
                     "application/json"
                 ],
@@ -2793,19 +2301,19 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "families"
+                    "Famille"
                 ],
-                "summary": "Redeem member points",
+                "summary": "Retirer des hops à un membre",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Family ID",
+                        "description": "Identifiant",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "Points redemption request",
+                        "description": "Corps de la requête",
                         "name": "points",
                         "in": "body",
                         "required": true,
@@ -2824,43 +2332,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "res: Points redeemed successfully",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "error: Invalid request / User does not have enough points / User is not a member of this family",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "error: You are not an admin of this family",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "error: Error redeeming points",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -2871,7 +2343,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/sync/changes": {
+        "/api/v1/files": {
             "get": {
                 "security": [
                     {
@@ -2881,7 +2353,2373 @@ const docTemplate = `{
                         "APIKeyAuth": []
                     }
                 ],
-                "description": "Returns chores and chore histories that have changed since the given sync version cursor, along with deleted entity IDs. Paginated — call repeatedly while hasMore is true using the returned cursor.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Fichiers"
+                ],
+                "summary": "Ouvrir un fichier",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/files/sign": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Fichiers"
+                ],
+                "summary": "Obtenir une adresse signée pour un fichier",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/games/challenges": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /eapi/v1/games/challenges",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Lister les défis",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Créer un défi",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/games/challenges/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Modifier un défi",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Supprimer un défi",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/games/flashes": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /eapi/v1/games/flashes",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Bonus chrono lancés",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /eapi/v1/games/flashes",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Lancer un bonus chrono",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/games/flashes/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : DELETE /eapi/v1/games/flashes/{id}",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Arrêter un bonus chrono",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/games/periods": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /eapi/v1/games/periods",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Lister les périodes bonus",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Créer une période bonus",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/games/periods/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Modifier une période bonus",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Supprimer une période bonus",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/games/podium": {
+            "put": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Régler le podium",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/games/quests": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /eapi/v1/games/quests",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Lister les quêtes",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Créer une quête",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/games/quests/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Modifier une quête",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Supprimer une quête",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/games/ranks": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /eapi/v1/games/ranks",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Rangs de la famille",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Changer les rangs",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/games/ranks/defaults": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Rangs proposés par défaut",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/games/routines": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /eapi/v1/games/routines",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Lister les routines",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Créer une routine",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/games/routines/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Modifier une routine",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Supprimer une routine",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/games/rules": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Règles des jeux",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Changer les règles des jeux",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/games/today": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /eapi/v1/games/today",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Résumé du jour : podium, rangs, quêtes, défis, routines",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/games/week": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Résumé des 7 derniers jours",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/health": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Système"
+                ],
+                "summary": "État du serveur (prêt ou non)",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/labels": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Étiquettes"
+                ],
+                "summary": "Lister les étiquettes",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Étiquettes"
+                ],
+                "summary": "Modifier une étiquette",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Étiquettes"
+                ],
+                "summary": "Créer une étiquette",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/labels/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Étiquettes"
+                ],
+                "summary": "Supprimer une étiquette",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/activations": {
+            "put": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre"
+                ],
+                "summary": "Activer ou couper un module pour une personne",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/cards": {
+            "put": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre"
+                ],
+                "summary": "Corriger une fiche pour la famille",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/catalogue": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre"
+                ],
+                "summary": "Catalogue des modules Apprendre",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/games": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    },
+                    {
+                        "PlayKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /api/v1/learn/play/games",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre",
+                    "Session de jeu"
+                ],
+                "summary": "Enregistrer une partie",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/modules": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre"
+                ],
+                "summary": "Modules installés, activations et réglages",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/modules/import": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre"
+                ],
+                "summary": "Importer un fichier de module",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/modules/install": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre"
+                ],
+                "summary": "Installer un module du catalogue",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/modules/{key}": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre"
+                ],
+                "summary": "Détail d'un module (chapitres et fiches)",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Clé du module",
+                        "name": "key",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre"
+                ],
+                "summary": "Désinstaller un module",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Clé du module",
+                        "name": "key",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/play-links": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /eapi/v1/learn/play-links",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre"
+                ],
+                "summary": "Créer un lien de jeu à usage unique",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/play/games": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    },
+                    {
+                        "PlayKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /api/v1/learn/play/games",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre",
+                    "Session de jeu"
+                ],
+                "summary": "Enregistrer une partie",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/play/player": {
+            "get": {
+                "security": [
+                    {
+                        "PlayKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Session de jeu"
+                ],
+                "summary": "Modules et progrès du joueur (session de jeu)",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/play/reports": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    },
+                    {
+                        "PlayKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /api/v1/learn/play/reports",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre",
+                    "Session de jeu"
+                ],
+                "summary": "Signaler une fiche",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/play/session": {
+            "delete": {
+                "security": [
+                    {
+                        "PlayKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Session de jeu"
+                ],
+                "summary": "Fermer la session de jeu",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/play/speak": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    },
+                    {
+                        "PlayKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /api/v1/learn/play/speak",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre",
+                    "Session de jeu"
+                ],
+                "summary": "Lire un texte avec la voix du serveur",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/play/start": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Session de jeu"
+                ],
+                "summary": "Ouvrir une session « jeux seulement » avec un lien de jeu",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/play/voices": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    },
+                    {
+                        "PlayKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /api/v1/learn/play/voices",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre",
+                    "Session de jeu"
+                ],
+                "summary": "Voix du serveur",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/players/{userId}": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre"
+                ],
+                "summary": "Modules, réglages et progrès d'une personne",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant de la personne",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/reports": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    },
+                    {
+                        "PlayKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /api/v1/learn/play/reports",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre",
+                    "Session de jeu"
+                ],
+                "summary": "Signaler une fiche",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/reports/export": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre"
+                ],
+                "summary": "Exporter les signalements",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/reports/{id}/resolve": {
+            "put": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre"
+                ],
+                "summary": "Marquer un signalement comme traité",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/settings": {
+            "put": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre"
+                ],
+                "summary": "Changer un réglage Apprendre",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/speak": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    },
+                    {
+                        "PlayKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /api/v1/learn/play/speak",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre",
+                    "Session de jeu"
+                ],
+                "summary": "Lire un texte avec la voix du serveur",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/stats/{key}": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre"
+                ],
+                "summary": "Statistiques d'un module",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Clé du module",
+                        "name": "key",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/voices": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    },
+                    {
+                        "PlayKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /api/v1/learn/play/voices",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre",
+                    "Session de jeu"
+                ],
+                "summary": "Voix du serveur",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/points/adjust": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /eapi/v1/points/adjust",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hops"
+                ],
+                "summary": "Donner un bonus ou une pénalité",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/points/history": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /eapi/v1/points/history",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hops"
+                ],
+                "summary": "Historique des hops d'une personne",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/points/journal": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /eapi/v1/points/journal",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hops"
+                ],
+                "summary": "Journal de la famille",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/points/presets": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /eapi/v1/points/presets",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hops"
+                ],
+                "summary": "Bonus et pénalités tout prêts",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hops"
+                ],
+                "summary": "Créer un bonus ou une pénalité tout prêt",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/points/presets/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hops"
+                ],
+                "summary": "Modifier un bonus ou une pénalité tout prêt",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hops"
+                ],
+                "summary": "Supprimer un bonus ou une pénalité tout prêt",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/points/reset": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hops"
+                ],
+                "summary": "Remettre les hops à zéro",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/realtime/sse": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Système"
+                ],
+                "summary": "Flux temps réel (SSE)",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/realtime/sse/ticket": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Système"
+                ],
+                "summary": "Ticket pour ouvrir le flux temps réel",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/resource": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Système"
+                ],
+                "summary": "Réglages publics du serveur (connexions disponibles…)",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/rewards": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /eapi/v1/rewards",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Récompenses"
+                ],
+                "summary": "Lister les récompenses",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Récompenses"
+                ],
+                "summary": "Créer une récompense",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/rewards/redemptions": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /eapi/v1/rewards/redemptions",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Récompenses"
+                ],
+                "summary": "Récompenses demandées",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/rewards/redemptions/{id}/approve": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /eapi/v1/rewards/redemptions/{id}/approve",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Récompenses"
+                ],
+                "summary": "Accorder une récompense demandée",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/rewards/redemptions/{id}/reject": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /eapi/v1/rewards/redemptions/{id}/reject",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Récompenses"
+                ],
+                "summary": "Refuser une récompense demandée",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/rewards/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Récompenses"
+                ],
+                "summary": "Modifier une récompense",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Récompenses"
+                ],
+                "summary": "Supprimer une récompense",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/rewards/{id}/redeem": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /eapi/v1/rewards/{id}/redeem",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Récompenses"
+                ],
+                "summary": "Demander une récompense",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/sync/changes": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -2889,52 +4727,1731 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "sync"
+                    "Système"
                 ],
-                "summary": "Get sync changes",
+                "summary": "Changements depuis la dernière synchro (hors ligne)",
                 "parameters": [
                     {
                         "type": "integer",
                         "format": "int64",
-                        "default": 0,
-                        "description": "Sync version cursor (0 for initial full sync)",
+                        "description": "Paramètre since",
                         "name": "since",
                         "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "changes, deletions, cursor, hasMore",
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": true
                         }
+                    }
+                }
+            }
+        },
+        "/api/v1/users": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
                     },
-                    "400": {
-                        "description": "error: Invalid 'since' parameter",
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Lister les utilisateurs de la famille",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Modifier son profil",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/change_password": {
+            "put": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Changer son mot de passe",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/delete": {
+            "delete": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Supprimer son compte",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/delete/check": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Vérifier ce que la suppression du compte efface",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/logout": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Se déconnecter",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/mfa/confirm": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Activer la double authentification",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/mfa/disable": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Désactiver la double authentification",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/mfa/setup": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Préparer la double authentification",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/mfa/status": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "État de la double authentification",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/profile": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Profil de l'utilisateur connecté",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/profile_photo": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Changer sa photo",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/storage": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Place utilisée par les fichiers",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/subaccounts": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Lister les comptes gérés",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Créer un compte géré (enfant)",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/subaccounts/password": {
+            "put": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Changer le mot de passe d'un compte géré",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/subaccounts/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Supprimer un compte géré",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/subaccounts/{id}/profile_photo": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Changer la photo d'un compte géré",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/tokens": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Lister ses jetons d'accès",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Créer un jeton d'accès longue durée",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/tokens/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Supprimer un jeton d'accès",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/chore": {
+            "get": {
+                "security": [
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tâches"
+                ],
+                "summary": "Lister les tâches (intégration)",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tâches"
+                ],
+                "summary": "Créer une tâche (intégration)",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/chore/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tâches"
+                ],
+                "summary": "Modifier une tâche (intégration)",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tâches"
+                ],
+                "summary": "Supprimer une tâche (intégration)",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/chore/{id}/approve": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /eapi/v1/chore/{id}/approve",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tâches"
+                ],
+                "summary": "Valider une tâche faite",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
-                                "type": "string"
+                                "$ref": "#/definitions/model.Chore"
                             }
                         }
-                    },
-                    "401": {
-                        "description": "error: Authentication failed",
+                    }
+                }
+            }
+        },
+        "/eapi/v1/chore/{id}/complete": {
+            "post": {
+                "security": [
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tâches"
+                ],
+                "summary": "Marquer une tâche comme faite (intégration)",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
                         "schema": {
                             "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "additionalProperties": true
                         }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/chore/{id}/reject": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
                     },
-                    "500": {
-                        "description": "error: Failed to fetch changes",
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /eapi/v1/chore/{id}/reject",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tâches"
+                ],
+                "summary": "Refuser une tâche faite",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Corps de la requête",
+                        "name": "rejection",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/chore.RejectChoreReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
                         "schema": {
                             "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/chore/{id}/slots/{slot}/approve": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /eapi/v1/chore/{id}/slots/{slot}/approve",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tâches"
+                ],
+                "summary": "Valider un créneau",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Numéro du créneau",
+                        "name": "slot",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/chore/{id}/slots/{slot}/catchup": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /eapi/v1/chore/{id}/slots/{slot}/catchup",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tâches"
+                ],
+                "summary": "Rattraper un créneau oublié",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Numéro du créneau",
+                        "name": "slot",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Corps de la requête",
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/chore.CatchUpSlotReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/chore/{id}/slots/{slot}/reject": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /eapi/v1/chore/{id}/slots/{slot}/reject",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tâches"
+                ],
+                "summary": "Refuser un créneau",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Numéro du créneau",
+                        "name": "slot",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/family/members": {
+            "get": {
+                "security": [
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Famille"
+                ],
+                "summary": "Membres de la famille (intégration)",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/family/members/{id}/away": {
+            "put": {
+                "security": [
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Famille"
+                ],
+                "summary": "Mettre un membre en « Pas là » (intégration)",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/family/timezone": {
+            "get": {
+                "security": [
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Famille"
+                ],
+                "summary": "Fuseau de la famille (intégration)",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Famille"
+                ],
+                "summary": "Changer le fuseau de la famille (intégration)",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/games/challenges": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /eapi/v1/games/challenges",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Lister les défis",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/games/flashes": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /eapi/v1/games/flashes",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Bonus chrono lancés",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /eapi/v1/games/flashes",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Lancer un bonus chrono",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/games/flashes/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : DELETE /eapi/v1/games/flashes/{id}",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Arrêter un bonus chrono",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/games/periods": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /eapi/v1/games/periods",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Lister les périodes bonus",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/games/quests": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /eapi/v1/games/quests",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Lister les quêtes",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/games/ranks": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /eapi/v1/games/ranks",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Rangs de la famille",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/games/routines": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /eapi/v1/games/routines",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Lister les routines",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/games/today": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /eapi/v1/games/today",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jeux"
+                ],
+                "summary": "Résumé du jour : podium, rangs, quêtes, défis, routines",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/learn/play-links": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /eapi/v1/learn/play-links",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre"
+                ],
+                "summary": "Créer un lien de jeu à usage unique",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/points/adjust": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /eapi/v1/points/adjust",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hops"
+                ],
+                "summary": "Donner un bonus ou une pénalité",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/points/history": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /eapi/v1/points/history",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hops"
+                ],
+                "summary": "Historique des hops d'une personne",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/points/journal": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /eapi/v1/points/journal",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hops"
+                ],
+                "summary": "Journal de la famille",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/points/presets": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /eapi/v1/points/presets",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hops"
+                ],
+                "summary": "Bonus et pénalités tout prêts",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/rewards": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /eapi/v1/rewards",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Récompenses"
+                ],
+                "summary": "Lister les récompenses",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/rewards/redemptions": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /eapi/v1/rewards/redemptions",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Récompenses"
+                ],
+                "summary": "Récompenses demandées",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/rewards/redemptions/{id}/approve": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /eapi/v1/rewards/redemptions/{id}/approve",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Récompenses"
+                ],
+                "summary": "Accorder une récompense demandée",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/rewards/redemptions/{id}/reject": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /eapi/v1/rewards/redemptions/{id}/reject",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Récompenses"
+                ],
+                "summary": "Refuser une récompense demandée",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/eapi/v1/rewards/{id}/redeem": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /eapi/v1/rewards/{id}/redeem",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Récompenses"
+                ],
+                "summary": "Demander une récompense",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/health": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Système"
+                ],
+                "summary": "État du serveur",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
                         }
                     }
                 }
@@ -3126,7 +6643,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "note": {
-                    "description": "This is going to be deprecated in future release, use \"Notes\" instead.",
+                    "description": "ancien nom de « notes », encore envoyé par la carte de la tablette",
                     "type": "string",
                     "minLength": 1
                 },
@@ -3188,7 +6705,7 @@ const docTemplate = `{
                     "$ref": "#/definitions/chore.ActionOptions"
                 },
                 "note": {
-                    "description": "This is going to be deprecated in future release, use \"Notes\" instead.",
+                    "description": "ancien nom de « notes », encore envoyé par la carte de la tablette",
                     "type": "string",
                     "minLength": 1
                 },
@@ -4019,17 +7536,37 @@ const docTemplate = `{
                 "WeekPatternWeekOfQuarter"
             ]
         }
+    },
+    "securityDefinitions": {
+        "APIKeyAuth": {
+            "description": "Jeton d'accès longue durée créé dans les réglages du compte.",
+            "type": "apiKey",
+            "name": "secretkey",
+            "in": "header"
+        },
+        "JWTKeyAuth": {
+            "description": "« Bearer » suivi d'une espace et du jeton de connexion.",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        },
+        "PlayKeyAuth": {
+            "description": "Session « jeux seulement » ouverte par un lien de jeu.",
+            "type": "apiKey",
+            "name": "X-Hopla-Play",
+            "in": "header"
+        }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
+	Version:          "1.0",
 	Host:             "",
-	BasePath:         "",
+	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "",
-	Description:      "",
+	Title:            "API de Hopla",
+	Description:      "Toutes les adresses du serveur Hopla. Les adresses /api/v1 servent l'interface web, /eapi/v1 les intégrations avec un jeton (en-tête secretkey).",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

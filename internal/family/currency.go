@@ -8,6 +8,14 @@ import (
 )
 
 // GetFamilyCurrency answers with what the family earns, and the choices.
+//
+//	@Summary		Monnaie de la famille (hops, points…)
+//	@Tags			Famille
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/families/currency [get]
 func (h *Handler) GetFamilyCurrency(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -23,6 +31,14 @@ func (h *Handler) GetFamilyCurrency(c *gin.Context) {
 }
 
 // SetFamilyCurrency renames what the family earns, for a parent.
+//
+//	@Summary		Changer la monnaie de la famille
+//	@Tags			Famille
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/families/currency [put]
 func (h *Handler) SetFamilyCurrency(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {

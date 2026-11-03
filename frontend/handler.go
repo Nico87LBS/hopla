@@ -24,8 +24,8 @@ func NewHandler(config *config.Config) *Handler {
 }
 
 func Routes(router *gin.Engine, h *Handler) {
-	// this whole logic is walkaround for serving frontend files
-	// TODO: figure out better way to improve it. main issue i run into is failing over to index.html when file does not exist
+	// Les fichiers de l'interface sont servis depuis dist ; une adresse
+	// inconnue renvoie index.html pour que le routeur du navigateur la gère.
 
 	if h.ServeFrontend {
 		// if file exists in dist folder, serve it

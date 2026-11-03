@@ -144,24 +144,3 @@ func CurrentUserWithImpersonation(c *gin.Context) (*uModel.UserDetails, *uModel.
 
 	return actualUserDetails, impersonatedUserDetails, true
 }
-
-// GetEffectiveUser returns the user that should be used for operations
-// If impersonating, returns the impersonated user, otherwise returns the current user
-func GetEffectiveUser(c *gin.Context) (*uModel.UserDetails, bool) {
-	_, impersonatedUser, hasImpersonation := CurrentUserWithImpersonation(c)
-	if hasImpersonation {
-		return impersonatedUser, true
-	}
-
-	return CurrentUser(c)
-}
-
-// GetActualUser returns the actual authenticated user (ignoring impersonation)
-func GetActualUser(c *gin.Context) (*uModel.UserDetails, bool) {
-	actualUser, _, hasImpersonation := CurrentUserWithImpersonation(c)
-	if hasImpersonation {
-		return actualUser, true
-	}
-
-	return CurrentUser(c)
-}

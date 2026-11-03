@@ -103,6 +103,17 @@ type MemberProgress struct {
 	Today games.DayTally `json:"today"`
 }
 
+// getToday godoc
+//
+//	@Summary		Résumé du jour : podium, rangs, quêtes, défis, routines
+//	@Description	Même traitement pour : GET /eapi/v1/games/today
+//	@Tags			Jeux
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/games/today [get]
+//	@Router			/eapi/v1/games/today [get]
 func (h *Handler) getToday(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -208,6 +219,14 @@ func (h *Handler) getToday(c *gin.Context) {
 }
 
 // getWeek answers with this week's stats of every active member.
+//
+//	@Summary		Résumé des 7 derniers jours
+//	@Tags			Jeux
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/games/week [get]
 func (h *Handler) getWeek(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -235,6 +254,14 @@ func (h *Handler) getWeek(c *gin.Context) {
 }
 
 // updatePodium chooses whether the parents stand on the podium.
+//
+//	@Summary		Régler le podium
+//	@Tags			Jeux
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/games/podium [put]
 func (h *Handler) updatePodium(c *gin.Context) {
 	_, familyID, ok := h.requireParent(c)
 	if !ok {
@@ -255,6 +282,15 @@ func (h *Handler) updatePodium(c *gin.Context) {
 	c.JSON(200, gin.H{"res": gin.H{"parentsOnPodium": *req.ParentsOnPodium}})
 }
 
+// getRules godoc
+//
+//	@Summary		Règles des jeux
+//	@Tags			Jeux
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/games/rules [get]
 func (h *Handler) getRules(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -269,6 +305,15 @@ func (h *Handler) getRules(c *gin.Context) {
 	c.JSON(200, gin.H{"res": rules})
 }
 
+// updateRules godoc
+//
+//	@Summary		Changer les règles des jeux
+//	@Tags			Jeux
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/games/rules [put]
 func (h *Handler) updateRules(c *gin.Context) {
 	_, familyID, ok := h.requireParent(c)
 	if !ok {
@@ -293,6 +338,17 @@ func (h *Handler) updateRules(c *gin.Context) {
 	c.JSON(200, gin.H{"res": rules})
 }
 
+// getPeriods godoc
+//
+//	@Summary		Lister les périodes bonus
+//	@Description	Même traitement pour : GET /eapi/v1/games/periods
+//	@Tags			Jeux
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/games/periods [get]
+//	@Router			/eapi/v1/games/periods [get]
 func (h *Handler) getPeriods(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -340,6 +396,15 @@ func (h *Handler) bindPeriod(c *gin.Context) (PeriodReq, bool) {
 	return req, req.valid(c)
 }
 
+// createPeriod godoc
+//
+//	@Summary		Créer une période bonus
+//	@Tags			Jeux
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/games/periods [post]
 func (h *Handler) createPeriod(c *gin.Context) {
 	parentID, familyID, ok := h.requireParent(c)
 	if !ok {
@@ -375,6 +440,16 @@ func (h *Handler) findPeriod(c *gin.Context, familyID int) (*games.BonusPeriod, 
 	return &period, nil
 }
 
+// updatePeriod godoc
+//
+//	@Summary		Modifier une période bonus
+//	@Tags			Jeux
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/games/periods/{id} [put]
 func (h *Handler) updatePeriod(c *gin.Context) {
 	_, familyID, ok := h.requireParent(c)
 	if !ok {
@@ -402,6 +477,16 @@ func (h *Handler) updatePeriod(c *gin.Context) {
 	c.JSON(200, gin.H{"res": period})
 }
 
+// deletePeriod godoc
+//
+//	@Summary		Supprimer une période bonus
+//	@Tags			Jeux
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/games/periods/{id} [delete]
 func (h *Handler) deletePeriod(c *gin.Context) {
 	_, familyID, ok := h.requireParent(c)
 	if !ok {
@@ -419,6 +504,17 @@ func (h *Handler) deletePeriod(c *gin.Context) {
 	c.JSON(200, gin.H{"res": "Bonus period deleted"})
 }
 
+// getFlashes godoc
+//
+//	@Summary		Bonus chrono lancés
+//	@Description	Même traitement pour : GET /eapi/v1/games/flashes
+//	@Tags			Jeux
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/games/flashes [get]
+//	@Router			/eapi/v1/games/flashes [get]
 func (h *Handler) getFlashes(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -442,6 +538,16 @@ type FlashReq struct {
 }
 
 // launchFlash starts a flash bonus on a task now, for its copies too.
+//
+//	@Summary		Lancer un bonus chrono
+//	@Description	Même traitement pour : POST /eapi/v1/games/flashes
+//	@Tags			Jeux
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/games/flashes [post]
+//	@Router			/eapi/v1/games/flashes [post]
 func (h *Handler) launchFlash(c *gin.Context) {
 	parentID, familyID, ok := h.requireParent(c)
 	if !ok {
@@ -474,6 +580,17 @@ func (h *Handler) launchFlash(c *gin.Context) {
 }
 
 // stopFlash ends a flash bonus before its time.
+//
+//	@Summary		Arrêter un bonus chrono
+//	@Description	Même traitement pour : DELETE /eapi/v1/games/flashes/{id}
+//	@Tags			Jeux
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/games/flashes/{id} [delete]
+//	@Router			/eapi/v1/games/flashes/{id} [delete]
 func (h *Handler) stopFlash(c *gin.Context) {
 	_, familyID, ok := h.requireParent(c)
 	if !ok {

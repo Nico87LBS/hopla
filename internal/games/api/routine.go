@@ -49,6 +49,17 @@ func answerRoutineError(c *gin.Context, err error) {
 	c.JSON(500, gin.H{"error": "Error saving the routine"})
 }
 
+// getRoutines godoc
+//
+//	@Summary		Lister les routines
+//	@Description	Même traitement pour : GET /eapi/v1/games/routines
+//	@Tags			Jeux
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/games/routines [get]
+//	@Router			/eapi/v1/games/routines [get]
 func (h *Handler) getRoutines(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -63,6 +74,15 @@ func (h *Handler) getRoutines(c *gin.Context) {
 	c.JSON(200, gin.H{"res": routines})
 }
 
+// createRoutine godoc
+//
+//	@Summary		Créer une routine
+//	@Tags			Jeux
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/games/routines [post]
 func (h *Handler) createRoutine(c *gin.Context) {
 	parentID, familyID, ok := h.requireParent(c)
 	if !ok {
@@ -82,6 +102,16 @@ func (h *Handler) createRoutine(c *gin.Context) {
 	c.JSON(200, gin.H{"res": routine})
 }
 
+// updateRoutine godoc
+//
+//	@Summary		Modifier une routine
+//	@Tags			Jeux
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/games/routines/{id} [put]
 func (h *Handler) updateRoutine(c *gin.Context) {
 	_, familyID, ok := h.requireParent(c)
 	if !ok {
@@ -104,6 +134,16 @@ func (h *Handler) updateRoutine(c *gin.Context) {
 	c.JSON(200, gin.H{"res": routine})
 }
 
+// deleteRoutine godoc
+//
+//	@Summary		Supprimer une routine
+//	@Tags			Jeux
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/games/routines/{id} [delete]
 func (h *Handler) deleteRoutine(c *gin.Context) {
 	_, familyID, ok := h.requireParent(c)
 	if !ok {

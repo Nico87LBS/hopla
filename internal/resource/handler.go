@@ -36,6 +36,13 @@ func NewHandler(cfg *config.Config) *Handler {
 	}
 }
 
+// getResource godoc
+//
+//	@Summary		Réglages publics du serveur (connexions disponibles…)
+//	@Tags			Système
+//	@Produce		json
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/resource [get]
 func (h *Handler) getResource(c *gin.Context) {
 	c.JSON(200, &Resource{
 		Idp: identityProvider{
@@ -54,6 +61,13 @@ func (h *Handler) getResource(c *gin.Context) {
 	})
 }
 
+// getHealth godoc
+//
+//	@Summary		État du serveur
+//	@Tags			Système
+//	@Produce		json
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/health [get]
 func (h *Handler) getHealth(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"status":  "healthy",

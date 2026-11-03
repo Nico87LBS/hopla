@@ -48,6 +48,15 @@ func NewHandler(storage Storage, choreRepo *chRepo.ChoreRepository, familyRepo *
 }
 
 // AssetHandler serves signed asset URLs from local storage
+//
+//	@Summary		Télécharger un fichier enregistré
+//	@Tags			Fichiers
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			filepath	path	string	true	"Chemin du fichier"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/assets/{filepath} [get]
 func (h *Handler) AssetHandler(c *gin.Context) {
 
 	rawURL := c.Param("filepath")
@@ -112,6 +121,15 @@ func (h *Handler) AssetHandler(c *gin.Context) {
 	io.Copy(c.Writer, file)
 }
 
+// ChoreUploadHandler godoc
+//
+//	@Summary		Envoyer une pièce jointe de tâche
+//	@Tags			Fichiers
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/assets/chore [post]
 func (h *Handler) ChoreUploadHandler(c *gin.Context) {
 	// read chore from formdata chore and the file from file:
 	log := logging.FromContext(c)
@@ -298,6 +316,16 @@ func handleEntityType(c *gin.Context, h *Handler, currentUser *user.UserDetails)
 	}
 }
 
+// ListChoreAttachmentsHandler godoc
+//
+//	@Summary		Pièces jointes d'une tâche
+//	@Tags			Fichiers
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/chores/{id}/attachments [get]
 func (h *Handler) ListChoreAttachmentsHandler(c *gin.Context) {
 	log := logging.FromContext(c)
 	currentUser, ok := auth.CurrentUser(c)
@@ -355,6 +383,16 @@ func (h *Handler) ListChoreAttachmentsHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
+// DeleteChoreAttachmentHandler godoc
+//
+//	@Summary		Supprimer une pièce jointe d'une tâche
+//	@Tags			Fichiers
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/chores/{id}/attachments [delete]
 func (h *Handler) DeleteChoreAttachmentHandler(c *gin.Context) {
 	log := logging.FromContext(c)
 	currentUser, ok := auth.CurrentUser(c)
@@ -424,6 +462,15 @@ func (h *Handler) DeleteChoreAttachmentHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "attachment deleted"})
 }
 
+// RedirectAssetHandler godoc
+//
+//	@Summary		Ouvrir un fichier
+//	@Tags			Fichiers
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/files [get]
 func (h *Handler) RedirectAssetHandler(c *gin.Context) {
 	log := logging.FromContext(c)
 	currentUser, ok := auth.CurrentUser(c)
@@ -468,6 +515,15 @@ func (h *Handler) RedirectAssetHandler(c *gin.Context) {
 	c.Redirect(http.StatusFound, signedURL)
 }
 
+// SignAssetHandler godoc
+//
+//	@Summary		Obtenir une adresse signée pour un fichier
+//	@Tags			Fichiers
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/files/sign [get]
 func (h *Handler) SignAssetHandler(c *gin.Context) {
 	log := logging.FromContext(c)
 	currentUser, ok := auth.CurrentUser(c)
@@ -520,6 +576,14 @@ func (h *Handler) SignAssetHandler(c *gin.Context) {
 
 // DeleteDraftAttachmentHandler deletes a draft upload (attachment or
 // description image) before its chore exists. Only the uploader can delete it.
+//
+//	@Summary		Supprimer une pièce jointe pas encore enregistrée
+//	@Tags			Fichiers
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/assets/chore [delete]
 func (h *Handler) DeleteDraftAttachmentHandler(c *gin.Context) {
 	log := logging.FromContext(c)
 	currentUser, ok := auth.CurrentUser(c)

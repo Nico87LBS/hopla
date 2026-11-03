@@ -83,7 +83,7 @@ func scheduleNextDueDate(ctx context.Context, chore *chModel.Chore, completedDat
 	case "yearly":
 		baseDate = baseDate.AddDate(1, 0, 0)
 	case "adaptive":
-		// TODO: Implement a more sophisticated adaptive logic
+		// Adaptative : le prochain écart reprend le retard (ou l'avance) de cette fois.
 		diff := completedDate.UTC().Sub(chore.NextDueDate.UTC())
 		baseDate = completedDate.UTC().Add(diff)
 	case "interval":

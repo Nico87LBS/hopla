@@ -43,24 +43,21 @@ func NewHandler(cr *fRepo.FamilyRepository, ur *uRepo.UserRepository, c *chRepo.
 
 // GetFamilyMembers godoc
 //
-//	@Summary		Get family members
-//	@Description	Retrieves all members of the current user's family
-//	@Tags			families
+//	@Summary		Membres de la famille
+//	@Tags			Famille
 //	@Accept			json
 //	@Produce		json
 //	@Security		JWTKeyAuth
 //	@Security		APIKeyAuth
-//	@Success		200	{object}	map[string][]fModel.UserFamilyDetail	"res: array of family members"
-//	@Failure		500	{object}	map[string]string						"error: Error getting current user"
-//	@Failure		500	{object}	map[string]string						"error: Error getting family members"
-//	@Router			/families/members [get]
+//	@Success		200	{object}	map[string][]fModel.UserFamilyDetail
+//	@Router			/api/v1/families/members [get]
 func (h *Handler) GetFamilyMembers(c *gin.Context) {
 	// Get the family ID from the JWT
 	log := logging.FromContext(c)
-	currentUser, ok := auth.CurrentUser(c) // TODO we might want to change this from 500 to 401
+	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
 		log.Error("Error getting current user")
-		c.JSON(500, gin.H{
+		c.JSON(401, gin.H{
 			"error": "Error getting current user",
 		})
 		return
@@ -87,20 +84,15 @@ func (h *Handler) GetFamilyMembers(c *gin.Context) {
 
 // JoinFamily godoc
 //
-//	@Summary		Request to join a family
-//	@Description	Requests to join a family using an invite code
-//	@Tags			families
+//	@Summary		Rejoindre une famille avec son code
+//	@Tags			Famille
 //	@Accept			json
 //	@Produce		json
 //	@Security		JWTKeyAuth
 //	@Security		APIKeyAuth
-//	@Param			invite_code	query		string				true	"Invite code"
-//	@Success		200			{object}	map[string]string	"res: User Requested to join family successfully"
-//	@Failure		400			{object}	map[string]string	"error: Invalid request"
-//	@Failure		401			{object}	map[string]string	"error: Authentication failed"
-//	@Failure		409			{object}	map[string]string	"error: You are already a member of this family"
-//	@Failure		500			{object}	map[string]string	"error: Error adding user to family"
-//	@Router			/families/join [post]
+//	@Param			invite_code	query	string	true	"Paramètre invite_code"
+//	@Success		200	{object}	map[string]string
+//	@Router			/api/v1/families/join [post]
 func (h *Handler) JoinFamily(c *gin.Context) {
 	// Get the family ID from the JWT
 	log := logging.FromContext(c)
@@ -160,25 +152,21 @@ func (h *Handler) JoinFamily(c *gin.Context) {
 
 // LeaveFamily godoc
 //
-//	@Summary		Leave a family
-//	@Description	Removes the current user from a family and restores their original family
-//	@Tags			families
+//	@Summary		Quitter la famille
+//	@Tags			Famille
 //	@Accept			json
 //	@Produce		json
 //	@Security		JWTKeyAuth
 //	@Security		APIKeyAuth
-//	@Param			family_id	query		int					true	"Family ID"
-//	@Success		200			{object}	map[string]string	"res: User left family successfully"
-//	@Failure		400			{object}	map[string]string	"error: Invalid request"
-//	@Failure		401			{object}	map[string]string	"error: Authentication failed"
-//	@Failure		500			{object}	map[string]string	"error: Error leaving family"
-//	@Router			/families/leave [delete]
+//	@Param			family_id	query	int	true	"Paramètre family_id"
+//	@Success		200	{object}	map[string]string
+//	@Router			/api/v1/families/leave [delete]
 func (h *Handler) LeaveFamily(c *gin.Context) {
 	log := logging.FromContext(c)
 	log.Debug("handler.go: LeaveFamily")
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
-		c.JSON(500, gin.H{
+		c.JSON(401, gin.H{
 			"error": "Error getting current user",
 		})
 		return
@@ -283,27 +271,22 @@ func handleUserLeavingFamily(h *Handler, c *gin.Context, leavingUser *uModel.Use
 
 // DeleteFamilyMember godoc
 //
-//	@Summary		Delete a family member
-//	@Description	Removes a member from a family (admin only)
-//	@Tags			families
+//	@Summary		Retirer un membre de la famille
+//	@Tags			Famille
 //	@Accept			json
 //	@Produce		json
 //	@Security		JWTKeyAuth
 //	@Security		APIKeyAuth
-//	@Param			id			path		int					true	"Family ID"
-//	@Param			member_id	query		int					true	"Member ID to delete"
-//	@Success		200			{object}	map[string]string	"res: User deleted from family successfully"
-//	@Failure		400			{object}	map[string]string	"error: Invalid request"
-//	@Failure		401			{object}	map[string]string	"error: Authentication failed"
-//	@Failure		403			{object}	map[string]string	"error: You are not an admin of this family"
-//	@Failure		500			{object}	map[string]string	"error: Error deleting family member"
-//	@Router			/families/{id}/members/delete [delete]
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Param			member_id	query	int	true	"Paramètre member_id"
+//	@Success		200	{object}	map[string]string
+//	@Router			/api/v1/families/{id}/members/delete [delete]
 func (h *Handler) DeleteFamilyMember(c *gin.Context) {
 	log := logging.FromContext(c)
 	log.Debug("handler.go: DeleteFamilyMember")
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
-		c.JSON(500, gin.H{
+		c.JSON(401, gin.H{
 			"error": "Error getting current user",
 		})
 		return
@@ -369,22 +352,19 @@ func (h *Handler) DeleteFamilyMember(c *gin.Context) {
 
 // GetUserFamilies godoc
 //
-//	@Summary		Get user families
-//	@Description	Retrieves all families the current user belongs to
-//	@Tags			families
+//	@Summary		Familles de l'utilisateur
+//	@Tags			Famille
 //	@Accept			json
 //	@Produce		json
 //	@Security		JWTKeyAuth
 //	@Security		APIKeyAuth
-//	@Success		200	{object}	map[string][]fModel.Family	"res: array of families"
-//	@Failure		401	{object}	map[string]string			"error: Authentication failed"
-//	@Failure		500	{object}	map[string]string			"error: Error getting user families"
-//	@Router			/families [get]
+//	@Success		200	{object}	map[string][]fModel.Family
+//	@Router			/api/v1/families [get]
 func (h *Handler) GetUserFamilies(c *gin.Context) {
 	log := logging.FromContext(c)
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
-		c.JSON(500, gin.H{
+		c.JSON(401, gin.H{
 			"error": "Error getting current user",
 		})
 		return
@@ -406,23 +386,19 @@ func (h *Handler) GetUserFamilies(c *gin.Context) {
 
 // GetPendingFamilyMembers godoc
 //
-//	@Summary		Get pending join requests
-//	@Description	Retrieves pending family join requests (admin only)
-//	@Tags			families
+//	@Summary		Demandes pour rejoindre la famille
+//	@Tags			Famille
 //	@Accept			json
 //	@Produce		json
 //	@Security		JWTKeyAuth
 //	@Security		APIKeyAuth
-//	@Success		200	{object}	map[string][]fModel.UserFamilyDetail	"res: array of pending members"
-//	@Failure		401	{object}	map[string]string						"error: Authentication failed"
-//	@Failure		403	{object}	map[string]string						"error: You are not an admin of this family"
-//	@Failure		500	{object}	map[string]string						"error: Error getting pending family members"
-//	@Router			/families/members/requests [get]
+//	@Success		200	{object}	map[string][]fModel.UserFamilyDetail
+//	@Router			/api/v1/families/members/requests [get]
 func (h *Handler) GetPendingFamilyMembers(c *gin.Context) {
 	log := logging.FromContext(c)
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
-		c.JSON(500, gin.H{
+		c.JSON(401, gin.H{
 			"error": "Error getting current user",
 		})
 		return
@@ -512,25 +488,20 @@ func (h *Handler) findPendingRequest(c *gin.Context, familyID, requestID int) (*
 
 // AcceptJoinRequest godoc
 //
-//	@Summary		Accept a join request
-//	@Description	Accepts a pending family join request (admin only)
-//	@Tags			families
+//	@Summary		Accepter une demande
+//	@Tags			Famille
 //	@Accept			json
 //	@Produce		json
 //	@Security		JWTKeyAuth
 //	@Security		APIKeyAuth
-//	@Param			requestId	query		int					true	"Request ID"
-//	@Success		200			{object}	map[string]string	"res: Join request accepted successfully"
-//	@Failure		400			{object}	map[string]string	"error: Invalid request / Family is full"
-//	@Failure		401			{object}	map[string]string	"error: Authentication failed"
-//	@Failure		403			{object}	map[string]string	"error: You are not an admin of this family"
-//	@Failure		500			{object}	map[string]string	"error: Error accepting join request"
-//	@Router			/families/members/requests/accept [put]
+//	@Param			requestId	query	int	true	"Paramètre requestId"
+//	@Success		200	{object}	map[string]string
+//	@Router			/api/v1/families/members/requests/accept [put]
 func (h *Handler) AcceptJoinRequest(c *gin.Context) {
 	log := logging.FromContext(c)
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
-		c.JSON(500, gin.H{
+		c.JSON(401, gin.H{
 			"error": "Error getting current user",
 		})
 		return
@@ -662,25 +633,20 @@ func (h *Handler) removeStaleMembership(c *gin.Context, userID, previousFamilyID
 
 // DeclineJoinRequest godoc
 //
-//	@Summary		Decline a join request
-//	@Description	Declines a pending family join request (admin only). The request is removed, so the user may request to join again later.
-//	@Tags			families
+//	@Summary		Refuser une demande
+//	@Tags			Famille
 //	@Accept			json
 //	@Produce		json
 //	@Security		JWTKeyAuth
 //	@Security		APIKeyAuth
-//	@Param			requestId	query		int					true	"Request ID"
-//	@Success		200			{object}	map[string]string	"res: Join request declined successfully"
-//	@Failure		400			{object}	map[string]string	"error: Invalid request"
-//	@Failure		401			{object}	map[string]string	"error: Authentication failed"
-//	@Failure		403			{object}	map[string]string	"error: You are not an admin of this family"
-//	@Failure		500			{object}	map[string]string	"error: Error declining join request"
-//	@Router			/families/members/requests/decline [delete]
+//	@Param			requestId	query	int	true	"Paramètre requestId"
+//	@Success		200	{object}	map[string]string
+//	@Router			/api/v1/families/members/requests/decline [delete]
 func (h *Handler) DeclineJoinRequest(c *gin.Context) {
 	log := logging.FromContext(c)
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
-		c.JSON(500, gin.H{
+		c.JSON(401, gin.H{
 			"error": "Error getting current user",
 		})
 		return
@@ -727,21 +693,16 @@ func (h *Handler) DeclineJoinRequest(c *gin.Context) {
 
 // RedeemPoints godoc
 //
-//	@Summary		Redeem member points
-//	@Description	Redeems points for a family member (admin only)
-//	@Tags			families
+//	@Summary		Retirer des hops à un membre
+//	@Tags			Famille
 //	@Accept			json
 //	@Produce		json
 //	@Security		JWTKeyAuth
 //	@Security		APIKeyAuth
-//	@Param			id		path		int								true	"Family ID"
-//	@Param			points	body		object{points=int,userId=int}	true	"Points redemption request"
-//	@Success		200		{object}	map[string]string				"res: Points redeemed successfully"
-//	@Failure		400		{object}	map[string]string				"error: Invalid request / User does not have enough points / User is not a member of this family"
-//	@Failure		401		{object}	map[string]string				"error: Authentication failed"
-//	@Failure		403		{object}	map[string]string				"error: You are not an admin of this family"
-//	@Failure		500		{object}	map[string]string				"error: Error redeeming points"
-//	@Router			/families/{id}/members/points/redeem [post]
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Param			points	body	object{points=int,userId=int}	true	"Corps de la requête"
+//	@Success		200	{object}	map[string]string
+//	@Router			/api/v1/families/{id}/members/points/redeem [post]
 func (h *Handler) RedeemPoints(c *gin.Context) {
 	type RedeemPointsRequest struct {
 		Points int `json:"points"`
@@ -751,7 +712,7 @@ func (h *Handler) RedeemPoints(c *gin.Context) {
 	log := logging.FromContext(c)
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
-		c.JSON(500, gin.H{
+		c.JSON(401, gin.H{
 			"error": "Error getting current user",
 		})
 		return
@@ -850,25 +811,20 @@ func (h *Handler) RedeemPoints(c *gin.Context) {
 
 // ChangeMemberRole godoc
 //
-//	@Summary		Change member role
-//	@Description	Changes the role of a family member (admin only)
-//	@Tags			families
+//	@Summary		Changer le rôle d'un membre
+//	@Tags			Famille
 //	@Accept			json
 //	@Produce		json
 //	@Security		JWTKeyAuth
 //	@Security		APIKeyAuth
-//	@Param			role	body		object{memberId=int,role=fModel.Role}	true	"Role change request"
-//	@Success		200		{object}	map[string]string						"res: Member role changed successfully"
-//	@Failure		400		{object}	map[string]string						"error: Invalid request / Invalid role / User is not a member of this family"
-//	@Failure		401		{object}	map[string]string						"error: Authentication failed"
-//	@Failure		403		{object}	map[string]string						"error: You are not an admin of this family"
-//	@Failure		500		{object}	map[string]string						"error: Error changing member role"
-//	@Router			/families/members/role [put]
+//	@Param			role	body	object{memberId=int,role=fModel.Role}	true	"Corps de la requête"
+//	@Success		200	{object}	map[string]string
+//	@Router			/api/v1/families/members/role [put]
 func (h *Handler) ChangeMemberRole(c *gin.Context) {
 	log := logging.FromContext(c)
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
-		c.JSON(500, gin.H{
+		c.JSON(401, gin.H{
 			"error": "Error getting current user",
 		})
 		return
@@ -946,19 +902,15 @@ func (h *Handler) ChangeMemberRole(c *gin.Context) {
 
 // SetMemberAway godoc
 //
-//	@Summary		Mark a member away or back home
-//	@Description	Pauses a member's tasks, streak and quests while they are away, such as a child at the other parent's home (admin/manager only). Coming back makes the tasks that fell due meanwhile due today.
-//	@Tags			families
+//	@Summary		Mettre un membre en « Pas là »
+//	@Tags			Famille
 //	@Accept			json
 //	@Produce		json
 //	@Security		JWTKeyAuth
 //	@Security		APIKeyAuth
-//	@Param			away	body		object{memberId=int,away=bool}	true	"Who and where"
-//	@Success		200		{object}	map[string]bool					"res: whether anything changed"
-//	@Failure		400		{object}	map[string]string				"error: Invalid request / User is not a member of this family"
-//	@Failure		403		{object}	map[string]string				"error: Only parents can do this"
-//	@Failure		500		{object}	map[string]string				"error: Error changing the member's presence"
-//	@Router			/families/members/away [put]
+//	@Param			away	body	object{memberId=int,away=bool}	true	"Corps de la requête"
+//	@Success		200	{object}	map[string]bool
+//	@Router			/api/v1/families/members/away [put]
 func (h *Handler) SetMemberAway(c *gin.Context) {
 	var req struct {
 		MemberID int   `json:"memberId"`
@@ -973,32 +925,28 @@ func (h *Handler) SetMemberAway(c *gin.Context) {
 
 // GetFamilyTimezone godoc
 //
-//	@Summary		Get the family's time zone
-//	@Description	Every date of the family follows this zone, whatever the device's. It is the server's unless the family moved, such as on holiday.
-//	@Tags			families
+//	@Summary		Fuseau de la famille
+//	@Tags			Famille
 //	@Produce		json
 //	@Security		JWTKeyAuth
 //	@Security		APIKeyAuth
-//	@Success		200	{object}	map[string]chore.FamilyTimezone	"res: the family's zone"
-//	@Router			/families/timezone [get]
+//	@Success		200	{object}	map[string]chore.FamilyTimezone
+//	@Router			/api/v1/families/timezone [get]
 func (h *Handler) GetFamilyTimezone(c *gin.Context) {
 	chore.GetFamilyTimezone(c)
 }
 
 // SetFamilyTimezone godoc
 //
-//	@Summary		Move the family to another time zone
-//	@Description	Sets the zone every date of the family follows, such as on holiday (admin/manager only). Tasks keep their time of day. An empty zone, or the server's, brings the family back home.
-//	@Tags			families
+//	@Summary		Changer le fuseau de la famille
+//	@Tags			Famille
 //	@Accept			json
 //	@Produce		json
 //	@Security		JWTKeyAuth
 //	@Security		APIKeyAuth
-//	@Param			timezone	body		object{timezone=string}			true	"IANA zone, such as Europe/Lisbon"
-//	@Success		200			{object}	map[string]chore.FamilyTimezone	"res: the family's zone"
-//	@Failure		400			{object}	map[string]string				"error: Invalid request / Invalid timezone"
-//	@Failure		403			{object}	map[string]string				"error: Only parents can do this"
-//	@Router			/families/timezone [put]
+//	@Param			timezone	body	object{timezone=string}	true	"Corps de la requête"
+//	@Success		200	{object}	map[string]chore.FamilyTimezone
+//	@Router			/api/v1/families/timezone [put]
 func (h *Handler) SetFamilyTimezone(c *gin.Context) {
 	chore.SetFamilyTimezone(c, h.familyRepo, h.choreRepo)
 }

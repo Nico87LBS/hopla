@@ -90,6 +90,17 @@ func (h *Handler) isAdminOrManager(c *gin.Context, userID int, familyID int) (bo
 	return false, nil
 }
 
+// getRewards godoc
+//
+//	@Summary		Lister les récompenses
+//	@Description	Même traitement pour : GET /eapi/v1/rewards
+//	@Tags			Récompenses
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/rewards [get]
+//	@Router			/eapi/v1/rewards [get]
 func (h *Handler) getRewards(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -108,6 +119,15 @@ func (h *Handler) getRewards(c *gin.Context) {
 	c.JSON(200, rewards)
 }
 
+// createReward godoc
+//
+//	@Summary		Créer une récompense
+//	@Tags			Récompenses
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/rewards [post]
 func (h *Handler) createReward(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -160,6 +180,16 @@ func (h *Handler) createReward(c *gin.Context) {
 	c.JSON(200, gin.H{"res": reward})
 }
 
+// updateReward godoc
+//
+//	@Summary		Modifier une récompense
+//	@Tags			Récompenses
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/rewards/{id} [put]
 func (h *Handler) updateReward(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -218,6 +248,16 @@ func (h *Handler) updateReward(c *gin.Context) {
 	c.JSON(200, gin.H{"res": reward})
 }
 
+// deleteReward godoc
+//
+//	@Summary		Supprimer une récompense
+//	@Tags			Récompenses
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/rewards/{id} [delete]
 func (h *Handler) deleteReward(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -248,6 +288,18 @@ func (h *Handler) deleteReward(c *gin.Context) {
 	c.JSON(200, gin.H{"res": "Reward deleted"})
 }
 
+// redeemReward godoc
+//
+//	@Summary		Demander une récompense
+//	@Description	Même traitement pour : POST /eapi/v1/rewards/{id}/redeem
+//	@Tags			Récompenses
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/rewards/{id}/redeem [post]
+//	@Router			/eapi/v1/rewards/{id}/redeem [post]
 func (h *Handler) redeemReward(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -327,6 +379,17 @@ func (h *Handler) redeemForMember(c *gin.Context, rewardID int, memberID int, ad
 	c.JSON(200, gin.H{"res": redemption})
 }
 
+// getRedemptions godoc
+//
+//	@Summary		Récompenses demandées
+//	@Description	Même traitement pour : GET /eapi/v1/rewards/redemptions
+//	@Tags			Récompenses
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/rewards/redemptions [get]
+//	@Router			/eapi/v1/rewards/redemptions [get]
 func (h *Handler) getRedemptions(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -372,6 +435,18 @@ func (h *Handler) getRedemptions(c *gin.Context) {
 	c.JSON(200, redemptions)
 }
 
+// approveRedemption godoc
+//
+//	@Summary		Accorder une récompense demandée
+//	@Description	Même traitement pour : POST /eapi/v1/rewards/redemptions/{id}/approve
+//	@Tags			Récompenses
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/rewards/redemptions/{id}/approve [post]
+//	@Router			/eapi/v1/rewards/redemptions/{id}/approve [post]
 func (h *Handler) approveRedemption(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -411,6 +486,18 @@ func (h *Handler) approveRedemption(c *gin.Context) {
 	c.JSON(200, gin.H{"message": "Redemption approved"})
 }
 
+// rejectRedemption godoc
+//
+//	@Summary		Refuser une récompense demandée
+//	@Description	Même traitement pour : POST /eapi/v1/rewards/redemptions/{id}/reject
+//	@Tags			Récompenses
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/rewards/redemptions/{id}/reject [post]
+//	@Router			/eapi/v1/rewards/redemptions/{id}/reject [post]
 func (h *Handler) rejectRedemption(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {

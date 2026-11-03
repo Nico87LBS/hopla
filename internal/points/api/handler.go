@@ -74,6 +74,16 @@ func toEntry(h pModel.PointsHistory) Entry {
 
 // getJournal is the family journal: every change to the points and the tasks
 // done that earned none, newest first, one page at a time.
+//
+//	@Summary		Journal de la famille
+//	@Description	Même traitement pour : GET /eapi/v1/points/journal
+//	@Tags			Hops
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/points/journal [get]
+//	@Router			/eapi/v1/points/journal [get]
 func (h *Handler) getJournal(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -172,6 +182,17 @@ func optionalInt(c *gin.Context, name string) (*int, bool) {
 	return &value, true
 }
 
+// getHistory godoc
+//
+//	@Summary		Historique des hops d'une personne
+//	@Description	Même traitement pour : GET /eapi/v1/points/history
+//	@Tags			Hops
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/points/history [get]
+//	@Router			/eapi/v1/points/history [get]
 func (h *Handler) getHistory(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -214,6 +235,17 @@ type AdjustReq struct {
 	PresetID *int    `json:"presetId"`
 }
 
+// adjust godoc
+//
+//	@Summary		Donner un bonus ou une pénalité
+//	@Description	Même traitement pour : POST /eapi/v1/points/adjust
+//	@Tags			Hops
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/points/adjust [post]
+//	@Router			/eapi/v1/points/adjust [post]
 func (h *Handler) adjust(c *gin.Context) {
 	parentID, familyID, ok := h.requireParent(c)
 	if !ok {
@@ -283,6 +315,15 @@ type ResetReq struct {
 	ClearGames bool `json:"clearGames"`
 }
 
+// reset godoc
+//
+//	@Summary		Remettre les hops à zéro
+//	@Tags			Hops
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/points/reset [post]
 func (h *Handler) reset(c *gin.Context) {
 	parentID, familyID, ok := h.requireParent(c)
 	if !ok {
@@ -341,6 +382,17 @@ func (req PresetReq) valid(c *gin.Context) bool {
 	return true
 }
 
+// getPresets godoc
+//
+//	@Summary		Bonus et pénalités tout prêts
+//	@Description	Même traitement pour : GET /eapi/v1/points/presets
+//	@Tags			Hops
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/points/presets [get]
+//	@Router			/eapi/v1/points/presets [get]
 func (h *Handler) getPresets(c *gin.Context) {
 	currentUser, ok := auth.CurrentUser(c)
 	if !ok {
@@ -355,6 +407,15 @@ func (h *Handler) getPresets(c *gin.Context) {
 	c.JSON(200, gin.H{"res": presets})
 }
 
+// createPreset godoc
+//
+//	@Summary		Créer un bonus ou une pénalité tout prêt
+//	@Tags			Hops
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/points/presets [post]
 func (h *Handler) createPreset(c *gin.Context) {
 	_, familyID, ok := h.requireParent(c)
 	if !ok {
@@ -375,6 +436,16 @@ func (h *Handler) createPreset(c *gin.Context) {
 	c.JSON(200, gin.H{"res": preset})
 }
 
+// updatePreset godoc
+//
+//	@Summary		Modifier un bonus ou une pénalité tout prêt
+//	@Tags			Hops
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/points/presets/{id} [put]
 func (h *Handler) updatePreset(c *gin.Context) {
 	_, familyID, ok := h.requireParent(c)
 	if !ok {
@@ -404,6 +475,16 @@ func (h *Handler) updatePreset(c *gin.Context) {
 	c.JSON(200, gin.H{"res": preset})
 }
 
+// deletePreset godoc
+//
+//	@Summary		Supprimer un bonus ou une pénalité tout prêt
+//	@Tags			Hops
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/points/presets/{id} [delete]
 func (h *Handler) deletePreset(c *gin.Context) {
 	_, familyID, ok := h.requireParent(c)
 	if !ok {

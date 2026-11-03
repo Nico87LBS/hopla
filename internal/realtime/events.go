@@ -199,11 +199,3 @@ func NewHeartbeatEvent(familyID int) *Event {
 		Timestamp: time.Now().UTC(),
 	})
 }
-
-// NewErrorEvent creates an error event
-func NewErrorEvent(familyID int, code, message string) *Event {
-	return NewEvent(EventTypeError, familyID, &ErrorData{
-		Code:    code,
-		Message: message,
-	})
-}

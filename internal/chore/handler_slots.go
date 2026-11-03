@@ -204,13 +204,17 @@ func (h *Handler) respondSlot(c *gin.Context, user *uModel.UserDetails, choreID 
 
 // ApproveSlot godoc
 //
-//	@Summary		Approve a slot of the day
-//	@Description	Approves a slot ticked by a child that waits for a parent (admin/manager only)
-//	@Tags			chores
+//	@Summary		Valider un créneau
+//	@Description	Même traitement pour : POST /eapi/v1/chore/{id}/slots/{slot}/approve
+//	@Tags			Tâches
 //	@Produce		json
-//	@Param			id		path	int	true	"Chore ID"
-//	@Param			slot	path	int	true	"Slot index"
-//	@Router			/chores/{id}/slots/{slot}/approve [post]
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Param			slot	path	integer	true	"Numéro du créneau"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/chores/{id}/slots/{slot}/approve [post]
+//	@Router			/eapi/v1/chore/{id}/slots/{slot}/approve [post]
 func (h *Handler) ApproveSlot(c *gin.Context) {
 	user, chore, slot, _, ok := h.slotRequest(c)
 	if !ok {
@@ -231,13 +235,17 @@ func (h *Handler) ApproveSlot(c *gin.Context) {
 
 // RejectSlot godoc
 //
-//	@Summary		Reject a slot of the day
-//	@Description	Turns down a slot ticked by a child: it is to do again while open (admin/manager only)
-//	@Tags			chores
+//	@Summary		Refuser un créneau
+//	@Description	Même traitement pour : POST /eapi/v1/chore/{id}/slots/{slot}/reject
+//	@Tags			Tâches
 //	@Produce		json
-//	@Param			id		path	int	true	"Chore ID"
-//	@Param			slot	path	int	true	"Slot index"
-//	@Router			/chores/{id}/slots/{slot}/reject [post]
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Param			slot	path	integer	true	"Numéro du créneau"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/chores/{id}/slots/{slot}/reject [post]
+//	@Router			/eapi/v1/chore/{id}/slots/{slot}/reject [post]
 func (h *Handler) RejectSlot(c *gin.Context) {
 	user, chore, slot, _, ok := h.slotRequest(c)
 	if !ok {
@@ -272,15 +280,19 @@ type CatchUpSlotReq struct {
 
 // CatchUpSlot godoc
 //
-//	@Summary		Tick a slot of the day as a parent
-//	@Description	Marks an open or missed slot of today done for a child, without approval (admin/manager only)
-//	@Tags			chores
+//	@Summary		Rattraper un créneau oublié
+//	@Description	Même traitement pour : POST /eapi/v1/chore/{id}/slots/{slot}/catchup
 //	@Accept			json
+//	@Tags			Tâches
 //	@Produce		json
-//	@Param			id		path	int				true	"Chore ID"
-//	@Param			slot	path	int				true	"Slot index"
-//	@Param			body	body	CatchUpSlotReq	false	"Who did it"
-//	@Router			/chores/{id}/slots/{slot}/catchup [post]
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			id	path	integer	true	"Identifiant"
+//	@Param			slot	path	integer	true	"Numéro du créneau"
+//	@Param			body	body	CatchUpSlotReq	false	"Corps de la requête"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/chores/{id}/slots/{slot}/catchup [post]
+//	@Router			/eapi/v1/chore/{id}/slots/{slot}/catchup [post]
 func (h *Handler) CatchUpSlot(c *gin.Context) {
 	user, chore, slot, statuses, ok := h.slotRequest(c)
 	if !ok {
@@ -341,11 +353,13 @@ func (h *Handler) CatchUpSlot(c *gin.Context) {
 
 // GetSlotsToday godoc
 //
-//	@Summary		Today's slots
-//	@Description	Today's slots of every task done several times a day, by task
-//	@Tags			chores
+//	@Summary		Créneaux du jour de chaque tâche
+//	@Tags			Tâches
 //	@Produce		json
-//	@Router			/chores/slots [get]
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/chores/slots [get]
 func (h *Handler) GetSlotsToday(c *gin.Context) {
 	user, ok := auth.CurrentUser(c)
 	if !ok {
@@ -372,11 +386,13 @@ func (h *Handler) GetSlotsToday(c *gin.Context) {
 
 // GetFlashes godoc
 //
-//	@Summary		Speed bonuses open now
-//	@Description	The speed bonus open now on each task that has one, by task
-//	@Tags			chores
+//	@Summary		Bonus chrono en cours sur les tâches
+//	@Tags			Tâches
 //	@Produce		json
-//	@Router			/chores/flashes [get]
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/chores/flashes [get]
 func (h *Handler) GetFlashes(c *gin.Context) {
 	user, ok := auth.CurrentUser(c)
 	if !ok {

@@ -8,9 +8,9 @@ Hopla a deux API REST :
   scripts), avec un jeton d'accès longue durée.
 
 Quand `server.serve_swagger` est actif, une description de l'API est servie
-sous `/swagger/index.html`. Elle est générée depuis les commentaires du code
-et peut avoir du retard sur les dernières routes : les tableaux ci-dessous
-font foi.
+sous `/swagger/index.html`. Elle décrit toutes les adresses, rangées par
+thème (Tâches, Famille, Jeux, Apprendre…), et elle est générée depuis les
+commentaires `@Summary` / `@Router` placés au-dessus de chaque fonction.
 
 ## Jetons d'accès
 
