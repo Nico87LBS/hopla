@@ -325,6 +325,54 @@ ModuleRow.propTypes = {
   single: PropTypes.bool,
 }
 
+// LevelHeader names a level of a pack, with the family's settings for it.
+const LevelHeader = ({ installed, level, onSettings, settings }) => {
+  const { t } = useTranslation('learn')
+  return (
+    <Box sx={{ mb: 1.25 }}>
+      <Stack direction='row' alignItems='center' gap={1}>
+        <Box sx={{ flex: 1, minWidth: 0 }}>
+          <Typography level='title-lg'>{level.nom}</Typography>
+          <Stack direction='row' gap={0.5} flexWrap='wrap' sx={{ mt: 0.25 }}>
+            {(level.niveaux || []).map(name => (
+              <Chip key={name} size='sm' variant='soft'>
+                {name}
+              </Chip>
+            ))}
+          </Stack>
+        </Box>
+        {installed && (
+          <IconButton
+            variant='plain'
+            aria-label={t('manage.familySettings', { name: level.nom })}
+            onClick={() =>
+              onSettings({
+                id: level.id,
+                name: level.nom,
+                children: level.modules,
+              })
+            }
+          >
+            <TuneRounded />
+          </IconButton>
+        )}
+      </Stack>
+      {installed && (
+        <Box sx={{ mt: 0.75 }}>
+          <OwnChips from='family' row={settings.get(`${FAMILY}:${level.id}`)} />
+        </Box>
+      )}
+    </Box>
+  )
+}
+
+LevelHeader.propTypes = {
+  installed: PropTypes.bool.isRequired,
+  level: PropTypes.object.isRequired,
+  onSettings: PropTypes.func.isRequired,
+  settings: PropTypes.instanceOf(Map).isRequired,
+}
+
 // /manage/learn/detail/:moduleId: what a pack or a module holds, down to its
 // cards, and the family's settings for it once installed.
 export const LearnDetail = () => {
@@ -351,10 +399,34 @@ export const LearnDetail = () => {
   const view = useMemo(() => {
     if (!data?.documents?.length) return null
     const [main, ...children] = data.documents
-    const modules = (children.length ? children : [main]).map(compile)
+    const isPackDoc = doc => doc.modules?.length > 0
+    const byId = new Map(children.map(doc => [doc.id, doc]))
+    // A pack of levels shows each level with its modules.
+    const levels = (main.modules || [])
+      .map(id => byId.get(id))
+      .filter(doc => doc && isPackDoc(doc))
+    const sections = levels.length
+      ? levels.map(level => ({
+          level,
+          modules: level.modules
+            .map(id => byId.get(id))
+            .filter(Boolean)
+            .map(compile),
+        }))
+      : [
+          {
+            level: null,
+            modules: (children.length ? children : [main])
+              .filter(doc => !isPackDoc(doc))
+              .map(compile),
+          },
+        ]
+    const modules = sections.flatMap(section => section.modules)
     return {
       main,
+      levels: levels.length,
       modules,
+      sections,
       cards: modules.reduce((n, m) => n + (m.doc.fiches || []).length, 0),
     }
   }, [data])
@@ -421,6 +493,8 @@ export const LearnDetail = () => {
                     t('manage.by', { author: view.main.auteur }),
                   view.main.version &&
                     t('detail.version', { version: view.main.version }),
+                  view.levels > 0 &&
+                    t('manage.levelsCount', { count: view.levels }),
                   isPack &&
                     t('manage.modulesCount', { count: view.modules.length }),
                   view.cards > 0 && t('detail.cards', { count: view.cards }),
@@ -501,20 +575,30 @@ export const LearnDetail = () => {
               </Button>
             )}
 
-            <Sheet sx={surfaceSx}>
-              <Stack gap={1.25}>
-                {view.modules.map(compiled => (
-                  <ModuleRow
-                    key={compiled.id}
-                    compiled={compiled}
+            {view.sections.map(({ level, modules }) => (
+              <Sheet key={level?.id || 'modules'} sx={surfaceSx}>
+                {level && (
+                  <LevelHeader
+                    level={level}
                     installed={installed}
                     settings={settings}
-                    single={!isPack}
                     onSettings={setSettingsFor}
                   />
-                ))}
-              </Stack>
-            </Sheet>
+                )}
+                <Stack gap={1.25}>
+                  {modules.map(compiled => (
+                    <ModuleRow
+                      key={compiled.id}
+                      compiled={compiled}
+                      installed={installed}
+                      settings={settings}
+                      single={!isPack}
+                      onSettings={setSettingsFor}
+                    />
+                  ))}
+                </Stack>
+              </Sheet>
+            ))}
 
             {installed && (
               <Button

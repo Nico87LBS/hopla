@@ -7,12 +7,17 @@ jouée sans réseau est envoyée au retour de la connexion.
 
 ## Paquets, modules, chapitres, fiches
 
-| Niveau | Exemple | Rôle |
+| Étage | Exemple | Rôle |
 | --- | --- | --- |
-| **Paquet** | Maths CE2 | Regroupe des modules ; l'installer installe tous ses modules |
+| **Paquet** | Maths à l'école | Ce qu'on installe : il regroupe ses niveaux et les installe tous |
+| **Niveau** | Maths CE2 | Une étape du paquet, qui regroupe des modules. Un paquet à un seul niveau (Anglais aéronautique) n'affiche pas cet étage |
 | **Module** | Multiplication CE2 | Une notion. C'est lui qu'on active pour une personne et qu'on joue |
 | **Chapitre** | Tables de 6 et 7 | Une étape du module. Il peut rester fermé tant que le chapitre d'avant n'est pas assez su |
 | **Fiche** ou **générateur** | « 7 × 8 », ou « tables de 6 et 7, dans les deux formes » | Une question écrite, ou une sorte d'exercice tiré au hasard |
+
+Tous les paquets ont cette forme. Un niveau est lui-même un paquet de modules :
+un paquet contient soit ses niveaux, soit directement ses modules quand il n'a
+qu'un niveau, jamais les deux, et un niveau ne contient que des modules.
 
 Une notion n'est écrite qu'une fois : si deux paquets contiennent le même
 module, ce que l'enfant sait est commun. Des fiches de modules différents
@@ -21,24 +26,14 @@ peuvent aussi partager ce qui est appris grâce à leur clé (voir
 
 ## Le catalogue fourni
 
-| Paquet | Modules | Public |
+| Paquet | Niveaux et modules | Public |
 | --- | --- | --- |
-| **Apprendre à lire** | Lettres et sons, Syllabes simples, Sons complexes, Mots outils, Lire des mots, Comprendre une phrase, Mots sans dessin (méthode syllabique) | Enfant, GS et CP |
-| **Apprendre à lire en cursif** | Lettres cursives (la lettre en cursif, la réponse en imprimerie), puis les six autres modules d'Apprendre à lire écrits en cursif, avec leur propre progression, et Tracer en cursif (lettres et petits mots à repasser au doigt) | Enfant, CP |
-| **Langage GS** | Les rimes, Les syllabes, Le son du début, Les lettres (avec « Mon prénom »), Les mots en images, Tracer les lettres (capitales à repasser au doigt) | Enfant, GS |
-| **Maths GS** | Compter des quantités, La suite des nombres, Lire les nombres, Comparer, Composer 5 et 10, Formes et positions, Tracer les chiffres | Enfant, GS |
-| **Explorer le monde GS** | Le temps qui passe, Les saisons, Les animaux, Mon corps, Les plantes, Objets et matières | Enfant, GS |
-| **Français CP** | Les sept modules d'Apprendre à lire (mêmes progrès), puis Écrire des mots (dictée, accents ignorés), La phrase au CP, Un, une, des | Enfant, CP |
-| **Maths CP** | Les nombres jusqu'à 100, Comparer et ranger, Additions et soustractions, Calcul mental, Problèmes, Monnaie et heures (horloge à aiguilles à lire, puis à régler), Formes et repérage | Enfant, CP |
-| **Questionner le monde CP** | Vivant ou non vivant, Animaux et plantes, Mon corps et ma santé, La matière, Le temps qui passe, L'espace autour de moi | Enfant, CP |
-| **Français CE1** | Lire et comprendre, Les sons et leur écriture, La phrase et les mots, Les accords, Conjuguer au CE1, Le vocabulaire, Dictée CE1 (les accents comptent, une lettre de travers acceptée) | Enfant, CE1 |
-| **Maths CE1** | Les nombres jusqu'à 1 000, Comparer, ranger, encadrer, Additions et soustractions, Calcul mental, La multiplication (tables de 2, 3, 4, 5 et 10), Problèmes, Mesures et heures (horloge avec demies et quarts, à lire puis à régler, règle graduée), Géométrie | Enfant, CE1 |
-| **Questionner le monde CE1** | Le vivant, Mon corps, La matière, Objets et électricité, Le temps, L'espace | Enfant, CE1 |
-| **Français CE2** | Conjugaison (présent, futur, imparfait, passé composé, puis le verbe à écrire soi-même), La phrase, Les accords (avec un chapitre à écrire), Les homophones, Le vocabulaire, Comprendre un texte | Enfant, CE2 |
-| **Questionner le monde CE2** | Le vivant, Mon corps (squelette à toucher), La matière, L'électricité, Se repérer dans l'espace (régions, fleuves, montagnes et villes de France, continents et océans), Se repérer dans le temps | Enfant, CE2 |
-| **Maths CE2** | Nombres jusqu'à 10 000, Calcul mental, Addition et soustraction, Multiplication, Division, Mesures, Problèmes, Géométrie | Enfant, CE2 |
-| **Anglais à l'école** | Anglais GS : mes premiers mots (à l'oreille, avec dessins, sans lire) ; Anglais CP (se présenter, émotions, école, maison, à table, sans lire) ; Anglais CE1 (jours, nombres jusqu'à 20, corps, vêtements, météo, petites phrases) ; Anglais CE2 | Enfant, GS, CP, CE1 et CE2 |
-| **Anglais aéronautique** | Bases radio, Phraséo et au-delà, Systèmes de l'avion, Météo, Aérodrome, Situations anormales, Anglais idiomatique, Compréhension orale, Oral | Adulte, niveau 6 OACI |
+| **Apprendre à lire** | **Lire en lettres d'imprimerie** : Lettres et sons, Syllabes simples, Sons complexes, Mots outils, Lire des mots, Comprendre une phrase, Mots sans dessin (méthode syllabique). **Lire en cursif** : Lettres cursives (la lettre en cursif, la réponse en imprimerie), puis les six autres modules écrits en cursif, avec leur propre progression, et Tracer en cursif (lettres et petits mots à repasser au doigt) | Enfant, GS et CP |
+| **Français à l'école** | **Langage GS** : Les rimes, Les syllabes, Le son du début, Les lettres (avec « Mon prénom »), Les mots en images, Tracer les lettres (capitales à repasser au doigt). **Français CP** : les sept modules de Lire en lettres d'imprimerie (mêmes progrès), puis Écrire des mots (dictée, accents ignorés), La phrase au CP, Un, une, des. **Français CE1** : Lire et comprendre, Les sons et leur écriture, La phrase et les mots, Les accords, Conjuguer au CE1, Le vocabulaire, Dictée CE1 (les accents comptent, une lettre de travers acceptée). **Français CE2** : Conjugaison (présent, futur, imparfait, passé composé, puis le verbe à écrire soi-même), La phrase, Les accords (avec un chapitre à écrire), Les homophones, Le vocabulaire, Comprendre un texte | Enfant, GS à CE2 |
+| **Maths à l'école** | **Maths GS** : Compter des quantités, La suite des nombres, Lire les nombres, Comparer, Composer 5 et 10, Formes et positions, Tracer les chiffres. **Maths CP** : Les nombres jusqu'à 100, Comparer et ranger, Additions et soustractions, Calcul mental, Problèmes, Monnaie et heures (horloge à aiguilles à lire, puis à régler), Formes et repérage. **Maths CE1** : Les nombres jusqu'à 1 000, Comparer, ranger, encadrer, Additions et soustractions, Calcul mental, La multiplication (tables de 2, 3, 4, 5 et 10), Problèmes, Mesures et heures (horloge avec demies et quarts, à lire puis à régler, règle graduée), Géométrie. **Maths CE2** : Nombres jusqu'à 10 000, Calcul mental, Addition et soustraction, Multiplication, Division, Mesures, Problèmes, Géométrie | Enfant, GS à CE2 |
+| **Le monde à l'école** | **Explorer le monde GS** : Le temps qui passe, Les saisons, Les animaux, Mon corps, Les plantes, Objets et matières. **Questionner le monde CP** : Vivant ou non vivant, Animaux et plantes, Mon corps et ma santé, La matière, Le temps qui passe, L'espace autour de moi. **CE1** : Le vivant, Mon corps, La matière, Objets et électricité, Le temps, L'espace. **CE2** : Le vivant, Mon corps (squelette à toucher), La matière, L'électricité, Se repérer dans l'espace (régions, fleuves, montagnes et villes de France, continents et océans), Se repérer dans le temps | Enfant, GS à CE2 |
+| **Anglais à l'école** | Anglais GS : mes premiers mots (à l'oreille, avec dessins, sans lire) ; Anglais CP (se présenter, émotions, école, maison, à table, sans lire) ; Anglais CE1 (jours, nombres jusqu'à 20, corps, vêtements, météo, petites phrases) ; Anglais CE2. Pour l'instant un module par niveau | Enfant, GS, CP, CE1 et CE2 |
+| **Anglais aéronautique** | Un seul niveau, OACI 6 : Bases radio, Phraséo et au-delà, Systèmes de l'avion, Météo, Aérodrome, Situations anormales, Anglais idiomatique, Compréhension orale, Oral | Adulte, niveau 6 OACI |
 
 ## Installer et choisir qui joue
 
@@ -49,7 +44,7 @@ Gérer › Modules d'apprentissage, en deux onglets :
   à la main (fichier ou texte collé, format `hopla-module/1`).
 - **Par personne** : on choisit une personne en haut, puis on coche les
   modules auxquels elle joue. La case à droite du nom d'un paquet coche tous
-  ses modules.
+  ses modules ; celle d'un niveau, tous les modules du niveau.
 
 Retirer un paquet retire aussi ses modules, sauf ceux qu'un autre paquet
 installé contient. Par défaut, ce que chacun a appris est gardé et revient si
@@ -62,6 +57,11 @@ Les paquets fournis se mettent à jour avec Hopla. Quand une mise à jour ajoute
 un module à un paquet installé, il est installé tout seul, activé pour
 personne, avec un badge « Nouveau » : il reste à le cocher pour ceux qui
 doivent y jouer.
+
+Une famille qui avait installé un paquet devenu depuis le niveau d'un plus
+grand (Maths CE2, maintenant dans Maths à l'école) reçoit le grand paquet tout
+seul, avec ses autres niveaux activés pour personne. Ce que chacun joue, sait
+et a réglé reste comme avant.
 
 ## Les réglages
 
@@ -77,8 +77,10 @@ doivent y jouer.
 Un réglage peut être donné à quatre endroits ; le plus précis l'emporte :
 
 1. le **module de la personne** (Par personne › réglages du module) ;
-2. le **paquet de la personne** (Par personne › réglages du paquet) ;
-3. la **famille** (Catalogue › réglages de la famille du paquet ou du module),
+2. le **paquet de la personne** (Par personne › réglages du niveau, puis du
+   paquet) ;
+3. la **famille** (Catalogue › réglages de la famille du module, du niveau
+   puis du paquet),
    pour tout le monde ;
 4. le **module** lui-même, tel qu'il est écrit.
 

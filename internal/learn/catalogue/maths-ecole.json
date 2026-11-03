@@ -1,0 +1,26 @@
+{
+  "format": "hopla-module/1",
+  "version": "1.0.0",
+  "public": "enfant",
+  "langue": "fr",
+  "auteur": "Hopla",
+  "id": "maths-ecole",
+  "nom": "Maths à l'école",
+  "description": "Les maths de la grande section au CE2, niveau par niveau : quantités et formes en GS, nombres et calcul au CP, tables et mesures au CE1, opérations, divisions et géométrie au CE2.",
+  "matiere": "maths",
+  "niveaux": [
+    "GS",
+    "CP",
+    "CE1",
+    "CE2"
+  ],
+  "icone": "calcul",
+  "couleur": "#5B4FE0",
+  "sources": "D'après les programmes des cycles 1 et 2 et les repères annuels de progression (Éduscol).",
+  "modules": [
+    "maths-gs",
+    "maths-cp",
+    "maths-ce1",
+    "maths-ce2"
+  ]
+}

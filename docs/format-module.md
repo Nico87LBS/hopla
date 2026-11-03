@@ -74,7 +74,7 @@ Le fichier est contrôlé à l'import ; une erreur est expliquée en français
 | `ecriture` | non | `cursive` pour écrire les mots du module en cursif (police Playwrite FR Moderne, embarquée), `cursive_question` pour la question seule en cursif et les réponses en lettres d'imprimerie. Par défaut : lettres d'imprimerie. Les consignes restent en imprimerie |
 | `couleur` | non | Couleur du module, en `#RRGGBB` |
 | `icone`, `sources` | non | Informations, pas encore affichées |
-| `modules` | paquet | Fait du fichier un **paquet** : la liste des `id` de ses modules (40 au plus). Un paquet n'a ni chapitres, ni fiches, ni générateurs. Ses modules sont ceux du catalogue (installés avec lui) ou des modules déjà importés |
+| `modules` | paquet | Fait du fichier un **paquet** : la liste des `id` de ses modules (40 au plus). Un paquet n'a ni chapitres, ni fiches, ni générateurs. Ses modules sont ceux du catalogue (installés avec lui) ou des modules déjà importés. Un paquet contient soit ses **niveaux** (chacun un paquet de modules), soit directement ses modules s'il n'a qu'un niveau, jamais les deux ; un niveau ne contient pas de paquet |
 | `prerequis` | non | Garde le module fermé tant qu'un chapitre d'un autre module n'est pas su : `[{"module": "maths-ce2-multiplication", "chapitre": "tables-2-5", "pourcent": 80}]` |
 | `chapitres` | oui | De 1 à 50 chapitres |
 | `fiches` | * | Questions écrites (5 000 au plus) |
