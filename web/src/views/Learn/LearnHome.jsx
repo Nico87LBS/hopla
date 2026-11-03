@@ -26,7 +26,7 @@ import { moduleLocked, openChapters, totalLeft } from '../../utils/learn/engine'
 import { levelsIn, playFirst, shape, toReview } from '../../utils/learn/listing'
 import { loadServerVoices } from '../../utils/learn/serverVoice'
 import { queuedFor } from '../../utils/learn/store'
-import { packTree, rootOf } from '../../utils/learn/tree'
+import { byRootPack, packTree, rootOf } from '../../utils/learn/tree'
 import LoadingComponent from '../components/Loading'
 import { MemberAvatar } from '../Games/GameParts'
 import { clock } from '../Recre/games/common'
@@ -449,23 +449,15 @@ export const LearnModules = ({
 
   if (isLoading) return <LoadingComponent />
 
-  const testable = player ? testablePacks(player) : []
+  const testPacks = player ? testablePacks(player) : []
   const tested = new Set((player?.placements || []).map(p => p.pack))
   // One pack never tested at a time is offered its test, so the modules
   // stay in sight; the others have theirs at the top of their group.
   const offers = player?.offline
     ? []
-    : testable.filter(({ pack }) => !tested.has(pack.id)).slice(0, 1)
-  // The test is there anytime, at the top of the first group of its pack.
-  const testOf = {}
-  for (const { pack } of testable) {
-    const first = (player?.packs || []).find(
-      p =>
-        rootOf(player.packs, p.id)?.id === pack.id &&
-        p.children.some(id => player.modules.some(m => m.id === id)),
-    )
-    if (first) testOf[first.id] = pack.id
-  }
+    : testPacks.filter(({ pack }) => !tested.has(pack.id)).slice(0, 1)
+  // The test is there anytime, next to the name of its pack.
+  const testable = new Set(testPacks.map(({ pack }) => pack.id))
   const skip = async pack => {
     await SendPlacement({ userId, pack, status: 'skipped' })
     queryClient.invalidateQueries({ queryKey: learnKeys.player(userId) })
@@ -497,6 +489,15 @@ export const LearnModules = ({
       ? [{ id: 'first', name: '', items: playFirst(items) }]
       : []
   }
+  // Each pack shows its levels under its name, as in Gérer.
+  const sections =
+    choices.sort === 'first' && withBar
+      ? groups.map(group => ({
+          id: group.id,
+          name: group.name,
+          levels: [{ group, title: null }],
+        }))
+      : byRootPack(groups, player?.packs || [])
 
   return (
     <Container maxWidth='sm' sx={pageSx}>
@@ -630,8 +631,8 @@ export const LearnModules = ({
       )}
 
       <Stack gap={2.5}>
-        {groups.map(group => (
-          <Box component='section' key={group.id || 'others'}>
+        {sections.map(section => (
+          <Box component='section' key={section.id || 'others'}>
             <Stack
               direction='row'
               alignItems='center'
@@ -648,35 +649,45 @@ export const LearnModules = ({
                   textTransform: 'uppercase',
                 }}
               >
-                {group.id === 'first'
+                {section.id === 'first'
                   ? t('list.sort.first')
-                  : group.name || t('home.others')}
+                  : section.name || t('home.others')}
               </Typography>
-              {testOf[group.id] && !player.offline && (
+              {testable.has(section.id) && !player.offline && (
                 <Button
                   component={Link}
-                  to={testPath(testOf[group.id])}
+                  to={testPath(section.id)}
                   size='sm'
                   variant='plain'
                   startDecorator={<FactCheckOutlined />}
                 >
-                  {tested.has(testOf[group.id])
-                    ? t('test.again')
-                    : t('test.button')}
+                  {tested.has(section.id) ? t('test.again') : t('test.button')}
                 </Button>
               )}
             </Stack>
-            <Stack gap={1}>
-              {group.items.map(module => (
-                <ModuleCard
-                  key={module.id}
-                  module={module}
-                  compiled={byId[module.id]}
-                  compiledById={byId}
-                  cards={cards}
-                  dayFull={left === 0}
-                  to={playPath(module.id)}
-                />
+            <Stack gap={1.5}>
+              {section.levels.map(({ group, title }) => (
+                <Stack key={group.id || 'others'} gap={1}>
+                  {title && (
+                    <Typography
+                      level='title-sm'
+                      sx={{ color: 'text.secondary', px: 0.5 }}
+                    >
+                      {title}
+                    </Typography>
+                  )}
+                  {group.items.map(module => (
+                    <ModuleCard
+                      key={module.id}
+                      module={module}
+                      compiled={byId[module.id]}
+                      compiledById={byId}
+                      cards={cards}
+                      dayFull={left === 0}
+                      to={playPath(module.id)}
+                    />
+                  ))}
+                </Stack>
               ))}
             </Stack>
           </Box>
