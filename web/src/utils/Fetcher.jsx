@@ -1272,6 +1272,39 @@ const SendLearnGame = async game =>
         }),
   )
 
+// The placement test of a pack: its levels, whole, then the result.
+const GetPlacementTest = async (userId, pack) => {
+  const path = `/placements/${userId}/${encodeURIComponent(pack)}`
+  return learnAnswer(
+    inPlayPages()
+      ? await playFetch(path, { method: 'GET' })
+      : await Fetch(`/learn${path}`, { method: 'GET', headers: HEADERS() }),
+  )
+}
+
+const SendPlacement = async result =>
+  learnAnswer(
+    inPlayPages()
+      ? await playFetch('/placements', {
+          method: 'POST',
+          body: JSON.stringify(result),
+        })
+      : await Fetch(`/learn/placements`, {
+          method: 'POST',
+          headers: HEADERS(),
+          body: JSON.stringify(result),
+        }),
+  )
+
+const SetPlacementKeep = async change =>
+  learnAnswer(
+    await Fetch(`/learn/placements/keep`, {
+      method: 'PUT',
+      headers: HEADERS(),
+      body: JSON.stringify(change),
+    }),
+  )
+
 // The récré: a little game after a few games of Apprendre, and its records.
 const SendRecre = async game =>
   learnAnswer(
@@ -1370,6 +1403,7 @@ export {
   GetLearnVoices,
   GetLongLiveTokens,
   GetMFAStatus,
+  GetPlacementTest,
   GetPointsPresets,
   GetQuests,
   GetRanks,
@@ -1413,12 +1447,14 @@ export {
   SaveRoutine,
   SendLearnGame,
   SendLearnReport,
+  SendPlacement,
   SendRecre,
   SetFamilyCurrency,
   SetFamilyTimezone,
   SetLearnActivation,
   SetLearnSetting,
   SetMemberAway,
+  SetPlacementKeep,
   SetRecreSettings,
   SetupMFA,
   SignAssetURL,

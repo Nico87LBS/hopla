@@ -150,7 +150,15 @@
     },
     "firstName": "First name in the games",
     "firstNameHelp": "For the questions about their first name (first letter, letters in order…). Empty: the first word of their name in Hopla.",
-    "firstNameFor": "First name of {{name}} in the games"
+    "firstNameFor": "First name of {{name}} in the games",
+    "testNone": "No level test yet",
+    "testSkipped": "Test skipped, started from the beginning",
+    "testDoneAt": "Test taken on {{day}} · level reached: {{level}}",
+    "testDone": "Test taken on {{day}}",
+    "testKeep": "After the test, keep",
+    "testKeepUpTo": "Every level up to the one reached",
+    "testKeepOnly": "Only the level reached",
+    "byTest": "opened by the test"
   },
   "stats": {
     "chapters": "Chapters",
@@ -430,5 +438,40 @@
       "notKept": "Trial game: nothing is kept.",
       "close": "Close"
     }
+  },
+  "test": {
+    "newPack": "New pack",
+    "offer": "Already know a bit? Take the test: it opens what you know right away, so you start at the right level.",
+    "startAt": "Start the test at",
+    "belowKnown": "The levels before count as known.",
+    "rules": "2 questions per chapter · no hops",
+    "start": "Take the test",
+    "skip": "Skip, start from the beginning",
+    "button": "Level test",
+    "again": "Take the test again",
+    "title": "Test · {{pack}}",
+    "withoutHops": "No hops",
+    "quit": "Stop the test",
+    "levelDone": "{{level}} ✓",
+    "where": "Chapter {{chapter}} of {{chapters}} · question {{question}} of {{questions}}",
+    "howItWorks": "Two right answers open the chapter. The test stops at the first chapter missed: that is where you will start.",
+    "startsAt": "Well done {{name}}, you start at “{{level}}”!",
+    "noted": "Well done {{name}}, all set!",
+    "fromStart": "Let's start from the beginning, {{name}}!",
+    "opened_one": "{{count}} chapter of {{total}} open",
+    "opened_other": "{{count}} chapters of {{total}} open",
+    "openedFrom_one": "{{count}} chapter of {{total}} open · you pick up at “{{next}}”",
+    "openedFrom_other": "{{count}} chapters of {{total}} open · you pick up at “{{next}}”",
+    "notTested": "Not tested yet",
+    "keepTitle": "Which levels to keep?",
+    "keepUpTo": "Every level up to {{level}}",
+    "keepUpToHelp": "{{levels}}: the first ones to review",
+    "keepOnly": "Only {{level}}",
+    "keepOnlyHelp": "{{levels}} stay unticked",
+    "keepLater": "This can be changed later in Manage.",
+    "noHops": "The test gives no hops and does not count in the reviews.",
+    "go": "Let's go",
+    "error": "The test could not open.",
+    "back": "Back"
   }
 }

@@ -16,6 +16,7 @@ import {
   SendLearnReport,
   SetLearnActivation,
   SetLearnSetting,
+  SetPlacementKeep,
   SetRecreSettings,
 } from '../utils/Fetcher'
 import {
@@ -120,3 +121,4 @@ export const useSetSetting = () => useLearnChange(SetLearnSetting)
 export const useEditCard = () => useLearnChange(EditLearnCard)
 export const useResolveReport = () => useLearnChange(ResolveLearnReport)
 export const useSetRecre = () => useLearnChange(SetRecreSettings)
+export const useSetPlacementKeep = () => useLearnChange(SetPlacementKeep)

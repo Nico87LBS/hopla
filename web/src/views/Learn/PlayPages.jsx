@@ -12,6 +12,7 @@ import LoadingComponent from '../components/Loading'
 import RecrePage from '../Recre/RecrePage'
 import { LearnModules } from './LearnHome'
 import LearnPlay from './LearnPlay'
+import PlacementTest from './PlacementTest'
 
 // The play pages open a child's games on the family screen, signed in as
 // nobody: /play/<code> trades a short link for a session that can only play,
@@ -85,6 +86,7 @@ export const PlayHome = () => {
       isParent={false}
       playPath={moduleId => `/play/${member.userId}/${moduleId}`}
       recrePath={`/play/${member.userId}/recre`}
+      testPath={pack => `/play/${member.userId}/test/${pack}`}
     />
   )
 }
@@ -103,4 +105,12 @@ export const PlayRecre = () => {
   const session = usePlaySession()
   if (!session) return <Closed text={t('playLink.ended')} />
   return <RecrePage playMode />
+}
+
+// /play/:userId/test/:packId: the placement test of a pack.
+export const PlayTest = () => {
+  const { t } = useTranslation('learn')
+  const session = usePlaySession()
+  if (!session) return <Closed text={t('playLink.ended')} />
+  return <PlacementTest playMode />
 }

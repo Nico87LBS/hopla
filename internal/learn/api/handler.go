@@ -148,6 +148,8 @@ type Installed struct {
 	// Day the family's today, to tell the modules played lately.
 	LastPlayed map[int]map[string]string `json:"lastPlayed"`
 	Day        string                    `json:"day"`
+	// Placements are the placement tests of each person.
+	Placements []learn.Placement `json:"placements"`
 }
 
 // getModules godoc
@@ -210,9 +212,14 @@ func (h *Handler) getModules(c *gin.Context) {
 		answerError(c, err, "list the games")
 		return
 	}
+	placements, err := learn.Placements(db, who.familyID, nil)
+	if err != nil {
+		answerError(c, err, "list the placement tests")
+		return
+	}
 	c.JSON(200, gin.H{"res": Installed{Modules: modules, Activations: activations, Settings: settings,
 		Defaults: defaults, Applied: applied, Reports: counts, LastPlayed: lastPlayed,
-		Day: learn.Day(who.familyID, time.Now().UTC())}})
+		Day: learn.Day(who.familyID, time.Now().UTC()), Placements: placements}})
 }
 
 // install godoc
@@ -571,6 +578,105 @@ func (h *Handler) recordGame(c *gin.Context) {
 	c.JSON(200, gin.H{"res": result})
 }
 
+// getPlacementTest godoc
+//
+//	@Summary		Test de placement d'un paquet pour une personne
+//	@Description	Même traitement pour : GET /api/v1/learn/play/placements/{userId}/{pack}
+//	@Tags			Apprendre,Session de jeu
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Security		PlayKeyAuth
+//	@Param			userId	path	int		true	"Personne"
+//	@Param			pack	path	string	true	"Clé du paquet"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/placements/{userId}/{pack} [get]
+//	@Router			/api/v1/learn/play/placements/{userId}/{pack} [get]
+func (h *Handler) getPlacementTest(c *gin.Context) {
+	who, ok := h.caller(c)
+	if !ok {
+		return
+	}
+	userID, err := strconv.Atoi(c.Param("userId"))
+	if err != nil || !mayPlayFor(who, userID) {
+		c.JSON(403, gin.H{"error": "You can only play as yourself"})
+		return
+	}
+	test, err := learn.PlacementTestFor(h.db.WithContext(c), who.familyID, userID, c.Param("pack"), time.Now().UTC())
+	if err != nil {
+		answerError(c, err, "get the placement test")
+		return
+	}
+	c.JSON(200, gin.H{"res": test})
+}
+
+// savePlacement godoc
+//
+//	@Summary		Enregistrer un test de placement, fait ou passé
+//	@Description	Ouvre les chapitres réussis et active les niveaux jusqu'au niveau atteint. Même traitement pour : POST /api/v1/learn/play/placements
+//	@Tags			Apprendre,Session de jeu
+//	@Accept			json
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Security		PlayKeyAuth
+//	@Param			test	body	learn.PlacementResult	true	"Corps de la requête"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/placements [post]
+//	@Router			/api/v1/learn/play/placements [post]
+func (h *Handler) savePlacement(c *gin.Context) {
+	who, ok := h.caller(c)
+	if !ok {
+		return
+	}
+	var result learn.PlacementResult
+	if err := c.ShouldBindJSON(&result); err != nil {
+		c.JSON(400, gin.H{"error": "Invalid request"})
+		return
+	}
+	if !mayPlayFor(who, result.UserID) {
+		c.JSON(403, gin.H{"error": "You can only play as yourself"})
+		return
+	}
+	saved, err := learn.SavePlacement(h.db.WithContext(c), who.familyID, result, time.Now().UTC())
+	if err != nil {
+		answerError(c, err, "save the placement test")
+		return
+	}
+	c.JSON(200, gin.H{"res": saved})
+}
+
+// setPlacementKeep godoc
+//
+//	@Summary		Choisir les niveaux gardés après un test de placement (parent)
+//	@Tags			Apprendre
+//	@Accept			json
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/placements/keep [put]
+func (h *Handler) setPlacementKeep(c *gin.Context) {
+	who, ok := h.requireParent(c)
+	if !ok {
+		return
+	}
+	var req struct {
+		UserID int    `json:"userId" binding:"required"`
+		Pack   string `json:"pack" binding:"required"`
+		Keep   string `json:"keep"`
+	}
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(400, gin.H{"error": "Invalid request"})
+		return
+	}
+	if _, err := learn.SetPlacementKeep(h.db.WithContext(c), who.familyID, req.UserID, req.Pack, req.Keep, time.Now().UTC()); err != nil {
+		answerError(c, err, "change the placement test")
+		return
+	}
+	h.getModules(c)
+}
+
 // setRecre godoc
 //
 //	@Summary		Régler la récré d'une personne (parent)
@@ -661,6 +767,9 @@ func Routes(r *gin.Engine, h *Handler, auth *jwt.GinJWTMiddleware) {
 		routes.GET("/players/:userId", h.getPlayer)
 		routes.POST("/play-links", h.newPlayLink)
 		routes.POST("/games", h.recordGame)
+		routes.GET("/placements/:userId/:pack", h.getPlacementTest)
+		routes.POST("/placements", h.savePlacement)
+		routes.PUT("/placements/keep", h.setPlacementKeep)
 		routes.PUT("/recre/settings", h.setRecre)
 		routes.POST("/recre", h.recordRecre)
 		routes.PUT("/cards", h.editCard)
