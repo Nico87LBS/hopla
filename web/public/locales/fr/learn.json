@@ -218,7 +218,10 @@
     },
     "by": "{{name}}, le {{date}} :",
     "given": "(réponse donnée : {{given}})",
-    "resolve": "Marquer comme traité"
+    "resolve": "Marquer comme traité",
+    "redo": "Refaire les sons de cette question",
+    "redoHelp": "La voix tire un peu au hasard : un son mal dit est fabriqué de nouveau la prochaine fois.",
+    "redone": "Les sons de cette question seront refaits."
   },
   "edit": {
     "title": "Fiche « {{name}} »",
@@ -291,7 +294,12 @@
       }
     },
     "server": "Serveur",
-    "serverHelp": "Les voix « Serveur » sont fabriquées par le serveur Hopla : très naturelles, mais il faut le réseau ; hors ligne, l’appareil reprend sa propre voix."
+    "serverHelp": "Les voix « Serveur » sont fabriquées par le serveur Hopla : très naturelles, mais il faut le réseau ; hors ligne, l’appareil reprend sa propre voix.",
+    "hard": "Écouter les mots difficiles",
+    "hardSample": {
+      "fr": "au|un|A|le hibou|maman|lapin|un lion|la partie en couleur",
+      "en": "the|a|owl|thirteen|thirty|three"
+    }
   },
   "list": {
     "search": "Chercher un module",

@@ -1,12 +1,13 @@
 // The natural voice made by the server: the sentences come as sounds, kept
 // on this device for the page's life, and are played one after another.
 
-import { GetLearnSpeech, GetLearnVoices } from '../Fetcher'
+import { DeleteLearnSpeech, GetLearnSpeech, GetLearnVoices } from '../Fetcher'
 import { setServer } from './speech'
 
 // The sounds already fetched, by voice and text; the oldest go first.
 const KEEP = 200
 const sounds = new Map()
+const asking = new Map()
 
 // After a failure, the device's own voice speaks for a while before the
 // server is asked again.
@@ -53,7 +54,15 @@ const soundOf = async (text, voice) => {
     sounds.set(key, url)
     return url
   }
-  const blob = await GetLearnSpeech(text, voice)
+  // A sentence asked twice at once, made ready then said, is fetched once.
+  if (!asking.has(key)) {
+    asking.set(
+      key,
+      GetLearnSpeech(text, voice).finally(() => asking.delete(key)),
+    )
+  }
+  const blob = await asking.get(key)
+  if (sounds.has(key)) return sounds.get(key)
   const url = URL.createObjectURL(blob)
   sounds.set(key, url)
   if (sounds.size > KEEP) {
@@ -64,9 +73,46 @@ const soundOf = async (text, voice) => {
   return url
 }
 
+// prepare asks the server for sentences ahead, all at once, so that they
+// are ready when they are said: the parts of a question, the next one.
+const prepare = (texts, voice) => {
+  if (Date.now() < downUntil) return
+  for (const text of texts) {
+    if (text) soundOf(text, voice).catch(() => {})
+  }
+}
+
+// The sentences said since the question on screen opened, which a parent
+// can have made again when one is badly said.
+let recent = []
+export const recentSounds = () => recent
+export const newQuestion = () => {
+  recent = []
+}
+
+// redoSounds has the server make the sentences of the question again.
+export const redoSounds = async () => {
+  const said = recent
+  await Promise.all(
+    said.map(({ text, voice }) => DeleteLearnSpeech(text, voice)),
+  )
+  for (const { text, voice } of said) {
+    const key = `${voice}\u0000${text}`
+    const url = sounds.get(key)
+    if (url) {
+      sounds.delete(key)
+      URL.revokeObjectURL(url)
+    }
+  }
+  return said.length
+}
+
 // Each sentence said, not queued, starts a new turn and ends the older one.
 let turn = 0
 let chain = Promise.resolve()
+// The sentences still to be heard, being fetched or played.
+let pending = 0
+const playing = () => pending > 0
 
 const playOne = async (text, voice, mine, { fallback, onDone }) => {
   if (mine !== turn) return
@@ -106,11 +152,20 @@ const playOne = async (text, voice, mine, { fallback, onDone }) => {
 const play = (text, voice, options) => {
   if (!options.queue) stop()
   const mine = turn
-  chain = chain.then(() => playOne(text, voice, mine, options))
+  if (!recent.some(r => r.text === text && r.voice === voice)) {
+    recent = [...recent, { text, voice }].slice(-20)
+  }
+  pending++
+  chain = chain.then(() =>
+    playOne(text, voice, mine, options).finally(() => {
+      if (mine === turn) pending = Math.max(0, pending - 1)
+    }),
+  )
 }
 
 const stop = () => {
   turn++
+  pending = 0
   chain = Promise.resolve()
   const a = element()
   if (a && !a.paused) {
@@ -126,7 +181,7 @@ let loading = null
 export const loadServerVoices = () => {
   loading ||= GetLearnVoices()
     .then(voices => {
-      setServer({ play, stop, voices: voices || [] })
+      setServer({ play, playing, prepare, stop, voices: voices || [] })
       return voices || []
     })
     .catch(() => {

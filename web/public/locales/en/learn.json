@@ -218,7 +218,10 @@
     },
     "by": "{{name}}, on {{date}}:",
     "given": "(answer given: {{given}})",
-    "resolve": "Mark as handled"
+    "resolve": "Mark as handled",
+    "redo": "Make this question's sounds again",
+    "redoHelp": "The voice draws a little at random: a sound badly said is made again the next time.",
+    "redone": "This question's sounds will be made again."
   },
   "edit": {
     "title": "Card “{{name}}”",
@@ -291,7 +294,12 @@
       }
     },
     "server": "Server",
-    "serverHelp": "The « Server » voices are made by the Hopla server: very natural, but they need the network; offline, the device uses its own voice."
+    "serverHelp": "The « Server » voices are made by the Hopla server: very natural, but they need the network; offline, the device uses its own voice.",
+    "hard": "Listen to the hard words",
+    "hardSample": {
+      "fr": "au|un|A|le hibou|maman|lapin|un lion|la partie en couleur",
+      "en": "the|a|owl|thirteen|thirty|three"
+    }
   },
   "list": {
     "search": "Search a module",

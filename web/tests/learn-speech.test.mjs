@@ -104,3 +104,72 @@ test('the server voice says the questions first, unless a device voice was chose
     ['fr_FR-siwis-medium', 'fr_FR-mls-medium', 'fr_FR-gilles-low'],
   )
 })
+
+test('a blank is said as a voice left hanging, not as a sentence cut in two', async () => {
+  const { sayBlank } = await import('../src/utils/learn/saying.js')
+  assert.equal(
+    sayBlank('Avec ses jambes, on peut ___.'),
+    'Avec ses jambes, on peut…',
+  )
+  assert.equal(sayBlank('Il ___ à l’école.'), 'Il … à l’école.')
+  assert.equal(sayBlank('Bonjour.'), 'Bonjour.')
+})
+
+test('the same consigne is said once, again when it changes or after a mistake', async () => {
+  const { partsOf, sayAgain } = await import('../src/utils/learn/saying.js')
+  const sort = text => ({
+    prompt: 'Vivant ou non vivant ?',
+    instruction: 'Vivant ou non vivant ?',
+    subject: { text },
+  })
+  const other = {
+    prompt: 'Combien y en a-t-il ?',
+    instruction: 'Combien y en a-t-il ?',
+  }
+  const questions = [
+    sort('la fleur'),
+    sort('la pierre'),
+    sort('le chat'),
+    other,
+    other,
+  ]
+  const right = { correct: true }
+  const wrong = { correct: false }
+  const answers = [right, wrong, right, right]
+  assert.equal(sayAgain(questions, answers, 0), true, 'the first question')
+  assert.equal(sayAgain(questions, answers, 1), false, 'the same consigne')
+  assert.equal(sayAgain(questions, answers, 2), true, 'after a mistake')
+  assert.equal(sayAgain(questions, answers, 3), true, 'a new consigne')
+  assert.equal(sayAgain(questions, answers, 4), false)
+  assert.deepEqual(
+    partsOf(questions[1], false),
+    ['la pierre'],
+    'only what it is about',
+  )
+  assert.deepEqual(partsOf(questions[1], true), [
+    'Vivant ou non vivant ?',
+    'la pierre',
+  ])
+  assert.deepEqual(partsOf(other, false), [], 'nothing new to say')
+
+  const read = prompt => ({ prompt, instruction: 'Lis la phrase.' })
+  assert.equal(
+    sayAgain([read('Avec un crayon…'), read('Avec ses yeux…')], [right], 1),
+    false,
+    'the instruction above sentences that change',
+  )
+  assert.deepEqual(partsOf(read('Avec ses yeux…'), false), ['Avec ses yeux…'])
+
+  const listen = word => ({
+    listen: word,
+    lang: 'fr',
+    instruction: 'Écoute, puis touche le mot.',
+  })
+  assert.deepEqual(partsOf(listen('au'), false, 'fr'), [
+    { text: 'au', lang: 'fr' },
+  ])
+  assert.deepEqual(partsOf(listen('au'), true, 'fr'), [
+    { text: 'Écoute, puis touche le mot.', lang: 'fr' },
+    { text: 'au', lang: 'fr' },
+  ])
+})

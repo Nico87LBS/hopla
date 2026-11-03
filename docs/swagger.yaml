@@ -3373,6 +3373,32 @@ paths:
       tags:
       - Apprendre
   /api/v1/learn/speak:
+    delete:
+      parameters:
+      - description: Texte dit
+        in: query
+        name: text
+        required: true
+        type: string
+      - description: Voix du serveur
+        in: query
+        name: voice
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Refaire un son de la voix du serveur
+      tags:
+      - Apprendre
     get:
       description: 'Même traitement pour : GET /api/v1/learn/play/speak'
       produces:

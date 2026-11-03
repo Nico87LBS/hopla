@@ -4340,6 +4340,48 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre"
+                ],
+                "summary": "Refaire un son de la voix du serveur",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Texte dit",
+                        "name": "text",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Voix du serveur",
+                        "name": "voice",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
             }
         },
         "/api/v1/learn/stats/{key}": {

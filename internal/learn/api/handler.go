@@ -3,6 +3,8 @@
 package api
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"errors"
 	"io"
 	"strconv"
@@ -667,6 +669,7 @@ func Routes(r *gin.Engine, h *Handler, auth *jwt.GinJWTMiddleware) {
 		routes.GET("/reports/export", h.exportReports)
 		routes.GET("/voices", h.getVoices)
 		routes.GET("/speak", h.speak)
+		routes.DELETE("/speak", h.forgetSpeech)
 	}
 }
 
@@ -724,7 +727,45 @@ func (h *Handler) speak(c *gin.Context) {
 		logging.FromContext(c).Warnw("The speech server does not answer", "error", err)
 		c.JSON(502, gin.H{"error": "The speech server does not answer"})
 	default:
-		c.Header("Cache-Control", "private, max-age=31536000, immutable")
+		// The device asks again each time, and gets the sound only when it
+		// changed: a sentence made again reaches every device.
+		sum := sha256.Sum256(sound)
+		tag := `"` + hex.EncodeToString(sum[:8]) + `"`
+		c.Header("Cache-Control", "private, no-cache")
+		c.Header("ETag", tag)
+		if c.GetHeader("If-None-Match") == tag {
+			c.Status(304)
+			return
+		}
 		c.Data(200, "audio/wav", sound)
+	}
+}
+
+// forgetSpeech throws away a sentence kept by the server, which makes it
+// again the next time it is said.
+//
+//	@Summary		Refaire un son de la voix du serveur
+//	@Tags			Apprendre
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			text	query	string	true	"Texte dit"
+//	@Param			voice	query	string	true	"Voix du serveur"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/speak [delete]
+func (h *Handler) forgetSpeech(c *gin.Context) {
+	if _, ok := h.requireParent(c); !ok {
+		return
+	}
+	err := h.piper.Forget(c.Query("text"), c.Query("voice"))
+	switch {
+	case errors.Is(err, voice.ErrOff):
+		c.JSON(404, gin.H{"error": "No speech server"})
+	case errors.Is(err, voice.ErrInvalid):
+		c.JSON(400, gin.H{"error": "Invalid text or voice"})
+	case err != nil:
+		answerError(c, err, "forget the sound")
+	default:
+		c.JSON(200, gin.H{"res": "ok"})
 	}
 }
