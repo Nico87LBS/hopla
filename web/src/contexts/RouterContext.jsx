@@ -23,6 +23,7 @@ import LabelView from '../views/Labels/LabelView'
 import LearnDetail from '../views/Learn/LearnDetail'
 import { LearnChooser, LearnHome } from '../views/Learn/LearnHome'
 import LearnPlay from '../views/Learn/LearnPlay'
+import LearnReports from '../views/Learn/LearnReports'
 import LearnStats from '../views/Learn/LearnStats'
 import ManageLearn, {
   LearnCatalogue,
@@ -227,6 +228,10 @@ const Router = createBrowserRouter([
       {
         path: '/manage/learn/voix',
         element: <LearnVoices />,
+      },
+      {
+        path: '/manage/learn/signalements',
+        element: <LearnReports />,
       },
       {
         path: '/manage/learn/detail/:moduleId',

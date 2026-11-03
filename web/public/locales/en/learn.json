@@ -221,7 +221,7 @@
       "faute": "Spelling mistake",
       "autre": "Other"
     },
-    "by": "{{name}}, on {{date}}:",
+    "by": "{{name}}, on {{date}}",
     "given": "(answer given: {{given}})",
     "resolve": "Mark as handled",
     "redo": "Make this question's sounds again",
@@ -336,8 +336,15 @@
   "reports": {
     "title_one": "{{count}} question reported",
     "title_other": "{{count}} questions reported",
-    "help": "Export them in a file, then send it so they get fixed in the modules.",
-    "export": "Export the reports"
+    "help": "Open the list to correct the questions, or export a file to send.",
+    "export": "Export the reports",
+    "open": "See and correct",
+    "pageTitle": "Reported questions",
+    "none": "No reported question: all done.",
+    "fix": "Correct",
+    "generated": "Question made by the game: it can't be corrected here. Export it to have it corrected.",
+    "seeModule": "See the module",
+    "back": "Learn"
   },
   "recre": {
     "title": "Break time!",
