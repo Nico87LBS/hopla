@@ -316,6 +316,32 @@ definitions:
     - EntityTypeChoreAttachment
     - EntityTypeChoreAttachmentDraft
     - EntityTypeChoreDescriptionDraft
+  learn.RecreChange:
+    properties:
+      every:
+        type: integer
+      games:
+        items:
+          type: string
+        type: array
+      minutes:
+        type: integer
+      "on":
+        type: boolean
+      userId:
+        type: integer
+    type: object
+  learn.RecreGame:
+    properties:
+      clientId:
+        type: string
+      game:
+        type: string
+      score:
+        type: integer
+      userId:
+        type: integer
+    type: object
   model.AssignmentStrategy:
     enum:
     - random
@@ -3074,6 +3100,34 @@ paths:
       summary: Modules et progrès du joueur (session de jeu)
       tags:
       - Session de jeu
+  /api/v1/learn/play/recre:
+    post:
+      consumes:
+      - application/json
+      description: 'Même traitement pour : POST /api/v1/learn/play/recre'
+      parameters:
+      - description: Corps de la requête
+        in: body
+        name: partie
+        required: true
+        schema:
+          $ref: '#/definitions/learn.RecreGame'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      - PlayKeyAuth: []
+      summary: Enregistrer une partie de récré (score et records)
+      tags:
+      - Apprendre
+      - Session de jeu
   /api/v1/learn/play/reports:
     post:
       description: 'Même traitement pour : POST /api/v1/learn/play/reports'
@@ -3179,6 +3233,59 @@ paths:
       - JWTKeyAuth: []
       - APIKeyAuth: []
       summary: Modules, réglages et progrès d'une personne
+      tags:
+      - Apprendre
+  /api/v1/learn/recre:
+    post:
+      consumes:
+      - application/json
+      description: 'Même traitement pour : POST /api/v1/learn/play/recre'
+      parameters:
+      - description: Corps de la requête
+        in: body
+        name: partie
+        required: true
+        schema:
+          $ref: '#/definitions/learn.RecreGame'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      - PlayKeyAuth: []
+      summary: Enregistrer une partie de récré (score et records)
+      tags:
+      - Apprendre
+      - Session de jeu
+  /api/v1/learn/recre/settings:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Corps de la requête
+        in: body
+        name: reglage
+        required: true
+        schema:
+          $ref: '#/definitions/learn.RecreChange'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Régler la récré d'une personne (parent)
       tags:
       - Apprendre
   /api/v1/learn/reports:

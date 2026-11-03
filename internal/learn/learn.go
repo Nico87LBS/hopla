@@ -996,6 +996,8 @@ type Player struct {
 	Voice     string `json:"voice"`
 	// FirstName is what the questions about the person's name ask about.
 	FirstName string `json:"firstName"`
+	// Recre is the person's récré: when the next one comes, and the records.
+	Recre Recre `json:"recre"`
 }
 
 // PlayerFor gathers what a person plays.
@@ -1066,7 +1068,9 @@ func PlayerFor(db *gorm.DB, familyID, userID int, now time.Time) (Player, error)
 	if err := db.Where("family_id = ? AND user_id = ?", familyID, userID).Find(&player.Cards).Error; err != nil {
 		return player, err
 	}
-	return player, nil
+	recre, err := RecreFor(db, familyID, userID, now)
+	player.Recre = recre
+	return player, err
 }
 
 // MaxFirstName is the longest first name the games take, in letters.

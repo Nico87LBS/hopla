@@ -187,6 +187,44 @@ l'autre sens ». La correction se pose par-dessus le catalogue (« Modifiée par
 la famille ») et survit aux mises à jour ; « Revenir à l'original » l'annule.
 Ce que les enfants savaient déjà de la fiche est gardé.
 
+## La récré
+
+Toutes les X parties réussies (au moins 2 étoiles), l'enfant a droit à une
+partie d'un petit jeu. Une carte verte « Récré ! » apparaît en haut de ses
+modules et à la fin de la partie qui l'ouvre. Avant, la même carte compte les
+parties qui restent. La récré ne rapporte aucun hop.
+
+Cinq jeux, faits pour le doigt comme pour la souris :
+
+- **Le train des lapereaux** : le lapin mange les carottes et une file de
+  lapereaux grandit derrière lui ; il ne faut toucher ni la haie ni la file.
+  Il part au premier glissement de doigt ou à la première flèche.
+- **Bulles de couleur** : viser et tirer une bulle ; 3 bulles de la même
+  couleur qui se touchent éclatent, avec celles qu'elles retenaient. Une
+  rangée descend tous les 7 tirs ; une bulle sous la ligne finit la partie.
+- **Le panier à carottes** : attraper les carottes qui tombent (la dorée vaut
+  5) et éviter les cailloux ; trois cœurs.
+- **Coucou les lapins** : toucher les lapins qui sortent des terriers avant
+  qu'ils se cachent ; la partie finit au cinquième lapin manqué.
+- **La séquence des couleurs** : retenir l'ordre des couleurs montré, puis le
+  rejouer ; il s'allonge à chaque tour.
+
+Une partie commencée compte, même arrêtée en route ou quittée. Chaque jeu
+garde les records de la famille, que la page de la récré affiche sous chaque
+jeu, même quand la récré n'est pas encore là.
+
+Les parties qui comptent sont celles jouées depuis la dernière récré, ou
+depuis le début de la journée avant la première.
+
+Dans Gérer › Modules d'apprentissage › Par personne, la carte « Récré » règle
+pour chacun :
+
+- la récré elle-même (coupée ou non) ;
+- toutes les combien de parties (1 à 10, 3 par défaut) ;
+- un minuteur (sans, 1, 2, 3 ou 5 minutes) qui arrête la partie et garde le
+  score atteint ;
+- les jeux permis (au moins un).
+
 ## Jouer sur une tablette partagée
 
 Un lien de jeu ouvre les jeux d'une personne sans se connecter. Il est

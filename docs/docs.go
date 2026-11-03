@@ -3853,6 +3853,53 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/learn/play/recre": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    },
+                    {
+                        "PlayKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /api/v1/learn/play/recre",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre",
+                    "Session de jeu"
+                ],
+                "summary": "Enregistrer une partie de récré (score et records)",
+                "parameters": [
+                    {
+                        "description": "Corps de la requête",
+                        "name": "partie",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/learn.RecreGame"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/learn/play/reports": {
             "post": {
                 "security": [
@@ -4021,6 +4068,95 @@ const docTemplate = `{
                         "name": "userId",
                         "in": "path",
                         "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/recre": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    },
+                    {
+                        "PlayKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : POST /api/v1/learn/play/recre",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre",
+                    "Session de jeu"
+                ],
+                "summary": "Enregistrer une partie de récré (score et records)",
+                "parameters": [
+                    {
+                        "description": "Corps de la requête",
+                        "name": "partie",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/learn.RecreGame"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/recre/settings": {
+            "put": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre"
+                ],
+                "summary": "Régler la récré d'une personne (parent)",
+                "parameters": [
+                    {
+                        "description": "Corps de la requête",
+                        "name": "reglage",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/learn.RecreChange"
+                        }
                     }
                 ],
                 "responses": {
@@ -7023,6 +7159,46 @@ const docTemplate = `{
                 "EntityTypeChoreAttachmentDraft",
                 "EntityTypeChoreDescriptionDraft"
             ]
+        },
+        "learn.RecreChange": {
+            "type": "object",
+            "properties": {
+                "every": {
+                    "type": "integer"
+                },
+                "games": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "minutes": {
+                    "type": "integer"
+                },
+                "on": {
+                    "type": "boolean"
+                },
+                "userId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "learn.RecreGame": {
+            "type": "object",
+            "properties": {
+                "clientId": {
+                    "type": "string"
+                },
+                "game": {
+                    "type": "string"
+                },
+                "score": {
+                    "type": "integer"
+                },
+                "userId": {
+                    "type": "integer"
+                }
+            }
         },
         "model.AssignmentStrategy": {
             "type": "string",

@@ -15,6 +15,7 @@ import {
   SendLearnReport,
   SetLearnActivation,
   SetLearnSetting,
+  SetRecreSettings,
 } from '../utils/Fetcher'
 import {
   flushQueue,
@@ -112,3 +113,4 @@ export const useSetActivation = () => useLearnChange(SetLearnActivation)
 export const useSetSetting = () => useLearnChange(SetLearnSetting)
 export const useEditCard = () => useLearnChange(EditLearnCard)
 export const useResolveReport = () => useLearnChange(ResolveLearnReport)
+export const useSetRecre = () => useLearnChange(SetRecreSettings)

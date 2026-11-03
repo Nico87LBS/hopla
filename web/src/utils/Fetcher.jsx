@@ -1260,6 +1260,30 @@ const SendLearnGame = async game =>
         }),
   )
 
+// The récré: a little game after a few games of Apprendre, and its records.
+const SendRecre = async game =>
+  learnAnswer(
+    inPlayPages()
+      ? await playFetch('/recre', {
+          method: 'POST',
+          body: JSON.stringify(game),
+        })
+      : await Fetch(`/learn/recre`, {
+          method: 'POST',
+          headers: HEADERS(),
+          body: JSON.stringify(game),
+        }),
+  )
+
+const SetRecreSettings = async change =>
+  learnAnswer(
+    await Fetch(`/learn/recre/settings`, {
+      method: 'PUT',
+      headers: HEADERS(),
+      body: JSON.stringify(change),
+    }),
+  )
+
 export {
   AcceptFamilyMemberRequest,
   AdjustPoints,
@@ -1376,11 +1400,13 @@ export {
   SaveRoutine,
   SendLearnGame,
   SendLearnReport,
+  SendRecre,
   SetFamilyCurrency,
   SetFamilyTimezone,
   SetLearnActivation,
   SetLearnSetting,
   SetMemberAway,
+  SetRecreSettings,
   SetupMFA,
   SignAssetURL,
   signUp,

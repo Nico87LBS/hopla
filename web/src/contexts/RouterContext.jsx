@@ -28,7 +28,12 @@ import ManageLearn, {
   LearnCatalogue,
   LearnVoices,
 } from '../views/Learn/ManageLearn'
-import { PlayGame, PlayHome, PlayStart } from '../views/Learn/PlayPages'
+import {
+  PlayGame,
+  PlayHome,
+  PlayRecre,
+  PlayStart,
+} from '../views/Learn/PlayPages'
 import ManageView from '../views/Manage/ManageView'
 import {
   ManageAccount,
@@ -40,6 +45,7 @@ import {
   ManageRoutines,
 } from '../views/Manage/ParentPages'
 import FamilySetupView from '../views/Onboarding/FamilySetupView'
+import RecrePage from '../views/Recre/RecrePage'
 const PointsRedirect = () => {
   const tab = new URLSearchParams(window.location.search).get('tab')
   const to =
@@ -56,6 +62,11 @@ const Router = createBrowserRouter([
   // signed in as nobody, so nothing there may ask for the account.
   { path: '/play', element: <PlayHome />, errorElement: <Error /> },
   { path: '/play/:code', element: <PlayStart />, errorElement: <Error /> },
+  {
+    path: '/play/:userId/recre',
+    element: <PlayRecre />,
+    errorElement: <Error />,
+  },
   {
     path: '/play/:userId/:moduleId',
     element: <PlayGame />,
@@ -236,6 +247,10 @@ const Router = createBrowserRouter([
       {
         path: '/learn/:userId/play/:moduleId',
         element: <LearnPlay />,
+      },
+      {
+        path: '/learn/:userId/recre',
+        element: <RecrePage />,
       },
       {
         // Old links: the points page was split into Famille and Boutique.

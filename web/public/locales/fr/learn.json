@@ -318,5 +318,72 @@
     "title_other": "{{count}} questions signalées",
     "help": "Exporte un fichier à envoyer, pour que les questions soient corrigées dans les modules.",
     "export": "Exporter les signalements"
+  },
+  "recre": {
+    "title": "Récré !",
+    "pick": "Choisis un petit jeu. Il ne rapporte pas de hops, juste des records !",
+    "notYet_one": "Encore {{count}} partie à 2 étoiles avant la récré",
+    "notYet_other": "Encore {{count}} parties à 2 étoiles avant la récré",
+    "ready": "Récré !",
+    "go": "Jouer",
+    "records": "Records",
+    "back": "Retour",
+    "play": "Jouer",
+    "stop": "Arrêter la partie",
+    "minutes_one": "{{count}} minute",
+    "minutes_other": "{{count}} minutes",
+    "noRecord": "Pas encore de record : à toi de jouer !",
+    "newRecord": "Nouveau record !",
+    "wellPlayed": "Bien joué !",
+    "score_one": "{{count}} point",
+    "score_other": "{{count}} points",
+    "notSaved": "Le score n'a pas pu être enregistré.",
+    "recordsOf": "Records de la famille : {{game}}",
+    "nextIn_one": "Prochaine récré après {{count}} partie à 2 étoiles.",
+    "nextIn_other": "Prochaine récré après {{count}} parties à 2 étoiles.",
+    "backToLearn": "Retour aux jeux",
+    "game": {
+      "train": "Le train des lapereaux",
+      "bulles": "Bulles de couleur",
+      "panier": "Le panier à carottes",
+      "terriers": "Coucou les lapins",
+      "sequence": "La séquence des couleurs"
+    },
+    "about": {
+      "train": "Ramasse les carottes sans te cogner.",
+      "bulles": "Vise et groupe 3 bulles de la même couleur.",
+      "panier": "Attrape les carottes, évite les cailloux.",
+      "terriers": "Touche les lapins avant qu'ils se cachent.",
+      "sequence": "Retiens les couleurs et rejoue-les."
+    },
+    "help": {
+      "train": "Glisse le doigt ou utilise les flèches pour tourner.",
+      "bulles": "Vise avec le doigt et lâche pour tirer.",
+      "panier": "Glisse le panier à gauche et à droite.",
+      "terriers": "Touche chaque lapin qui sort de son terrier.",
+      "sequence": "Regarde bien, puis touche les couleurs dans le même ordre."
+    },
+    "hint": {
+      "watch": "Regarde bien…",
+      "play": "À toi !"
+    },
+    "arrow": {
+      "up": "Haut",
+      "down": "Bas",
+      "left": "Gauche",
+      "right": "Droite"
+    },
+    "settings": {
+      "title": "Récré",
+      "help": "Un petit jeu après quelques parties d'Apprendre réussies (au moins 2 étoiles). Il ne rapporte pas de hops.",
+      "onFor": "Récré pour {{name}}",
+      "every": "Une récré toutes les",
+      "everyValue_one": "{{count}} partie",
+      "everyValue_other": "{{count}} parties",
+      "timer": "Minuteur",
+      "noTimer": "Sans minuteur",
+      "games": "Jeux permis",
+      "failed": "Réglage de la récré non enregistré"
+    }
   }
 }

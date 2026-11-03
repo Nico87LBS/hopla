@@ -176,6 +176,7 @@ func PlayRoutes(cfg *config.Config, h *Handler, r *gin.Engine, limiter *limiter.
 	{
 		play.GET("/player", h.getPlaySelf)
 		play.POST("/games", h.recordGame)
+		play.POST("/recre", h.recordRecre)
 		play.POST("/reports", h.addReport)
 		play.GET("/voices", h.getVoices)
 		play.GET("/speak", h.speak)

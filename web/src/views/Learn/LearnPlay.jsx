@@ -5,6 +5,7 @@ import {
   CloudOffRounded,
   OutlinedFlagRounded,
   ReplayRounded,
+  SportsEsportsRounded,
   VolumeUpRounded,
 } from '@mui/icons-material'
 import {
@@ -623,7 +624,11 @@ Question.propTypes = {
 
 // ── the end of a game ──
 
-const EndScreen = ({ back, color, end, onReplay }) => {
+// RECRE_MIN_STARS is what a game needs to count for the récré, as on the
+// server.
+const RECRE_MIN_STARS = 2
+
+const EndScreen = ({ back, color, end, onReplay, recre, recrePath }) => {
   const { t } = useTranslation('learn')
   const { capped, correct, hops, mistakes, stars: won, status, total } = end
   return (
@@ -691,6 +696,18 @@ const EndScreen = ({ back, color, end, onReplay }) => {
           </Stack>
         </Sheet>
       )}
+      {recre?.on && recre.since >= recre.every && (
+        <Button
+          size='lg'
+          component={Link}
+          to={recrePath}
+          replace
+          startDecorator={<SportsEsportsRounded />}
+          sx={{ bgcolor: HOPLA.green, '&:hover': { bgcolor: HOPLA.greenText } }}
+        >
+          {t('recre.ready')}
+        </Button>
+      )}
       <Stack direction='row' gap={1}>
         <Button
           size='lg'
@@ -720,6 +737,8 @@ EndScreen.propTypes = {
   color: PropTypes.string.isRequired,
   end: PropTypes.object.isRequired,
   onReplay: PropTypes.func.isRequired,
+  recre: PropTypes.object,
+  recrePath: PropTypes.string.isRequired,
 }
 
 // sendGame sends a game, or keeps it for later when the server is out of
@@ -835,8 +854,16 @@ const LearnPlay = ({ playMode = false }) => {
     // answers, so that playing again starts from them.
     const played = playLocally(player, sent, hops)
     lastKeys.current = new Set(game.questions.map(q => q.key))
+    // A game played well brings the récré one game nearer at once.
+    const recre = played.recre &&
+      stars(correct, total, settings.seuil) >= RECRE_MIN_STARS && {
+        ...played.recre,
+        since: played.recre.since + 1,
+      }
     queryClient.setQueryData(learnKeys.player(userId), kept =>
-      kept ? { ...played, offline: kept.offline } : kept,
+      kept
+        ? { ...played, ...(recre && { recre }), offline: kept.offline }
+        : kept,
     )
     const mistakes = game.questions.filter(
       (q, i) => answers[i] && !answers[i].correct,
@@ -967,6 +994,10 @@ const LearnPlay = ({ playMode = false }) => {
           end={end}
           onReplay={() => start(lastKeys.current)}
           back={back}
+          recre={player.recre}
+          recrePath={
+            playMode ? `/play/${userId}/recre` : `/learn/${userId}/recre`
+          }
           color={color}
         />
       ) : (

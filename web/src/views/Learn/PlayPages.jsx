@@ -9,6 +9,7 @@ import { HOPLA } from '../../constants/theme'
 import { setFamilyCurrency } from '../../utils/currency'
 import { playSession, startPlay } from '../../utils/learn/playSession'
 import LoadingComponent from '../components/Loading'
+import RecrePage from '../Recre/RecrePage'
 import { LearnModules } from './LearnHome'
 import LearnPlay from './LearnPlay'
 
@@ -83,6 +84,7 @@ export const PlayHome = () => {
       member={member}
       isParent={false}
       playPath={moduleId => `/play/${member.userId}/${moduleId}`}
+      recrePath={`/play/${member.userId}/recre`}
     />
   )
 }
@@ -93,4 +95,12 @@ export const PlayGame = () => {
   const session = usePlaySession()
   if (!session) return <Closed text={t('playLink.ended')} />
   return <LearnPlay playMode />
+}
+
+// /play/:userId/recre: the little game after a few games played well.
+export const PlayRecre = () => {
+  const { t } = useTranslation('learn')
+  const session = usePlaySession()
+  if (!session) return <Closed text={t('playLink.ended')} />
+  return <RecrePage playMode />
 }
