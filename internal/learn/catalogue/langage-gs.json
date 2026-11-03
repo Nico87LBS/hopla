@@ -1,7 +1,7 @@
 {
   "format": "hopla-module/1",
   "id": "langage-gs",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "nom": "Langage GS",
   "description": "Préparer la lecture sans l'exiger : rimes, syllabes, premier son des mots, lettres capitales et vocabulaire en images. Les questions sont lues à voix haute.",
   "matiere": "francais",
@@ -17,6 +17,7 @@
     "langage-gs-syllabes",
     "langage-gs-sons",
     "langage-gs-lettres",
-    "langage-gs-mots"
+    "langage-gs-mots",
+    "langage-gs-tracer"
   ]
 }

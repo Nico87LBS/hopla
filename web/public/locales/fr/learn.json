@@ -38,7 +38,14 @@
     "listen": "Écouter encore",
     "heard": "Entendu : {{word}}",
     "matchHelp": "Touche une carte de chaque côté pour les relier.",
-    "readAgain": "Lire encore"
+    "readAgain": "Lire encore",
+    "setClock": "Horloge à régler",
+    "setClockHelp": "Fais tourner les aiguilles avec le doigt.",
+    "traceHelp": "Repasse sur le modèle avec ton doigt.",
+    "traceAgain": "Effacer",
+    "traceDone": "J'ai fini",
+    "traceMore": "Repasse bien sur toute la lettre, sans déborder.",
+    "traceAlmost": "Presque ! Encore un peu plus près du modèle."
   },
   "end": {
     "title0": "Continue, ça va venir !",

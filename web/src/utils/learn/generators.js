@@ -792,6 +792,36 @@ const firstNameSource = (gen, moduleId, context) => {
   }
 }
 
+// Setting a clock: the hands are moved to the time asked, the other way
+// round from reading it. Same hours and minutes as heure; the time is not
+// drawn, the child makes it.
+const setClockSource = gen => {
+  const read = clockSource(gen)
+  const item = shown => {
+    const [, h, m] = /^hr:(\d+):(\d+)$/.exec(shown.key)
+    return {
+      key: `hr:regler:${h}:${m}`,
+      prompt: `Mets les aiguilles sur ${shown.answer}.`,
+      answer: shown.answer,
+      target: { h: Number(h), m: Number(m) },
+      mode: 'setclock',
+    }
+  }
+  return {
+    size: read.size,
+    list: () => read.list().map(item),
+    draw: rng => {
+      const shown = read.draw(rng)
+      return shown && item(shown)
+    },
+    fromKey: key => {
+      const found = /^hr:regler:(\d+):(\d+)$/.exec(key)
+      const shown = found && read.fromKey(`hr:${found[1]}:${found[2]}`)
+      return shown ? item(shown) : null
+    },
+  }
+}
+
 const SOURCES = {
   addition: arithmeticSource,
   soustraction: arithmeticSource,
@@ -840,6 +870,7 @@ const SOURCES = {
   compter: countSource,
   prenom: firstNameSource,
   heure: clockSource,
+  regler_heure: setClockSource,
   mesurer: rulerSource,
 }
 
@@ -1060,6 +1091,21 @@ const zoneItems = (card, moduleId, siblings) => {
 export const cardItems = (card, moduleId, siblings, lang) => {
   if (card.type === 'classer') return sortItems(card, moduleId)
   if (card.type === 'zones') return zoneItems(card, moduleId, siblings)
+  // A letter, a figure or a short word to trace with a finger.
+  if (card.type === 'tracer') {
+    return [
+      {
+        key: cardKey(moduleId, card),
+        chapter: card.chapitre,
+        source: card.id,
+        prompt: card.question,
+        answer: card.reponse,
+        explanation: card.explication,
+        ...(card.consigne && { instruction: card.consigne }),
+        mode: 'trace',
+      },
+    ]
+  }
   if (card.type === 'associer' || card.type === 'ordre') {
     const base = {
       key: cardKey(moduleId, card),

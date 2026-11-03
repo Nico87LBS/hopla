@@ -1,0 +1,245 @@
+{
+  "format": "hopla-module/1",
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "fr",
+  "auteur": "Hopla",
+  "id": "langage-gs-tracer",
+  "version": "1.0.0",
+  "nom": "Tracer les lettres",
+  "description": "Repasser avec le doigt sur chaque lettre capitale, de A à Z, sans déborder.",
+  "matiere": "francais",
+  "niveaux": [
+    "GS"
+  ],
+  "lecture_voix_haute": true,
+  "sources": "D'après le programme de l'école maternelle (cycle 1) et ses attendus de fin de GS (Éduscol).",
+  "chapitres": [
+    {
+      "id": "a-m",
+      "nom": "Les capitales de A à M"
+    },
+    {
+      "id": "n-z",
+      "nom": "Les capitales de N à Z",
+      "ouvert_apres": 70
+    }
+  ],
+  "fiches": [
+    {
+      "id": "capitale-a",
+      "chapitre": "a-m",
+      "type": "tracer",
+      "question": "Trace la lettre A.",
+      "reponse": "A",
+      "consigne": "Trace la lettre A."
+    },
+    {
+      "id": "capitale-b",
+      "chapitre": "a-m",
+      "type": "tracer",
+      "question": "Trace la lettre B.",
+      "reponse": "B",
+      "consigne": "Trace la lettre B."
+    },
+    {
+      "id": "capitale-c",
+      "chapitre": "a-m",
+      "type": "tracer",
+      "question": "Trace la lettre C.",
+      "reponse": "C",
+      "consigne": "Trace la lettre C."
+    },
+    {
+      "id": "capitale-d",
+      "chapitre": "a-m",
+      "type": "tracer",
+      "question": "Trace la lettre D.",
+      "reponse": "D",
+      "consigne": "Trace la lettre D."
+    },
+    {
+      "id": "capitale-e",
+      "chapitre": "a-m",
+      "type": "tracer",
+      "question": "Trace la lettre E.",
+      "reponse": "E",
+      "consigne": "Trace la lettre E."
+    },
+    {
+      "id": "capitale-f",
+      "chapitre": "a-m",
+      "type": "tracer",
+      "question": "Trace la lettre F.",
+      "reponse": "F",
+      "consigne": "Trace la lettre F."
+    },
+    {
+      "id": "capitale-g",
+      "chapitre": "a-m",
+      "type": "tracer",
+      "question": "Trace la lettre G.",
+      "reponse": "G",
+      "consigne": "Trace la lettre G."
+    },
+    {
+      "id": "capitale-h",
+      "chapitre": "a-m",
+      "type": "tracer",
+      "question": "Trace la lettre H.",
+      "reponse": "H",
+      "consigne": "Trace la lettre H."
+    },
+    {
+      "id": "capitale-i",
+      "chapitre": "a-m",
+      "type": "tracer",
+      "question": "Trace la lettre I.",
+      "reponse": "I",
+      "consigne": "Trace la lettre I."
+    },
+    {
+      "id": "capitale-j",
+      "chapitre": "a-m",
+      "type": "tracer",
+      "question": "Trace la lettre J.",
+      "reponse": "J",
+      "consigne": "Trace la lettre J."
+    },
+    {
+      "id": "capitale-k",
+      "chapitre": "a-m",
+      "type": "tracer",
+      "question": "Trace la lettre K.",
+      "reponse": "K",
+      "consigne": "Trace la lettre K."
+    },
+    {
+      "id": "capitale-l",
+      "chapitre": "a-m",
+      "type": "tracer",
+      "question": "Trace la lettre L.",
+      "reponse": "L",
+      "consigne": "Trace la lettre L."
+    },
+    {
+      "id": "capitale-m",
+      "chapitre": "a-m",
+      "type": "tracer",
+      "question": "Trace la lettre M.",
+      "reponse": "M",
+      "consigne": "Trace la lettre M."
+    },
+    {
+      "id": "capitale-n",
+      "chapitre": "n-z",
+      "type": "tracer",
+      "question": "Trace la lettre N.",
+      "reponse": "N",
+      "consigne": "Trace la lettre N."
+    },
+    {
+      "id": "capitale-o",
+      "chapitre": "n-z",
+      "type": "tracer",
+      "question": "Trace la lettre O.",
+      "reponse": "O",
+      "consigne": "Trace la lettre O."
+    },
+    {
+      "id": "capitale-p",
+      "chapitre": "n-z",
+      "type": "tracer",
+      "question": "Trace la lettre P.",
+      "reponse": "P",
+      "consigne": "Trace la lettre P."
+    },
+    {
+      "id": "capitale-q",
+      "chapitre": "n-z",
+      "type": "tracer",
+      "question": "Trace la lettre Q.",
+      "reponse": "Q",
+      "consigne": "Trace la lettre Q."
+    },
+    {
+      "id": "capitale-r",
+      "chapitre": "n-z",
+      "type": "tracer",
+      "question": "Trace la lettre R.",
+      "reponse": "R",
+      "consigne": "Trace la lettre R."
+    },
+    {
+      "id": "capitale-s",
+      "chapitre": "n-z",
+      "type": "tracer",
+      "question": "Trace la lettre S.",
+      "reponse": "S",
+      "consigne": "Trace la lettre S."
+    },
+    {
+      "id": "capitale-t",
+      "chapitre": "n-z",
+      "type": "tracer",
+      "question": "Trace la lettre T.",
+      "reponse": "T",
+      "consigne": "Trace la lettre T."
+    },
+    {
+      "id": "capitale-u",
+      "chapitre": "n-z",
+      "type": "tracer",
+      "question": "Trace la lettre U.",
+      "reponse": "U",
+      "consigne": "Trace la lettre U."
+    },
+    {
+      "id": "capitale-v",
+      "chapitre": "n-z",
+      "type": "tracer",
+      "question": "Trace la lettre V.",
+      "reponse": "V",
+      "consigne": "Trace la lettre V."
+    },
+    {
+      "id": "capitale-w",
+      "chapitre": "n-z",
+      "type": "tracer",
+      "question": "Trace la lettre W.",
+      "reponse": "W",
+      "consigne": "Trace la lettre W."
+    },
+    {
+      "id": "capitale-x",
+      "chapitre": "n-z",
+      "type": "tracer",
+      "question": "Trace la lettre X.",
+      "reponse": "X",
+      "consigne": "Trace la lettre X."
+    },
+    {
+      "id": "capitale-y",
+      "chapitre": "n-z",
+      "type": "tracer",
+      "question": "Trace la lettre Y.",
+      "reponse": "Y",
+      "consigne": "Trace la lettre Y."
+    },
+    {
+      "id": "capitale-z",
+      "chapitre": "n-z",
+      "type": "tracer",
+      "question": "Trace la lettre Z.",
+      "reponse": "Z",
+      "consigne": "Trace la lettre Z."
+    }
+  ],
+  "reglages": {
+    "questions_par_partie": 5,
+    "nouvelles_par_partie": 2,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 5
+  }
+}

@@ -44,6 +44,13 @@ import { generateUUID } from '../../utils/UUID'
 import LoadingComponent from '../components/Loading'
 import { Stars, subjectColor, useCompiled } from './LearnParts'
 import {
+  BlankLabels,
+  BlankSentence,
+  hasBlank,
+  SetClock,
+  TraceGlyph,
+} from './NewModes'
+import {
   Clock,
   CountPicture,
   Drawing,
@@ -386,7 +393,17 @@ const Feedback = ({ feedback, onNext }) => {
       <Typography level='title-lg' sx={{ color: 'inherit' }}>
         {correct ? t('play.right') : t('play.wrong')}
       </Typography>
-      {(!correct || typo) && (
+      {!correct && item.mode === 'trace' && (
+        <Typography level='body-md' sx={{ color: 'inherit', mt: 0.5 }}>
+          {feedback.almost ? t('play.traceAlmost') : t('play.traceMore')}
+        </Typography>
+      )}
+      {item.mode === 'setclock' && !correct && (
+        <Stack alignItems='center' sx={{ mt: 1 }}>
+          <Clock clock={item.target} size={140} />
+        </Stack>
+      )}
+      {(!correct || typo) && item.mode !== 'trace' && (
         <Typography level='body-md' sx={{ color: 'inherit', mt: 0.5 }}>
           {t('play.answerWas', {
             answer: `${item.mode === 'choice' ? capitalFor(item)(item.answer) : item.answer}${item.unit ? ` ${item.unit}` : ''}`,
@@ -485,7 +502,7 @@ export const readBack = item => {
 // speaker button. Without a voice on the device, the words are shown
 // instead. Read aloud, the question is said as it opens. In a module that
 // teaches reading, tell says only the instruction, written above it.
-const Prompt = ({ color, item, say, tell, tellLang }) => {
+const Prompt = ({ blank, color, item, say, tell, tellLang }) => {
   const { t } = useTranslation('learn')
   const voice = item.listen && canSpeak()
   const instruction = item.instruction !== item.prompt && item.instruction
@@ -563,24 +580,35 @@ const Prompt = ({ color, item, say, tell, tellLang }) => {
           maxHeight={300}
         />
       )}
-      <Typography
-        // An instruction stays in print; the words to read follow the module.
-        className={
-          item.prompt === item.instruction ? 'hopla-print' : 'hopla-words'
-        }
-        // Two sizes, by what is asked and never by its length: a word or a
-        // calculation alone, big; a sentence, the same for all.
-        level={isolated(item) ? 'h1' : 'h4'}
-        sx={{ fontVariantNumeric: 'tabular-nums' }}
-      >
-        {item.prompt}
-      </Typography>
+      {blank ? (
+        <BlankSentence
+          sentence={item.prompt}
+          color={color}
+          fill={blank.fill}
+          state={blank.state}
+          onClear={blank.onClear}
+        />
+      ) : (
+        <Typography
+          // An instruction stays in print; the words to read follow the module.
+          className={
+            item.prompt === item.instruction ? 'hopla-print' : 'hopla-words'
+          }
+          // Two sizes, by what is asked and never by its length: a word or a
+          // calculation alone, big; a sentence, the same for all.
+          level={isolated(item) ? 'h1' : 'h4'}
+          sx={{ fontVariantNumeric: 'tabular-nums' }}
+        >
+          {item.prompt}
+        </Typography>
+      )}
       {item.subject && <LabelView subject={item.subject} />}
     </Stack>
   )
 }
 
 Prompt.propTypes = {
+  blank: PropTypes.object,
   color: PropTypes.string.isRequired,
   item: PropTypes.object.isRequired,
   say: PropTypes.func,
@@ -588,10 +616,32 @@ Prompt.propTypes = {
   tellLang: PropTypes.string,
 }
 
-const Question = ({ color, item, onAnswer, say }) => {
+const Question = ({ blank, color, cursive, item, onAnswer, say }) => {
   switch (item.mode) {
     case 'choice':
+      if (blank) {
+        return (
+          <BlankLabels
+            item={item}
+            color={color}
+            fill={blank.fill}
+            onFill={blank.onFill}
+            onAnswer={onAnswer}
+          />
+        )
+      }
       return <Choices item={item} onAnswer={onAnswer} color={color} say={say} />
+    case 'setclock':
+      return <SetClock onAnswer={onAnswer} color={color} />
+    case 'trace':
+      return (
+        <TraceGlyph
+          item={item}
+          cursive={cursive}
+          onAnswer={onAnswer}
+          color={color}
+        />
+      )
     case 'sort':
       return (
         <SortBoxes item={item} onAnswer={onAnswer} color={color} say={say} />
@@ -616,7 +666,9 @@ const Question = ({ color, item, onAnswer, say }) => {
 }
 
 Question.propTypes = {
+  blank: PropTypes.object,
   color: PropTypes.string.isRequired,
+  cursive: PropTypes.bool,
   item: PropTypes.object.isRequired,
   onAnswer: PropTypes.func.isRequired,
   say: PropTypes.func,
@@ -773,6 +825,9 @@ const LearnPlay = ({ playMode = false }) => {
   const [feedback, setFeedback] = useState(null)
   const [end, setEnd] = useState(null)
   const [reporting, setReporting] = useState(false)
+  // The word slid into the blank of a sentence, for the question it was
+  // slid in.
+  const [filled, setFilled] = useState({ key: null, value: null })
   // The questions of the game just played: playing again asks others first.
   const lastKeys = useRef(new Set())
   useEffect(() => {
@@ -827,6 +882,20 @@ const LearnPlay = ({ playMode = false }) => {
   const index = game.answers.length
   const item = game.questions[index]
   const say = sayFor(item)
+  const shown = feedback?.item || item
+  const blank =
+    shown && hasBlank(shown)
+      ? {
+          fill: feedback
+            ? shown.answer
+            : filled.key === shown.key
+              ? filled.value
+              : null,
+          state: feedback ? 'right' : null,
+          onClear: () => setFilled({ key: null, value: null }),
+          onFill: value => setFilled({ key: shown.key, value }),
+        }
+      : undefined
 
   const finish = async answers => {
     const correct = answers.filter(a => a.correct).length
@@ -1019,6 +1088,7 @@ const LearnPlay = ({ playMode = false }) => {
               }}
             >
               <Prompt
+                blank={blank}
                 item={feedback?.item || item}
                 color={color}
                 say={sayFor(feedback?.item || item)}
@@ -1036,6 +1106,8 @@ const LearnPlay = ({ playMode = false }) => {
               >
                 <Question
                   key={item.key}
+                  blank={blank}
+                  cursive={doc.ecriture === 'cursive'}
                   item={item}
                   onAnswer={answer}
                   color={color}

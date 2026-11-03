@@ -516,7 +516,7 @@ CountPicture.propTypes = { count: PropTypes.object.isRequired }
 
 // Clock draws a clock face with its two hands: the short one for the
 // hours, the long one for the minutes, as at school.
-export const Clock = ({ clock }) => {
+export const Clock = ({ children, clock, size = 180 }) => {
   const { h, m } = clock
   const hand = (turns, length) => {
     const angle = turns * 2 * Math.PI
@@ -530,7 +530,7 @@ export const Clock = ({ clock }) => {
       viewBox='0 0 100 100'
       role='img'
       aria-label='horloge'
-      sx={{ display: 'block', height: 180, width: 180 }}
+      sx={{ display: 'block', height: size, width: size }}
     >
       <circle
         cx='50'
@@ -590,12 +590,17 @@ export const Clock = ({ clock }) => {
         strokeWidth='5'
         strokeLinecap='round'
       />
+      {children}
       <circle cx='50' cy='50' r='3.5' fill='#3E2F86' />
     </Box>
   )
 }
 
-Clock.propTypes = { clock: PropTypes.object.isRequired }
+Clock.propTypes = {
+  children: PropTypes.node,
+  clock: PropTypes.object.isRequired,
+  size: PropTypes.number,
+}
 
 // Ruler draws a line to measure above a ruler in centimetres.
 export const Ruler = ({ ruler }) => {

@@ -44,6 +44,8 @@ func TestTheNewCardTypesAreReadWithWhatTheyNeed(t *testing.T) {
 			"a_classer": []map[string]any{{"texte": "Le chat", "boite": "Vivant"}, {"texte": "La pierre", "boite": "Non vivant"}}}),
 		card(map[string]any{"type": "zones", "image": "carte-france", "question": "bretagne", "reponse": "Bretagne",
 			"sens": []string{"toucher", "nommer"}}),
+		card(map[string]any{"type": "tracer", "question": "Trace la lettre A", "reponse": "A"}),
+		card(map[string]any{"type": "tracer", "question": "Trace le mot", "reponse": "papa"}),
 	}
 	for _, c := range ok {
 		_, err := Parse(moduleWith(t, c))
@@ -68,6 +70,9 @@ func TestTheNewCardTypesAreReadWithWhatTheyNeed(t *testing.T) {
 		"an unknown sense":        card(map[string]any{"type": "zones", "image": "carte-france", "question": "bretagne", "reponse": "Bretagne", "sens": []string{"inverse"}}),
 		"a drawing not an id":     card(map[string]any{"type": "associer", "paires": []any{[]any{"a", map[string]any{"image": "../x"}}, []any{"c", "d"}, []any{"e", "f"}}}),
 		"a choice without answer": card(map[string]any{"type": "choix"}),
+		"nothing to trace":        card(map[string]any{"type": "tracer", "question": "Trace", "reponse": " "}),
+		"too long to trace":       card(map[string]any{"type": "tracer", "question": "Trace", "reponse": "anticonstitutionnel"}),
+		"a tracing both ways":     card(map[string]any{"type": "tracer", "question": "Trace", "reponse": "A", "sens": []string{"inverse"}}),
 	}
 	for name, c := range bad {
 		_, err := Parse(moduleWith(t, c))
