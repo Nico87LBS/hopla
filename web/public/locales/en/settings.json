@@ -180,6 +180,29 @@
       "title": "What you earn",
       "help": "The name of what everyone earns by doing tasks and playing, everywhere in Hopla.",
       "failed": "The name could not be changed."
+    },
+    "backup": {
+      "title": "Backup",
+      "help": "One file with the whole family: accounts, tasks, {{units}}, rewards, games, Learn and photos.",
+      "download": "Download the backup",
+      "downloadOne": "Download the backup of {{day}}",
+      "downloadFailed": "Could not download the backup",
+      "restore": "Restore a backup…",
+      "nightlyTitle": "Every night",
+      "nightlyHelp_one": "Around 3 am, the server keeps a backup of the family. It keeps the last one.",
+      "nightlyHelp_other": "Around 3 am, the server keeps a backup of the family. It keeps the last {{count}}.",
+      "nightlyOff": "Nightly backups are turned off on this server.",
+      "sizeKb": "{{size}} KB",
+      "sizeMb": "{{size}} MB",
+      "confirmTitle": "Restore the family?",
+      "confirmText": "The whole family will be replaced by the one in “{{file}}”. What was done since this backup will be lost, and everyone will sign in again with the backup's credentials.",
+      "confirmPrompt": "Type {{word}} to confirm.",
+      "confirmWord": "RESTORE",
+      "confirm": "Restore",
+      "cancel": "Cancel",
+      "restored": "Family “{{name}}” restored",
+      "restoredMessage": "Sign in again with the backup's credentials.",
+      "restoreFailed": "The restore failed"
     }
   },
   "accountSettings": {

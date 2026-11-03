@@ -180,6 +180,29 @@
       "title": "Ce qu'on gagne",
       "help": "Le nom donné à ce que chacun gagne en faisant ses tâches et en jouant, partout dans Hopla.",
       "failed": "Le nom n'a pas pu être changé."
+    },
+    "backup": {
+      "title": "Sauvegarde",
+      "help": "Un fichier avec toute la famille : comptes, tâches, {{units}}, récompenses, jeux, Apprendre et photos.",
+      "download": "Télécharger la sauvegarde",
+      "downloadOne": "Télécharger la sauvegarde du {{day}}",
+      "downloadFailed": "Impossible de télécharger la sauvegarde",
+      "restore": "Restaurer une sauvegarde…",
+      "nightlyTitle": "Chaque nuit",
+      "nightlyHelp_one": "Vers 3 h, le serveur garde une sauvegarde de la famille. Il garde la dernière.",
+      "nightlyHelp_other": "Vers 3 h, le serveur garde une sauvegarde de la famille. Il garde les {{count}} dernières.",
+      "nightlyOff": "Les sauvegardes de nuit sont coupées sur ce serveur.",
+      "sizeKb": "{{size}} Ko",
+      "sizeMb": "{{size}} Mo",
+      "confirmTitle": "Restaurer la famille ?",
+      "confirmText": "Toute la famille sera remplacée par celle de « {{file}} ». Ce qui a été fait depuis cette sauvegarde sera perdu, et tout le monde devra se reconnecter avec les identifiants de la sauvegarde.",
+      "confirmPrompt": "Tape {{word}} pour confirmer.",
+      "confirmWord": "RESTAURER",
+      "confirm": "Restaurer",
+      "cancel": "Annuler",
+      "restored": "Famille « {{name}} » restaurée",
+      "restoredMessage": "Reconnecte-toi avec les identifiants de la sauvegarde.",
+      "restoreFailed": "La restauration a échoué"
     }
   },
   "accountSettings": {

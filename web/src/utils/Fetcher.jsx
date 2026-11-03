@@ -1185,6 +1185,30 @@ const ExportLearnReports = async () =>
     }),
   )
 
+// The family's backups: a parent downloads one, sees the nightly ones and
+// restores the family from a file.
+const DownloadFamilyBackup = async (name = null) => {
+  const resp = await Fetch(
+    name ? `/families/backups/${encodeURIComponent(name)}` : '/families/backup',
+    { method: 'GET', headers: HEADERS() },
+  )
+  if (!resp?.ok) throw new Error(`Error ${resp?.status}`)
+  const disposition = resp.headers.get('Content-Disposition') || ''
+  const fileName = /filename="([^"]+)"/.exec(disposition)?.[1] || name
+  return { blob: await resp.blob(), fileName }
+}
+
+const GetFamilyBackups = async () =>
+  learnAnswer(
+    await Fetch('/families/backups', { method: 'GET', headers: HEADERS() }),
+  )
+
+const RestoreFamilyBackup = async file => {
+  const formData = new FormData()
+  formData.append('file', file)
+  return learnAnswer(await apiClient.upload('/families/restore', formData))
+}
+
 const GetLearnVoices = async () =>
   learnAnswer(
     inPlayPages()
@@ -1271,6 +1295,7 @@ export {
   DeleteRoutine,
   DeleteUser,
   DisableMFA,
+  DownloadFamilyBackup,
   EditLearnCard,
   ExportLearnReports,
   GetAllFamilyMembers,
@@ -1289,6 +1314,7 @@ export {
   GetChoresNew,
   GetChoresWithSubtasks,
   GetDefaultRanks,
+  GetFamilyBackups,
   GetFamilyCurrency,
   GetFamilyMemberRequests,
   GetFamilyTimezone,
@@ -1336,6 +1362,7 @@ export {
   ResetPoints,
   ResolveLearnReport,
   RestoreBackup,
+  RestoreFamilyBackup,
   RevokeCalendarURL,
   RotateCalendarURL,
   SaveBonusPeriod,

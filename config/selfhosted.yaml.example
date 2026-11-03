@@ -58,6 +58,12 @@ oauth2:
 #   base_path: ""
 #   max_file_size: 20971520        # 20 MB per file
 #   max_user_storage: 10737418240  # 10 GB for the family
+# Nightly backups of each family (optional): around 03:00 in the family's
+# time zone, kept in "sauvegardes" next to the database.
+# backup:
+#   dir: ""
+#   keep: 14
+#   disable_nightly: false
 # Single-family instance mode (optional).
 # When true, disables family join/leave endpoints and adds new OIDC users
 # to a shared household family instead of creating personal families.

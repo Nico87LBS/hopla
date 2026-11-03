@@ -52,6 +52,7 @@ import {
   shape,
   sortItems,
 } from '../../utils/learn/listing'
+import { saveFile } from '../../utils/saveFile'
 import LoadingComponent from '../components/Loading'
 import { MemberAvatar, surfaceSx } from '../Games/GameParts'
 import { ParentPage, useMembers } from '../Manage/ParentPages'
@@ -1175,29 +1176,6 @@ const ImportCard = () => {
 
 // /manage/learn: the modules of the family, who plays them and the settings
 // of each person.
-// saveFile hands a file to the person: the share sheet where the device
-// has one (an iPad sends it by message or keeps it in Files), else a
-// download.
-const saveFile = async (name, text) => {
-  const file = new File([text], name, { type: 'application/json' })
-  if (navigator.canShare?.({ files: [file] })) {
-    try {
-      await navigator.share({ files: [file] })
-      return
-    } catch (err) {
-      if (err?.name === 'AbortError') return
-    }
-  }
-  const url = URL.createObjectURL(file)
-  const link = document.createElement('a')
-  link.href = url
-  link.download = name
-  document.body.appendChild(link)
-  link.click()
-  link.remove()
-  setTimeout(() => URL.revokeObjectURL(url), 1000)
-}
-
 // ReportsCard sends the questions reported in the games, in one file, to
 // whoever writes the modules.
 const ReportsCard = ({ count }) => {
