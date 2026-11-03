@@ -143,6 +143,7 @@ func (p *Piper) pathOf(text, voice string) (string, string, error) {
 	if text == "" || utf8.RuneCountInString(text) > MaxText || !voiceName.MatchString(voice) {
 		return "", "", ErrInvalid
 	}
+	text = sayable(text, voice)
 	if p.dir == "" {
 		return text, "", nil
 	}
