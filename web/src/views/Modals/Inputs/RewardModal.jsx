@@ -27,6 +27,7 @@ function RewardModal({ isOpen, onClose, reward }) {
   const [isActive, setIsActive] = useState(true)
   const [quotaCount, setQuotaCount] = useState('')
   const [quotaPeriod, setQuotaPeriod] = useState('week')
+  const [recreMinutes, setRecreMinutes] = useState('')
   const [error, setError] = useState('')
   const queryClient = useQueryClient()
   const { showError } = useNotification()
@@ -39,6 +40,7 @@ function RewardModal({ isOpen, onClose, reward }) {
       setIsActive(reward.isActive)
       setQuotaCount(reward.quotaCount ? String(reward.quotaCount) : '')
       setQuotaPeriod(reward.quotaPeriod || 'week')
+      setRecreMinutes(reward.recreMinutes ? String(reward.recreMinutes) : '')
     } else {
       setName('')
       setDescription('')
@@ -46,6 +48,7 @@ function RewardModal({ isOpen, onClose, reward }) {
       setIsActive(true)
       setQuotaCount('')
       setQuotaPeriod('week')
+      setRecreMinutes('')
     }
     setError('')
   }, [reward])
@@ -65,6 +68,11 @@ function RewardModal({ isOpen, onClose, reward }) {
       setError(t('modal.errorInvalidQuota'))
       return false
     }
+    const recre = Number(recreMinutes || 0)
+    if (!Number.isInteger(recre) || recre < 0 || recre > 120) {
+      setError(t('modal.errorInvalidRecre'))
+      return false
+    }
     return true
   }
 
@@ -78,6 +86,7 @@ function RewardModal({ isOpen, onClose, reward }) {
       isActive,
       quotaCount: Number(quotaCount || 0),
       quotaPeriod: Number(quotaCount || 0) > 0 ? quotaPeriod : '',
+      recreMinutes: Number(recreMinutes || 0),
     }
 
     const save = reward?.id
@@ -185,6 +194,29 @@ function RewardModal({ isOpen, onClose, reward }) {
             sx={{ mt: 0.5 }}
           >
             {t('modal.quotaHelp')}
+          </Typography>
+        </FormControl>
+
+        <FormControl>
+          <Typography gutterBottom level='body-sm' alignSelf='start'>
+            {t('modal.recre')}
+          </Typography>
+          <Input
+            type='number'
+            placeholder={t('modal.recreNone')}
+            endDecorator={t('modal.recreUnit')}
+            slotProps={{
+              input: { min: 0, max: 120, 'aria-label': t('modal.recre') },
+            }}
+            value={recreMinutes}
+            onChange={e => setRecreMinutes(e.target.value)}
+          />
+          <Typography
+            level='body-xs'
+            textColor='text.tertiary'
+            sx={{ mt: 0.5 }}
+          >
+            {t('modal.recreHelp')}
           </Typography>
         </FormControl>
 

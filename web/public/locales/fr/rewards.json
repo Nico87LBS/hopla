@@ -49,7 +49,12 @@
     "perDay": "par jour",
     "perWeek": "par semaine",
     "perMonth": "par mois",
-    "quotaHelp": "Combien de fois chaque membre peut l'échanger par jour, par semaine (à partir du lundi) ou par mois. Laisse vide pour ne pas limiter."
+    "quotaHelp": "Combien de fois chaque membre peut l'échanger par jour, par semaine (à partir du lundi) ou par mois. Laisse vide pour ne pas limiter.",
+    "recre": "Temps de récré",
+    "recreNone": "Aucun",
+    "recreUnit": "min",
+    "recreHelp": "Une fois accordée, la récompense donne ce temps de jeu libre aux petits jeux d'Apprendre. Les minutes s'ajoutent à une réserve et ne s'écoulent que pendant les parties.",
+    "errorInvalidRecre": "Le temps de récré doit être un nombre entier de 0 à 120 minutes"
   },
   "view": {
     "subtitle": "Utilise les {{units}} gagné{{e}}s pour choisir quelque chose de spécial.",
@@ -68,5 +73,7 @@
     "week_other": "{{count}} par semaine",
     "month_one": "{{count}} par mois",
     "month_other": "{{count}} par mois"
-  }
+  },
+  "recreTime_one": "{{count}} min de récré",
+  "recreTime_other": "{{count}} min de récré"
 }

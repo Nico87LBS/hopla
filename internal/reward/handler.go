@@ -25,6 +25,8 @@ type RewardReq struct {
 	IsActive    *bool  `json:"isActive"`
 	QuotaCount  int    `json:"quotaCount" binding:"gte=0"`
 	QuotaPeriod string `json:"quotaPeriod"`
+	// RecreMinutes makes the reward time of récré (0 for none).
+	RecreMinutes int `json:"recreMinutes" binding:"gte=0,lte=120"`
 }
 
 // quota returns the reward's quota fields from the request, or an error
@@ -172,6 +174,7 @@ func (h *Handler) createReward(c *gin.Context) {
 		QuotaCount:    quotaCount,
 		QuotaPeriod:   quotaPeriod,
 		QuotaTimezone: currentUser.Timezone,
+		RecreMinutes:  req.RecreMinutes,
 	}
 	if err := h.rRepo.CreateReward(c, reward); err != nil {
 		c.JSON(500, gin.H{"error": "Error creating reward"})
@@ -240,6 +243,7 @@ func (h *Handler) updateReward(c *gin.Context) {
 		QuotaCount:    quotaCount,
 		QuotaPeriod:   quotaPeriod,
 		QuotaTimezone: currentUser.Timezone,
+		RecreMinutes:  req.RecreMinutes,
 	}
 	if err := h.rRepo.UpdateReward(c, reward); err != nil {
 		c.JSON(500, gin.H{"error": "Error updating reward"})

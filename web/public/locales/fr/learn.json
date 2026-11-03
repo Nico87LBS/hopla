@@ -410,7 +410,20 @@
       "timer": "Minuteur",
       "noTimer": "Sans minuteur",
       "games": "Jeux permis",
-      "failed": "Réglage de la récré non enregistré"
+      "failed": "Réglage de la récré non enregistré",
+      "trainSlow": "Ralenti",
+      "trainWrap": "Haie traversable",
+      "bank": "Temps de récré de la boutique en réserve : {{time}}"
+    },
+    "bankReady": "Temps de récré : {{time}}",
+    "bankPick": "Ta récompense : du temps de récré ! Le chrono tourne seulement pendant les parties.",
+    "bankLeft": "Il te reste {{time}} de récré.",
+    "playAgain": "Rejouer",
+    "trial": {
+      "title": "Essayer les jeux",
+      "help": "Des parties d'essai : pas de record, et la récré de {{name}} ne bouge pas. Les jeux suivent ses réglages.",
+      "notKept": "Partie d'essai : rien n'est gardé.",
+      "close": "Fermer"
     }
   }
 }

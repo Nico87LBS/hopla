@@ -57,6 +57,7 @@ import LoadingComponent from '../components/Loading'
 import { MemberAvatar, surfaceSx } from '../Games/GameParts'
 import { ParentPage, useMembers } from '../Manage/ParentPages'
 import RecreSettingsCard from '../Recre/RecreSettings'
+import RecreTrialCard from '../Recre/RecreTrial'
 import { useCompiled } from './LearnParts'
 import { VoicesCard } from './LearnVoices'
 import ListBar, { useListChoices } from './ListBar'
@@ -1518,6 +1519,7 @@ export const ManageLearn = () => {
             value={settings.get(`${person.userId}:*`)?.firstName}
           />
           <RecreSettingsCard person={person} recre={player?.recre} />
+          <RecreTrialCard person={person} recre={player?.recre} />
           <Legend person={person} />
           <ListBar
             query={query}

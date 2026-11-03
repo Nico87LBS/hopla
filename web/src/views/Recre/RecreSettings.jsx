@@ -15,13 +15,15 @@ import { useSetRecre } from '../../queries/LearnQueries'
 import { useNotification } from '../../service/NotificationProvider'
 import { surfaceSx } from '../Games/GameParts'
 import { GAMES } from './games'
+import { clock } from './games/common'
 
 const EVERY = [1, 2, 3, 4, 5, 6, 8, 10]
 const MINUTES = [0, 1, 2, 3, 5]
 const ALL = Object.keys(GAMES)
 
 // RecreSettingsCard sets one person's récré: on or off, after how many games
-// played well, with or without a timer, and which little games.
+// played well, with or without a timer, which little games, and how easy le
+// train des lapereaux is.
 const RecreSettingsCard = ({ person, recre }) => {
   const { t } = useTranslation('learn')
   const setRecre = useSetRecre()
@@ -132,7 +134,31 @@ const RecreSettingsCard = ({ person, recre }) => {
               ))}
             </Stack>
           </Box>
+          {games.includes('train') && (
+            <Box>
+              <Typography level='body-xs' sx={{ mb: 0.5 }}>
+                {t('recre.game.train')}
+              </Typography>
+              <Stack direction='row' gap={1.5} flexWrap='wrap'>
+                {['trainSlow', 'trainWrap'].map(key => (
+                  <Checkbox
+                    key={key}
+                    size='sm'
+                    label={t(`recre.settings.${key}`)}
+                    checked={recre[key]}
+                    disabled={setRecre.isPending}
+                    onChange={event => change({ [key]: event.target.checked })}
+                  />
+                ))}
+              </Stack>
+            </Box>
+          )}
         </Stack>
+      )}
+      {recre.bank > 0 && (
+        <Typography level='body-xs' sx={{ color: 'text.secondary', mt: 1.5 }}>
+          {t('recre.settings.bank', { time: clock(recre.bank) })}
+        </Typography>
       )}
     </Sheet>
   )

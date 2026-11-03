@@ -180,3 +180,7 @@ export const beep = (freq, duration = 0.12, volume = 0.15) => {
     // No sound: the game goes on.
   }
 }
+
+// clock writes seconds as 2:05.
+export const clock = seconds =>
+  `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`

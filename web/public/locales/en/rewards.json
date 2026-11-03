@@ -49,7 +49,12 @@
     "perDay": "per day",
     "perWeek": "per week",
     "perMonth": "per month",
-    "quotaHelp": "How many times each member can redeem it per calendar day, week (from Monday) or month. Leave empty for no limit."
+    "quotaHelp": "How many times each member can redeem it per calendar day, week (from Monday) or month. Leave empty for no limit.",
+    "recre": "Break time",
+    "recreNone": "None",
+    "recreUnit": "min",
+    "recreHelp": "Once approved, the reward gives this much free play on the little games of Learn. The minutes add up and only run down while playing.",
+    "errorInvalidRecre": "Break time must be a whole number from 0 to 120 minutes"
   },
   "view": {
     "subtitle": "Use the {{units}} you earn to choose something special.",
@@ -68,5 +73,7 @@
     "week_other": "{{count}} per week",
     "month_one": "{{count}} per month",
     "month_other": "{{count}} per month"
-  }
+  },
+  "recreTime_one": "{{count}} min of break",
+  "recreTime_other": "{{count}} min of break"
 }

@@ -231,8 +231,10 @@ parties qui restent. La récré ne rapporte aucun hop.
 Cinq jeux, faits pour le doigt comme pour la souris :
 
 - **Le train des lapereaux** : le lapin mange les carottes et une file de
-  lapereaux grandit derrière lui ; il ne faut toucher ni la haie ni la file.
-  Il part au premier glissement de doigt ou à la première flèche.
+  lapereaux grandit derrière lui ; il ne faut pas toucher la file. Par
+  défaut, il va doucement et la haie (en pointillés) le laisse passer : il
+  ressort de l'autre côté. Il part au premier glissement de doigt ou à la
+  première flèche.
 - **Bulles de couleur** : viser et tirer une bulle ; 3 bulles de la même
   couleur qui se touchent éclatent, avec celles qu'elles retenaient. Une
   rangée descend tous les 7 tirs ; une bulle sous la ligne finit la partie.
@@ -257,7 +259,29 @@ pour chacun :
 - toutes les combien de parties (1 à 10, 3 par défaut) ;
 - un minuteur (sans, 1, 2, 3 ou 5 minutes) qui arrête la partie et garde le
   score atteint ;
-- les jeux permis (au moins un).
+- les jeux permis (au moins un) ;
+- pour le train des lapereaux : « Ralenti » (plus lent au départ, accélère
+  deux fois moins) et « Haie traversable », cochés par défaut. Décochés, le
+  train est aussi rapide qu'avant et la haie arrête la partie.
+
+Sous elle, la carte « Essayer les jeux » lance chaque jeu pour l'essayer, avec
+les réglages de la personne choisie : rien n'est gardé, ni score ni record, et
+sa récré ne change pas.
+
+### Du temps de récré dans la boutique
+
+Une récompense peut donner du temps de récré : case « Temps de récré » (en
+minutes, 120 au plus) dans la fiche de la récompense. Une fois la demande
+accordée, ces minutes s'ajoutent à une réserve de la personne. Tant qu'il en
+reste, la carte « Récré » de ses modules est verte et montre le temps ; elle
+apparaît même si la récré est coupée ou qu'aucun module n'est actif.
+
+Sur la page de la récré, l'enfant enchaîne alors les parties de ses jeux
+permis. Le chrono ne tourne que pendant les parties et arrête la dernière quand
+la réserve est vide. Une récré gagnée par Apprendre passe avant : la réserve
+attend la suivante. Ces parties gardent leurs records mais ne remettent pas à
+zéro le compte des parties d'Apprendre. La carte « Récré » des réglages montre
+ce qui reste en réserve.
 
 ## Jouer sur une tablette partagée
 

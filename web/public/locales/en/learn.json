@@ -410,7 +410,20 @@
       "timer": "Timer",
       "noTimer": "No timer",
       "games": "Games allowed",
-      "failed": "Break time setting not saved"
+      "failed": "Break time setting not saved",
+      "trainSlow": "Slower",
+      "trainWrap": "Hedge you can go through",
+      "bank": "Break time from the shop waiting: {{time}}"
+    },
+    "bankReady": "Break time: {{time}}",
+    "bankPick": "Your reward: break time! The clock only runs while you play.",
+    "bankLeft": "You have {{time}} of break left.",
+    "playAgain": "Play again",
+    "trial": {
+      "title": "Try the games",
+      "help": "Trial games: no record, and {{name}}'s break does not change. The games follow their settings.",
+      "notKept": "Trial game: nothing is kept.",
+      "close": "Close"
     }
   }
 }
