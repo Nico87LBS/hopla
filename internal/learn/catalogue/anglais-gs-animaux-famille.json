@@ -1,0 +1,313 @@
+{
+  "format": "hopla-module/1",
+  "id": "anglais-gs-animaux-famille",
+  "version": "1.0.0",
+  "nom": "Les animaux, la famille, le corps",
+  "description": "Les animaux, La famille et Le corps.",
+  "matiere": "anglais",
+  "niveaux": [
+    "GS"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "en",
+  "icone": "langue",
+  "couleur": "#E5484D",
+  "auteur": "Hopla",
+  "sources": "D'après le programme de langues vivantes du cycle 1 (découvrir la langue par l'oral) et le vocabulaire courant de maternelle.",
+  "reglages": {
+    "questions_par_partie": 6,
+    "nouvelles_par_partie": 2,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 3
+  },
+  "chapitres": [
+    {
+      "id": "animals",
+      "nom": "Les animaux"
+    },
+    {
+      "id": "family",
+      "nom": "La famille",
+      "ouvert_apres": 60
+    },
+    {
+      "id": "body",
+      "nom": "Le corps",
+      "ouvert_apres": 60
+    }
+  ],
+  "fiches": [
+    {
+      "id": "cat",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:cat",
+      "question": "cat",
+      "reponse": "chat",
+      "image": "cat"
+    },
+    {
+      "id": "dog",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:dog",
+      "question": "dog",
+      "reponse": "chien",
+      "image": "dog"
+    },
+    {
+      "id": "rabbit",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:rabbit",
+      "question": "rabbit",
+      "reponse": "lapin",
+      "image": "rabbit"
+    },
+    {
+      "id": "bird",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:bird",
+      "question": "bird",
+      "reponse": "oiseau",
+      "image": "bird"
+    },
+    {
+      "id": "fish",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:fish",
+      "question": "fish",
+      "reponse": "poisson",
+      "image": "fish"
+    },
+    {
+      "id": "horse",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:horse",
+      "question": "horse",
+      "reponse": "cheval",
+      "image": "horse"
+    },
+    {
+      "id": "cow",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:cow",
+      "question": "cow",
+      "reponse": "vache",
+      "image": "cow"
+    },
+    {
+      "id": "pig",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:pig",
+      "question": "pig",
+      "reponse": "cochon",
+      "image": "pig"
+    },
+    {
+      "id": "duck",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:duck",
+      "question": "duck",
+      "reponse": "canard",
+      "image": "duck"
+    },
+    {
+      "id": "mouse",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:mouse",
+      "question": "mouse",
+      "reponse": "souris",
+      "image": "mouse"
+    },
+    {
+      "id": "sheep",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:sheep",
+      "question": "sheep",
+      "reponse": "mouton",
+      "image": "sheep"
+    },
+    {
+      "id": "frog",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:frog",
+      "question": "frog",
+      "reponse": "grenouille",
+      "image": "frog"
+    },
+    {
+      "id": "lion",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:lion",
+      "question": "lion",
+      "reponse": "lion",
+      "image": "lion"
+    },
+    {
+      "id": "elephant",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:elephant",
+      "question": "elephant",
+      "reponse": "éléphant",
+      "image": "elephant"
+    },
+    {
+      "id": "bear",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:bear",
+      "question": "bear",
+      "reponse": "ours",
+      "image": "bear"
+    },
+    {
+      "id": "snake",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:snake",
+      "question": "snake",
+      "reponse": "serpent",
+      "image": "snake"
+    },
+    {
+      "id": "mum",
+      "chapitre": "family",
+      "type": "ecoute",
+      "cle": "en:mot:mum",
+      "question": "mum",
+      "reponse": "maman",
+      "image": "mum"
+    },
+    {
+      "id": "dad",
+      "chapitre": "family",
+      "type": "ecoute",
+      "cle": "en:mot:dad",
+      "question": "dad",
+      "reponse": "papa",
+      "image": "dad"
+    },
+    {
+      "id": "baby",
+      "chapitre": "family",
+      "type": "ecoute",
+      "cle": "en:mot:baby",
+      "question": "baby",
+      "reponse": "bébé",
+      "image": "baby"
+    },
+    {
+      "id": "grandma",
+      "chapitre": "family",
+      "type": "ecoute",
+      "cle": "en:mot:grandma",
+      "question": "grandma",
+      "reponse": "mamie",
+      "image": "grandma"
+    },
+    {
+      "id": "grandpa",
+      "chapitre": "family",
+      "type": "ecoute",
+      "cle": "en:mot:grandpa",
+      "question": "grandpa",
+      "reponse": "papi",
+      "image": "grandpa"
+    },
+    {
+      "id": "sister",
+      "chapitre": "family",
+      "type": "ecoute",
+      "cle": "en:mot:sister",
+      "question": "sister",
+      "reponse": "sœur",
+      "image": "sister"
+    },
+    {
+      "id": "brother",
+      "chapitre": "family",
+      "type": "ecoute",
+      "cle": "en:mot:brother",
+      "question": "brother",
+      "reponse": "frère",
+      "image": "brother"
+    },
+    {
+      "id": "head",
+      "chapitre": "body",
+      "type": "ecoute",
+      "cle": "en:mot:head",
+      "question": "head",
+      "reponse": "tête",
+      "image": "head"
+    },
+    {
+      "id": "eye",
+      "chapitre": "body",
+      "type": "ecoute",
+      "cle": "en:mot:eye",
+      "question": "eye",
+      "reponse": "œil",
+      "image": "eye"
+    },
+    {
+      "id": "nose",
+      "chapitre": "body",
+      "type": "ecoute",
+      "cle": "en:mot:nose",
+      "question": "nose",
+      "reponse": "nez",
+      "image": "nose"
+    },
+    {
+      "id": "mouth",
+      "chapitre": "body",
+      "type": "ecoute",
+      "cle": "en:mot:mouth",
+      "question": "mouth",
+      "reponse": "bouche",
+      "image": "mouth"
+    },
+    {
+      "id": "ear",
+      "chapitre": "body",
+      "type": "ecoute",
+      "cle": "en:mot:ear",
+      "question": "ear",
+      "reponse": "oreille",
+      "image": "ear"
+    },
+    {
+      "id": "hand",
+      "chapitre": "body",
+      "type": "ecoute",
+      "cle": "en:mot:hand",
+      "question": "hand",
+      "reponse": "main",
+      "image": "hand"
+    },
+    {
+      "id": "foot",
+      "chapitre": "body",
+      "type": "ecoute",
+      "cle": "en:mot:foot",
+      "question": "foot",
+      "reponse": "pied",
+      "image": "foot"
+    }
+  ]
+}

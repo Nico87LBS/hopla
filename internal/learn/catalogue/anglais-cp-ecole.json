@@ -1,0 +1,151 @@
+{
+  "format": "hopla-module/1",
+  "id": "anglais-cp-ecole",
+  "version": "1.0.0",
+  "nom": "À l'école",
+  "description": "À l’école et Les consignes de la classe.",
+  "matiere": "anglais",
+  "niveaux": [
+    "CP"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "en",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de langues vivantes du cycle 2 et les repères de progression en anglais du CP (Éduscol).",
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 3
+  },
+  "icone": "langue",
+  "couleur": "#F59E0B",
+  "chapitres": [
+    {
+      "id": "school",
+      "nom": "À l’école"
+    },
+    {
+      "id": "classroom",
+      "nom": "Les consignes de la classe",
+      "ouvert_apres": 60
+    }
+  ],
+  "fiches": [
+    {
+      "id": "school-pencil",
+      "chapitre": "school",
+      "type": "ecoute",
+      "question": "pencil",
+      "reponse": "crayon",
+      "cle": "en:mot:pencil",
+      "image": "pencil"
+    },
+    {
+      "id": "school-schoolbag",
+      "chapitre": "school",
+      "type": "ecoute",
+      "question": "schoolbag",
+      "reponse": "cartable",
+      "cle": "en:mot:schoolbag",
+      "image": "schoolbag"
+    },
+    {
+      "id": "school-scissors",
+      "chapitre": "school",
+      "type": "ecoute",
+      "question": "scissors",
+      "reponse": "ciseaux",
+      "cle": "en:mot:scissors",
+      "image": "scissors"
+    },
+    {
+      "id": "school-glue",
+      "chapitre": "school",
+      "type": "ecoute",
+      "question": "glue",
+      "reponse": "colle",
+      "cle": "en:mot:glue",
+      "image": "glue"
+    },
+    {
+      "id": "school-book",
+      "chapitre": "school",
+      "type": "ecoute",
+      "question": "book",
+      "reponse": "livre",
+      "cle": "en:mot:book",
+      "image": "book"
+    },
+    {
+      "id": "school-notebook",
+      "chapitre": "school",
+      "type": "ecoute",
+      "question": "notebook",
+      "reponse": "cahier",
+      "cle": "en:mot:notebook",
+      "image": "notebook"
+    },
+    {
+      "id": "school-paintbrush",
+      "chapitre": "school",
+      "type": "ecoute",
+      "question": "paintbrush",
+      "reponse": "pinceau",
+      "cle": "en:mot:paintbrush",
+      "image": "paintbrush"
+    },
+    {
+      "id": "school-board",
+      "chapitre": "school",
+      "type": "ecoute",
+      "question": "board",
+      "reponse": "tableau",
+      "cle": "en:mot:board",
+      "image": "board"
+    },
+    {
+      "id": "ordre-stand-up",
+      "chapitre": "classroom",
+      "type": "ecoute",
+      "question": "Stand up!",
+      "reponse": "Lève-toi.",
+      "cle": "en:phrase:stand-up"
+    },
+    {
+      "id": "ordre-sit-down",
+      "chapitre": "classroom",
+      "type": "ecoute",
+      "question": "Sit down!",
+      "reponse": "Assieds-toi !",
+      "cle": "en:phrase:sit-down"
+    },
+    {
+      "id": "ordre-listen",
+      "chapitre": "classroom",
+      "type": "ecoute",
+      "question": "Listen!",
+      "reponse": "Écoute !",
+      "cle": "en:phrase:listen"
+    },
+    {
+      "id": "ordre-look",
+      "chapitre": "classroom",
+      "type": "ecoute",
+      "question": "Look!",
+      "reponse": "Regarde !",
+      "cle": "en:phrase:look"
+    },
+    {
+      "id": "ordre-be-quiet",
+      "chapitre": "classroom",
+      "type": "ecoute",
+      "question": "Be quiet!",
+      "reponse": "Silence !",
+      "cle": "en:phrase:be-quiet"
+    }
+  ]
+}

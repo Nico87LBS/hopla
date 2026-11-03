@@ -1,0 +1,338 @@
+{
+  "format": "hopla-module/1",
+  "id": "anglais-ce2-se-presenter",
+  "version": "1.0.0",
+  "nom": "Se présenter et la famille",
+  "description": "Bonjour et politesse et La famille.",
+  "matiere": "anglais",
+  "niveaux": [
+    "CE2"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "en",
+  "icone": "langue",
+  "couleur": "#3B82F6",
+  "auteur": "Hopla",
+  "sources": "D'après le programme de langues vivantes du cycle 2 et les repères de progression en anglais (Éduscol).",
+  "reglages": {
+    "questions_par_partie": 10,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 3
+  },
+  "chapitres": [
+    {
+      "id": "greetings",
+      "nom": "Bonjour et politesse"
+    },
+    {
+      "id": "family",
+      "nom": "La famille",
+      "ouvert_apres": 60
+    }
+  ],
+  "fiches": [
+    {
+      "id": "hello",
+      "chapitre": "greetings",
+      "type": "ecoute",
+      "cle": "en:mot:hello",
+      "question": "hello",
+      "reponse": "bonjour",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "goodbye",
+      "chapitre": "greetings",
+      "type": "ecoute",
+      "cle": "en:mot:goodbye",
+      "question": "goodbye",
+      "reponse": "au revoir",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "please",
+      "chapitre": "greetings",
+      "type": "ecoute",
+      "cle": "en:mot:please",
+      "question": "please",
+      "reponse": "s'il te plaît",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "thank-you",
+      "chapitre": "greetings",
+      "type": "ecoute",
+      "cle": "en:mot:thank-you",
+      "question": "thank you",
+      "reponse": "merci",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "yes",
+      "chapitre": "greetings",
+      "type": "ecoute",
+      "cle": "en:mot:yes",
+      "question": "yes",
+      "reponse": "oui",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "no",
+      "chapitre": "greetings",
+      "type": "ecoute",
+      "cle": "en:mot:no",
+      "question": "no",
+      "reponse": "non",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "sorry",
+      "chapitre": "greetings",
+      "type": "ecoute",
+      "cle": "en:mot:sorry",
+      "question": "sorry",
+      "reponse": "pardon",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "good-morning",
+      "chapitre": "greetings",
+      "type": "ecoute",
+      "cle": "en:mot:good-morning",
+      "question": "good morning",
+      "reponse": "bonjour (le matin)",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "good-night",
+      "chapitre": "greetings",
+      "type": "ecoute",
+      "cle": "en:mot:good-night",
+      "question": "good night",
+      "reponse": "bonne nuit",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "excuse-me",
+      "chapitre": "greetings",
+      "type": "ecoute",
+      "cle": "en:mot:excuse-me",
+      "question": "excuse me",
+      "reponse": "excusez-moi",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "phrase-how-are-you",
+      "chapitre": "greetings",
+      "type": "ecoute",
+      "cle": "en:phrase:how-are-you",
+      "question": "How are you?",
+      "reponse": "Comment ça va ?",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "phrase-im-fine",
+      "chapitre": "greetings",
+      "type": "ecoute",
+      "cle": "en:phrase:im-fine",
+      "question": "I'm fine.",
+      "reponse": "Ça va bien.",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "phrase-my-name-is-tom",
+      "chapitre": "greetings",
+      "type": "ecoute",
+      "cle": "en:phrase:my-name-is-tom",
+      "question": "My name is Tom.",
+      "reponse": "Je m'appelle Tom.",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "mother",
+      "chapitre": "family",
+      "type": "ecoute",
+      "cle": "en:mot:mother",
+      "question": "mother",
+      "reponse": "mère",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "father",
+      "chapitre": "family",
+      "type": "ecoute",
+      "cle": "en:mot:father",
+      "question": "father",
+      "reponse": "père",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "sister",
+      "chapitre": "family",
+      "type": "ecoute",
+      "cle": "en:mot:sister",
+      "question": "sister",
+      "reponse": "sœur",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "brother",
+      "chapitre": "family",
+      "type": "ecoute",
+      "cle": "en:mot:brother",
+      "question": "brother",
+      "reponse": "frère",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "grandmother",
+      "chapitre": "family",
+      "type": "ecoute",
+      "cle": "en:mot:grandmother",
+      "question": "grandmother",
+      "reponse": "grand-mère",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "grandfather",
+      "chapitre": "family",
+      "type": "ecoute",
+      "cle": "en:mot:grandfather",
+      "question": "grandfather",
+      "reponse": "grand-père",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "baby",
+      "chapitre": "family",
+      "type": "ecoute",
+      "cle": "en:mot:baby",
+      "question": "baby",
+      "reponse": "bébé",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "uncle",
+      "chapitre": "family",
+      "type": "ecoute",
+      "cle": "en:mot:uncle",
+      "question": "uncle",
+      "reponse": "oncle",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "aunt",
+      "chapitre": "family",
+      "type": "ecoute",
+      "cle": "en:mot:aunt",
+      "question": "aunt",
+      "reponse": "tante",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "cousin",
+      "chapitre": "family",
+      "type": "ecoute",
+      "cle": "en:mot:cousin",
+      "question": "cousin",
+      "reponse": "cousin",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "parents",
+      "chapitre": "family",
+      "type": "ecoute",
+      "cle": "en:mot:parents",
+      "question": "parents",
+      "reponse": "parents",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "family",
+      "chapitre": "family",
+      "type": "ecoute",
+      "cle": "en:mot:family",
+      "question": "family",
+      "reponse": "famille",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,199 @@
+{
+  "format": "hopla-module/1",
+  "id": "anglais-ce1-jours-nombres",
+  "version": "1.0.0",
+  "nom": "Les jours et les nombres",
+  "description": "Les jours de la semaine et Les nombres de 11 à 20.",
+  "matiere": "anglais",
+  "niveaux": [
+    "CE1"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "en",
+  "lecture_voix_haute": true,
+  "auteur": "Hopla",
+  "sources": "D'après le programme de langues vivantes du cycle 2 et les repères de progression en anglais du CE1 (Éduscol).",
+  "reglages": {
+    "questions_par_partie": 8,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 3
+  },
+  "icone": "langue",
+  "couleur": "#10B981",
+  "chapitres": [
+    {
+      "id": "days",
+      "nom": "Les jours de la semaine"
+    },
+    {
+      "id": "numbers",
+      "nom": "Les nombres de 11 à 20",
+      "ouvert_apres": 60
+    }
+  ],
+  "fiches": [
+    {
+      "id": "number-eleven",
+      "chapitre": "numbers",
+      "type": "ecoute",
+      "question": "eleven",
+      "reponse": "onze",
+      "cle": "en:nombre:eleven"
+    },
+    {
+      "id": "number-twelve",
+      "chapitre": "numbers",
+      "type": "ecoute",
+      "question": "twelve",
+      "reponse": "douze",
+      "cle": "en:nombre:twelve"
+    },
+    {
+      "id": "number-thirteen",
+      "chapitre": "numbers",
+      "type": "ecoute",
+      "question": "thirteen",
+      "reponse": "treize",
+      "cle": "en:nombre:thirteen"
+    },
+    {
+      "id": "number-fourteen",
+      "chapitre": "numbers",
+      "type": "ecoute",
+      "question": "fourteen",
+      "reponse": "quatorze",
+      "cle": "en:nombre:fourteen"
+    },
+    {
+      "id": "number-fifteen",
+      "chapitre": "numbers",
+      "type": "ecoute",
+      "question": "fifteen",
+      "reponse": "quinze",
+      "cle": "en:nombre:fifteen"
+    },
+    {
+      "id": "number-sixteen",
+      "chapitre": "numbers",
+      "type": "ecoute",
+      "question": "sixteen",
+      "reponse": "seize",
+      "cle": "en:nombre:sixteen"
+    },
+    {
+      "id": "number-seventeen",
+      "chapitre": "numbers",
+      "type": "ecoute",
+      "question": "seventeen",
+      "reponse": "dix-sept",
+      "cle": "en:nombre:seventeen"
+    },
+    {
+      "id": "number-eighteen",
+      "chapitre": "numbers",
+      "type": "ecoute",
+      "question": "eighteen",
+      "reponse": "dix-huit",
+      "cle": "en:nombre:eighteen"
+    },
+    {
+      "id": "number-nineteen",
+      "chapitre": "numbers",
+      "type": "ecoute",
+      "question": "nineteen",
+      "reponse": "dix-neuf",
+      "cle": "en:nombre:nineteen"
+    },
+    {
+      "id": "number-twenty",
+      "chapitre": "numbers",
+      "type": "ecoute",
+      "question": "twenty",
+      "reponse": "vingt",
+      "cle": "en:nombre:twenty"
+    },
+    {
+      "id": "monday",
+      "chapitre": "days",
+      "type": "ecoute",
+      "question": "Monday",
+      "reponse": "lundi",
+      "cle": "en:mot:monday"
+    },
+    {
+      "id": "tuesday",
+      "chapitre": "days",
+      "type": "ecoute",
+      "question": "Tuesday",
+      "reponse": "mardi",
+      "cle": "en:mot:tuesday"
+    },
+    {
+      "id": "wednesday",
+      "chapitre": "days",
+      "type": "ecoute",
+      "question": "Wednesday",
+      "reponse": "mercredi",
+      "cle": "en:mot:wednesday"
+    },
+    {
+      "id": "thursday",
+      "chapitre": "days",
+      "type": "ecoute",
+      "question": "Thursday",
+      "reponse": "jeudi",
+      "cle": "en:mot:thursday"
+    },
+    {
+      "id": "friday",
+      "chapitre": "days",
+      "type": "ecoute",
+      "question": "Friday",
+      "reponse": "vendredi",
+      "cle": "en:mot:friday"
+    },
+    {
+      "id": "saturday",
+      "chapitre": "days",
+      "type": "ecoute",
+      "question": "Saturday",
+      "reponse": "samedi",
+      "cle": "en:mot:saturday"
+    },
+    {
+      "id": "sunday",
+      "chapitre": "days",
+      "type": "ecoute",
+      "question": "Sunday",
+      "reponse": "dimanche",
+      "cle": "en:mot:sunday"
+    },
+    {
+      "id": "today",
+      "chapitre": "days",
+      "type": "ecoute",
+      "question": "today",
+      "reponse": "aujourd'hui",
+      "cle": "en:mot:today"
+    },
+    {
+      "id": "tomorrow",
+      "chapitre": "days",
+      "type": "ecoute",
+      "question": "tomorrow",
+      "reponse": "demain",
+      "cle": "en:mot:tomorrow"
+    },
+    {
+      "id": "yesterday",
+      "chapitre": "days",
+      "type": "ecoute",
+      "question": "yesterday",
+      "reponse": "hier",
+      "cle": "en:mot:yesterday"
+    }
+  ]
+}

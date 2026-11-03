@@ -1,0 +1,828 @@
+{
+  "format": "hopla-module/1",
+  "id": "anglais-ce2-quotidien",
+  "version": "1.0.0",
+  "nom": "Le quotidien",
+  "description": "Les couleurs, Le corps, Les vêtements et À table.",
+  "matiere": "anglais",
+  "niveaux": [
+    "CE2"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "en",
+  "icone": "langue",
+  "couleur": "#3B82F6",
+  "auteur": "Hopla",
+  "sources": "D'après le programme de langues vivantes du cycle 2 et les repères de progression en anglais (Éduscol).",
+  "reglages": {
+    "questions_par_partie": 10,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 3
+  },
+  "chapitres": [
+    {
+      "id": "colours",
+      "nom": "Les couleurs"
+    },
+    {
+      "id": "body",
+      "nom": "Le corps",
+      "ouvert_apres": 60
+    },
+    {
+      "id": "clothes",
+      "nom": "Les vêtements",
+      "ouvert_apres": 60
+    },
+    {
+      "id": "food",
+      "nom": "À table",
+      "ouvert_apres": 60
+    }
+  ],
+  "fiches": [
+    {
+      "id": "colour-red",
+      "chapitre": "colours",
+      "type": "ecoute",
+      "cle": "en:mot:red",
+      "question": "red",
+      "reponse": "rouge",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "colour-blue",
+      "chapitre": "colours",
+      "type": "ecoute",
+      "cle": "en:mot:blue",
+      "question": "blue",
+      "reponse": "bleu",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "colour-green",
+      "chapitre": "colours",
+      "type": "ecoute",
+      "cle": "en:mot:green",
+      "question": "green",
+      "reponse": "vert",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "colour-yellow",
+      "chapitre": "colours",
+      "type": "ecoute",
+      "cle": "en:mot:yellow",
+      "question": "yellow",
+      "reponse": "jaune",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "colour-orange",
+      "chapitre": "colours",
+      "type": "ecoute",
+      "cle": "en:mot:orange-couleur",
+      "question": "orange",
+      "reponse": "orange",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "colour-pink",
+      "chapitre": "colours",
+      "type": "ecoute",
+      "cle": "en:mot:pink",
+      "question": "pink",
+      "reponse": "rose",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "colour-purple",
+      "chapitre": "colours",
+      "type": "ecoute",
+      "cle": "en:mot:purple",
+      "question": "purple",
+      "reponse": "violet",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "colour-black",
+      "chapitre": "colours",
+      "type": "ecoute",
+      "cle": "en:mot:black",
+      "question": "black",
+      "reponse": "noir",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "colour-white",
+      "chapitre": "colours",
+      "type": "ecoute",
+      "cle": "en:mot:white",
+      "question": "white",
+      "reponse": "blanc",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "colour-brown",
+      "chapitre": "colours",
+      "type": "ecoute",
+      "cle": "en:mot:brown",
+      "question": "brown",
+      "reponse": "marron",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "colour-grey",
+      "chapitre": "colours",
+      "type": "ecoute",
+      "cle": "en:mot:grey",
+      "question": "grey",
+      "reponse": "gris",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "head",
+      "chapitre": "body",
+      "type": "ecoute",
+      "cle": "en:mot:head",
+      "question": "head",
+      "reponse": "tête",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "eye",
+      "chapitre": "body",
+      "type": "ecoute",
+      "cle": "en:mot:eye",
+      "question": "eye",
+      "reponse": "œil",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "ear",
+      "chapitre": "body",
+      "type": "ecoute",
+      "cle": "en:mot:ear",
+      "question": "ear",
+      "reponse": "oreille",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "nose",
+      "chapitre": "body",
+      "type": "ecoute",
+      "cle": "en:mot:nose",
+      "question": "nose",
+      "reponse": "nez",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "mouth",
+      "chapitre": "body",
+      "type": "ecoute",
+      "cle": "en:mot:mouth",
+      "question": "mouth",
+      "reponse": "bouche",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "teeth",
+      "chapitre": "body",
+      "type": "ecoute",
+      "cle": "en:mot:teeth",
+      "question": "teeth",
+      "reponse": "dents",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "hair",
+      "chapitre": "body",
+      "type": "ecoute",
+      "cle": "en:mot:hair",
+      "question": "hair",
+      "reponse": "cheveux",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "hand",
+      "chapitre": "body",
+      "type": "ecoute",
+      "cle": "en:mot:hand",
+      "question": "hand",
+      "reponse": "main",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "arm",
+      "chapitre": "body",
+      "type": "ecoute",
+      "cle": "en:mot:arm",
+      "question": "arm",
+      "reponse": "bras",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "leg",
+      "chapitre": "body",
+      "type": "ecoute",
+      "cle": "en:mot:leg",
+      "question": "leg",
+      "reponse": "jambe",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "foot",
+      "chapitre": "body",
+      "type": "ecoute",
+      "cle": "en:mot:foot",
+      "question": "foot",
+      "reponse": "pied",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "knee",
+      "chapitre": "body",
+      "type": "ecoute",
+      "cle": "en:mot:knee",
+      "question": "knee",
+      "reponse": "genou",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "finger",
+      "chapitre": "body",
+      "type": "ecoute",
+      "cle": "en:mot:finger",
+      "question": "finger",
+      "reponse": "doigt",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "back",
+      "chapitre": "body",
+      "type": "ecoute",
+      "cle": "en:mot:back",
+      "question": "back",
+      "reponse": "dos",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "t-shirt",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "cle": "en:mot:t-shirt",
+      "question": "T-shirt",
+      "reponse": "tee-shirt",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "trousers",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "cle": "en:mot:trousers",
+      "question": "trousers",
+      "reponse": "pantalon",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "shorts",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "cle": "en:mot:shorts",
+      "question": "shorts",
+      "reponse": "short",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "skirt",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "cle": "en:mot:skirt",
+      "question": "skirt",
+      "reponse": "jupe",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "dress",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "cle": "en:mot:dress",
+      "question": "dress",
+      "reponse": "robe",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "jumper",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "cle": "en:mot:jumper",
+      "question": "jumper",
+      "reponse": "pull",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "coat",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "cle": "en:mot:coat",
+      "question": "coat",
+      "reponse": "manteau",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "shoes",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "cle": "en:mot:shoes",
+      "question": "shoes",
+      "reponse": "chaussures",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "socks",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "cle": "en:mot:socks",
+      "question": "socks",
+      "reponse": "chaussettes",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "hat",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "cle": "en:mot:hat",
+      "question": "hat",
+      "reponse": "chapeau",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "cap",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "cle": "en:mot:cap",
+      "question": "cap",
+      "reponse": "casquette",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "scarf",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "cle": "en:mot:scarf",
+      "question": "scarf",
+      "reponse": "écharpe",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "gloves",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "cle": "en:mot:gloves",
+      "question": "gloves",
+      "reponse": "gants",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "boots",
+      "chapitre": "clothes",
+      "type": "ecoute",
+      "cle": "en:mot:boots",
+      "question": "boots",
+      "reponse": "bottes",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "apple",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:apple",
+      "question": "apple",
+      "reponse": "pomme",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "banana",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:banana",
+      "question": "banana",
+      "reponse": "banane",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "orange",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:orange-fruit",
+      "question": "orange",
+      "reponse": "orange",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "strawberry",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:strawberry",
+      "question": "strawberry",
+      "reponse": "fraise",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "pear",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:pear",
+      "question": "pear",
+      "reponse": "poire",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "lemon",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:lemon",
+      "question": "lemon",
+      "reponse": "citron",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "carrot",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:carrot",
+      "question": "carrot",
+      "reponse": "carotte",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "tomato",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:tomato",
+      "question": "tomato",
+      "reponse": "tomate",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "potato",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:potato",
+      "question": "potato",
+      "reponse": "pomme de terre",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "bread",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:bread",
+      "question": "bread",
+      "reponse": "pain",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "butter",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:butter",
+      "question": "butter",
+      "reponse": "beurre",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "cheese",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:cheese",
+      "question": "cheese",
+      "reponse": "fromage",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "milk",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:milk",
+      "question": "milk",
+      "reponse": "lait",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "water",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:water",
+      "question": "water",
+      "reponse": "eau",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "juice",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:juice",
+      "question": "juice",
+      "reponse": "jus de fruits",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "egg",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:egg",
+      "question": "egg",
+      "reponse": "œuf",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "chicken",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:chicken",
+      "question": "chicken",
+      "reponse": "poulet",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "rice",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:rice",
+      "question": "rice",
+      "reponse": "riz",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "pasta",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:pasta",
+      "question": "pasta",
+      "reponse": "pâtes",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "soup",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:soup",
+      "question": "soup",
+      "reponse": "soupe",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "cake",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:cake",
+      "question": "cake",
+      "reponse": "gâteau",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "chocolate",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:chocolate",
+      "question": "chocolate",
+      "reponse": "chocolat",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "ice-cream",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:ice-cream",
+      "question": "ice cream",
+      "reponse": "glace",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "breakfast",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:breakfast",
+      "question": "breakfast",
+      "reponse": "petit-déjeuner",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "lunch",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:lunch",
+      "question": "lunch",
+      "reponse": "déjeuner",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "dinner",
+      "chapitre": "food",
+      "type": "ecoute",
+      "cle": "en:mot:dinner",
+      "question": "dinner",
+      "reponse": "dîner",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    }
+  ]
+}

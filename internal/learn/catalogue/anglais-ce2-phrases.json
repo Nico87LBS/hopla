@@ -1,0 +1,719 @@
+{
+  "format": "hopla-module/1",
+  "id": "anglais-ce2-phrases",
+  "version": "1.0.0",
+  "nom": "Phrases et écriture",
+  "description": "Les verbes, Petites phrases et Écrire les mots entendus.",
+  "matiere": "anglais",
+  "niveaux": [
+    "CE2"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "en",
+  "icone": "langue",
+  "couleur": "#3B82F6",
+  "auteur": "Hopla",
+  "sources": "D'après le programme de langues vivantes du cycle 2 et les repères de progression en anglais (Éduscol).",
+  "reglages": {
+    "questions_par_partie": 10,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 3
+  },
+  "chapitres": [
+    {
+      "id": "verbs",
+      "nom": "Les verbes"
+    },
+    {
+      "id": "sentences",
+      "nom": "Petites phrases",
+      "ouvert_apres": 60
+    },
+    {
+      "id": "spelling",
+      "nom": "Écrire les mots entendus",
+      "ouvert_apres": 70
+    }
+  ],
+  "fiches": [
+    {
+      "id": "eat",
+      "chapitre": "verbs",
+      "type": "ecoute",
+      "cle": "en:mot:eat",
+      "question": "eat",
+      "reponse": "manger",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "drink",
+      "chapitre": "verbs",
+      "type": "ecoute",
+      "cle": "en:mot:drink",
+      "question": "drink",
+      "reponse": "boire",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "play",
+      "chapitre": "verbs",
+      "type": "ecoute",
+      "cle": "en:mot:play",
+      "question": "play",
+      "reponse": "jouer",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "read",
+      "chapitre": "verbs",
+      "type": "ecoute",
+      "cle": "en:mot:read",
+      "question": "read",
+      "reponse": "lire",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "write",
+      "chapitre": "verbs",
+      "type": "ecoute",
+      "cle": "en:mot:write",
+      "question": "write",
+      "reponse": "écrire",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "sing",
+      "chapitre": "verbs",
+      "type": "ecoute",
+      "cle": "en:mot:sing",
+      "question": "sing",
+      "reponse": "chanter",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "dance",
+      "chapitre": "verbs",
+      "type": "ecoute",
+      "cle": "en:mot:dance",
+      "question": "dance",
+      "reponse": "danser",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "run",
+      "chapitre": "verbs",
+      "type": "ecoute",
+      "cle": "en:mot:run",
+      "question": "run",
+      "reponse": "courir",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "jump",
+      "chapitre": "verbs",
+      "type": "ecoute",
+      "cle": "en:mot:jump",
+      "question": "jump",
+      "reponse": "sauter",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "swim",
+      "chapitre": "verbs",
+      "type": "ecoute",
+      "cle": "en:mot:swim",
+      "question": "swim",
+      "reponse": "nager",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "sleep",
+      "chapitre": "verbs",
+      "type": "ecoute",
+      "cle": "en:mot:sleep",
+      "question": "sleep",
+      "reponse": "dormir",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "walk",
+      "chapitre": "verbs",
+      "type": "ecoute",
+      "cle": "en:mot:walk",
+      "question": "walk",
+      "reponse": "marcher",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "draw",
+      "chapitre": "verbs",
+      "type": "ecoute",
+      "cle": "en:mot:draw",
+      "question": "draw",
+      "reponse": "dessiner",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "listen",
+      "chapitre": "verbs",
+      "type": "ecoute",
+      "cle": "en:mot:listen",
+      "question": "listen",
+      "reponse": "écouter",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "speak",
+      "chapitre": "verbs",
+      "type": "ecoute",
+      "cle": "en:mot:speak",
+      "question": "speak",
+      "reponse": "parler",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "like",
+      "chapitre": "verbs",
+      "type": "ecoute",
+      "cle": "en:mot:like",
+      "question": "like",
+      "reponse": "aimer",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "go",
+      "chapitre": "verbs",
+      "type": "ecoute",
+      "cle": "en:mot:go",
+      "question": "go",
+      "reponse": "aller",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "come",
+      "chapitre": "verbs",
+      "type": "ecoute",
+      "cle": "en:mot:come",
+      "question": "come",
+      "reponse": "venir",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "open",
+      "chapitre": "verbs",
+      "type": "ecoute",
+      "cle": "en:mot:open",
+      "question": "open",
+      "reponse": "ouvrir",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "close",
+      "chapitre": "verbs",
+      "type": "ecoute",
+      "cle": "en:mot:close",
+      "question": "close",
+      "reponse": "fermer",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "phrase-i-like-apples",
+      "chapitre": "sentences",
+      "type": "ecoute",
+      "cle": "en:phrase:i-like-apples",
+      "question": "I like apples.",
+      "reponse": "J'aime les pommes.",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "phrase-i-dont-like-milk",
+      "chapitre": "sentences",
+      "type": "ecoute",
+      "cle": "en:phrase:i-dont-like-milk",
+      "question": "I don't like milk.",
+      "reponse": "Je n'aime pas le lait.",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "phrase-can-i-have-some-water-please",
+      "chapitre": "sentences",
+      "type": "ecoute",
+      "cle": "en:phrase:can-i-have-some-water-please",
+      "question": "Can I have some water, please?",
+      "reponse": "Est-ce que je peux avoir de l'eau, s'il te plaît ?",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "phrase-how-old-are-you",
+      "chapitre": "sentences",
+      "type": "ecoute",
+      "cle": "en:phrase:how-old-are-you",
+      "question": "How old are you?",
+      "reponse": "Quel âge as-tu ?",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "phrase-im-eight",
+      "chapitre": "sentences",
+      "type": "ecoute",
+      "cle": "en:phrase:im-eight",
+      "question": "I'm eight.",
+      "reponse": "J'ai huit ans.",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "phrase-whats-your-name",
+      "chapitre": "sentences",
+      "type": "ecoute",
+      "cle": "en:phrase:whats-your-name",
+      "question": "What's your name?",
+      "reponse": "Comment tu t'appelles ?",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "phrase-where-do-you-live",
+      "chapitre": "sentences",
+      "type": "ecoute",
+      "cle": "en:phrase:where-do-you-live",
+      "question": "Where do you live?",
+      "reponse": "Où habites-tu ?",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "phrase-i-live-in-france",
+      "chapitre": "sentences",
+      "type": "ecoute",
+      "cle": "en:phrase:i-live-in-france",
+      "question": "I live in France.",
+      "reponse": "J'habite en France.",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "phrase-i-have-got-a-cat",
+      "chapitre": "sentences",
+      "type": "ecoute",
+      "cle": "en:phrase:i-have-got-a-cat",
+      "question": "I have got a cat.",
+      "reponse": "J'ai un chat.",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "phrase-what-colour-is-it",
+      "chapitre": "sentences",
+      "type": "ecoute",
+      "cle": "en:phrase:what-colour-is-it",
+      "question": "What colour is it?",
+      "reponse": "C'est de quelle couleur ?",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "phrase-its-blue",
+      "chapitre": "sentences",
+      "type": "ecoute",
+      "cle": "en:phrase:its-blue",
+      "question": "It's blue.",
+      "reponse": "C'est bleu.",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "phrase-whats-the-weather-like",
+      "chapitre": "sentences",
+      "type": "ecoute",
+      "cle": "en:phrase:whats-the-weather-like",
+      "question": "What's the weather like?",
+      "reponse": "Quel temps fait-il ?",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "phrase-sit-down-please",
+      "chapitre": "sentences",
+      "type": "ecoute",
+      "cle": "en:phrase:sit-down-please",
+      "question": "Sit down, please.",
+      "reponse": "Assieds-toi, s'il te plaît.",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "phrase-stand-up",
+      "chapitre": "sentences",
+      "type": "ecoute",
+      "cle": "en:phrase:stand-up",
+      "question": "Stand up.",
+      "reponse": "Lève-toi.",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "phrase-open-your-book",
+      "chapitre": "sentences",
+      "type": "ecoute",
+      "cle": "en:phrase:open-your-book",
+      "question": "Open your book.",
+      "reponse": "Ouvre ton livre.",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "phrase-lets-go",
+      "chapitre": "sentences",
+      "type": "ecoute",
+      "cle": "en:phrase:lets-go",
+      "question": "Let's go!",
+      "reponse": "Allons-y !",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "phrase-im-hungry",
+      "chapitre": "sentences",
+      "type": "ecoute",
+      "cle": "en:phrase:im-hungry",
+      "question": "I'm hungry.",
+      "reponse": "J'ai faim.",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "phrase-im-thirsty",
+      "chapitre": "sentences",
+      "type": "ecoute",
+      "cle": "en:phrase:im-thirsty",
+      "question": "I'm thirsty.",
+      "reponse": "J'ai soif.",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "ecrire-cat",
+      "chapitre": "spelling",
+      "type": "ecoute",
+      "cle": "en:ecrire:cat",
+      "question": "cat",
+      "reponse": "chat",
+      "sens": [
+        "dictee"
+      ]
+    },
+    {
+      "id": "ecrire-dog",
+      "chapitre": "spelling",
+      "type": "ecoute",
+      "cle": "en:ecrire:dog",
+      "question": "dog",
+      "reponse": "chien",
+      "sens": [
+        "dictee"
+      ]
+    },
+    {
+      "id": "ecrire-red",
+      "chapitre": "spelling",
+      "type": "ecoute",
+      "cle": "en:ecrire:red",
+      "question": "red",
+      "reponse": "rouge",
+      "sens": [
+        "dictee"
+      ]
+    },
+    {
+      "id": "ecrire-blue",
+      "chapitre": "spelling",
+      "type": "ecoute",
+      "cle": "en:ecrire:blue",
+      "question": "blue",
+      "reponse": "bleu",
+      "sens": [
+        "dictee"
+      ]
+    },
+    {
+      "id": "ecrire-green",
+      "chapitre": "spelling",
+      "type": "ecoute",
+      "cle": "en:ecrire:green",
+      "question": "green",
+      "reponse": "vert",
+      "sens": [
+        "dictee"
+      ]
+    },
+    {
+      "id": "ecrire-one",
+      "chapitre": "spelling",
+      "type": "ecoute",
+      "cle": "en:ecrire:one",
+      "question": "one",
+      "reponse": "un",
+      "sens": [
+        "dictee"
+      ]
+    },
+    {
+      "id": "ecrire-two",
+      "chapitre": "spelling",
+      "type": "ecoute",
+      "cle": "en:ecrire:two",
+      "question": "two",
+      "reponse": "deux",
+      "sens": [
+        "dictee"
+      ]
+    },
+    {
+      "id": "ecrire-three",
+      "chapitre": "spelling",
+      "type": "ecoute",
+      "cle": "en:ecrire:three",
+      "question": "three",
+      "reponse": "trois",
+      "sens": [
+        "dictee"
+      ]
+    },
+    {
+      "id": "ecrire-ten",
+      "chapitre": "spelling",
+      "type": "ecoute",
+      "cle": "en:ecrire:ten",
+      "question": "ten",
+      "reponse": "dix",
+      "sens": [
+        "dictee"
+      ]
+    },
+    {
+      "id": "ecrire-sun",
+      "chapitre": "spelling",
+      "type": "ecoute",
+      "cle": "en:ecrire:sun",
+      "question": "sun",
+      "reponse": "soleil",
+      "sens": [
+        "dictee"
+      ]
+    },
+    {
+      "id": "ecrire-book",
+      "chapitre": "spelling",
+      "type": "ecoute",
+      "cle": "en:ecrire:book",
+      "question": "book",
+      "reponse": "livre",
+      "sens": [
+        "dictee"
+      ]
+    },
+    {
+      "id": "ecrire-pen",
+      "chapitre": "spelling",
+      "type": "ecoute",
+      "cle": "en:ecrire:pen",
+      "question": "pen",
+      "reponse": "stylo",
+      "sens": [
+        "dictee"
+      ]
+    },
+    {
+      "id": "ecrire-apple",
+      "chapitre": "spelling",
+      "type": "ecoute",
+      "cle": "en:ecrire:apple",
+      "question": "apple",
+      "reponse": "pomme",
+      "sens": [
+        "dictee"
+      ]
+    },
+    {
+      "id": "ecrire-milk",
+      "chapitre": "spelling",
+      "type": "ecoute",
+      "cle": "en:ecrire:milk",
+      "question": "milk",
+      "reponse": "lait",
+      "sens": [
+        "dictee"
+      ]
+    },
+    {
+      "id": "ecrire-hello",
+      "chapitre": "spelling",
+      "type": "ecoute",
+      "cle": "en:ecrire:hello",
+      "question": "hello",
+      "reponse": "bonjour",
+      "sens": [
+        "dictee"
+      ]
+    },
+    {
+      "id": "ecrire-yes",
+      "chapitre": "spelling",
+      "type": "ecoute",
+      "cle": "en:ecrire:yes",
+      "question": "yes",
+      "reponse": "oui",
+      "sens": [
+        "dictee"
+      ]
+    },
+    {
+      "id": "ecrire-no",
+      "chapitre": "spelling",
+      "type": "ecoute",
+      "cle": "en:ecrire:no",
+      "question": "no",
+      "reponse": "non",
+      "sens": [
+        "dictee"
+      ]
+    },
+    {
+      "id": "ecrire-bed",
+      "chapitre": "spelling",
+      "type": "ecoute",
+      "cle": "en:ecrire:bed",
+      "question": "bed",
+      "reponse": "lit",
+      "sens": [
+        "dictee"
+      ]
+    },
+    {
+      "id": "ecrire-egg",
+      "chapitre": "spelling",
+      "type": "ecoute",
+      "cle": "en:ecrire:egg",
+      "question": "egg",
+      "reponse": "œuf",
+      "sens": [
+        "dictee"
+      ]
+    },
+    {
+      "id": "ecrire-hat",
+      "chapitre": "spelling",
+      "type": "ecoute",
+      "cle": "en:ecrire:hat",
+      "question": "hat",
+      "reponse": "chapeau",
+      "sens": [
+        "dictee"
+      ]
+    }
+  ]
+}

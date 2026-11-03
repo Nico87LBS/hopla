@@ -1,0 +1,691 @@
+{
+  "format": "hopla-module/1",
+  "id": "anglais-ce2-maison-ecole",
+  "version": "1.0.0",
+  "nom": "Maison, école, animaux",
+  "description": "La maison, À l'école et Les animaux.",
+  "matiere": "anglais",
+  "niveaux": [
+    "CE2"
+  ],
+  "public": "enfant",
+  "langue": "fr",
+  "langue_apprise": "en",
+  "icone": "langue",
+  "couleur": "#3B82F6",
+  "auteur": "Hopla",
+  "sources": "D'après le programme de langues vivantes du cycle 2 et les repères de progression en anglais (Éduscol).",
+  "reglages": {
+    "questions_par_partie": 10,
+    "nouvelles_par_partie": 3,
+    "seuil": 70,
+    "hops_par_etoile": 1,
+    "plafond_jour": 3
+  },
+  "chapitres": [
+    {
+      "id": "house",
+      "nom": "La maison"
+    },
+    {
+      "id": "school",
+      "nom": "À l'école",
+      "ouvert_apres": 60
+    },
+    {
+      "id": "animals",
+      "nom": "Les animaux",
+      "ouvert_apres": 60
+    }
+  ],
+  "fiches": [
+    {
+      "id": "cat",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:cat",
+      "question": "cat",
+      "reponse": "chat",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "dog",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:dog",
+      "question": "dog",
+      "reponse": "chien",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "rabbit",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:rabbit",
+      "question": "rabbit",
+      "reponse": "lapin",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "bird",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:bird",
+      "question": "bird",
+      "reponse": "oiseau",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "fish",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:fish",
+      "question": "fish",
+      "reponse": "poisson",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "horse",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:horse",
+      "question": "horse",
+      "reponse": "cheval",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "cow",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:cow",
+      "question": "cow",
+      "reponse": "vache",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "pig",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:pig",
+      "question": "pig",
+      "reponse": "cochon",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "sheep",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:sheep",
+      "question": "sheep",
+      "reponse": "mouton",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "duck",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:duck",
+      "question": "duck",
+      "reponse": "canard",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "mouse",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:mouse",
+      "question": "mouse",
+      "reponse": "souris",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "lion",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:lion",
+      "question": "lion",
+      "reponse": "lion",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "tiger",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:tiger",
+      "question": "tiger",
+      "reponse": "tigre",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "elephant",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:elephant",
+      "question": "elephant",
+      "reponse": "éléphant",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "monkey",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:monkey",
+      "question": "monkey",
+      "reponse": "singe",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "bear",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:bear",
+      "question": "bear",
+      "reponse": "ours",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "snake",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:snake",
+      "question": "snake",
+      "reponse": "serpent",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "frog",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:frog",
+      "question": "frog",
+      "reponse": "grenouille",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "giraffe",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:giraffe",
+      "question": "giraffe",
+      "reponse": "girafe",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "hen",
+      "chapitre": "animals",
+      "type": "ecoute",
+      "cle": "en:mot:hen",
+      "question": "hen",
+      "reponse": "poule",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "school",
+      "chapitre": "school",
+      "type": "ecoute",
+      "cle": "en:mot:school",
+      "question": "school",
+      "reponse": "école",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "teacher",
+      "chapitre": "school",
+      "type": "ecoute",
+      "cle": "en:mot:teacher",
+      "question": "teacher",
+      "reponse": "maître ou maîtresse",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "pupil",
+      "chapitre": "school",
+      "type": "ecoute",
+      "cle": "en:mot:pupil",
+      "question": "pupil",
+      "reponse": "élève",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "pen",
+      "chapitre": "school",
+      "type": "ecoute",
+      "cle": "en:mot:pen",
+      "question": "pen",
+      "reponse": "stylo",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "pencil",
+      "chapitre": "school",
+      "type": "ecoute",
+      "cle": "en:mot:pencil",
+      "question": "pencil",
+      "reponse": "crayon",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "rubber",
+      "chapitre": "school",
+      "type": "ecoute",
+      "cle": "en:mot:rubber",
+      "question": "rubber",
+      "reponse": "gomme",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "ruler",
+      "chapitre": "school",
+      "type": "ecoute",
+      "cle": "en:mot:ruler",
+      "question": "ruler",
+      "reponse": "règle",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "scissors",
+      "chapitre": "school",
+      "type": "ecoute",
+      "cle": "en:mot:scissors",
+      "question": "scissors",
+      "reponse": "ciseaux",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "glue",
+      "chapitre": "school",
+      "type": "ecoute",
+      "cle": "en:mot:glue",
+      "question": "glue",
+      "reponse": "colle",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "schoolbag",
+      "chapitre": "school",
+      "type": "ecoute",
+      "cle": "en:mot:schoolbag",
+      "question": "schoolbag",
+      "reponse": "cartable",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "book",
+      "chapitre": "school",
+      "type": "ecoute",
+      "cle": "en:mot:book",
+      "question": "book",
+      "reponse": "livre",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "exercise-book",
+      "chapitre": "school",
+      "type": "ecoute",
+      "cle": "en:mot:exercise-book",
+      "question": "exercise book",
+      "reponse": "cahier",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "desk",
+      "chapitre": "school",
+      "type": "ecoute",
+      "cle": "en:mot:desk",
+      "question": "desk",
+      "reponse": "bureau",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "chair",
+      "chapitre": "school",
+      "type": "ecoute",
+      "cle": "en:mot:chair",
+      "question": "chair",
+      "reponse": "chaise",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "board",
+      "chapitre": "school",
+      "type": "ecoute",
+      "cle": "en:mot:board",
+      "question": "board",
+      "reponse": "tableau",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "classroom",
+      "chapitre": "school",
+      "type": "ecoute",
+      "cle": "en:mot:classroom",
+      "question": "classroom",
+      "reponse": "classe",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "playground",
+      "chapitre": "school",
+      "type": "ecoute",
+      "cle": "en:mot:playground",
+      "question": "playground",
+      "reponse": "cour de récréation",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "lesson",
+      "chapitre": "school",
+      "type": "ecoute",
+      "cle": "en:mot:lesson",
+      "question": "lesson",
+      "reponse": "leçon",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "house",
+      "chapitre": "house",
+      "type": "ecoute",
+      "cle": "en:mot:house",
+      "question": "house",
+      "reponse": "maison",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "kitchen",
+      "chapitre": "house",
+      "type": "ecoute",
+      "cle": "en:mot:kitchen",
+      "question": "kitchen",
+      "reponse": "cuisine",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "bedroom",
+      "chapitre": "house",
+      "type": "ecoute",
+      "cle": "en:mot:bedroom",
+      "question": "bedroom",
+      "reponse": "chambre",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "bathroom",
+      "chapitre": "house",
+      "type": "ecoute",
+      "cle": "en:mot:bathroom",
+      "question": "bathroom",
+      "reponse": "salle de bain",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "living-room",
+      "chapitre": "house",
+      "type": "ecoute",
+      "cle": "en:mot:living-room",
+      "question": "living room",
+      "reponse": "salon",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "garden",
+      "chapitre": "house",
+      "type": "ecoute",
+      "cle": "en:mot:garden",
+      "question": "garden",
+      "reponse": "jardin",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "door",
+      "chapitre": "house",
+      "type": "ecoute",
+      "cle": "en:mot:door",
+      "question": "door",
+      "reponse": "porte",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "window",
+      "chapitre": "house",
+      "type": "ecoute",
+      "cle": "en:mot:window",
+      "question": "window",
+      "reponse": "fenêtre",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "bed",
+      "chapitre": "house",
+      "type": "ecoute",
+      "cle": "en:mot:bed",
+      "question": "bed",
+      "reponse": "lit",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "table",
+      "chapitre": "house",
+      "type": "ecoute",
+      "cle": "en:mot:table",
+      "question": "table",
+      "reponse": "table",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "sofa",
+      "chapitre": "house",
+      "type": "ecoute",
+      "cle": "en:mot:sofa",
+      "question": "sofa",
+      "reponse": "canapé",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "stairs",
+      "chapitre": "house",
+      "type": "ecoute",
+      "cle": "en:mot:stairs",
+      "question": "stairs",
+      "reponse": "escalier",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "toilet",
+      "chapitre": "house",
+      "type": "ecoute",
+      "cle": "en:mot:toilet",
+      "question": "toilet",
+      "reponse": "toilettes",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "lamp",
+      "chapitre": "house",
+      "type": "ecoute",
+      "cle": "en:mot:lamp",
+      "question": "lamp",
+      "reponse": "lampe",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "television",
+      "chapitre": "house",
+      "type": "ecoute",
+      "cle": "en:mot:television",
+      "question": "television",
+      "reponse": "télévision",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    },
+    {
+      "id": "key",
+      "chapitre": "house",
+      "type": "ecoute",
+      "cle": "en:mot:key",
+      "question": "key",
+      "reponse": "clé",
+      "sens": [
+        "direct",
+        "lire"
+      ]
+    }
+  ]
+}
