@@ -320,7 +320,7 @@
   },
   "calendar": {
     "title": "Calendar Sync",
-    "description": "Keep your Hopla tasks visible in your preferred calendar app with a private iCalendar subscription.",
+    "description": "Keep Hopla tasks in your calendar app with a private iCalendar subscription: yours, a child's or the whole family's.",
     "activeTitle": "Calendar subscription",
     "activeStatus": "Active",
     "urlLabel": "Private calendar subscription URL",
@@ -349,7 +349,16 @@
     "howToDescription": "Copy the URL and choose “Add calendar by URL” or “Subscribe to calendar” in your calendar app. Refresh timing is controlled by that app, so changes may not appear immediately.",
     "errorTitle": "Calendar sync error",
     "actionFailed": "Could not update your calendar subscription. Please try again.",
-    "loadFailed": "Could not load your calendar subscription. This server may not support calendar sync yet."
+    "loadFailed": "Could not load your calendar subscription. This server may not support calendar sync yet.",
+    "who": "Tasks of",
+    "whoMe": "Me",
+    "whoFamily": "The whole family",
+    "reminder": "Reminder",
+    "noReminder": "No reminder",
+    "reminderBefore_one": "{{count}} minute before",
+    "reminderBefore_other": "{{count}} minutes before",
+    "contents": "The calendar shows the next 30 days, one event per slot, and the tasks done this week, crossed out. Each choice gives its own address: subscribe to several if you like.",
+    "subscribe": "Subscribe"
   },
   "storage": {
     "title": "Browser cache",

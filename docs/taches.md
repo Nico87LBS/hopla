@@ -152,5 +152,18 @@ ligne.
 ## Calendrier
 
 Gérer › Avancé › Calendrier donne une adresse iCal privée à ajouter à un
-agenda (téléphone, Google, Outlook) : il affiche les échéances à venir. Le
-lien est personnel ; en générer un nouveau désactive l'ancien.
+agenda (téléphone, Google, Outlook). L'agenda montre :
+
+- les 30 prochains jours, un événement à chaque passage d'une tâche répétée
+  et un par créneau pour une tâche faite plusieurs fois par jour (« Se
+  brosser les dents · Matin ») ;
+- les tâches faites des 7 derniers jours, barrées avec ✓ (⏳ si elles
+  attendent un parent) ; un créneau fait ne revient pas comme « à faire » ;
+- rien des tâches en pause pendant qu'un enfant est « Pas là ».
+
+Deux choix au-dessus de l'adresse la complètent : **les tâches de** (moi ; un
+parent peut aussi choisir un membre ou toute la famille, et chaque tâche dit
+alors pour qui elle est) et un **rappel** de 5 à 60 minutes avant. Chaque choix
+donne son adresse : on peut s'abonner à plusieurs. Les tâches ne marquent pas
+l'agenda comme occupé. Le lien est personnel ; en générer un nouveau
+désactive toutes ses variantes.

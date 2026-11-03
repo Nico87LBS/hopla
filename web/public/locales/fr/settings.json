@@ -320,7 +320,7 @@
   },
   "calendar": {
     "title": "Synchro du calendrier",
-    "description": "Garde tes tâches Hopla visibles dans ton application de calendrier avec un abonnement iCalendar privé.",
+    "description": "Garde les tâches Hopla visibles dans ton application de calendrier avec un abonnement iCalendar privé : les tiennes, celles d'un enfant ou de toute la famille.",
     "activeTitle": "Abonnement au calendrier",
     "activeStatus": "Actif",
     "urlLabel": "Adresse privée de l'abonnement",
@@ -349,7 +349,16 @@
     "howToDescription": "Copie l'adresse et choisis « Ajouter un calendrier par URL » ou « S'abonner à un calendrier » dans ton application. C'est elle qui décide quand se mettre à jour, les changements peuvent donc mettre un moment à apparaître.",
     "errorTitle": "Erreur de synchro du calendrier",
     "actionFailed": "L'abonnement n'a pas pu être modifié. Réessaie.",
-    "loadFailed": "L'abonnement n'a pas pu être chargé. Ce serveur ne gère peut-être pas encore la synchro du calendrier."
+    "loadFailed": "L'abonnement n'a pas pu être chargé. Ce serveur ne gère peut-être pas encore la synchro du calendrier.",
+    "who": "Les tâches de",
+    "whoMe": "Moi",
+    "whoFamily": "Toute la famille",
+    "reminder": "Rappel",
+    "noReminder": "Sans rappel",
+    "reminderBefore_one": "{{count}} minute avant",
+    "reminderBefore_other": "{{count}} minutes avant",
+    "contents": "L'agenda montre les 30 prochains jours, un événement par créneau, et les tâches faites de la semaine, barrées. Chaque choix donne sa propre adresse : abonne-toi à plusieurs si tu veux.",
+    "subscribe": "S'abonner"
   },
   "storage": {
     "title": "Cache de ce navigateur",

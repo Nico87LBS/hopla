@@ -1,6 +1,7 @@
 package calendar
 
 import (
+	"context"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
@@ -59,6 +60,7 @@ func newTestHandlerWithConfig(t *testing.T, customize func(*config.Config)) (*Ha
 		chRepo.NewChoreRepository(db, cfg),
 		uRepo.NewUserRepository(db),
 		calRepo.NewCalendarRepository(db),
+		db,
 		cfg,
 	)
 
@@ -509,10 +511,10 @@ func TestPriorityName(t *testing.T) {
 		expected string
 	}{
 		{0, ""},
-		{1, "Low"},
-		{2, "Medium"},
-		{3, "High"},
-		{4, "Urgent"},
+		{1, "basse"},
+		{2, "moyenne"},
+		{3, "haute"},
+		{4, "urgente"},
 		{5, ""},
 	}
 
@@ -549,6 +551,16 @@ func TestStripHTMLTags(t *testing.T) {
 			}
 		})
 	}
+}
+
+// feedNow is the time the feed tests are served at, before their tasks.
+var feedNow = time.Date(2025, 6, 1, 8, 0, 0, 0, time.UTC)
+
+// buildICalFeed renders the feed of some tasks for one person, as served at
+// feedNow.
+func buildICalFeed(chores []*chModel.Chore, name, timezone string) string {
+	opt := feedOptions{Now: feedNow, Location: time.UTC, Currency: "hops"}
+	return writeCalendar("Hopla - "+name, timezone, planEvents(context.Background(), chores, nil, opt), 0, feedNow)
 }
 
 func TestBuildICalFeed_Empty(t *testing.T) {
@@ -621,11 +633,11 @@ func TestBuildICalFeed_BasicChore(t *testing.T) {
 	}{
 		{"VEVENT start", "BEGIN:VEVENT"},
 		{"VEVENT end", "END:VEVENT"},
-		{"UID", "UID:chore-42@hopla"},
+		{"UID", "UID:tache-42-20250615T1000Z@hopla"},
 		{"DTSTART", "DTSTART:20250615T100000Z"},
 		{"SUMMARY", "SUMMARY:Kitchen Cleaning"},
 		{"PRIORITY", "PRIORITY:3"},
-		{"STATUS", "STATUS:NEEDS-ACTION"},
+		{"TRANSP", "TRANSP:TRANSPARENT"},
 		{"LAST-MODIFIED", "LAST-MODIFIED:20250601T120000Z"},
 	}
 
@@ -683,25 +695,6 @@ func TestBuildICalFeed_DefaultDuration(t *testing.T) {
 	// Default duration is 1 hour
 	if !strings.Contains(result, "DTEND:20250615T110000Z") {
 		t.Errorf("expected DTEND 1 hour after start (default), got:\n%s", result)
-	}
-}
-
-func TestBuildICalFeed_InProgressStatus(t *testing.T) {
-	dueDate := time.Date(2025, 6, 15, 10, 0, 0, 0, time.UTC)
-
-	chores := []*chModel.Chore{
-		{
-			ID:          1,
-			Name:        "Test",
-			NextDueDate: &dueDate,
-			Status:      chModel.ChoreStatusInProgress,
-		},
-	}
-
-	result := buildICalFeed(chores, "Test", "")
-
-	if !strings.Contains(result, "STATUS:IN-PROCESS") {
-		t.Errorf("expected IN-PROCESS status, got:\n%s", result)
 	}
 }
 
@@ -763,13 +756,13 @@ func TestBuildICalFeed_MultipleChores(t *testing.T) {
 		t.Errorf("expected 2 VEVENTs, got %d", eventCount)
 	}
 
-	if !strings.Contains(result, "chore-1@hopla") {
+	if !strings.Contains(result, "tache-1-") {
 		t.Error("missing UID for chore 1")
 	}
-	if !strings.Contains(result, "chore-2@hopla") {
+	if !strings.Contains(result, "tache-2-") {
 		t.Error("missing UID for chore 2")
 	}
-	if strings.Contains(result, "chore-3@hopla") {
+	if strings.Contains(result, "tache-3-") {
 		t.Error("chore 3 (no due date) should not be included")
 	}
 }
@@ -808,18 +801,18 @@ func TestBuildChoreDescription_AllFields(t *testing.T) {
 		Priority:      3,
 	}
 
-	result := buildChoreDescription(ch)
+	result := buildChoreDescription(ch, "hops")
 
 	if !strings.Contains(result, "Do the thing") {
 		t.Error("missing description text")
 	}
-	if !strings.Contains(result, "Repeats: daily") {
+	if !strings.Contains(result, "Répétition : tous les jours") {
 		t.Error("missing frequency info")
 	}
-	if !strings.Contains(result, "Points: 10") {
+	if !strings.Contains(result, "10 hops") {
 		t.Error("missing points")
 	}
-	if !strings.Contains(result, "Priority: High") {
+	if !strings.Contains(result, "Priorité : haute") {
 		t.Error("missing priority")
 	}
 }
@@ -843,7 +836,7 @@ func TestBuildICalFeed_DescriptionUsesICalNewlineEscape(t *testing.T) {
 	// Unfold so the DESCRIPTION property can be inspected as one line.
 	result := strings.ReplaceAll(buildICalFeed(chores, "Test", ""), "\r\n ", "")
 
-	if !strings.Contains(result, `Do the thing\nRepeats: daily\nPoints: 10`) {
+	if !strings.Contains(result, `Do the thing\nRépétition : tous les jours\n10 hops`) {
 		t.Errorf("description separators should be the iCal \\n escape, got:\n%s", result)
 	}
 	// A doubled backslash would render as a literal "\n" in calendar clients.
@@ -857,9 +850,9 @@ func TestBuildChoreDescription_OnceFrequencyOmitted(t *testing.T) {
 		FrequencyType: chModel.FrequencyTypeOnce,
 	}
 
-	result := buildChoreDescription(ch)
+	result := buildChoreDescription(ch, "hops")
 
-	if strings.Contains(result, "Repeats") {
+	if strings.Contains(result, "Répétition") {
 		t.Error("once frequency should not show 'Repeats'")
 	}
 }
@@ -867,7 +860,7 @@ func TestBuildChoreDescription_OnceFrequencyOmitted(t *testing.T) {
 func TestBuildChoreDescription_Empty(t *testing.T) {
 	ch := &chModel.Chore{}
 
-	result := buildChoreDescription(ch)
+	result := buildChoreDescription(ch, "hops")
 
 	if result != "" {
 		t.Errorf("expected empty description, got %q", result)
@@ -880,9 +873,9 @@ func TestBuildChoreDescription_ZeroPoints(t *testing.T) {
 		Points: &points,
 	}
 
-	result := buildChoreDescription(ch)
+	result := buildChoreDescription(ch, "hops")
 
-	if strings.Contains(result, "Points") {
+	if strings.Contains(result, "hops") {
 		t.Error("zero points should not be included")
 	}
 }

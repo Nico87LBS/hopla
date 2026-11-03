@@ -1,6 +1,7 @@
 package calendar
 
 import (
+	"context"
 	"crypto/rand"
 	"encoding/base64"
 	"errors"
@@ -17,8 +18,11 @@ import (
 	calRepo "github.com/nico87lbs/hopla/internal/calendar/repo"
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
 	chRepo "github.com/nico87lbs/hopla/internal/chore/repo"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
+	"github.com/nico87lbs/hopla/internal/games"
 	uRepo "github.com/nico87lbs/hopla/internal/user/repo"
 	"github.com/nico87lbs/hopla/internal/utils"
+	"github.com/nico87lbs/hopla/internal/zone"
 	"github.com/nico87lbs/hopla/logging"
 	"github.com/ulule/limiter/v3"
 	"gorm.io/gorm"
@@ -36,17 +40,19 @@ type Handler struct {
 	choreRepo *chRepo.ChoreRepository
 	userRepo  *uRepo.UserRepository
 	calRepo   *calRepo.CalendarRepository
+	db        *gorm.DB
 	// publicHost is the operator-configured externally reachable base URL. It is
 	// preferred over request headers, which a client can forge.
 	publicHost string
 }
 
 // NewHandler creates a new calendar handler
-func NewHandler(cr *chRepo.ChoreRepository, ur *uRepo.UserRepository, calr *calRepo.CalendarRepository, cfg *config.Config) *Handler {
+func NewHandler(cr *chRepo.ChoreRepository, ur *uRepo.UserRepository, calr *calRepo.CalendarRepository, db *gorm.DB, cfg *config.Config) *Handler {
 	return &Handler{
 		choreRepo:  cr,
 		userRepo:   ur,
 		calRepo:    calr,
+		db:         db,
 		publicHost: cfg.Server.PublicHost,
 	}
 }
@@ -242,9 +248,12 @@ func (h *Handler) RevokeCalendarURL(c *gin.Context) {
 // ServeCalendar godoc
 //
 //	@Summary		Agenda des tâches au format iCalendar
+//	@Description	Les 30 prochains jours (un événement par passage et par créneau) et les tâches faites des 7 derniers jours, barrées. Un enfant ne voit que ses tâches ; un parent peut demander celles d'un membre ou de toute la famille.
 //	@Tags			Agenda
-//	@Produce		json
+//	@Produce		plain
 //	@Param			token	path	string	true	"Jeton secret de l'agenda"
+//	@Param			qui		query	string	false	"moi (par défaut), famille ou le numéro d'un membre"
+//	@Param			rappel	query	int		false	"Rappel, en minutes avant chaque tâche (0 à 1440)"
 //	@Success		200	{string}	string
 //	@Router			/api/v1/chores/calendar/{token} [get]
 func (h *Handler) ServeCalendar(c *gin.Context) {
@@ -277,14 +286,74 @@ func (h *Handler) ServeCalendar(c *gin.Context) {
 		return
 	}
 
+	alarm := 0
+	if value := c.Query("rappel"); value != "" {
+		if _, err := fmt.Sscanf(value, "%d", &alarm); err != nil || alarm < 0 || alarm > maxAlarm {
+			c.String(http.StatusBadRequest, "rappel : de 0 à 1440 minutes")
+			return
+		}
+	}
+
+	members, err := h.userRepo.GetAllUsers(ctx, user.FamilyID)
+	if err != nil {
+		logger.Error("Failed to load the family for calendar", "error", err, "userID", token.UserID)
+		c.String(http.StatusInternalServerError, "Failed to generate calendar")
+		return
+	}
+	names := make(map[int]string, len(members))
+	for _, m := range members {
+		names[m.ID] = m.DisplayName
+	}
+	var family struct {
+		Name     string
+		Currency string
+	}
+	h.db.WithContext(ctx).Table("families").Select("name, currency").Where("id = ?", user.FamilyID).Scan(&family)
+
+	opt := feedOptions{Names: names, Currency: family.Currency, Now: time.Now().UTC(), Location: zone.Of(user.FamilyID)}
+	calendarName := "Hopla - " + user.DisplayName
+	switch who := c.DefaultQuery("qui", "moi"); who {
+	case "moi", "":
+		opt.Who = map[int]bool{user.ID: true}
+	default:
+		if !h.isParent(ctx, user.ID, user.FamilyID) {
+			c.String(http.StatusForbidden, "Seul un parent voit les tâches des autres")
+			return
+		}
+		if who == "famille" {
+			opt.Several = true
+			calendarName = "Hopla - Famille"
+			if family.Name != "" {
+				calendarName = "Hopla - " + family.Name
+			}
+			break
+		}
+		var id int
+		if _, err := fmt.Sscanf(who, "%d", &id); err != nil || names[id] == "" {
+			c.String(http.StatusNotFound, "Membre inconnu")
+			return
+		}
+		opt.Who = map[int]bool{id: true}
+		calendarName = "Hopla - " + names[id]
+	}
+
 	chores, err := h.choreRepo.GetChores(ctx, user.FamilyID, token.UserID, false, nil, false)
 	if err != nil {
 		logger.Error("Failed to retrieve chores for calendar", "error", err, "userID", token.UserID)
 		c.String(http.StatusInternalServerError, "Failed to generate calendar")
 		return
 	}
+	if opt.Away, err = games.AwayMembers(h.db.WithContext(ctx), user.FamilyID); err != nil {
+		logger.Warn("Failed to load the members away for calendar", "error", err)
+	}
+	history, err := h.recentHistory(ctx, chores, opt.Now.AddDate(0, 0, -doneDays))
+	if err != nil {
+		logger.Error("Failed to retrieve history for calendar", "error", err, "userID", token.UserID)
+		c.String(http.StatusInternalServerError, "Failed to generate calendar")
+		return
+	}
 
-	ical := buildICalFeed(chores, user.DisplayName, user.Timezone)
+	ical := writeCalendar(calendarName, opt.Location.String(), planEvents(ctx, chores, history, opt), alarm, opt.Now)
 
 	// Best effort: a failed bookkeeping write must not fail the feed.
 	if err := h.calRepo.TouchLastUsed(ctx, token.ID); err != nil {
@@ -292,103 +361,105 @@ func (h *Handler) ServeCalendar(c *gin.Context) {
 	}
 
 	c.Header("Content-Type", "text/calendar; charset=utf-8")
-	c.Header("Content-Disposition", "attachment; filename=\"hopla-chores.ics\"")
+	c.Header("Content-Disposition", "attachment; filename=\"hopla.ics\"")
 	c.Header("Cache-Control", "no-cache, no-store, must-revalidate")
 	c.Header("X-Content-Type-Options", "nosniff")
 	c.String(http.StatusOK, ical)
 }
 
-// buildICalFeed generates a full VCALENDAR string from a list of chores.
-func buildICalFeed(chores []*chModel.Chore, calendarName string, userTimezone string) string {
-	var b strings.Builder
+// maxAlarm is the longest reminder, a day.
+const maxAlarm = 24 * 60
 
-	b.WriteString("BEGIN:VCALENDAR\r\n")
-	b.WriteString("VERSION:2.0\r\n")
-	b.WriteString(foldLine(fmt.Sprintf("PRODID:%s", calendarProdID)))
-	b.WriteString(foldLine(fmt.Sprintf("X-WR-CALNAME:Hopla - %s", escapeICalText(calendarName))))
-	b.WriteString("METHOD:PUBLISH\r\n")
-	b.WriteString("CALSCALE:GREGORIAN\r\n")
-
-	if userTimezone != "" {
-		b.WriteString(foldLine(fmt.Sprintf("X-WR-TIMEZONE:%s", userTimezone)))
-	}
-
-	now := time.Now().UTC()
-	dtstamp := now.Format("20060102T150405Z")
-
-	for _, ch := range chores {
-		if ch.NextDueDate == nil {
-			continue
-		}
-
-		b.WriteString("BEGIN:VEVENT\r\n")
-
-		uid := fmt.Sprintf("chore-%d@hopla", ch.ID)
-		b.WriteString(foldLine(fmt.Sprintf("UID:%s", uid)))
-		b.WriteString(fmt.Sprintf("DTSTAMP:%s\r\n", dtstamp))
-
-		dtstart := ch.NextDueDate.UTC().Format("20060102T150405Z")
-		b.WriteString(fmt.Sprintf("DTSTART:%s\r\n", dtstart))
-
-		// Use completion window (hours) as event duration, default 1 hour
-		duration := time.Hour
-		if ch.CompletionWindow != nil && *ch.CompletionWindow > 0 {
-			duration = time.Duration(*ch.CompletionWindow) * time.Hour
-		}
-		dtend := ch.NextDueDate.Add(duration).UTC().Format("20060102T150405Z")
-		b.WriteString(fmt.Sprintf("DTEND:%s\r\n", dtend))
-
-		b.WriteString(foldLine(fmt.Sprintf("SUMMARY:%s", escapeICalText(ch.Name))))
-
-		desc := buildChoreDescription(ch)
-		if desc != "" {
-			b.WriteString(foldLine(fmt.Sprintf("DESCRIPTION:%s", escapeICalText(desc))))
-		}
-
-		icalPriority := mapPriority(ch.Priority)
-		if icalPriority > 0 {
-			b.WriteString(fmt.Sprintf("PRIORITY:%d\r\n", icalPriority))
-		}
-
-		switch ch.Status {
-		case chModel.ChoreStatusInProgress:
-			b.WriteString("STATUS:IN-PROCESS\r\n")
-		default:
-			b.WriteString("STATUS:NEEDS-ACTION\r\n")
-		}
-
-		b.WriteString(fmt.Sprintf("LAST-MODIFIED:%s\r\n", ch.UpdatedAt.UTC().Format("20060102T150405Z")))
-		b.WriteString("END:VEVENT\r\n")
-	}
-
-	b.WriteString("END:VCALENDAR\r\n")
-	return b.String()
+// isParent reports whether a member is a parent of the family.
+func (h *Handler) isParent(ctx context.Context, userID, familyID int) bool {
+	var n int64
+	h.db.WithContext(ctx).Table("user_families").
+		Where("user_id = ? AND family_id = ? AND role IN ?", userID, familyID,
+			[]fModel.UserRole{fModel.UserRoleAdmin, fModel.UserRoleManager}).Count(&n)
+	return n > 0
 }
 
-// buildChoreDescription creates a plain-text description for the calendar event.
-func buildChoreDescription(ch *chModel.Chore) string {
+// recentHistory returns the tasks done or waiting for a parent since a time.
+func (h *Handler) recentHistory(ctx context.Context, chores []*chModel.Chore, since time.Time) ([]*chModel.ChoreHistory, error) {
+	ids := make([]int, 0, len(chores))
+	for _, ch := range chores {
+		ids = append(ids, ch.ID)
+	}
+	var history []*chModel.ChoreHistory
+	if len(ids) == 0 {
+		return history, nil
+	}
+	err := h.db.WithContext(ctx).Where("chore_id IN ? AND performed_at >= ? AND status IN ?", ids, since,
+		[]chModel.ChoreHistoryStatus{chModel.ChoreHistoryStatusCompleted, chModel.ChoreHistoryStatusPendingApproval}).
+		Find(&history).Error
+	return history, err
+}
+
+// buildChoreDescription creates a plain-text description for the calendar
+// event, in French like the rest of Hopla.
+func buildChoreDescription(ch *chModel.Chore, currency string) string {
 	var parts []string
 
 	if ch.Description != nil && *ch.Description != "" {
-		parts = append(parts, stripHTMLTags(*ch.Description))
+		parts = append(parts, strings.TrimSpace(stripHTMLTags(*ch.Description)))
 	}
 
-	if ch.FrequencyType != "" && ch.FrequencyType != chModel.FrequencyTypeOnce {
-		parts = append(parts, fmt.Sprintf("Repeats: %s", ch.FrequencyType))
+	if repeat := frequencyName(ch.FrequencyType); repeat != "" {
+		parts = append(parts, "Répétition : "+repeat)
 	}
 
 	if ch.Points != nil && *ch.Points > 0 {
-		parts = append(parts, fmt.Sprintf("Points: %d", *ch.Points))
+		parts = append(parts, fmt.Sprintf("%d %s", *ch.Points, currencyName(currency)))
 	}
 
 	pName := priorityName(ch.Priority)
 	if pName != "" {
-		parts = append(parts, fmt.Sprintf("Priority: %s", pName))
+		parts = append(parts, "Priorité : "+pName)
 	}
 
 	// Real newlines: escapeICalText turns these into the RFC 5545 "\n" escape.
 	// Pre-escaping here would get double-escaped into a literal backslash-n.
 	return strings.Join(parts, "\n")
+}
+
+// frequencyName says how a task repeats; nothing for a task done once.
+func frequencyName(f chModel.FrequencyType) string {
+	switch f {
+	case chModel.FrequencyTypeDaily:
+		return "tous les jours"
+	case chModel.FrequencyTypeWeekly:
+		return "chaque semaine"
+	case chModel.FrequencyTypeMonthly:
+		return "chaque mois"
+	case chModel.FrequencyTypeYearly:
+		return "chaque année"
+	case chModel.FrequencyTypeInterval:
+		return "à intervalle régulier"
+	case chModel.FrequencyTypeDayOfTheWeek:
+		return "certains jours de la semaine"
+	case chModel.FrequencyTypeDayOfTheMonth:
+		return "certains jours du mois"
+	case chModel.FrequencyTypeAdaptive:
+		return "selon le rythme"
+	}
+	return ""
+}
+
+// currencyName is what the family earns, as the web app says it in French.
+func currencyName(currency string) string {
+	switch currency {
+	case "points":
+		return "points"
+	case "stars":
+		return "étoiles"
+	case "carrots":
+		return "carottes"
+	case "coins":
+		return "pièces"
+	case "tokens":
+		return "jetons"
+	}
+	return "hops"
 }
 
 // escapeICalText escapes special characters per RFC 5545.
@@ -468,13 +539,13 @@ func mapPriority(p int) int {
 func priorityName(p int) string {
 	switch p {
 	case 4:
-		return "Urgent"
+		return "urgente"
 	case 3:
-		return "High"
+		return "haute"
 	case 2:
-		return "Medium"
+		return "moyenne"
 	case 1:
-		return "Low"
+		return "basse"
 	default:
 		return ""
 	}
