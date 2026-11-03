@@ -1,6 +1,7 @@
 import {
   ChevronRightRounded,
   CloudOffRounded,
+  FactCheckOutlined,
   LockRounded,
   SchoolRounded,
   SportsEsportsRounded,
@@ -10,7 +11,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import PropTypes from 'prop-types'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link, Navigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 
 import { HOPLA } from '../../constants/theme'
 import { useIsParent } from '../../hooks/useIsParent'
@@ -20,15 +21,18 @@ import {
   usePlayer,
 } from '../../queries/LearnQueries'
 import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries'
+import { SendPlacement } from '../../utils/Fetcher'
 import { moduleLocked, openChapters, totalLeft } from '../../utils/learn/engine'
 import { levelsIn, playFirst, shape, toReview } from '../../utils/learn/listing'
 import { loadServerVoices } from '../../utils/learn/serverVoice'
 import { queuedFor } from '../../utils/learn/store'
+import { packTree, rootOf } from '../../utils/learn/tree'
 import LoadingComponent from '../components/Loading'
 import { MemberAvatar } from '../Games/GameParts'
 import { clock } from '../Recre/games/common'
 import { Progress, subjectColor, useCompiled } from './LearnParts'
 import ListBar, { useListChoices } from './ListBar'
+import { StartLevels } from './PlacementTest'
 
 const pageSx = { px: { xs: 2, sm: 3 }, pb: 6, pt: { xs: 1, sm: 3 } }
 
@@ -106,6 +110,7 @@ const ModuleCard = ({ cards, compiled, compiledById, dayFull, module, to }) => {
     compiled,
     cards,
     module.unlockPercent ?? undefined,
+    module.placed,
   )
   const current = [...chapters].reverse().find(c => c.open)
   // The bar is the chapter being learnt, the one that opens the next.
@@ -294,6 +299,91 @@ RecreCard.propTypes = {
   to: PropTypes.string.isRequired,
 }
 
+// testablePacks are the packs on top of the modules a person plays, each
+// with its levels, for their placement test.
+const testablePacks = player => {
+  const { groups } = packTree(player.packs)
+  const playing = new Set(player.modules.map(m => m.id))
+  const out = []
+  for (const group of groups) {
+    const levels = group.levels.map(level => level.pack || group.pack)
+    const plays = player.packs.some(
+      p =>
+        rootOf(player.packs, p.id)?.id === group.pack.id &&
+        p.children.some(id => playing.has(id)),
+    )
+    if (plays) out.push({ pack: group.pack, levels })
+  }
+  return out
+}
+
+// TestOffer proposes the placement test of a pack never tested: it opens at
+// once what the person knows, from the level they choose.
+const TestOffer = ({ levels, onSkip, pack, to }) => {
+  const { t } = useTranslation('learn')
+  const navigate = useNavigate()
+  const [start, setStart] = useState(0)
+  const [skipping, setSkipping] = useState(false)
+  return (
+    <Sheet
+      variant='outlined'
+      sx={{ borderRadius: 'xl', display: 'grid', gap: 1.75, mb: 2, p: 2 }}
+    >
+      <Stack direction='row' gap={1.5} alignItems='center'>
+        <Box
+          sx={{
+            alignItems: 'center',
+            bgcolor: HOPLA.violetSoft,
+            borderRadius: 'lg',
+            display: 'flex',
+            flexShrink: 0,
+            height: 44,
+            justifyContent: 'center',
+            width: 44,
+          }}
+        >
+          <FactCheckOutlined sx={{ color: HOPLA.violet }} />
+        </Box>
+        <Box sx={{ minWidth: 0 }}>
+          <Typography
+            level='body-xs'
+            sx={{ color: 'text.secondary', fontWeight: 600 }}
+          >
+            {t('test.newPack')}
+          </Typography>
+          <Typography level='title-lg'>{pack.name}</Typography>
+        </Box>
+      </Stack>
+      <Typography level='body-md'>{t('test.offer')}</Typography>
+      <StartLevels levels={levels} value={start} onPick={setStart} />
+      <Typography level='body-sm' sx={{ color: 'text.secondary' }}>
+        {t('test.rules')}
+      </Typography>
+      <Button size='lg' onClick={() => navigate(`${to}?depart=${start}`)}>
+        {t('test.start')}
+      </Button>
+      <Button
+        variant='plain'
+        loading={skipping}
+        onClick={async () => {
+          setSkipping(true)
+          await onSkip().catch(() => {})
+          setSkipping(false)
+        }}
+      >
+        {t('test.skip')}
+      </Button>
+    </Sheet>
+  )
+}
+
+TestOffer.propTypes = {
+  levels: PropTypes.array.isRequired,
+  onSkip: PropTypes.func.isRequired,
+  pack: PropTypes.object.isRequired,
+  to: PropTypes.string.isRequired,
+}
+
 // groupByPack puts the modules under their pack, in the pack's order; the
 // others come last.
 const groupByPack = player => {
@@ -330,6 +420,7 @@ export const LearnModules = ({
   member,
   playPath,
   recrePath,
+  testPath,
   userId,
 }) => {
   const { t } = useTranslation('learn')
@@ -357,6 +448,28 @@ export const LearnModules = ({
   }, [queryClient, userId])
 
   if (isLoading) return <LoadingComponent />
+
+  const testable = player ? testablePacks(player) : []
+  const tested = new Set((player?.placements || []).map(p => p.pack))
+  // One pack never tested at a time is offered its test, so the modules
+  // stay in sight; the others have theirs at the top of their group.
+  const offers = player?.offline
+    ? []
+    : testable.filter(({ pack }) => !tested.has(pack.id)).slice(0, 1)
+  // The test is there anytime, at the top of the first group of its pack.
+  const testOf = {}
+  for (const { pack } of testable) {
+    const first = (player?.packs || []).find(
+      p =>
+        rootOf(player.packs, p.id)?.id === pack.id &&
+        p.children.some(id => player.modules.some(m => m.id === id)),
+    )
+    if (first) testOf[first.id] = pack.id
+  }
+  const skip = async pack => {
+    await SendPlacement({ userId, pack, status: 'skipped' })
+    queryClient.invalidateQueries({ queryKey: learnKeys.player(userId) })
+  }
 
   const waiting = queuedFor(userId)
   const left = totalLeft(player)
@@ -439,6 +552,16 @@ export const LearnModules = ({
         <RecreCard recre={player.recre} to={recrePath} />
       )}
 
+      {offers.map(({ levels, pack }) => (
+        <TestOffer
+          key={pack.id}
+          pack={pack}
+          levels={levels}
+          to={testPath(pack.id)}
+          onSkip={() => skip(pack.id)}
+        />
+      ))}
+
       {(player?.offline || waiting > 0) && (
         <Sheet
           variant='soft'
@@ -509,21 +632,40 @@ export const LearnModules = ({
       <Stack gap={2.5}>
         {groups.map(group => (
           <Box component='section' key={group.id || 'others'}>
-            <Typography
-              level='body-xs'
-              sx={{
-                color: 'text.tertiary',
-                fontWeight: 700,
-                letterSpacing: '.06em',
-                mb: 1,
-                px: 0.5,
-                textTransform: 'uppercase',
-              }}
+            <Stack
+              direction='row'
+              alignItems='center'
+              gap={1}
+              sx={{ mb: 1, px: 0.5 }}
             >
-              {group.id === 'first'
-                ? t('list.sort.first')
-                : group.name || t('home.others')}
-            </Typography>
+              <Typography
+                level='body-xs'
+                sx={{
+                  color: 'text.tertiary',
+                  flex: 1,
+                  fontWeight: 700,
+                  letterSpacing: '.06em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                {group.id === 'first'
+                  ? t('list.sort.first')
+                  : group.name || t('home.others')}
+              </Typography>
+              {testOf[group.id] && !player.offline && (
+                <Button
+                  component={Link}
+                  to={testPath(testOf[group.id])}
+                  size='sm'
+                  variant='plain'
+                  startDecorator={<FactCheckOutlined />}
+                >
+                  {tested.has(testOf[group.id])
+                    ? t('test.again')
+                    : t('test.button')}
+                </Button>
+              )}
+            </Stack>
             <Stack gap={1}>
               {group.items.map(module => (
                 <ModuleCard
@@ -549,6 +691,7 @@ LearnModules.propTypes = {
   member: PropTypes.object,
   playPath: PropTypes.func.isRequired,
   recrePath: PropTypes.string.isRequired,
+  testPath: PropTypes.func.isRequired,
   userId: PropTypes.number.isRequired,
 }
 
@@ -570,6 +713,7 @@ export const LearnHome = () => {
       isParent={!!isParent}
       playPath={moduleId => `/learn/${userId}/play/${moduleId}`}
       recrePath={`/learn/${userId}/recre`}
+      testPath={pack => `/learn/${userId}/test/${pack}`}
     />
   )
 }

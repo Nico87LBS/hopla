@@ -61,6 +61,7 @@ func Migration(db *gorm.DB) error {
 		learn.Module{},
 		learn.Activation{},
 		learn.PersonSetting{},
+		learn.Placement{},
 		learn.Session{},
 		learn.RecreSetting{},
 		learn.RecrePlay{},

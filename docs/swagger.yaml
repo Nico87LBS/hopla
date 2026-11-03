@@ -316,6 +316,23 @@ definitions:
     - EntityTypeChoreAttachment
     - EntityTypeChoreAttachmentDraft
     - EntityTypeChoreDescriptionDraft
+  learn.PlacementResult:
+    properties:
+      keep:
+        type: string
+      opened:
+        items:
+          type: string
+        type: array
+      pack:
+        type: string
+      reached:
+        type: string
+      status:
+        type: string
+      userId:
+        type: integer
+    type: object
   learn.RecreChange:
     properties:
       every:
@@ -3072,6 +3089,83 @@ paths:
       summary: Installer un module du catalogue
       tags:
       - Apprendre
+  /api/v1/learn/placements:
+    post:
+      consumes:
+      - application/json
+      description: 'Ouvre les chapitres réussis et active les niveaux jusqu''au niveau
+        atteint. Même traitement pour : POST /api/v1/learn/play/placements'
+      parameters:
+      - description: Corps de la requête
+        in: body
+        name: test
+        required: true
+        schema:
+          $ref: '#/definitions/learn.PlacementResult'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      - PlayKeyAuth: []
+      summary: Enregistrer un test de placement, fait ou passé
+      tags:
+      - Apprendre
+      - Session de jeu
+  /api/v1/learn/placements/{userId}/{pack}:
+    get:
+      description: 'Même traitement pour : GET /api/v1/learn/play/placements/{userId}/{pack}'
+      parameters:
+      - description: Personne
+        in: path
+        name: userId
+        required: true
+        type: integer
+      - description: Clé du paquet
+        in: path
+        name: pack
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      - PlayKeyAuth: []
+      summary: Test de placement d'un paquet pour une personne
+      tags:
+      - Apprendre
+      - Session de jeu
+  /api/v1/learn/placements/keep:
+    put:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Choisir les niveaux gardés après un test de placement (parent)
+      tags:
+      - Apprendre
   /api/v1/learn/play-links:
     post:
       description: 'Même traitement pour : POST /eapi/v1/learn/play-links'
@@ -3105,6 +3199,65 @@ paths:
       - APIKeyAuth: []
       - PlayKeyAuth: []
       summary: Enregistrer une partie
+      tags:
+      - Apprendre
+      - Session de jeu
+  /api/v1/learn/play/placements:
+    post:
+      consumes:
+      - application/json
+      description: 'Ouvre les chapitres réussis et active les niveaux jusqu''au niveau
+        atteint. Même traitement pour : POST /api/v1/learn/play/placements'
+      parameters:
+      - description: Corps de la requête
+        in: body
+        name: test
+        required: true
+        schema:
+          $ref: '#/definitions/learn.PlacementResult'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      - PlayKeyAuth: []
+      summary: Enregistrer un test de placement, fait ou passé
+      tags:
+      - Apprendre
+      - Session de jeu
+  /api/v1/learn/play/placements/{userId}/{pack}:
+    get:
+      description: 'Même traitement pour : GET /api/v1/learn/play/placements/{userId}/{pack}'
+      parameters:
+      - description: Personne
+        in: path
+        name: userId
+        required: true
+        type: integer
+      - description: Clé du paquet
+        in: path
+        name: pack
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      - PlayKeyAuth: []
+      summary: Test de placement d'un paquet pour une personne
       tags:
       - Apprendre
       - Session de jeu

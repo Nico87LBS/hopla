@@ -161,19 +161,22 @@ export const chapterProgress = (chapter, cards) => {
 
 // openChapters tells, chapter by chapter, how well it is known and whether it
 // is open. The first one always is; the next opens when the one before is
-// known well enough, by its own threshold or the one a parent set.
-export const openChapters = (compiled, cards, unlockPercent) => {
+// known well enough, by its own threshold or the one a parent set. A chapter
+// a placement test passed (placed, its ids) is open, and so is the next.
+export const openChapters = (compiled, cards, unlockPercent, placed = []) => {
+  const passed = new Set(placed)
   const out = []
   compiled.chapters.forEach((chapter, i) => {
     const progress = chapterProgress(chapter, cards)
+    const byTest = passed.has(chapter.id)
     let open = true
     let needed = 0
-    if (i > 0 && chapter.openAfter > 0) {
+    if (i > 0 && chapter.openAfter > 0 && !byTest) {
       const before = out[i - 1]
       needed = unlockPercent ?? chapter.openAfter
-      open = before.open && before.progress.percent >= needed
+      open = before.placed || (before.open && before.progress.percent >= needed)
     }
-    out.push({ chapter, progress, open, needed })
+    out.push({ chapter, progress, open, needed, placed: byTest })
   })
   return out
 }
@@ -270,7 +273,12 @@ export const pickQuestions = (compiled, cards, options = {}) => {
   const count = settings.questions_par_partie
   const newCount = settings.nouvelles_par_partie
   const day = options.day || '9999-12-31'
-  const open = openChapters(compiled, cards, options.unlockPercent)
+  const open = openChapters(
+    compiled,
+    cards,
+    options.unlockPercent,
+    options.placed,
+  )
     .filter(c => c.open)
     .map(c => c.chapter)
   const picked = []
@@ -329,6 +337,20 @@ export const pickQuestions = (compiled, cards, options = {}) => {
     }
   }
   return shuffle(picked, rng).map(item => prepare(item, rng))
+}
+
+// chapterQuestions draws a few different questions of one chapter, shaped
+// for a game, such as for a placement test.
+export const chapterQuestions = (chapter, count, rng = Math.random) => {
+  const picked = []
+  const keys = new Set()
+  for (let tries = 0; tries < count * 30 && picked.length < count; tries++) {
+    const item = drawFrom(chapter, rng)
+    if (!item || keys.has(item.key)) continue
+    keys.add(item.key)
+    picked.push(item)
+  }
+  return picked.map(item => prepare(item, rng))
 }
 
 // ── answers ──

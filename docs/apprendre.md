@@ -200,6 +200,34 @@ monter, une erreur la fait redescendre. Elle revient après 1, 2, 4, 8 puis 16
 jours selon sa boîte. Une question en boîte 4 ou 5 est **sue** : c'est ce
 pourcentage qui ouvre les chapitres suivants.
 
+## Le test de niveau
+
+Chaque paquet a son test de niveau, pour commencer au bon endroit sans tout
+refaire depuis le début. Il est proposé en haut d'Apprendre la première fois
+qu'une personne joue à un paquet (un paquet à la fois), et il reste à portée
+ensuite avec le bouton **Test de niveau** en tête du paquet, ou **Refaire le
+test** dans Gérer.
+
+- On choisit le niveau de départ (GS, CP, CE1, CE2…) ; les niveaux d'avant
+  comptent comme sus. Un paquet à un seul niveau, comme l'anglais
+  aéronautique, commence à son premier chapitre.
+- Le test pose **2 questions par chapitre**, dans l'ordre des modules puis
+  des chapitres du niveau, puis passe au niveau suivant. Deux bonnes réponses
+  passent le chapitre ; il **s'arrête au premier chapitre raté**, et c'est là
+  que la personne commence.
+- Si le tout premier chapitre du niveau de départ est raté, le test
+  **redescend d'un niveau** (jusqu'au premier) : seuls les niveaux sous un
+  niveau réussi comptent comme sus.
+- Le test ne donne **pas de hops** et ne compte pas dans la répétition
+  espacée : les chapitres réussis s'ouvrent, simplement, avec celui d'après.
+- À la fin, on choisit les niveaux à garder : **tous jusqu'au niveau
+  atteint** (les premiers pour réviser) ou **seulement le niveau atteint**.
+  Les niveaux au-dessus sont décochés. Le choix se change ensuite dans Gérer ›
+  Par personne, sous le nom du paquet, où l'on voit aussi la date du test, le
+  niveau atteint et les modules ouverts par le test.
+- **Passer, commencer au début** ne change rien et ne propose plus le test ;
+  le bouton reste là.
+
 ## Suivre les progrès
 
 Les statistiques d'une personne (Gérer › Modules d'apprentissage › Par

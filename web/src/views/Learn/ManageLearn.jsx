@@ -2,6 +2,7 @@ import {
   ChevronRightRounded,
   DeleteOutlineRounded,
   DownloadDoneRounded,
+  FactCheckOutlined,
   FileDownloadRounded,
   InsightsRounded,
   OutlinedFlagRounded,
@@ -40,6 +41,7 @@ import {
   usePlayer,
   useRemoveModule,
   useSetActivation,
+  useSetPlacementKeep,
   useSetSetting,
 } from '../../queries/LearnQueries'
 import { useNotification } from '../../service/NotificationProvider'
@@ -736,6 +738,92 @@ LevelRow.propTypes = {
   section: PropTypes.object.isRequired,
 }
 
+// PlacementBox tells a person's placement test in a pack: when it was done
+// and the level reached, what it keeps on, and the test to do again.
+const PlacementBox = ({ group, person, placement }) => {
+  const { i18n, t } = useTranslation('learn')
+  const setKeep = useSetPlacementKeep()
+  const notify = useNotify()
+  const levels = (group.tiers || []).filter(level => level.pack)
+  const reached = levels.find(level => level.pack.id === placement?.reached)
+  const done = placement?.status === 'done'
+  const day = done
+    ? new Date(placement.doneAt).toLocaleDateString(i18n.language, {
+        day: 'numeric',
+        month: 'short',
+      })
+    : ''
+  const change = async keep => {
+    try {
+      await setKeep.mutateAsync({
+        userId: person.userId,
+        pack: group.pack.id,
+        keep,
+      })
+    } catch (err) {
+      notify('error', err.message)
+    }
+  }
+  return (
+    <Sheet
+      variant='soft'
+      sx={{ borderRadius: 'lg', display: 'grid', gap: 1, mt: 1.5, p: 1.5 }}
+    >
+      <Stack direction='row' alignItems='center' gap={1}>
+        <FactCheckOutlined
+          sx={{ color: done ? HOPLA.green : 'text.tertiary' }}
+        />
+        <Typography level='body-sm' sx={{ flex: 1, minWidth: 0 }}>
+          {!placement
+            ? t('manage.testNone')
+            : !done
+              ? t('manage.testSkipped')
+              : reached
+                ? t('manage.testDoneAt', { day, level: reached.pack.name })
+                : t('manage.testDone', { day })}
+        </Typography>
+        <Button
+          size='sm'
+          variant='outlined'
+          component={Link}
+          to={`/learn/${person.userId}/test/${group.pack.id}`}
+        >
+          {placement ? t('test.again') : t('test.button')}
+        </Button>
+      </Stack>
+      {done && reached && levels[0].pack.id !== reached.pack.id && (
+        <Stack gap={0.5}>
+          <Typography
+            id={`keep-${person.userId}-${group.pack.id}`}
+            level='body-xs'
+            sx={{ color: 'text.secondary', fontWeight: 600 }}
+          >
+            {t('manage.testKeep')}
+          </Typography>
+          <Select
+            value={placement.keep || ''}
+            onChange={(e, value) => value !== null && change(value)}
+            slotProps={{
+              button: {
+                'aria-labelledby': `keep-${person.userId}-${group.pack.id}`,
+              },
+            }}
+          >
+            <Option value=''>{t('manage.testKeepUpTo')}</Option>
+            <Option value='only'>{t('manage.testKeepOnly')}</Option>
+          </Select>
+        </Stack>
+      )}
+    </Sheet>
+  )
+}
+
+PlacementBox.propTypes = {
+  group: PropTypes.object.isRequired,
+  person: PropTypes.object.isRequired,
+  placement: PropTypes.object,
+}
+
 // One installed pack, or the modules outside any pack, for one person: the
 // pack's settings on one line under its name, then each module with only
 // the settings of its own, and at the right the box of who plays it.
@@ -748,6 +836,7 @@ const ModuleGroup = ({
   onRemove,
   onSettings,
   person,
+  placements,
   reports,
   settings,
 }) => {
@@ -803,6 +892,14 @@ const ModuleGroup = ({
     })
     .filter(section => section.modules.length)
   const indent = sections.length ? 6 : 4
+  const placement = group.pack
+    ? (placements || []).find(
+        p => p.userId === person.userId && p.pack === group.pack.id,
+      )
+    : null
+  const placedIn = new Set(
+    (placement?.opened || []).map(chapter => chapter.split('/')[0]),
+  )
   // renderModule is the row of a module, its chips against the line above.
   const renderModule = (module, baseline) => {
     const playing = isOn(module.id)
@@ -813,19 +910,28 @@ const ModuleGroup = ({
         sx={{ ...rowSx, opacity: playing ? 1 : 0.6 }}
       >
         <Stack direction='row' alignItems='center' gap={1}>
-          <Typography
-            level='body-md'
-            sx={{ flex: 1, minWidth: 0, pl: indent }}
-            endDecorator={
-              isNew(module) && (
-                <Chip size='sm' variant='soft' color='success'>
-                  {t('manage.new')}
-                </Chip>
-              )
-            }
-          >
-            {module.name}
-          </Typography>
+          <Box sx={{ flex: 1, minWidth: 0, pl: indent }}>
+            <Typography
+              level='body-md'
+              endDecorator={
+                isNew(module) && (
+                  <Chip size='sm' variant='soft' color='success'>
+                    {t('manage.new')}
+                  </Chip>
+                )
+              }
+            >
+              {module.name}
+            </Typography>
+            {placedIn.has(module.id) && (
+              <Typography
+                level='body-xs'
+                sx={{ color: HOPLA.greenText, fontWeight: 600 }}
+              >
+                {t('manage.byTest')}
+              </Typography>
+            )}
+          </Box>
           <Slot>
             <IconButton
               size='sm'
@@ -974,6 +1080,10 @@ const ModuleGroup = ({
         </Stack>
       )}
 
+      {group.pack && on > 0 && (
+        <PlacementBox group={group} person={person} placement={placement} />
+      )}
+
       <Stack gap={1.25} sx={{ mt: 1.5 }}>
         {sections.length
           ? sections.map(section => (
@@ -1023,6 +1133,7 @@ ModuleGroup.propTypes = {
   onRemove: PropTypes.func.isRequired,
   onSettings: PropTypes.func.isRequired,
   person: PropTypes.object.isRequired,
+  placements: PropTypes.array,
   reports: PropTypes.object,
   settings: PropTypes.instanceOf(Map).isRequired,
 }
@@ -1712,6 +1823,7 @@ export const ManageLearn = () => {
               applied={data?.applied?.[person.userId]}
               defaults={defaults}
               reports={data?.reports}
+              placements={data?.placements}
               settings={settings}
               onRemove={askRemove}
               onSettings={module => setSettingsFor({ scope: 'module', module })}

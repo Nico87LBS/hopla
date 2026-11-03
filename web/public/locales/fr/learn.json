@@ -150,7 +150,15 @@
     },
     "firstName": "Prénom dans les jeux",
     "firstNameHelp": "Pour les questions sur son prénom (première lettre, lettres dans l’ordre…). Vide : le premier mot de son nom dans Hopla.",
-    "firstNameFor": "Prénom de {{name}} dans les jeux"
+    "firstNameFor": "Prénom de {{name}} dans les jeux",
+    "testNone": "Pas encore de test de niveau",
+    "testSkipped": "Test passé, commencé au début",
+    "testDoneAt": "Test fait le {{day}} · niveau atteint : {{level}}",
+    "testDone": "Test fait le {{day}}",
+    "testKeep": "Après le test, garder",
+    "testKeepUpTo": "Tous les niveaux jusqu'au niveau atteint",
+    "testKeepOnly": "Seulement le niveau atteint",
+    "byTest": "ouvert par le test"
   },
   "stats": {
     "chapters": "Chapitres",
@@ -430,5 +438,40 @@
       "notKept": "Partie d'essai : rien n'est gardé.",
       "close": "Fermer"
     }
+  },
+  "test": {
+    "newPack": "Nouveau paquet",
+    "offer": "Tu en sais déjà un peu ? Fais le test : il ouvre tout de suite ce que tu sais, pour commencer au bon niveau.",
+    "startAt": "Commencer le test à",
+    "belowKnown": "Les niveaux d'avant comptent comme sus.",
+    "rules": "2 questions par chapitre · pas de hops",
+    "start": "Faire le test",
+    "skip": "Passer, commencer au début",
+    "button": "Test de niveau",
+    "again": "Refaire le test",
+    "title": "Test · {{pack}}",
+    "withoutHops": "Sans hops",
+    "quit": "Arrêter le test",
+    "levelDone": "{{level}} ✓",
+    "where": "Chapitre {{chapter}} sur {{chapters}} · question {{question}} sur {{questions}}",
+    "howItWorks": "Deux bonnes réponses ouvrent le chapitre. Le test s'arrête au premier chapitre raté : c'est là que tu commenceras.",
+    "startsAt": "Bravo {{name}}, tu commences à « {{level}} » !",
+    "noted": "Bravo {{name}}, c'est noté !",
+    "fromStart": "On commence au début, {{name}} !",
+    "opened_one": "{{count}} chapitre sur {{total}} ouvert",
+    "opened_other": "{{count}} chapitres sur {{total}} ouverts",
+    "openedFrom_one": "{{count}} chapitre sur {{total}} ouvert · tu reprends à « {{next}} »",
+    "openedFrom_other": "{{count}} chapitres sur {{total}} ouverts · tu reprends à « {{next}} »",
+    "notTested": "Pas encore testé",
+    "keepTitle": "Quels niveaux garder ?",
+    "keepUpTo": "Tous les niveaux jusqu'à {{level}}",
+    "keepUpToHelp": "{{levels}} : les premiers pour réviser",
+    "keepOnly": "Seulement {{level}}",
+    "keepOnlyHelp": "{{levels}} restent décochés",
+    "keepLater": "On peut le changer ensuite dans Gérer.",
+    "noHops": "Le test ne donne pas de hops et ne compte pas dans les révisions.",
+    "go": "C'est parti",
+    "error": "Le test n'a pas pu s'ouvrir.",
+    "back": "Revenir"
   }
 }

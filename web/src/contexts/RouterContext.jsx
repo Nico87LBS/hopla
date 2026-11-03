@@ -29,11 +29,13 @@ import ManageLearn, {
   LearnCatalogue,
   LearnVoices,
 } from '../views/Learn/ManageLearn'
+import PlacementTest from '../views/Learn/PlacementTest'
 import {
   PlayGame,
   PlayHome,
   PlayRecre,
   PlayStart,
+  PlayTest,
 } from '../views/Learn/PlayPages'
 import ManageView from '../views/Manage/ManageView'
 import {
@@ -66,6 +68,11 @@ const Router = createBrowserRouter([
   {
     path: '/play/:userId/recre',
     element: <PlayRecre />,
+    errorElement: <Error />,
+  },
+  {
+    path: '/play/:userId/test/:packId',
+    element: <PlayTest />,
     errorElement: <Error />,
   },
   {
@@ -252,6 +259,10 @@ const Router = createBrowserRouter([
       {
         path: '/learn/:userId/play/:moduleId',
         element: <LearnPlay />,
+      },
+      {
+        path: '/learn/:userId/test/:packId',
+        element: <PlacementTest />,
       },
       {
         path: '/learn/:userId/recre',

@@ -348,7 +348,7 @@ FlipCard.propTypes = {
 
 // ── a question ──
 
-const Feedback = ({ feedback, onNext }) => {
+export const Feedback = ({ feedback, onNext }) => {
   const { t } = useTranslation('learn')
   const { correct, given, item, typo } = feedback
   // The words said again once answered are heard to the end: « Next »
@@ -511,7 +511,7 @@ export const readBack = item => {
 // speaker button. Without a voice on the device, the words are shown
 // instead. Read aloud, the question is said as it opens. In a module that
 // teaches reading, tell says only the instruction, written above it.
-const Prompt = ({
+export const Prompt = ({
   blank,
   color,
   drag = false,
@@ -675,7 +675,7 @@ Prompt.propTypes = {
   tellLang: PropTypes.string,
 }
 
-const Question = ({ blank, color, cursive, item, onAnswer, say }) => {
+export const Question = ({ blank, color, cursive, item, onAnswer, say }) => {
   switch (item.mode) {
     case 'choice':
       if (blank) {
@@ -905,6 +905,7 @@ const LearnPlay = ({ playMode = false }) => {
           day: player.day,
           settings: module.settings,
           unlockPercent: module.unlockPercent ?? undefined,
+          placed: module.placed,
           recent,
         }),
         answers: [],

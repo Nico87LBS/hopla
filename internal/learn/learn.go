@@ -518,6 +518,9 @@ func Remove(db *gorm.DB, familyID int, key string, forget bool) error {
 		if err := tx.Where("family_id = ? AND scope IN ?", familyID, keys).Delete(&PersonSetting{}).Error; err != nil {
 			return err
 		}
+		if err := tx.Where("family_id = ? AND pack_key IN ?", familyID, keys).Delete(&Placement{}).Error; err != nil {
+			return err
+		}
 		if !forget {
 			return nil
 		}
@@ -1161,6 +1164,8 @@ type PlayerModule struct {
 	UnlockPercent *int `json:"unlockPercent"`
 	EarnedToday   int  `json:"earnedToday"`
 	PlayedToday   int  `json:"playedToday"`
+	// Placed are the chapters a placement test opened.
+	Placed []string `json:"placed"`
 }
 
 // Player is everything a device needs to let a person play, also offline:
@@ -1184,6 +1189,9 @@ type Player struct {
 	FirstName string `json:"firstName"`
 	// Recre is the person's récré: when the next one comes, and the records.
 	Recre Recre `json:"recre"`
+	// Placements are the person's placement tests, to offer one in a pack
+	// never tested.
+	Placements []Placement `json:"placements"`
 }
 
 // PlayerFor gathers what a person plays.
@@ -1231,6 +1239,11 @@ func PlayerFor(db *gorm.DB, familyID, userID int, now time.Time) (Player, error)
 			return player, err
 		}
 	}
+	player.Placements, err = Placements(db, familyID, &userID)
+	if err != nil {
+		return player, err
+	}
+	placed := placedChapters(player.Placements)
 	for _, module := range modules {
 		if module.IsPack() {
 			player.Packs = append(player.Packs, module)
@@ -1247,7 +1260,11 @@ func PlayerFor(db *gorm.DB, familyID, userID int, now time.Time) (Player, error)
 		pm := PlayerModule{Module: module, Document: json.RawMessage(module.Content),
 			Settings:      limits.settings(module.Key, activation, doc.Settings.WithDefaults()),
 			UnlockPercent: limits.unlockPercent(module.Key, activation),
-			EarnedToday:   earned[module.Key].Points, PlayedToday: earned[module.Key].Games}
+			EarnedToday:   earned[module.Key].Points, PlayedToday: earned[module.Key].Games,
+			Placed: placed[module.Key]}
+		if pm.Placed == nil {
+			pm.Placed = []string{}
+		}
 		pm.DailyCap = limits.dailyCap(module.Key, activation, pm.Settings)
 		player.Modules = append(player.Modules, pm)
 	}
@@ -1311,12 +1328,14 @@ const StatsDays = 90
 // PersonStats is how one person does with a module: their cards, which the
 // web app matches to the module's chapters, and their recent games of it.
 type PersonStats struct {
-	UserID        int       `json:"userId"`
-	Active        bool      `json:"active"`
-	DailyCap      int       `json:"dailyCap"`
-	UnlockPercent *int      `json:"unlockPercent"`
-	Cards         []Card    `json:"cards"`
-	Sessions      []Session `json:"sessions"`
+	UserID        int  `json:"userId"`
+	Active        bool `json:"active"`
+	DailyCap      int  `json:"dailyCap"`
+	UnlockPercent *int `json:"unlockPercent"`
+	// Placed are the chapters a placement test opened.
+	Placed   []string  `json:"placed"`
+	Cards    []Card    `json:"cards"`
+	Sessions []Session `json:"sessions"`
 }
 
 // ModuleStats is a module and how everyone of the family does with it.
@@ -1375,6 +1394,14 @@ func Stats(db *gorm.DB, familyID int, key string, now time.Time) (ModuleStats, e
 		}
 		person.DailyCap = limits.dailyCap(key, activation, doc.Settings.WithDefaults())
 		person.UnlockPercent = limits.unlockPercent(key, activation)
+		placements, err := Placements(db, familyID, &member.UserID)
+		if err != nil {
+			return stats, err
+		}
+		person.Placed = placedChapters(placements)[key]
+		if person.Placed == nil {
+			person.Placed = []string{}
+		}
 		if err := db.Where("family_id = ? AND user_id = ?", familyID, member.UserID).Find(&person.Cards).Error; err != nil {
 			return stats, err
 		}

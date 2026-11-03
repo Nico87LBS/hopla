@@ -64,3 +64,23 @@ export const leavesOf = (modules, id) => {
   walk(id, 0)
   return out
 }
+
+// rootOf is the pack no other pack gathers above a module or a pack: the
+// pack itself when none does, null for a module of no pack.
+export const rootOf = (modules, id) => {
+  const above = packsAbove(modules, id)
+  if (above.length) return above[above.length - 1]
+  const self = modules.find(m => m.id === id)
+  return isPack(self) ? self : null
+}
+
+// shortLevel names a level by its school level, such as CP, when it has one
+// of its own, else by its name.
+export const shortLevel = (level, siblings = []) => {
+  const own = level?.levels || []
+  if (own.length !== 1) return level?.name || ''
+  const shared = siblings.filter(
+    other => other !== level && (other.levels || []).includes(own[0]),
+  )
+  return shared.length ? level.name : own[0]
+}

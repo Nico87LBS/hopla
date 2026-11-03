@@ -3779,6 +3779,133 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/learn/placements": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    },
+                    {
+                        "PlayKeyAuth": []
+                    }
+                ],
+                "description": "Ouvre les chapitres réussis et active les niveaux jusqu'au niveau atteint. Même traitement pour : POST /api/v1/learn/play/placements",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre",
+                    "Session de jeu"
+                ],
+                "summary": "Enregistrer un test de placement, fait ou passé",
+                "parameters": [
+                    {
+                        "description": "Corps de la requête",
+                        "name": "test",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/learn.PlacementResult"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/placements/keep": {
+            "put": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre"
+                ],
+                "summary": "Choisir les niveaux gardés après un test de placement (parent)",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/placements/{userId}/{pack}": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    },
+                    {
+                        "PlayKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /api/v1/learn/play/placements/{userId}/{pack}",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre",
+                    "Session de jeu"
+                ],
+                "summary": "Test de placement d'un paquet pour une personne",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Personne",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Clé du paquet",
+                        "name": "pack",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/learn/play-links": {
             "post": {
                 "security": [
@@ -3830,6 +3957,102 @@ const docTemplate = `{
                     "Session de jeu"
                 ],
                 "summary": "Enregistrer une partie",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/play/placements": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    },
+                    {
+                        "PlayKeyAuth": []
+                    }
+                ],
+                "description": "Ouvre les chapitres réussis et active les niveaux jusqu'au niveau atteint. Même traitement pour : POST /api/v1/learn/play/placements",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre",
+                    "Session de jeu"
+                ],
+                "summary": "Enregistrer un test de placement, fait ou passé",
+                "parameters": [
+                    {
+                        "description": "Corps de la requête",
+                        "name": "test",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/learn.PlacementResult"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/play/placements/{userId}/{pack}": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    },
+                    {
+                        "PlayKeyAuth": []
+                    }
+                ],
+                "description": "Même traitement pour : GET /api/v1/learn/play/placements/{userId}/{pack}",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre",
+                    "Session de jeu"
+                ],
+                "summary": "Test de placement d'un paquet pour une personne",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Personne",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Clé du paquet",
+                        "name": "pack",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -7214,6 +7437,32 @@ const docTemplate = `{
                 "EntityTypeChoreAttachmentDraft",
                 "EntityTypeChoreDescriptionDraft"
             ]
+        },
+        "learn.PlacementResult": {
+            "type": "object",
+            "properties": {
+                "keep": {
+                    "type": "string"
+                },
+                "opened": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "pack": {
+                    "type": "string"
+                },
+                "reached": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "integer"
+                }
+            }
         },
         "learn.RecreChange": {
             "type": "object",

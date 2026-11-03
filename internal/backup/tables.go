@@ -59,6 +59,7 @@ var saved = []table{
 	{"learn_modules", byFamily},
 	{"learn_activations", byFamily},
 	{"learn_person_settings", byFamily},
+	{"learn_placements", byFamily},
 	{"learn_card_edits", byFamily},
 	{"learn_cards", byFamily},
 	{"learn_sessions", byFamily},
