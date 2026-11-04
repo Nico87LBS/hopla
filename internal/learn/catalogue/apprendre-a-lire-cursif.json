@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "apprendre-a-lire-cursif",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "nom": "Lire en cursif",
+  "icone": "✍️",
   "description": "Le paquet Apprendre à lire, écrit en cursif comme à l'école : les lettres cursives, puis les syllabes, les sons, les mots et les phrases. Pour le CP.",
   "matiere": "francais",
   "niveaux": [

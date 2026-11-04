@@ -35,7 +35,7 @@ func invalid(format string, args ...any) error {
 
 func moduleFrom(familyID int, doc Document, raw []byte, builtin bool, now time.Time) Module {
 	return Module{
-		FamilyID: familyID, Key: doc.ID, Version: doc.Version, Name: doc.Name, Author: doc.Author, Subject: doc.Subject,
+		FamilyID: familyID, Key: doc.ID, Version: doc.Version, Name: doc.Name, Author: doc.Author, Subject: doc.Subject, Icon: doc.Icon,
 		Levels: doc.Levels, Audience: doc.Audience, Children: doc.Modules, Builtin: builtin,
 		Content: string(raw), InstalledAt: now, UpdatedAt: now,
 	}
@@ -46,7 +46,7 @@ func moduleFrom(familyID int, doc Document, raw []byte, builtin bool, now time.T
 func save(tx *gorm.DB, module Module) error {
 	return tx.Clauses(clause.OnConflict{
 		Columns: []clause.Column{{Name: "family_id"}, {Name: "module_key"}},
-		DoUpdates: clause.AssignmentColumns([]string{"version", "name", "author", "subject", "levels", "audience",
+		DoUpdates: clause.AssignmentColumns([]string{"version", "name", "author", "subject", "icon", "levels", "audience",
 			"children", "builtin", "content", "updated_at"}),
 	}).Create(&module).Error
 }

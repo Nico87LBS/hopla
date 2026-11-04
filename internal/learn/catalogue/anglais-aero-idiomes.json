@@ -1,16 +1,15 @@
 {
   "format": "hopla-module/1",
   "id": "anglais-aero-idiomes",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Anglais idiomatique",
+  "icone": "💡",
   "description": "Verbes à particule, expressions courantes, nuances de certitude et faux amis : ce qui distingue le niveau 6.",
   "matiere": "anglais",
   "niveaux": ["OACI 6"],
   "public": "adulte",
   "langue": "en",
   "langue_apprise": "en",
-  "icone": "langue",
-  "couleur": "#7A4FD0",
   "auteur": "Hopla",
   "chapitres": [
     {"id": "phrasal-verbs", "nom": "Phrasal verbs"},

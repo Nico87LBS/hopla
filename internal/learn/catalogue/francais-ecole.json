@@ -1,11 +1,12 @@
 {
   "format": "hopla-module/1",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "public": "enfant",
   "langue": "fr",
   "auteur": "Hopla",
   "id": "francais-ecole",
   "nom": "Français à l'école",
+  "icone": "📖",
   "description": "Le français de la grande section au CE2, niveau par niveau : le langage en GS, lire et écrire au CP, puis la phrase, les accords, la conjugaison et le vocabulaire au CE1 et au CE2.",
   "matiere": "francais",
   "niveaux": [

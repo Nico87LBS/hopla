@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "maths-cp-monnaie-heure",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "nom": "Monnaie et heures",
+  "icone": "🪙",
   "description": "Reconnaître les pièces et les billets, compter une somme, payer le juste prix, lire l'heure pile sur une horloge à aiguilles et régler les aiguilles.",
   "matiere": "maths",
   "niveaux": [

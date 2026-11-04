@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce1-vocabulaire",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "nom": "Le vocabulaire",
+  "icone": "📚",
   "description": "L'ordre alphabétique, les familles de mots, les contraires, les mots de même sens et les mots-étiquettes.",
   "matiere": "francais",
   "niveaux": [

@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "anglais-ce2",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "nom": "Anglais CE2",
+  "icone": "🇬🇧",
   "description": "Écouter et lire les mots et petites phrases du CE2, puis écrire les mots entendus : politesse, nombres jusqu'à 100, jours, mois, famille, école, maison, vêtements, repas, météo et verbes courants.",
   "matiere": "anglais",
   "niveaux": [
@@ -11,8 +12,6 @@
   "public": "enfant",
   "langue": "fr",
   "langue_apprise": "en",
-  "icone": "langue",
-  "couleur": "#3B82F6",
   "auteur": "Hopla",
   "sources": "D'après le programme de langues vivantes du cycle 2 et les repères de progression en anglais (Éduscol).",
   "modules": [

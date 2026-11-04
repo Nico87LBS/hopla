@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "maths-ce2-mesures",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Mesures CE2",
+  "icone": "📏",
   "description": "Longueurs, masses, contenances, durées et monnaie : convertir et calculer avec les unités.",
   "matiere": "maths",
   "niveaux": [
@@ -10,8 +11,6 @@
   ],
   "public": "enfant",
   "langue": "fr",
-  "icone": "regle",
-  "couleur": "#2F7D32",
   "auteur": "Hopla",
   "chapitres": [
     {

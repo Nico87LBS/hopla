@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "apprendre-a-lire",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "nom": "Lire en lettres d'imprimerie",
+  "icone": "🔤",
   "description": "Apprendre à lire pas à pas, avec la méthode syllabique : des lettres et des sons jusqu'aux phrases. Pour la fin de la grande section et le CP.",
   "matiere": "francais",
   "niveaux": [

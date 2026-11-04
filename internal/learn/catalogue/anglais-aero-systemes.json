@@ -1,16 +1,15 @@
 {
   "format": "hopla-module/1",
   "id": "anglais-aero-systemes",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Systèmes de l'avion",
+  "icone": "⚙️",
   "description": "Le vocabulaire de la cellule, des moteurs, des circuits, du train et de l'avionique, pour décrire une panne avec le mot juste.",
   "matiere": "anglais",
   "niveaux": ["OACI 6"],
   "public": "adulte",
   "langue": "en",
   "langue_apprise": "en",
-  "icone": "langue",
-  "couleur": "#2E6FD8",
   "auteur": "Hopla",
   "chapitres": [
     {"id": "airframe", "nom": "Airframe and flight controls"},

@@ -12,13 +12,15 @@ import "time"
 // Module is a module installed in a family. Content is the whole document;
 // the other fields repeat its header for lists.
 type Module struct {
-	ID       int      `json:"-" gorm:"primaryKey"`
-	FamilyID int      `json:"-" gorm:"column:family_id;not null;uniqueIndex:idx_learn_module"`
-	Key      string   `json:"id" gorm:"column:module_key;size:80;not null;uniqueIndex:idx_learn_module"`
-	Version  string   `json:"version" gorm:"column:version;not null"`
-	Name     string   `json:"name" gorm:"column:name;not null"`
-	Author   string   `json:"author" gorm:"column:author"`
-	Subject  string   `json:"subject" gorm:"column:subject"`
+	ID       int    `json:"-" gorm:"primaryKey"`
+	FamilyID int    `json:"-" gorm:"column:family_id;not null;uniqueIndex:idx_learn_module"`
+	Key      string `json:"id" gorm:"column:module_key;size:80;not null;uniqueIndex:idx_learn_module"`
+	Version  string `json:"version" gorm:"column:version;not null"`
+	Name     string `json:"name" gorm:"column:name;not null"`
+	Author   string `json:"author" gorm:"column:author"`
+	Subject  string `json:"subject" gorm:"column:subject"`
+	// Icon is the emoji of the module, from its document.
+	Icon     string   `json:"icon" gorm:"column:icon"`
 	Levels   []string `json:"levels" gorm:"column:levels;type:text;serializer:json"`
 	Audience string   `json:"audience" gorm:"column:audience"`
 	// Children are the modules a pack gathers; a pack has no questions.

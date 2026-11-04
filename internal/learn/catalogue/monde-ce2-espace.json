@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce2-espace",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "nom": "Se repérer dans l'espace",
+  "icone": "🧭",
   "description": "Les points cardinaux, la France (régions, fleuves, montagnes, grandes villes), les paysages, les continents et les océans.",
   "matiere": "monde",
   "niveaux": [

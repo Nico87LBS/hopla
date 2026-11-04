@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "maths-ce1-calcul",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Additions et soustractions",
+  "icone": "➕",
   "description": "Additions et soustractions avec retenue jusqu'à 100, puis jusqu'à 1 000. On peut poser l'opération sur une feuille.",
   "matiere": "maths",
   "niveaux": [

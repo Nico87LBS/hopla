@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "langage-gs-lettres",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Les lettres",
+  "icone": "🔠",
   "description": "Reconnaître les lettres en capitales quand on les entend, les relier à leur minuscule, et les lettres de son prénom.",
   "matiere": "francais",
   "niveaux": [

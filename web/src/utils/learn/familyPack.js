@@ -71,6 +71,7 @@ export const fromDocument = doc => {
     chapitres = [],
     fiches = [],
     format: _format,
+    icone = '',
     id,
     matiere = '',
     niveaux = [],
@@ -86,6 +87,7 @@ export const fromDocument = doc => {
     audience,
     level: niveaux[0] || '',
     subject: matiere,
+    icon: icone,
     chapters: chapitres.map(chapter => ({
       ...chapter,
       cards: fiches.filter(card => card.chapitre === chapter.id),
@@ -102,6 +104,7 @@ export const newPack = name => ({
   audience: 'enfant',
   level: '',
   subject: '',
+  icon: '',
   chapters: [{ id: '', nom: '', cards: [] }],
   rest: {},
 })
@@ -250,6 +253,7 @@ export const toDocument = pack => {
     public: pack.audience,
     niveaux: pack.level ? [pack.level] : [],
     ...(pack.subject && { matiere: pack.subject }),
+    ...(pack.icon && { icone: pack.icon }),
     langue: 'fr',
     ...(dictation && { langue_apprise: 'fr' }),
     ...(pack.audience === 'enfant' && { lecture_voix_haute: true }),

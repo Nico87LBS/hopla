@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "maths-cp-nombres",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Les nombres jusqu’à 100",
+  "icone": "🔢",
   "description": "Entendre un nombre et toucher son écriture en chiffres, jusqu'à 100 ; les dizaines et les unités. Les nombres jusqu'à 30 sont partagés avec la grande section.",
   "matiere": "maths",
   "niveaux": [

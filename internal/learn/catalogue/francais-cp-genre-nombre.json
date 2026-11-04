@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "francais-cp-genre-nombre",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "Un, une, des",
+  "icone": "👫",
   "description": "Le ou la, un ou une, un ou des, le s du pluriel, et il, elle, ils ou elles pour remplacer un nom.",
   "matiere": "francais",
   "niveaux": [

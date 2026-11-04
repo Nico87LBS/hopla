@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "maths-cp-calcul",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Additions et soustractions",
+  "icone": "➕",
   "description": "Additions et soustractions jusqu'à 10, puis 20, puis jusqu'à 100 sans retenue.",
   "matiere": "maths",
   "niveaux": [

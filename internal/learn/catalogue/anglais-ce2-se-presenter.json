@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "anglais-ce2-se-presenter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Se présenter et la famille",
+  "icone": "👨‍👩‍👧",
   "description": "Bonjour et politesse et La famille.",
   "matiere": "anglais",
   "niveaux": [
@@ -11,8 +12,6 @@
   "public": "enfant",
   "langue": "fr",
   "langue_apprise": "en",
-  "icone": "langue",
-  "couleur": "#3B82F6",
   "auteur": "Hopla",
   "sources": "D'après le programme de langues vivantes du cycle 2 et les repères de progression en anglais (Éduscol).",
   "reglages": {

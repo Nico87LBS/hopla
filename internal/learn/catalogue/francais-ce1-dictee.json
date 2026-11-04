@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce1-dictee",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Dictée CE1",
+  "icone": "📝",
   "description": "Écrire les mots invariables, les mots fréquents et de petites phrases dictés par l'appareil. Les accents comptent ; une lettre de travers est acceptée.",
   "matiere": "francais",
   "niveaux": [

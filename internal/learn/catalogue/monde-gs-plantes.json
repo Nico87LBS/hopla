@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "monde-gs-plantes",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "nom": "Les plantes",
+  "icone": "🌱",
   "description": "Les parties d'une plante, de la graine à la fleur, et les fruits et légumes.",
   "matiere": "monde",
   "niveaux": [

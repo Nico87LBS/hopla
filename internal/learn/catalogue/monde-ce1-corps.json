@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce1-corps",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "nom": "Mon corps",
+  "icone": "🦷",
   "description": "Les dents de lait et les dents définitives, les familles d'aliments et le repas équilibré, les articulations et les muscles.",
   "matiere": "monde",
   "niveaux": [

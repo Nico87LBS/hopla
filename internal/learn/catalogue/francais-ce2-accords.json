@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce2-accords",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "Les accords",
+  "icone": "🔗",
   "description": "Le masculin et le féminin, le pluriel des noms, l'accord dans le groupe nominal et l'accord du verbe avec son sujet ; puis écrire soi-même le mot accordé.",
   "matiere": "francais",
   "niveaux": [

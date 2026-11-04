@@ -1,15 +1,14 @@
 {
   "format": "hopla-module/1",
   "id": "maths-ce2-nombres",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Nombres jusqu'à 10 000",
+  "icone": "🔢",
   "description": "Lire et écrire les nombres, unités, dizaines, centaines et milliers, comparer, avant et après.",
   "matiere": "maths",
   "niveaux": ["CE2"],
   "public": "enfant",
   "langue": "fr",
-  "icone": "nombres",
-  "couleur": "#2B63B5",
   "auteur": "Hopla",
   "chapitres": [
     { "id": "lire-1000", "nom": "Lire et écrire jusqu'à 1 000" },

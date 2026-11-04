@@ -37,7 +37,7 @@ import { loadServerVoices } from '../../utils/learn/serverVoice'
 import { canSpeak, speak } from '../../utils/learn/speech'
 import { shortLevel } from '../../utils/learn/tree'
 import LoadingComponent from '../components/Loading'
-import { subjectColor } from './LearnParts'
+import { LearnIcon, subjectColor } from './LearnParts'
 import {
   Feedback,
   Prompt,
@@ -118,7 +118,7 @@ const Intro = ({ levels, onStart, pack }) => {
       sx={{ borderRadius: 'xl', display: 'grid', gap: 2, p: 2.5 }}
     >
       <Stack direction='row' gap={1.5} alignItems='center'>
-        <FactCheckOutlined sx={{ color: HOPLA.violet, fontSize: 32 }} />
+        <LearnIcon entity={pack} size={44} />
         <Typography level='title-lg'>{pack.name}</Typography>
       </Stack>
       <Typography level='body-md'>{t('test.offer')}</Typography>

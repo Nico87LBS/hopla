@@ -500,6 +500,8 @@
     "forWho": "Pour qui",
     "level": "Niveau",
     "subject": "Matière",
+    "icon": "Icône",
+    "iconAuto": "Selon la matière",
     "none": "Aucun",
     "subjects": {
       "francais": "Français",

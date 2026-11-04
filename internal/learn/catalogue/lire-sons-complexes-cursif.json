@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "lire-sons-complexes-cursif",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Sons complexes en cursif",
+  "icone": "🐸",
   "description": "Les sons écrits avec plusieurs lettres (ou, on, an, in, oi, eu, au, ai, gn, ill, ph…) et les lettres c et g.",
   "matiere": "francais",
   "niveaux": [

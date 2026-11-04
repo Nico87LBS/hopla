@@ -836,3 +836,20 @@ func TestImportTakesAPackOfTheEditor(t *testing.T) {
 	require.NoError(t, err, "saving again replaces the pack")
 	require.Equal(t, "1.0.1", module.Version)
 }
+
+func TestEveryCatalogueModuleHasAnIconAndTheListCarriesIt(t *testing.T) {
+	entries, err := Catalogue()
+	require.NoError(t, err)
+	for id, entry := range entries {
+		require.NotEmpty(t, entry.Doc.Icon, id)
+	}
+	db := setup(t)
+	require.NoError(t, Install(db, 1, "maths-ce2-division", time.Now()))
+	modules, err := Modules(db, 1, time.Now())
+	require.NoError(t, err)
+	icons := map[string]string{}
+	for _, module := range modules {
+		icons[module.Key] = module.Icon
+	}
+	require.Equal(t, "➗", icons["maths-ce2-division"])
+}

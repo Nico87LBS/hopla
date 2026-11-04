@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce2-vivant",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "nom": "Le vivant",
+  "icone": "🦋",
   "description": "Les familles d'animaux, ce qu'ils mangent, les chaînes alimentaires, les cycles de vie et les besoins des plantes.",
   "matiere": "monde",
   "niveaux": [

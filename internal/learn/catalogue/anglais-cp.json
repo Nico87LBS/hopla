@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "anglais-cp",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "nom": "Anglais CP",
+  "icone": "🇬🇧",
   "description": "Écouter et comprendre : bonjour et politesse, se présenter, les émotions, l'école, la maison, la nourriture et les animaux ; les couleurs et les nombres de la grande section à réviser. Sans lire.",
   "matiere": "anglais",
   "niveaux": [
@@ -11,8 +12,6 @@
   "public": "enfant",
   "langue": "fr",
   "langue_apprise": "en",
-  "icone": "langue",
-  "couleur": "#F59E0B",
   "auteur": "Hopla",
   "sources": "D'après le programme de langues vivantes du cycle 2 et les repères de progression en anglais du CP (Éduscol).",
   "modules": [

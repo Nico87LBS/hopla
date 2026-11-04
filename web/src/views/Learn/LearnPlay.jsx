@@ -49,7 +49,7 @@ import {
 import { applyResult, playLocally, queueGame } from '../../utils/learn/store'
 import { generateUUID } from '../../utils/UUID'
 import LoadingComponent from '../components/Loading'
-import { Stars, subjectColor, useCompiled } from './LearnParts'
+import { LearnIcon, Stars, subjectColor, useCompiled } from './LearnParts'
 import {
   BlankLabels,
   BlankSentence,
@@ -1070,6 +1070,7 @@ const LearnPlay = ({ playMode = false }) => {
           >
             <CloseRounded />
           </IconButton>
+          <LearnIcon entity={module} size={32} />
           <Typography level='title-lg' sx={{ flex: 1, minWidth: 0 }} noWrap>
             {module.name}
           </Typography>

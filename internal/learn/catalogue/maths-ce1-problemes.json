@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "maths-ce1-problemes",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Problèmes CE1",
+  "icone": "🧩",
   "description": "Des problèmes pour ajouter, enlever, partager, multiplier, et des problèmes en deux étapes.",
   "matiere": "maths",
   "niveaux": [

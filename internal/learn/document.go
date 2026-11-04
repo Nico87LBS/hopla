@@ -53,16 +53,19 @@ const maxSharedKey = 150
 // Document is the part of a module document the server reads. The web app
 // reads the rest, such as how each generator draws its numbers.
 type Document struct {
-	Format      string   `json:"format"`
-	ID          string   `json:"id"`
-	Version     string   `json:"version"`
-	Name        string   `json:"nom"`
-	Author      string   `json:"auteur"`
-	Description string   `json:"description"`
-	Subject     string   `json:"matiere"`
-	Levels      []string `json:"niveaux"`
-	Audience    string   `json:"public"`
-	Language    string   `json:"langue"`
+	Format      string `json:"format"`
+	ID          string `json:"id"`
+	Version     string `json:"version"`
+	Name        string `json:"nom"`
+	Author      string `json:"auteur"`
+	Description string `json:"description"`
+	Subject     string `json:"matiere"`
+	// Icon is the emoji drawn beside the module's name, so a child finds it
+	// at a glance.
+	Icon     string   `json:"icone"`
+	Levels   []string `json:"niveaux"`
+	Audience string   `json:"public"`
+	Language string   `json:"langue"`
 	// ReadAloud lets the device say the questions and answers aloud, for
 	// those who do not read yet, unless a parent turned it off for them.
 	ReadAloud ReadAloud `json:"lecture_voix_haute"`
@@ -442,6 +445,9 @@ func (d Document) Check() error {
 	}
 	if strings.TrimSpace(d.Version) == "" {
 		return fmt.Errorf("module %s : version manquante", d.ID)
+	}
+	if len([]rune(d.Icon)) > 8 {
+		return fmt.Errorf("module %s : icône trop longue (un seul émoji)", d.ID)
 	}
 	if !contains(Audiences, d.Audience) {
 		return fmt.Errorf("module %s : public %q inconnu (enfant, adulte ou tous)", d.ID, d.Audience)

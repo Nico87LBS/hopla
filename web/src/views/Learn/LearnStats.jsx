@@ -18,7 +18,7 @@ import {
 import LoadingComponent from '../components/Loading'
 import { MemberAvatar, surfaceSx } from '../Games/GameParts'
 import { useMembers } from '../Manage/ParentPages'
-import { Progress, Stars } from './LearnParts'
+import { LearnIcon, Progress, Stars } from './LearnParts'
 
 const HEAD = 32
 const STRUGGLES = 8
@@ -340,7 +340,14 @@ const LearnStats = () => {
       {data && view && (
         <Stack gap={2}>
           <Box>
-            <Typography level='h3'>{data.module.name}</Typography>
+            <Typography
+              level='h3'
+              startDecorator={
+                <LearnIcon entity={data.module} size={32} tile={false} />
+              }
+            >
+              {data.module.name}
+            </Typography>
             <Stack direction='row' gap={0.5} sx={{ mt: 0.5 }}>
               {(data.module.levels || []).map(level => (
                 <Chip key={level} size='sm' variant='soft'>

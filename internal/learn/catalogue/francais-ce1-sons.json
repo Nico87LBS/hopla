@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce1-sons",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "Les sons et leur écriture",
+  "icone": "👂",
   "description": "Choisir la bonne écriture d'un son : s ou ss, c ou ç, g ou ge, m devant m, b, p, é, er ou ez, o, au ou eau.",
   "matiere": "francais",
   "niveaux": [

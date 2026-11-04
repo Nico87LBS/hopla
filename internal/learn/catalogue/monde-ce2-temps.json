@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce2-temps",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "nom": "Se repérer dans le temps",
+  "icone": "🏰",
   "description": "Les durées, la frise des grandes périodes de l'histoire, des repères, ce qui a changé depuis autrefois, et les générations.",
   "matiere": "monde",
   "niveaux": [

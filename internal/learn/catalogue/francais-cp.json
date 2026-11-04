@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "francais-cp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Français CP",
+  "icone": "📖",
   "description": "Apprendre à lire avec la méthode syllabique, puis écrire des mots, la phrase, et un, une, des. Les modules d'Apprendre à lire gardent leurs progrès.",
   "matiere": "francais",
   "niveaux": [

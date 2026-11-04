@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce2-matiere",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "nom": "La matière",
+  "icone": "💧",
   "description": "Solide, liquide ou gaz, les changements d'état de l'eau, le cycle de l'eau, les mélanges et l'air.",
   "matiere": "monde",
   "niveaux": [

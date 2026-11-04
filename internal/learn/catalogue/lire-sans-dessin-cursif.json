@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "lire-sans-dessin-cursif",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "nom": "Mots sans dessin en cursif",
+  "icone": "🙈",
   "description": "Lire des mots qu'on ne peut pas dessiner : les actions, les contraires, les mots du temps, ranger les mots, et les mots qui se ressemblent.",
   "matiere": "francais",
   "niveaux": [

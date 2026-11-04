@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce1-espace",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "nom": "L’espace",
+  "icone": "🗺️",
   "description": "Le plan et la carte, les paysages, la France et les continents sur la carte du monde, et les points cardinaux.",
   "matiere": "monde",
   "niveaux": [

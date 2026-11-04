@@ -500,6 +500,8 @@
     "forWho": "For whom",
     "level": "Level",
     "subject": "Subject",
+    "icon": "Icon",
+    "iconAuto": "From the subject",
     "none": "None",
     "subjects": {
       "francais": "French",

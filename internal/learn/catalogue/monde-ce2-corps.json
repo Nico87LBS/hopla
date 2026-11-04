@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce2-corps",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "nom": "Mon corps",
+  "icone": "🫀",
   "description": "Le squelette, les muscles et les articulations, bien manger, les dents, et les gestes pour rester en bonne santé.",
   "matiere": "monde",
   "niveaux": [

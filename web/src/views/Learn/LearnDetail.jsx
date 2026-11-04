@@ -35,6 +35,7 @@ import LoadingComponent from '../components/Loading'
 import { surfaceSx } from '../Games/GameParts'
 import { ParentPage } from '../Manage/ParentPages'
 import CardEditor, { ReportList } from './CardEditor'
+import { LearnIcon } from './LearnParts'
 import { FAMILY, FamilySettings, OwnChips, useNotify } from './ManageLearn'
 import RemoveModal from './RemoveModal'
 
@@ -275,7 +276,18 @@ const ModuleRow = ({ compiled, installed, onSettings, settings, single }) => {
       <Stack direction='row' alignItems='center' gap={1}>
         <Toggle open={open} onClick={() => setOpen(!open)}>
           <Box sx={{ flex: 1, minWidth: 0 }}>
-            <Typography level='title-md'>{doc.nom}</Typography>
+            <Typography
+              level='title-md'
+              startDecorator={
+                <LearnIcon
+                  entity={{ icon: doc.icone, subject: doc.matiere }}
+                  size={22}
+                  tile={false}
+                />
+              }
+            >
+              {doc.nom}
+            </Typography>
             <Typography level='body-xs' sx={{ color: 'text.tertiary' }}>
               {[
                 t('detail.chapters', { count: compiled.chapters.length }),
@@ -332,7 +344,18 @@ const LevelHeader = ({ installed, level, onSettings, settings }) => {
     <Box sx={{ mb: 1.25 }}>
       <Stack direction='row' alignItems='center' gap={1}>
         <Box sx={{ flex: 1, minWidth: 0 }}>
-          <Typography level='title-lg'>{level.nom}</Typography>
+          <Typography
+            level='title-lg'
+            startDecorator={
+              <LearnIcon
+                entity={{ icon: level.icone, subject: level.matiere }}
+                size={26}
+                tile={false}
+              />
+            }
+          >
+            {level.nom}
+          </Typography>
           <Stack direction='row' gap={0.5} flexWrap='wrap' sx={{ mt: 0.25 }}>
             {(level.niveaux || []).map(name => (
               <Chip key={name} size='sm' variant='soft'>
@@ -486,7 +509,21 @@ export const LearnDetail = () => {
         {view && (
           <>
             <Box>
-              <Typography level='h3'>{view.main.nom}</Typography>
+              <Typography
+                level='h3'
+                startDecorator={
+                  <LearnIcon
+                    entity={{
+                      icon: view.main.icone,
+                      subject: view.main.matiere,
+                    }}
+                    size={32}
+                    tile={false}
+                  />
+                }
+              >
+                {view.main.nom}
+              </Typography>
               <Typography level='body-sm' sx={{ color: 'text.secondary' }}>
                 {[
                   view.main.auteur &&

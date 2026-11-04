@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "monde-gs-corps",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "nom": "Mon corps",
+  "icone": "🖐️",
   "description": "Nommer les parties du corps, connaître les cinq sens et prendre soin de soi.",
   "matiere": "monde",
   "niveaux": [

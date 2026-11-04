@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce1-matiere",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "nom": "La matière",
+  "icone": "💧",
   "description": "L'eau solide, liquide ou en vapeur, les matériaux, et les mélanges qui se dissolvent ou non.",
   "matiere": "monde",
   "niveaux": [

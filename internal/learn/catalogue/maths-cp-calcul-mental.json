@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "maths-cp-calcul-mental",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Calcul mental CP",
+  "icone": "⚡",
   "description": "Les doubles et les moitiés, les compléments à 10, ajouter ou enlever 10, et les tables d'addition.",
   "matiere": "maths",
   "niveaux": [

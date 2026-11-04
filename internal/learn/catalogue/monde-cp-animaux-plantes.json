@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "monde-cp-animaux-plantes",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "nom": "Animaux et plantes",
+  "icone": "🐞",
   "description": "Ce dont les animaux et les plantes ont besoin, comment les animaux se déplacent et où ils vivent, et comment une graine devient une plante.",
   "matiere": "monde",
   "niveaux": [

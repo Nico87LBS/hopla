@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "maths-cp-comparer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Comparer et ranger",
+  "icone": "⚖️",
   "description": "Le plus grand, le plus petit, les signes < et >, ranger des nombres, et le nombre d'avant, d'après ou entre deux, jusqu'à 100.",
   "matiere": "maths",
   "niveaux": [

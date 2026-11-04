@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "langage-gs-mots",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Les mots en images",
+  "icone": "🖼️",
   "description": "Le vocabulaire de tous les jours : entendre un mot et toucher son dessin. La maison, l'école, le corps, les émotions, les jouets et les habits.",
   "matiere": "francais",
   "niveaux": [

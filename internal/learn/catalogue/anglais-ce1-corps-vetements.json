@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "anglais-ce1-corps-vetements",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Corps, vêtements, météo",
+  "icone": "👕",
   "description": "Le corps, Les vêtements et La météo.",
   "matiere": "anglais",
   "niveaux": [
@@ -21,8 +22,6 @@
     "hops_par_etoile": 1,
     "plafond_jour": 3
   },
-  "icone": "langue",
-  "couleur": "#10B981",
   "chapitres": [
     {
       "id": "body",

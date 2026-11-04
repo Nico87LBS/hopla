@@ -135,3 +135,10 @@ projet et les vérifications sont dans [Développement](docs/developpement.md).
 Hopla est une version modifiée d'un logiciel libre distribué sous licence
 GNU Affero General Public License v3.0. Hopla est distribué sous la même
 licence : voir le fichier [LICENSE](LICENSE).
+
+## Crédits
+
+Les petits dessins des paquets et des modules Apprendre (`web/public/icones`)
+sont ceux de [Twemoji](https://github.com/jdecked/twemoji), sous licence
+[CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/) : © Twitter, Inc. et
+contributeurs.

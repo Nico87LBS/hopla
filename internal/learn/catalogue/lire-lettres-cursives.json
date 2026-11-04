@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "lire-lettres-cursives",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Lettres cursives",
+  "icone": "✍️",
   "description": "Reconnaître chaque lettre écrite en cursif, puis les majuscules et des mots, en les retrouvant en lettres d'imprimerie.",
   "matiere": "francais",
   "niveaux": [

@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce1-lire",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "Lire et comprendre",
+  "icone": "📖",
   "description": "De petits textes à lire avec une question, vrai ou faux, remettre une histoire dans l'ordre, et trouver qui parle.",
   "matiere": "francais",
   "niveaux": [

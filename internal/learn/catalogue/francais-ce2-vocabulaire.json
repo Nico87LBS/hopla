@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce2-vocabulaire",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "Le vocabulaire",
+  "icone": "📚",
   "description": "Les synonymes, les contraires, les familles de mots, les préfixes et les suffixes, l'ordre alphabétique et le dictionnaire, les mots qui en regroupent d'autres.",
   "matiere": "francais",
   "niveaux": [

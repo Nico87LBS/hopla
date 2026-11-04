@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "monde-gs-temps",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "nom": "Le temps qui passe",
+  "icone": "⏳",
   "description": "Les moments de la journée, les jours de la semaine, hier, aujourd'hui et demain.",
   "matiere": "monde",
   "niveaux": [

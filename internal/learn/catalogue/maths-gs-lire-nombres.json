@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "maths-gs-lire-nombres",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Lire les nombres",
+  "icone": "🔢",
   "description": "Entendre un nombre et toucher son écriture en chiffres, de 0 à 30.",
   "matiere": "maths",
   "niveaux": [

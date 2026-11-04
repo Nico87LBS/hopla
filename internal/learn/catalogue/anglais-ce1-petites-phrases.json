@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "anglais-ce1-petites-phrases",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Petites phrases",
+  "icone": "💬",
   "description": "J’ai… (I’ve got) et Demander et aimer.",
   "matiere": "anglais",
   "niveaux": [
@@ -21,8 +22,6 @@
     "hops_par_etoile": 1,
     "plafond_jour": 3
   },
-  "icone": "langue",
-  "couleur": "#10B981",
   "chapitres": [
     {
       "id": "got",

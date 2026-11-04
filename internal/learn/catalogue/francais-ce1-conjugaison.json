@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce1-conjugaison",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "Conjuguer au CE1",
+  "icone": "🏃",
   "description": "Le présent des verbes en -er, être et avoir, aller, faire, dire et venir ; passé, présent ou futur ; puis écrire soi-même le verbe.",
   "matiere": "francais",
   "niveaux": [

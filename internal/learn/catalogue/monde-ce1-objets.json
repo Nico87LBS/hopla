@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce1-objets",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "nom": "Objets et électricité",
+  "icone": "🔌",
   "description": "Ce qui marche avec une pile ou sur une prise, les dangers de l'électricité, et ce qu'attire un aimant.",
   "matiere": "monde",
   "niveaux": [

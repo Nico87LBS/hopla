@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce1-vivant",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "nom": "Le vivant",
+  "icone": "🌳",
   "description": "Les milieux de vie, qui mange quoi (les chaînes alimentaires) et le cycle de vie des animaux et des plantes.",
   "matiere": "monde",
   "niveaux": [

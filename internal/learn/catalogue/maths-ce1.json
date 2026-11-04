@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "maths-ce1",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Maths CE1",
+  "icone": "🧮",
   "description": "Les nombres jusqu'à 1 000, comparer et encadrer, additions et soustractions, calcul mental, multiplication, problèmes, mesures et heures, géométrie.",
   "matiere": "maths",
   "niveaux": [

@@ -47,10 +47,12 @@ import {
   readList,
   toDocument,
 } from '../../utils/learn/familyPack'
+import { iconFile, ICONS } from '../../utils/learn/icons'
 import LoadingComponent from '../components/Loading'
 import { surfaceSx } from '../Games/GameParts'
 import { ParentPage } from '../Manage/ParentPages'
 import { useExportModule } from './FamilyPacks'
+import { LearnIcon } from './LearnParts'
 import { useNotify } from './ManageLearn'
 import RemoveModal from './RemoveModal'
 
@@ -589,6 +591,55 @@ const PackForm = ({ isNew, moduleId, start }) => {
           borderRadius: 'lg',
         }}
       />
+
+      <Sheet sx={surfaceSx}>
+        <Stack direction='row' alignItems='center' gap={1.5} sx={{ mb: 1 }}>
+          <LearnIcon
+            entity={{ icon: pack.icon, subject: pack.subject }}
+            size={44}
+          />
+          <Typography level='title-md'>{t('pack.icon')}</Typography>
+        </Stack>
+        <Box
+          role='group'
+          aria-label={t('pack.icon')}
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: 0.75,
+            maxHeight: 188,
+            overflowY: 'auto',
+          }}
+        >
+          <Button
+            size='sm'
+            variant={pack.icon ? 'outlined' : 'soft'}
+            color={pack.icon ? 'neutral' : 'primary'}
+            aria-pressed={!pack.icon}
+            onClick={() => change({ icon: '' })}
+          >
+            {t('pack.iconAuto')}
+          </Button>
+          {ICONS.map(emoji => (
+            <Button
+              key={emoji}
+              variant={pack.icon === emoji ? 'soft' : 'plain'}
+              color={pack.icon === emoji ? 'primary' : 'neutral'}
+              aria-pressed={pack.icon === emoji}
+              aria-label={emoji}
+              onClick={() => change({ icon: emoji })}
+              sx={{ minHeight: 40, minWidth: 40, p: 0.5 }}
+            >
+              <Box
+                component='img'
+                src={iconFile(emoji)}
+                alt=''
+                sx={{ height: 28, width: 28 }}
+              />
+            </Button>
+          ))}
+        </Box>
+      </Sheet>
 
       <Sheet sx={surfaceSx}>
         <Typography level='title-md' sx={{ mb: 1 }}>

@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce1-phrase",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "nom": "La phrase et les mots",
+  "icone": "💬",
   "description": "Les sortes de phrases, trouver le verbe et le sujet, et reconnaître un nom, un verbe ou un adjectif.",
   "matiere": "francais",
   "niveaux": [

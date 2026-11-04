@@ -1,15 +1,14 @@
 {
   "format": "hopla-module/1",
   "id": "maths-ce2-division",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Divisions CE2",
+  "icone": "➗",
   "description": "Partager et grouper : divisions avec les tables, partages équitables et « combien de fois ». Ouvert quand les tables de 2 à 5 sont bien connues.",
   "matiere": "maths",
   "niveaux": ["CE2"],
   "public": "enfant",
   "langue": "fr",
-  "icone": "diviser",
-  "couleur": "#7A3FA8",
   "auteur": "Hopla",
   "prerequis": [{ "module": "maths-ce2-multiplication", "chapitre": "tables-2-5", "pourcent": 80 }],
   "chapitres": [
