@@ -125,8 +125,11 @@ par les clés des fiches ; les parties déjà jouées restent sous l'ancien modu
 | Ouverture (%) | celle du module, souvent 80 | Ce qu'il faut savoir d'un chapitre pour ouvrir le suivant |
 | Mémorisation visée (%) | 90 | Part des questions qu'on veut encore savoir quand elles reviennent, de 70 à 97 : plus haut, elles reviennent plus tôt |
 | Attente maximale (jours) | 365 | Plus longue attente d'une question sue, de 7 à 3650 |
+| Nouvelles par jour | 10 | Questions jamais vues par module et par jour, de 1 à 200 ; au-delà, le module ne fait plus que réviser |
 | Plafond total | aucun | Hops par jour pour tous les jeux ensemble, par personne |
 | Notation des bonnes réponses | selon le compte | Par personne : le temps de réponse (enfants) ou les boutons Difficile et Facile (parents) |
+| Révisions max par jour | 50 | Par personne, tous modules ensemble : au-delà, les questions à revoir attendent le lendemain |
+| Bonus « tout révisé » | 2 hops | Par personne, une fois par jour, quand les révisions du jour sont finies |
 
 Un réglage peut être donné à quatre endroits ; le plus précis l'emporte :
 
@@ -144,7 +147,10 @@ module, violet clair pour la famille, violet plein pour la personne.
 
 ## Une partie
 
-Une partie mélange des questions nouvelles et des révisions. Les deux sens
+Une partie pose d'abord les questions à revoir, puis quelques nouvelles (dans
+la limite des nouvelles par jour). Quand il en manque pour la remplir, elle
+reprend en avance les questions qui reviennent le plus tôt, puis, dans un
+module qu'on commence, d'autres nouvelles. Les deux sens
 d'une même fiche (« chat » → « cat » et « cat » → « chat »), ou 7 × 8 et
 7 × ? = 56, ne tombent pas dans la même partie, sauf si le module n'a pas
 assez d'autres questions ; ils ne se suivent alors jamais. Les types de
@@ -270,6 +276,27 @@ ou plus. Une question qui attend 8 jours ou plus (boîte 4 ou 5) est **sue** :
 c'est ce pourcentage qui ouvre les chapitres suivants. Les questions d'avant
 FSRS repartent de leur boîte à leur prochaine réponse ; chaque réponse est
 gardée (note, temps, jour).
+
+### Module à jour et entraînement
+
+Un module qui n'a plus rien à revoir aujourd'hui et plus de nouvelle question
+permise est **à jour** : sa carte affiche « À jour, reviens demain » et le
+nombre de questions du lendemain. On ne peut plus y jouer de partie qui compte,
+seulement **S'entraîner** : les questions déjà vues, au hasard, sans hops,
+sans compter pour la récré ni changer les dates de retour. L'entraînement
+n'est pas envoyé au serveur.
+
+### Mes révisions
+
+En haut de la page Apprendre, **Mes révisions** reprend les questions à revoir
+de tous les modules de la personne (sauf ceux encore fermés), les plus en
+retard d'abord, par parties de 10. Chaque réponse compte pour le module qui a
+posé la question. Une partie de révisions rapporte ses étoiles (1 hop par
+étoile, 10 hops par jour au plus pour les révisions), et la partie qui finit
+les révisions du jour rapporte en plus le **bonus « tout révisé »**, une fois
+par jour, dans la limite du plafond total. Les révisions s'arrêtent à
+**Révisions max par jour**, comptées sur toutes les parties : après des
+vacances, le reste attend le lendemain.
 
 ## Le test de niveau
 

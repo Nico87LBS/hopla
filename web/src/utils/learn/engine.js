@@ -22,7 +22,16 @@ export const DEFAULT_SETTINGS = {
   plafond_jour: 10,
   memorisation: 90,
   intervalle_max: 365,
+  nouvelles_par_jour: 10,
 }
+
+// REVIEWS is the game of the day's reviews, the questions due in all the
+// modules a person plays; no module takes this id. A person reviews at
+// most REVIEW_MAX questions due in a day, and earns REVIEW_BONUS hops once
+// a day for reviewing everything, unless a parent set otherwise.
+export const REVIEWS = 'revisions'
+export const REVIEW_MAX = 50
+export const REVIEW_BONUS = 2
 
 // A chapter whose questions are drawn without end counts as known once this
 // many of them are known, unless it sets its own objectif.
@@ -334,77 +343,210 @@ export const apart = (items, rng) => {
   return out
 }
 
-// pickQuestions makes a game: the cards due first, then a few new questions
-// from the latest open chapter, then any questions of the open chapters.
-// Two siblings never come in the same game, unless the open chapters have
-// too few questions to fill it.
+// A card is kept once its question was answered; isDue tells whether it is
+// to be seen again on day.
+const answered = card => !!card?.due
+export const isDue = (card, day) => answered(card) && card.due <= day
+
+const openOf = (compiled, cards, options = {}) =>
+  openChapters(compiled, cards, options.unlockPercent, options.placed)
+    .filter(c => c.open)
+    .map(c => c.chapter)
+
+// freshIn counts the new questions the chapters still have: Infinity when a
+// source draws them without end.
+const freshIn = (chapters, cards) => {
+  let count = 0
+  for (const chapter of chapters) {
+    for (const source of chapter.sources) {
+      if (!source.finite) return Infinity
+      count += (source.list() || []).filter(item => !cards.has(item.key)).length
+    }
+  }
+  return count
+}
+
+// moduleToday tells what a module has for a person on a day: the questions
+// due (within dueLeft, what is left of the day's reviews), the new ones
+// still allowed (within nouvelles_par_jour, newToday met already), and the
+// questions due tomorrow. A module with neither is up to date: it comes
+// back tomorrow, and only lets the person practise.
+export const moduleToday = (compiled, cards, options = {}) => {
+  const settings = withDefaults({ ...compiled.settings, ...options.settings })
+  const day = options.day
+  const open = openOf(compiled, cards, options)
+  const next = addDays(day, 1)
+  let due = 0
+  let tomorrow = 0
+  let seen = 0
+  for (const card of cards.values()) {
+    if (!answered(card) || !itemForKey(open, card.key)) continue
+    seen++
+    if (isDue(card, day)) due++
+    else if (card.due === next) tomorrow++
+  }
+  due = Math.min(due, options.dueLeft ?? Infinity)
+  const newLeft = Math.max(
+    0,
+    Math.min(
+      settings.nouvelles_par_jour - (options.newToday || 0),
+      freshIn(open, cards),
+    ),
+  )
+  return { due, newLeft, tomorrow, seen, upToDate: due === 0 && newLeft === 0 }
+}
+
+// pickQuestions makes a game: the cards due first (within options.dueLeft),
+// then a few new questions from the latest open chapter (within
+// options.newLeft, what the day still allows). A game with neither is not
+// played: the module is up to date, and pickQuestions gives none. Otherwise
+// the game is filled with the questions that come back soonest, reviewed
+// ahead, then, in a module just begun, with more new ones. Two siblings
+// never come in the same game, unless there are too few questions to fill
+// it.
 export const pickQuestions = (compiled, cards, options = {}) => {
   const rng = options.rng || Math.random
   const settings = withDefaults({ ...compiled.settings, ...options.settings })
   const count = settings.questions_par_partie
-  const newCount = settings.nouvelles_par_partie
   const day = options.day || '9999-12-31'
-  const open = openChapters(
-    compiled,
-    cards,
-    options.unlockPercent,
-    options.placed,
-  )
-    .filter(c => c.open)
-    .map(c => c.chapter)
+  let newLeft = options.newLeft ?? Infinity
+  const dueLeft = options.dueLeft ?? Infinity
+  const open = openOf(compiled, cards, options)
   const { add, picked } = picker(count)
 
   const due = [...cards.values()]
-    .filter(card => card.due && card.due <= day)
+    .filter(card => isDue(card, day))
     .sort((a, b) => a.due.localeCompare(b.due) || a.box - b.box)
+  let reviewed = 0
   for (const card of due) {
-    if (picked.length >= count) break
-    add(itemForKey(open, card.key))
+    if (picked.length >= count || reviewed >= dueLeft) break
+    if (add(itemForKey(open, card.key))) reviewed++
   }
 
-  // New questions, the latest chapter first.
-  let added = 0
-  for (const chapter of [...open].reverse()) {
-    for (const source of chapter.sources) {
-      if (added >= newCount) break
-      if (source.finite) {
-        const fresh = shuffle(
-          (source.list() || []).filter(item => !cards.has(item.key)),
-          rng,
-        )
-        for (const item of fresh) {
-          if (added >= newCount) break
-          if (add(item)) added++
-        }
-      } else {
-        for (let tries = 0; tries < 50 && added < newCount; tries++) {
-          const item = source.draw(rng)
-          if (item && !cards.has(item.key) && add(item)) added++
+  // New questions, the latest chapter first; those the last game asked
+  // last, so that playing again asks others.
+  const recent = options.recent || new Set()
+  const addNew = (limit, sibling = false) => {
+    let added = 0
+    for (const chapter of [...open].reverse()) {
+      for (const source of chapter.sources) {
+        if (added >= limit) break
+        if (source.finite) {
+          const fresh = shuffle(
+            (source.list() || []).filter(item => !cards.has(item.key)),
+            rng,
+          )
+          for (const item of [
+            ...fresh.filter(i => !recent.has(i.key)),
+            ...fresh.filter(i => recent.has(i.key)),
+          ]) {
+            if (added >= limit) break
+            if (add(item, sibling)) added++
+          }
+        } else {
+          const tries = 50 + limit * 30
+          for (let i = 0; i < tries && added < limit; i++) {
+            const item = source.draw(rng)
+            if (!item || cards.has(item.key)) continue
+            if (i < tries / 2 && recent.has(item.key)) continue
+            if (add(item, sibling)) added++
+          }
         }
       }
     }
+    newLeft -= added
   }
+  addNew(Math.min(settings.nouvelles_par_partie, newLeft))
+  if (!picked.length) return []
 
-  // Then fill, half from the latest chapter: first with questions the last
-  // game did not ask, so that playing again asks others, then with any, and
-  // last, with siblings.
-  const recent = options.recent || new Set()
-  for (const [fresh, sibling] of [
-    [true, false],
-    [false, false],
-    [false, true],
-  ]) {
-    for (let tries = 0; tries < count * 30 && picked.length < count; tries++) {
-      if (!open.length) break
-      const chapter =
-        rng() < 0.5
-          ? open[open.length - 1]
-          : open[Math.floor(rng() * open.length)]
-      const item = drawFrom(chapter, rng)
-      if (fresh && item && recent.has(item.key)) continue
-      add(item, sibling)
+  // Then the questions that come back soonest, first those the last game
+  // did not ask, so that playing again asks others; then new ones; last,
+  // siblings.
+  const ahead = [...cards.values()]
+    .filter(card => answered(card) && card.due > day)
+    .sort((a, b) => a.due.localeCompare(b.due) || a.box - b.box)
+  for (const card of ahead) {
+    if (!recent.has(card.key)) add(itemForKey(open, card.key))
+  }
+  for (const card of ahead) add(itemForKey(open, card.key))
+  addNew(Math.min(count - picked.length, newLeft))
+  for (const card of ahead) add(itemForKey(open, card.key), true)
+  addNew(Math.min(count - picked.length, newLeft), true)
+  return apart(picked, rng).map(item => prepare(item, rng))
+}
+
+// practiceQuestions makes a game of practice in a module up to date: the
+// questions already seen, at random. It earns nothing and moves no card.
+export const practiceQuestions = (compiled, cards, options = {}) => {
+  const rng = options.rng || Math.random
+  const settings = withDefaults({ ...compiled.settings, ...options.settings })
+  const open = openOf(compiled, cards, options)
+  const seen = shuffle(
+    [...cards.values()]
+      .filter(answered)
+      .map(card => itemForKey(open, card.key))
+      .filter(Boolean),
+    rng,
+  )
+  const { add, picked } = picker(settings.questions_par_partie)
+  for (const item of seen) add(item)
+  for (const item of seen) add(item, true)
+  return apart(picked, rng).map(item => prepare(item, rng))
+}
+
+// reviewsLeft is what is left of a person's reviews of the day.
+export const reviewsLeft = player =>
+  Math.max(
+    0,
+    (player?.reviews?.most || REVIEW_MAX) - (player?.reviews?.done || 0),
+  )
+
+// dueReviews lists the questions due in all the modules a person plays and
+// can open, the latest first: each from the module that last asked it, or
+// another that asks it too.
+export const dueReviews = (player, compiledById, cards) => {
+  const day = player.day
+  const modules = (player.modules || []).filter(
+    m =>
+      compiledById[m.id] &&
+      !moduleLocked(compiledById[m.id], compiledById, cards),
+  )
+  const opens = new Map()
+  const openFor = m => {
+    if (!opens.has(m.id))
+      opens.set(
+        m.id,
+        openOf(compiledById[m.id], cards, {
+          unlockPercent: m.unlockPercent ?? undefined,
+          placed: m.placed,
+        }),
+      )
+    return opens.get(m.id)
+  }
+  const out = []
+  const due = [...cards.values()]
+    .filter(card => isDue(card, day))
+    .sort((a, b) => a.due.localeCompare(b.due) || a.box - b.box)
+  for (const card of due) {
+    const own = modules.find(m => m.id === card.module)
+    for (const m of own ? [own, ...modules.filter(o => o !== own)] : modules) {
+      const item = itemForKey(openFor(m), card.key)
+      if (item) {
+        out.push({ card, module: m.id, item })
+        break
+      }
     }
   }
+  return out
+}
+
+// reviewQuestions makes a game of the day's reviews from dueReviews: each
+// question says the module that asks it.
+export const reviewQuestions = (due, count, rng = Math.random) => {
+  const { add, picked } = picker(count)
+  const items = due.map(d => ({ ...d.item, module: d.module }))
+  for (const item of items) add(item)
+  for (const item of items) add(item, true)
   return apart(picked, rng).map(item => prepare(item, rng))
 }
 

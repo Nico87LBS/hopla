@@ -1,8 +1,10 @@
 import {
   BackspaceOutlined,
+  CheckCircleRounded,
   CheckRounded,
   CloseRounded,
   CloudOffRounded,
+  FitnessCenterRounded,
   OutlinedFlagRounded,
   ReplayRounded,
   SportsEsportsRounded,
@@ -20,21 +22,38 @@ import {
 } from '@mui/joy'
 import { useQueryClient } from '@tanstack/react-query'
 import PropTypes from 'prop-types'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link, Navigate, useParams } from 'react-router-dom'
+import {
+  Link,
+  Navigate,
+  useLocation,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom'
 
 import { HOPLA } from '../../constants/theme'
 import { learnKeys, usePlayer } from '../../queries/LearnQueries'
 import { SendLearnGame } from '../../utils/Fetcher'
 import { capitalFor, isolated } from '../../utils/learn/display'
 import {
+  addDays,
   again,
+  cardMap,
   checkAnswer,
+  DEFAULT_SETTINGS,
+  dueReviews,
   expectedHops,
+  isDue,
   MIN_ANSWERS,
   moduleLocked,
+  moduleToday,
   pickQuestions,
+  practiceQuestions,
+  REVIEW_BONUS,
+  reviewQuestions,
+  REVIEWS,
+  reviewsLeft,
   stars,
   totalLeft,
 } from '../../utils/learn/engine'
@@ -836,7 +855,18 @@ const EndScreen = ({
   retried,
 }) => {
   const { t } = useTranslation('learn')
-  const { capped, correct, hops, mistakes, stars: won, status, total } = end
+  const {
+    bonus,
+    capped,
+    correct,
+    hops,
+    mistakes,
+    practice,
+    stars: won,
+    status,
+    tomorrow,
+    total,
+  } = end
   return (
     <Stack gap={2} alignItems='center' sx={{ textAlign: 'center', pt: 2 }}>
       <Stars count={won} size={56} />
@@ -859,15 +889,29 @@ const EndScreen = ({
         }}
       >
         <Typography level='title-lg' sx={{ color: 'inherit' }}>
-          {total < MIN_ANSWERS
-            ? t('end.tooShort')
-            : capped && hops === 0
-              ? t('end.capped')
-              : hops === 0
-                ? t('end.noHops')
-                : t('end.hops', { count: hops })}
+          {practice
+            ? t('end.practice')
+            : bonus > 0
+              ? t('end.hops', { count: hops })
+              : total < MIN_ANSWERS
+                ? t('end.tooShort')
+                : capped && hops === 0
+                  ? t('end.capped')
+                  : hops === 0
+                    ? t('end.noHops')
+                    : t('end.hops', { count: hops })}
         </Typography>
+        {bonus > 0 && (
+          <Typography level='body-sm' sx={{ color: 'inherit' }}>
+            {t('end.bonus', { count: bonus })}
+          </Typography>
+        )}
       </Sheet>
+      {tomorrow !== undefined && (
+        <Typography level='body-md' sx={{ color: 'text.secondary' }}>
+          {t('end.tomorrow', { count: tomorrow })}
+        </Typography>
+      )}
       {status === 'waiting' && (
         <Typography
           level='body-sm'
@@ -956,6 +1000,59 @@ EndScreen.propTypes = {
   }),
 }
 
+// UpToDate tells that a module has nothing to ask today, or that every
+// review is done: it comes back tomorrow, and meanwhile the person may
+// practise, for nothing.
+const UpToDate = ({ back, color, practiceTo, reviews, tomorrow }) => {
+  const { t } = useTranslation('learn')
+  return (
+    <Stack gap={2} alignItems='center' sx={{ textAlign: 'center', pt: 2 }}>
+      <CheckCircleRounded sx={{ color: HOPLA.green, fontSize: 56 }} />
+      <Typography level='h2'>
+        {t(reviews ? 'upToDate.reviews' : 'upToDate.title')}
+      </Typography>
+      <Typography level='body-lg'>
+        {t('upToDate.tomorrow', { count: tomorrow })}
+      </Typography>
+      {practiceTo && (
+        <>
+          <Typography level='body-sm' sx={{ color: 'text.secondary' }}>
+            {t('upToDate.practiceHelp')}
+          </Typography>
+          <Button
+            size='lg'
+            component={Link}
+            to={practiceTo}
+            replace
+            startDecorator={<FitnessCenterRounded />}
+            sx={{ bgcolor: color, '&:hover': { bgcolor: color } }}
+          >
+            {t('upToDate.practice')}
+          </Button>
+        </>
+      )}
+      <Button
+        size='lg'
+        variant='soft'
+        color='neutral'
+        component={Link}
+        to={back}
+        replace
+      >
+        {t('end.back')}
+      </Button>
+    </Stack>
+  )
+}
+
+UpToDate.propTypes = {
+  back: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired,
+  practiceTo: PropTypes.string,
+  reviews: PropTypes.bool,
+  tomorrow: PropTypes.number.isRequired,
+}
+
 // RetryStart tells that the questions missed come back once, before the end
 // of the game.
 const RetryStart = ({ color, count, onStart }) => {
@@ -982,6 +1079,106 @@ RetryStart.propTypes = {
   onStart: PropTypes.func.isRequired,
 }
 
+// questionsFor draws the questions of a game: the day's reviews, practice
+// in a module up to date, or a game of a module, within the new questions
+// and reviews the day still allows.
+const questionsFor = ({
+  byId,
+  cards,
+  compiled,
+  module,
+  player,
+  practice,
+  recent,
+  reviews,
+}) => {
+  if (reviews) {
+    return reviewQuestions(
+      dueReviews(player, byId, cards),
+      Math.min(DEFAULT_SETTINGS.questions_par_partie, reviewsLeft(player)),
+    )
+  }
+  const options = {
+    day: player.day,
+    settings: module.settings,
+    unlockPercent: module.unlockPercent ?? undefined,
+    placed: module.placed,
+    recent,
+  }
+  if (practice) return practiceQuestions(compiled, cards, options)
+  const perDay =
+    module.settings?.nouvelles_par_jour ?? DEFAULT_SETTINGS.nouvelles_par_jour
+  return pickQuestions(compiled, cards, {
+    ...options,
+    newLeft: Math.max(0, perDay - (module.newToday || 0)),
+    dueLeft: reviewsLeft(player),
+  })
+}
+
+// reviewsBonus tells whether a game of the day's reviews is the last one,
+// when nothing due is left or the day's reviews are all done, and the bonus
+// it should earn, once a day, within what is left of the total.
+const reviewsBonus = ({ answers, byId, cards, hops, player }) => {
+  const asked = new Set(answers.map(a => a.key))
+  const left = dueReviews(player, byId, cards).filter(
+    d => !asked.has(d.card.key),
+  ).length
+  const reviewed = [...asked].filter(key =>
+    isDue(cards.get(key), player.day),
+  ).length
+  const last = left === 0 || reviewsLeft(player) - reviewed <= 0
+  const bonus =
+    last && !player.reviews?.bonusPaid
+      ? Math.max(
+          0,
+          Math.min(
+            player.reviews?.bonus ?? REVIEW_BONUS,
+            totalLeft(player) - hops,
+          ),
+        )
+      : 0
+  return { last, bonus }
+}
+
+// reviewsOf is the day's reviews shown as a module: its name and icon, and
+// its hops of the day.
+const reviewsOf = (player, name) => ({
+  id: REVIEWS,
+  name,
+  icon: '🔁',
+  subject: '',
+  settings: DEFAULT_SETTINGS,
+  earnedToday: player.reviews?.earnedToday || 0,
+  dailyCap: player.reviews?.dailyCap ?? DEFAULT_SETTINGS.plafond_jour,
+})
+
+// PracticeBanner tells, during practice, that it earns nothing.
+const PracticeBanner = () => {
+  const { t } = useTranslation('learn')
+  return (
+    <Sheet
+      variant='soft'
+      color='neutral'
+      sx={{ borderRadius: 'lg', px: 1.5, py: 1 }}
+    >
+      <Typography level='body-sm' startDecorator={<FitnessCenterRounded />}>
+        {t('practice.banner')}
+      </Typography>
+    </Sheet>
+  )
+}
+
+// tomorrowOf counts the questions due tomorrow: in every module for the
+// day's reviews (compiled is then all of them), else in the module.
+const tomorrowOf = ({ byId, cards, compiled, module, player }) =>
+  module.id === REVIEWS
+    ? dueReviews({ ...player, day: addDays(player.day, 1) }, byId, cards).length
+    : moduleToday(compiled, cards, {
+        day: player.day,
+        unlockPercent: module.unlockPercent ?? undefined,
+        placed: module.placed,
+      }).tomorrow
+
 // sendGame sends a game, or keeps it for later when the server is out of
 // reach. It tells what the server said.
 const sendGame = async (game, userId) => {
@@ -1003,14 +1200,28 @@ const sendGame = async (game, userId) => {
 const LearnPlay = ({ playMode = false }) => {
   const { t } = useTranslation('learn')
   const { moduleId, userId: param } = useParams()
+  const [search] = useSearchParams()
+  const location = useLocation()
   const userId = Number(param)
   const queryClient = useQueryClient()
   const { data: player, isLoading } = usePlayer(userId)
   const { byId, cards } = useCompiled(player)
-  const module = player?.modules.find(m => m.id === moduleId)
-  const compiled = byId[moduleId]
+  // The day's reviews ask the questions due in every module; practice, in
+  // a module up to date, asks those already seen for nothing.
+  const reviews = moduleId === REVIEWS
+  const practice = !reviews && search.get('mode') === 'entrainement'
+  const reviewsModule = useMemo(
+    () => player && reviewsOf(player, t('reviews.title')),
+    [player, t],
+  )
+  const module = reviews
+    ? reviewsModule
+    : player?.modules.find(m => m.id === moduleId)
+  const compiled = reviews ? player && byId : byId[moduleId]
 
-  const [game, setGame] = useState(null)
+  const [kept, setGame] = useState(null)
+  // Going from a module up to date to its practice starts another game.
+  const game = kept?.practice === practice ? kept : null
   const [feedback, setFeedback] = useState(null)
   const [end, setEnd] = useState(null)
   const [reporting, setReporting] = useState(false)
@@ -1034,12 +1245,16 @@ const LearnPlay = ({ playMode = false }) => {
       setGame({
         clientId: generateUUID(),
         startedAt: Date.now(),
-        questions: pickQuestions(compiled, cards, {
-          day: player.day,
-          settings: module.settings,
-          unlockPercent: module.unlockPercent ?? undefined,
-          placed: module.placed,
+        practice,
+        questions: questionsFor({
+          byId,
+          cards,
+          compiled,
+          module,
+          player,
+          practice,
           recent,
+          reviews,
         }),
         answers: [],
         // play, then, when questions were missed, retryStart and retry:
@@ -1048,7 +1263,7 @@ const LearnPlay = ({ playMode = false }) => {
       })
       // Only a new game picks new questions, not a card moved by this one.
     },
-    [compiled, module?.id],
+    [compiled, module?.id, practice],
   )
 
   useEffect(() => {
@@ -1057,23 +1272,35 @@ const LearnPlay = ({ playMode = false }) => {
 
   const back = playMode ? '/play' : `/learn/${userId}`
   if (isLoading || (!game && compiled)) return <LoadingComponent />
-  if (!module || !compiled || moduleLocked(compiled, byId, cards)) {
+  if (
+    !module ||
+    !compiled ||
+    (!reviews && moduleLocked(compiled, byId, cards))
+  ) {
     return <Navigate to={back} replace />
   }
 
-  const color = subjectColor(module.subject, module.document?.couleur)
+  const color = reviews
+    ? HOPLA.violet
+    : subjectColor(module.subject, module.document?.couleur)
+  // The module of a question: in the day's reviews, each says its own.
+  const moduleOf = asked =>
+    reviews ? player.modules.find(m => m.id === asked?.module) : module
   // A grown-up says a right answer hard or easy with buttons; a child's is
   // easy when answered in half their usual time, on a question already seen.
   const buttons = player.grading === 'boutons'
-  const quickGrade = (asked, ms) =>
-    module.usualMs > 0 &&
-    cards.get(asked.key)?.seen > 0 &&
-    ms < module.usualMs / 2
+  const quickGrade = (asked, ms) => {
+    const usual = moduleOf(asked)?.usualMs || 0
+    return usual > 0 && cards.get(asked.key)?.seen > 0 && ms < usual / 2
       ? EASY
       : undefined
+  }
+  const index = game.answers.length
+  const item = game.questions[index]
+  const shown = feedback?.item || item
   // Read aloud, in the modules made to be read aloud, as a parent chose for
   // this person: everything, only the instructions, or nothing.
-  const doc = compiled.doc
+  const doc = (reviews ? byId[shown?.module]?.doc : compiled.doc) || {}
   const personVoice = player.voice || (player.readAloud ? 'tout' : 'rien')
   const voice = personVoice !== 'rien' && canSpeak() && doc.lecture_voix_haute
   const tell = voice
@@ -1086,10 +1313,7 @@ const LearnPlay = ({ playMode = false }) => {
     personVoice === 'consigne' || (voice === 'consigne' && shown?.instruction)
       ? undefined
       : tell
-  const index = game.answers.length
-  const item = game.questions[index]
   const say = sayFor(item)
-  const shown = feedback?.item || item
   const blank =
     shown && hasBlank(shown)
       ? {
@@ -1108,6 +1332,22 @@ const LearnPlay = ({ playMode = false }) => {
     const correct = answers.filter(a => a.correct).length
     const total = answers.length
     const settings = module.settings
+    const mistakes = game.questions.filter(
+      (q, i) => answers[i] && !answers[i].correct,
+    )
+    lastKeys.current = new Set(game.questions.map(q => q.key))
+    if (practice) {
+      // Practice is kept nowhere: no hops, no récré, no card moved.
+      setEnd({
+        correct,
+        total,
+        stars: stars(correct, total, settings.seuil),
+        hops: 0,
+        mistakes,
+        practice: true,
+      })
+      return
+    }
     const hops = expectedHops(
       correct,
       total,
@@ -1126,10 +1366,22 @@ const LearnPlay = ({ playMode = false }) => {
       durationSec: Math.round((Date.now() - game.startedAt) / 1000),
       answers,
     }
+    let bonus = 0
+    if (reviews) {
+      const end = reviewsBonus({ answers, byId, cards, hops, player })
+      sent.last = end.last
+      bonus = end.bonus
+    }
     // The cards moved by this game count at once, even before the server
     // answers, so that playing again starts from them.
-    const played = playLocally(player, sent, hops)
-    lastKeys.current = new Set(game.questions.map(q => q.key))
+    const played = playLocally(player, sent, hops + bonus, bonus)
+    const tomorrow = reviews
+      ? dueReviews(
+          { ...played, day: addDays(player.day, 1) },
+          byId,
+          cardMap(played.cards),
+        ).length
+      : undefined
     // A game played well brings the récré one game nearer at once.
     const recre = played.recre &&
       stars(correct, total, settings.seuil) >= RECRE_MIN_STARS && {
@@ -1141,17 +1393,16 @@ const LearnPlay = ({ playMode = false }) => {
         ? { ...played, ...(recre && { recre }), offline: kept.offline }
         : kept,
     )
-    const mistakes = game.questions.filter(
-      (q, i) => answers[i] && !answers[i].correct,
-    )
     const shown = {
       correct,
       total,
       stars: stars(correct, total, settings.seuil),
-      hops,
+      hops: hops + bonus,
+      bonus,
       capped: total >= MIN_ANSWERS && wouldEarn > hops,
       mistakes,
       status: 'sending',
+      tomorrow,
     }
     setEnd(shown)
     const { result, status } = await sendGame(sent, userId)
@@ -1160,6 +1411,7 @@ const LearnPlay = ({ playMode = false }) => {
       status,
       ...(result && {
         hops: result.session.points,
+        bonus: result.session.bonus || 0,
         stars: result.session.stars,
         capped: result.capped,
       }),
@@ -1185,6 +1437,7 @@ const LearnPlay = ({ playMode = false }) => {
       ...game.answers,
       {
         key: item.key,
+        ...(item.module && { module: item.module }),
         correct: check.correct,
         almost: check.almost,
         given: check.correct ? '' : String(given),
@@ -1242,6 +1495,29 @@ const LearnPlay = ({ playMode = false }) => {
     next(answers)
   }
 
+  // Nothing to ask: the module is up to date, or every review is done.
+  if (!game.questions.length) {
+    const tomorrow = tomorrowOf({ byId, cards, compiled, module, player })
+    return (
+      <Container
+        maxWidth='sm'
+        sx={{ px: { xs: 2, sm: 3 }, pb: 6, pt: { xs: 1, sm: 2 } }}
+      >
+        <UpToDate
+          back={back}
+          color={color}
+          reviews={reviews}
+          tomorrow={tomorrow}
+          practiceTo={
+            reviews || practice
+              ? undefined
+              : `${location.pathname}?mode=entrainement`
+          }
+        />
+      </Container>
+    )
+  }
+
   const retrying = game.phase === 'retryStart' || game.phase === 'retry'
   const retried = game.phase === 'done' && {
     right: game.answers.filter(a => a.correct).length,
@@ -1280,6 +1556,7 @@ const LearnPlay = ({ playMode = false }) => {
             </IconButton>
           )}
         </Stack>
+        {practice && <PracticeBanner />}
         <Stack direction='row' alignItems='center' gap={1.25}>
           <Stack direction='row' gap='2px' sx={{ flex: 1, height: 8 }}>
             {game.questions.map((q, i) => {
@@ -1406,7 +1683,7 @@ const LearnPlay = ({ playMode = false }) => {
         <ReportSheet
           item={feedback?.item || item}
           given={feedback ? game.answers.at(-1)?.given : ''}
-          moduleId={moduleId}
+          moduleId={reviews ? (feedback?.item || item)?.module || '' : moduleId}
           userId={userId}
           onClose={() => setReporting(false)}
         />

@@ -62,7 +62,7 @@ Le fichier est contrôlé à l'import ; une erreur est expliquée en français
 | Champ | Obligatoire | Rôle |
 | --- | --- | --- |
 | `format` | oui | Toujours `"hopla-module/1"` |
-| `id` | oui | Identifiant unique : lettres minuscules, chiffres et tirets, 2 à 80 caractères. Ne doit jamais changer : la progression y est attachée. Pour un module partagé hors de la famille, préfixez-le par l'auteur (`nico-capitales`). L'`id` d'un module du catalogue est refusé |
+| `id` | oui | Identifiant unique : lettres minuscules, chiffres et tirets, 2 à 80 caractères. Ne doit jamais changer : la progression y est attachée. Pour un module partagé hors de la famille, préfixez-le par l'auteur (`nico-capitales`). L'`id` d'un module du catalogue est refusé, ainsi que `revisions` (réservé aux révisions du jour) |
 | `version` | oui | `X.Y.Z`. Augmentez-la à chaque modification |
 | `nom` | oui | Nom affiché |
 | `auteur` | non | Affiché « par … » |
@@ -338,6 +338,7 @@ Champs communs : `id`, `chapitre`, `operation`.
 | `plafond_jour` | 10 | Hops par jour et par personne, 0 à 200 |
 | `memorisation` | 90 | % de questions encore sues à leur retour, 70 à 97 |
 | `intervalle_max` | 365 | Plus longue attente d'une question, 7 à 3650 jours |
+| `nouvelles_par_jour` | 10 | Questions jamais vues par jour et par personne, 1 à 200 |
 
 Les parents peuvent changer ces valeurs pour la famille ou par personne sans
 toucher au fichier.

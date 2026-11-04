@@ -18,7 +18,11 @@
     "locked": "S'ouvre quand « {{chapter}} » sera su à {{needed}} % (là : {{percent}} %)",
     "hopsToday": "{{earned}}/{{cap}} {{units}}",
     "totalToday": "Aujourd'hui : {{earned}}/{{cap}} {{units}}",
-    "dayFull": "Plafond du jour atteint, tu peux continuer pour t'entraîner"
+    "dayFull": "Plafond du jour atteint, tu peux continuer pour t'entraîner",
+    "upToDate": "À jour, reviens demain",
+    "tomorrow_one": "{{count}} question demain",
+    "tomorrow_other": "{{count}} questions demain",
+    "practice": "S'entraîner"
   },
   "play": {
     "quit": "Quitter la partie",
@@ -72,7 +76,13 @@
     "replay": "Rejouer",
     "back": "Retour",
     "noHops": "Pas {{ofUnits}} cette fois, rejoue pour en gagner",
-    "retried": "Au 2e essai : {{right}} sur {{total}}"
+    "retried": "Au 2e essai : {{right}} sur {{total}}",
+    "practice": "Entraînement : pas de {{units}}",
+    "bonus_one": "dont +{{count}} {{unit}} de bonus « tout révisé »",
+    "bonus_other": "dont +{{count}} {{units}} de bonus « tout révisé »",
+    "tomorrow_zero": "Demain : rien à revoir",
+    "tomorrow_one": "Demain : {{count}} question à revoir",
+    "tomorrow_other": "Demain : {{count}} questions à revoir"
   },
   "retry": {
     "title": "On réessaie !",
@@ -185,7 +195,15 @@
       "compte": "Selon le compte",
       "auto": "Le temps de réponse",
       "boutons": "Les boutons Difficile et Facile"
-    }
+    },
+    "newPerDay": "Nouvelles par jour",
+    "reviewBonus": "Bonus « tout révisé » ({{units}})",
+    "reviewMax": "Révisions max par jour",
+    "reviews": "Révisions du jour",
+    "reviewsShort": "{{most}} questions au plus par jour · bonus {{bonus}} {{units}}",
+    "reviewsFor": "Régler les révisions du jour de {{name}}",
+    "reviewsHelp": "Les révisions du jour reprennent les questions à revoir de tous les modules. Au-delà du maximum, le reste attend le lendemain (pratique au retour de vacances). Le bonus arrive une fois par jour, quand tout est révisé. Laisse vide pour garder la valeur par défaut.",
+    "byDefault": "{{value}} (par défaut)"
   },
   "stats": {
     "chapters": "Chapitres",
@@ -226,7 +244,9 @@
     "dailyCap_other": "{{count}} {{units}} par jour",
     "unlock": "ouverture à {{value}} %",
     "retention": "mémoire {{value}} %",
-    "maxInterval": "au plus {{value}} j"
+    "maxInterval": "au plus {{value}} j",
+    "newPerDay_one": "{{count}} nouvelle par jour",
+    "newPerDay_other": "{{count}} nouvelles par jour"
   },
   "legend": {
     "module": "Module",
@@ -589,5 +609,33 @@
     "pasteCount_other": "{{count}} fiches seront ajoutées à « {{chapter}} ».",
     "pasteSkipped_one": "{{count}} ligne sautée (déjà là, en double ou sans réponse).",
     "pasteSkipped_other": "{{count}} lignes sautées (déjà là, en double ou sans réponse)."
+  },
+  "reviews": {
+    "title": "Mes révisions",
+    "count_one": "{{count}} question à revoir aujourd'hui",
+    "count_other": "{{count}} questions à revoir aujourd'hui",
+    "modules_one": "{{count}} module",
+    "modules_other": "{{count}} modules",
+    "go_one": "Réviser ({{count}} question)",
+    "go_other": "Réviser ({{count}} questions)",
+    "bonus_one": "Tout réviser aujourd'hui : +{{count}} {{unit}} en bonus",
+    "bonus_other": "Tout réviser aujourd'hui : +{{count}} {{units}} en bonus",
+    "done": "Révisions à jour",
+    "most": "Assez révisé pour aujourd'hui, la suite demain.",
+    "tomorrow_zero": "Rien à revoir demain.",
+    "tomorrow_one": "{{count}} question à revoir demain.",
+    "tomorrow_other": "{{count}} questions à revoir demain."
+  },
+  "upToDate": {
+    "title": "À jour, reviens demain !",
+    "reviews": "Tout est révisé !",
+    "tomorrow_zero": "Rien de prévu demain pour l'instant.",
+    "tomorrow_one": "{{count}} question reviendra demain.",
+    "tomorrow_other": "{{count}} questions reviendront demain.",
+    "practiceHelp": "Tu peux t'entraîner en attendant : sans {{units}}, ça ne compte ni pour la récré ni pour les révisions.",
+    "practice": "S'entraîner"
+  },
+  "practice": {
+    "banner": "Entraînement : pas de {{units}}, ne compte ni pour la récré ni pour les révisions"
   }
 }

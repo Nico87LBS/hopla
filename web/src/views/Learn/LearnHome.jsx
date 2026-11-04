@@ -1,7 +1,9 @@
 import {
+  CheckCircleRounded,
   ChevronRightRounded,
   CloudOffRounded,
   FactCheckOutlined,
+  FitnessCenterRounded,
   SchoolRounded,
   SportsEsportsRounded,
 } from '@mui/icons-material'
@@ -21,7 +23,18 @@ import {
 } from '../../queries/LearnQueries'
 import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries'
 import { OpenNextLevel, SendPlacement } from '../../utils/Fetcher'
-import { moduleLocked, openChapters, totalLeft } from '../../utils/learn/engine'
+import {
+  addDays,
+  DEFAULT_SETTINGS,
+  dueReviews,
+  moduleLocked,
+  moduleToday,
+  openChapters,
+  REVIEW_BONUS,
+  REVIEWS,
+  reviewsLeft,
+  totalLeft,
+} from '../../utils/learn/engine'
 import { levelKnown } from '../../utils/learn/levels'
 import { levelsIn, playFirst, shape, toReview } from '../../utils/learn/listing'
 import { loadServerVoices } from '../../utils/learn/serverVoice'
@@ -102,10 +115,30 @@ export const LearnChooser = () => {
   )
 }
 
-const ModuleCard = ({ cards, compiled, compiledById, dayFull, module, to }) => {
+const ModuleCard = ({
+  cards,
+  compiled,
+  compiledById,
+  day,
+  dayFull,
+  dueLeft,
+  module,
+  to,
+}) => {
   const { t } = useTranslation('learn')
   const color = subjectColor(module.subject, module.document?.couleur)
   const locked = moduleLocked(compiled, compiledById, cards)
+  // A module with nothing due and no new question left today is up to
+  // date: it comes back tomorrow, and meanwhile only lets one practise.
+  const today = moduleToday(compiled, cards, {
+    day,
+    settings: module.settings,
+    unlockPercent: module.unlockPercent ?? undefined,
+    placed: module.placed,
+    newToday: module.newToday,
+    dueLeft,
+  })
+  const upToDate = !locked && today.upToDate
   const chapters = openChapters(
     compiled,
     cards,
@@ -134,15 +167,29 @@ const ModuleCard = ({ cards, compiled, compiledById, dayFull, module, to }) => {
           </Typography>
         ) : (
           <>
+            {upToDate && (
+              <Typography
+                level='body-xs'
+                startDecorator={<CheckCircleRounded sx={{ fontSize: 16 }} />}
+                sx={{ color: HOPLA.greenText, fontWeight: 700 }}
+              >
+                {t('home.upToDate')}
+              </Typography>
+            )}
+            {upToDate && today.tomorrow > 0 && (
+              <Typography level='body-xs' sx={{ color: 'text.secondary' }}>
+                {t('home.tomorrow', { count: today.tomorrow })}
+              </Typography>
+            )}
             <Typography level='body-xs' sx={{ color: 'text.secondary' }} noWrap>
               {current?.chapter.name}
-              {module.review > 0 && (
+              {!upToDate && today.due > 0 && (
                 <Typography
                   component='span'
                   sx={{ color: HOPLA.carrotText, fontWeight: 700 }}
                 >
                   {' · '}
-                  {t('list.toReview', { count: module.review })}
+                  {t('list.toReview', { count: today.due })}
                 </Typography>
               )}
             </Typography>
@@ -165,7 +212,19 @@ const ModuleCard = ({ cards, compiled, compiledById, dayFull, module, to }) => {
           </>
         )}
       </Box>
-      {!locked && (
+      {upToDate && (
+        <Button
+          size='sm'
+          variant='outlined'
+          component={Link}
+          to={`${to}?mode=entrainement`}
+          startDecorator={<FitnessCenterRounded />}
+          sx={{ flexShrink: 0 }}
+        >
+          {t('home.practice')}
+        </Button>
+      )}
+      {!locked && !upToDate && (
         <Box sx={{ textAlign: 'right', flexShrink: 0 }}>
           <Typography
             level='body-xs'
@@ -188,12 +247,13 @@ const ModuleCard = ({ cards, compiled, compiledById, dayFull, module, to }) => {
   return (
     <Sheet
       variant='outlined'
-      component={locked ? 'div' : Link}
-      to={locked ? undefined : to}
+      component={locked || upToDate ? 'div' : Link}
+      to={locked || upToDate ? undefined : to}
       sx={{
         borderRadius: 'xl',
         display: 'block',
         opacity: locked ? 0.7 : 1,
+        ...(upToDate && { bgcolor: 'background.level1' }),
         p: 1.5,
         textDecoration: 'none',
         '&:hover': locked ? {} : { borderColor: color },
@@ -206,10 +266,98 @@ const ModuleCard = ({ cards, compiled, compiledById, dayFull, module, to }) => {
 
 ModuleCard.propTypes = {
   cards: PropTypes.instanceOf(Map).isRequired,
+  day: PropTypes.string.isRequired,
   dayFull: PropTypes.bool,
+  dueLeft: PropTypes.number,
   compiled: PropTypes.object.isRequired,
   compiledById: PropTypes.object.isRequired,
   module: PropTypes.object.isRequired,
+  to: PropTypes.string.isRequired,
+}
+
+// ReviewsCard gathers the questions due today in every module: a game asks
+// them, the latest first, and reviewing everything earns a bonus once a
+// day. Once done, it tells what comes tomorrow.
+const ReviewsCard = ({ byId, cards, player, to }) => {
+  const { t } = useTranslation('learn')
+  const due = dueReviews(player, byId, cards)
+  const left = reviewsLeft(player)
+  const count = Math.min(due.length, left)
+  const modules = new Set(due.slice(0, count).map(d => d.module)).size
+  const bonus = player.reviews?.bonus ?? REVIEW_BONUS
+  if (!count) {
+    const tomorrow = dueReviews(
+      { ...player, day: addDays(player.day, 1) },
+      byId,
+      cards,
+    ).length
+    if (!tomorrow && !player.reviews?.done) return null
+    return (
+      <Sheet
+        variant='outlined'
+        sx={{
+          alignItems: 'center',
+          borderRadius: 'lg',
+          display: 'flex',
+          gap: 1.5,
+          mb: 2,
+          p: 1.25,
+        }}
+      >
+        <CheckCircleRounded sx={{ color: HOPLA.green }} />
+        <Box sx={{ flex: 1 }}>
+          <Typography level='title-sm'>{t('reviews.done')}</Typography>
+          <Typography level='body-xs' sx={{ color: 'text.secondary' }}>
+            {left === 0 && due.length
+              ? t('reviews.most')
+              : t('reviews.tomorrow', { count: tomorrow })}
+          </Typography>
+        </Box>
+      </Sheet>
+    )
+  }
+  return (
+    <Sheet
+      variant='outlined'
+      sx={{
+        bgcolor: HOPLA.violetSoft,
+        borderColor: 'rgba(91, 79, 224, .35)',
+        borderRadius: 'xl',
+        mb: 2,
+        p: 1.5,
+      }}
+    >
+      <Stack direction='row' gap={1.5} alignItems='center'>
+        <LearnIcon entity={{ icon: '🔁' }} color={HOPLA.violet} />
+        <Box sx={{ flex: 1, minWidth: 0 }}>
+          <Typography level='title-md'>{t('reviews.title')}</Typography>
+          <Typography level='body-xs' sx={{ color: 'text.secondary' }}>
+            {t('reviews.count', { count })} ·{' '}
+            {t('reviews.modules', { count: modules })}
+          </Typography>
+        </Box>
+      </Stack>
+      <Button component={Link} to={to} fullWidth sx={{ mt: 1.25 }}>
+        {t('reviews.go', {
+          count: Math.min(count, DEFAULT_SETTINGS.questions_par_partie),
+        })}
+      </Button>
+      {bonus > 0 && !player.reviews?.bonusPaid && (
+        <Typography
+          level='body-xs'
+          sx={{ color: 'text.secondary', mt: 0.75, textAlign: 'center' }}
+        >
+          {t('reviews.bonus', { count: bonus })}
+        </Typography>
+      )}
+    </Sheet>
+  )
+}
+
+ReviewsCard.propTypes = {
+  byId: PropTypes.object.isRequired,
+  cards: PropTypes.instanceOf(Map).isRequired,
+  player: PropTypes.object.isRequired,
   to: PropTypes.string.isRequired,
 }
 
@@ -542,6 +690,15 @@ export const LearnModules = ({
         </Sheet>
       )}
 
+      {player && count > 0 && (
+        <ReviewsCard
+          player={player}
+          byId={byId}
+          cards={cards}
+          to={playPath(REVIEWS)}
+        />
+      )}
+
       {((player?.recre?.on && count > 0) || player?.recre?.bank > 0) && (
         <RecreCard recre={player.recre} to={recrePath} />
       )}
@@ -679,7 +836,9 @@ export const LearnModules = ({
                       compiled={byId[module.id]}
                       compiledById={byId}
                       cards={cards}
+                      day={player.day}
                       dayFull={left === 0}
+                      dueLeft={reviewsLeft(player)}
                       to={playPath(module.id)}
                     />
                   ))}

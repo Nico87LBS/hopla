@@ -48,7 +48,11 @@ import {
 } from '../../queries/LearnQueries'
 import { useNotification } from '../../service/NotificationProvider'
 import { ExportLearnReports } from '../../utils/Fetcher'
-import { moduleProgress } from '../../utils/learn/engine'
+import {
+  moduleProgress,
+  REVIEW_BONUS,
+  REVIEW_MAX,
+} from '../../utils/learn/engine'
 import {
   isRecent,
   levelsIn,
@@ -107,12 +111,20 @@ export const FIELDS = {
     label: 'manage.maxInterval',
     own: 'intervalle_max',
   },
+  newPerDay: {
+    name: 'newPerDay',
+    label: 'manage.newPerDay',
+    own: 'nouvelles_par_jour',
+  },
+  reviewBonus: { name: 'reviewBonus', label: 'manage.reviewBonus' },
+  reviewMax: { name: 'reviewMax', label: 'manage.reviewMax' },
 }
 
 const GAME_FIELDS = [
   'questions',
   'threshold',
   'hopsByStar',
+  'newPerDay',
   'retention',
   'maxInterval',
 ]
@@ -125,6 +137,7 @@ const CHIPS = [
   ['questions', 'chips.questions'],
   ['threshold', 'chips.threshold'],
   ['hopsByStar', 'chips.hopsByStar'],
+  ['newPerDay', 'chips.newPerDay'],
   ['retention', 'chips.retention'],
   ['maxInterval', 'chips.maxInterval'],
   ['dailyCap', 'chips.dailyCap'],
@@ -200,6 +213,7 @@ const OWN = {
   questions: 'questions_par_partie',
   threshold: 'seuil',
   hopsByStar: 'hops_par_etoile',
+  newPerDay: 'nouvelles_par_jour',
   retention: 'memorisation',
   maxInterval: 'intervalle_max',
   dailyCap: 'plafond_jour',
@@ -549,6 +563,39 @@ TotalCard.propTypes = {
   onOpen: PropTypes.func.isRequired,
   person: PropTypes.object.isRequired,
   total: PropTypes.number,
+}
+
+// ReviewsCard shows a person's reviews of the day: the most questions due
+// reviewed in a day, and the bonus for reviewing them all.
+const ReviewsCard = ({ onOpen, person, setting }) => {
+  const { t } = useTranslation('learn')
+  return (
+    <Sheet sx={{ ...surfaceSx, display: 'flex', alignItems: 'center', gap: 1 }}>
+      <Box sx={{ flex: 1 }}>
+        <Typography level='title-md'>{t('manage.reviews')}</Typography>
+        <Typography level='body-xs' sx={{ color: 'text.secondary' }}>
+          {t('manage.reviewsShort', {
+            most: setting?.reviewMax ?? REVIEW_MAX,
+            bonus: setting?.reviewBonus ?? REVIEW_BONUS,
+          })}
+        </Typography>
+      </Box>
+      <IconButton
+        variant='soft'
+        color='primary'
+        aria-label={t('manage.reviewsFor', { name: person.displayName })}
+        onClick={onOpen}
+      >
+        <TuneRounded />
+      </IconButton>
+    </Sheet>
+  )
+}
+
+ReviewsCard.propTypes = {
+  onOpen: PropTypes.func.isRequired,
+  person: PropTypes.object.isRequired,
+  setting: PropTypes.object,
 }
 
 // VOICES are what the device can say aloud for a person: everything, only
@@ -1813,6 +1860,28 @@ export const ManageLearn = () => {
         />
       )
     }
+    if (scope === 'reviews') {
+      return (
+        <SettingsModal
+          {...common}
+          title={t('manage.reviews')}
+          help={t('manage.reviewsHelp')}
+          fields={['reviewMax', 'reviewBonus']}
+          candidates={members}
+          current={userId => settings.get(`${userId}:*`)}
+          placeholder={(userId, field) => {
+            const family = settings.get(`${FAMILY}:*`)?.[FIELDS[field].name]
+            if (isSet(family)) return t('manage.fromFamily', { value: family })
+            return t('manage.byDefault', {
+              value: field === 'reviewMax' ? REVIEW_MAX : REVIEW_BONUS,
+            })
+          }}
+          save={(userId, change) =>
+            setSetting.mutateAsync({ userId, scope: '*', ...change })
+          }
+        />
+      )
+    }
     if (scope === 'module') {
       return (
         <SettingsModal
@@ -1902,6 +1971,11 @@ export const ManageLearn = () => {
             person={person}
             total={settings.get(`${person.userId}:*`)?.totalCap}
             onOpen={() => setSettingsFor({ scope: 'total' })}
+          />
+          <ReviewsCard
+            person={person}
+            setting={settings.get(`${person.userId}:*`)}
+            onOpen={() => setSettingsFor({ scope: 'reviews' })}
           />
           <ReadAloudCard
             person={person}
