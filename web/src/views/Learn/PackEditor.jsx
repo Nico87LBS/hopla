@@ -34,8 +34,16 @@ import {
   useRemoveModule,
 } from '../../queries/LearnQueries'
 import {
+  extrasOf,
+  hasOptions,
+  LISTENING,
+  listensFor,
+  typed,
+} from '../../utils/learn/cardOptions'
+import {
   cardDone,
   cardFrom,
+  DICTATION_HINT,
   editable,
   fieldsOf,
   fromDocument,
@@ -54,6 +62,7 @@ import { iconFile, ICONS } from '../../utils/learn/icons'
 import LoadingComponent from '../components/Loading'
 import { surfaceSx } from '../Games/GameParts'
 import { ParentPage } from '../Manage/ParentPages'
+import { CardOptionFields, MoreOptions, ToleranceSelect } from './CardOptions'
 import { useExportModule } from './FamilyPacks'
 import { LearnIcon } from './LearnParts'
 import { useNotify } from './ManageLearn'
@@ -146,22 +155,57 @@ KindChoice.propTypes = {
   value: PropTypes.string.isRequired,
 }
 
-// CardModal writes or changes one card.
+// The type each kind of the editor writes.
+const TYPE_OF = { dictee: 'ecoute', choix: 'choix', retourner: 'retourner' }
+
+// sensesFor keeps, of the ways a card is asked, those its new kind knows.
+const sensesFor = (kind, senses) => {
+  if (kind === 'dictee') {
+    const kept = (senses || []).filter(s => LISTENING.includes(s))
+    return kept.length ? kept : ['dictee']
+  }
+  return (senses || []).filter(s => s === 'direct' || s === 'inverse')
+}
+
+// CardModal writes or changes one card: what it asks and answers first, its
+// other options folded away.
 const CardModal = ({ card, onClose, onDelete, onSave }) => {
   const { t } = useTranslation('learn')
   const { ResponsiveModal } = useResponsiveModal()
-  const start = card ? fieldsOf(card) : { oneTypo: true }
+  const [start] = useState(() =>
+    card
+      ? fieldsOf(card)
+      : { tolerance: 'une_faute', extras: { ...extrasOf({}) } },
+  )
   const [kind, setKind] = useState(card ? kindOf(card) : 'saisie')
   const [question, setQuestion] = useState(start.question || '')
   const [answer, setAnswer] = useState(start.answer || '')
   const [traps, setTraps] = useState((start.traps || []).join('\n'))
   const [others, setOthers] = useState((start.others || []).join('\n'))
-  const [oneTypo, setOneTypo] = useState(!!start.oneTypo)
+  const [tolerance, setTolerance] = useState(start.tolerance)
+  const [extras, setExtras] = useState(start.extras)
+  const type = TYPE_OF[kind] || 'saisie'
+  const senses = sensesFor(kind, extras.sens)
+  const ownAnswer = kind !== 'dictee' || listensFor(senses)
+  const withTraps =
+    kind === 'choix' || (kind === 'dictee' && listensFor(senses))
+  const spelled = typed(type, senses)
   const written = cardFrom(
     kind,
-    { question, answer, oneTypo, traps: lines(traps), others: lines(others) },
+    {
+      question,
+      answer,
+      tolerance,
+      traps: lines(traps),
+      others: lines(others),
+      extras: { ...extras, sens: senses },
+    },
     card || {},
   )
+  const pick = next => {
+    setKind(next)
+    setExtras(current => ({ ...current, sens: sensesFor(next, current.sens) }))
+  }
 
   return (
     <ResponsiveModal
@@ -192,10 +236,16 @@ const CardModal = ({ card, onClose, onDelete, onSave }) => {
           <Typography level='title-sm' sx={{ mb: 0.5 }}>
             {t('pack.kind')}
           </Typography>
-          <KindChoice kinds={KINDS} value={kind} onPick={setKind} />
+          <KindChoice kinds={KINDS} value={kind} onPick={pick} />
         </Box>
         {field(
-          t(kind === 'dictee' ? 'pack.word' : 'pack.question'),
+          t(
+            kind !== 'dictee'
+              ? 'pack.question'
+              : senses.includes('dictee')
+                ? 'pack.word'
+                : 'pack.heard',
+          ),
           <Input
             slotProps={{ input: { id: 'pack-question' } }}
             value={question}
@@ -203,9 +253,9 @@ const CardModal = ({ card, onClose, onDelete, onSave }) => {
           />,
           'pack-question',
         )}
-        {kind !== 'dictee' &&
+        {ownAnswer &&
           field(
-            t('pack.answer'),
+            t(kind === 'dictee' ? 'pack.meaning' : 'pack.answer'),
             <Input
               slotProps={{ input: { id: 'pack-answer' } }}
               value={answer}
@@ -213,7 +263,7 @@ const CardModal = ({ card, onClose, onDelete, onSave }) => {
             />,
             'pack-answer',
           )}
-        {kind === 'choix' &&
+        {withTraps &&
           field(
             t('pack.traps'),
             <Textarea
@@ -225,7 +275,7 @@ const CardModal = ({ card, onClose, onDelete, onSave }) => {
             />,
             'pack-traps',
           )}
-        {(kind === 'saisie' || kind === 'dictee') &&
+        {spelled &&
           field(
             t(kind === 'dictee' ? 'pack.spellings' : 'pack.others'),
             <Textarea
@@ -239,16 +289,26 @@ const CardModal = ({ card, onClose, onDelete, onSave }) => {
             />,
             'pack-others',
           )}
-        {(kind === 'saisie' || kind === 'dictee') && (
-          <Checkbox
-            label={t('pack.oneTypo')}
-            checked={oneTypo}
-            onChange={e => setOneTypo(e.target.checked)}
-          />
+        {spelled && (
+          <ToleranceSelect value={tolerance} onChange={setTolerance} />
         )}
         <Typography level='body-xs' sx={{ color: 'text.tertiary' }}>
           {t(`pack.kindHelp.${kind}`)}
         </Typography>
+        <MoreOptions
+          start={hasOptions({
+            ...extras,
+            // The usual instruction of a dictation is no option to show.
+            consigne: extras.consigne === DICTATION_HINT ? '' : extras.consigne,
+          })}
+        >
+          <CardOptionFields
+            type={type}
+            extras={{ ...extras, sens: senses }}
+            onChange={setExtras}
+            traps={withTraps ? lines(traps) : []}
+          />
+        </MoreOptions>
       </Stack>
     </ResponsiveModal>
   )
@@ -384,7 +444,7 @@ const CardRow = ({ card, onOpen, onRemove }) => {
   const { t } = useTranslation('learn')
   const kind = kindOf(card)
   const label =
-    kind === 'dictee'
+    kind === 'dictee' && !listensFor(card.sens)
       ? card.autres_reponses?.length
         ? t('pack.dictationAlso', { words: card.autres_reponses.join(', ') })
         : t('pack.dictationLine')

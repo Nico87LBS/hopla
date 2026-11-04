@@ -3,6 +3,14 @@
 // The editor reads and writes the module document (hopla-module/1), which
 // the server checks on import like any other.
 
+import {
+  extrasOf,
+  LISTENING,
+  listensFor,
+  optionsFor,
+  toleranceOf,
+  typed,
+} from './cardOptions.js'
 import { slug } from './generators.js'
 
 export const FORMAT = 'hopla-module/1'
@@ -39,9 +47,8 @@ const list = values => (values || []).map(clean).filter(Boolean)
 export const kindOf = card => {
   if (card.type === 'ecoute') {
     const senses = card.sens || []
-    return senses.length === 1 && senses[0] === 'dictee' ? 'dictee' : 'autre'
+    return senses.every(sense => LISTENING.includes(sense)) ? 'dictee' : 'autre'
   }
-  if (card.image) return 'autre'
   return ['saisie', 'choix', 'retourner'].includes(card.type)
     ? card.type
     : 'autre'
@@ -134,68 +141,120 @@ export const newPack = name => ({
   rest: {},
 })
 
-// cardFrom writes a card of one of KINDS from the editor's fields. The id,
-// the explanation and the instruction of the card it replaces are kept.
+// The fields the editor writes; any other field of the card it replaces,
+// such as its id or a field Hopla does not know, is kept.
+const WRITTEN = [
+  'type',
+  'question',
+  'reponse',
+  'sens',
+  'tolerance',
+  'consigne',
+  'explication',
+  'image',
+  'pieges',
+  'pourquoi',
+  'autres_reponses',
+  'question_inverse',
+  'question_toucher',
+  'paires',
+  'elements',
+  'echangeables',
+  'boites',
+  'a_classer',
+]
+
+const TYPES = { dictee: 'ecoute', choix: 'choix', retourner: 'retourner' }
+
+// cardFrom writes a card of one of KINDS from the editor's fields. Without
+// extras (a pasted list), the explanation and the instruction of the card
+// it replaces are kept.
 export const cardFrom = (
   kind,
-  { answer, oneTypo, others, question, traps },
+  { answer, extras, oneTypo, others, question, tolerance, traps },
   base = {},
 ) => {
-  const keep = {
-    ...(base.id && { id: base.id }),
-    ...(base.explication && { explication: base.explication }),
+  const keep = Object.fromEntries(
+    Object.entries(base).filter(([name]) => !WRITTEN.includes(name)),
+  )
+  const type = TYPES[kind] || 'saisie'
+  const given = extras || {
+    ...extrasOf({}),
+    consigne: base.consigne || '',
+    explication: base.explication || '',
+    sens: type === 'ecoute' ? ['dictee'] : [],
   }
+  // The instruction of a dictation is no instruction for another kind.
+  const wanted =
+    type !== 'ecoute' && clean(given.consigne) === DICTATION_HINT
+      ? { ...given, consigne: '' }
+      : given
   const q = clean(question)
-  switch (kind) {
-    case 'dictee':
-      return {
-        ...keep,
-        type: 'ecoute',
-        question: q,
-        reponse: q,
-        sens: ['dictee'],
-        tolerance: oneTypo ? 'une_faute' : 'exacte',
-        consigne: base.consigne || DICTATION_HINT,
-        // Other spellings heard the same way, such as « cet » for « cette ».
-        ...(list(others).length && { autres_reponses: list(others) }),
-      }
+  const wrong = list(traps)
+  const options = optionsFor(type, wanted, wrong)
+  const card = { ...keep, type, question: q }
+  switch (type) {
+    case 'ecoute': {
+      // A dictation is answered by the word itself; heard and picked, or
+      // typed as figures, it has its own answer, with its traps.
+      const own = listensFor(options.sens)
+      Object.assign(card, {
+        reponse: own ? clean(answer) : q,
+        ...(own && wrong.length && { pieges: wrong }),
+        ...options,
+        consigne: options.consigne || (own ? undefined : DICTATION_HINT),
+        tolerance: tolerance || (oneTypo === false ? 'exacte' : 'une_faute'),
+      })
+      break
+    }
     case 'choix':
-      return {
-        ...keep,
-        type: 'choix',
-        question: q,
+      Object.assign(card, {
         reponse: clean(answer),
-        ...(list(traps).length && { pieges: list(traps) }),
-      }
+        ...(wrong.length && { pieges: wrong }),
+        ...options,
+      })
+      break
     case 'retourner':
-      return { ...keep, type: 'retourner', question: q, reponse: clean(answer) }
-    default:
-      return {
-        ...keep,
-        type: 'saisie',
-        question: q,
+      Object.assign(card, { reponse: clean(answer), ...options })
+      break
+    default: {
+      const checked = tolerance || (oneTypo ? 'une_faute' : 'accents')
+      Object.assign(card, {
         reponse: clean(answer),
-        ...(list(others).length && { autres_reponses: list(others) }),
-        ...(oneTypo && { tolerance: 'une_faute' }),
-      }
+        ...options,
+        ...(checked !== 'accents' && { tolerance: checked }),
+      })
+    }
   }
+  // Other answers or spellings, such as « cette » for « cet ».
+  if (typed(type, card.sens) && list(others).length) {
+    card.autres_reponses = list(others)
+  }
+  return Object.fromEntries(
+    Object.entries(card).filter(([, value]) => value !== undefined),
+  )
 }
 
 // fieldsOf reads a card back into the editor's fields.
-export const fieldsOf = card => ({
-  question: card.question || '',
-  answer: card.reponse || '',
-  traps: card.pieges || [],
-  others: card.autres_reponses || [],
-  oneTypo:
-    card.type === 'ecoute'
-      ? card.tolerance !== 'exacte'
-      : card.tolerance === 'une_faute',
-})
+export const fieldsOf = card => {
+  const listening = card.type === 'ecoute'
+  return {
+    question: card.question || '',
+    // A dictation's answer is its word; only a word heard and picked has
+    // one of its own.
+    answer: listening && !listensFor(card.sens) ? '' : card.reponse || '',
+    traps: card.pieges || [],
+    others: card.autres_reponses || [],
+    tolerance: toleranceOf(card),
+    oneTypo: toleranceOf(card) === 'une_faute',
+    extras: extrasOf(card),
+  }
+}
 
 // cardDone tells whether a card has what it needs to be played.
 export const cardDone = card =>
-  !!clean(card.question) && (card.type === 'ecoute' || !!clean(card.reponse))
+  !!clean(card.question) &&
+  ((card.type === 'ecoute' && !listensFor(card.sens)) || !!clean(card.reponse))
 
 const same = text => slug(text)
 

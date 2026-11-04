@@ -2,7 +2,6 @@ import { OutlinedFlagRounded } from '@mui/icons-material'
 import {
   Box,
   Button,
-  Checkbox,
   Input,
   Sheet,
   Stack,
@@ -17,7 +16,16 @@ import { useTranslation } from 'react-i18next'
 import ModalActions from '../../components/common/ModalActions'
 import { useResponsiveModal } from '../../hooks/useResponsiveModal'
 import { useEditCard, useResolveReport } from '../../queries/LearnQueries'
+import {
+  extrasOf,
+  hasOptions,
+  listensFor,
+  optionsFor,
+  toleranceOf,
+  typed,
+} from '../../utils/learn/cardOptions'
 import { useMembers } from '../Manage/ParentPages'
+import { CardOptionFields, MoreOptions, ToleranceSelect } from './CardOptions'
 import { useNotify } from './ManageLearn'
 
 const lines = text =>
@@ -130,10 +138,10 @@ const CardEditor = ({ card, moduleId, onClose, original, reports }) => {
   const base = original || card
   const [question, setQuestion] = useState(card.question || '')
   const [answer, setAnswer] = useState(card.reponse || '')
-  const [example, setExample] = useState(card.explication || '')
   const [traps, setTraps] = useState((card.pieges || []).join('\n'))
   const [others, setOthers] = useState((card.autres_reponses || []).join('\n'))
-  const [both, setBoth] = useState(!!card.sens?.includes('inverse'))
+  const [extras, setExtras] = useState(() => extrasOf(card))
+  const [tolerance, setTolerance] = useState(toleranceOf(card))
   const [pairs, setPairs] = useState(
     (card.paires || []).map(pair => pair.map(writeSide).join(' = ')).join('\n'),
   )
@@ -151,10 +159,12 @@ const CardEditor = ({ card, moduleId, onClose, original, reports }) => {
       )
       .join('\n'),
   )
-  const asks = card.type === 'choix' || card.type === 'saisie'
   // A dictation accepts other spellings heard the same way (cet, cette).
-  const dictation = card.type === 'ecoute' && !!base.sens?.includes('dictee')
-  const variants = card.type === 'saisie' || dictation
+  const dictation =
+    card.type === 'ecoute' && (extras.sens || []).includes('dictee')
+  const variants = typed(card.type, extras.sens)
+  const withTraps =
+    card.type === 'choix' || (card.type === 'ecoute' && listensFor(extras.sens))
   const labelled = LABELLED.includes(card.type)
 
   const send = async change => {
@@ -177,20 +187,17 @@ const CardEditor = ({ card, moduleId, onClose, original, reports }) => {
         boites: readBoxes(boxes),
         a_classer: readToSort(toSort),
       }),
-      explication: example.trim() || undefined,
-      ...(card.type === 'choix' && {
+      ...(withTraps && {
         pieges: lines(traps).length ? lines(traps) : undefined,
       }),
       ...(variants && {
         autres_reponses: lines(others).length ? lines(others) : undefined,
+        tolerance:
+          tolerance === toleranceOf({ type: card.type }) && !base.tolerance
+            ? undefined
+            : tolerance,
       }),
-      ...(asks && {
-        sens: both
-          ? ['direct', 'inverse']
-          : base.sens?.length
-            ? ['direct']
-            : undefined,
-      }),
+      ...optionsFor(card.type, extras, lines(traps)),
     }
     // Each field is sent as the module has it (null, no correction) or as
     // changed, so the correction holds only what differs.
@@ -295,11 +302,7 @@ const CardEditor = ({ card, moduleId, onClose, original, reports }) => {
               onChange={e => setToSort(e.target.value)}
             />,
           )}
-        {field(
-          t('edit.example'),
-          <Input value={example} onChange={e => setExample(e.target.value)} />,
-        )}
-        {card.type === 'choix' &&
+        {withTraps &&
           field(
             t('edit.traps'),
             <Textarea
@@ -321,13 +324,17 @@ const CardEditor = ({ card, moduleId, onClose, original, reports }) => {
               onChange={e => setOthers(e.target.value)}
             />,
           )}
-        {asks && (
-          <Checkbox
-            label={t('edit.both')}
-            checked={both}
-            onChange={e => setBoth(e.target.checked)}
-          />
+        {variants && (
+          <ToleranceSelect value={tolerance} onChange={setTolerance} />
         )}
+        <MoreOptions start={hasOptions(extras)}>
+          <CardOptionFields
+            type={card.type}
+            extras={extras}
+            onChange={setExtras}
+            traps={withTraps ? lines(traps) : []}
+          />
+        </MoreOptions>
         <Typography level='body-xs' sx={{ color: 'text.tertiary' }}>
           {t('edit.keyHelp', { key: card.cle || `${moduleId}:${card.id}` })}
         </Typography>

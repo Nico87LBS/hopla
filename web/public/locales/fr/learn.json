@@ -583,14 +583,14 @@
     "kinds": {
       "saisie": "À taper",
       "choix": "À choisir",
-      "dictee": "Dictée",
+      "dictee": "Dictée / écoute",
       "retourner": "Carte à retourner",
       "autre": "Autre"
     },
     "kindHelp": {
       "saisie": "On lit la question et on tape la réponse.",
       "choix": "On choisit la bonne réponse parmi plusieurs.",
-      "dictee": "L'appareil dit le mot, on l'écrit.",
+      "dictee": "L'appareil dit le mot : on l'écrit, ou on choisit ce qu'il veut dire.",
       "retourner": "On réfléchit, on retourne la carte et on dit si on savait."
     },
     "cardTitle": "Modifier la fiche",
@@ -598,8 +598,10 @@
     "saveCard": "Enregistrer la fiche",
     "deleteCard": "Supprimer la fiche",
     "word": "Mot à écrire",
+    "heard": "Mot dit par l'appareil",
     "question": "Question",
     "answer": "Bonne réponse",
+    "meaning": "Ce que veut dire le mot (ou les chiffres attendus)",
     "traps": "Mauvaises réponses proposées",
     "trapsHelp": "Une par ligne. Vide : prises parmi les autres fiches du chapitre.",
     "others": "Autres réponses acceptées",
@@ -679,5 +681,54 @@
     "day": "Date du contrôle",
     "covers": "Ce qui tombe",
     "add": "Préparer un contrôle"
+  },
+  "options": {
+    "more": "Plus d'options",
+    "moreHint": "Consigne, explication, dessin, sens de la question…",
+    "tolerance": "Orthographe",
+    "tolerances": {
+      "accents": "Accents et majuscules ignorés",
+      "une_faute": "Une petite faute permise",
+      "exacte": "Accents comptés"
+    },
+    "way": "Poser la question",
+    "ways": {
+      "direct": "Dans ce sens : question puis réponse",
+      "both": "Dans les deux sens",
+      "inverse": "Seulement à l'envers : réponse puis question"
+    },
+    "listening": "Façons de poser",
+    "listeningHelp": "Pour toutes les façons sauf la dictée, il faut une réponse : le sens du mot ou les chiffres attendus.",
+    "listen": {
+      "dictee": "Écrire le mot entendu (dictée)",
+      "direct": "Entendre le mot et choisir ce qu'il veut dire",
+      "lire": "Lire le mot et choisir ce qu'il veut dire",
+      "inverse": "Voir ce qu'il veut dire et choisir le mot",
+      "chiffres": "Entendre un message et taper ses chiffres"
+    },
+    "zoneWays": "Façons de poser",
+    "zone": {
+      "toucher": "Toucher la zone d'après son nom",
+      "nommer": "Nommer la zone en couleur"
+    },
+    "instruction": "Consigne",
+    "instructionHelp": "Montrée au-dessus de la question, et dite à voix haute si le paquet le permet.",
+    "explanation": "Explication",
+    "explanationHelp": "Montrée après la réponse, juste ou fausse.",
+    "image": "Dessin",
+    "imageHelp": "Montré au-dessus de la question.",
+    "imagePick": "Choisir un dessin",
+    "imageChange": "Changer",
+    "imageRemove": "Retirer le dessin",
+    "imageSearch": "Chercher (nom anglais : cat, apple…)",
+    "imageNone": "Aucun dessin de ce nom.",
+    "drawingQuestion": "Question sous le dessin",
+    "drawingQuestionHelp": "Comment s’appelle ce dessin ?",
+    "touchQuestion": "Phrase pour toucher la zone",
+    "touchQuestionHelp": "Touche : le nom de la zone",
+    "why": "Pourquoi chaque mauvaise réponse est fausse",
+    "whyHelp": "Dit quand elle est choisie (facultatif).",
+    "whyOf": "Pourquoi « {{trap}} » est faux",
+    "whyFirst": "Écris d'abord les mauvaises réponses proposées."
   }
 }
