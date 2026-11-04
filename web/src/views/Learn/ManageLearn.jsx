@@ -10,7 +10,6 @@ import {
   OutlinedFlagRounded,
   SchoolRounded,
   TuneRounded,
-  UploadFileRounded,
 } from '@mui/icons-material'
 import {
   Box,
@@ -24,7 +23,6 @@ import {
   Sheet,
   Stack,
   Switch,
-  Textarea,
   Typography,
 } from '@mui/joy'
 import PropTypes from 'prop-types'
@@ -37,7 +35,6 @@ import PageTabs from '../../components/common/PageTabs'
 import { HOPLA } from '../../constants/theme'
 import { useResponsiveModal } from '../../hooks/useResponsiveModal'
 import {
-  useImportModule,
   useInstallModule,
   useLearnCatalogue,
   useLearnModules,
@@ -66,6 +63,7 @@ import { MemberAvatar, surfaceSx } from '../Games/GameParts'
 import { ParentPage, useMembers } from '../Manage/ParentPages'
 import RecreSettingsCard from '../Recre/RecreSettings'
 import RecreTrialCard from '../Recre/RecreTrial'
+import FamilyPacksCard from './FamilyPacks'
 import { useCompiled } from './LearnParts'
 import { VoicesCard } from './LearnVoices'
 import ListBar, { useListChoices } from './ListBar'
@@ -1482,77 +1480,6 @@ CatalogueCard.propTypes = {
   settings: PropTypes.instanceOf(Map).isRequired,
 }
 
-// ImportCard takes a module written by the family, as a JSON file or text.
-const ImportCard = () => {
-  const { t } = useTranslation('learn')
-  const [text, setText] = useState('')
-  const [error, setError] = useState('')
-  const importModule = useImportModule()
-  const notify = useNotify()
-
-  const readFile = async e => {
-    const file = e.target.files?.[0]
-    if (file) setText(await file.text())
-    e.target.value = ''
-  }
-
-  const send = async () => {
-    setError('')
-    try {
-      const module = await importModule.mutateAsync(text)
-      notify('success', t('manage.installed', { name: module.name }))
-      setText('')
-    } catch (err) {
-      setError(err.message)
-    }
-  }
-
-  return (
-    <Sheet sx={surfaceSx}>
-      <Typography level='title-lg'>{t('manage.import')}</Typography>
-      <Typography level='body-sm' sx={{ color: 'text.secondary', mb: 1.5 }}>
-        {t('manage.importHelp')}
-      </Typography>
-      <Textarea
-        minRows={4}
-        maxRows={12}
-        value={text}
-        onChange={e => setText(e.target.value)}
-        placeholder='{ "format": "hopla-module/1", … }'
-        sx={{ fontFamily: 'monospace', fontSize: 13 }}
-      />
-      {error && (
-        <Typography level='body-sm' color='danger' sx={{ mt: 1 }}>
-          {error}
-        </Typography>
-      )}
-      <Stack direction='row' gap={1} sx={{ mt: 1.5 }}>
-        <Button
-          component='label'
-          variant='soft'
-          color='neutral'
-          startDecorator={<UploadFileRounded />}
-        >
-          {t('manage.chooseFile')}
-          <input
-            type='file'
-            accept='.json,application/json'
-            hidden
-            onChange={readFile}
-          />
-        </Button>
-        <Button
-          onClick={send}
-          disabled={!text.trim()}
-          loading={importModule.isPending}
-        >
-          {t('manage.importButton')}
-        </Button>
-      </Stack>
-    </Sheet>
-  )
-}
-
 // /manage/learn: the modules of the family, who plays them and the settings
 // of each person.
 // useExportReports sends the questions reported in the games, in one file,
@@ -1960,8 +1887,8 @@ export const ManageLearn = () => {
   )
 }
 
-// /manage/learn/catalogue: the modules that come with Hopla and those the
-// family imports, for the whole family.
+// /manage/learn/catalogue: the packs the family writes or receives, then
+// those that come with Hopla, for the whole family.
 export const LearnCatalogue = () => {
   const { data } = useLearnModules()
   const modules = data?.modules || []
@@ -1973,12 +1900,12 @@ export const LearnCatalogue = () => {
   return (
     <ParentPage page='learn'>
       <LearnTabs current='catalogue' />
+      <FamilyPacksCard modules={modules} />
       <CatalogueCard
         installed={new Set(modules.map(m => m.id))}
         defaults={data?.defaults || {}}
         settings={settings}
       />
-      <ImportCard />
     </ParentPage>
   )
 }

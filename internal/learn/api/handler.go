@@ -285,6 +285,30 @@ func (h *Handler) importModule(c *gin.Context) {
 	c.JSON(200, gin.H{"res": module})
 }
 
+// exportModule godoc
+//
+//	@Summary		Exporter un module de la famille
+//	@Description	Le fichier du module, tel qu'importé ou enregistré depuis l'éditeur.
+//	@Tags			Apprendre
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			key	path	string	true	"Clé du module"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/modules/{key}/file [get]
+func (h *Handler) exportModule(c *gin.Context) {
+	who, ok := h.requireParent(c)
+	if !ok {
+		return
+	}
+	content, err := learn.ModuleFile(h.db.WithContext(c), who.familyID, c.Param("key"))
+	if err != nil {
+		answerError(c, err, "export the module")
+		return
+	}
+	c.Data(200, "application/json; charset=utf-8", []byte(content))
+}
+
 // remove godoc
 //
 //	@Summary		Désinstaller un module
@@ -869,6 +893,7 @@ func Routes(r *gin.Engine, h *Handler, auth *jwt.GinJWTMiddleware) {
 		routes.GET("/catalogue", h.getCatalogue)
 		routes.GET("/modules", h.getModules)
 		routes.GET("/modules/:key", h.getDetail)
+		routes.GET("/modules/:key/file", h.exportModule)
 		routes.POST("/modules/install", h.install)
 		routes.POST("/modules/import", h.importModule)
 		routes.DELETE("/modules/:key", h.remove)

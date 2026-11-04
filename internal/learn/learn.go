@@ -123,6 +123,19 @@ func Import(db *gorm.DB, familyID int, raw []byte, now time.Time) (Module, error
 	return module, err
 }
 
+// ModuleFile is the document of a module written by the family, as it was
+// imported or saved from the editor, to share it with another family or
+// change it. A catalogue module has no file of the family.
+func ModuleFile(db *gorm.DB, familyID int, key string) (string, error) {
+	var module Module
+	err := db.Where("family_id = ? AND module_key = ? AND builtin = ?", familyID, key, false).
+		Take(&module).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return "", ErrNotFound
+	}
+	return module.Content, err
+}
+
 // checkImportTree refuses a pack written by the family whose shape is not
 // that of every pack (see CheckTree), its modules read from the catalogue or
 // the family's.

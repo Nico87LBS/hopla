@@ -29,6 +29,7 @@ import ManageLearn, {
   LearnCatalogue,
   LearnVoices,
 } from '../views/Learn/ManageLearn'
+import PackEditor from '../views/Learn/PackEditor'
 import PlacementTest from '../views/Learn/PlacementTest'
 import {
   PlayGame,
@@ -239,6 +240,10 @@ const Router = createBrowserRouter([
       {
         path: '/manage/learn/signalements',
         element: <LearnReports />,
+      },
+      {
+        path: '/manage/learn/editeur/:moduleId',
+        element: <PackEditor />,
       },
       {
         path: '/manage/learn/detail/:moduleId',

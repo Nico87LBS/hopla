@@ -3074,6 +3074,29 @@ paths:
       summary: Détail d'un module (chapitres et fiches)
       tags:
       - Apprendre
+  /api/v1/learn/modules/{key}/file:
+    get:
+      description: Le fichier du module, tel qu'importé ou enregistré depuis l'éditeur.
+      parameters:
+      - description: Clé du module
+        in: path
+        name: key
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Exporter un module de la famille
+      tags:
+      - Apprendre
   /api/v1/learn/modules/import:
     post:
       produces:

@@ -5,6 +5,7 @@ import {
   ExportLearnReports,
   GetLearnCatalogue,
   GetLearnDetail,
+  GetLearnModuleFile,
   GetLearnModules,
   GetLearnPlayer,
   GetLearnStats,
@@ -93,6 +94,15 @@ export const useLearnDetail = key =>
   useQuery({
     queryKey: learnKeys.detail(key),
     queryFn: () => GetLearnDetail(key),
+  })
+
+// useLearnModuleFile: the document of a module of the family, for the
+// editor; nothing for a new pack.
+export const useLearnModuleFile = key =>
+  useQuery({
+    queryKey: ['learn', 'file', key],
+    enabled: !!key,
+    queryFn: () => GetLearnModuleFile(key),
   })
 
 // useLearnReports: every question reported and not looked at yet, with its

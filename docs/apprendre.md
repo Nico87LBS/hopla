@@ -35,13 +35,37 @@ peuvent aussi partager ce qui est appris grâce à leur clé (voir
 | **Anglais à l'école** | **Anglais GS** (à l'oreille, avec dessins, sans lire) : Couleurs et nombres, Les animaux, la famille, le corps, Ma journée. **Anglais CP** (sans lire) : Se présenter, Révisions couleurs et nombres, À l'école, Autour de moi. **Anglais CE1** : Les jours et les nombres, Corps, vêtements, météo, Petites phrases. **Anglais CE2** : Se présenter et la famille, Nombres et temps, Le quotidien, Maison, école, animaux, Phrases et écriture | Enfant, GS, CP, CE1 et CE2 |
 | **Anglais aéronautique** | Un seul niveau, OACI 6 : Bases radio, Phraséo et au-delà, Systèmes de l'avion, Météo, Aérodrome, Situations anormales, Anglais idiomatique, Compréhension orale, Oral | Adulte, niveau 6 OACI |
 
+## Écrire un paquet de la famille
+
+Catalogue › « Créer un paquet » ouvre l'éditeur, sans fichier à écrire : le
+nom, pour qui (enfant, adulte, tout âge), le niveau et la matière, puis un ou
+plusieurs chapitres de fiches. Une fiche se répond de quatre façons : **à
+taper**, **à choisir** (avec les mauvaises réponses proposées, sinon prises
+dans les autres fiches du chapitre), **dictée** (l'appareil dit le mot, on
+l'écrit) ou **carte à retourner**.
+
+« Coller une liste » remplit un chapitre d'un coup : des mots, un par ligne,
+pour une dictée ; ou des lignes « question ; réponse », séparées par un
+point-virgule ou une tabulation (copiées d'un tableur), les colonnes
+suivantes étant les mauvaises réponses d'une fiche à choisir ou les autres
+réponses acceptées d'une fiche à taper. Les lignes déjà là sont sautées.
+
+Un paquet enregistré se coche ensuite dans Par personne, comme les autres.
+« Modifier » le rouvre : les fiches gardent leur identifiant, donc ce que
+chacun a appris. « Exporter » donne son fichier, à envoyer à une autre
+famille, qui l'ajoute avec « Importer » (fichier ou texte collé, format
+`hopla-module/1`, voir [le format des modules](format-module.md)). Un module
+reçu qui contient d'autres types de fiches (relier, ordre, cartes…) se
+modifie dans l'éditeur sans perdre ces fiches ; un module avec des calculs
+tirés au hasard ou un paquet de modules se change seulement par fichier.
+
 ## Installer et choisir qui joue
 
 Gérer › Modules d'apprentissage, en deux onglets :
 
-- **Catalogue** : les paquets fournis, à installer, avec le détail de chacun
-  (modules, chapitres, exemples de fiches). On y importe aussi un module écrit
-  à la main (fichier ou texte collé, format `hopla-module/1`).
+- **Catalogue** : en haut, les **paquets de la famille** ; dessous, les
+  paquets fournis, à installer, avec le détail de chacun (modules, chapitres,
+  exemples de fiches).
 - **Par personne** : on choisit une personne en haut, puis on coche les
   **paquets** auxquels elle joue (case à droite du nom). Les paquets sont
   pliés : une ligne dit jusqu'à quel niveau le paquet est ouvert et combien

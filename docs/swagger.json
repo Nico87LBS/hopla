@@ -3772,6 +3772,44 @@
                 }
             }
         },
+        "/api/v1/learn/modules/{key}/file": {
+            "get": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "description": "Le fichier du module, tel qu'importé ou enregistré depuis l'éditeur.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre"
+                ],
+                "summary": "Exporter un module de la famille",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Clé du module",
+                        "name": "key",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/learn/packs": {
             "put": {
                 "security": [
