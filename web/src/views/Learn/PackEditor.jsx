@@ -39,6 +39,7 @@ import {
   LISTENING,
   listensFor,
   typed,
+  ZONE_WAYS,
 } from '../../utils/learn/cardOptions'
 import {
   cardDone,
@@ -49,6 +50,7 @@ import {
   fromDocument,
   kindOf,
   KINDS,
+  LABEL_KINDS,
   moduleIdFor,
   newChapter,
   newPack,
@@ -59,11 +61,17 @@ import {
   toDocument,
 } from '../../utils/learn/familyPack'
 import { iconFile, ICONS } from '../../utils/learn/icons'
+import {
+  emptyLabels,
+  labelProblem,
+  labelsOf,
+} from '../../utils/learn/labelCards'
 import LoadingComponent from '../components/Loading'
 import { surfaceSx } from '../Games/GameParts'
 import { ParentPage } from '../Manage/ParentPages'
 import { CardOptionFields, MoreOptions, ToleranceSelect } from './CardOptions'
 import { useExportModule } from './FamilyPacks'
+import LabelRows, { ZoneChoice } from './LabelRows'
 import { LearnIcon } from './LearnParts'
 import { useNotify } from './ManageLearn'
 import RemoveModal from './RemoveModal'
@@ -98,6 +106,11 @@ const KIND_COLORS = {
   choix: 'success',
   dictee: 'warning',
   retourner: 'neutral',
+  associer: 'primary',
+  ordre: 'success',
+  classer: 'warning',
+  tracer: 'neutral',
+  zones: 'success',
   autre: 'neutral',
 }
 
@@ -164,7 +177,22 @@ const sensesFor = (kind, senses) => {
     const kept = (senses || []).filter(s => LISTENING.includes(s))
     return kept.length ? kept : ['dictee']
   }
+  if (kind === 'zones') return (senses || []).filter(s => ZONE_WAYS.includes(s))
+  if (LABEL_KINDS.includes(kind)) return []
   return (senses || []).filter(s => s === 'direct' || s === 'inverse')
+}
+
+// rowsOf gives the label rows of a card, or the empty rows to start with.
+const rowsOf = card => {
+  const empty = emptyLabels()
+  if (!card) return empty
+  const own = labelsOf(card)
+  return Object.fromEntries(
+    Object.keys(empty).map(name => [
+      name,
+      own[name].length ? own[name] : empty[name],
+    ]),
+  )
 }
 
 // CardModal writes or changes one card: what it asks and answers first, its
@@ -184,9 +212,18 @@ const CardModal = ({ card, onClose, onDelete, onSave }) => {
   const [others, setOthers] = useState((start.others || []).join('\n'))
   const [tolerance, setTolerance] = useState(start.tolerance)
   const [extras, setExtras] = useState(start.extras)
-  const type = TYPE_OF[kind] || 'saisie'
+  const [labels, setLabels] = useState(() => rowsOf(card))
+  const [zone, setZone] = useState(() =>
+    card?.type === 'zones'
+      ? { picture: card.image || '', id: card.question || '' }
+      : { picture: '', id: '' },
+  )
+  const labelled = LABEL_KINDS.includes(kind)
+  const type = labelled ? kind : TYPE_OF[kind] || 'saisie'
   const senses = sensesFor(kind, extras.sens)
-  const ownAnswer = kind !== 'dictee' || listensFor(senses)
+  const ownAnswer =
+    (!labelled && (kind !== 'dictee' || listensFor(senses))) ||
+    kind === 'tracer'
   const withTraps =
     kind === 'choix' || (kind === 'dictee' && listensFor(senses))
   const spelled = typed(type, senses)
@@ -199,9 +236,12 @@ const CardModal = ({ card, onClose, onDelete, onSave }) => {
       traps: lines(traps),
       others: lines(others),
       extras: { ...extras, sens: senses },
+      labels,
+      zone,
     },
     card || {},
   )
+  const problem = labelled ? labelProblem(written) : ''
   const pick = next => {
     setKind(next)
     setExtras(current => ({ ...current, sens: sensesFor(next, current.sens) }))
@@ -238,24 +278,45 @@ const CardModal = ({ card, onClose, onDelete, onSave }) => {
           </Typography>
           <KindChoice kinds={KINDS} value={kind} onPick={pick} />
         </Box>
-        {field(
-          t(
-            kind !== 'dictee'
-              ? 'pack.question'
-              : senses.includes('dictee')
-                ? 'pack.word'
-                : 'pack.heard',
-          ),
-          <Input
-            slotProps={{ input: { id: 'pack-question' } }}
-            value={question}
-            onChange={e => setQuestion(e.target.value)}
-          />,
-          'pack-question',
+        {kind !== 'zones' &&
+          field(
+            t(
+              labelled
+                ? 'pack.instruction'
+                : kind !== 'dictee'
+                  ? 'pack.question'
+                  : senses.includes('dictee')
+                    ? 'pack.word'
+                    : 'pack.heard',
+            ),
+            <Input
+              slotProps={{ input: { id: 'pack-question' } }}
+              value={question}
+              placeholder={
+                labelled ? t(`pack.instructionHint.${kind}`) : undefined
+              }
+              onChange={e => setQuestion(e.target.value)}
+            />,
+            'pack-question',
+          )}
+        {kind === 'zones' && (
+          <ZoneChoice
+            zone={zone}
+            onZone={setZone}
+            answer={answer}
+            onAnswer={setAnswer}
+          />
         )}
+        <LabelRows type={kind} labels={labels} onChange={setLabels} />
         {ownAnswer &&
           field(
-            t(kind === 'dictee' ? 'pack.meaning' : 'pack.answer'),
+            t(
+              kind === 'dictee'
+                ? 'pack.meaning'
+                : kind === 'tracer'
+                  ? 'pack.traced'
+                  : 'pack.answer',
+            ),
             <Input
               slotProps={{ input: { id: 'pack-answer' } }}
               value={answer}
@@ -295,11 +356,18 @@ const CardModal = ({ card, onClose, onDelete, onSave }) => {
         <Typography level='body-xs' sx={{ color: 'text.tertiary' }}>
           {t(`pack.kindHelp.${kind}`)}
         </Typography>
+        {problem && (
+          <Typography level='body-sm' color='warning'>
+            {t(`labels.problems.${problem}`)}
+          </Typography>
+        )}
         <MoreOptions
           start={hasOptions({
             ...extras,
             // The usual instruction of a dictation is no option to show.
             consigne: extras.consigne === DICTATION_HINT ? '' : extras.consigne,
+            // The picture of a zone is chosen above.
+            image: kind === 'zones' ? '' : extras.image,
           })}
         >
           <CardOptionFields
@@ -450,7 +518,16 @@ const CardRow = ({ card, onOpen, onRemove }) => {
         : t('pack.dictationLine')
       : kind === 'choix' && card.pieges?.length
         ? `${card.reponse} · ${card.pieges.join(', ')}`
-        : card.reponse
+        : kind === 'associer'
+          ? t('pack.pairsLine', { count: card.paires?.length || 0 })
+          : kind === 'ordre'
+            ? (card.elements || []).join(' → ')
+            : kind === 'classer'
+              ? t('pack.sortLine', {
+                  boxes: (card.boites || []).map(b => b.nom).join(', '),
+                  count: card.a_classer?.length || 0,
+                })
+              : card.reponse
   const chip = (
     <Chip size='sm' variant='soft' color={KIND_COLORS[kind]}>
       {t(`pack.kinds.${kind}`)}

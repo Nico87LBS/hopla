@@ -24,8 +24,10 @@ import {
   toleranceOf,
   typed,
 } from '../../utils/learn/cardOptions'
+import { labelProblem, labelsFor, labelsOf } from '../../utils/learn/labelCards'
 import { useMembers } from '../Manage/ParentPages'
 import { CardOptionFields, MoreOptions, ToleranceSelect } from './CardOptions'
+import LabelRows from './LabelRows'
 import { useNotify } from './ManageLearn'
 
 const lines = text =>
@@ -33,41 +35,6 @@ const lines = text =>
     .split('\n')
     .map(line => line.trim())
     .filter(Boolean)
-
-// A label is written « mot #dessin »: a word, a drawing of the catalogue, or
-// both. A word alone stays a plain string, as in the module.
-const readSide = text => {
-  const m = /^(.*?)\s*(?:#([a-z0-9-]+))?$/.exec(text.trim())
-  const word = m[1].trim()
-  if (!m[2]) return word
-  return word ? { texte: word, image: m[2] } : { image: m[2] }
-}
-
-const writeSide = side =>
-  typeof side === 'string'
-    ? side
-    : [side.texte, side.image && `#${side.image}`].filter(Boolean).join(' ')
-
-// The labels of a card, one line each: « gauche = droite » for pairs,
-// « mot #dessin = boîte » for labels to sort.
-const readPairs = text =>
-  lines(text).map(line => line.split('=').map(part => readSide(part)))
-
-const readToSort = text =>
-  lines(text).map(line => {
-    const [left, box = ''] = line.split('=')
-    const side = readSide(left)
-    const own = typeof side === 'string' ? { texte: side } : side
-    return { ...own, boite: box.trim() }
-  })
-
-const readBoxes = text =>
-  lines(text).map(line => {
-    const side = readSide(line)
-    return typeof side === 'string'
-      ? { nom: side }
-      : { nom: side.texte || '', image: side.image }
-  })
 
 // The types whose answer is a set of labels, not one answer.
 const LABELLED = ['associer', 'ordre', 'classer']
@@ -142,23 +109,7 @@ const CardEditor = ({ card, moduleId, onClose, original, reports }) => {
   const [others, setOthers] = useState((card.autres_reponses || []).join('\n'))
   const [extras, setExtras] = useState(() => extrasOf(card))
   const [tolerance, setTolerance] = useState(toleranceOf(card))
-  const [pairs, setPairs] = useState(
-    (card.paires || []).map(pair => pair.map(writeSide).join(' = ')).join('\n'),
-  )
-  const [elements, setElements] = useState((card.elements || []).join('\n'))
-  const [boxes, setBoxes] = useState(
-    (card.boites || [])
-      .map(b => writeSide(b.image ? { texte: b.nom, image: b.image } : b.nom))
-      .join('\n'),
-  )
-  const [toSort, setToSort] = useState(
-    (card.a_classer || [])
-      .map(
-        e =>
-          `${writeSide(e.image ? { texte: e.texte, image: e.image } : e.texte)} = ${e.boite}`,
-      )
-      .join('\n'),
-  )
+  const [labels, setLabels] = useState(() => labelsOf(card))
   // A dictation accepts other spellings heard the same way (cet, cette).
   const dictation =
     card.type === 'ecoute' && (extras.sens || []).includes('dictee')
@@ -166,6 +117,13 @@ const CardEditor = ({ card, moduleId, onClose, original, reports }) => {
   const withTraps =
     card.type === 'choix' || (card.type === 'ecoute' && listensFor(extras.sens))
   const labelled = LABELLED.includes(card.type)
+  const problem = labelled
+    ? labelProblem({
+        ...card,
+        question,
+        ...labelsFor(card.type, labels),
+      })
+    : ''
 
   const send = async change => {
     try {
@@ -181,12 +139,7 @@ const CardEditor = ({ card, moduleId, onClose, original, reports }) => {
     const wanted = {
       question: question.trim(),
       ...(!labelled && { reponse: answer.trim() }),
-      ...(card.type === 'associer' && { paires: readPairs(pairs) }),
-      ...(card.type === 'ordre' && { elements: lines(elements) }),
-      ...(card.type === 'classer' && {
-        boites: readBoxes(boxes),
-        a_classer: readToSort(toSort),
-      }),
+      ...labelsFor(card.type, labels),
       ...(withTraps && {
         pieges: lines(traps).length ? lines(traps) : undefined,
       }),
@@ -237,7 +190,8 @@ const CardEditor = ({ card, moduleId, onClose, original, reports }) => {
             label: t('manage.save'),
             onClick: save,
             loading: edit.isPending,
-            disabled: !question.trim() || (!labelled && !answer.trim()),
+            disabled:
+              !question.trim() || (!labelled && !answer.trim()) || !!problem,
           }}
         />
       }
@@ -263,45 +217,12 @@ const CardEditor = ({ card, moduleId, onClose, original, reports }) => {
             t(card.type === 'zones' ? 'edit.zoneName' : 'edit.answer'),
             <Input value={answer} onChange={e => setAnswer(e.target.value)} />,
           )}
-        {card.type === 'associer' &&
-          field(
-            t('edit.pairs'),
-            <Textarea
-              minRows={4}
-              value={pairs}
-              placeholder={t('edit.pairsHelp')}
-              onChange={e => setPairs(e.target.value)}
-            />,
-          )}
-        {card.type === 'ordre' &&
-          field(
-            t('edit.elements'),
-            <Textarea
-              minRows={4}
-              value={elements}
-              onChange={e => setElements(e.target.value)}
-            />,
-          )}
-        {card.type === 'classer' &&
-          field(
-            t('edit.boxes'),
-            <Textarea
-              minRows={2}
-              value={boxes}
-              placeholder={t('edit.boxesHelp')}
-              onChange={e => setBoxes(e.target.value)}
-            />,
-          )}
-        {card.type === 'classer' &&
-          field(
-            t('edit.toSort'),
-            <Textarea
-              minRows={4}
-              value={toSort}
-              placeholder={t('edit.toSortHelp')}
-              onChange={e => setToSort(e.target.value)}
-            />,
-          )}
+        <LabelRows type={card.type} labels={labels} onChange={setLabels} />
+        {problem && (
+          <Typography level='body-sm' color='warning'>
+            {t(`labels.problems.${problem}`)}
+          </Typography>
+        )}
         {withTraps &&
           field(
             t('edit.traps'),

@@ -83,15 +83,92 @@ ToleranceSelect.propTypes = {
   value: PropTypes.string.isRequired,
 }
 
-// DrawingPicker picks a drawing of the app for a card, or none.
-export const DrawingPicker = ({ onChange, value }) => {
+// DrawingGrid lists the drawings of the app, to pick one.
+export const DrawingGrid = ({ onPick, value }) => {
   const { t } = useTranslation('learn')
-  const [open, setOpen] = useState(false)
   const [search, setSearch] = useState('')
   const shown = useMemo(() => {
     const wanted = search.trim().toLowerCase()
     return wanted ? DRAWINGS.filter(name => name.includes(wanted)) : DRAWINGS
   }, [search])
+  return (
+    <Box sx={{ mt: 1 }}>
+      <Input
+        size='sm'
+        startDecorator={<SearchRounded />}
+        placeholder={t('options.imageSearch')}
+        value={search}
+        onChange={e => setSearch(e.target.value)}
+        sx={{ mb: 1 }}
+      />
+      <Box
+        role='listbox'
+        aria-label={t('options.image')}
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(64px, 1fr))',
+          gap: 0.75,
+          maxHeight: 248,
+          overflowY: 'auto',
+        }}
+      >
+        {shown.map(name => (
+          <Box
+            key={name}
+            component='button'
+            type='button'
+            role='option'
+            aria-selected={name === value}
+            title={name}
+            onClick={() => onPick(name)}
+            sx={{
+              p: 0.5,
+              border: '2px solid',
+              borderColor: name === value ? 'primary.solidBg' : 'transparent',
+              borderRadius: 'md',
+              bgcolor: 'background.level1',
+              cursor: 'pointer',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              minWidth: 0,
+            }}
+          >
+            <Box
+              component='img'
+              src={drawingURL(name)}
+              alt=''
+              loading='lazy'
+              sx={{ width: 44, height: 44 }}
+            />
+            <Typography
+              level='body-xs'
+              noWrap
+              sx={{ maxWidth: '100%', color: 'text.secondary' }}
+            >
+              {name}
+            </Typography>
+          </Box>
+        ))}
+      </Box>
+      {!shown.length && (
+        <Typography level='body-sm' sx={{ color: 'text.tertiary' }}>
+          {t('options.imageNone')}
+        </Typography>
+      )}
+    </Box>
+  )
+}
+
+DrawingGrid.propTypes = {
+  onPick: PropTypes.func.isRequired,
+  value: PropTypes.string,
+}
+
+// DrawingPicker picks a drawing of the app for a card, or none.
+export const DrawingPicker = ({ onChange, value }) => {
+  const { t } = useTranslation('learn')
+  const [open, setOpen] = useState(false)
   return (
     <Field label={t('options.image')} help={t('options.imageHelp')}>
       <Stack direction='row' gap={1} alignItems='center'>
@@ -125,75 +202,13 @@ export const DrawingPicker = ({ onChange, value }) => {
         )}
       </Stack>
       {open && (
-        <Box sx={{ mt: 1 }}>
-          <Input
-            size='sm'
-            startDecorator={<SearchRounded />}
-            placeholder={t('options.imageSearch')}
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            sx={{ mb: 1 }}
-          />
-          <Box
-            role='listbox'
-            aria-label={t('options.image')}
-            sx={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(64px, 1fr))',
-              gap: 0.75,
-              maxHeight: 248,
-              overflowY: 'auto',
-            }}
-          >
-            {shown.map(name => (
-              <Box
-                key={name}
-                component='button'
-                type='button'
-                role='option'
-                aria-selected={name === value}
-                title={name}
-                onClick={() => {
-                  onChange(name)
-                  setOpen(false)
-                }}
-                sx={{
-                  p: 0.5,
-                  border: '2px solid',
-                  borderColor:
-                    name === value ? 'primary.solidBg' : 'transparent',
-                  borderRadius: 'md',
-                  bgcolor: 'background.level1',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  minWidth: 0,
-                }}
-              >
-                <Box
-                  component='img'
-                  src={drawingURL(name)}
-                  alt=''
-                  loading='lazy'
-                  sx={{ width: 44, height: 44 }}
-                />
-                <Typography
-                  level='body-xs'
-                  noWrap
-                  sx={{ maxWidth: '100%', color: 'text.secondary' }}
-                >
-                  {name}
-                </Typography>
-              </Box>
-            ))}
-          </Box>
-          {!shown.length && (
-            <Typography level='body-sm' sx={{ color: 'text.tertiary' }}>
-              {t('options.imageNone')}
-            </Typography>
-          )}
-        </Box>
+        <DrawingGrid
+          value={value}
+          onPick={name => {
+            onChange(name)
+            setOpen(false)
+          }}
+        />
       )}
     </Field>
   )
