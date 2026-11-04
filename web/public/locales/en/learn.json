@@ -18,7 +18,11 @@
     "locked": "Opens once “{{chapter}}” is known at {{needed}}% (now: {{percent}}%)",
     "hopsToday": "{{earned}}/{{cap}} {{units}}",
     "totalToday": "Today: {{earned}}/{{cap}} {{units}}",
-    "dayFull": "Today's cap is reached, keep playing to practise"
+    "dayFull": "Today's cap is reached, keep playing to practise",
+    "upToDate": "Up to date, come back tomorrow",
+    "tomorrow_one": "{{count}} question tomorrow",
+    "tomorrow_other": "{{count}} questions tomorrow",
+    "practice": "Practise"
   },
   "play": {
     "quit": "Quit the game",
@@ -72,7 +76,13 @@
     "replay": "Play again",
     "back": "Back",
     "noHops": "No {{units}} this time, play again to earn some",
-    "retried": "Second try: {{right}} out of {{total}}"
+    "retried": "Second try: {{right}} out of {{total}}",
+    "practice": "Practice: no {{units}}",
+    "bonus_one": "including a +{{count}} {{unit}} “all reviewed” bonus",
+    "bonus_other": "including a +{{count}} {{units}} “all reviewed” bonus",
+    "tomorrow_zero": "Tomorrow: nothing to review",
+    "tomorrow_one": "Tomorrow: {{count}} question to review",
+    "tomorrow_other": "Tomorrow: {{count}} questions to review"
   },
   "retry": {
     "title": "Let's try again!",
@@ -185,7 +195,15 @@
       "compte": "By account",
       "auto": "The answer time",
       "boutons": "The Hard and Easy buttons"
-    }
+    },
+    "newPerDay": "New per day",
+    "reviewBonus": "“All reviewed” bonus ({{units}})",
+    "reviewMax": "Most reviews per day",
+    "reviews": "Daily reviews",
+    "reviewsShort": "At most {{most}} questions a day · {{bonus}} {{units}} bonus",
+    "reviewsFor": "Set the daily reviews of {{name}}",
+    "reviewsHelp": "The daily reviews gather the questions due in every module. Past the most, the rest waits for the next day (handy after the holidays). The bonus comes once a day, when everything is reviewed. Leave empty to keep the default.",
+    "byDefault": "{{value}} (default)"
   },
   "stats": {
     "chapters": "Chapters",
@@ -226,7 +244,9 @@
     "dailyCap_other": "{{count}} {{units}} a day",
     "unlock": "opening at {{value}}%",
     "retention": "recall {{value}} %",
-    "maxInterval": "at most {{value}} d"
+    "maxInterval": "at most {{value}} d",
+    "newPerDay_one": "{{count}} new per day",
+    "newPerDay_other": "{{count}} new per day"
   },
   "legend": {
     "module": "Module",
@@ -589,5 +609,33 @@
     "pasteCount_other": "{{count}} cards will be added to “{{chapter}}”.",
     "pasteSkipped_one": "{{count}} line skipped (already there, twice or without an answer).",
     "pasteSkipped_other": "{{count}} lines skipped (already there, twice or without an answer)."
+  },
+  "reviews": {
+    "title": "My reviews",
+    "count_one": "{{count}} question to review today",
+    "count_other": "{{count}} questions to review today",
+    "modules_one": "{{count}} module",
+    "modules_other": "{{count}} modules",
+    "go_one": "Review ({{count}} question)",
+    "go_other": "Review ({{count}} questions)",
+    "bonus_one": "Review everything today: +{{count}} {{unit}} bonus",
+    "bonus_other": "Review everything today: +{{count}} {{units}} bonus",
+    "done": "Reviews up to date",
+    "most": "Enough reviewing for today, more tomorrow.",
+    "tomorrow_zero": "Nothing to review tomorrow.",
+    "tomorrow_one": "{{count}} question to review tomorrow.",
+    "tomorrow_other": "{{count}} questions to review tomorrow."
+  },
+  "upToDate": {
+    "title": "Up to date, come back tomorrow!",
+    "reviews": "Everything is reviewed!",
+    "tomorrow_zero": "Nothing planned for tomorrow yet.",
+    "tomorrow_one": "{{count}} question comes back tomorrow.",
+    "tomorrow_other": "{{count}} questions come back tomorrow.",
+    "practiceHelp": "You can practise meanwhile: no {{units}}, it counts neither for the break nor for the reviews.",
+    "practice": "Practise"
+  },
+  "practice": {
+    "banner": "Practice: no {{units}}, counts neither for the break nor for the reviews"
   }
 }

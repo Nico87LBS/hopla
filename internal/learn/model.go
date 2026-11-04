@@ -62,6 +62,8 @@ type GameSettings struct {
 	// MaxInterval the longest wait of a card, in days.
 	Retention   *int `json:"retention" gorm:"column:retention"`
 	MaxInterval *int `json:"maxInterval" gorm:"column:max_interval"`
+	// NewPerDay is the most new questions of a module in a day.
+	NewPerDay *int `json:"newPerDay" gorm:"column:new_per_day"`
 }
 
 func (Activation) TableName() string { return "learn_activations" }
@@ -104,6 +106,12 @@ type PersonSetting struct {
 	// and Facile (GradingButtons). Empty, by their account: buttons for a
 	// parent, the time for a child.
 	Grading string `json:"grading" gorm:"column:grading;size:10"`
+	// ReviewBonus and ReviewMax, for AllPacks only, are the hops earned
+	// once a day for reviewing everything due, and the most questions due
+	// reviewed in a day. Empty, the family's, then DefaultReviewBonus and
+	// DefaultReviewMax.
+	ReviewBonus *int `json:"reviewBonus" gorm:"column:review_bonus"`
+	ReviewMax   *int `json:"reviewMax" gorm:"column:review_max"`
 	GameSettings
 	UpdatedAt time.Time `json:"updatedAt" gorm:"column:updated_at"`
 }
@@ -127,8 +135,15 @@ type Session struct {
 	DurationSec int       `json:"durationSec" gorm:"column:duration_sec"`
 	PlayedAt    time.Time `json:"playedAt" gorm:"column:played_at;not null"`
 	PlayedBy    int       `json:"playedBy" gorm:"column:played_by"`
-	CreatedAt   time.Time `json:"createdAt" gorm:"column:created_at"`
+	// Bonus is the part of Points paid for reviewing everything due, in
+	// the day's reviews (ReviewsKey).
+	Bonus     int       `json:"bonus" gorm:"column:bonus;not null;default:0"`
+	CreatedAt time.Time `json:"createdAt" gorm:"column:created_at"`
 }
+
+// ReviewsKey is the module of the day's reviews, a game that asks what is
+// due in all the modules a person plays. No module takes this id.
+const ReviewsKey = "revisions"
 
 func (Session) TableName() string { return "learn_sessions" }
 
@@ -195,8 +210,12 @@ type ReviewLog struct {
 	Day       string `json:"day" gorm:"column:day;size:10;not null"`
 	Grade     int    `json:"grade" gorm:"column:grade;not null"`
 	// Ms is the time taken to answer, 0 when unknown.
-	Ms        int       `json:"ms" gorm:"column:ms;not null;default:0"`
-	Elapsed   int       `json:"elapsed" gorm:"column:elapsed;not null;default:0"`
+	Ms      int `json:"ms" gorm:"column:ms;not null;default:0"`
+	Elapsed int `json:"elapsed" gorm:"column:elapsed;not null;default:0"`
+	// WasDue tells that the card was due when answered, WasNew that it was
+	// never seen before: the day's reviews and new questions count them.
+	WasDue    bool      `json:"wasDue" gorm:"column:was_due;not null;default:false"`
+	WasNew    bool      `json:"wasNew" gorm:"column:was_new;not null;default:false"`
 	CreatedAt time.Time `json:"createdAt" gorm:"column:created_at"`
 }
 

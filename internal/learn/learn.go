@@ -336,6 +336,7 @@ func splitModule(db *gorm.DB, familyID int, key string, entries map[string]Entry
 					{&row.DailyCap, &a.DailyCap}, {&row.UnlockPercent, &a.UnlockPercent},
 					{&row.Questions, &a.Questions}, {&row.Threshold, &a.Threshold}, {&row.HopsByStar, &a.HopsByStar},
 					{&row.Retention, &a.Retention}, {&row.MaxInterval, &a.MaxInterval},
+					{&row.NewPerDay, &a.NewPerDay},
 				} {
 					if *f.to == nil {
 						*f.to = *f.from
@@ -657,6 +658,9 @@ func SetActivation(db *gorm.DB, familyID int, change ActivationChange, now time.
 			if change.MaxInterval != nil {
 				columns = append(columns, "max_interval")
 			}
+			if change.NewPerDay != nil {
+				columns = append(columns, "new_per_day")
+			}
 			if len(columns) == 0 {
 				conflict.DoNothing = true
 			} else {
@@ -688,6 +692,9 @@ func (g GameSettings) check() error {
 		(*g.MaxInterval < MinMaxInterval || *g.MaxInterval > MaxMaxInterval) {
 		return invalid("intervalle maximal entre %d et %d jours", MinMaxInterval, MaxMaxInterval)
 	}
+	if g.NewPerDay != nil && *g.NewPerDay != -1 && (*g.NewPerDay < 1 || *g.NewPerDay > MaxNewPerDay) {
+		return invalid("nouvelles questions par jour entre 1 et %d", MaxNewPerDay)
+	}
 	return nil
 }
 
@@ -708,11 +715,14 @@ func (g *GameSettings) apply(change GameSettings) {
 	if change.MaxInterval != nil {
 		g.MaxInterval = ownSetting(change.MaxInterval)
 	}
+	if change.NewPerDay != nil {
+		g.NewPerDay = ownSetting(change.NewPerDay)
+	}
 }
 
 func (g GameSettings) empty() bool {
 	return g.Questions == nil && g.Threshold == nil && g.HopsByStar == nil && g.Retention == nil &&
-		g.MaxInterval == nil
+		g.MaxInterval == nil && g.NewPerDay == nil
 }
 
 // ownSetting is a person's setting as kept: nil for -1, the module's own.
@@ -760,6 +770,10 @@ type SettingChange struct {
 	// Grading sets how a person's right answers are graded (scope AllPacks):
 	// one of Gradings, or empty for the default of their account.
 	Grading *string `json:"grading"`
+	// ReviewBonus and ReviewMax set the day's reviews (scope AllPacks), for
+	// a person or the whole family.
+	ReviewBonus *int `json:"reviewBonus"`
+	ReviewMax   *int `json:"reviewMax"`
 	GameSettings
 }
 
@@ -784,16 +798,30 @@ func SetPersonSetting(db *gorm.DB, familyID int, change SettingChange, now time.
 	if change.UnlockPercent != nil && (*change.UnlockPercent < -1 || *change.UnlockPercent > 100) {
 		return invalid("seuil d'ouverture entre 0 et 100 %%")
 	}
+	if change.ReviewBonus != nil && (*change.ReviewBonus < -1 || *change.ReviewBonus > MaxReviewBonus) {
+		return invalid("bonus des révisions entre 0 et %d hops", MaxReviewBonus)
+	}
+	if change.ReviewMax != nil && *change.ReviewMax != -1 &&
+		(*change.ReviewMax < MinReviewMax || *change.ReviewMax > MaxReviewMax) {
+		return invalid("révisions par jour entre %d et %d", MinReviewMax, MaxReviewMax)
+	}
 	if err := change.GameSettings.check(); err != nil {
 		return err
 	}
 	if change.Family {
 		change.UserID = Family
 	}
+	reviews := change.ReviewBonus != nil || change.ReviewMax != nil
 	switch {
-	case change.Scope == AllPacks && (change.Family || change.DailyCap != nil || change.UnlockPercent != nil ||
+	case change.Scope == AllPacks && (change.DailyCap != nil || change.UnlockPercent != nil ||
 		!change.GameSettings.empty()):
 		return invalid("seul le plafond total se règle pour tous les jeux, personne par personne")
+	case reviews && change.Scope != AllPacks:
+		return invalid("les révisions du jour se règlent pour tous les jeux")
+	case change.Scope == AllPacks && change.Family && !reviews:
+		return invalid("pour toute la famille, seules les révisions du jour se règlent pour tous les jeux")
+	case change.TotalCap != nil && change.Family:
+		return invalid("le plafond total se règle personne par personne")
 	case change.TotalCap != nil && change.Scope != AllPacks:
 		return invalid("le plafond total se règle pour tous les jeux")
 	case (change.ReadAloud != nil || change.Voice != nil) && (change.Scope != AllPacks || change.Family):
@@ -867,10 +895,17 @@ func SetPersonSetting(db *gorm.DB, familyID int, change SettingChange, now time.
 		if change.Grading != nil {
 			row.Grading = *change.Grading
 		}
+		if change.ReviewBonus != nil {
+			row.ReviewBonus = ownSetting(change.ReviewBonus)
+		}
+		if change.ReviewMax != nil {
+			row.ReviewMax = ownSetting(change.ReviewMax)
+		}
 		row.GameSettings.apply(change.GameSettings)
 		row.UpdatedAt = now
 		if row.DailyCap == nil && row.UnlockPercent == nil && row.TotalCap == nil && row.ReadAloud == nil &&
-			row.Voice == "" && row.FirstName == "" && row.Grading == "" && row.GameSettings.empty() {
+			row.Voice == "" && row.FirstName == "" && row.Grading == "" && row.ReviewBonus == nil &&
+			row.ReviewMax == nil && row.GameSettings.empty() {
 			return tx.Where("family_id = ? AND user_id = ? AND scope = ?", familyID, change.UserID, change.Scope).
 				Delete(&PersonSetting{}).Error
 		}
@@ -910,6 +945,7 @@ func FoldAllPacks(db *gorm.DB) error {
 					{dailyCap, &all.DailyCap}, {unlock, &all.UnlockPercent}, {&game.Questions, &all.Questions},
 					{&game.Threshold, &all.Threshold}, {&game.HopsByStar, &all.HopsByStar},
 					{&game.Retention, &all.Retention}, {&game.MaxInterval, &all.MaxInterval},
+					{&game.NewPerDay, &all.NewPerDay},
 				} {
 					if *f.to == nil {
 						*f.to = *f.from
@@ -944,7 +980,8 @@ func FoldAllPacks(db *gorm.DB) error {
 				}
 			}
 			where := tx.Where("family_id = ? AND user_id = ? AND scope = ?", all.FamilyID, all.UserID, AllPacks)
-			if all.TotalCap == nil && all.ReadAloud == nil && all.Voice == "" && all.FirstName == "" {
+			if all.TotalCap == nil && all.ReadAloud == nil && all.Voice == "" && all.FirstName == "" &&
+				all.Grading == "" && all.ReviewBonus == nil && all.ReviewMax == nil {
 				return where.Delete(&PersonSetting{}).Error
 			}
 			return where.Model(&PersonSetting{}).Updates(map[string]any{"daily_cap": nil, "unlock_percent": nil,
@@ -1069,10 +1106,26 @@ func (l limits) settings(module string, activation Activation, own Settings) Set
 	pick(activation.HopsByStar, func(s PersonSetting) *int { return s.HopsByStar }, &own.HopsByStar)
 	pick(activation.Retention, func(s PersonSetting) *int { return s.Retention }, &own.Retention)
 	pick(activation.MaxInterval, func(s PersonSetting) *int { return s.MaxInterval }, &own.MaxInterval)
+	pick(activation.NewPerDay, func(s PersonSetting) *int { return s.NewPerDay }, &own.NewPerDay)
 	return own
 }
 
 func (l limits) totalCap() *int { return l.byScope[AllPacks].TotalCap }
+
+// reviews are the day's reviews of a person: the bonus for reviewing
+// everything due, and the most questions due reviewed in a day.
+func (l limits) reviews() (bonus, most int) {
+	bonus, most = DefaultReviewBonus, DefaultReviewMax
+	for _, row := range []PersonSetting{l.family[AllPacks], l.byScope[AllPacks]} {
+		if row.ReviewBonus != nil {
+			bonus = *row.ReviewBonus
+		}
+		if row.ReviewMax != nil {
+			most = *row.ReviewMax
+		}
+	}
+	return bonus, most
+}
 
 // What the device says aloud for a person, in the modules that read.
 const (
@@ -1108,6 +1161,7 @@ type Applied struct {
 	HopsByStar    Value `json:"hopsByStar"`
 	Retention     Value `json:"retention"`
 	MaxInterval   Value `json:"maxInterval"`
+	NewPerDay     Value `json:"newPerDay"`
 	DailyCap      Value `json:"dailyCap"`
 	UnlockPercent Value `json:"unlockPercent"`
 }
@@ -1159,6 +1213,8 @@ func AppliedSettings(db *gorm.DB, familyID int, userIDs []int) (map[int]map[stri
 				Retention:  value(activation.Retention, func(s PersonSetting) *int { return s.Retention }, &settings.Retention),
 				MaxInterval: value(activation.MaxInterval, func(s PersonSetting) *int { return s.MaxInterval },
 					&settings.MaxInterval),
+				NewPerDay: value(activation.NewPerDay, func(s PersonSetting) *int { return s.NewPerDay },
+					&settings.NewPerDay),
 				DailyCap:      value(activation.DailyCap, func(s PersonSetting) *int { return s.DailyCap }, &settings.DailyCap),
 				UnlockPercent: value(activation.UnlockPercent, func(s PersonSetting) *int { return s.UnlockPercent }, nil),
 			}
@@ -1246,6 +1302,24 @@ type PlayerModule struct {
 	// UsualMs is the time the person usually takes to answer right in this
 	// module, 0 until enough answers are known.
 	UsualMs int `json:"usualMs"`
+	// NewToday counts the new questions met today, within NewPerDay.
+	NewToday int `json:"newToday"`
+}
+
+// PlayerReviews are a person's reviews of the day, all modules together.
+type PlayerReviews struct {
+	// Bonus is paid once a day for reviewing everything due; BonusPaid
+	// tells it was today.
+	Bonus     int  `json:"bonus"`
+	BonusPaid bool `json:"bonusPaid"`
+	// Most is the most questions due reviewed in a day, Done those reviewed
+	// today, in any game.
+	Most int `json:"most"`
+	Done int `json:"done"`
+	// EarnedToday is what the review games earned today, without the
+	// bonus, within DailyCap.
+	EarnedToday int `json:"earnedToday"`
+	DailyCap    int `json:"dailyCap"`
 }
 
 // Player is everything a device needs to let a person play, also offline:
@@ -1270,6 +1344,8 @@ type Player struct {
 	// Grading is how the person's right answers are graded: GradingAuto or
 	// GradingButtons.
 	Grading string `json:"grading"`
+	// Reviews are the day's reviews, all modules together.
+	Reviews PlayerReviews `json:"reviews"`
 	// Recre is the person's récré: when the next one comes, and the records.
 	Recre Recre `json:"recre"`
 	// Placements are the person's placement tests, to offer one in a pack
@@ -1298,10 +1374,11 @@ func PlayerFor(db *gorm.DB, familyID, userID int, now time.Time) (Player, error)
 	type total struct {
 		ModuleKey string
 		Points    int
+		Bonus     int
 		Games     int
 	}
 	var totals []total
-	if err := db.Model(&Session{}).Select("module_key, SUM(points) AS points, COUNT(*) AS games").
+	if err := db.Model(&Session{}).Select("module_key, SUM(points) AS points, SUM(bonus) AS bonus, COUNT(*) AS games").
 		Where("family_id = ? AND user_id = ? AND day = ?", familyID, userID, player.Day).
 		Group("module_key").Scan(&totals).Error; err != nil {
 		return player, err
@@ -1333,6 +1410,13 @@ func PlayerFor(db *gorm.DB, familyID, userID int, now time.Time) (Player, error)
 	if err != nil {
 		return player, err
 	}
+	newToday, err := reviewsOf(db, familyID, userID, player.Day, &player.Reviews)
+	if err != nil {
+		return player, err
+	}
+	player.Reviews.Bonus, player.Reviews.Most = limits.reviews()
+	player.Reviews.DailyCap = DefaultDailyCap
+	player.Reviews.EarnedToday = earned[ReviewsKey].Points - earned[ReviewsKey].Bonus
 	player.Placements, err = Placements(db, familyID, &userID)
 	if err != nil {
 		return player, err
@@ -1359,7 +1443,7 @@ func PlayerFor(db *gorm.DB, familyID, userID int, now time.Time) (Player, error)
 			Settings:      limits.settings(module.Key, activation, doc.Settings.WithDefaults()),
 			UnlockPercent: limits.unlockPercent(module.Key, activation),
 			EarnedToday:   earned[module.Key].Points, PlayedToday: earned[module.Key].Games,
-			Placed: placed[module.Key], UsualMs: usual[module.Key]}
+			Placed: placed[module.Key], UsualMs: usual[module.Key], NewToday: newToday[module.Key]}
 		if pm.Placed == nil {
 			pm.Placed = []string{}
 		}
@@ -1372,6 +1456,40 @@ func PlayerFor(db *gorm.DB, familyID, userID int, now time.Time) (Player, error)
 	recre, err := RecreFor(db, familyID, userID, now)
 	player.Recre = recre
 	return player, err
+}
+
+// reviewsOf counts a person's reviews of the day, all modules together, and
+// tells whether the bonus was paid. It returns the new questions met today,
+// by module.
+func reviewsOf(db *gorm.DB, familyID, userID int, day string, reviews *PlayerReviews) (map[string]int, error) {
+	var done int64
+	if err := db.Model(&ReviewLog{}).Distinct("card_key").
+		Where("family_id = ? AND user_id = ? AND day = ? AND was_due = ?", familyID, userID, day, true).
+		Count(&done).Error; err != nil {
+		return nil, err
+	}
+	reviews.Done = int(done)
+	var paid int64
+	if err := db.Model(&Session{}).Where("family_id = ? AND user_id = ? AND day = ? AND bonus > 0",
+		familyID, userID, day).Count(&paid).Error; err != nil {
+		return nil, err
+	}
+	reviews.BonusPaid = paid > 0
+	type count struct {
+		ModuleKey string
+		New       int
+	}
+	var counts []count
+	if err := db.Model(&ReviewLog{}).Select("module_key, COUNT(DISTINCT card_key) AS new").
+		Where("family_id = ? AND user_id = ? AND day = ? AND was_new = ?", familyID, userID, day, true).
+		Group("module_key").Scan(&counts).Error; err != nil {
+		return nil, err
+	}
+	out := map[string]int{}
+	for _, c := range counts {
+		out[c.ModuleKey] = c.New
+	}
+	return out, nil
 }
 
 // gradingOf is how a person's right answers are graded: as a parent set it,
@@ -1572,6 +1690,8 @@ type Answer struct {
 	Grade int `json:"grade,omitempty"`
 	// Ms is the time taken to answer, in milliseconds.
 	Ms int `json:"ms,omitempty"`
+	// Module, in the day's reviews, is the module that asked the question.
+	Module string `json:"module,omitempty"`
 }
 
 // GradeOf is the FSRS grade of an answer: Again when wrong, Hard for
@@ -1608,6 +1728,10 @@ type Game struct {
 	PlayedAt    time.Time `json:"playedAt"`
 	DurationSec int       `json:"durationSec"`
 	Answers     []Answer  `json:"answers"`
+	// Last, in the day's reviews, tells that the device found nothing left
+	// to review today once this game is played: it earns the bonus, once a
+	// day.
+	Last bool `json:"last"`
 }
 
 // Result is what a game earned.
@@ -1689,26 +1813,6 @@ func Record(db *gorm.DB, familyID, playedBy int, game Game, now time.Time) (Resu
 		if !errors.Is(err, gorm.ErrRecordNotFound) {
 			return err
 		}
-		var activation Activation
-		if err := tx.Where("family_id = ? AND user_id = ? AND module_key = ?", familyID, game.UserID, game.Module).
-			First(&activation).Error; err != nil {
-			if errors.Is(err, gorm.ErrRecordNotFound) {
-				return ErrNotActive
-			}
-			return err
-		}
-		var module Module
-		if err := tx.Where("family_id = ? AND module_key = ?", familyID, game.Module).First(&module).Error; err != nil {
-			if errors.Is(err, gorm.ErrRecordNotFound) {
-				return ErrNotActive
-			}
-			return err
-		}
-		doc, err := Parse([]byte(module.Content))
-		if err != nil {
-			return err
-		}
-		settings := doc.Settings.WithDefaults()
 		var modules []Module
 		if err := tx.Where("family_id = ?", familyID).Find(&modules).Error; err != nil {
 			return err
@@ -1717,9 +1821,65 @@ func Record(db *gorm.DB, familyID, playedBy int, game Game, now time.Time) (Resu
 		if err != nil {
 			return err
 		}
-		result.DailyCap = limits.dailyCap(game.Module, activation, settings)
+		reviews := game.Module == ReviewsKey
+		// Each module asked, with the settings that apply to the person.
+		asked := map[string]Settings{}
+		names := map[string]string{}
+		var activations []Activation
+		if err := tx.Where("family_id = ? AND user_id = ?", familyID, game.UserID).Find(&activations).Error; err != nil {
+			return err
+		}
+		byKey := map[string]Module{}
+		for _, module := range modules {
+			byKey[module.Key] = module
+		}
+		for _, activation := range activations {
+			module, ok := byKey[activation.ModuleKey]
+			if !ok || module.IsPack() {
+				continue
+			}
+			wanted := activation.ModuleKey == game.Module
+			if reviews {
+				for _, answer := range game.Answers {
+					wanted = wanted || answer.Module == activation.ModuleKey
+				}
+			}
+			if !wanted {
+				continue
+			}
+			doc, err := Parse([]byte(module.Content))
+			if err != nil {
+				return err
+			}
+			own := doc.Settings.WithDefaults()
+			if activation.ModuleKey == game.Module {
+				result.DailyCap = limits.dailyCap(game.Module, activation, own)
+			}
+			asked[module.Key] = limits.settings(module.Key, activation, own)
+			names[module.Key] = module.Name
+		}
+		settings := Settings{}.WithDefaults()
+		var name string
+		if reviews {
+			for i, answer := range game.Answers {
+				if _, ok := asked[answer.Module]; !ok {
+					return ErrNotActive
+				}
+				game.Answers[i].Module = answer.Module
+			}
+			result.DailyCap = DefaultDailyCap
+			name = "révisions du jour"
+		} else {
+			own, ok := asked[game.Module]
+			if !ok {
+				return ErrNotActive
+			}
+			settings, name = own, names[game.Module]
+			for i := range game.Answers {
+				game.Answers[i].Module = game.Module
+			}
+		}
 		result.TotalCap = limits.totalCap()
-		settings = limits.settings(game.Module, activation, settings)
 
 		day := Day(familyID, game.PlayedAt)
 		session := Session{FamilyID: familyID, ClientID: game.ClientID, UserID: game.UserID, ModuleKey: game.Module,
@@ -1736,7 +1896,7 @@ func Record(db *gorm.DB, familyID, playedBy int, game Game, now time.Time) (Resu
 		}
 
 		var earned int
-		if err := tx.Model(&Session{}).Select("COALESCE(SUM(points), 0)").
+		if err := tx.Model(&Session{}).Select("COALESCE(SUM(points - bonus), 0)").
 			Where("family_id = ? AND user_id = ? AND module_key = ? AND day = ?", familyID, game.UserID, game.Module, day).
 			Scan(&earned).Error; err != nil {
 			return err
@@ -1751,11 +1911,33 @@ func Record(db *gorm.DB, familyID, playedBy int, game Game, now time.Time) (Resu
 			session.Points = max(0, min(session.Points, *result.TotalCap-total))
 		}
 		result.Capped = session.Points < wanted
+		cards, due, err := moveCards(tx, familyID, game, day, asked, now)
+		if err != nil {
+			return err
+		}
+		if reviews && game.Last && due > 0 {
+			var paid int64
+			if err := tx.Model(&Session{}).Where("family_id = ? AND user_id = ? AND day = ? AND bonus > 0",
+				familyID, game.UserID, day).Count(&paid).Error; err != nil {
+				return err
+			}
+			bonus, _ := limits.reviews()
+			if result.TotalCap != nil {
+				bonus = min(bonus, *result.TotalCap-total-session.Points)
+			}
+			if paid == 0 && bonus > 0 {
+				session.Bonus = bonus
+				session.Points += bonus
+			}
+		}
 		if err := tx.Create(&session).Error; err != nil {
 			return err
 		}
 		if session.Points > 0 {
-			reason := fmt.Sprintf("Apprendre : %s %s", module.Name, strings.Repeat("★", session.Stars)+strings.Repeat("☆", 3-session.Stars))
+			reason := fmt.Sprintf("Apprendre : %s %s", name, strings.Repeat("★", session.Stars)+strings.Repeat("☆", 3-session.Stars))
+			if session.Bonus > 0 {
+				reason += fmt.Sprintf(" + bonus %d", session.Bonus)
+			}
 			if err := tx.Model(&fModel.UserFamily{}).Where("user_id = ? AND family_id = ?", game.UserID, familyID).
 				Update("points", gorm.Expr("points + ?", session.Points)).Error; err != nil {
 				return err
@@ -1765,12 +1947,8 @@ func Record(db *gorm.DB, familyID, playedBy int, game Game, now time.Time) (Resu
 				return err
 			}
 		}
-		cards, err := moveCards(tx, familyID, game, day, settings.schedule(), now)
-		if err != nil {
-			return err
-		}
 		result.Session, result.Cards = session, cards
-		result.EarnedToday = earned + session.Points
+		result.EarnedToday = earned + session.Points - session.Bonus
 		result.TotalEarned = total + session.Points
 		return nil
 	})
@@ -1780,7 +1958,7 @@ func Record(db *gorm.DB, familyID, playedBy int, game Game, now time.Time) (Resu
 // fillDay answers a game sent again with the day as it stands.
 func fillDay(tx *gorm.DB, familyID int, result *Result) error {
 	s := result.Session
-	if err := tx.Model(&Session{}).Select("COALESCE(SUM(points), 0)").
+	if err := tx.Model(&Session{}).Select("COALESCE(SUM(points - bonus), 0)").
 		Where("family_id = ? AND user_id = ? AND module_key = ? AND day = ?", familyID, s.UserID, s.ModuleKey, s.Day).
 		Scan(&result.EarnedToday).Error; err != nil {
 		return err
@@ -1790,8 +1968,12 @@ func fillDay(tx *gorm.DB, familyID int, result *Result) error {
 	return err
 }
 
-// moveCards applies the answers to the cards, in the order they were given.
-func moveCards(tx *gorm.DB, familyID int, game Game, day string, schedule Schedule, now time.Time) ([]Card, error) {
+// moveCards applies the answers to the cards, in the order they were given,
+// each by the settings of the module that asked it. It tells how many cards
+// were due.
+func moveCards(tx *gorm.DB, familyID int, game Game, day string, asked map[string]Settings,
+	now time.Time) ([]Card, int, error) {
+	due := 0
 	cards := map[string]*Card{}
 	var order []string
 	for _, answer := range game.Answers {
@@ -1801,30 +1983,35 @@ func moveCards(tx *gorm.DB, familyID int, game Game, day string, schedule Schedu
 			err := tx.Where("family_id = ? AND user_id = ? AND card_key = ?", familyID, game.UserID, answer.Key).
 				First(card).Error
 			if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-				return nil, err
+				return nil, 0, err
 			}
 			cards[answer.Key] = card
 			order = append(order, answer.Key)
 		}
 		elapsed := elapsedDays(card, day)
-		Review(card, answer, day, schedule)
-		card.ModuleKey = game.Module
-		log := ReviewLog{FamilyID: familyID, UserID: game.UserID, ModuleKey: game.Module, CardKey: answer.Key,
+		wasNew := card.Seen == 0
+		wasDue := !wasNew && card.Due != "" && card.Due <= day
+		if wasDue {
+			due++
+		}
+		Review(card, answer, day, asked[answer.Module].schedule())
+		card.ModuleKey = answer.Module
+		log := ReviewLog{FamilyID: familyID, UserID: game.UserID, ModuleKey: answer.Module, CardKey: answer.Key,
 			Day: day, Grade: GradeOf(answer), Ms: max(0, min(answer.Ms, maxAnswerMs)), Elapsed: elapsed,
-			CreatedAt: now}
+			WasDue: wasDue, WasNew: wasNew, CreatedAt: now}
 		if err := tx.Create(&log).Error; err != nil {
-			return nil, err
+			return nil, 0, err
 		}
 		card.LastSeenAt = game.PlayedAt.UTC()
 	}
 	out := make([]Card, 0, len(order))
 	for _, key := range order {
 		if err := tx.Save(cards[key]).Error; err != nil {
-			return nil, err
+			return nil, 0, err
 		}
 		out = append(out, *cards[key])
 	}
-	return out, nil
+	return out, due, nil
 }
 
 // maxAnswerMs is the longest time kept for one answer: past it, the player

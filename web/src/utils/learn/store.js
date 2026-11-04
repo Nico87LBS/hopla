@@ -4,7 +4,7 @@
 // does no harm.
 
 import { familyDay } from '../familyTime'
-import { review } from './engine'
+import { isDue, review, REVIEWS } from './engine'
 
 const PLAYER_KEY = userId => `hopla.learn.player.${userId}`
 const QUEUE_KEY = 'hopla.learn.queue'
@@ -41,7 +41,14 @@ export const loadPlayer = userId => {
       ...m,
       earnedToday: 0,
       playedToday: 0,
+      newToday: 0,
     }))
+    player.reviews = {
+      ...player.reviews,
+      bonusPaid: false,
+      done: 0,
+      earnedToday: 0,
+    }
   }
   return player
 }
@@ -63,38 +70,55 @@ const mergeCards = (cards, newer) => {
 }
 
 // playLocally moves the cards a game asked and counts its hops on the kept
-// player, before the server answers.
-export const playLocally = (player, game, hops) => {
+// player, before the server answers: the day's new questions and reviews
+// too. In the day's reviews (REVIEWS), each answer says its module; bonus
+// is the part of the hops paid for reviewing everything.
+export const playLocally = (player, game, hops, bonus = 0) => {
   const day = player.day || today()
   const byKey = new Map((player.cards || []).map(card => [card.key, card]))
-  const settings = player.modules?.find(m => m.id === game.module)?.settings
+  const settingsOf = id => player.modules?.find(m => m.id === id)?.settings
+  const fresh = {}
+  let reviewed = 0
+  const counted = new Set()
   const moved = game.answers.map(answer => {
+    const module = answer.module || game.module
+    const before = byKey.get(answer.key)
+    if (!counted.has(answer.key)) {
+      counted.add(answer.key)
+      if (!before) fresh[module] = (fresh[module] || 0) + 1
+      else if (isDue(before, day)) reviewed++
+    }
     const card = review(
-      {
-        ...(byKey.get(answer.key) || { key: answer.key }),
-        module: game.module,
-      },
+      { ...(before || { key: answer.key }), module },
       answer,
       day,
-      settings,
+      settingsOf(module),
     )
     // The same question twice in a game moves its card twice.
     byKey.set(card.key, card)
     return card
   })
+  const reviews = player.reviews || {}
   const next = {
     ...player,
     earnedToday: (player.earnedToday || 0) + hops,
     cards: mergeCards(player.cards, moved),
-    modules: player.modules.map(m =>
-      m.id === game.module
-        ? {
-            ...m,
-            earnedToday: m.earnedToday + hops,
-            playedToday: m.playedToday + 1,
-          }
-        : m,
-    ),
+    reviews: {
+      ...reviews,
+      done: (reviews.done || 0) + reviewed,
+      ...(game.module === REVIEWS && {
+        earnedToday: (reviews.earnedToday || 0) + hops - bonus,
+        bonusPaid: reviews.bonusPaid || bonus > 0,
+      }),
+    },
+    modules: player.modules.map(m => ({
+      ...m,
+      newToday: (m.newToday || 0) + (fresh[m.id] || 0),
+      ...(m.id === game.module && {
+        earnedToday: m.earnedToday + hops,
+        playedToday: m.playedToday + 1,
+      }),
+    })),
   }
   savePlayer(next)
   return next
@@ -105,9 +129,17 @@ export const applyResult = (userId, game, result) => {
   const player = read(PLAYER_KEY(userId))
   if (!player) return
   const sameDay = player.day === result.session?.day
+  const reviews = game.module === REVIEWS && sameDay
   savePlayer({
     ...player,
     ...(sameDay && { earnedToday: result.totalEarned }),
+    ...(reviews && {
+      reviews: {
+        ...player.reviews,
+        earnedToday: result.earnedToday,
+        bonusPaid: player.reviews?.bonusPaid || result.session.bonus > 0,
+      },
+    }),
     cards: mergeCards(player.cards, result.cards || []),
     modules: player.modules.map(m =>
       m.id === game.module && sameDay

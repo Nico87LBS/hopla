@@ -31,6 +31,13 @@ const (
 	DefaultRetention = 90
 	// DefaultMaxInterval is the longest wait of a card, in days.
 	DefaultMaxInterval = 365
+	// DefaultNewPerDay is the most new questions of a module in a day.
+	DefaultNewPerDay = 10
+	// DefaultReviewBonus is the hops earned once a day for reviewing
+	// everything due, and DefaultReviewMax the most questions due reviewed
+	// in a day, all modules together.
+	DefaultReviewBonus = 2
+	DefaultReviewMax   = 50
 )
 
 // Limits of the spaced repetition settings.
@@ -39,6 +46,10 @@ const (
 	MaxRetention   = 97
 	MinMaxInterval = 7
 	MaxMaxInterval = 3650
+	MaxNewPerDay   = 200
+	MaxReviewBonus = 20
+	MinReviewMax   = 5
+	MaxReviewMax   = 1000
 )
 
 // The question types and generators the game knows. A module using another
@@ -405,6 +416,9 @@ type Settings struct {
 	Retention int `json:"memorisation"`
 	// MaxInterval is the longest wait of a card, in days.
 	MaxInterval int `json:"intervalle_max"`
+	// NewPerDay is the most new questions a person meets in a day; past
+	// it, the module only asks what is due.
+	NewPerDay int `json:"nouvelles_par_jour"`
 }
 
 // WithDefaults fills the settings a module left out.
@@ -429,6 +443,9 @@ func (s Settings) WithDefaults() Settings {
 	}
 	if s.MaxInterval == 0 {
 		s.MaxInterval = DefaultMaxInterval
+	}
+	if s.NewPerDay == 0 {
+		s.NewPerDay = DefaultNewPerDay
 	}
 	return s
 }
@@ -459,6 +476,9 @@ func (d Document) Check() error {
 	}
 	if contains(ReservedDomains, d.ID) {
 		return fmt.Errorf("identifiant %q réservé aux calculs", d.ID)
+	}
+	if d.ID == ReviewsKey {
+		return fmt.Errorf("identifiant %q réservé aux révisions du jour", d.ID)
 	}
 	if strings.TrimSpace(d.Name) == "" {
 		return fmt.Errorf("module %s : nom manquant", d.ID)
@@ -562,6 +582,8 @@ func (d Document) Check() error {
 		return fmt.Errorf("module %s : memorisation entre %d et %d %%", d.ID, MinRetention, MaxRetention)
 	case s.MaxInterval != 0 && (s.MaxInterval < MinMaxInterval || s.MaxInterval > MaxMaxInterval):
 		return fmt.Errorf("module %s : intervalle_max entre %d et %d jours", d.ID, MinMaxInterval, MaxMaxInterval)
+	case s.NewPerDay < 0 || s.NewPerDay > MaxNewPerDay:
+		return fmt.Errorf("module %s : nouvelles_par_jour entre 1 et %d", d.ID, MaxNewPerDay)
 	}
 	return nil
 }
