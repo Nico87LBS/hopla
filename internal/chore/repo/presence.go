@@ -12,9 +12,10 @@ import (
 
 // SetMemberAway records that a member left or came back. Their tasks wait
 // while they are away; when they come back, the tasks that fell due meanwhile
-// are due today instead of piling up late. Today's surprise is drawn again
-// among the tasks of the members who are here. It returns false when the
-// member already was in that state.
+// are due today instead of piling up late; those already late before stay
+// late. When the member leaves, today's surprise is drawn again if it was
+// one of their tasks. It returns false when the member already was in that
+// state.
 func (r *ChoreRepository) SetMemberAway(ctx context.Context, familyID, userID int, away bool, now time.Time) (bool, error) {
 	changed := false
 	err := r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
@@ -22,22 +23,26 @@ func (r *ChoreRepository) SetMemberAway(ctx context.Context, familyID, userID in
 		if err != nil {
 			return err
 		}
+		starts, err := games.AbsenceStarts(tx, familyID)
+		if err != nil {
+			return err
+		}
 		if changed, err = games.SetAway(tx, familyID, userID, away, now); err != nil || !changed {
 			return err
 		}
 		if !away {
-			if err := r.bringBackTasks(ctx, tx, familyID, awayBefore, now); err != nil {
-				return err
-			}
+			return r.bringBackTasks(ctx, tx, familyID, awayBefore, starts, now)
 		}
 		return games.ForgetSurprise(tx, familyID, now)
 	})
 	return changed, err
 }
 
-// bringBackTasks moves the tasks that waited for the members away before to
-// today, at the time of day they were due.
-func (r *ChoreRepository) bringBackTasks(ctx context.Context, tx *gorm.DB, familyID int, awayBefore map[int]bool, now time.Time) error {
+// bringBackTasks moves the tasks that fell due while they waited for the
+// members away before to today, at the time of day they were due. starts are
+// when those members left.
+func (r *ChoreRepository) bringBackTasks(ctx context.Context, tx *gorm.DB, familyID int, awayBefore map[int]bool,
+	starts map[int]time.Time, now time.Time) error {
 	awayNow, err := games.AwayMembers(tx, familyID)
 	if err != nil {
 		return err
@@ -54,7 +59,11 @@ func (r *ChoreRepository) bringBackTasks(ctx context.Context, tx *gorm.DB, famil
 	var back []*chModel.Chore
 	for _, chore := range chores {
 		// A task with slots moves to its next slot on its own.
-		if !chore.HasSlots() && games.Paused(chore, awayBefore) && !games.Paused(chore, awayNow) {
+		if chore.HasSlots() || games.Paused(chore, awayNow) {
+			continue
+		}
+		// A task already late when it started to wait stays late.
+		if since, ok := games.PausedSince(chore, awayBefore, starts); ok && !chore.NextDueDate.Before(since) {
 			back = append(back, chore)
 		}
 	}

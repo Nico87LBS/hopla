@@ -125,10 +125,18 @@ touche « À la maison » sur sa carte, dans la page Famille, pour le passer en
 - les jours d'absence ne cassent pas sa série ;
 - ses quêtes ne sont pas tirées, et les objectifs de ses quêtes et défis sont
   réduits en proportion des jours d'absence ;
-- la tâche surprise est tirée parmi les enfants présents.
+- la tâche surprise est tirée parmi les enfants présents : si la surprise du
+  jour était une de ses tâches, une autre est tirée à son départ ; sinon elle
+  ne change pas.
 
 À son retour (« De retour à la maison »), les tâches tombées pendant
-l'absence reviennent aujourd'hui, à la même heure.
+l'absence reviennent aujourd'hui, à la même heure. Celles qui étaient déjà en
+retard avant son départ restent en retard, et la surprise du jour ne change
+pas.
+
+Un enfant passé en « Pas là » par erreur et remis « À la maison » dans le
+quart d'heure n'a jamais été absent : ni ses séries, ni ses quêtes, ni ses
+défis ne comptent cette absence.
 
 ## La page Aujourd'hui
 
