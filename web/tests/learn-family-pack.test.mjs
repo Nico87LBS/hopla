@@ -9,6 +9,7 @@ import {
   fromDocument,
   kindOf,
   moduleIdFor,
+  newChapter,
   newPack,
   nextVersion,
   readList,
@@ -151,4 +152,28 @@ test('a card keeps its id when it changes kind, and what the editor does not wri
   assert.equal(doc.lecture_voix_haute, undefined)
   assert.equal(nextVersion('2'), '1.0.0')
   assert.equal(nextVersion('1.2.9'), '1.2.10')
+})
+
+test('the chapters after the first open at 80 %, unless the family chose otherwise', () => {
+  const doc = toDocument(
+    fromDocument({
+      format: 'hopla-module/1',
+      id: 'famille-y',
+      version: '1.0.0',
+      nom: 'Y',
+      chapitres: [
+        { id: 'a', nom: 'A' },
+        { id: 'b', nom: 'B' },
+        { id: 'c', nom: 'C', ouvert_apres: 0 },
+      ],
+      fiches: [],
+    }),
+  )
+  assert.deepEqual(
+    doc.chapitres.map(c => c.ouvert_apres),
+    [undefined, 80, 0],
+  )
+  const pack = newPack('Z')
+  pack.chapters.push(newChapter())
+  assert.equal(toDocument(pack).chapitres[1].ouvert_apres, 80)
 })

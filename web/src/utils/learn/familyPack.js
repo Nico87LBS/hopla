@@ -250,7 +250,7 @@ export const toDocument = pack => {
   const chapitres = []
   const fiches = []
   pack.chapters.forEach((chapter, index) => {
-    const { cards, ouvert_apres: _openAfter, ...fields } = chapter
+    const { cards, ...fields } = chapter
     const nom =
       clean(fields.nom) ||
       (pack.chapters.length === 1 && clean(pack.name)) ||
