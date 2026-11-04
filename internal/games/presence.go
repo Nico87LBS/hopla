@@ -97,8 +97,13 @@ func absenceDays(db *gorm.DB, familyID int, since, now time.Time) (map[int]map[s
 	return days, nil
 }
 
+// MistakeAbsence is how short an absence has to be to count as a mistake: a
+// member put away and back home within it was never away.
+const MistakeAbsence = 15 * time.Minute
+
 // SetAway records that a member left or came back. It returns false when
-// they already were in that state.
+// they already were in that state. Coming back within MistakeAbsence erases
+// the absence, so that it counts for nothing (quests, challenges, streaks).
 func SetAway(tx *gorm.DB, familyID, userID int, away bool, now time.Time) (bool, error) {
 	result := tx.Model(&fModel.UserFamily{}).Where("family_id = ? AND user_id = ? AND away = ?", familyID, userID, !away).
 		Update("away", away)
@@ -108,12 +113,56 @@ func SetAway(tx *gorm.DB, familyID, userID int, away bool, now time.Time) (bool,
 	if away {
 		return true, tx.Create(&Absence{FamilyID: familyID, UserID: userID, StartAt: now}).Error
 	}
-	return true, tx.Model(&Absence{}).Where("family_id = ? AND user_id = ? AND end_at IS NULL", familyID, userID).
-		Update("end_at", now).Error
+	open := tx.Model(&Absence{}).Where("family_id = ? AND user_id = ? AND end_at IS NULL", familyID, userID)
+	if err := tx.Where("family_id = ? AND user_id = ? AND end_at IS NULL AND start_at > ?", familyID, userID,
+		now.Add(-MistakeAbsence)).Delete(&Absence{}).Error; err != nil {
+		return true, err
+	}
+	return true, open.Update("end_at", now).Error
 }
 
-// ForgetSurprise drops today's surprise task when nobody has done it yet, so
-// it is drawn again among the tasks of the members who are here.
+// AbsenceStarts returns, per member away now, when their absence started.
+func AbsenceStarts(db *gorm.DB, familyID int) (map[int]time.Time, error) {
+	var absences []Absence
+	if err := db.Where("family_id = ? AND end_at IS NULL", familyID).Find(&absences).Error; err != nil {
+		return nil, err
+	}
+	starts := make(map[int]time.Time, len(absences))
+	for _, absence := range absences {
+		if start, ok := starts[absence.UserID]; !ok || absence.StartAt.Before(start) {
+			starts[absence.UserID] = absence.StartAt
+		}
+	}
+	return starts, nil
+}
+
+// PausedSince returns when a paused task started to wait: when its assignee
+// left, or, for a task everyone has at once, when the last of them left. ok
+// is false when the task is not paused or the time is not known.
+func PausedSince(chore *chModel.Chore, away map[int]bool, starts map[int]time.Time) (since time.Time, ok bool) {
+	if !Paused(chore, away) {
+		return since, false
+	}
+	if chore.AssignStrategy == chModel.AssignmentStrategyTogether {
+		for _, assignee := range chore.Assignees {
+			start, known := starts[assignee.UserID]
+			if !known {
+				return since, false
+			}
+			if start.After(since) {
+				since = start
+			}
+		}
+		return since, true
+	}
+	since, ok = starts[*chore.AssignedTo]
+	return since, ok
+}
+
+// ForgetSurprise drops today's surprise task when nobody has done it yet and
+// every copy of it waits for a member away, so that it is drawn again among
+// the tasks of the members who are here. A surprise someone here can still
+// do stays put.
 func ForgetSurprise(tx *gorm.DB, familyID int, now time.Time) error {
 	loc := zone.Of(familyID)
 	var surprise Surprise
@@ -125,11 +174,26 @@ func ForgetSurprise(tx *gorm.DB, familyID int, now time.Time) error {
 	if err != nil {
 		return err
 	}
+	ids := append(same, surprise.ChoreID)
+	away, err := AwayMembers(tx, familyID)
+	if err != nil {
+		return err
+	}
+	var copies []*chModel.Chore
+	if err := tx.Select("id", "assigned_to", "assign_strategy").Preload("Assignees").
+		Where("id IN ? AND is_active = ?", ids, true).Find(&copies).Error; err != nil {
+		return err
+	}
+	for _, chore := range copies {
+		if !Paused(chore, away) {
+			return nil
+		}
+	}
 	local := now.In(loc)
 	dayStart := time.Date(local.Year(), local.Month(), local.Day(), 0, 0, 0, 0, loc)
 	var done int64
 	if err := tx.Model(&chModel.ChoreHistory{}).
-		Where("chore_id IN ? AND status IN ? AND performed_at >= ?", append(same, surprise.ChoreID),
+		Where("chore_id IN ? AND status IN ? AND performed_at >= ?", ids,
 			[]chModel.ChoreHistoryStatus{chModel.ChoreHistoryStatusCompleted, chModel.ChoreHistoryStatusPendingApproval},
 			dayStart.UTC()).
 		Count(&done).Error; err != nil || done > 0 {
