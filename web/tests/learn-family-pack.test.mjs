@@ -3,6 +3,7 @@ import { test } from 'node:test'
 
 import { checkAnswer, compile } from '../src/utils/learn/engine.js'
 import {
+  cardDone,
   cardFrom,
   editable,
   fieldsOf,
@@ -123,7 +124,8 @@ test('a card keeps its id when it changes kind, and what the editor does not wri
   assert.equal(changed.id, 'f1')
   assert.equal(changed.explication, 'parce que')
   assert.equal(kindOf({ type: 'associer' }), 'autre')
-  assert.equal(kindOf({ type: 'choix', image: 'cat' }), 'autre')
+  assert.equal(kindOf({ type: 'choix', image: 'cat' }), 'choix')
+  assert.equal(kindOf({ type: 'ecoute', sens: ['lire', 'dictee'] }), 'dictee')
   assert.equal(editable({ format: 'hopla-module/1', modules: ['a'] }), false)
   assert.equal(editable({ format: 'hopla-module/1', generateurs: [{}] }), false)
   const doc = toDocument(
@@ -217,5 +219,95 @@ test('a dictation accepts the other spellings heard the same way', () => {
   assert.equal(
     cardFrom('dictee', { question: 'cet', others: [] }).autres_reponses,
     undefined,
+  )
+})
+
+test('the editor writes every option of a card, and reads them back', () => {
+  const card = cardFrom(
+    'choix',
+    {
+      question: 'Le ___ dort.',
+      answer: 'chat',
+      traps: ['chats', 'chate'],
+      extras: {
+        consigne: 'Complète la phrase.',
+        explication: 'un seul chat',
+        image: 'cat',
+        sens: ['direct', 'inverse'],
+        pourquoi: { chats: 'il n’y en a qu’un', chate: '', autre: 'parti' },
+      },
+    },
+    { id: 'f', chapitre: 'c', cle: 'fr:chat', paires: [['a', 'b']] },
+  )
+  assert.deepEqual(card, {
+    id: 'f',
+    chapitre: 'c',
+    cle: 'fr:chat',
+    type: 'choix',
+    question: 'Le ___ dort.',
+    reponse: 'chat',
+    pieges: ['chats', 'chate'],
+    consigne: 'Complète la phrase.',
+    explication: 'un seul chat',
+    image: 'cat',
+    sens: ['direct', 'inverse'],
+    pourquoi: { chats: 'il n’y en a qu’un' },
+  })
+  const back = fieldsOf(card)
+  assert.equal(back.extras.image, 'cat')
+  assert.deepEqual(back.extras.pourquoi, { chats: 'il n’y en a qu’un' })
+
+  // Asked only one way, a card needs no senses; accents counted are kept.
+  const typedCard = cardFrom('saisie', {
+    question: 'été',
+    answer: 'summer',
+    tolerance: 'exacte',
+    extras: { ...back.extras, sens: ['direct'], pourquoi: {} },
+  })
+  assert.equal(typedCard.sens, undefined)
+  assert.equal(typedCard.tolerance, 'exacte')
+  assert.equal(typedCard.pourquoi, undefined)
+
+  // A word heard and picked among drawings has its own answer and traps;
+  // named from its drawing, it says what to ask.
+  const heard = cardFrom('dictee', {
+    question: 'apple',
+    answer: 'la pomme',
+    traps: ['la poire'],
+    extras: {
+      sens: ['direct', 'inverse'],
+      image: 'apple',
+      question_inverse: 'Comment dit-on en anglais ?',
+    },
+  })
+  assert.equal(heard.reponse, 'la pomme')
+  assert.deepEqual(heard.pieges, ['la poire'])
+  assert.deepEqual(heard.sens, ['direct', 'inverse'])
+  assert.equal(heard.consigne, undefined)
+  assert.equal(heard.question_inverse, 'Comment dit-on en anglais ?')
+  assert.equal(heard.autres_reponses, undefined)
+  assert.ok(cardDone(heard))
+  assert.equal(cardDone({ ...heard, reponse: '' }), false)
+  assert.equal(fieldsOf(heard).answer, 'la pomme')
+  assert.equal(fieldsOf(cardFrom('dictee', { question: 'cet' })).answer, '')
+
+  // The instruction of a dictation does not follow it to another kind.
+  const dictation = cardFrom('dictee', { question: 'cet' })
+  const moved = cardFrom('saisie', { ...fieldsOf(dictation), answer: 'x' })
+  assert.equal(moved.consigne, undefined)
+})
+
+test('the drawings offered are those of the app', async () => {
+  const { readdirSync } = await import('node:fs')
+  const { DRAWINGS } = await import('../src/utils/learn/drawings.js')
+  const folder = new URL('../public/drawings/', import.meta.url)
+  const have = readdirSync(folder)
+    .filter(name => name.endsWith('.svg'))
+    .map(name => name.slice(0, -4))
+    .sort()
+  assert.deepEqual(
+    DRAWINGS,
+    have,
+    'run the list again: node scripts/drawing-list.mjs',
   )
 })

@@ -583,14 +583,14 @@
     "kinds": {
       "saisie": "Type it",
       "choix": "Choose it",
-      "dictee": "Dictation",
+      "dictee": "Dictation / listening",
       "retourner": "Card to turn",
       "autre": "Other"
     },
     "kindHelp": {
       "saisie": "Read the question and type the answer.",
       "choix": "Choose the right answer among several.",
-      "dictee": "The device says the word, you write it.",
+      "dictee": "The device says the word: you write it, or pick what it means.",
       "retourner": "Think, turn the card and say whether you knew."
     },
     "cardTitle": "Edit the card",
@@ -598,8 +598,10 @@
     "saveCard": "Save the card",
     "deleteCard": "Delete the card",
     "word": "Word to write",
+    "heard": "Word said by the device",
     "question": "Question",
     "answer": "Right answer",
+    "meaning": "What the word means (or the figures expected)",
     "traps": "Wrong answers shown",
     "trapsHelp": "One per line. Empty: taken from the other cards of the chapter.",
     "others": "Other answers accepted",
@@ -679,5 +681,54 @@
     "day": "Day of the test",
     "covers": "What it covers",
     "add": "Prepare a test"
+  },
+  "options": {
+    "more": "More options",
+    "moreHint": "Instruction, explanation, drawing, way of asking…",
+    "tolerance": "Spelling",
+    "tolerances": {
+      "accents": "Accents and capitals left aside",
+      "une_faute": "A small mistake allowed",
+      "exacte": "Accents counted"
+    },
+    "way": "Ask the question",
+    "ways": {
+      "direct": "This way: question then answer",
+      "both": "Both ways",
+      "inverse": "Only the other way: answer then question"
+    },
+    "listening": "Ways of asking",
+    "listeningHelp": "Every way but the dictation needs an answer: the meaning of the word or the figures expected.",
+    "listen": {
+      "dictee": "Write the word heard (dictation)",
+      "direct": "Hear the word and pick its meaning",
+      "lire": "Read the word and pick its meaning",
+      "inverse": "See its meaning and pick the word",
+      "chiffres": "Hear a message and type its figures"
+    },
+    "zoneWays": "Ways of asking",
+    "zone": {
+      "toucher": "Touch the zone from its name",
+      "nommer": "Name the zone in colour"
+    },
+    "instruction": "Instruction",
+    "instructionHelp": "Shown above the question, and said aloud if the pack allows it.",
+    "explanation": "Explanation",
+    "explanationHelp": "Shown after the answer, right or wrong.",
+    "image": "Drawing",
+    "imageHelp": "Shown above the question.",
+    "imagePick": "Pick a drawing",
+    "imageChange": "Change",
+    "imageRemove": "Remove the drawing",
+    "imageSearch": "Search (cat, apple…)",
+    "imageNone": "No drawing of that name.",
+    "drawingQuestion": "Question under the drawing",
+    "drawingQuestionHelp": "What is this drawing called?",
+    "touchQuestion": "Sentence to touch the zone",
+    "touchQuestionHelp": "Touch: the name of the zone",
+    "why": "Why each wrong answer is wrong",
+    "whyHelp": "Said when it is picked (optional).",
+    "whyOf": "Why « {{trap}} » is wrong",
+    "whyFirst": "Write the wrong answers shown first."
   }
 }
