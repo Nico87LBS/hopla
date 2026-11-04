@@ -403,7 +403,38 @@ export const moduleToday = (compiled, cards, options = {}) => {
       freshIn(open, cards),
     ),
   )
-  return { due, newLeft, tomorrow, seen, upToDate: due === 0 && newLeft === 0 }
+  const upToDate = due === 0 && newLeft === 0
+  return {
+    due,
+    newLeft,
+    tomorrow,
+    seen,
+    upToDate,
+    why: upToDate ? whyUpToDate(compiled, cards, open, options) : null,
+  }
+}
+
+// whyUpToDate tells why a module with nothing to ask is up to date: the
+// day's new questions are done ('daily'), the next chapter is still closed
+// as the chapter being learnt is not known well enough ('chapter', with it
+// and the percents), or the whole module has been seen ('all').
+const whyUpToDate = (compiled, cards, open, options) => {
+  if (freshIn(open, cards) > 0) return { kind: 'daily' }
+  const chapters = openChapters(
+    compiled,
+    cards,
+    options.unlockPercent,
+    options.placed,
+  )
+  const closed = chapters.findIndex(c => !c.open)
+  if (closed < 1) return { kind: 'all' }
+  const before = chapters[closed - 1]
+  return {
+    kind: 'chapter',
+    chapter: before.chapter.name,
+    percent: before.progress.percent,
+    needed: chapters[closed].needed,
+  }
 }
 
 // pickQuestions makes a game: the cards due first (within options.dueLeft),

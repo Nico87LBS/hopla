@@ -639,7 +639,12 @@
     "tomorrow_one": "{{count}} question reviendra demain.",
     "tomorrow_other": "{{count}} questions reviendront demain.",
     "practiceHelp": "Tu peux t'entraîner en attendant : sans {{units}}, ça ne compte ni pour la récré ni pour les révisions.",
-    "practice": "S'entraîner"
+    "practice": "S'entraîner",
+    "why": {
+      "daily": "Tes nouvelles questions du jour sont faites.",
+      "chapter": "La suite s'ouvre quand « {{chapter}} » sera su à {{needed}} % (là : {{percent}} %). Ce pourcentage monte à chaque bonne réponse revue.",
+      "all": "Toutes les questions de ce module ont été vues."
+    }
   },
   "practice": {
     "banner": "Entraînement : pas de {{units}}, ne compte ni pour la récré ni pour les révisions"

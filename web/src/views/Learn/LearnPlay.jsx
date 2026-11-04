@@ -1067,7 +1067,7 @@ RememberScreen.propTypes = {
 // UpToDate tells that a module has nothing to ask today, or that every
 // review is done: it comes back tomorrow, and meanwhile the person may
 // practise, for nothing.
-const UpToDate = ({ back, color, practiceTo, reviews, tomorrow }) => {
+const UpToDate = ({ back, color, practiceTo, reviews, tomorrow, why }) => {
   const { t } = useTranslation('learn')
   return (
     <Stack gap={2} alignItems='center' sx={{ textAlign: 'center', pt: 2 }}>
@@ -1075,6 +1075,11 @@ const UpToDate = ({ back, color, practiceTo, reviews, tomorrow }) => {
       <Typography level='h2'>
         {t(reviews ? 'upToDate.reviews' : 'upToDate.title')}
       </Typography>
+      {why && (
+        <Typography level='body-md' sx={{ color: 'text.secondary' }}>
+          {t(`upToDate.why.${why.kind}`, why)}
+        </Typography>
+      )}
       <Typography level='body-lg'>
         {t('upToDate.tomorrow', { count: tomorrow })}
       </Typography>
@@ -1115,6 +1120,7 @@ UpToDate.propTypes = {
   practiceTo: PropTypes.string,
   reviews: PropTypes.bool,
   tomorrow: PropTypes.number.isRequired,
+  why: PropTypes.object,
 }
 
 // RetryStart tells that the questions missed come back once, before the end
@@ -1252,16 +1258,27 @@ const PracticeBanner = () => {
   )
 }
 
-// tomorrowOf counts the questions due tomorrow: in every module for the
-// day's reviews (compiled is then all of them), else in the module.
-const tomorrowOf = ({ byId, cards, compiled, module, player }) =>
-  module.id === REVIEWS
-    ? dueReviews({ ...player, day: addDays(player.day, 1) }, byId, cards).length
-    : moduleToday(compiled, cards, {
-        day: player.day,
-        unlockPercent: module.unlockPercent ?? undefined,
-        placed: module.placed,
-      }).tomorrow
+// nothingToday tells what is left to ask tomorrow, and why there is nothing
+// today: in every module for the day's reviews (compiled is then all of
+// them), else in the module.
+const nothingToday = ({ byId, cards, compiled, module, player }) => {
+  if (module.id === REVIEWS) {
+    const tomorrow = dueReviews(
+      { ...player, day: addDays(player.day, 1) },
+      byId,
+      cards,
+    ).length
+    return { tomorrow, why: null }
+  }
+  const { tomorrow, why } = moduleToday(compiled, cards, {
+    day: player.day,
+    settings: module.settings,
+    unlockPercent: module.unlockPercent ?? undefined,
+    placed: module.placed,
+    newToday: module.newToday,
+  })
+  return { tomorrow, why }
+}
 
 // sendGame sends a game, or keeps it for later when the server is out of
 // reach. It tells what the server said.
@@ -1597,7 +1614,13 @@ const LearnPlay = ({ playMode = false }) => {
     return <Navigate to={back} replace />
   }
   if (!game.questions.length) {
-    const tomorrow = tomorrowOf({ byId, cards, compiled, module, player })
+    const { tomorrow, why } = nothingToday({
+      byId,
+      cards,
+      compiled,
+      module,
+      player,
+    })
     return (
       <Container
         maxWidth='sm'
@@ -1608,6 +1631,7 @@ const LearnPlay = ({ playMode = false }) => {
           color={color}
           reviews={reviews}
           tomorrow={tomorrow}
+          why={why}
           practiceTo={
             reviews || practice
               ? undefined

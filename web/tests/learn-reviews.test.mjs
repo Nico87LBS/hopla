@@ -55,6 +55,7 @@ test('a module with nothing due and no new question allowed is up to date', () =
     tomorrow: 4,
     seen: 8,
     upToDate: true,
+    why: { kind: 'daily' },
   })
   assert.deepEqual(
     pickQuestions(compiled, cards, { day: DAY, newLeft: 0 }),
@@ -133,4 +134,40 @@ test('practice asks only the questions already seen', () => {
   const questions = practiceQuestions(compiled, cards, { rng: seededRandom(4) })
   assert.equal(questions.length, 6)
   assert.ok(questions.every(q => cards.has(q.key)))
+})
+
+test('an up to date module says why: the next chapter is closed, or all is seen', () => {
+  const two = compile({
+    id: 'deux',
+    chapitres: [
+      { id: 'a', nom: 'Premier' },
+      { id: 'b', nom: 'Second', ouvert_apres: 80 },
+    ],
+    fiches: ['a', 'b'].flatMap(chapter =>
+      Array.from({ length: 4 }, (_, i) => ({
+        id: `${chapter}${i}`,
+        chapitre: chapter,
+        type: 'saisie',
+        question: `q${chapter}${i}`,
+        reponse: `r${i}`,
+      })),
+    ),
+  })
+  const first = two.chapters[0].sources.flatMap(s => s.list())
+  const cards = cardMap(
+    seenCards(
+      first.map(item => item.key),
+      ['2026-11-06'],
+    ),
+  )
+  const today = moduleToday(two, cards, { day: DAY })
+  assert.ok(today.upToDate)
+  assert.equal(today.why.kind, 'chapter')
+  assert.equal(today.why.chapter, 'Premier')
+  assert.equal(today.why.needed, 80)
+  assert.ok(today.why.percent < 80)
+
+  const all = words('tout', 4)
+  const seen = cardMap(seenCards(keysOf(all), ['2026-11-06']))
+  assert.equal(moduleToday(all, seen, { day: DAY }).why.kind, 'all')
 })
