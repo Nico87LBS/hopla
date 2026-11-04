@@ -296,6 +296,12 @@ seulement **S'entraîner** : les questions déjà vues, au hasard, sans hops,
 sans compter pour la récré ni changer les dates de retour. L'entraînement
 n'est pas envoyé au serveur.
 
+La carte et l'écran disent **pourquoi** le module est à jour : les nouvelles
+questions du jour sont faites, le chapitre suivant reste fermé tant que le
+chapitre en cours n'est pas su au pourcentage demandé (ce pourcentage mesure
+l'ancrage des questions, pas les erreurs : une question réussie une seule
+fois pèse peu), ou toutes les questions ont été vues.
+
 ### Mes révisions
 
 En haut de la page Apprendre, **Mes révisions** reprend les questions à revoir

@@ -639,7 +639,12 @@
     "tomorrow_one": "{{count}} question comes back tomorrow.",
     "tomorrow_other": "{{count}} questions come back tomorrow.",
     "practiceHelp": "You can practise meanwhile: no {{units}}, it counts neither for the break nor for the reviews.",
-    "practice": "Practise"
+    "practice": "Practise",
+    "why": {
+      "daily": "Today's new questions are done.",
+      "chapter": "The next chapter opens when \"{{chapter}}\" is known at {{needed}}% (now: {{percent}}%). It rises with each right answer you review.",
+      "all": "Every question in this module has been seen."
+    }
   },
   "practice": {
     "banner": "Practice: no {{units}}, counts neither for the break nor for the reviews"

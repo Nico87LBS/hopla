@@ -178,6 +178,11 @@ const ModuleCard = ({
                 {t('home.upToDate')}
               </Typography>
             )}
+            {upToDate && today.why && (
+              <Typography level='body-xs' sx={{ color: 'text.secondary' }}>
+                {t(`upToDate.why.${today.why.kind}`, today.why)}
+              </Typography>
+            )}
             {upToDate && today.tomorrow > 0 && (
               <Typography level='body-xs' sx={{ color: 'text.secondary' }}>
                 {t('home.tomorrow', { count: today.tomorrow })}
