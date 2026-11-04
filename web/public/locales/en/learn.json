@@ -232,7 +232,13 @@
     "wrongCount_other": "{{count}} mistakes, {{right}} right",
     "recent": "Last games",
     "score": "{{correct}}/{{total}}",
-    "nobody": "Nobody plays this module yet."
+    "nobody": "Nobody plays this module yet.",
+    "tough_one": "Tough question",
+    "tough_other": "Tough questions ({{count}})",
+    "toughHelp_one": "Forgotten at least {{count}} time.",
+    "toughHelp_other": "Forgotten at least {{count}} times.",
+    "forgotCount_one": "{{count}} lapse",
+    "forgotCount_other": "{{count}} lapses"
   },
   "chips": {
     "questions_one": "{{count}} question",
@@ -637,5 +643,11 @@
   },
   "practice": {
     "banner": "Practice: no {{units}}, counts neither for the break nor for the reviews"
+  },
+  "remember": {
+    "title": "To remember",
+    "text_one": "This question gives you trouble: read it well.",
+    "text_other": "These questions give you trouble: read them well.",
+    "done": "Got it"
   }
 }

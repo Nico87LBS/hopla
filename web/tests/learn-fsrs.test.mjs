@@ -31,3 +31,18 @@ test('FSRS gives the numbers of the reference, like the server', () => {
     }
   }
 })
+
+test('a question forgotten five times is tough', async () => {
+  const { isTough, review, TOUGH_FORGOT } =
+    await import('../src/utils/learn/engine.js')
+  let card = review({ key: 'k' }, { key: 'k', correct: false }, '2026-11-01')
+  assert.equal(card.forgot, 0, 'a first miss is not yet a lapse')
+  for (let i = 1; i <= TOUGH_FORGOT; i++) {
+    assert.ok(!isTough(card), `${card.forgot} forgotten`)
+    card = review(card, { key: 'k', correct: false }, `2026-11-0${i + 1}`)
+  }
+  assert.equal(card.forgot, TOUGH_FORGOT)
+  assert.ok(isTough(card))
+  card = review(card, { key: 'k', correct: true }, '2026-11-09')
+  assert.equal(card.forgot, TOUGH_FORGOT, 'a right answer keeps the count')
+})

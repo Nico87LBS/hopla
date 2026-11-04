@@ -6,6 +6,7 @@ import {
   CloudOffRounded,
   FitnessCenterRounded,
   OutlinedFlagRounded,
+  PsychologyRounded,
   ReplayRounded,
   SportsEsportsRounded,
   VolumeUpRounded,
@@ -45,6 +46,7 @@ import {
   dueReviews,
   expectedHops,
   isDue,
+  isTough,
   MIN_ANSWERS,
   moduleLocked,
   moduleToday,
@@ -1000,6 +1002,66 @@ EndScreen.propTypes = {
   }),
 }
 
+// RememberScreen shows, once a game is over, the tough questions it asked:
+// their answer and what helps to retain it, read at one's own pace.
+const RememberScreen = ({ color, items, onDone }) => {
+  const { t } = useTranslation('learn')
+  return (
+    <Stack gap={2} alignItems='center' sx={{ pt: 2 }}>
+      <PsychologyRounded sx={{ color, fontSize: 56 }} />
+      <Typography level='h2' sx={{ textAlign: 'center' }}>
+        {t('remember.title')}
+      </Typography>
+      <Typography
+        level='body-md'
+        sx={{ color: 'text.secondary', textAlign: 'center' }}
+      >
+        {t('remember.text', { count: items.length })}
+      </Typography>
+      <Stack gap={1} sx={{ width: '100%' }}>
+        {items.map(item => (
+          <Sheet
+            key={item.key}
+            variant='outlined'
+            sx={{ borderRadius: 'lg', p: 1.5 }}
+          >
+            <Typography level='title-sm'>
+              {item.subject?.text || item.prompt}
+            </Typography>
+            {item.mode !== 'flip' && (
+              <Typography
+                level='title-md'
+                sx={{ color: HOPLA.greenText, fontWeight: 700 }}
+              >
+                {item.answer}
+                {item.unit ? ` ${item.unit}` : ''}
+              </Typography>
+            )}
+            {item.whenWrong && (
+              <Typography level='body-sm' sx={{ color: 'text.secondary' }}>
+                {item.whenWrong}
+              </Typography>
+            )}
+          </Sheet>
+        ))}
+      </Stack>
+      <Button
+        size='lg'
+        onClick={onDone}
+        sx={{ bgcolor: color, '&:hover': { bgcolor: color } }}
+      >
+        {t('remember.done')}
+      </Button>
+    </Stack>
+  )
+}
+
+RememberScreen.propTypes = {
+  color: PropTypes.string.isRequired,
+  items: PropTypes.array.isRequired,
+  onDone: PropTypes.func.isRequired,
+}
+
 // UpToDate tells that a module has nothing to ask today, or that every
 // review is done: it comes back tomorrow, and meanwhile the person may
 // practise, for nothing.
@@ -1224,6 +1286,7 @@ const LearnPlay = ({ playMode = false }) => {
   const game = kept?.practice === practice ? kept : null
   const [feedback, setFeedback] = useState(null)
   const [end, setEnd] = useState(null)
+  const [understood, setUnderstood] = useState(false)
   const [reporting, setReporting] = useState(false)
   // The word slid into the blank of a sentence, for the question it was
   // slid in.
@@ -1241,6 +1304,7 @@ const LearnPlay = ({ playMode = false }) => {
       if (!compiled || !module) return
       setFeedback(null)
       setEnd(null)
+      setUnderstood(false)
       shownAt.current = Date.now()
       setGame({
         clientId: generateUUID(),
@@ -1403,6 +1467,10 @@ const LearnPlay = ({ playMode = false }) => {
       mistakes,
       status: 'sending',
       tomorrow,
+      // The tough questions of this game, to retain once it is over.
+      remember: game.questions.filter(q =>
+        isTough(cardMap(played.cards).get(q.key)),
+      ),
     }
     setEnd(shown)
     const { result, status } = await sendGame(sent, userId)
@@ -1603,6 +1671,12 @@ const LearnPlay = ({ playMode = false }) => {
             shownAt.current = Date.now()
             setGame(now => ({ ...now, phase: 'retry' }))
           }}
+        />
+      ) : end && !retrying && end.remember?.length && !understood ? (
+        <RememberScreen
+          color={color}
+          items={end.remember}
+          onDone={() => setUnderstood(true)}
         />
       ) : end && !retrying ? (
         <EndScreen

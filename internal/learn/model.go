@@ -168,9 +168,12 @@ type Card struct {
 	// was forgotten once learnt.
 	LastReview string `json:"lastReview" gorm:"column:last_review;size:10"`
 	Lapses     int    `json:"lapses" gorm:"column:lapses;not null;default:0"`
-	Seen       int    `json:"seen" gorm:"column:seen;not null"`
-	Right      int    `json:"right" gorm:"column:right_count;not null"`
-	Wrong      int    `json:"wrong" gorm:"column:wrong_count;not null"`
+	// Forgot counts the wrong answers to a question already seen: from
+	// ToughForgot, the question is tough.
+	Forgot int `json:"forgot" gorm:"column:forgot;not null;default:0"`
+	Seen   int `json:"seen" gorm:"column:seen;not null"`
+	Right  int `json:"right" gorm:"column:right_count;not null"`
+	Wrong  int `json:"wrong" gorm:"column:wrong_count;not null"`
 	// LastAnswer is the last wrong answer given, for parents.
 	LastAnswer string    `json:"lastAnswer,omitempty" gorm:"column:last_answer;size:120"`
 	ModuleKey  string    `json:"module" gorm:"column:module_key;size:80"`
@@ -183,6 +186,10 @@ func (Card) TableName() string { return "learn_cards" }
 // shortest wait of each box (BoxOf), and the stability of a card from
 // before FSRS.
 var BoxDays = map[int]int{1: 1, 2: 2, 3: 4, 4: 8, 5: 16}
+
+// ToughForgot is how many times a question is forgotten before it counts as
+// tough: the stats list it and a game ends on what to remember of it.
+const ToughForgot = 5
 
 // MasteredBox is the box from which a card counts as known: a card that
 // waits 8 days or more.
