@@ -33,6 +33,7 @@ import {
   REVIEW_BONUS,
   REVIEWS,
   reviewsLeft,
+  TESTS,
   totalLeft,
 } from '../../utils/learn/engine'
 import { levelKnown } from '../../utils/learn/levels'
@@ -46,6 +47,7 @@ import { clock } from '../Recre/games/common'
 import { LearnIcon, Progress, subjectColor, useCompiled } from './LearnParts'
 import ListBar, { useListChoices } from './ListBar'
 import { StartLevels } from './PlacementTest'
+import TestsSection from './TestPrep'
 
 const pageSx = { px: { xs: 2, sm: 3 }, pb: 6, pt: { xs: 1, sm: 3 } }
 
@@ -688,6 +690,16 @@ export const LearnModules = ({
             </Typography>
           )}
         </Sheet>
+      )}
+
+      {player && count > 0 && (
+        <TestsSection
+          byId={byId}
+          cards={cards}
+          player={player}
+          testPath={id => `${playPath(TESTS)}?id=${id}`}
+          userId={userId}
+        />
       )}
 
       {player && count > 0 && (

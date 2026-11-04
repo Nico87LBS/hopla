@@ -1346,6 +1346,8 @@ type Player struct {
 	Grading string `json:"grading"`
 	// Reviews are the day's reviews, all modules together.
 	Reviews PlayerReviews `json:"reviews"`
+	// Tests are the tests the person prepares, the nearest first.
+	Tests []Test `json:"tests"`
 	// Recre is the person's récré: when the next one comes, and the records.
 	Recre Recre `json:"recre"`
 	// Placements are the person's placement tests, to offer one in a pack
@@ -1411,6 +1413,10 @@ func PlayerFor(db *gorm.DB, familyID, userID int, now time.Time) (Player, error)
 		return player, err
 	}
 	newToday, err := reviewsOf(db, familyID, userID, player.Day, &player.Reviews)
+	if err != nil {
+		return player, err
+	}
+	player.Tests, err = TestsFor(db, familyID, userID, player.Day)
 	if err != nil {
 		return player, err
 	}
@@ -1822,6 +1828,10 @@ func Record(db *gorm.DB, familyID, playedBy int, game Game, now time.Time) (Resu
 			return err
 		}
 		reviews := game.Module == ReviewsKey
+		// A game that prepares a test asks several modules like the day's
+		// reviews, but moves no card.
+		prepares := game.Module == TestsKey
+		mixed := reviews || prepares
 		// Each module asked, with the settings that apply to the person.
 		asked := map[string]Settings{}
 		names := map[string]string{}
@@ -1839,7 +1849,7 @@ func Record(db *gorm.DB, familyID, playedBy int, game Game, now time.Time) (Resu
 				continue
 			}
 			wanted := activation.ModuleKey == game.Module
-			if reviews {
+			if mixed {
 				for _, answer := range game.Answers {
 					wanted = wanted || answer.Module == activation.ModuleKey
 				}
@@ -1860,7 +1870,7 @@ func Record(db *gorm.DB, familyID, playedBy int, game Game, now time.Time) (Resu
 		}
 		settings := Settings{}.WithDefaults()
 		var name string
-		if reviews {
+		if mixed {
 			for i, answer := range game.Answers {
 				if _, ok := asked[answer.Module]; !ok {
 					return ErrNotActive
@@ -1869,6 +1879,9 @@ func Record(db *gorm.DB, familyID, playedBy int, game Game, now time.Time) (Resu
 			}
 			result.DailyCap = DefaultDailyCap
 			name = "révisions du jour"
+			if prepares {
+				name = "contrôle"
+			}
 		} else {
 			own, ok := asked[game.Module]
 			if !ok {
@@ -1911,9 +1924,12 @@ func Record(db *gorm.DB, familyID, playedBy int, game Game, now time.Time) (Resu
 			session.Points = max(0, min(session.Points, *result.TotalCap-total))
 		}
 		result.Capped = session.Points < wanted
-		cards, due, err := moveCards(tx, familyID, game, day, asked, now)
-		if err != nil {
-			return err
+		var cards []Card
+		var due int
+		if !prepares {
+			if cards, due, err = moveCards(tx, familyID, game, day, asked, now); err != nil {
+				return err
+			}
 		}
 		if reviews && game.Last && due > 0 {
 			var paid int64

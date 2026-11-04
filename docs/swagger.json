@@ -4853,6 +4853,85 @@
                 }
             }
         },
+        "/api/v1/learn/tests": {
+            "post": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre"
+                ],
+                "summary": "Préparer un contrôle (date et chapitres)",
+                "parameters": [
+                    {
+                        "description": "Corps de la requête",
+                        "name": "controle",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/learn.TestChange"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/learn/tests/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "JWTKeyAuth": []
+                    },
+                    {
+                        "APIKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Apprendre"
+                ],
+                "summary": "Supprimer un contrôle",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Identifiant du contrôle",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/learn/voices": {
             "get": {
                 "security": [
@@ -7749,6 +7828,37 @@
                 },
                 "userId": {
                     "type": "integer"
+                }
+            }
+        },
+        "learn.TestChange": {
+            "type": "object",
+            "properties": {
+                "chapters": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/learn.TestChapter"
+                    }
+                },
+                "day": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "learn.TestChapter": {
+            "type": "object",
+            "properties": {
+                "chapter": {
+                    "type": "string"
+                },
+                "module": {
+                    "type": "string"
                 }
             }
         },

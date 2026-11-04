@@ -388,6 +388,26 @@ definitions:
       userId:
         type: integer
     type: object
+  learn.TestChange:
+    properties:
+      chapters:
+        items:
+          $ref: '#/definitions/learn.TestChapter'
+        type: array
+      day:
+        type: string
+      name:
+        type: string
+      userId:
+        type: integer
+    type: object
+  learn.TestChapter:
+    properties:
+      chapter:
+        type: string
+      module:
+        type: string
+    type: object
   model.AssignmentStrategy:
     enum:
     - random
@@ -3748,6 +3768,53 @@ paths:
       - JWTKeyAuth: []
       - APIKeyAuth: []
       summary: Statistiques d'un module
+      tags:
+      - Apprendre
+  /api/v1/learn/tests:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Corps de la requête
+        in: body
+        name: controle
+        required: true
+        schema:
+          $ref: '#/definitions/learn.TestChange'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Préparer un contrôle (date et chapitres)
+      tags:
+      - Apprendre
+  /api/v1/learn/tests/{id}:
+    delete:
+      parameters:
+      - description: Identifiant du contrôle
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - JWTKeyAuth: []
+      - APIKeyAuth: []
+      summary: Supprimer un contrôle
       tags:
       - Apprendre
   /api/v1/learn/voices:

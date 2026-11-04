@@ -62,7 +62,7 @@ Le fichier est contrôlé à l'import ; une erreur est expliquée en français
 | Champ | Obligatoire | Rôle |
 | --- | --- | --- |
 | `format` | oui | Toujours `"hopla-module/1"` |
-| `id` | oui | Identifiant unique : lettres minuscules, chiffres et tirets, 2 à 80 caractères. Ne doit jamais changer : la progression y est attachée. Pour un module partagé hors de la famille, préfixez-le par l'auteur (`nico-capitales`). L'`id` d'un module du catalogue est refusé, ainsi que `revisions` (réservé aux révisions du jour) |
+| `id` | oui | Identifiant unique : lettres minuscules, chiffres et tirets, 2 à 80 caractères. Ne doit jamais changer : la progression y est attachée. Pour un module partagé hors de la famille, préfixez-le par l'auteur (`nico-capitales`). L'`id` d'un module du catalogue est refusé, ainsi que `revisions` et `controle` (réservés aux révisions du jour et aux contrôles) |
 | `version` | oui | `X.Y.Z`. Augmentez-la à chaque modification |
 | `nom` | oui | Nom affiché |
 | `auteur` | non | Affiché « par … » |

@@ -64,6 +64,7 @@ var saved = []table{
 	{"learn_card_edits", byFamily},
 	{"learn_cards", byFamily},
 	{"learn_reviews", byFamily},
+	{"learn_tests", byFamily},
 	{"learn_sessions", byFamily},
 	{"learn_reports", byFamily},
 	{"learn_recre_settings", byFamily},

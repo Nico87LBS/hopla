@@ -649,5 +649,22 @@
     "text_one": "Cette question te donne du mal : lis-la bien.",
     "text_other": "Ces questions te donnent du mal : lis-les bien.",
     "done": "J'ai compris"
+  },
+  "tests": {
+    "inDays_zero": "aujourd'hui",
+    "inDays_one": "demain",
+    "inDays_other": "dans {{count}} jours",
+    "remove": "Supprimer ce contrôle",
+    "ready": "{{percent}} % prêt",
+    "left_one": "{{count}} question à renforcer",
+    "left_other": "{{count}} questions à renforcer",
+    "go": "Réviser pour le contrôle",
+    "new": "Nouveau contrôle",
+    "save": "Enregistrer",
+    "name": "Nom",
+    "namePlaceholder": "Contrôle de conjugaison",
+    "day": "Date du contrôle",
+    "covers": "Ce qui tombe",
+    "add": "Préparer un contrôle"
   }
 }

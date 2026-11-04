@@ -1,6 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 import {
+  CreateLearnTest,
+  DeleteLearnTest,
   EditLearnCard,
   ExportLearnReports,
   GetLearnCatalogue,
@@ -127,6 +129,8 @@ const useLearnChange = mutationFn => {
 
 export const useInstallModule = () => useLearnChange(InstallLearnModule)
 export const useImportModule = () => useLearnChange(ImportLearnModule)
+export const useCreateTest = () => useLearnChange(CreateLearnTest)
+export const useDeleteTest = () => useLearnChange(DeleteLearnTest)
 export const useRemoveModule = () => useLearnChange(RemoveLearnModule)
 export const useSetActivation = () => useLearnChange(SetLearnActivation)
 export const useSetSetting = () => useLearnChange(SetLearnSetting)

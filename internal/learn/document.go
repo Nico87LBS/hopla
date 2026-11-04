@@ -477,8 +477,8 @@ func (d Document) Check() error {
 	if contains(ReservedDomains, d.ID) {
 		return fmt.Errorf("identifiant %q réservé aux calculs", d.ID)
 	}
-	if d.ID == ReviewsKey {
-		return fmt.Errorf("identifiant %q réservé aux révisions du jour", d.ID)
+	if d.ID == ReviewsKey || d.ID == TestsKey {
+		return fmt.Errorf("identifiant %q réservé aux révisions du jour et aux contrôles", d.ID)
 	}
 	if strings.TrimSpace(d.Name) == "" {
 		return fmt.Errorf("module %s : nom manquant", d.ID)

@@ -11,6 +11,7 @@ import {
   initDifficulty,
   interval,
   nextState,
+  retrievability,
 } from './fsrs.js'
 import { cardItems, generatorSource, withName } from './generators.js'
 
@@ -32,6 +33,12 @@ export const DEFAULT_SETTINGS = {
 export const REVIEWS = 'revisions'
 export const REVIEW_MAX = 50
 export const REVIEW_BONUS = 2
+// TESTS is the game that prepares a test: questions of the chapters it
+// covers, from several modules, that move no card.
+export const TESTS = 'controle'
+// A question is ready for a test when it is still recalled this often on the
+// day of the test.
+export const READY = 0.9
 
 // A chapter whose questions are drawn without end counts as known once this
 // many of them are known, unless it sets its own objectif.
@@ -550,6 +557,75 @@ export const reviewQuestions = (due, count, rng = Math.random) => {
   const items = due.map(d => ({ ...d.item, module: d.module }))
   for (const item of items) add(item)
   for (const item of items) add(item, true)
+  return apart(picked, rng).map(item => prepare(item, rng))
+}
+
+// recallOn is the chance a card is still recalled on a day: 0 for a question
+// never answered.
+const recallOn = (card, day) => {
+  if (!card?.due) return 0
+  const stability =
+    card.stability || BOX_DAYS[Math.min(5, Math.max(card.box, 1))]
+  return retrievability(elapsedDays(card, day), stability)
+}
+
+// testItems lists the questions of the chapters a test covers, each with its
+// module, and the share of them to count: a chapter whose questions never end
+// counts its goal. Questions never seen come last.
+const testItems = (test, byId, cards) => {
+  const out = []
+  let total = 0
+  for (const { chapter, module } of test.chapters || []) {
+    const found = byId[module]?.chapters.find(c => c.id === chapter)
+    if (!found) continue
+    for (const source of found.sources) {
+      if (source.finite) {
+        for (const item of source.list() || []) out.push({ item, module })
+        total += (source.list() || []).length
+        continue
+      }
+      for (const card of cards.values()) {
+        const item = source.fromKey(card.key)
+        if (item && card.due) out.push({ item, module })
+      }
+      total += found.goal
+    }
+  }
+  return { items: out, total }
+}
+
+// testReadiness tells how ready a person is for a test: the share of its
+// questions still recalled READY of the time on its day, and how many are
+// not.
+export const testReadiness = (test, byId, cards) => {
+  const { items, total } = testItems(test, byId, cards)
+  const ready = items.filter(
+    ({ item }) => recallOn(cards.get(item.key), test.day) >= READY,
+  ).length
+  const left = Math.max(0, total - ready)
+  return { percent: total ? Math.floor((ready * 100) / total) : 0, left }
+}
+
+// testQuestions makes a game that prepares a test: the questions of its
+// chapters least likely to be recalled on its day first, even when they are
+// not due yet, then those never seen. Each says its module.
+export const testQuestions = (test, byId, cards, count, rng = Math.random) => {
+  const { items } = testItems(test, byId, cards)
+  const chance = ({ item }) => recallOn(cards.get(item.key), test.day)
+  const seen = items
+    .filter(i => chance(i) > 0)
+    .sort((a, b) => chance(a) - chance(b))
+  const fresh = shuffle(
+    items.filter(i => chance(i) === 0),
+    rng,
+  )
+  const { add, picked } = picker(count)
+  const ordered = [...seen, ...fresh].map(({ item, module }) => ({
+    ...item,
+    module,
+  }))
+  for (const item of ordered) add(item)
+  for (const item of ordered) add(item, true)
   return apart(picked, rng).map(item => prepare(item, rng))
 }
 
