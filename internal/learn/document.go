@@ -26,6 +26,19 @@ const (
 	DefaultThreshold  = 70
 	DefaultHopsByStar = 1
 	DefaultDailyCap   = 10
+	// DefaultRetention is the share of cards to recall wanted, in percent:
+	// the higher, the sooner a card comes back.
+	DefaultRetention = 90
+	// DefaultMaxInterval is the longest wait of a card, in days.
+	DefaultMaxInterval = 365
+)
+
+// Limits of the spaced repetition settings.
+const (
+	MinRetention   = 70
+	MaxRetention   = 97
+	MinMaxInterval = 7
+	MaxMaxInterval = 3650
 )
 
 // The question types and generators the game knows. A module using another
@@ -388,6 +401,10 @@ type Settings struct {
 	Threshold  int `json:"seuil"`
 	HopsByStar int `json:"hops_par_etoile"`
 	DailyCap   int `json:"plafond_jour"`
+	// Retention is the share of cards to recall wanted, in percent.
+	Retention int `json:"memorisation"`
+	// MaxInterval is the longest wait of a card, in days.
+	MaxInterval int `json:"intervalle_max"`
 }
 
 // WithDefaults fills the settings a module left out.
@@ -406,6 +423,12 @@ func (s Settings) WithDefaults() Settings {
 	}
 	if s.DailyCap == 0 {
 		s.DailyCap = DefaultDailyCap
+	}
+	if s.Retention == 0 {
+		s.Retention = DefaultRetention
+	}
+	if s.MaxInterval == 0 {
+		s.MaxInterval = DefaultMaxInterval
 	}
 	return s
 }
@@ -535,6 +558,10 @@ func (d Document) Check() error {
 		return fmt.Errorf("module %s : seuil entre 0 et 100", d.ID)
 	case s.HopsByStar < 0 || s.HopsByStar > 20 || s.DailyCap < 0 || s.DailyCap > 200:
 		return fmt.Errorf("module %s : hops par étoile ou plafond hors limites", d.ID)
+	case s.Retention != 0 && (s.Retention < MinRetention || s.Retention > MaxRetention):
+		return fmt.Errorf("module %s : memorisation entre %d et %d %%", d.ID, MinRetention, MaxRetention)
+	case s.MaxInterval != 0 && (s.MaxInterval < MinMaxInterval || s.MaxInterval > MaxMaxInterval):
+		return fmt.Errorf("module %s : intervalle_max entre %d et %d jours", d.ID, MinMaxInterval, MaxMaxInterval)
 	}
 	return nil
 }

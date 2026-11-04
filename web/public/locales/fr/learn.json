@@ -50,7 +50,11 @@
     "dragStart": "Étiquette prise.",
     "dragOver": "Au-dessus d’une case.",
     "dragEnd": "Étiquette posée.",
-    "dragCancel": "Étiquette reposée à sa place."
+    "dragCancel": "Étiquette reposée à sa place.",
+    "again": "À revoir",
+    "hard": "Difficile",
+    "good": "Correct",
+    "easy": "Facile"
   },
   "end": {
     "title0": "Continue, ça va venir !",
@@ -171,7 +175,17 @@
     "packOnLevel_one": "Ouvert jusqu'à {{level}} · {{count}} module joué",
     "packOnLevel_other": "Ouvert jusqu'à {{level}} · {{count}} modules joués",
     "packOn_one": "{{count}} module joué",
-    "packOn_other": "{{count}} modules joués"
+    "packOn_other": "{{count}} modules joués",
+    "retention": "Mémorisation visée (%)",
+    "maxInterval": "Attente maximale (jours)",
+    "grading": "Notation des bonnes réponses",
+    "gradingHelp": "Le temps de réponse note tout seul une réponse rapide comme facile. Avec les boutons, on choisit Difficile ou Facile après une bonne réponse ; Continuer la compte comme correcte. Selon le compte : les boutons pour un parent, le temps pour un enfant.",
+    "gradingFor": "Notation des bonnes réponses de {{name}}",
+    "gradings": {
+      "compte": "Selon le compte",
+      "auto": "Le temps de réponse",
+      "boutons": "Les boutons Difficile et Facile"
+    }
   },
   "stats": {
     "chapters": "Chapitres",
@@ -210,7 +224,9 @@
     "hopsByStar_other": "{{count}} {{units}} par ★",
     "dailyCap_one": "{{count}} {{unit}} par jour",
     "dailyCap_other": "{{count}} {{units}} par jour",
-    "unlock": "ouverture à {{value}} %"
+    "unlock": "ouverture à {{value}} %",
+    "retention": "mémoire {{value}} %",
+    "maxInterval": "au plus {{value}} j"
   },
   "legend": {
     "module": "Module",

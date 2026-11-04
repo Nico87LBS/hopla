@@ -67,6 +67,7 @@ func Migration(db *gorm.DB) error {
 		learn.RecreSetting{},
 		learn.RecrePlay{},
 		learn.Card{},
+		learn.ReviewLog{},
 		learn.CardEdit{},
 		learn.Report{},
 		learn.PlayToken{},

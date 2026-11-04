@@ -58,6 +58,10 @@ type GameSettings struct {
 	Questions  *int `json:"questions" gorm:"column:questions"`
 	Threshold  *int `json:"threshold" gorm:"column:threshold"`
 	HopsByStar *int `json:"hopsByStar" gorm:"column:hops_by_star"`
+	// Retention is the share of cards to recall wanted, in percent, and
+	// MaxInterval the longest wait of a card, in days.
+	Retention   *int `json:"retention" gorm:"column:retention"`
+	MaxInterval *int `json:"maxInterval" gorm:"column:max_interval"`
 }
 
 func (Activation) TableName() string { return "learn_activations" }
@@ -95,6 +99,11 @@ type PersonSetting struct {
 	// FirstName, for AllPacks only, is the name the games call the person
 	// by, in the questions about it. Empty, their name in Hopla.
 	FirstName string `json:"firstName" gorm:"column:first_name;size:40"`
+	// Grading, for AllPacks only, is how the person's right answers are
+	// graded: by the time taken (GradingAuto) or by the buttons Difficile
+	// and Facile (GradingButtons). Empty, by their account: buttons for a
+	// parent, the time for a child.
+	Grading string `json:"grading" gorm:"column:grading;size:10"`
 	GameSettings
 	UpdatedAt time.Time `json:"updatedAt" gorm:"column:updated_at"`
 }
@@ -124,19 +133,29 @@ type Session struct {
 func (Session) TableName() string { return "learn_sessions" }
 
 // Card is what a person knows of one piece of knowledge, for spaced
-// repetition. Key names the knowledge itself, such as "mul:7x8", not the
-// module that asked it, so two modules asking the same thing share it.
+// repetition (FSRS, see fsrs.go). Key names the knowledge itself, such as
+// "mul:7x8", not the module that asked it, so two modules asking the same
+// thing share it.
 type Card struct {
 	FamilyID int    `json:"-" gorm:"primaryKey;autoIncrement:false"`
 	UserID   int    `json:"-" gorm:"primaryKey;autoIncrement:false"`
 	Key      string `json:"key" gorm:"column:card_key;primaryKey;size:160"`
-	// Box goes from 1 to 5: each right answer moves the card up and spaces
-	// out its next review, a wrong one sends it back to 1.
-	Box   int    `json:"box" gorm:"column:box;not null"`
-	Due   string `json:"due" gorm:"column:due;size:10;not null"`
-	Seen  int    `json:"seen" gorm:"column:seen;not null"`
-	Right int    `json:"right" gorm:"column:right_count;not null"`
-	Wrong int    `json:"wrong" gorm:"column:wrong_count;not null"`
+	// Box, from 1 to 5, tells how far the card got, from the days it waits
+	// (BoxOf): the progress bars and the chapters opened read it.
+	Box int    `json:"box" gorm:"column:box;not null"`
+	Due string `json:"due" gorm:"column:due;size:10;not null"`
+	// Stability is the days after which the card is still recalled nine
+	// times out of ten, Difficulty from 1 to 10; both 0 for a card from
+	// before FSRS, read from its box at its next review.
+	Stability  float64 `json:"stability" gorm:"column:stability;not null;default:0"`
+	Difficulty float64 `json:"difficulty" gorm:"column:difficulty;not null;default:0"`
+	// LastReview is the day of the last answer, Lapses the times the card
+	// was forgotten once learnt.
+	LastReview string `json:"lastReview" gorm:"column:last_review;size:10"`
+	Lapses     int    `json:"lapses" gorm:"column:lapses;not null;default:0"`
+	Seen       int    `json:"seen" gorm:"column:seen;not null"`
+	Right      int    `json:"right" gorm:"column:right_count;not null"`
+	Wrong      int    `json:"wrong" gorm:"column:wrong_count;not null"`
 	// LastAnswer is the last wrong answer given, for parents.
 	LastAnswer string    `json:"lastAnswer,omitempty" gorm:"column:last_answer;size:120"`
 	ModuleKey  string    `json:"module" gorm:"column:module_key;size:80"`
@@ -145,8 +164,40 @@ type Card struct {
 
 func (Card) TableName() string { return "learn_cards" }
 
-// BoxDays is how many days a card waits before coming back, by box.
+// BoxDays is how many days a card waits before coming back, by box: the
+// shortest wait of each box (BoxOf), and the stability of a card from
+// before FSRS.
 var BoxDays = map[int]int{1: 1, 2: 2, 3: 4, 4: 8, 5: 16}
 
-// MasteredBox is the box from which a card counts as known.
+// MasteredBox is the box from which a card counts as known: a card that
+// waits 8 days or more.
 const MasteredBox = 4
+
+// BoxOf is the box of a card that waits days before coming back.
+func BoxOf(days int) int {
+	box := 1
+	for b := 2; b <= 5; b++ {
+		if days >= BoxDays[b] {
+			box = b
+		}
+	}
+	return box
+}
+
+// ReviewLog is one answer given, for the time a person usually takes and,
+// later, statistics.
+type ReviewLog struct {
+	ID        int    `json:"id" gorm:"primaryKey"`
+	FamilyID  int    `json:"-" gorm:"column:family_id;not null;index:idx_learn_review_person"`
+	UserID    int    `json:"userId" gorm:"column:user_id;not null;index:idx_learn_review_person"`
+	ModuleKey string `json:"module" gorm:"column:module_key;size:80;not null;index:idx_learn_review_person"`
+	CardKey   string `json:"key" gorm:"column:card_key;size:160;not null"`
+	Day       string `json:"day" gorm:"column:day;size:10;not null"`
+	Grade     int    `json:"grade" gorm:"column:grade;not null"`
+	// Ms is the time taken to answer, 0 when unknown.
+	Ms        int       `json:"ms" gorm:"column:ms;not null;default:0"`
+	Elapsed   int       `json:"elapsed" gorm:"column:elapsed;not null;default:0"`
+	CreatedAt time.Time `json:"createdAt" gorm:"column:created_at"`
+}
+
+func (ReviewLog) TableName() string { return "learn_reviews" }

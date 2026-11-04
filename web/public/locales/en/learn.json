@@ -50,7 +50,11 @@
     "dragStart": "Label picked up.",
     "dragOver": "Over a box.",
     "dragEnd": "Label put down.",
-    "dragCancel": "Label put back."
+    "dragCancel": "Label put back.",
+    "again": "Again",
+    "hard": "Hard",
+    "good": "Good",
+    "easy": "Easy"
   },
   "end": {
     "title0": "Keep going, you'll get there!",
@@ -171,7 +175,17 @@
     "packOnLevel_one": "Open up to {{level}} · {{count}} module played",
     "packOnLevel_other": "Open up to {{level}} · {{count}} modules played",
     "packOn_one": "{{count}} module played",
-    "packOn_other": "{{count}} modules played"
+    "packOn_other": "{{count}} modules played",
+    "retention": "Target recall (%)",
+    "maxInterval": "Longest wait (days)",
+    "grading": "Grading of right answers",
+    "gradingHelp": "The answer time grades a quick answer as easy on its own. With the buttons, you pick Hard or Easy after a right answer; Continue counts it as good. By account: the buttons for a parent, the time for a child.",
+    "gradingFor": "Grading of {{name}}'s right answers",
+    "gradings": {
+      "compte": "By account",
+      "auto": "The answer time",
+      "boutons": "The Hard and Easy buttons"
+    }
   },
   "stats": {
     "chapters": "Chapters",
@@ -210,7 +224,9 @@
     "hopsByStar_other": "{{count}} {{units}} per ★",
     "dailyCap_one": "{{count}} {{unit}} a day",
     "dailyCap_other": "{{count}} {{units}} a day",
-    "unlock": "opening at {{value}}%"
+    "unlock": "opening at {{value}}%",
+    "retention": "recall {{value}} %",
+    "maxInterval": "at most {{value}} d"
   },
   "legend": {
     "module": "Module",

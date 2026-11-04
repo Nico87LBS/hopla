@@ -176,21 +176,73 @@ func TestAGameNeedsTheModuleOnAndFewAnswersEarnNothing(t *testing.T) {
 }
 
 func TestCardsClimbTheBoxesAndAWrongAnswerSendsThemBack(t *testing.T) {
+	schedule := Schedule{Retention: 90, MaxInterval: 365}
 	card := &Card{}
-	Review(card, Answer{Correct: true}, "2026-10-24")
-	require.Equal(t, 1, card.Box)
-	require.Equal(t, "2026-10-25", card.Due)
+	Review(card, Answer{Correct: true}, "2026-10-24", schedule)
+	require.Equal(t, 2, card.Box)
+	require.Equal(t, "2026-10-26", card.Due)
+	require.Equal(t, "2026-10-24", card.LastReview)
+
+	// Playing again the same day does not push the card further.
 	for range 5 {
-		Review(card, Answer{Correct: true}, "2026-10-24")
+		Review(card, Answer{Correct: true}, "2026-10-24", schedule)
+	}
+	require.Equal(t, "2026-10-26", card.Due)
+
+	// Answered right each time it comes back, it waits longer and longer.
+	for range 4 {
+		Review(card, Answer{Correct: true}, card.Due, schedule)
 	}
 	require.Equal(t, 5, card.Box)
-	require.Equal(t, "2026-11-09", card.Due)
-	Review(card, Answer{Almost: true}, "2026-10-24")
-	require.Equal(t, 5, card.Box, "presque keeps the box")
-	Review(card, Answer{Given: "54"}, "2026-10-24")
+	known := card.Stability
+
+	Review(card, Answer{Almost: true}, card.Due, schedule)
+	require.Equal(t, 5, card.Box, "presque keeps the card far")
+	require.Greater(t, card.Stability, known, "a hard recall still strengthens it")
+
+	Review(card, Answer{Given: "54"}, card.Due, schedule)
 	require.Equal(t, 1, card.Box)
 	require.Equal(t, "54", card.LastAnswer)
 	require.Equal(t, 1, card.Wrong)
+	require.Equal(t, 1, card.Lapses)
+}
+
+func TestEasyWaitsLongerThanGoodAndRetentionBringsCardsSooner(t *testing.T) {
+	good, easy := &Card{}, &Card{}
+	schedule := Schedule{Retention: 90, MaxInterval: 365}
+	Review(good, Answer{Correct: true}, "2026-10-24", schedule)
+	Review(easy, Answer{Correct: true, Grade: Easy}, "2026-10-24", schedule)
+	require.Greater(t, easy.Due, good.Due)
+	require.Equal(t, MasteredBox, easy.Box, "a card easy at once waits 8 days")
+
+	// A wrong answer is never easy, whatever it says.
+	wrong := &Card{}
+	Review(wrong, Answer{Grade: Easy}, "2026-10-24", schedule)
+	require.Equal(t, 1, wrong.Box)
+
+	strict := &Card{}
+	Review(strict, Answer{Correct: true, Grade: Easy}, "2026-10-24", Schedule{Retention: 97, MaxInterval: 365})
+	require.Less(t, strict.Due, easy.Due)
+	short := &Card{Stability: 400, Difficulty: 3, LastReview: "2026-01-01", Seen: 9, Box: 5}
+	Review(short, Answer{Correct: true}, "2026-10-24", Schedule{Retention: 90, MaxInterval: 30})
+	require.Equal(t, "2026-11-23", short.Due)
+}
+
+func TestACardFromTheBoxesStartsFromItsBox(t *testing.T) {
+	card := &Card{Box: 4, Due: "2026-11-01", Seen: 4, Right: 4}
+	Review(card, Answer{Correct: true}, "2026-11-01", Schedule{Retention: 90, MaxInterval: 365})
+	require.Greater(t, card.Stability, 8.0, "it was waiting 8 days and was recalled")
+	require.Equal(t, 5, card.Box)
+	require.Equal(t, 5, card.Seen)
+}
+
+func TestGradeOf(t *testing.T) {
+	require.Equal(t, Good, GradeOf(Answer{Correct: true}))
+	require.Equal(t, Hard, GradeOf(Answer{Correct: true, Grade: Hard}))
+	require.Equal(t, Easy, GradeOf(Answer{Correct: true, Grade: Easy}))
+	require.Equal(t, Good, GradeOf(Answer{Correct: true, Grade: Again}))
+	require.Equal(t, Hard, GradeOf(Answer{Almost: true}))
+	require.Equal(t, Again, GradeOf(Answer{Grade: Good}))
 }
 
 func TestTheSameKnowledgeIsOneCardWhicheverModuleAsksIt(t *testing.T) {

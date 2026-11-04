@@ -67,16 +67,21 @@ const mergeCards = (cards, newer) => {
 export const playLocally = (player, game, hops) => {
   const day = player.day || today()
   const byKey = new Map((player.cards || []).map(card => [card.key, card]))
-  const moved = game.answers.map(answer =>
-    review(
+  const settings = player.modules?.find(m => m.id === game.module)?.settings
+  const moved = game.answers.map(answer => {
+    const card = review(
       {
         ...(byKey.get(answer.key) || { key: answer.key }),
         module: game.module,
       },
       answer,
       day,
-    ),
-  )
+      settings,
+    )
+    // The same question twice in a game moves its card twice.
+    byKey.set(card.key, card)
+    return card
+  })
   const next = {
     ...player,
     earnedToday: (player.earnedToday || 0) + hops,

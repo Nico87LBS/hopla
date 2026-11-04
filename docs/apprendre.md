@@ -123,7 +123,10 @@ par les clés des fiches ; les parties déjà jouées restent sous l'ancien modu
 | Hops par étoile | 1 | Ce que rapporte chaque étoile |
 | Hops par jour | 10 | Plafond du module, par personne et par jour |
 | Ouverture (%) | celle du module, souvent 80 | Ce qu'il faut savoir d'un chapitre pour ouvrir le suivant |
+| Mémorisation visée (%) | 90 | Part des questions qu'on veut encore savoir quand elles reviennent, de 70 à 97 : plus haut, elles reviennent plus tôt |
+| Attente maximale (jours) | 365 | Plus longue attente d'une question sue, de 7 à 3650 |
 | Plafond total | aucun | Hops par jour pour tous les jeux ensemble, par personne |
+| Notation des bonnes réponses | selon le compte | Par personne : le temps de réponse (enfants) ou les boutons Difficile et Facile (parents) |
 
 Un réglage peut être donné à quatre endroits ; le plus précis l'emporte :
 
@@ -246,10 +249,27 @@ objectif « Jouer à Apprendre » ou « Gagner des étoiles ».
 
 ### Répétition espacée
 
-Chaque question vit dans une boîte, de 1 à 5. Une bonne réponse la fait
-monter, une erreur la fait redescendre. Elle revient après 1, 2, 4, 8 puis 16
-jours selon sa boîte. Une question en boîte 4 ou 5 est **sue** : c'est ce
-pourcentage qui ouvre les chapitres suivants.
+Les questions reviennent selon **FSRS**, l'algorithme d'Anki depuis 2023.
+Chaque question garde une **stabilité** (les jours après lesquels on la sait
+encore neuf fois sur dix, selon la mémorisation visée) et une **difficulté**.
+Chaque réponse est notée :
+
+| Note | Quand |
+| --- | --- |
+| À revoir | réponse fausse : la question revient le lendemain |
+| Difficile | « presque », ou bouton Difficile après une bonne réponse |
+| Correct | bonne réponse, « Continuer » |
+| Facile | bouton Facile, ou, en notation par le temps, une question déjà vue réussie en moins de la moitié du temps habituel de la personne sur ce module (connu après 10 bonnes réponses) |
+
+Rejouer le même jour ne repousse pas une question. La carte à retourner offre
+aux personnes notées par boutons les quatre notes d'Anki.
+
+Pour les barres de progrès, une question reste rangée dans une boîte de 1 à
+5 selon le nombre de jours avant son retour : moins de 2, 2, 4, 8 et 16 jours
+ou plus. Une question qui attend 8 jours ou plus (boîte 4 ou 5) est **sue** :
+c'est ce pourcentage qui ouvre les chapitres suivants. Les questions d'avant
+FSRS repartent de leur boîte à leur prochaine réponse ; chaque réponse est
+gardée (note, temps, jour).
 
 ## Le test de niveau
 

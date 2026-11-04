@@ -1,0 +1,2741 @@
+{
+ "source": "ts-fsrs 5.4.2, FSRS-6 default parameters, enable_short_term, no fuzz",
+ "cases": [
+  {
+   "retention": 0.8,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 2.3065,
+     "difficulty": 2.11810397,
+     "interval": 8
+    },
+    {
+     "elapsed": 5,
+     "grade": 2,
+     "stability": 11.84551583,
+     "difficulty": 4.75285849,
+     "interval": 39
+    },
+    {
+     "elapsed": 13,
+     "grade": 4,
+     "stability": 64.67169393,
+     "difficulty": 2.98473668,
+     "interval": 214
+    },
+    {
+     "elapsed": 40,
+     "grade": 3,
+     "stability": 161.78158105,
+     "difficulty": 2.97698031,
+     "interval": 365
+    },
+    {
+     "elapsed": 0,
+     "grade": 4,
+     "stability": 209.25384769,
+     "difficulty": 1,
+     "interval": 365
+    },
+    {
+     "elapsed": 1,
+     "grade": 4,
+     "stability": 215.25595122,
+     "difficulty": 1,
+     "interval": 365
+    },
+    {
+     "elapsed": 40,
+     "grade": 1,
+     "stability": 4.81185955,
+     "difficulty": 7.02698957,
+     "interval": 16
+    },
+    {
+     "elapsed": 2,
+     "grade": 1,
+     "stability": 0.84267915,
+     "difficulty": 9.00802006,
+     "interval": 3
+    },
+    {
+     "elapsed": 0,
+     "grade": 1,
+     "stability": 0.3025738,
+     "difficulty": 9.65917131,
+     "interval": 1
+    },
+    {
+     "elapsed": 40,
+     "grade": 3,
+     "stability": 1.98536088,
+     "difficulty": 9.64474051,
+     "interval": 7
+    }
+   ]
+  },
+  {
+   "retention": 0.8,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 4,
+     "stability": 8.2956,
+     "difficulty": 1,
+     "interval": 28
+    },
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 8.2956,
+     "difficulty": 1,
+     "interval": 28
+    },
+    {
+     "elapsed": 2,
+     "grade": 3,
+     "stability": 18.13612,
+     "difficulty": 1,
+     "interval": 60
+    },
+    {
+     "elapsed": 40,
+     "grade": 1,
+     "stability": 2.27464547,
+     "difficulty": 7.02698957,
+     "interval": 8
+    },
+    {
+     "elapsed": 13,
+     "grade": 1,
+     "stability": 0.73028647,
+     "difficulty": 9.00802006,
+     "interval": 2
+    },
+    {
+     "elapsed": 0,
+     "grade": 1,
+     "stability": 0.26469945,
+     "difficulty": 9.65917131,
+     "interval": 1
+    },
+    {
+     "elapsed": 13,
+     "grade": 3,
+     "stability": 1.51017984,
+     "difficulty": 9.64474051,
+     "interval": 5
+    },
+    {
+     "elapsed": 13,
+     "grade": 4,
+     "stability": 7.6135186,
+     "difficulty": 9.51125771,
+     "interval": 25
+    },
+    {
+     "elapsed": 13,
+     "grade": 4,
+     "stability": 19.28056534,
+     "difficulty": 9.33317118,
+     "interval": 64
+    },
+    {
+     "elapsed": 2,
+     "grade": 1,
+     "stability": 1.59857612,
+     "difficulty": 9.76604627,
+     "interval": 5
+    }
+   ]
+  },
+  {
+   "retention": 0.8,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 1,
+     "stability": 0.212,
+     "difficulty": 6.4133,
+     "interval": 1
+    },
+    {
+     "elapsed": 2,
+     "grade": 3,
+     "stability": 2.4329485,
+     "difficulty": 6.40211507,
+     "interval": 8
+    },
+    {
+     "elapsed": 13,
+     "grade": 2,
+     "stability": 10.59076698,
+     "difficulty": 7.59678469,
+     "interval": 35
+    },
+    {
+     "elapsed": 40,
+     "grade": 2,
+     "stability": 28.11077647,
+     "difficulty": 8.38986205,
+     "interval": 93
+    },
+    {
+     "elapsed": 1,
+     "grade": 3,
+     "stability": 29.26169231,
+     "difficulty": 8.37670056,
+     "interval": 97
+    },
+    {
+     "elapsed": 5,
+     "grade": 2,
+     "stability": 32.50511735,
+     "difficulty": 8.90760656,
+     "interval": 108
+    },
+    {
+     "elapsed": 1,
+     "grade": 2,
+     "stability": 33.04800027,
+     "difficulty": 9.2600467,
+     "interval": 110
+    },
+    {
+     "elapsed": 5,
+     "grade": 4,
+     "stability": 39.67088911,
+     "difficulty": 8.99801716,
+     "interval": 132
+    },
+    {
+     "elapsed": 13,
+     "grade": 2,
+     "stability": 45.39649544,
+     "difficulty": 9.32006547,
+     "interval": 151
+    },
+    {
+     "elapsed": 2,
+     "grade": 3,
+     "stability": 46.75863093,
+     "difficulty": 9.30597377,
+     "interval": 155
+    }
+   ]
+  },
+  {
+   "retention": 0.8,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 2.3065,
+     "difficulty": 2.11810397,
+     "interval": 8
+    },
+    {
+     "elapsed": 0,
+     "grade": 1,
+     "stability": 0.77508398,
+     "difficulty": 7.39450274,
+     "interval": 3
+    },
+    {
+     "elapsed": 5,
+     "grade": 3,
+     "stability": 5.21599303,
+     "difficulty": 7.38233661,
+     "interval": 17
+    },
+    {
+     "elapsed": 1,
+     "grade": 2,
+     "stability": 6.39738605,
+     "difficulty": 8.24750143,
+     "interval": 21
+    },
+    {
+     "elapsed": 0,
+     "grade": 2,
+     "stability": 6.39738605,
+     "difficulty": 8.82183815,
+     "interval": 21
+    },
+    {
+     "elapsed": 1,
+     "grade": 4,
+     "stability": 8.57238359,
+     "difficulty": 8.41337973,
+     "interval": 28
+    },
+    {
+     "elapsed": 40,
+     "grade": 1,
+     "stability": 1.5492151,
+     "difficulty": 9.46371707,
+     "interval": 5
+    },
+    {
+     "elapsed": 5,
+     "grade": 3,
+     "stability": 3.99797512,
+     "difficulty": 9.44948172,
+     "interval": 13
+    },
+    {
+     "elapsed": 1,
+     "grade": 4,
+     "stability": 5.60541336,
+     "difficulty": 9.25075253,
+     "interval": 19
+    },
+    {
+     "elapsed": 2,
+     "grade": 2,
+     "stability": 6.65946477,
+     "difficulty": 9.48784298,
+     "interval": 22
+    }
+   ]
+  },
+  {
+   "retention": 0.8,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 2.3065,
+     "difficulty": 2.11810397,
+     "interval": 8
+    },
+    {
+     "elapsed": 1,
+     "grade": 3,
+     "stability": 7.31530068,
+     "difficulty": 2.11121424,
+     "interval": 24
+    },
+    {
+     "elapsed": 5,
+     "grade": 1,
+     "stability": 1.19686016,
+     "difficulty": 7.39223814,
+     "interval": 4
+    },
+    {
+     "elapsed": 1,
+     "grade": 1,
+     "stability": 0.34875646,
+     "difficulty": 9.12807478,
+     "interval": 1
+    },
+    {
+     "elapsed": 13,
+     "grade": 4,
+     "stability": 4.19784589,
+     "difficulty": 8.82194638,
+     "interval": 14
+    },
+    {
+     "elapsed": 2,
+     "grade": 2,
+     "stability": 5.51378372,
+     "difficulty": 9.20318148,
+     "interval": 18
+    },
+    {
+     "elapsed": 1,
+     "grade": 3,
+     "stability": 6.48489276,
+     "difficulty": 9.18920667,
+     "interval": 22
+    },
+    {
+     "elapsed": 40,
+     "grade": 2,
+     "stability": 14.21774903,
+     "difficulty": 9.44698597,
+     "interval": 47
+    },
+    {
+     "elapsed": 5,
+     "grade": 2,
+     "stability": 16.22527304,
+     "difficulty": 9.61811188,
+     "interval": 54
+    },
+    {
+     "elapsed": 40,
+     "grade": 1,
+     "stability": 1.91049093,
+     "difficulty": 9.85970434,
+     "interval": 6
+    }
+   ]
+  },
+  {
+   "retention": 0.8,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 2.3065,
+     "difficulty": 2.11810397,
+     "interval": 8
+    },
+    {
+     "elapsed": 1,
+     "grade": 2,
+     "stability": 5.31879273,
+     "difficulty": 4.75285849,
+     "interval": 18
+    },
+    {
+     "elapsed": 1,
+     "grade": 4,
+     "stability": 11.66176688,
+     "difficulty": 2.98473668,
+     "interval": 39
+    },
+    {
+     "elapsed": 2,
+     "grade": 1,
+     "stability": 1.36903444,
+     "difficulty": 7.67935902,
+     "interval": 5
+    },
+    {
+     "elapsed": 2,
+     "grade": 4,
+     "stability": 7.00813201,
+     "difficulty": 6.88913732,
+     "interval": 23
+    },
+    {
+     "elapsed": 2,
+     "grade": 1,
+     "stability": 1.02014354,
+     "difficulty": 8.96270896,
+     "interval": 3
+    },
+    {
+     "elapsed": 40,
+     "grade": 1,
+     "stability": 0.53712752,
+     "difficulty": 9.64427786,
+     "interval": 2
+    },
+    {
+     "elapsed": 5,
+     "grade": 2,
+     "stability": 1.38972157,
+     "difficulty": 9.74908344,
+     "interval": 5
+    },
+    {
+     "elapsed": 40,
+     "grade": 3,
+     "stability": 5.46888232,
+     "difficulty": 9.73456273,
+     "interval": 18
+    },
+    {
+     "elapsed": 40,
+     "grade": 3,
+     "stability": 13.82256409,
+     "difficulty": 9.72005654,
+     "interval": 46
+    }
+   ]
+  },
+  {
+   "retention": 0.8,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 2,
+     "stability": 1.2931,
+     "difficulty": 5.11217071,
+     "interval": 4
+    },
+    {
+     "elapsed": 2,
+     "grade": 1,
+     "stability": 0.40717516,
+     "difficulty": 8.37863212,
+     "interval": 1
+    },
+    {
+     "elapsed": 13,
+     "grade": 2,
+     "stability": 2.30400293,
+     "difficulty": 8.90888882,
+     "interval": 8
+    },
+    {
+     "elapsed": 40,
+     "grade": 3,
+     "stability": 11.34275156,
+     "difficulty": 8.8952083,
+     "interval": 38
+    },
+    {
+     "elapsed": 5,
+     "grade": 4,
+     "stability": 19.84414605,
+     "difficulty": 8.51126677,
+     "interval": 66
+    },
+    {
+     "elapsed": 2,
+     "grade": 4,
+     "stability": 24.0662041,
+     "difficulty": 7.99902987,
+     "interval": 80
+    },
+    {
+     "elapsed": 40,
+     "grade": 3,
+     "stability": 56.28574882,
+     "difficulty": 7.98625921,
+     "interval": 187
+    },
+    {
+     "elapsed": 2,
+     "grade": 2,
+     "stability": 57.70956377,
+     "difficulty": 8.64841339,
+     "interval": 191
+    },
+    {
+     "elapsed": 40,
+     "grade": 3,
+     "stability": 86.03126994,
+     "difficulty": 8.63499335,
+     "interval": 285
+    },
+    {
+     "elapsed": 1,
+     "grade": 4,
+     "stability": 87.6716903,
+     "difficulty": 8.16410011,
+     "interval": 291
+    }
+   ]
+  },
+  {
+   "retention": 0.8,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 1,
+     "stability": 0.212,
+     "difficulty": 6.4133,
+     "interval": 1
+    },
+    {
+     "elapsed": 0,
+     "grade": 2,
+     "stability": 0.212,
+     "difficulty": 7.60420977,
+     "interval": 1
+    },
+    {
+     "elapsed": 5,
+     "grade": 1,
+     "stability": 0.12870216,
+     "difficulty": 9.19774841,
+     "interval": 1
+    },
+    {
+     "elapsed": 1,
+     "grade": 4,
+     "stability": 1.13141695,
+     "difficulty": 8.91490169,
+     "interval": 4
+    },
+    {
+     "elapsed": 1,
+     "grade": 3,
+     "stability": 2.26995221,
+     "difficulty": 8.90121516,
+     "interval": 8
+    },
+    {
+     "elapsed": 5,
+     "grade": 1,
+     "stability": 0.61967895,
+     "difficulty": 9.62406526,
+     "interval": 2
+    },
+    {
+     "elapsed": 40,
+     "grade": 3,
+     "stability": 3.37006377,
+     "difficulty": 9.60966956,
+     "interval": 11
+    },
+    {
+     "elapsed": 1,
+     "grade": 4,
+     "stability": 4.82463429,
+     "difficulty": 9.46446768,
+     "interval": 16
+    },
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 4.82463429,
+     "difficulty": 9.45023158,
+     "interval": 16
+    },
+    {
+     "elapsed": 2,
+     "grade": 4,
+     "stability": 7.74051346,
+     "difficulty": 9.25175296,
+     "interval": 26
+    }
+   ]
+  },
+  {
+   "retention": 0.8,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 2,
+     "stability": 1.2931,
+     "difficulty": 5.11217071,
+     "interval": 4
+    },
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 1.33589976,
+     "difficulty": 5.10228691,
+     "interval": 4
+    },
+    {
+     "elapsed": 2,
+     "grade": 4,
+     "stability": 11.30599919,
+     "difficulty": 3.4509278,
+     "interval": 37
+    },
+    {
+     "elapsed": 5,
+     "grade": 2,
+     "stability": 21.09695297,
+     "difficulty": 5.63764906,
+     "interval": 70
+    },
+    {
+     "elapsed": 5,
+     "grade": 2,
+     "stability": 27.8998828,
+     "difficulty": 7.08929653,
+     "interval": 93
+    },
+    {
+     "elapsed": 2,
+     "grade": 4,
+     "stability": 34.2550035,
+     "difficulty": 6.10190344,
+     "interval": 114
+    },
+    {
+     "elapsed": 0,
+     "grade": 4,
+     "stability": 49.07169803,
+     "difficulty": 4.78456959,
+     "interval": 163
+    },
+    {
+     "elapsed": 5,
+     "grade": 3,
+     "stability": 61.16962158,
+     "difficulty": 4.77501339,
+     "interval": 203
+    },
+    {
+     "elapsed": 5,
+     "grade": 1,
+     "stability": 2.69572445,
+     "difficulty": 8.2678108,
+     "interval": 9
+    },
+    {
+     "elapsed": 5,
+     "grade": 4,
+     "stability": 12.1798213,
+     "difficulty": 7.67422226,
+     "interval": 40
+    }
+   ]
+  },
+  {
+   "retention": 0.8,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 1,
+     "stability": 0.212,
+     "difficulty": 6.4133,
+     "interval": 1
+    },
+    {
+     "elapsed": 2,
+     "grade": 4,
+     "stability": 4.37161444,
+     "difficulty": 5.20002037,
+     "interval": 14
+    },
+    {
+     "elapsed": 13,
+     "grade": 2,
+     "stability": 17.01895508,
+     "difficulty": 6.79877821,
+     "interval": 56
+    },
+    {
+     "elapsed": 0,
+     "grade": 4,
+     "stability": 25.52874222,
+     "difficulty": 5.71430744,
+     "interval": 85
+    },
+    {
+     "elapsed": 1,
+     "grade": 4,
+     "stability": 29.9566732,
+     "difficulty": 4.26745706,
+     "interval": 99
+    },
+    {
+     "elapsed": 1,
+     "grade": 1,
+     "stability": 2.00516786,
+     "difficulty": 8.10098048,
+     "interval": 7
+    },
+    {
+     "elapsed": 13,
+     "grade": 1,
+     "stability": 0.67725516,
+     "difficulty": 9.36103357,
+     "interval": 2
+    },
+    {
+     "elapsed": 5,
+     "grade": 4,
+     "stability": 4.24425172,
+     "difficulty": 9.13274913,
+     "interval": 14
+    },
+    {
+     "elapsed": 2,
+     "grade": 1,
+     "stability": 0.77661131,
+     "difficulty": 9.7001689,
+     "interval": 3
+    },
+    {
+     "elapsed": 2,
+     "grade": 4,
+     "stability": 2.71148778,
+     "difficulty": 9.58520769,
+     "interval": 9
+    }
+   ]
+  },
+  {
+   "retention": 0.8,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 1,
+     "stability": 0.212,
+     "difficulty": 6.4133,
+     "interval": 1
+    },
+    {
+     "elapsed": 0,
+     "grade": 1,
+     "stability": 0.08335672,
+     "difficulty": 8.80630447,
+     "interval": 1
+    },
+    {
+     "elapsed": 5,
+     "grade": 3,
+     "stability": 0.89502163,
+     "difficulty": 8.79272653,
+     "interval": 3
+    },
+    {
+     "elapsed": 5,
+     "grade": 2,
+     "stability": 2.63007539,
+     "difficulty": 9.18378399,
+     "interval": 9
+    },
+    {
+     "elapsed": 40,
+     "grade": 1,
+     "stability": 0.92595442,
+     "difficulty": 9.71694371,
+     "interval": 3
+    },
+    {
+     "elapsed": 40,
+     "grade": 1,
+     "stability": 0.50171281,
+     "difficulty": 9.89218969,
+     "interval": 2
+    },
+    {
+     "elapsed": 1,
+     "grade": 1,
+     "stability": 0.18735796,
+     "difficulty": 9.94979185,
+     "interval": 1
+    },
+    {
+     "elapsed": 13,
+     "grade": 1,
+     "stability": 0.13114253,
+     "difficulty": 9.96872529,
+     "interval": 1
+    },
+    {
+     "elapsed": 13,
+     "grade": 2,
+     "stability": 0.50001021,
+     "difficulty": 9.96446676,
+     "interval": 2
+    },
+    {
+     "elapsed": 0,
+     "grade": 1,
+     "stability": 0.1858077,
+     "difficulty": 9.97354883,
+     "interval": 1
+    }
+   ]
+  },
+  {
+   "retention": 0.8,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 1,
+     "stability": 0.212,
+     "difficulty": 6.4133,
+     "interval": 1
+    },
+    {
+     "elapsed": 2,
+     "grade": 1,
+     "stability": 0.11279815,
+     "difficulty": 8.80630447,
+     "interval": 1
+    },
+    {
+     "elapsed": 40,
+     "grade": 1,
+     "stability": 0.09855072,
+     "difficulty": 9.59286876,
+     "interval": 1
+    },
+    {
+     "elapsed": 0,
+     "grade": 2,
+     "stability": 0.09855072,
+     "difficulty": 9.71495568,
+     "interval": 1
+    },
+    {
+     "elapsed": 1,
+     "grade": 1,
+     "stability": 0.05368069,
+     "difficulty": 9.89153624,
+     "interval": 1
+    },
+    {
+     "elapsed": 5,
+     "grade": 2,
+     "stability": 0.2398903,
+     "difficulty": 9.91322507,
+     "interval": 1
+    },
+    {
+     "elapsed": 13,
+     "grade": 4,
+     "stability": 2.01901564,
+     "difficulty": 9.86945731,
+     "interval": 7
+    },
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 2.02557648,
+     "difficulty": 9.85481622,
+     "interval": 7
+    },
+    {
+     "elapsed": 13,
+     "grade": 2,
+     "stability": 3.91063232,
+     "difficulty": 9.88884862,
+     "interval": 13
+    },
+    {
+     "elapsed": 2,
+     "grade": 4,
+     "stability": 5.99939382,
+     "difficulty": 9.83693538,
+     "interval": 20
+    }
+   ]
+  },
+  {
+   "retention": 0.9,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 1,
+     "stability": 0.212,
+     "difficulty": 6.4133,
+     "interval": 1
+    },
+    {
+     "elapsed": 13,
+     "grade": 3,
+     "stability": 3.9233297,
+     "difficulty": 6.40211507,
+     "interval": 4
+    },
+    {
+     "elapsed": 0,
+     "grade": 1,
+     "stability": 1.27312182,
+     "difficulty": 8.80262806,
+     "interval": 1
+    },
+    {
+     "elapsed": 1,
+     "grade": 2,
+     "stability": 2.00233543,
+     "difficulty": 9.19035708,
+     "interval": 2
+    },
+    {
+     "elapsed": 5,
+     "grade": 2,
+     "stability": 3.87466645,
+     "difficulty": 9.44774967,
+     "interval": 4
+    },
+    {
+     "elapsed": 40,
+     "grade": 3,
+     "stability": 12.61741837,
+     "difficulty": 9.43353029,
+     "interval": 13
+    },
+    {
+     "elapsed": 40,
+     "grade": 3,
+     "stability": 26.8242507,
+     "difficulty": 9.41932513,
+     "interval": 27
+    },
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 26.8242507,
+     "difficulty": 9.40513417,
+     "interval": 27
+    },
+    {
+     "elapsed": 5,
+     "grade": 3,
+     "stability": 30.12815218,
+     "difficulty": 9.39095741,
+     "interval": 30
+    },
+    {
+     "elapsed": 13,
+     "grade": 3,
+     "stability": 37.82208538,
+     "difficulty": 9.37679482,
+     "interval": 38
+    }
+   ]
+  },
+  {
+   "retention": 0.9,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 4,
+     "stability": 8.2956,
+     "difficulty": 1,
+     "interval": 8
+    },
+    {
+     "elapsed": 13,
+     "grade": 3,
+     "stability": 50.87364411,
+     "difficulty": 1,
+     "interval": 51
+    },
+    {
+     "elapsed": 1,
+     "grade": 4,
+     "stability": 58.41402669,
+     "difficulty": 1,
+     "interval": 58
+    },
+    {
+     "elapsed": 2,
+     "grade": 4,
+     "stability": 73.04558116,
+     "difficulty": 1,
+     "interval": 73
+    },
+    {
+     "elapsed": 40,
+     "grade": 4,
+     "stability": 300.93910975,
+     "difficulty": 1,
+     "interval": 301
+    },
+    {
+     "elapsed": 40,
+     "grade": 4,
+     "stability": 513.45781984,
+     "difficulty": 1,
+     "interval": 365
+    },
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 513.45781984,
+     "difficulty": 1,
+     "interval": 365
+    },
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 513.45781984,
+     "difficulty": 1,
+     "interval": 365
+    },
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 513.45781984,
+     "difficulty": 1,
+     "interval": 365
+    },
+    {
+     "elapsed": 0,
+     "grade": 4,
+     "stability": 615.5246766,
+     "difficulty": 1,
+     "interval": 365
+    }
+   ]
+  },
+  {
+   "retention": 0.9,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 4,
+     "stability": 8.2956,
+     "difficulty": 1,
+     "interval": 8
+    },
+    {
+     "elapsed": 0,
+     "grade": 4,
+     "stability": 13.04606469,
+     "difficulty": 1,
+     "interval": 13
+    },
+    {
+     "elapsed": 0,
+     "grade": 2,
+     "stability": 13.04606469,
+     "difficulty": 4.01060897,
+     "interval": 13
+    },
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 13.04606469,
+     "difficulty": 4.00182673,
+     "interval": 13
+    },
+    {
+     "elapsed": 1,
+     "grade": 2,
+     "stability": 15.11354718,
+     "difficulty": 6.00336144,
+     "interval": 15
+    },
+    {
+     "elapsed": 13,
+     "grade": 2,
+     "stability": 29.06304797,
+     "difficulty": 7.33207345,
+     "interval": 29
+    },
+    {
+     "elapsed": 40,
+     "grade": 4,
+     "stability": 105.49887149,
+     "difficulty": 6.4258051,
+     "interval": 105
+    },
+    {
+     "elapsed": 13,
+     "grade": 2,
+     "stability": 117.63318105,
+     "difficulty": 7.61251124,
+     "interval": 118
+    },
+    {
+     "elapsed": 5,
+     "grade": 3,
+     "stability": 123.49705437,
+     "difficulty": 7.6001271,
+     "interval": 123
+    },
+    {
+     "elapsed": 5,
+     "grade": 1,
+     "stability": 3.37947094,
+     "difficulty": 9.19640647,
+     "interval": 3
+    }
+   ]
+  },
+  {
+   "retention": 0.9,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 2.3065,
+     "difficulty": 2.11810397,
+     "interval": 2
+    },
+    {
+     "elapsed": 1,
+     "grade": 1,
+     "stability": 0.57129918,
+     "difficulty": 7.39450274,
+     "interval": 1
+    },
+    {
+     "elapsed": 1,
+     "grade": 1,
+     "stability": 0.20943069,
+     "difficulty": 9.12881914,
+     "interval": 1
+    },
+    {
+     "elapsed": 1,
+     "grade": 2,
+     "stability": 0.61843865,
+     "difficulty": 9.40689792,
+     "interval": 1
+    },
+    {
+     "elapsed": 40,
+     "grade": 3,
+     "stability": 3.79890018,
+     "difficulty": 9.39271939,
+     "interval": 4
+    },
+    {
+     "elapsed": 5,
+     "grade": 3,
+     "stability": 6.98381716,
+     "difficulty": 9.37855504,
+     "interval": 7
+    },
+    {
+     "elapsed": 40,
+     "grade": 4,
+     "stability": 29.21514341,
+     "difficulty": 9.15612546,
+     "interval": 29
+    },
+    {
+     "elapsed": 5,
+     "grade": 4,
+     "stability": 36.31584474,
+     "difficulty": 8.85937028,
+     "interval": 36
+    },
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 36.31584474,
+     "difficulty": 8.84573928,
+     "interval": 36
+    },
+    {
+     "elapsed": 2,
+     "grade": 1,
+     "stability": 2.09052891,
+     "difficulty": 9.60583072,
+     "interval": 2
+    }
+   ]
+  },
+  {
+   "retention": 0.9,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 4,
+     "stability": 8.2956,
+     "difficulty": 1,
+     "interval": 8
+    },
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 8.2956,
+     "difficulty": 1,
+     "interval": 8
+    },
+    {
+     "elapsed": 13,
+     "grade": 1,
+     "stability": 1.47392752,
+     "difficulty": 7.02698957,
+     "interval": 1
+    },
+    {
+     "elapsed": 13,
+     "grade": 4,
+     "stability": 19.16675678,
+     "difficulty": 6.01877639,
+     "interval": 19
+    },
+    {
+     "elapsed": 2,
+     "grade": 4,
+     "stability": 27.65215373,
+     "difficulty": 4.67366535,
+     "interval": 28
+    },
+    {
+     "elapsed": 1,
+     "grade": 1,
+     "stability": 1.92775397,
+     "difficulty": 8.23449839,
+     "interval": 2
+    },
+    {
+     "elapsed": 13,
+     "grade": 3,
+     "stability": 9.33946619,
+     "difficulty": 8.22149226,
+     "interval": 9
+    },
+    {
+     "elapsed": 5,
+     "grade": 2,
+     "stability": 12.93535687,
+     "difficulty": 8.80457206,
+     "interval": 13
+    },
+    {
+     "elapsed": 1,
+     "grade": 1,
+     "stability": 1.32074295,
+     "difficulty": 9.59229933,
+     "interval": 1
+    },
+    {
+     "elapsed": 40,
+     "grade": 1,
+     "stability": 0.62897277,
+     "difficulty": 9.85121993,
+     "interval": 1
+    }
+   ]
+  },
+  {
+   "retention": 0.9,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 4,
+     "stability": 8.2956,
+     "difficulty": 1,
+     "interval": 8
+    },
+    {
+     "elapsed": 2,
+     "grade": 1,
+     "stability": 1.24684881,
+     "difficulty": 7.02698957,
+     "interval": 1
+    },
+    {
+     "elapsed": 13,
+     "grade": 2,
+     "stability": 6.49612195,
+     "difficulty": 8.01160551,
+     "interval": 6
+    },
+    {
+     "elapsed": 0,
+     "grade": 4,
+     "stability": 10.38181857,
+     "difficulty": 7.3324051,
+     "interval": 10
+    },
+    {
+     "elapsed": 0,
+     "grade": 1,
+     "stability": 3.15995053,
+     "difficulty": 9.10840807,
+     "interval": 3
+    },
+    {
+     "elapsed": 1,
+     "grade": 3,
+     "stability": 4.21945946,
+     "difficulty": 9.09452803,
+     "interval": 4
+    },
+    {
+     "elapsed": 40,
+     "grade": 3,
+     "stability": 15.39646707,
+     "difficulty": 9.08066187,
+     "interval": 15
+    },
+    {
+     "elapsed": 13,
+     "grade": 1,
+     "stability": 1.62907872,
+     "difficulty": 9.68304818,
+     "interval": 2
+    },
+    {
+     "elapsed": 40,
+     "grade": 4,
+     "stability": 10.43750916,
+     "difficulty": 9.56236602,
+     "interval": 10
+    },
+    {
+     "elapsed": 13,
+     "grade": 3,
+     "stability": 16.81042082,
+     "difficulty": 9.54803202,
+     "interval": 17
+    }
+   ]
+  },
+  {
+   "retention": 0.9,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 2.3065,
+     "difficulty": 2.11810397,
+     "interval": 2
+    },
+    {
+     "elapsed": 5,
+     "grade": 4,
+     "stability": 32.01322223,
+     "difficulty": 1,
+     "interval": 32
+    },
+    {
+     "elapsed": 13,
+     "grade": 3,
+     "stability": 79.80800783,
+     "difficulty": 1,
+     "interval": 80
+    },
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 79.80800783,
+     "difficulty": 1,
+     "interval": 80
+    },
+    {
+     "elapsed": 40,
+     "grade": 2,
+     "stability": 153.12194404,
+     "difficulty": 4.01060897,
+     "interval": 153
+    },
+    {
+     "elapsed": 40,
+     "grade": 4,
+     "stability": 310.29247859,
+     "difficulty": 1.99446196,
+     "interval": 310
+    },
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 310.29247859,
+     "difficulty": 1.98769587,
+     "interval": 310
+    },
+    {
+     "elapsed": 1,
+     "grade": 3,
+     "stability": 312.9993369,
+     "difficulty": 1.98093654,
+     "interval": 313
+    },
+    {
+     "elapsed": 5,
+     "grade": 4,
+     "stability": 338.16837109,
+     "difficulty": 1,
+     "interval": 338
+    },
+    {
+     "elapsed": 40,
+     "grade": 1,
+     "stability": 5.53064701,
+     "difficulty": 7.02698957,
+     "interval": 6
+    }
+   ]
+  },
+  {
+   "retention": 0.9,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 2.3065,
+     "difficulty": 2.11810397,
+     "interval": 2
+    },
+    {
+     "elapsed": 13,
+     "grade": 1,
+     "stability": 0.7917891,
+     "difficulty": 7.39450274,
+     "interval": 1
+    },
+    {
+     "elapsed": 0,
+     "grade": 1,
+     "stability": 0.2854688,
+     "difficulty": 9.12881914,
+     "interval": 1
+    },
+    {
+     "elapsed": 13,
+     "grade": 2,
+     "stability": 1.38027908,
+     "difficulty": 9.40689792,
+     "interval": 1
+    },
+    {
+     "elapsed": 0,
+     "grade": 4,
+     "stability": 2.44258111,
+     "difficulty": 9.19393921,
+     "interval": 2
+    },
+    {
+     "elapsed": 5,
+     "grade": 3,
+     "stability": 5.71381355,
+     "difficulty": 9.17997364,
+     "interval": 6
+    },
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 5.71381355,
+     "difficulty": 9.16602204,
+     "interval": 6
+    },
+    {
+     "elapsed": 2,
+     "grade": 2,
+     "stability": 6.81834879,
+     "difficulty": 9.43159494,
+     "interval": 7
+    },
+    {
+     "elapsed": 5,
+     "grade": 1,
+     "stability": 1.05779721,
+     "difficulty": 9.79839749,
+     "interval": 1
+    },
+    {
+     "elapsed": 0,
+     "grade": 2,
+     "stability": 1.05779721,
+     "difficulty": 9.85139523,
+     "interval": 1
+    }
+   ]
+  },
+  {
+   "retention": 0.9,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 1,
+     "stability": 0.212,
+     "difficulty": 6.4133,
+     "interval": 1
+    },
+    {
+     "elapsed": 5,
+     "grade": 4,
+     "stability": 5.75894272,
+     "difficulty": 5.20002037,
+     "interval": 6
+    },
+    {
+     "elapsed": 40,
+     "grade": 4,
+     "stability": 79.10228278,
+     "difficulty": 3.58131923,
+     "interval": 79
+    },
+    {
+     "elapsed": 1,
+     "grade": 4,
+     "stability": 84.31787098,
+     "difficulty": 1.4217236,
+     "interval": 84
+    },
+    {
+     "elapsed": 1,
+     "grade": 4,
+     "stability": 90.98309654,
+     "difficulty": 1,
+     "interval": 91
+    },
+    {
+     "elapsed": 1,
+     "grade": 2,
+     "stability": 93.19039668,
+     "difficulty": 4.01060897,
+     "interval": 93
+    },
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 93.19039668,
+     "difficulty": 4.00182673,
+     "interval": 93
+    },
+    {
+     "elapsed": 2,
+     "grade": 1,
+     "stability": 3.15486178,
+     "difficulty": 8.0136696,
+     "interval": 3
+    },
+    {
+     "elapsed": 40,
+     "grade": 1,
+     "stability": 1.02158834,
+     "difficulty": 9.33233508,
+     "interval": 1
+    },
+    {
+     "elapsed": 13,
+     "grade": 3,
+     "stability": 4.3421776,
+     "difficulty": 9.31823111,
+     "interval": 4
+    }
+   ]
+  },
+  {
+   "retention": 0.9,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 1,
+     "stability": 0.212,
+     "difficulty": 6.4133,
+     "interval": 1
+    },
+    {
+     "elapsed": 2,
+     "grade": 3,
+     "stability": 2.4329485,
+     "difficulty": 6.40211507,
+     "interval": 2
+    },
+    {
+     "elapsed": 0,
+     "grade": 1,
+     "stability": 0.81470993,
+     "difficulty": 8.80262806,
+     "interval": 1
+    },
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 0.86765319,
+     "difficulty": 8.7890538,
+     "interval": 1
+    },
+    {
+     "elapsed": 40,
+     "grade": 3,
+     "stability": 6.31494149,
+     "difficulty": 8.77549312,
+     "interval": 6
+    },
+    {
+     "elapsed": 5,
+     "grade": 3,
+     "stability": 11.00592458,
+     "difficulty": 8.761946,
+     "interval": 11
+    },
+    {
+     "elapsed": 1,
+     "grade": 1,
+     "stability": 1.22332276,
+     "difficulty": 9.57828844,
+     "interval": 1
+    },
+    {
+     "elapsed": 0,
+     "grade": 1,
+     "stability": 0.42860625,
+     "difficulty": 9.84661465,
+     "interval": 1
+    },
+    {
+     "elapsed": 0,
+     "grade": 1,
+     "stability": 0.16089653,
+     "difficulty": 9.93481165,
+     "interval": 1
+    },
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 0.19065274,
+     "difficulty": 9.92010521,
+     "interval": 1
+    }
+   ]
+  },
+  {
+   "retention": 0.9,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 2,
+     "stability": 1.2931,
+     "difficulty": 5.11217071,
+     "interval": 1
+    },
+    {
+     "elapsed": 40,
+     "grade": 1,
+     "stability": 0.64537059,
+     "difficulty": 8.37863212,
+     "interval": 1
+    },
+    {
+     "elapsed": 2,
+     "grade": 1,
+     "stability": 0.2505827,
+     "difficulty": 9.45229578,
+     "interval": 1
+    },
+    {
+     "elapsed": 40,
+     "grade": 1,
+     "stability": 0.19109439,
+     "difficulty": 9.80520172,
+     "interval": 1
+    },
+    {
+     "elapsed": 0,
+     "grade": 4,
+     "stability": 0.3851534,
+     "difficulty": 9.72533758,
+     "interval": 1
+    },
+    {
+     "elapsed": 40,
+     "grade": 2,
+     "stability": 1.51353739,
+     "difficulty": 9.80289466,
+     "interval": 2
+    },
+    {
+     "elapsed": 1,
+     "grade": 1,
+     "stability": 0.39951172,
+     "difficulty": 9.92044118,
+     "interval": 1
+    },
+    {
+     "elapsed": 40,
+     "grade": 4,
+     "stability": 3.44783482,
+     "difficulty": 9.8790847,
+     "interval": 3
+    },
+    {
+     "elapsed": 13,
+     "grade": 2,
+     "stability": 5.71078112,
+     "difficulty": 9.90495916,
+     "interval": 6
+    },
+    {
+     "elapsed": 13,
+     "grade": 3,
+     "stability": 9.9930005,
+     "difficulty": 9.89028257,
+     "interval": 10
+    }
+   ]
+  },
+  {
+   "retention": 0.9,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 2.3065,
+     "difficulty": 2.11810397,
+     "interval": 2
+    },
+    {
+     "elapsed": 2,
+     "grade": 3,
+     "stability": 10.96433194,
+     "difficulty": 2.11121424,
+     "interval": 11
+    },
+    {
+     "elapsed": 0,
+     "grade": 4,
+     "stability": 16.92946595,
+     "difficulty": 1,
+     "interval": 17
+    },
+    {
+     "elapsed": 40,
+     "grade": 2,
+     "stability": 76.3504774,
+     "difficulty": 4.01060897,
+     "interval": 76
+    },
+    {
+     "elapsed": 1,
+     "grade": 4,
+     "stability": 81.29220903,
+     "difficulty": 1.99446196,
+     "interval": 81
+    },
+    {
+     "elapsed": 1,
+     "grade": 1,
+     "stability": 3.12097675,
+     "difficulty": 7.35386245,
+     "interval": 3
+    },
+    {
+     "elapsed": 13,
+     "grade": 3,
+     "stability": 14.93959302,
+     "difficulty": 7.34173696,
+     "interval": 15
+    },
+    {
+     "elapsed": 13,
+     "grade": 2,
+     "stability": 25.1414102,
+     "difficulty": 8.22054948,
+     "interval": 25
+    },
+    {
+     "elapsed": 5,
+     "grade": 4,
+     "stability": 35.98294429,
+     "difficulty": 7.61116841,
+     "interval": 36
+    },
+    {
+     "elapsed": 13,
+     "grade": 4,
+     "stability": 66.25424622,
+     "difficulty": 6.79816058,
+     "interval": 66
+    }
+   ]
+  },
+  {
+   "retention": 0.95,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 2,
+     "stability": 1.2931,
+     "difficulty": 5.11217071,
+     "interval": 1
+    },
+    {
+     "elapsed": 40,
+     "grade": 1,
+     "stability": 0.64537059,
+     "difficulty": 8.37863212,
+     "interval": 1
+    },
+    {
+     "elapsed": 1,
+     "grade": 2,
+     "stability": 1.4387304,
+     "difficulty": 8.90888882,
+     "interval": 1
+    },
+    {
+     "elapsed": 1,
+     "grade": 1,
+     "stability": 0.38893403,
+     "difficulty": 9.62658754,
+     "interval": 1
+    },
+    {
+     "elapsed": 40,
+     "grade": 4,
+     "stability": 4.19952681,
+     "difficulty": 9.48703887,
+     "interval": 2
+    },
+    {
+     "elapsed": 5,
+     "grade": 3,
+     "stability": 7.24497266,
+     "difficulty": 9.4727802,
+     "interval": 3
+    },
+    {
+     "elapsed": 1,
+     "grade": 4,
+     "stability": 8.75109184,
+     "difficulty": 9.28183629,
+     "interval": 4
+    },
+    {
+     "elapsed": 5,
+     "grade": 4,
+     "stability": 15.66320491,
+     "difficulty": 9.02708781,
+     "interval": 6
+    },
+    {
+     "elapsed": 0,
+     "grade": 2,
+     "stability": 15.66320491,
+     "difficulty": 9.33936392,
+     "interval": 6
+    },
+    {
+     "elapsed": 5,
+     "grade": 1,
+     "stability": 1.51561086,
+     "difficulty": 9.76808178,
+     "interval": 1
+    }
+   ]
+  },
+  {
+   "retention": 0.95,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 2,
+     "stability": 1.2931,
+     "difficulty": 5.11217071,
+     "interval": 1
+    },
+    {
+     "elapsed": 40,
+     "grade": 3,
+     "stability": 19.70586632,
+     "difficulty": 5.10228691,
+     "interval": 8
+    },
+    {
+     "elapsed": 0,
+     "grade": 2,
+     "stability": 19.70586632,
+     "difficulty": 6.73389818,
+     "interval": 8
+    },
+    {
+     "elapsed": 0,
+     "grade": 2,
+     "stability": 19.70586632,
+     "difficulty": 7.81703778,
+     "interval": 8
+    },
+    {
+     "elapsed": 0,
+     "grade": 2,
+     "stability": 19.70586632,
+     "difficulty": 8.53607632,
+     "interval": 8
+    },
+    {
+     "elapsed": 13,
+     "grade": 1,
+     "stability": 1.78987249,
+     "difficulty": 9.50404661,
+     "interval": 1
+    },
+    {
+     "elapsed": 0,
+     "grade": 1,
+     "stability": 0.61159516,
+     "difficulty": 9.82221186,
+     "interval": 1
+    },
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 0.66374591,
+     "difficulty": 9.80761802,
+     "interval": 1
+    },
+    {
+     "elapsed": 40,
+     "grade": 3,
+     "stability": 3.15248314,
+     "difficulty": 9.79303877,
+     "interval": 1
+    },
+    {
+     "elapsed": 13,
+     "grade": 4,
+     "stability": 10.5061703,
+     "difficulty": 9.70911034,
+     "interval": 4
+    }
+   ]
+  },
+  {
+   "retention": 0.95,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 2,
+     "stability": 1.2931,
+     "difficulty": 5.11217071,
+     "interval": 1
+    },
+    {
+     "elapsed": 13,
+     "grade": 3,
+     "stability": 14.4565482,
+     "difficulty": 5.10228691,
+     "interval": 6
+    },
+    {
+     "elapsed": 13,
+     "grade": 3,
+     "stability": 41.71583295,
+     "difficulty": 5.09241299,
+     "interval": 17
+    },
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 41.71583295,
+     "difficulty": 5.08254895,
+     "interval": 17
+    },
+    {
+     "elapsed": 0,
+     "grade": 1,
+     "stability": 11.58677997,
+     "difficulty": 8.36889565,
+     "interval": 5
+    },
+    {
+     "elapsed": 1,
+     "grade": 2,
+     "stability": 12.37598294,
+     "difficulty": 8.9024253,
+     "interval": 5
+    },
+    {
+     "elapsed": 1,
+     "grade": 4,
+     "stability": 14.31903235,
+     "difficulty": 8.52089535,
+     "interval": 6
+    },
+    {
+     "elapsed": 40,
+     "grade": 4,
+     "stability": 58.08785344,
+     "difficulty": 8.01187587,
+     "interval": 23
+    },
+    {
+     "elapsed": 5,
+     "grade": 2,
+     "stability": 61.51415908,
+     "difficulty": 8.66541893,
+     "interval": 25
+    },
+    {
+     "elapsed": 1,
+     "grade": 1,
+     "stability": 2.56460954,
+     "difficulty": 9.54656065,
+     "interval": 1
+    }
+   ]
+  },
+  {
+   "retention": 0.95,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 4,
+     "stability": 8.2956,
+     "difficulty": 1,
+     "interval": 3
+    },
+    {
+     "elapsed": 5,
+     "grade": 3,
+     "stability": 29.73356788,
+     "difficulty": 1,
+     "interval": 12
+    },
+    {
+     "elapsed": 5,
+     "grade": 3,
+     "stability": 50.26216957,
+     "difficulty": 1,
+     "interval": 20
+    },
+    {
+     "elapsed": 1,
+     "grade": 2,
+     "stability": 52.68802998,
+     "difficulty": 4.01060897,
+     "interval": 21
+    },
+    {
+     "elapsed": 40,
+     "grade": 2,
+     "stability": 103.00197764,
+     "difficulty": 6.0091915,
+     "interval": 41
+    },
+    {
+     "elapsed": 2,
+     "grade": 1,
+     "stability": 3.19197009,
+     "difficulty": 8.67347675,
+     "interval": 1
+    },
+    {
+     "elapsed": 0,
+     "grade": 4,
+     "stability": 5.34544239,
+     "difficulty": 8.21544287,
+     "interval": 2
+    },
+    {
+     "elapsed": 13,
+     "grade": 4,
+     "stability": 25.38446668,
+     "difficulty": 7.60435541,
+     "interval": 10
+    },
+    {
+     "elapsed": 2,
+     "grade": 3,
+     "stability": 28.367391,
+     "difficulty": 7.59197942,
+     "interval": 11
+    },
+    {
+     "elapsed": 5,
+     "grade": 1,
+     "stability": 1.95187236,
+     "difficulty": 9.19372838,
+     "interval": 1
+    }
+   ]
+  },
+  {
+   "retention": 0.95,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 2,
+     "stability": 1.2931,
+     "difficulty": 5.11217071,
+     "interval": 1
+    },
+    {
+     "elapsed": 2,
+     "grade": 1,
+     "stability": 0.40717516,
+     "difficulty": 8.37863212,
+     "interval": 1
+    },
+    {
+     "elapsed": 1,
+     "grade": 1,
+     "stability": 0.16249876,
+     "difficulty": 9.45229578,
+     "interval": 1
+    },
+    {
+     "elapsed": 40,
+     "grade": 4,
+     "stability": 2.54871685,
+     "difficulty": 9.25450692,
+     "interval": 1
+    },
+    {
+     "elapsed": 0,
+     "grade": 2,
+     "stability": 2.54871685,
+     "difficulty": 9.49033533,
+     "interval": 1
+    },
+    {
+     "elapsed": 0,
+     "grade": 1,
+     "stability": 0.85087012,
+     "difficulty": 9.81770506,
+     "interval": 1
+    },
+    {
+     "elapsed": 5,
+     "grade": 3,
+     "stability": 2.36476128,
+     "difficulty": 9.80311572,
+     "interval": 1
+    },
+    {
+     "elapsed": 2,
+     "grade": 3,
+     "stability": 3.53417527,
+     "difficulty": 9.78854097,
+     "interval": 1
+    },
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 3.53417527,
+     "difficulty": 9.7739808,
+     "interval": 1
+    },
+    {
+     "elapsed": 5,
+     "grade": 2,
+     "stability": 4.97725639,
+     "difficulty": 9.83518629,
+     "interval": 2
+    }
+   ]
+  },
+  {
+   "retention": 0.95,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 2,
+     "stability": 1.2931,
+     "difficulty": 5.11217071,
+     "interval": 1
+    },
+    {
+     "elapsed": 13,
+     "grade": 1,
+     "stability": 0.54336944,
+     "difficulty": 8.37863212,
+     "interval": 1
+    },
+    {
+     "elapsed": 0,
+     "grade": 2,
+     "stability": 0.54336944,
+     "difficulty": 8.90888882,
+     "interval": 1
+    },
+    {
+     "elapsed": 2,
+     "grade": 2,
+     "stability": 1.43785347,
+     "difficulty": 9.26089792,
+     "interval": 1
+    },
+    {
+     "elapsed": 1,
+     "grade": 2,
+     "stability": 2.01995711,
+     "difficulty": 9.49457797,
+     "interval": 1
+    },
+    {
+     "elapsed": 2,
+     "grade": 2,
+     "stability": 2.89013308,
+     "difficulty": 9.64970568,
+     "interval": 1
+    },
+    {
+     "elapsed": 40,
+     "grade": 3,
+     "stability": 9.46330231,
+     "difficulty": 9.63528434,
+     "interval": 4
+    },
+    {
+     "elapsed": 2,
+     "grade": 3,
+     "stability": 10.79395245,
+     "difficulty": 9.62087742,
+     "interval": 4
+    },
+    {
+     "elapsed": 40,
+     "grade": 2,
+     "stability": 17.94013755,
+     "difficulty": 9.73354913,
+     "interval": 7
+    },
+    {
+     "elapsed": 0,
+     "grade": 1,
+     "stability": 5.26746519,
+     "difficulty": 9.89764778,
+     "interval": 2
+    }
+   ]
+  },
+  {
+   "retention": 0.95,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 4,
+     "stability": 8.2956,
+     "difficulty": 1,
+     "interval": 3
+    },
+    {
+     "elapsed": 13,
+     "grade": 3,
+     "stability": 50.87364411,
+     "difficulty": 1,
+     "interval": 20
+    },
+    {
+     "elapsed": 1,
+     "grade": 1,
+     "stability": 2.71899327,
+     "difficulty": 7.02698957,
+     "interval": 1
+    },
+    {
+     "elapsed": 1,
+     "grade": 3,
+     "stability": 4.95466941,
+     "difficulty": 7.01519095,
+     "interval": 2
+    },
+    {
+     "elapsed": 5,
+     "grade": 4,
+     "stability": 20.31392238,
+     "difficulty": 6.00303523,
+     "interval": 8
+    },
+    {
+     "elapsed": 1,
+     "grade": 4,
+     "stability": 24.64111289,
+     "difficulty": 4.65266423,
+     "interval": 10
+    },
+    {
+     "elapsed": 2,
+     "grade": 3,
+     "stability": 30.23832556,
+     "difficulty": 4.64323994,
+     "interval": 12
+    },
+    {
+     "elapsed": 13,
+     "grade": 4,
+     "stability": 87.16617213,
+     "difficulty": 2.83848872,
+     "interval": 35
+    },
+    {
+     "elapsed": 40,
+     "grade": 3,
+     "stability": 186.74143981,
+     "difficulty": 2.8308786,
+     "interval": 75
+    },
+    {
+     "elapsed": 5,
+     "grade": 2,
+     "stability": 194.67680643,
+     "difficulty": 5.2260315,
+     "interval": 78
+    }
+   ]
+  },
+  {
+   "retention": 0.95,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 2,
+     "stability": 1.2931,
+     "difficulty": 5.11217071,
+     "interval": 1
+    },
+    {
+     "elapsed": 0,
+     "grade": 1,
+     "stability": 0.45140292,
+     "difficulty": 8.37863212,
+     "interval": 1
+    },
+    {
+     "elapsed": 2,
+     "grade": 1,
+     "stability": 0.19499281,
+     "difficulty": 9.45229578,
+     "interval": 1
+    },
+    {
+     "elapsed": 5,
+     "grade": 3,
+     "stability": 1.14818751,
+     "difficulty": 9.43807185,
+     "interval": 1
+    },
+    {
+     "elapsed": 40,
+     "grade": 2,
+     "stability": 3.8874935,
+     "difficulty": 9.61219428,
+     "interval": 2
+    },
+    {
+     "elapsed": 13,
+     "grade": 4,
+     "stability": 12.96985434,
+     "difficulty": 9.46783605,
+     "interval": 5
+    },
+    {
+     "elapsed": 2,
+     "grade": 2,
+     "stability": 13.84409217,
+     "difficulty": 9.63195314,
+     "interval": 6
+    },
+    {
+     "elapsed": 5,
+     "grade": 3,
+     "stability": 16.78665126,
+     "difficulty": 9.61754956,
+     "interval": 7
+    },
+    {
+     "elapsed": 13,
+     "grade": 1,
+     "stability": 1.67582307,
+     "difficulty": 9.85951951,
+     "interval": 1
+    },
+    {
+     "elapsed": 1,
+     "grade": 2,
+     "stability": 2.06049063,
+     "difficulty": 9.89197087,
+     "interval": 1
+    }
+   ]
+  },
+  {
+   "retention": 0.95,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 2.3065,
+     "difficulty": 2.11810397,
+     "interval": 1
+    },
+    {
+     "elapsed": 0,
+     "grade": 2,
+     "stability": 2.3065,
+     "difficulty": 4.75285849,
+     "interval": 1
+    },
+    {
+     "elapsed": 1,
+     "grade": 1,
+     "stability": 0.54364041,
+     "difficulty": 8.26052864,
+     "interval": 1
+    },
+    {
+     "elapsed": 2,
+     "grade": 2,
+     "stability": 1.71566256,
+     "difficulty": 8.83048622,
+     "interval": 1
+    },
+    {
+     "elapsed": 0,
+     "grade": 1,
+     "stability": 0.58787352,
+     "difficulty": 9.60081715,
+     "interval": 1
+    },
+    {
+     "elapsed": 0,
+     "grade": 2,
+     "stability": 0.58787352,
+     "difficulty": 9.72023219,
+     "interval": 1
+    },
+    {
+     "elapsed": 2,
+     "grade": 2,
+     "stability": 1.14986888,
+     "difficulty": 9.79950546,
+     "interval": 1
+    },
+    {
+     "elapsed": 2,
+     "grade": 2,
+     "stability": 1.78223401,
+     "difficulty": 9.85213075,
+     "interval": 1
+    },
+    {
+     "elapsed": 2,
+     "grade": 3,
+     "stability": 2.86802706,
+     "difficulty": 9.83750699,
+     "interval": 1
+    },
+    {
+     "elapsed": 13,
+     "grade": 1,
+     "stability": 0.80434628,
+     "difficulty": 9.93181802,
+     "interval": 1
+    }
+   ]
+  },
+  {
+   "retention": 0.95,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 4,
+     "stability": 8.2956,
+     "difficulty": 1,
+     "interval": 3
+    },
+    {
+     "elapsed": 1,
+     "grade": 4,
+     "stability": 18.01494386,
+     "difficulty": 1,
+     "interval": 7
+    },
+    {
+     "elapsed": 2,
+     "grade": 3,
+     "stability": 27.17625649,
+     "difficulty": 1,
+     "interval": 11
+    },
+    {
+     "elapsed": 5,
+     "grade": 4,
+     "stability": 65.93198708,
+     "difficulty": 1,
+     "interval": 27
+    },
+    {
+     "elapsed": 0,
+     "grade": 4,
+     "stability": 90.46728301,
+     "difficulty": 1,
+     "interval": 36
+    },
+    {
+     "elapsed": 0,
+     "grade": 1,
+     "stability": 23.87987475,
+     "difficulty": 7.02698957,
+     "interval": 10
+    },
+    {
+     "elapsed": 2,
+     "grade": 1,
+     "stability": 1.78289656,
+     "difficulty": 9.00802006,
+     "interval": 1
+    },
+    {
+     "elapsed": 13,
+     "grade": 3,
+     "stability": 6.94368421,
+     "difficulty": 8.99424041,
+     "interval": 3
+    },
+    {
+     "elapsed": 2,
+     "grade": 4,
+     "stability": 10.67765255,
+     "difficulty": 8.64339079,
+     "interval": 4
+    },
+    {
+     "elapsed": 2,
+     "grade": 3,
+     "stability": 12.95340853,
+     "difficulty": 8.62997577,
+     "interval": 5
+    }
+   ]
+  },
+  {
+   "retention": 0.95,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 2.3065,
+     "difficulty": 2.11810397,
+     "interval": 1
+    },
+    {
+     "elapsed": 1,
+     "grade": 1,
+     "stability": 0.57129918,
+     "difficulty": 7.39450274,
+     "interval": 1
+    },
+    {
+     "elapsed": 0,
+     "grade": 1,
+     "stability": 0.21044549,
+     "difficulty": 9.12881914,
+     "interval": 1
+    },
+    {
+     "elapsed": 2,
+     "grade": 4,
+     "stability": 1.90151825,
+     "difficulty": 8.82293946,
+     "interval": 1
+    },
+    {
+     "elapsed": 13,
+     "grade": 4,
+     "stability": 12.76512431,
+     "difficulty": 8.41484905,
+     "interval": 5
+    },
+    {
+     "elapsed": 1,
+     "grade": 3,
+     "stability": 14.03864505,
+     "difficulty": 8.40166257,
+     "interval": 6
+    },
+    {
+     "elapsed": 13,
+     "grade": 1,
+     "stability": 1.58180707,
+     "difficulty": 9.45986573,
+     "interval": 1
+    },
+    {
+     "elapsed": 2,
+     "grade": 2,
+     "stability": 2.44261169,
+     "difficulty": 9.62666207,
+     "interval": 1
+    },
+    {
+     "elapsed": 2,
+     "grade": 1,
+     "stability": 0.57207856,
+     "difficulty": 9.86251473,
+     "interval": 1
+    },
+    {
+     "elapsed": 5,
+     "grade": 2,
+     "stability": 1.30872717,
+     "difficulty": 9.89395924,
+     "interval": 1
+    }
+   ]
+  },
+  {
+   "retention": 0.95,
+   "maxInterval": 365,
+   "steps": [
+    {
+     "elapsed": 0,
+     "grade": 2,
+     "stability": 1.2931,
+     "difficulty": 5.11217071,
+     "interval": 1
+    },
+    {
+     "elapsed": 0,
+     "grade": 2,
+     "stability": 1.2931,
+     "difficulty": 6.74045952,
+     "interval": 1
+    },
+    {
+     "elapsed": 2,
+     "grade": 1,
+     "stability": 0.40032076,
+     "difficulty": 8.91383958,
+     "interval": 1
+    },
+    {
+     "elapsed": 5,
+     "grade": 1,
+     "stability": 0.20633794,
+     "difficulty": 9.62821482,
+     "interval": 1
+    },
+    {
+     "elapsed": 2,
+     "grade": 3,
+     "stability": 0.86213617,
+     "difficulty": 9.61381497,
+     "interval": 1
+    },
+    {
+     "elapsed": 5,
+     "grade": 3,
+     "stability": 2.64667312,
+     "difficulty": 9.59942952,
+     "interval": 1
+    },
+    {
+     "elapsed": 13,
+     "grade": 2,
+     "stability": 5.21464062,
+     "difficulty": 9.71931102,
+     "interval": 2
+    },
+    {
+     "elapsed": 0,
+     "grade": 3,
+     "stability": 5.21464062,
+     "difficulty": 9.70482008,
+     "interval": 2
+    },
+    {
+     "elapsed": 1,
+     "grade": 3,
+     "stability": 5.91794319,
+     "difficulty": 9.69034363,
+     "interval": 2
+    },
+    {
+     "elapsed": 40,
+     "grade": 3,
+     "stability": 14.86480618,
+     "difficulty": 9.67588166,
+     "interval": 6
+    }
+   ]
+  }
+ ]
+}

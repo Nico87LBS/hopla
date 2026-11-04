@@ -38,6 +38,7 @@ import {
   stars,
   totalLeft,
 } from '../../utils/learn/engine'
+import { EASY, HARD } from '../../utils/learn/fsrs'
 import { consigneOf, partsOf, sayAgain, spoken } from '../../utils/learn/saying'
 import { loadServerVoices, newQuestion } from '../../utils/learn/serverVoice'
 import {
@@ -302,8 +303,9 @@ TextAnswer.propTypes = {
 }
 
 // FlipCard shows the answer of an open question; the player says herself
-// whether she knew it.
-const FlipCard = ({ color, item, onAnswer }) => {
+// whether she knew it. Graded with buttons, as for a grown-up, it offers the
+// four grades of Anki.
+const FlipCard = ({ buttons = false, color, item, onAnswer }) => {
   const { t } = useTranslation('learn')
   const [turned, setTurned] = useState(false)
   if (!turned) {
@@ -322,26 +324,60 @@ const FlipCard = ({ color, item, onAnswer }) => {
       <Sheet variant='soft' sx={{ borderRadius: 'lg', p: 2 }}>
         <Typography level='body-lg'>{item.answer}</Typography>
       </Sheet>
-      <Stack direction='row' gap={1} justifyContent='center' flexWrap='wrap'>
-        <Button color='success' onClick={() => onAnswer('oui')}>
-          {t('play.knew')}
-        </Button>
-        <Button
-          color='warning'
-          variant='soft'
-          onClick={() => onAnswer('presque')}
-        >
-          {t('play.almost')}
-        </Button>
-        <Button color='neutral' variant='soft' onClick={() => onAnswer('non')}>
-          {t('play.notYet')}
-        </Button>
-      </Stack>
+      {buttons ? (
+        <Stack direction='row' gap={1} justifyContent='center' flexWrap='wrap'>
+          <Button
+            color='warning'
+            variant='soft'
+            onClick={() => onAnswer('non')}
+          >
+            {t('play.again')}
+          </Button>
+          <Button
+            color='neutral'
+            variant='soft'
+            onClick={() => onAnswer('presque')}
+          >
+            {t('play.hard')}
+          </Button>
+          <Button color='success' onClick={() => onAnswer('oui')}>
+            {t('play.good')}
+          </Button>
+          <Button
+            color='success'
+            variant='soft'
+            onClick={() => onAnswer('oui', EASY)}
+          >
+            {t('play.easy')}
+          </Button>
+        </Stack>
+      ) : (
+        <Stack direction='row' gap={1} justifyContent='center' flexWrap='wrap'>
+          <Button color='success' onClick={() => onAnswer('oui')}>
+            {t('play.knew')}
+          </Button>
+          <Button
+            color='warning'
+            variant='soft'
+            onClick={() => onAnswer('presque')}
+          >
+            {t('play.almost')}
+          </Button>
+          <Button
+            color='neutral'
+            variant='soft'
+            onClick={() => onAnswer('non')}
+          >
+            {t('play.notYet')}
+          </Button>
+        </Stack>
+      )}
     </Stack>
   )
 }
 
 FlipCard.propTypes = {
+  buttons: PropTypes.bool,
   color: PropTypes.string.isRequired,
   item: PropTypes.object.isRequired,
   onAnswer: PropTypes.func.isRequired,
@@ -349,7 +385,10 @@ FlipCard.propTypes = {
 
 // ── a question ──
 
-export const Feedback = ({ feedback, onNext }) => {
+// Feedback tells whether the answer was right. With onGrade, as for a
+// grown-up, a right answer can be said hard or easy on the way to the next
+// question; « Continuer » counts it as good.
+export const Feedback = ({ feedback, onGrade, onNext }) => {
   const { t } = useTranslation('learn')
   const { correct, given, item, typo } = feedback
   // The words said again once answered are heard to the end: « Next »
@@ -460,20 +499,51 @@ export const Feedback = ({ feedback, onNext }) => {
           {item.explanation}
         </Typography>
       )}
-      <Button
-        onClick={onNext}
-        disabled={!ready}
-        sx={{ mt: 1.5 }}
-        color={correct ? 'success' : 'warning'}
-      >
-        {t('play.next')}
-      </Button>
+      {correct && onGrade ? (
+        <Stack
+          direction='row'
+          gap={1}
+          justifyContent='center'
+          flexWrap='wrap'
+          sx={{ mt: 1.5 }}
+        >
+          <Button
+            color='neutral'
+            variant='soft'
+            disabled={!ready}
+            onClick={() => onGrade(HARD)}
+          >
+            {t('play.hard')}
+          </Button>
+          <Button color='success' disabled={!ready} onClick={() => onNext()}>
+            {t('play.next')}
+          </Button>
+          <Button
+            color='success'
+            variant='soft'
+            disabled={!ready}
+            onClick={() => onGrade(EASY)}
+          >
+            {t('play.easy')}
+          </Button>
+        </Stack>
+      ) : (
+        <Button
+          onClick={() => onNext()}
+          disabled={!ready}
+          sx={{ mt: 1.5 }}
+          color={correct ? 'success' : 'warning'}
+        >
+          {t('play.next')}
+        </Button>
+      )}
     </Sheet>
   )
 }
 
 Feedback.propTypes = {
   feedback: PropTypes.object.isRequired,
+  onGrade: PropTypes.func,
   onNext: PropTypes.func.isRequired,
 }
 
@@ -676,7 +746,15 @@ Prompt.propTypes = {
   tellLang: PropTypes.string,
 }
 
-export const Question = ({ blank, color, cursive, item, onAnswer, say }) => {
+export const Question = ({
+  blank,
+  buttons = false,
+  color,
+  cursive,
+  item,
+  onAnswer,
+  say,
+}) => {
   switch (item.mode) {
     case 'choice':
       if (blank) {
@@ -719,7 +797,14 @@ export const Question = ({ blank, color, cursive, item, onAnswer, say }) => {
     case 'text':
       return <TextAnswer onAnswer={onAnswer} color={color} />
     case 'flip':
-      return <FlipCard item={item} onAnswer={onAnswer} color={color} />
+      return (
+        <FlipCard
+          item={item}
+          onAnswer={onAnswer}
+          color={color}
+          buttons={buttons}
+        />
+      )
     default:
       return <NumberPad onAnswer={onAnswer} color={color} unit={item.unit} />
   }
@@ -727,6 +812,7 @@ export const Question = ({ blank, color, cursive, item, onAnswer, say }) => {
 
 Question.propTypes = {
   blank: PropTypes.object,
+  buttons: PropTypes.bool,
   color: PropTypes.string.isRequired,
   cursive: PropTypes.bool,
   item: PropTypes.object.isRequired,
@@ -933,6 +1019,8 @@ const LearnPlay = ({ playMode = false }) => {
   const [filled, setFilled] = useState({ key: null, value: null })
   // The questions of the game just played: playing again asks others first.
   const lastKeys = useRef(new Set())
+  // When the question on screen was shown, for the time an answer takes.
+  const shownAt = useRef(0)
   useEffect(() => {
     loadServerVoices()
   }, [])
@@ -942,6 +1030,7 @@ const LearnPlay = ({ playMode = false }) => {
       if (!compiled || !module) return
       setFeedback(null)
       setEnd(null)
+      shownAt.current = Date.now()
       setGame({
         clientId: generateUUID(),
         startedAt: Date.now(),
@@ -973,6 +1062,15 @@ const LearnPlay = ({ playMode = false }) => {
   }
 
   const color = subjectColor(module.subject, module.document?.couleur)
+  // A grown-up says a right answer hard or easy with buttons; a child's is
+  // easy when answered in half their usual time, on a question already seen.
+  const buttons = player.grading === 'boutons'
+  const quickGrade = (asked, ms) =>
+    module.usualMs > 0 &&
+    cards.get(asked.key)?.seen > 0 &&
+    ms < module.usualMs / 2
+      ? EASY
+      : undefined
   // Read aloud, in the modules made to be read aloud, as a parent chose for
   // this person: everything, only the instructions, or nothing.
   const doc = compiled.doc
@@ -1069,8 +1167,12 @@ const LearnPlay = ({ playMode = false }) => {
     queryClient.invalidateQueries({ queryKey: learnKeys.player(userId) })
   }
 
-  const answer = given => {
+  // The time an answer took, from the question shown.
+  const elapsedMs = () => Math.max(0, Date.now() - shownAt.current)
+
+  const answer = (given, grade) => {
     const check = checkAnswer(item, given)
+    const ms = elapsedMs()
     // Once answered, the words are said again where hearing them teaches
     // something: an English word, a word the child had to read.
     let reading = false
@@ -1086,6 +1188,16 @@ const LearnPlay = ({ playMode = false }) => {
         correct: check.correct,
         almost: check.almost,
         given: check.correct ? '' : String(given),
+        ms,
+        ...(check.correct && {
+          // Only a grade said on purpose: some answers pass other things.
+          grade:
+            grade === HARD || grade === EASY
+              ? grade
+              : buttons
+                ? undefined
+                : quickGrade(item, ms),
+        }),
       },
     ]
     setGame({ ...game, answers })
@@ -1115,9 +1227,19 @@ const LearnPlay = ({ playMode = false }) => {
     }
   }
 
-  const next = () => {
+  const next = (answers = game.answers) => {
     setFeedback(null)
-    if (game.answers.length === game.questions.length) roundOver(game.answers)
+    shownAt.current = Date.now()
+    if (answers.length === game.questions.length) roundOver(answers)
+  }
+
+  // grade says the last right answer hard or easy, then goes on.
+  const grade = value => {
+    const answers = game.answers.map((a, i) =>
+      i === game.answers.length - 1 ? { ...a, grade: value } : a,
+    )
+    setGame({ ...game, answers })
+    next(answers)
   }
 
   const retrying = game.phase === 'retryStart' || game.phase === 'retry'
@@ -1200,7 +1322,10 @@ const LearnPlay = ({ playMode = false }) => {
         <RetryStart
           color={color}
           count={game.questions.length}
-          onStart={() => setGame(now => ({ ...now, phase: 'retry' }))}
+          onStart={() => {
+            shownAt.current = Date.now()
+            setGame(now => ({ ...now, phase: 'retry' }))
+          }}
         />
       ) : end && !retrying ? (
         <EndScreen
@@ -1250,7 +1375,11 @@ const LearnPlay = ({ playMode = false }) => {
                 />
               </Sheet>
               {feedback ? (
-                <Feedback feedback={feedback} onNext={next} />
+                <Feedback
+                  feedback={feedback}
+                  onNext={next}
+                  onGrade={buttons && game.phase === 'play' ? grade : undefined}
+                />
               ) : (
                 <Stack
                   className='hopla-answers'
@@ -1265,6 +1394,7 @@ const LearnPlay = ({ playMode = false }) => {
                     onAnswer={answer}
                     color={color}
                     say={say}
+                    buttons={buttons}
                   />
                 </Stack>
               )}
