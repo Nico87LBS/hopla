@@ -29,6 +29,7 @@ import { learnKeys, usePlayer } from '../../queries/LearnQueries'
 import { SendLearnGame } from '../../utils/Fetcher'
 import { capitalFor, isolated } from '../../utils/learn/display'
 import {
+  again,
   checkAnswer,
   expectedHops,
   MIN_ANSWERS,
@@ -739,7 +740,15 @@ Question.propTypes = {
 // server.
 const RECRE_MIN_STARS = 2
 
-const EndScreen = ({ back, color, end, onReplay, recre, recrePath }) => {
+const EndScreen = ({
+  back,
+  color,
+  end,
+  onReplay,
+  recre,
+  recrePath,
+  retried,
+}) => {
   const { t } = useTranslation('learn')
   const { capped, correct, hops, mistakes, stars: won, status, total } = end
   return (
@@ -749,6 +758,11 @@ const EndScreen = ({ back, color, end, onReplay, recre, recrePath }) => {
       <Typography level='body-lg'>
         {t('end.score', { correct, total })}
       </Typography>
+      {retried && (
+        <Typography level='body-md' sx={{ color: 'text.secondary', mt: -1 }}>
+          {t('end.retried', retried)}
+        </Typography>
+      )}
       <Sheet
         sx={{
           bgcolor: HOPLA.goldSoft,
@@ -850,6 +864,36 @@ EndScreen.propTypes = {
   onReplay: PropTypes.func.isRequired,
   recre: PropTypes.object,
   recrePath: PropTypes.string.isRequired,
+  retried: PropTypes.shape({
+    right: PropTypes.number,
+    total: PropTypes.number,
+  }),
+}
+
+// RetryStart tells that the questions missed come back once, before the end
+// of the game.
+const RetryStart = ({ color, count, onStart }) => {
+  const { t } = useTranslation('learn')
+  return (
+    <Stack gap={2} alignItems='center' sx={{ textAlign: 'center', pt: 2 }}>
+      <ReplayRounded sx={{ color, fontSize: 56 }} />
+      <Typography level='h2'>{t('retry.title')}</Typography>
+      <Typography level='body-lg'>{t('retry.text', { count })}</Typography>
+      <Button
+        size='lg'
+        onClick={onStart}
+        sx={{ bgcolor: color, '&:hover': { bgcolor: color } }}
+      >
+        {t('retry.go')}
+      </Button>
+    </Stack>
+  )
+}
+
+RetryStart.propTypes = {
+  color: PropTypes.string.isRequired,
+  count: PropTypes.number.isRequired,
+  onStart: PropTypes.func.isRequired,
 }
 
 // sendGame sends a game, or keeps it for later when the server is out of
@@ -909,6 +953,9 @@ const LearnPlay = ({ playMode = false }) => {
           recent,
         }),
         answers: [],
+        // play, then, when questions were missed, retryStart and retry:
+        // they come back once. Only the first answers count.
+        phase: 'play',
       })
       // Only a new game picks new questions, not a card moved by this one.
     },
@@ -1043,15 +1090,40 @@ const LearnPlay = ({ playMode = false }) => {
     ]
     setGame({ ...game, answers })
     if (item.mode === 'flip') {
-      if (answers.length === game.questions.length) finish(answers)
+      if (answers.length === game.questions.length) roundOver(answers)
       return
     }
     setFeedback({ ...check, given: String(given), item, reading })
   }
 
+  // roundOver ends the game at its last answer: the first answers are sent,
+  // then the questions missed come back once.
+  const roundOver = answers => {
+    if (game.phase !== 'play') {
+      setGame(now => ({ ...now, answers, phase: 'done' }))
+      return
+    }
+    finish(answers)
+    const missed = game.questions.filter((q, i) => !answers[i]?.correct)
+    if (missed.length) {
+      setGame(now => ({
+        ...now,
+        phase: 'retryStart',
+        questions: again(missed),
+        answers: [],
+      }))
+    }
+  }
+
   const next = () => {
     setFeedback(null)
-    if (game.answers.length === game.questions.length) finish(game.answers)
+    if (game.answers.length === game.questions.length) roundOver(game.answers)
+  }
+
+  const retrying = game.phase === 'retryStart' || game.phase === 'retry'
+  const retried = game.phase === 'done' && {
+    right: game.answers.filter(a => a.correct).length,
+    total: game.answers.length,
   }
 
   return (
@@ -1074,7 +1146,7 @@ const LearnPlay = ({ playMode = false }) => {
           <Typography level='title-lg' sx={{ flex: 1, minWidth: 0 }} noWrap>
             {module.name}
           </Typography>
-          {!end && (feedback?.item || item) && (
+          {(!end || game.phase === 'retry') && (feedback?.item || item) && (
             <IconButton
               variant='plain'
               color='neutral'
@@ -1124,9 +1196,16 @@ const LearnPlay = ({ playMode = false }) => {
         </Stack>
       </Stack>
 
-      {end ? (
+      {game.phase === 'retryStart' ? (
+        <RetryStart
+          color={color}
+          count={game.questions.length}
+          onStart={() => setGame(now => ({ ...now, phase: 'retry' }))}
+        />
+      ) : end && !retrying ? (
         <EndScreen
           end={end}
+          retried={retried || undefined}
           onReplay={() => start(lastKeys.current)}
           back={back}
           recre={player.recre}

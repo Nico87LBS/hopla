@@ -67,7 +67,14 @@
     "review": "To review",
     "replay": "Play again",
     "back": "Back",
-    "noHops": "No {{units}} this time, play again to earn some"
+    "noHops": "No {{units}} this time, play again to earn some",
+    "retried": "Second try: {{right}} out of {{total}}"
+  },
+  "retry": {
+    "title": "Let's try again!",
+    "text_one": "One question was missed. Let's do it once more: your score is already counted.",
+    "text_other": "{{count}} questions were missed. Let's do them once more: your score is already counted.",
+    "go": "Let's go"
   },
   "manage": {
     "others": "Other modules",

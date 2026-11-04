@@ -151,6 +151,7 @@ const arithmeticSource = (gen, chapter) => {
     if (form === 'trou') {
       return {
         key: `${op.tag}:${a}${keySign}?=${result}`,
+        sibling: `${op.tag}:${a}${keySign}${b}`,
         prompt: `${f(a)} ${op.sign} ? = ${f(result)}`,
         answer: String(b),
         whenWrong: `${f(b)}, car ${f(a)} ${op.sign} ${f(b)} = ${f(result)}.`,
@@ -158,6 +159,7 @@ const arithmeticSource = (gen, chapter) => {
     }
     return {
       key: `${op.tag}:${a}${keySign}${b}`,
+      sibling: `${op.tag}:${a}${keySign}${b}`,
       prompt: `${f(a)} ${op.sign} ${f(b)}`,
       answer: String(result),
       whenWrong: steps(gen.operation, a, b),
@@ -211,12 +213,14 @@ const divisionSource = gen => {
     return form === 'trou'
       ? {
           key: `div:${d}/?=${q}`,
+          sibling: `div:${d}/${t}`,
           prompt: `${f(d)} ÷ ? = ${f(q)}`,
           answer: String(t),
           whenWrong: `${f(t)}, car ${f(d)} ÷ ${f(t)} = ${f(q)} : ${f(t)} × ${f(q)} = ${f(d)}.`,
         }
       : {
           key: `div:${d}/${t}`,
+          sibling: `div:${d}/${t}`,
           prompt: `${f(d)} ÷ ${f(t)}`,
           answer: String(q),
           whenWrong: `${f(d)} ÷ ${f(t)} = ${f(q)}, car ${f(t)} × ${f(q)} = ${f(d)}.`,
@@ -400,6 +404,7 @@ const wordsSource = gen => {
     form === 'mots'
       ? {
           key: `num:${a}:mots`,
+          sibling: `num:${a}`,
           prompt: `Comment s'écrit ${f(a)} en lettres ?`,
           mode: 'choice',
           answer: frenchWords(a),
@@ -410,6 +415,7 @@ const wordsSource = gen => {
         }
       : {
           key: `num:${a}:chiffres`,
+          sibling: `num:${a}`,
           prompt: `Écris en chiffres : ${frenchWords(a)}`,
           answer: String(a),
         }
@@ -1050,6 +1056,7 @@ const zoneItems = (card, moduleId, siblings) => {
     .map(direction => {
       const base = {
         key: `${cardKey(moduleId, card)}${direction === 'toucher' ? '' : ':nommer'}`,
+        sibling: cardKey(moduleId, card),
         chapter: card.chapitre,
         source: card.id,
         answer: card.reponse,
@@ -1146,6 +1153,7 @@ export const cardItems = (card, moduleId, siblings, lang) => {
       const answer = inverse ? card.question : card.reponse
       const base = {
         key: cardKey(moduleId, card, direction),
+        sibling: cardKey(moduleId, card),
         chapter: card.chapitre,
         source: card.id,
         prompt,

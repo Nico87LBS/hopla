@@ -141,7 +141,10 @@ module, violet clair pour la famille, violet plein pour la personne.
 
 ## Une partie
 
-Une partie mélange des questions nouvelles et des révisions. Les types de
+Une partie mélange des questions nouvelles et des révisions. Les deux sens
+d'une même fiche (« chat » → « cat » et « cat » → « chat »), ou 7 × 8 et
+7 × ? = 56, ne tombent pas dans la même partie, sauf si le module n'a pas
+assez d'autres questions ; ils ne se suivent alors jamais. Les types de
 questions :
 
 | Type | L'enfant… |
@@ -219,8 +222,11 @@ premier mot de son nom dans Hopla ; Gérer › Modules d'apprentissage › Par
 personne › « Prénom dans les jeux » permet d'en écrire un autre (20 lettres au
 plus), par exemple sans surnom ni nom de famille.
 
-Une question ratée est remontrée avec sa réponse, et revient en fin de partie
-dans « À revoir ».
+Une question ratée est remontrée avec sa réponse. Après la dernière question,
+l'écran « On réessaie ! » repose une fois les questions ratées, dans un autre
+ordre. Seul le premier essai compte pour la note, les étoiles, les hops, la
+récré et les révisions ; la fin de partie montre « Au 2e essai : X sur Y » et
+la liste « À revoir ».
 
 ### Étoiles et hops
 

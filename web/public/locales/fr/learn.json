@@ -67,7 +67,14 @@
     "review": "À revoir",
     "replay": "Rejouer",
     "back": "Retour",
-    "noHops": "Pas {{ofUnits}} cette fois, rejoue pour en gagner"
+    "noHops": "Pas {{ofUnits}} cette fois, rejoue pour en gagner",
+    "retried": "Au 2e essai : {{right}} sur {{total}}"
+  },
+  "retry": {
+    "title": "On réessaie !",
+    "text_one": "Une question était ratée. On la refait une fois : ta note est déjà comptée.",
+    "text_other": "{{count}} questions étaient ratées. On les refait une fois : ta note est déjà comptée.",
+    "go": "C'est parti"
   },
   "manage": {
     "others": "Autres modules",
