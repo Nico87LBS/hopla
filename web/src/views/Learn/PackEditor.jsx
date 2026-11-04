@@ -42,8 +42,11 @@ import {
   kindOf,
   KINDS,
   moduleIdFor,
+  newChapter,
   newPack,
   nextVersion,
+  OPEN_AFTER_CHOICES,
+  openAfterOf,
   readList,
   toDocument,
 } from '../../utils/learn/familyPack'
@@ -751,6 +754,41 @@ const PackForm = ({ isNew, moduleId, start }) => {
               </IconButton>
             )}
           </Stack>
+          {index > 0 && (
+            <Stack
+              direction='row'
+              gap={1}
+              alignItems='center'
+              flexWrap='wrap'
+              sx={{ mb: 1 }}
+            >
+              <Typography
+                level='body-sm'
+                component='label'
+                htmlFor={`pack-open-${index}`}
+                sx={{ color: 'text.secondary' }}
+              >
+                {t('pack.opens')}
+              </Typography>
+              <Select
+                size='sm'
+                value={openAfterOf(chapter, index)}
+                onChange={(_, value) =>
+                  value !== null &&
+                  changeChapter(index, { ouvert_apres: value })
+                }
+                slotProps={{ button: { id: `pack-open-${index}` } }}
+              >
+                {OPEN_AFTER_CHOICES.map(value => (
+                  <Option key={value} value={value}>
+                    {value === 0
+                      ? t('pack.openFromStart')
+                      : t('pack.openAt', { value })}
+                  </Option>
+                ))}
+              </Select>
+            </Stack>
+          )}
           <Stack gap={0.75}>
             {chapter.cards.map((card, cardIndex) => (
               <CardRow
@@ -796,7 +834,7 @@ const PackForm = ({ isNew, moduleId, start }) => {
         onClick={() =>
           setPack(p => ({
             ...p,
-            chapters: [...p.chapters, { id: '', nom: '', cards: [] }],
+            chapters: [...p.chapters, newChapter()],
           }))
         }
         sx={{ borderStyle: 'dashed' }}
