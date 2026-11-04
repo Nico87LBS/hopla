@@ -51,6 +51,8 @@ func staticMiddleware(root string) gin.HandlerFunc {
 		// cached so that updates are picked up immediately.
 		if strings.HasPrefix(c.Request.URL.Path, "/assets/") {
 			c.Header("Cache-Control", "public, max-age=31536000, immutable")
+		} else if isAppShell(c.Request.URL.Path) {
+			c.Header("Cache-Control", "no-cache")
 		}
 		fileServer.ServeHTTP(c.Writer, c.Request)
 
@@ -63,9 +65,21 @@ func staticMiddlewareNoRoute(root string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Rewrite all requests to serve index.html
 		c.Request.URL.Path = "/"
+		c.Header("Cache-Control", "no-cache")
 		fileServer.ServeHTTP(c.Writer, c.Request)
 
 	}
+}
+
+// isAppShell names the files that say which version of the interface to
+// load: the browser must ask for them again each time, so that a new
+// version is seen as soon as it is deployed.
+func isAppShell(path string) bool {
+	switch path {
+	case "/", "/index.html", "/sw.js", "/registerSW.js", "/manifest.webmanifest":
+		return true
+	}
+	return false
 }
 
 func getFileSystem(path string) http.FileSystem {
