@@ -225,14 +225,16 @@ const CardModal = ({ card, onClose, onDelete, onSave }) => {
             />,
             'pack-traps',
           )}
-        {kind === 'saisie' &&
+        {(kind === 'saisie' || kind === 'dictee') &&
           field(
-            t('pack.others'),
+            t(kind === 'dictee' ? 'pack.spellings' : 'pack.others'),
             <Textarea
               slotProps={{ textarea: { id: 'pack-others' } }}
               minRows={2}
               value={others}
-              placeholder={t('pack.othersHelp')}
+              placeholder={t(
+                kind === 'dictee' ? 'pack.spellingsHelp' : 'pack.othersHelp',
+              )}
               onChange={e => setOthers(e.target.value)}
             />,
             'pack-others',
@@ -383,7 +385,9 @@ const CardRow = ({ card, onOpen, onRemove }) => {
   const kind = kindOf(card)
   const label =
     kind === 'dictee'
-      ? t('pack.dictationLine')
+      ? card.autres_reponses?.length
+        ? t('pack.dictationAlso', { words: card.autres_reponses.join(', ') })
+        : t('pack.dictationLine')
       : kind === 'choix' && card.pieges?.length
         ? `${card.reponse} · ${card.pieges.join(', ')}`
         : card.reponse

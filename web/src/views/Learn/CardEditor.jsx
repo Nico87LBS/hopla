@@ -152,6 +152,9 @@ const CardEditor = ({ card, moduleId, onClose, original, reports }) => {
       .join('\n'),
   )
   const asks = card.type === 'choix' || card.type === 'saisie'
+  // A dictation accepts other spellings heard the same way (cet, cette).
+  const dictation = card.type === 'ecoute' && !!base.sens?.includes('dictee')
+  const variants = card.type === 'saisie' || dictation
   const labelled = LABELLED.includes(card.type)
 
   const send = async change => {
@@ -178,7 +181,7 @@ const CardEditor = ({ card, moduleId, onClose, original, reports }) => {
       ...(card.type === 'choix' && {
         pieges: lines(traps).length ? lines(traps) : undefined,
       }),
-      ...(card.type === 'saisie' && {
+      ...(variants && {
         autres_reponses: lines(others).length ? lines(others) : undefined,
       }),
       ...(asks && {
@@ -306,13 +309,15 @@ const CardEditor = ({ card, moduleId, onClose, original, reports }) => {
               onChange={e => setTraps(e.target.value)}
             />,
           )}
-        {card.type === 'saisie' &&
+        {variants &&
           field(
-            t('edit.others'),
+            t(dictation ? 'edit.spellings' : 'edit.others'),
             <Textarea
               minRows={2}
               value={others}
-              placeholder={t('edit.othersHelp')}
+              placeholder={t(
+                dictation ? 'edit.spellingsHelp' : 'edit.othersHelp',
+              )}
               onChange={e => setOthers(e.target.value)}
             />,
           )}

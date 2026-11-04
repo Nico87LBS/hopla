@@ -156,6 +156,8 @@ export const cardFrom = (
         sens: ['dictee'],
         tolerance: oneTypo ? 'une_faute' : 'exacte',
         consigne: base.consigne || DICTATION_HINT,
+        // Other spellings heard the same way, such as « cet » for « cette ».
+        ...(list(others).length && { autres_reponses: list(others) }),
       }
     case 'choix':
       return {
@@ -198,7 +200,8 @@ export const cardDone = card =>
 const same = text => slug(text)
 
 // readList turns pasted lines into cards. As words, each line is a word to
-// write; as questions, each line is « question ; answer » (or separated by
+// write, maybe followed by the other spellings accepted (« cet ; cette »);
+// as questions, each line is « question ; answer » (or separated by
 // a tab, as copied from a spreadsheet), the next columns being the wrong
 // answers of a card to choose or the other answers of a card to type.
 // Lines already among cards, or twice in the list, are left out.
@@ -210,12 +213,17 @@ export const readList = (text, { as, kind, oneTypo }, cards = []) => {
     const line = raw.trim()
     if (!line) continue
     let card
+    const cells = (line.includes('\t') ? line.split('\t') : line.split(';'))
+      .map(clean)
+      .filter(Boolean)
     if (as === 'words') {
-      card = cardFrom('dictee', { question: line, oneTypo })
+      const [word, ...others] = cells
+      if (!word) {
+        skipped++
+        continue
+      }
+      card = cardFrom('dictee', { question: word, others, oneTypo })
     } else {
-      const cells = (line.includes('\t') ? line.split('\t') : line.split(';'))
-        .map(clean)
-        .filter(Boolean)
       if (cells.length < 2) {
         skipped++
         continue
