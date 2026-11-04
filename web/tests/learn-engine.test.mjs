@@ -170,17 +170,40 @@ test('answers are checked kindly but surely', () => {
 
 test('cards climb the boxes like on the server', () => {
   let card = review({ key: 'mul:7x8' }, { correct: true }, '2026-10-24')
-  assert.equal(card.box, 1)
-  assert.equal(card.due, '2026-10-25')
+  assert.equal(card.box, 2)
+  assert.equal(card.due, '2026-10-26')
+  // Playing again the same day does not push the card further.
   for (let i = 0; i < 5; i++)
     card = review(card, { correct: true }, '2026-10-24')
+  assert.equal(card.due, '2026-10-26')
+  for (let i = 0; i < 4; i++) card = review(card, { correct: true }, card.due)
   assert.equal(card.box, 5)
-  assert.equal(card.due, '2026-11-09')
-  card = review(card, { almost: true }, '2026-10-24')
+  const known = card.stability
+  card = review(card, { almost: true }, card.due)
   assert.equal(card.box, 5)
-  card = review(card, { given: '54' }, '2026-10-24')
+  assert.ok(card.stability > known)
+  card = review(card, { given: '54' }, card.due)
   assert.equal(card.box, 1)
   assert.equal(card.lastAnswer, '54')
+  assert.equal(card.lapses, 1)
+  const easy = review({ key: 'a' }, { correct: true, grade: 4 }, '2026-10-24')
+  assert.equal(easy.box, 4)
+  const strict = review(
+    { key: 'a' },
+    { correct: true, grade: 4 },
+    '2026-10-24',
+    {
+      memorisation: 97,
+    },
+  )
+  assert.ok(strict.due < easy.due)
+  const old = review(
+    { key: 'b', box: 4, due: '2026-11-01', seen: 4, right: 4 },
+    { correct: true },
+    '2026-11-01',
+  )
+  assert.ok(old.stability > 8)
+  assert.equal(old.box, 5)
   assert.equal(stars(10, 10, 70), 3)
   assert.equal(stars(9, 10, 70), 2)
   assert.equal(stars(7, 10, 70), 1)

@@ -97,9 +97,25 @@ export const FIELDS = {
     label: 'manage.hopsByStar',
     own: 'hops_par_etoile',
   },
+  retention: {
+    name: 'retention',
+    label: 'manage.retention',
+    own: 'memorisation',
+  },
+  maxInterval: {
+    name: 'maxInterval',
+    label: 'manage.maxInterval',
+    own: 'intervalle_max',
+  },
 }
 
-const GAME_FIELDS = ['questions', 'threshold', 'hopsByStar']
+const GAME_FIELDS = [
+  'questions',
+  'threshold',
+  'hopsByStar',
+  'retention',
+  'maxInterval',
+]
 export const PACK_FIELDS = [...GAME_FIELDS, 'capEach', 'unlock']
 export const MODULE_FIELDS = [...GAME_FIELDS, 'cap', 'unlock']
 
@@ -109,6 +125,8 @@ const CHIPS = [
   ['questions', 'chips.questions'],
   ['threshold', 'chips.threshold'],
   ['hopsByStar', 'chips.hopsByStar'],
+  ['retention', 'chips.retention'],
+  ['maxInterval', 'chips.maxInterval'],
   ['dailyCap', 'chips.dailyCap'],
   ['unlockPercent', 'chips.unlock'],
 ]
@@ -182,6 +200,8 @@ const OWN = {
   questions: 'questions_par_partie',
   threshold: 'seuil',
   hopsByStar: 'hops_par_etoile',
+  retention: 'memorisation',
+  maxInterval: 'intervalle_max',
   dailyCap: 'plafond_jour',
 }
 
@@ -583,6 +603,65 @@ const ReadAloudCard = ({ person, setting }) => {
 }
 
 ReadAloudCard.propTypes = {
+  person: PropTypes.object.isRequired,
+  setting: PropTypes.object,
+}
+
+// GRADINGS are how a person's right answers are graded: by their account
+// (buttons for a parent, the time for a child), by the time taken, or by the
+// buttons Difficile and Facile.
+const GRADINGS = ['compte', 'auto', 'boutons']
+
+// GradingCard chooses, for one person, how their right answers are graded.
+const GradingCard = ({ person, setting }) => {
+  const { t } = useTranslation('learn')
+  const setSetting = useSetSetting()
+  const notify = useNotify()
+  const value = setting?.grading || 'compte'
+  const change = async grading => {
+    try {
+      await setSetting.mutateAsync({
+        userId: person.userId,
+        scope: '*',
+        grading: grading === 'compte' ? '' : grading,
+      })
+    } catch (err) {
+      notify('error', err.message)
+    }
+  }
+  return (
+    <Sheet sx={{ ...surfaceSx }}>
+      <Box>
+        <Typography level='title-md'>{t('manage.grading')}</Typography>
+        <Typography level='body-xs' sx={{ color: 'text.secondary' }}>
+          {t('manage.gradingHelp')}
+        </Typography>
+      </Box>
+      <Select
+        size='sm'
+        value={value}
+        disabled={setSetting.isPending}
+        onChange={(_, next) => next && next !== value && change(next)}
+        slotProps={{
+          button: {
+            'aria-label': t('manage.gradingFor', {
+              name: person.displayName,
+            }),
+          },
+        }}
+        sx={{ mt: 1, width: 'fit-content' }}
+      >
+        {GRADINGS.map(grading => (
+          <Option key={grading} value={grading}>
+            {t(`manage.gradings.${grading}`)}
+          </Option>
+        ))}
+      </Select>
+    </Sheet>
+  )
+}
+
+GradingCard.propTypes = {
   person: PropTypes.object.isRequired,
   setting: PropTypes.object,
 }
@@ -1825,6 +1904,10 @@ export const ManageLearn = () => {
             onOpen={() => setSettingsFor({ scope: 'total' })}
           />
           <ReadAloudCard
+            person={person}
+            setting={settings.get(`${person.userId}:*`)}
+          />
+          <GradingCard
             person={person}
             setting={settings.get(`${person.userId}:*`)}
           />

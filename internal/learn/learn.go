@@ -12,6 +12,7 @@ import (
 
 	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	ptModel "github.com/nico87lbs/hopla/internal/points"
+	uModel "github.com/nico87lbs/hopla/internal/user/model"
 	"github.com/nico87lbs/hopla/internal/zone"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -334,6 +335,7 @@ func splitModule(db *gorm.DB, familyID int, key string, entries map[string]Entry
 				for _, f := range []struct{ to, from **int }{
 					{&row.DailyCap, &a.DailyCap}, {&row.UnlockPercent, &a.UnlockPercent},
 					{&row.Questions, &a.Questions}, {&row.Threshold, &a.Threshold}, {&row.HopsByStar, &a.HopsByStar},
+					{&row.Retention, &a.Retention}, {&row.MaxInterval, &a.MaxInterval},
 				} {
 					if *f.to == nil {
 						*f.to = *f.from
@@ -649,6 +651,12 @@ func SetActivation(db *gorm.DB, familyID int, change ActivationChange, now time.
 			if change.HopsByStar != nil {
 				columns = append(columns, "hops_by_star")
 			}
+			if change.Retention != nil {
+				columns = append(columns, "retention")
+			}
+			if change.MaxInterval != nil {
+				columns = append(columns, "max_interval")
+			}
 			if len(columns) == 0 {
 				conflict.DoNothing = true
 			} else {
@@ -673,6 +681,13 @@ func (g GameSettings) check() error {
 	if g.HopsByStar != nil && (*g.HopsByStar < -1 || *g.HopsByStar > 20) {
 		return invalid("hops par étoile entre 0 et 20")
 	}
+	if g.Retention != nil && *g.Retention != -1 && (*g.Retention < MinRetention || *g.Retention > MaxRetention) {
+		return invalid("mémorisation visée entre %d et %d %%", MinRetention, MaxRetention)
+	}
+	if g.MaxInterval != nil && *g.MaxInterval != -1 &&
+		(*g.MaxInterval < MinMaxInterval || *g.MaxInterval > MaxMaxInterval) {
+		return invalid("intervalle maximal entre %d et %d jours", MinMaxInterval, MaxMaxInterval)
+	}
 	return nil
 }
 
@@ -687,10 +702,17 @@ func (g *GameSettings) apply(change GameSettings) {
 	if change.HopsByStar != nil {
 		g.HopsByStar = ownSetting(change.HopsByStar)
 	}
+	if change.Retention != nil {
+		g.Retention = ownSetting(change.Retention)
+	}
+	if change.MaxInterval != nil {
+		g.MaxInterval = ownSetting(change.MaxInterval)
+	}
 }
 
 func (g GameSettings) empty() bool {
-	return g.Questions == nil && g.Threshold == nil && g.HopsByStar == nil
+	return g.Questions == nil && g.Threshold == nil && g.HopsByStar == nil && g.Retention == nil &&
+		g.MaxInterval == nil
 }
 
 // ownSetting is a person's setting as kept: nil for -1, the module's own.
@@ -735,8 +757,21 @@ type SettingChange struct {
 	// FirstName sets the name the games use for a person (scope AllPacks);
 	// empty gives their name in Hopla back.
 	FirstName *string `json:"firstName"`
+	// Grading sets how a person's right answers are graded (scope AllPacks):
+	// one of Gradings, or empty for the default of their account.
+	Grading *string `json:"grading"`
 	GameSettings
 }
+
+// How a person's right answers are graded: by the time taken, or by the
+// buttons Difficile and Facile.
+const (
+	GradingAuto    = "auto"
+	GradingButtons = "boutons"
+)
+
+// Gradings are the values a person's grading takes; empty is the default.
+var Gradings = []string{"", GradingAuto, GradingButtons}
 
 // SetPersonSetting applies a change of a person's or of the family's settings.
 func SetPersonSetting(db *gorm.DB, familyID int, change SettingChange, now time.Time) error {
@@ -769,6 +804,10 @@ func SetPersonSetting(db *gorm.DB, familyID int, change SettingChange, now time.
 		return invalid("le prénom se règle pour tous les jeux, personne par personne")
 	case change.FirstName != nil && utf8.RuneCountInString(strings.TrimSpace(*change.FirstName)) > MaxFirstName:
 		return invalid("le prénom a %d lettres au plus", MaxFirstName)
+	case change.Grading != nil && (change.Scope != AllPacks || change.Family):
+		return invalid("la notation des réponses se règle pour tous les jeux, personne par personne")
+	case change.Grading != nil && !slices.Contains(Gradings, *change.Grading):
+		return invalid("la notation des réponses vaut auto ou boutons")
 	}
 	return db.Transaction(func(tx *gorm.DB) error {
 		if !change.Family {
@@ -825,10 +864,13 @@ func SetPersonSetting(db *gorm.DB, familyID int, change SettingChange, now time.
 		if change.FirstName != nil {
 			row.FirstName = strings.TrimSpace(*change.FirstName)
 		}
+		if change.Grading != nil {
+			row.Grading = *change.Grading
+		}
 		row.GameSettings.apply(change.GameSettings)
 		row.UpdatedAt = now
 		if row.DailyCap == nil && row.UnlockPercent == nil && row.TotalCap == nil && row.ReadAloud == nil &&
-			row.Voice == "" && row.FirstName == "" && row.GameSettings.empty() {
+			row.Voice == "" && row.FirstName == "" && row.Grading == "" && row.GameSettings.empty() {
 			return tx.Where("family_id = ? AND user_id = ? AND scope = ?", familyID, change.UserID, change.Scope).
 				Delete(&PersonSetting{}).Error
 		}
@@ -867,6 +909,7 @@ func FoldAllPacks(db *gorm.DB) error {
 				for _, f := range []struct{ to, from **int }{
 					{dailyCap, &all.DailyCap}, {unlock, &all.UnlockPercent}, {&game.Questions, &all.Questions},
 					{&game.Threshold, &all.Threshold}, {&game.HopsByStar, &all.HopsByStar},
+					{&game.Retention, &all.Retention}, {&game.MaxInterval, &all.MaxInterval},
 				} {
 					if *f.to == nil {
 						*f.to = *f.from
@@ -1024,6 +1067,8 @@ func (l limits) settings(module string, activation Activation, own Settings) Set
 	pick(activation.Questions, func(s PersonSetting) *int { return s.Questions }, &own.Questions)
 	pick(activation.Threshold, func(s PersonSetting) *int { return s.Threshold }, &own.Threshold)
 	pick(activation.HopsByStar, func(s PersonSetting) *int { return s.HopsByStar }, &own.HopsByStar)
+	pick(activation.Retention, func(s PersonSetting) *int { return s.Retention }, &own.Retention)
+	pick(activation.MaxInterval, func(s PersonSetting) *int { return s.MaxInterval }, &own.MaxInterval)
 	return own
 }
 
@@ -1061,6 +1106,8 @@ type Applied struct {
 	Questions     Value `json:"questions"`
 	Threshold     Value `json:"threshold"`
 	HopsByStar    Value `json:"hopsByStar"`
+	Retention     Value `json:"retention"`
+	MaxInterval   Value `json:"maxInterval"`
 	DailyCap      Value `json:"dailyCap"`
 	UnlockPercent Value `json:"unlockPercent"`
 }
@@ -1106,9 +1153,12 @@ func AppliedSettings(db *gorm.DB, familyID int, userIDs []int) (map[int]map[stri
 				return Value{Value: v, From: from}
 			}
 			out[userID][key] = Applied{
-				Questions:     value(activation.Questions, func(s PersonSetting) *int { return s.Questions }, &settings.Questions),
-				Threshold:     value(activation.Threshold, func(s PersonSetting) *int { return s.Threshold }, &settings.Threshold),
-				HopsByStar:    value(activation.HopsByStar, func(s PersonSetting) *int { return s.HopsByStar }, &settings.HopsByStar),
+				Questions:  value(activation.Questions, func(s PersonSetting) *int { return s.Questions }, &settings.Questions),
+				Threshold:  value(activation.Threshold, func(s PersonSetting) *int { return s.Threshold }, &settings.Threshold),
+				HopsByStar: value(activation.HopsByStar, func(s PersonSetting) *int { return s.HopsByStar }, &settings.HopsByStar),
+				Retention:  value(activation.Retention, func(s PersonSetting) *int { return s.Retention }, &settings.Retention),
+				MaxInterval: value(activation.MaxInterval, func(s PersonSetting) *int { return s.MaxInterval },
+					&settings.MaxInterval),
 				DailyCap:      value(activation.DailyCap, func(s PersonSetting) *int { return s.DailyCap }, &settings.DailyCap),
 				UnlockPercent: value(activation.UnlockPercent, func(s PersonSetting) *int { return s.UnlockPercent }, nil),
 			}
@@ -1193,6 +1243,9 @@ type PlayerModule struct {
 	PlayedToday   int  `json:"playedToday"`
 	// Placed are the chapters a placement test opened.
 	Placed []string `json:"placed"`
+	// UsualMs is the time the person usually takes to answer right in this
+	// module, 0 until enough answers are known.
+	UsualMs int `json:"usualMs"`
 }
 
 // Player is everything a device needs to let a person play, also offline:
@@ -1214,6 +1267,9 @@ type Player struct {
 	Voice     string `json:"voice"`
 	// FirstName is what the questions about the person's name ask about.
 	FirstName string `json:"firstName"`
+	// Grading is how the person's right answers are graded: GradingAuto or
+	// GradingButtons.
+	Grading string `json:"grading"`
 	// Recre is the person's récré: when the next one comes, and the records.
 	Recre Recre `json:"recre"`
 	// Placements are the person's placement tests, to offer one in a pack
@@ -1269,6 +1325,14 @@ func PlayerFor(db *gorm.DB, familyID, userID int, now time.Time) (Player, error)
 			return player, err
 		}
 	}
+	player.Grading, err = gradingOf(db, userID, limits.byScope[AllPacks].Grading)
+	if err != nil {
+		return player, err
+	}
+	usual, err := usualTimes(db, familyID, userID)
+	if err != nil {
+		return player, err
+	}
 	player.Placements, err = Placements(db, familyID, &userID)
 	if err != nil {
 		return player, err
@@ -1295,7 +1359,7 @@ func PlayerFor(db *gorm.DB, familyID, userID int, now time.Time) (Player, error)
 			Settings:      limits.settings(module.Key, activation, doc.Settings.WithDefaults()),
 			UnlockPercent: limits.unlockPercent(module.Key, activation),
 			EarnedToday:   earned[module.Key].Points, PlayedToday: earned[module.Key].Games,
-			Placed: placed[module.Key]}
+			Placed: placed[module.Key], UsualMs: usual[module.Key]}
 		if pm.Placed == nil {
 			pm.Placed = []string{}
 		}
@@ -1308,6 +1372,57 @@ func PlayerFor(db *gorm.DB, familyID, userID int, now time.Time) (Player, error)
 	recre, err := RecreFor(db, familyID, userID, now)
 	player.Recre = recre
 	return player, err
+}
+
+// gradingOf is how a person's right answers are graded: as a parent set it,
+// else by the buttons for a parent and by the time for a child.
+func gradingOf(db *gorm.DB, userID int, set string) (string, error) {
+	if set != "" {
+		return set, nil
+	}
+	var types []int
+	if err := db.Table("users").Where("id = ?", userID).Pluck("user_type", &types).Error; err != nil {
+		return "", err
+	}
+	if len(types) > 0 && types[0] == int(uModel.UserTypeChild) {
+		return GradingAuto, nil
+	}
+	return GradingButtons, nil
+}
+
+// Usual times: the median of the last answers right in a module, once
+// there are enough of them.
+const (
+	usualLast = 50
+	usualMin  = 10
+)
+
+// usualTimes is, by module, the time a person usually takes to answer right.
+func usualTimes(db *gorm.DB, familyID, userID int) (map[string]int, error) {
+	var rows []struct {
+		ModuleKey string
+		Ms        int
+	}
+	if err := db.Model(&ReviewLog{}).Select("module_key, ms").
+		Where("family_id = ? AND user_id = ? AND grade >= ? AND ms > 0", familyID, userID, Hard).
+		Order("id DESC").Limit(5000).Scan(&rows).Error; err != nil {
+		return nil, err
+	}
+	times := map[string][]int{}
+	for _, row := range rows {
+		if len(times[row.ModuleKey]) < usualLast {
+			times[row.ModuleKey] = append(times[row.ModuleKey], row.Ms)
+		}
+	}
+	out := map[string]int{}
+	for key, list := range times {
+		if len(list) < usualMin {
+			continue
+		}
+		slices.Sort(list)
+		out[key] = list[len(list)/2]
+	}
+	return out, nil
 }
 
 // MaxFirstName is the longest first name the games take, in letters.
@@ -1452,6 +1567,37 @@ type Answer struct {
 	// counts as right nor sends the card back to the start.
 	Almost bool   `json:"almost"`
 	Given  string `json:"given"`
+	// Grade, on a right answer, is Hard or Easy when the player or the time
+	// taken said so; Good otherwise.
+	Grade int `json:"grade,omitempty"`
+	// Ms is the time taken to answer, in milliseconds.
+	Ms int `json:"ms,omitempty"`
+}
+
+// GradeOf is the FSRS grade of an answer: Again when wrong, Hard for
+// « presque », Good when right, unless the answer says Hard or Easy.
+func GradeOf(answer Answer) int {
+	switch {
+	case answer.Correct && (answer.Grade == Hard || answer.Grade == Easy):
+		return answer.Grade
+	case answer.Correct:
+		return Good
+	case answer.Almost:
+		return Hard
+	}
+	return Again
+}
+
+// Schedule is how far apart a person's cards come back: the share to recall
+// wanted, in percent, and the longest wait, in days.
+type Schedule struct {
+	Retention   int
+	MaxInterval int
+}
+
+func (s Settings) schedule() Schedule {
+	s = s.WithDefaults()
+	return Schedule{Retention: s.Retention, MaxInterval: s.MaxInterval}
 }
 
 // Game is a game sent by a device once played.
@@ -1619,7 +1765,7 @@ func Record(db *gorm.DB, familyID, playedBy int, game Game, now time.Time) (Resu
 				return err
 			}
 		}
-		cards, err := moveCards(tx, familyID, game, day)
+		cards, err := moveCards(tx, familyID, game, day, settings.schedule(), now)
 		if err != nil {
 			return err
 		}
@@ -1645,7 +1791,7 @@ func fillDay(tx *gorm.DB, familyID int, result *Result) error {
 }
 
 // moveCards applies the answers to the cards, in the order they were given.
-func moveCards(tx *gorm.DB, familyID int, game Game, day string) ([]Card, error) {
+func moveCards(tx *gorm.DB, familyID int, game Game, day string, schedule Schedule, now time.Time) ([]Card, error) {
 	cards := map[string]*Card{}
 	var order []string
 	for _, answer := range game.Answers {
@@ -1660,8 +1806,15 @@ func moveCards(tx *gorm.DB, familyID int, game Game, day string) ([]Card, error)
 			cards[answer.Key] = card
 			order = append(order, answer.Key)
 		}
-		Review(card, answer, day)
+		elapsed := elapsedDays(card, day)
+		Review(card, answer, day, schedule)
 		card.ModuleKey = game.Module
+		log := ReviewLog{FamilyID: familyID, UserID: game.UserID, ModuleKey: game.Module, CardKey: answer.Key,
+			Day: day, Grade: GradeOf(answer), Ms: max(0, min(answer.Ms, maxAnswerMs)), Elapsed: elapsed,
+			CreatedAt: now}
+		if err := tx.Create(&log).Error; err != nil {
+			return nil, err
+		}
 		card.LastSeenAt = game.PlayedAt.UTC()
 	}
 	out := make([]Card, 0, len(order))
@@ -1674,24 +1827,65 @@ func moveCards(tx *gorm.DB, familyID int, game Game, day string) ([]Card, error)
 	return out, nil
 }
 
-// Review moves a card after one answer given on day. The web app applies the
-// same rule to games played offline.
-func Review(card *Card, answer Answer, day string) {
+// maxAnswerMs is the longest time kept for one answer: past it, the player
+// was elsewhere.
+const maxAnswerMs = 10 * 60 * 1000
+
+// elapsedDays is the days since a card's last review, 0 for a new card.
+func elapsedDays(card *Card, day string) int {
+	last := card.LastReview
+	if last == "" && card.Due != "" && card.Box > 0 {
+		last = addDays(card.Due, -BoxDays[card.Box])
+	}
+	if last == "" {
+		return 0
+	}
+	from, err1 := time.Parse(time.DateOnly, last)
+	to, err2 := time.Parse(time.DateOnly, day)
+	if err1 != nil || err2 != nil {
+		return 0
+	}
+	return max(0, int(to.Sub(from).Hours()/24+0.5))
+}
+
+// Review moves a card after one answer given on day, by FSRS: its
+// stability and difficulty, then the day it comes back and its box. A card
+// from before FSRS starts from its box. The web app applies the same rule
+// to games played offline.
+func Review(card *Card, answer Answer, day string, schedule Schedule) {
+	grade := GradeOf(answer)
+	elapsed := elapsedDays(card, day)
+	if card.Stability == 0 && card.Seen > 0 {
+		box := min(5, max(card.Box, 1))
+		card.Stability = float64(BoxDays[box])
+		card.Difficulty = clampF(round8(initDifficulty(Good)+6*float64(card.Wrong)/float64(card.Seen)), 1, 10)
+	}
+	if grade == Again && card.Box >= MasteredBox {
+		card.Lapses++
+	}
+	card.Stability, card.Difficulty = NextState(card.Stability, card.Difficulty, elapsed, grade)
 	card.Seen++
 	switch {
 	case answer.Correct:
 		card.Right++
-		card.Box = min(5, max(card.Box, 0)+1)
-	case answer.Almost:
-		card.Box = max(card.Box, 1)
-	default:
+	case grade == Again:
 		card.Wrong++
-		card.Box = 1
 		given := strings.TrimSpace(answer.Given)
 		if len(given) > maxGiven {
 			given = given[:maxGiven]
 		}
 		card.LastAnswer = given
 	}
-	card.Due = addDays(day, BoxDays[card.Box])
+	if schedule.Retention == 0 || schedule.MaxInterval == 0 {
+		schedule = Settings{}.schedule()
+	}
+	days := Interval(card.Stability, float64(schedule.Retention)/100, schedule.MaxInterval)
+	if grade == Again {
+		// A card forgotten comes back the next day, like a relearning step
+		// of Anki, then at the pace of its new stability.
+		days = 1
+	}
+	card.Due = addDays(day, days)
+	card.LastReview = day
+	card.Box = BoxOf(days)
 }

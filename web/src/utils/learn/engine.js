@@ -3,6 +3,15 @@
 // questions of a game and checks the answers. Moving the cards and counting
 // the stars follow the same rules as the server, which has the last word.
 
+import {
+  AGAIN,
+  EASY,
+  GOOD,
+  HARD,
+  initDifficulty,
+  interval,
+  nextState,
+} from './fsrs.js'
 import { cardItems, generatorSource, withName } from './generators.js'
 
 export const DEFAULT_SETTINGS = {
@@ -11,13 +20,23 @@ export const DEFAULT_SETTINGS = {
   seuil: 70,
   hops_par_etoile: 1,
   plafond_jour: 10,
+  memorisation: 90,
+  intervalle_max: 365,
 }
 
 // A chapter whose questions are drawn without end counts as known once this
 // many of them are known, unless it sets its own objectif.
 export const DEFAULT_GOAL = 20
 export const MASTERED_BOX = 4
+// BOX_DAYS is the shortest wait of each box: a card's box tells how far it
+// got (boxOf), and is the stability of a card from before FSRS.
 export const BOX_DAYS = { 1: 1, 2: 2, 3: 4, 4: 8, 5: 16 }
+
+export const boxOf = days => {
+  let box = 1
+  for (let b = 2; b <= 5; b++) if (days >= BOX_DAYS[b]) box = b
+  return box
+}
 // A game with fewer answers earns no stars.
 export const MIN_ANSWERS = 5
 
@@ -508,31 +527,77 @@ export const addDays = (day, days) => {
   return date.toISOString().slice(0, 10)
 }
 
-// review moves a card after an answer: up one box when right, back to the
-// first when wrong; « presque » keeps it where it is.
-export const review = (card, answer, day) => {
+const daysBetween = (from, to) => {
+  const at = day => {
+    const [y, m, d] = day.split('-').map(Number)
+    return Date.UTC(y, m - 1, d)
+  }
+  return Math.max(0, Math.round((at(to) - at(from)) / 86400000))
+}
+
+// elapsedDays is the days since a card's last review, 0 for a new card.
+const elapsedDays = (card, day) => {
+  let last = card.lastReview
+  if (!last && card.due && card.box > 0)
+    last = addDays(card.due, -BOX_DAYS[card.box])
+  return last ? daysBetween(last, day) : 0
+}
+
+// gradeOf is the FSRS grade of an answer: again when wrong, hard for
+// « presque », good when right, unless the answer says hard or easy.
+export const gradeOf = answer => {
+  if (answer.correct) {
+    return answer.grade === HARD || answer.grade === EASY ? answer.grade : GOOD
+  }
+  return answer.almost ? HARD : AGAIN
+}
+
+const round8 = x => Math.round(x * 1e8) / 1e8
+
+// review moves a card after an answer, by FSRS (fsrs.js): its stability and
+// difficulty, then the day it comes back and its box. A card forgotten comes
+// back the next day; a card from before FSRS starts from its box. settings
+// are the module's, for the share to recall and the longest wait.
+export const review = (card, answer, day, settings) => {
+  const s = withDefaults(settings)
   const next = {
     box: 0,
     seen: 0,
     right: 0,
     wrong: 0,
+    stability: 0,
+    difficulty: 0,
+    lapses: 0,
     ...card,
     key: card.key || answer.key,
   }
+  const grade = gradeOf(answer)
+  const elapsed = elapsedDays(next, day)
+  if (!next.stability && next.seen > 0) {
+    const box = Math.min(5, Math.max(next.box, 1))
+    next.stability = BOX_DAYS[box]
+    next.difficulty = Math.min(
+      10,
+      Math.max(1, round8(initDifficulty(GOOD) + (6 * next.wrong) / next.seen)),
+    )
+  }
+  if (grade === AGAIN && next.box >= MASTERED_BOX) next.lapses++
+  Object.assign(next, nextState(next, elapsed, grade))
   next.seen++
-  if (answer.correct) {
-    next.right++
-    next.box = Math.min(5, Math.max(next.box, 0) + 1)
-  } else if (answer.almost) {
-    next.box = Math.max(next.box, 1)
-  } else {
+  if (answer.correct) next.right++
+  else if (grade === AGAIN) {
     next.wrong++
-    next.box = 1
     next.lastAnswer = String(answer.given ?? '')
       .trim()
       .slice(0, 120)
   }
-  next.due = addDays(day, BOX_DAYS[next.box])
+  const days =
+    grade === AGAIN
+      ? 1
+      : interval(next.stability, s.memorisation / 100, s.intervalle_max)
+  next.due = addDays(day, days)
+  next.lastReview = day
+  next.box = boxOf(days)
   return next
 }
 

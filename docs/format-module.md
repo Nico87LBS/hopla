@@ -336,6 +336,8 @@ Champs communs : `id`, `chapitre`, `operation`.
 | `seuil` | 70 | % pour la 1re étoile |
 | `hops_par_etoile` | 1 | 0 à 20 |
 | `plafond_jour` | 10 | Hops par jour et par personne, 0 à 200 |
+| `memorisation` | 90 | % de questions encore sues à leur retour, 70 à 97 |
+| `intervalle_max` | 365 | Plus longue attente d'une question, 7 à 3650 jours |
 
 Les parents peuvent changer ces valeurs pour la famille ou par personne sans
 toucher au fichier.
