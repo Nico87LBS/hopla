@@ -74,6 +74,7 @@ import { useExportModule } from './FamilyPacks'
 import LabelRows, { ZoneChoice } from './LabelRows'
 import { LearnIcon } from './LearnParts'
 import { useNotify } from './ManageLearn'
+import PackOptions from './PackOptions'
 import RemoveModal from './RemoveModal'
 
 const NEW = 'nouveau'
@@ -854,6 +855,17 @@ const PackForm = ({ isNew, moduleId, start }) => {
             </Select>,
             'pack-subject',
           )}
+        </Box>
+        <Box sx={{ mt: 2 }}>
+          <PackOptions
+            audience={pack.audience}
+            rest={pack.rest}
+            selfId={pack.id}
+            modules={(installed?.modules || []).filter(
+              module => !module.children?.length,
+            )}
+            onChange={rest => change({ rest })}
+          />
         </Box>
       </Sheet>
 

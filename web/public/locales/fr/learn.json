@@ -565,7 +565,7 @@
     "addCard": "Une fiche",
     "addChapter": "Ajouter un chapitre",
     "paste": "Coller une liste",
-    "settingsHint": "Questions par partie, seuil, hops par étoile et plafond se règlent comme pour les autres paquets.",
+    "settingsHint": "Les réglages de Gérer › Apprendre, pour la famille ou une personne, passent avant ceux du paquet.",
     "save": "Enregistrer",
     "saveNeeds": "Il faut un nom et au moins une fiche.",
     "created": "{{name}} est créé. Coche-le dans Par personne pour qui doit y jouer.",
@@ -809,6 +809,64 @@
       "toSortTwice": "Deux étiquettes à classer sont pareilles.",
       "tracedLength": "Écris de 1 à 8 caractères à tracer.",
       "zoneMissing": "Choisis une image, une zone et son nom."
+    }
+  },
+  "packOptions": {
+    "hint": "Description, voix, écriture, couleur, prérequis, réglages des parties…",
+    "description": "Description",
+    "descriptionHint": "Ce que contient le paquet, montré dans le catalogue.",
+    "author": "Auteur",
+    "language": "Langue du paquet",
+    "taught": "Langue apprise",
+    "taughtHelp": "Celle que l’appareil parle pour les mots à écouter.",
+    "taughtSame": "Comme la langue du paquet",
+    "languages": {
+      "fr": "Français",
+      "en": "Anglais",
+      "es": "Espagnol",
+      "de": "Allemand",
+      "it": "Italien"
+    },
+    "readAloud": "Lecture à voix haute",
+    "readAlouds": {
+      "tout": "Tout : questions et réponses",
+      "consigne": "Seulement les consignes (pour apprendre à lire)",
+      "rien": "Rien"
+    },
+    "readBack": "Redire la réponse une fois donnée",
+    "readBacks": {
+      "auto": "Selon la matière (langues et lecture)",
+      "oui": "Toujours",
+      "non": "Jamais"
+    },
+    "writing": "Écriture",
+    "writings": {
+      "imprimerie": "En imprimerie",
+      "cursive": "En cursive",
+      "cursive_question": "Seulement la question en cursive"
+    },
+    "color": "Couleur",
+    "colorHelp": "Celle des cartes et de la partie.",
+    "colorAuto": "Selon la matière",
+    "prereqs": "Prérequis",
+    "prereqsHelp": "Le paquet reste fermé tant que ces modules (ou chapitres) ne sont pas assez sus.",
+    "prereqModule": "Module à savoir d’abord",
+    "prereqChapter": "Chapitre",
+    "prereqWhole": "Tout le module",
+    "prereqPercent": "Su à",
+    "prereqRemove": "Retirer le prérequis",
+    "prereqAdd": "Un prérequis",
+    "game": "Réglages des parties",
+    "gameHelp": "Vides, les valeurs habituelles s’appliquent. Ceux de Gérer › Apprendre, pour la famille ou une personne, passent avant.",
+    "games": {
+      "questions_par_partie": "Questions par partie",
+      "nouvelles_par_partie": "Nouvelles par partie",
+      "seuil": "Seuil (%)",
+      "hops_par_etoile": "Hops par étoile",
+      "plafond_jour": "Plafond de hops par jour",
+      "memorisation": "Mémorisation (%)",
+      "intervalle_max": "Attente max (jours)",
+      "nouvelles_par_jour": "Nouvelles par jour"
     }
   }
 }
