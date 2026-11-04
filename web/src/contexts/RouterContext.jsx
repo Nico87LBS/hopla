@@ -25,11 +25,11 @@ import { LearnChooser, LearnHome } from '../views/Learn/LearnHome'
 import LearnPlay from '../views/Learn/LearnPlay'
 import LearnReports from '../views/Learn/LearnReports'
 import LearnStats from '../views/Learn/LearnStats'
-import PackEditor from '../views/Learn/PackEditor'
 import ManageLearn, {
   LearnCatalogue,
   LearnVoices,
 } from '../views/Learn/ManageLearn'
+import PackEditor from '../views/Learn/PackEditor'
 import PlacementTest from '../views/Learn/PlacementTest'
 import {
   PlayGame,
