@@ -61,6 +61,10 @@ habituel entre deux fois).
 
 « Compter depuis le jour où elle est faite » : faite en retard, la tâche
 revient d'autant plus tard. Sans cette case, elle garde son calendrier.
+Faite en retard, elle saute les passages manqués : faite un jour, elle ne
+revient pas avant le lendemain, à son heure habituelle (une tâche quotidienne
+de 18 h faite le matin ne revient pas le soir même). Une tâche toutes les N
+heures saute seulement les passages déjà passés.
 
 ### Créneaux
 
