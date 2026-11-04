@@ -265,8 +265,60 @@ const prepare = (item, rng) => {
   return { ...item, choices: shuffle(choices, rng) }
 }
 
+// siblingOf names the piece of knowledge a question asks about: the two ways
+// of a card (« chat » → « cat » and « cat » → « chat »), or 7 × 8 and
+// 7 × ? = 56, are siblings, and one would give the other away.
+export const siblingOf = item => item.sibling || item.key
+
+// picker gathers the questions of a game, one per key and, while it can, one
+// per sibling. Once a game cannot be filled otherwise, a sibling may come
+// in, as far as possible from its twin.
+const picker = count => {
+  const picked = []
+  const keys = new Set()
+  const siblings = new Set()
+  const add = (item, allowSibling = false) => {
+    if (!item || keys.has(item.key) || picked.length >= count) return false
+    const sibling = siblingOf(item)
+    if (siblings.has(sibling) && !allowSibling) return false
+    keys.add(item.key)
+    siblings.add(sibling)
+    picked.push(item)
+    return true
+  }
+  return { add, picked }
+}
+
+// apart shuffles the questions of a game, then moves a question away from
+// its sibling when they follow each other.
+export const apart = (items, rng) => {
+  const out = shuffle(items, rng)
+  const twin = (k, item) =>
+    k >= 0 && k < out.length && siblingOf(out[k]) === siblingOf(item)
+  for (let i = 1; i < out.length; i++) {
+    if (!twin(i - 1, out[i])) continue
+    for (let j = 0; j < out.length; j++) {
+      if (Math.abs(j - i) < 2) continue
+      const here = out[j]
+      const moved = out[i]
+      const fitsHere = !twin(i - 1, here) && !twin(i + 1, here)
+      const fitsThere =
+        (j - 1 === i || !twin(j - 1, moved)) &&
+        (j + 1 === i || !twin(j + 1, moved))
+      if (fitsHere && fitsThere) {
+        out[i] = here
+        out[j] = moved
+        break
+      }
+    }
+  }
+  return out
+}
+
 // pickQuestions makes a game: the cards due first, then a few new questions
 // from the latest open chapter, then any questions of the open chapters.
+// Two siblings never come in the same game, unless the open chapters have
+// too few questions to fill it.
 export const pickQuestions = (compiled, cards, options = {}) => {
   const rng = options.rng || Math.random
   const settings = withDefaults({ ...compiled.settings, ...options.settings })
@@ -281,14 +333,7 @@ export const pickQuestions = (compiled, cards, options = {}) => {
   )
     .filter(c => c.open)
     .map(c => c.chapter)
-  const picked = []
-  const keys = new Set()
-  const add = item => {
-    if (!item || keys.has(item.key) || picked.length >= count) return false
-    keys.add(item.key)
-    picked.push(item)
-    return true
-  }
+  const { add, picked } = picker(count)
 
   const due = [...cards.values()]
     .filter(card => card.due && card.due <= day)
@@ -322,9 +367,14 @@ export const pickQuestions = (compiled, cards, options = {}) => {
   }
 
   // Then fill, half from the latest chapter: first with questions the last
-  // game did not ask, so that playing again asks others, then with any.
+  // game did not ask, so that playing again asks others, then with any, and
+  // last, with siblings.
   const recent = options.recent || new Set()
-  for (const fresh of [true, false]) {
+  for (const [fresh, sibling] of [
+    [true, false],
+    [false, false],
+    [false, true],
+  ]) {
     for (let tries = 0; tries < count * 30 && picked.length < count; tries++) {
       if (!open.length) break
       const chapter =
@@ -333,22 +383,25 @@ export const pickQuestions = (compiled, cards, options = {}) => {
           : open[Math.floor(rng() * open.length)]
       const item = drawFrom(chapter, rng)
       if (fresh && item && recent.has(item.key)) continue
-      add(item)
+      add(item, sibling)
     }
   }
-  return shuffle(picked, rng).map(item => prepare(item, rng))
+  return apart(picked, rng).map(item => prepare(item, rng))
 }
+
+// again shapes the questions missed in a game to be asked once more at its
+// end: in another order, their choices mixed again.
+export const again = (items, rng = Math.random) =>
+  apart(items, rng).map(item => prepare(item, rng))
 
 // chapterQuestions draws a few different questions of one chapter, shaped
 // for a game, such as for a placement test.
 export const chapterQuestions = (chapter, count, rng = Math.random) => {
-  const picked = []
-  const keys = new Set()
-  for (let tries = 0; tries < count * 30 && picked.length < count; tries++) {
-    const item = drawFrom(chapter, rng)
-    if (!item || keys.has(item.key)) continue
-    keys.add(item.key)
-    picked.push(item)
+  const { add, picked } = picker(count)
+  for (const sibling of [false, true]) {
+    for (let tries = 0; tries < count * 30 && picked.length < count; tries++) {
+      add(drawFrom(chapter, rng), sibling)
+    }
   }
   return picked.map(item => prepare(item, rng))
 }

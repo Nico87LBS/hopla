@@ -243,7 +243,7 @@ test('a card without traps of its own draws them from its chapter, game after ga
   const chapter = compiled.chapters[0]
   const answers = new Set(chapter.sources[0].list().map(item => item.answer))
   const drawn = new Set()
-  for (let seed = 1; seed <= 6; seed++) {
+  for (let seed = 1; seed <= 20; seed++) {
     for (const q of pickQuestions(compiled, new Map(), {
       rng: seededRandom(seed),
     })) {
