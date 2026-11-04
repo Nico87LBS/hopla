@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "anglais-ecole",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "nom": "Anglais à l'école",
+  "icone": "🇬🇧",
   "description": "L'anglais de l'école, à l'oreille : les premiers mots en dessins pour la grande section, se présenter et les mots de la classe au CP, les jours, le corps et les petites phrases au CE1, puis les mots et petites phrases du CE2.",
   "matiere": "anglais",
   "niveaux": [
@@ -14,8 +15,6 @@
   "public": "enfant",
   "langue": "fr",
   "langue_apprise": "en",
-  "icone": "langue",
-  "couleur": "#E5484D",
   "auteur": "Hopla",
   "sources": "D'après les programmes de langues vivantes des cycles 1 et 2 (Éduscol).",
   "modules": [

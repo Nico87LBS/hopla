@@ -5,8 +5,9 @@
   "langue_apprise": "fr",
   "auteur": "Hopla",
   "id": "maths-gs-tracer-chiffres",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Tracer les chiffres",
+  "icone": "✏️",
   "description": "Repasser avec le doigt sur chaque chiffre, de 0 à 9, sans déborder.",
   "matiere": "maths",
   "niveaux": [

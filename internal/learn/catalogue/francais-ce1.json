@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce1",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Français CE1",
+  "icone": "📖",
   "description": "Lire et comprendre, les sons et leur écriture, la phrase, les accords, la conjugaison, le vocabulaire et la dictée.",
   "matiere": "francais",
   "niveaux": [

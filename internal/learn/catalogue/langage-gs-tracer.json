@@ -5,8 +5,9 @@
   "langue_apprise": "fr",
   "auteur": "Hopla",
   "id": "langage-gs-tracer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Tracer les lettres",
+  "icone": "✏️",
   "description": "Repasser avec le doigt sur chaque lettre capitale, de A à Z, sans déborder.",
   "matiere": "francais",
   "niveaux": [

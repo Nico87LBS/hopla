@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce2-conjugaison",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "nom": "Conjugaison CE2",
+  "icone": "🏃",
   "description": "Passé, présent ou futur ; le présent, le futur, l'imparfait et le passé composé des verbes du CE2 (être, avoir, aller, faire, dire, venir, pouvoir, voir, vouloir, prendre, partir et les verbes en -er) ; puis écrire soi-même le verbe.",
   "matiere": "francais",
   "niveaux": [

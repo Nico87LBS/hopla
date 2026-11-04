@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "monde-gs-animaux",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "nom": "Les animaux",
+  "icone": "🐰",
   "description": "Les animaux et leurs petits, où ils vivent et ce qu'ils mangent.",
   "matiere": "monde",
   "niveaux": [

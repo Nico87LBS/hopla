@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "monde-cp-temps",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "nom": "Le temps qui passe",
+  "icone": "⏳",
   "description": "Les jours de la semaine, les mois, les saisons, et hier, aujourd'hui, demain.",
   "matiere": "monde",
   "niveaux": [

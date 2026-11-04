@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce2",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Questionner le monde CE2",
+  "icone": "🌍",
   "description": "Le vivant, le corps, la matière, l'électricité, se repérer dans l'espace (France, monde) et dans le temps.",
   "matiere": "monde",
   "niveaux": [

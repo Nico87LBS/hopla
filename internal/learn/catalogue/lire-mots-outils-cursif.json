@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "lire-mots-outils-cursif",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "Mots outils en cursif",
+  "icone": "🔑",
   "description": "Reconnaître d'un coup d'œil les petits mots qu'on lit partout (le, est, dans, avec…), puis compléter des phrases.",
   "matiere": "francais",
   "niveaux": [

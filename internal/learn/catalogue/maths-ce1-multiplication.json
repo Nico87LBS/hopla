@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "maths-ce1-multiplication",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "La multiplication",
+  "icone": "✖️",
   "description": "Comprendre la multiplication comme une addition répétée, les tables de 2, 5 et 10, puis de 3 et 4, et multiplier par 10.",
   "matiere": "maths",
   "niveaux": [

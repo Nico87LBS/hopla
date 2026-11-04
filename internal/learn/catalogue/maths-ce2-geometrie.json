@@ -1,15 +1,14 @@
 {
   "format": "hopla-module/1",
   "id": "maths-ce2-geometrie",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Géométrie CE2",
+  "icone": "📐",
   "description": "Le vocabulaire des figures, des solides et des instruments.",
   "matiere": "maths",
   "niveaux": ["CE2"],
   "public": "enfant",
   "langue": "fr",
-  "icone": "geometrie",
-  "couleur": "#8A5A00",
   "auteur": "Hopla",
   "chapitres": [
     { "id": "figures", "nom": "Figures planes" },

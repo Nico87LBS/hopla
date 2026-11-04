@@ -1,15 +1,14 @@
 {
   "format": "hopla-module/1",
   "id": "maths-ce2-addition-soustraction",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Addition et soustraction",
+  "icone": "➕",
   "description": "Additions et soustractions de nombres à 3 et 4 chiffres, sans puis avec retenue. On peut poser l'opération sur une feuille.",
   "matiere": "maths",
   "niveaux": ["CE2"],
   "public": "enfant",
   "langue": "fr",
-  "icone": "plus",
-  "couleur": "#1F7F74",
   "auteur": "Hopla",
   "chapitres": [
     { "id": "add-sans", "nom": "Additions sans retenue" },

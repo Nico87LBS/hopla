@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "maths-cp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Maths CP",
+  "icone": "🧮",
   "description": "Les nombres jusqu'à 100, comparer et ranger, additions et soustractions, calcul mental, problèmes, monnaie et heures, formes et repérage. Les questions sont lues à voix haute.",
   "matiere": "maths",
   "niveaux": [

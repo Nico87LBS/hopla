@@ -1,16 +1,15 @@
 {
   "format": "hopla-module/1",
   "id": "anglais-aero-phraseo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Phraséo et au-delà",
+  "icone": "📻",
   "description": "La phraséologie normalisée et l'anglais courant qui la prolonge quand une situation sort du cadre.",
   "matiere": "anglais",
   "niveaux": ["OACI 6"],
   "public": "adulte",
   "langue": "en",
   "langue_apprise": "en",
-  "icone": "langue",
-  "couleur": "#6E56CF",
   "auteur": "Hopla",
   "chapitres": [
     {"id": "clearances", "nom": "Clearances and instructions"},

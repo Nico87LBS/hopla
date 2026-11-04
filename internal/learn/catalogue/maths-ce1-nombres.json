@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "maths-ce1-nombres",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Les nombres jusqu’à 1 000",
+  "icone": "🔢",
   "description": "Centaines, dizaines et unités, écrire un nombre en chiffres ou trouver son écriture en lettres, et entendre un nombre jusqu'à 1 000.",
   "matiere": "maths",
   "niveaux": [

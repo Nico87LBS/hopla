@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce2-textes",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "Comprendre un texte",
+  "icone": "📜",
   "description": "De petits textes à lire, avec une question ; vrai ou faux ; remettre une histoire dans l'ordre ; deviner ce qui n'est pas écrit.",
   "matiere": "francais",
   "niveaux": [

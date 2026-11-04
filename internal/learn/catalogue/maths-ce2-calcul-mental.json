@@ -1,15 +1,14 @@
 {
   "format": "hopla-module/1",
   "id": "maths-ce2-calcul-mental",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Calcul mental CE2",
+  "icone": "⚡",
   "description": "Tables d'addition, doubles et moitiés, compléments, dizaines et centaines, multiplier par 10 et 100.",
   "matiere": "maths",
   "niveaux": ["CE2"],
   "public": "enfant",
   "langue": "fr",
-  "icone": "eclair",
-  "couleur": "#B4470F",
   "auteur": "Hopla",
   "chapitres": [
     { "id": "tables-addition", "nom": "Tables d'addition" },

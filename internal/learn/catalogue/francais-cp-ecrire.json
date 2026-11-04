@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "francais-cp-ecrire",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Écrire des mots",
+  "icone": "✏️",
   "description": "Écrire les mots que l'appareil dit : syllabes simples, puis ou, on, an, in, oi et ch, les mots outils, remettre des lettres dans l'ordre et écrire de petites phrases. Les accents ne comptent pas.",
   "matiere": "francais",
   "niveaux": [

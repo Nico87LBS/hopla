@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce2-phrase",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "nom": "La phrase",
+  "icone": "💬",
   "description": "Les types de phrases, la forme négative, le sujet et le verbe, la nature des mots et les pronoms.",
   "matiere": "francais",
   "niveaux": [

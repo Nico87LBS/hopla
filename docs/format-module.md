@@ -74,8 +74,9 @@ Le fichier est contrôlé à l'import ; une erreur est expliquée en français
 | `langue_apprise` | non | Langue enseignée, pour la voix des fiches Écoute (`en`) |
 | `lecture_voix_haute` | non | `true` pour les modules de ceux qui ne lisent pas encore : l'appareil dit la question, puis chaque réponse au premier toucher (un second toucher la choisit). `"consigne"` pour les modules qui apprennent à lire : l'appareil ne dit que la `consigne` des fiches qui en ont une, puis, une fois répondu, les mots à lire ; les réponses ne sont pas dites. `true` convient aussi aux plus grands : un parent choisit, pour chaque personne, ce que dit l'appareil (tout, la consigne seulement, rien) |
 | `ecriture` | non | `cursive` pour écrire les mots du module en cursif (police Playwrite FR Moderne, embarquée), `cursive_question` pour la question seule en cursif et les réponses en lettres d'imprimerie. Par défaut : lettres d'imprimerie. Les consignes restent en imprimerie |
-| `couleur` | non | Couleur du module, en `#RRGGBB` |
-| `icone`, `sources` | non | Informations, pas encore affichées |
+| `couleur` | non | Couleur du module, en `#RRGGBB`. Sans elle, la couleur est celle de la matière (maths violet, français carotte, anglais vert, le reste myrtille) |
+| `icone` | non | Un émoji, dessiné à côté du nom du module et du paquet pour qu'un enfant les reconnaisse : un des dessins de Hopla (ceux du choix d'icône de l'éditeur). Sans lui, c'est celui de la matière. Les dessins sont ceux de Twemoji (voir [Crédits](../README.md#crédits)) |
+| `sources` | non | Information, pas affichée |
 | `modules` | paquet | Fait du fichier un **paquet** : la liste des `id` de ses modules (40 au plus). Un paquet n'a ni chapitres, ni fiches, ni générateurs. Ses modules sont ceux du catalogue (installés avec lui) ou des modules déjà importés. Un paquet contient soit ses **niveaux** (chacun un paquet de modules), soit directement ses modules s'il n'a qu'un niveau, jamais les deux ; un niveau ne contient pas de paquet |
 | `prerequis` | non | Garde le module fermé tant qu'un chapitre d'un autre module n'est pas su : `[{"module": "maths-ce2-multiplication", "chapitre": "tables-2-5", "pourcent": 80}]` |
 | `chapitres` | oui | De 1 à 50 chapitres |

@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "monde-gs-saisons",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "nom": "Les saisons",
+  "icone": "🍂",
   "description": "Les quatre saisons, le temps qu'il fait et les habits qui vont avec.",
   "matiere": "monde",
   "niveaux": [

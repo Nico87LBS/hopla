@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "maths-gs-suite",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "La suite des nombres",
+  "icone": "🐾",
   "description": "Réciter la suite des nombres jusqu'à 30 : ranger des nombres, dire celui qui vient avant ou après.",
   "matiere": "maths",
   "niveaux": [

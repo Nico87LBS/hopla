@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "maths-ce1-comparer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Comparer, ranger, encadrer",
+  "icone": "⚖️",
   "description": "Les signes < et >, ranger des nombres, le nombre d'avant ou d'après, et encadrer à la dizaine ou à la centaine, jusqu'à 1 000.",
   "matiere": "maths",
   "niveaux": [

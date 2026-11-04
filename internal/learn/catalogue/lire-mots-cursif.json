@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "lire-mots-cursif",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Lire des mots en cursif",
+  "icone": "🐱",
   "description": "Lire un mot tout seul, puis toucher son dessin : syllabes simples, mots longs, lettres muettes, sons complexes.",
   "matiere": "francais",
   "niveaux": [

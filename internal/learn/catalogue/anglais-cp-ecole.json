@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "anglais-cp-ecole",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "À l'école",
+  "icone": "🎒",
   "description": "À l’école et Les consignes de la classe.",
   "matiere": "anglais",
   "niveaux": [
@@ -21,8 +22,6 @@
     "hops_par_etoile": 1,
     "plafond_jour": 3
   },
-  "icone": "langue",
-  "couleur": "#F59E0B",
   "chapitres": [
     {
       "id": "school",

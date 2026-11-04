@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "langage-gs-rimes",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "nom": "Les rimes",
+  "icone": "🎵",
   "description": "Entendre que deux mots finissent pareil : classer, relier les dessins qui riment, trouver l'intrus.",
   "matiere": "francais",
   "niveaux": [

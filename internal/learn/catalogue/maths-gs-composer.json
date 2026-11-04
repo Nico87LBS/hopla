@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "maths-gs-composer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Composer 5 et 10",
+  "icone": "🖐️",
   "description": "Ce qui manque pour faire 5, puis 10, et un de plus, un de moins.",
   "matiere": "maths",
   "niveaux": [

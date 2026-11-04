@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "anglais-ce1",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "nom": "Anglais CE1",
+  "icone": "🇬🇧",
   "description": "Écouter et comprendre : les jours, les nombres de 11 à 20, le corps, les vêtements et la météo en dessins, puis « I've got… », « Can I have… ? » et « I like… ». Sans lire.",
   "matiere": "anglais",
   "niveaux": [
@@ -11,8 +12,6 @@
   "public": "enfant",
   "langue": "fr",
   "langue_apprise": "en",
-  "icone": "langue",
-  "couleur": "#10B981",
   "auteur": "Hopla",
   "sources": "D'après le programme de langues vivantes du cycle 2 et les repères de progression en anglais du CE1 (Éduscol).",
   "modules": [

@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "anglais-cp-revisions",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Révisions : couleurs et nombres",
+  "icone": "🔁",
   "description": "Les couleurs (révision) et Les nombres jusqu’à 10 (révision).",
   "matiere": "anglais",
   "niveaux": [
@@ -21,8 +22,6 @@
     "hops_par_etoile": 1,
     "plafond_jour": 3
   },
-  "icone": "langue",
-  "couleur": "#F59E0B",
   "chapitres": [
     {
       "id": "colours",

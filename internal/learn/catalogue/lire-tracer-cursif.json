@@ -5,8 +5,9 @@
   "langue_apprise": "fr",
   "auteur": "Hopla",
   "id": "lire-tracer-cursif",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Tracer en cursif",
+  "icone": "✏️",
   "description": "Repasser avec le doigt sur les lettres cursives, puis sur des petits mots, sans déborder.",
   "matiere": "francais",
   "niveaux": [

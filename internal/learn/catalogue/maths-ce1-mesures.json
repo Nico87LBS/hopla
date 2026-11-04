@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "maths-ce1-mesures",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "nom": "Mesures et heures",
+  "icone": "🕒",
   "description": "Lire l'heure, les demies et les quarts sur une horloge, régler les aiguilles, calculer une durée, mesurer un trait avec la règle, choisir entre cm et m, g et kg, et compter les euros et les centimes.",
   "matiere": "maths",
   "niveaux": [

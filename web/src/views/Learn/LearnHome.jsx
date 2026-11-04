@@ -2,7 +2,6 @@ import {
   ChevronRightRounded,
   CloudOffRounded,
   FactCheckOutlined,
-  LockRounded,
   SchoolRounded,
   SportsEsportsRounded,
 } from '@mui/icons-material'
@@ -31,7 +30,7 @@ import { byRootPack, packTree, rootOf } from '../../utils/learn/tree'
 import LoadingComponent from '../components/Loading'
 import { MemberAvatar } from '../Games/GameParts'
 import { clock } from '../Recre/games/common'
-import { Progress, subjectColor, useCompiled } from './LearnParts'
+import { LearnIcon, Progress, subjectColor, useCompiled } from './LearnParts'
 import ListBar, { useListChoices } from './ListBar'
 import { StartLevels } from './PlacementTest'
 
@@ -120,22 +119,7 @@ const ModuleCard = ({ cards, compiled, compiledById, dayFull, module, to }) => {
 
   const body = (
     <Stack direction='row' gap={1.5} alignItems='center'>
-      <Box
-        sx={{
-          alignItems: 'center',
-          bgcolor: locked ? 'background.level2' : color,
-          borderRadius: '14px',
-          color: locked ? 'text.tertiary' : '#fff',
-          '--Icon-color': 'currentColor',
-          display: 'flex',
-          flexShrink: 0,
-          height: 48,
-          justifyContent: 'center',
-          width: 48,
-        }}
-      >
-        {locked ? <LockRounded /> : <SchoolRounded />}
-      </Box>
+      <LearnIcon entity={module} color={color} locked={!!locked} />
       <Box sx={{ flex: 1, minWidth: 0 }}>
         <Typography level='title-md' noWrap>
           {module.name}
@@ -331,20 +315,7 @@ const TestOffer = ({ levels, onSkip, pack, to }) => {
       sx={{ borderRadius: 'xl', display: 'grid', gap: 1.75, mb: 2, p: 2 }}
     >
       <Stack direction='row' gap={1.5} alignItems='center'>
-        <Box
-          sx={{
-            alignItems: 'center',
-            bgcolor: HOPLA.violetSoft,
-            borderRadius: 'lg',
-            display: 'flex',
-            flexShrink: 0,
-            height: 44,
-            justifyContent: 'center',
-            width: 44,
-          }}
-        >
-          <FactCheckOutlined sx={{ color: HOPLA.violet }} />
-        </Box>
+        <LearnIcon entity={pack} size={44} />
         <Box sx={{ minWidth: 0 }}>
           <Typography
             level='body-xs'
@@ -509,6 +480,8 @@ export const LearnModules = ({
       ? [{ id: 'first', name: '', items: playFirst(items) }]
       : []
   }
+  const packOf = id =>
+    id && id !== 'first' ? player?.packs?.find(p => p.id === id) : null
   // Each pack shows its levels under its name, as in Gérer.
   const sections =
     choices.sort === 'first' && withBar
@@ -659,6 +632,9 @@ export const LearnModules = ({
               gap={1}
               sx={{ mb: 1, px: 0.5 }}
             >
+              {packOf(section.id) && (
+                <LearnIcon entity={packOf(section.id)} size={20} tile={false} />
+              )}
               <Typography
                 level='body-xs'
                 sx={{

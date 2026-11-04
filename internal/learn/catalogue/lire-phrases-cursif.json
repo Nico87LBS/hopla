@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "lire-phrases-cursif",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Comprendre une phrase en cursif",
+  "icone": "💬",
   "description": "Lire une phrase et la comprendre : devinettes, vrai ou faux, phrases à remettre dans l'ordre, petits textes.",
   "matiere": "francais",
   "niveaux": [

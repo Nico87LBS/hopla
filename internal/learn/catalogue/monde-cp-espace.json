@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "monde-cp-espace",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "nom": "L’espace autour de moi",
+  "icone": "🗺️",
   "description": "Se situer (sur, sous, entre…), passer à la vue d’en haut, lire le plan de la chambre et de la classe, se déplacer sur un quadrillage, reconnaître les paysages, traverser la rue.",
   "matiere": "monde",
   "niveaux": [

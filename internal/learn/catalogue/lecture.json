@@ -1,11 +1,12 @@
 {
   "format": "hopla-module/1",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "public": "enfant",
   "langue": "fr",
   "auteur": "Hopla",
   "id": "lecture",
   "nom": "Apprendre à lire",
+  "icone": "🔤",
   "description": "Apprendre à lire pas à pas, avec la méthode syllabique : d'abord en lettres d'imprimerie, de la fin de la grande section au CP, puis en cursif comme à l'école.",
   "matiere": "francais",
   "niveaux": [

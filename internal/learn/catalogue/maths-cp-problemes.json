@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "maths-cp-problemes",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Problèmes CP",
+  "icone": "🧩",
   "description": "De petits problèmes à lire ou à écouter : ajouter, enlever, partager en deux, comparer.",
   "matiere": "maths",
   "niveaux": [

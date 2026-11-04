@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "monde-gs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Explorer le monde GS",
+  "icone": "🌍",
   "description": "Le temps qui passe, les saisons, les animaux, le corps, les plantes, les objets et les matières. Les questions sont lues à voix haute.",
   "matiere": "monde",
   "niveaux": [

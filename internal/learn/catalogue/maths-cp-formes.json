@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "maths-cp-formes",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "nom": "Formes et repérage",
+  "icone": "🔺",
   "description": "Le carré, le rectangle, le triangle et le rond ; le cube, la boule, le cylindre et la pyramide ; à gauche, à droite, entre, devant, derrière.",
   "matiere": "maths",
   "niveaux": [

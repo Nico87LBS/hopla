@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "maths-gs-comparer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Comparer",
+  "icone": "⚖️",
   "description": "Trouver le plus grand ou le plus petit de quelques nombres, et les ranger.",
   "matiere": "maths",
   "niveaux": [

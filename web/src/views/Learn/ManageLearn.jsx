@@ -64,7 +64,7 @@ import { ParentPage, useMembers } from '../Manage/ParentPages'
 import RecreSettingsCard from '../Recre/RecreSettings'
 import RecreTrialCard from '../Recre/RecreTrial'
 import FamilyPacksCard from './FamilyPacks'
-import { useCompiled } from './LearnParts'
+import { LearnIcon, useCompiled } from './LearnParts'
 import { VoicesCard } from './LearnVoices'
 import ListBar, { useListChoices } from './ListBar'
 import RemoveModal from './RemoveModal'
@@ -675,6 +675,7 @@ const LevelRow = ({
           level='title-md'
           component={Link}
           to={`/manage/learn/detail/${group.pack.id}`}
+          startDecorator={<LearnIcon entity={level} size={22} tile={false} />}
           sx={{
             color: 'inherit',
             flex: 1,
@@ -970,6 +971,9 @@ const ModuleGroup = ({
           <Box sx={{ flex: 1, minWidth: 0, pl: indent }}>
             <Typography
               level='body-md'
+              startDecorator={
+                <LearnIcon entity={module} size={22} tile={false} />
+              }
               endDecorator={
                 isNew(module) &&
                 moduleOpen(module) && (
@@ -1053,7 +1057,11 @@ const ModuleGroup = ({
   return (
     <Sheet sx={surfaceSx}>
       <Stack direction='row' alignItems='flex-start' gap={1}>
-        <SchoolRounded sx={{ color: HOPLA.violet, mt: 0.5 }} />
+        {group.pack ? (
+          <LearnIcon entity={group.pack} size={32} tile={false} />
+        ) : (
+          <SchoolRounded sx={{ color: HOPLA.violet, mt: 0.5 }} />
+        )}
         <Box sx={{ flex: 1, minWidth: 0 }}>
           {group.pack ? (
             <Typography
@@ -1378,6 +1386,7 @@ const CatalogueCard = ({ defaults, installed, settings }) => {
             sx={{ borderRadius: 'lg', p: 1.5 }}
           >
             <Stack direction='row' gap={1.5} alignItems='flex-start'>
+              <LearnIcon entity={entry} size={44} />
               <Box sx={{ flex: 1, minWidth: 0 }}>
                 <Stack
                   direction='row'

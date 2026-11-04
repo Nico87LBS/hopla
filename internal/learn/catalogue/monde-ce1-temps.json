@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce1-temps",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "nom": "Le temps",
+  "icone": "⏳",
   "description": "Le calendrier, la frise du temps, les générations de la famille, et les objets d'autrefois et d'aujourd'hui.",
   "matiere": "monde",
   "niveaux": [

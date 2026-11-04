@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "anglais-ce1-jours-nombres",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Les jours et les nombres",
+  "icone": "📅",
   "description": "Les jours de la semaine et Les nombres de 11 à 20.",
   "matiere": "anglais",
   "niveaux": [
@@ -21,8 +22,6 @@
     "hops_par_etoile": 1,
     "plafond_jour": 3
   },
-  "icone": "langue",
-  "couleur": "#10B981",
   "chapitres": [
     {
       "id": "days",

@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "maths-ce1-geometrie",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Géométrie CE1",
+  "icone": "📐",
   "description": "Le carré, le rectangle et le triangle, les angles droits et les instruments, les solides avec leurs faces, sommets et arêtes, et se repérer sur un quadrillage.",
   "matiere": "maths",
   "niveaux": [

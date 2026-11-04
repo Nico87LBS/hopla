@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "monde-cp-corps",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "nom": "Mon corps, ma santé",
+  "icone": "🍎",
   "description": "Les parties du corps, les cinq sens, et prendre soin de soi : se laver, dormir, bien manger.",
   "matiere": "monde",
   "niveaux": [

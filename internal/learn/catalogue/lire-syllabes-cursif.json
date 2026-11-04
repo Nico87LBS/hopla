@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "lire-syllabes-cursif",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Syllabes simples en cursif",
+  "icone": "🧱",
   "description": "Lire une consonne et une voyelle ensemble (la, mi, po…), puis assembler les syllabes en mots.",
   "matiere": "francais",
   "niveaux": [

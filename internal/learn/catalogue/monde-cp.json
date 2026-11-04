@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "monde-cp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Questionner le monde CP",
+  "icone": "🌍",
   "description": "Le vivant, les animaux et les plantes, le corps et la santé, la matière, le temps qui passe et l'espace autour de soi. Les questions sont lues à voix haute.",
   "matiere": "monde",
   "niveaux": [

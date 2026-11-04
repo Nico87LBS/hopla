@@ -1,15 +1,14 @@
 {
   "format": "hopla-module/1",
   "id": "maths-ce2-problemes",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Problèmes CE2",
+  "icone": "🧩",
   "description": "Des petits problèmes de la vie de tous les jours : ajouter, retirer, comparer, multiplier, partager, puis en deux étapes.",
   "matiere": "maths",
   "niveaux": ["CE2"],
   "public": "enfant",
   "langue": "fr",
-  "icone": "probleme",
-  "couleur": "#C93F68",
   "auteur": "Hopla",
   "chapitres": [
     { "id": "ajouter-retirer", "nom": "Ajouter et retirer" },

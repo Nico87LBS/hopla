@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "lire-lettres-sons",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Lettres et sons",
+  "icone": "🔤",
   "description": "Entendre un son dans un mot et trouver la lettre qui l'écrit : voyelles, consonnes, majuscules.",
   "matiere": "francais",
   "niveaux": [

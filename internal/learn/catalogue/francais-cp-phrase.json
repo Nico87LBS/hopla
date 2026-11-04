@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "francais-cp-phrase",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "nom": "La phrase au CP",
+  "icone": "💬",
   "description": "La majuscule et le point, remettre les mots dans l'ordre, reconnaître une phrase et le point d'interrogation.",
   "matiere": "francais",
   "niveaux": [

@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "monde-ce2-electricite",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "nom": "L'électricité",
+  "icone": "💡",
   "description": "Les objets électriques, le circuit avec une pile et une ampoule, les conducteurs et les isolants, et les dangers.",
   "matiere": "monde",
   "niveaux": [

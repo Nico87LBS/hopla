@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "monde-cp-vivant",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "nom": "Vivant ou non vivant",
+  "icone": "🌳",
   "description": "Reconnaître ce qui est vivant ; naître, grandir et mourir ; les petits des animaux ; animal ou végétal.",
   "matiere": "monde",
   "niveaux": [

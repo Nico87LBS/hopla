@@ -1,16 +1,15 @@
 {
   "format": "hopla-module/1",
   "id": "anglais-aero-oral",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Oral",
+  "icone": "🗣️",
   "description": "Des sujets à dire à voix haute, comme à l'examen : décrire, réagir à l'imprévu, donner son avis. On retourne la carte pour voir une réponse type.",
   "matiere": "anglais",
   "niveaux": ["OACI 6"],
   "public": "adulte",
   "langue": "en",
   "langue_apprise": "en",
-  "icone": "langue",
-  "couleur": "#C8442C",
   "auteur": "Hopla",
   "chapitres": [
     {"id": "describe", "nom": "Describe and explain"},

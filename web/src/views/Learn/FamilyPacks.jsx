@@ -16,6 +16,7 @@ import { useImportModule } from '../../queries/LearnQueries'
 import { GetLearnModuleFile } from '../../utils/Fetcher'
 import { saveFile } from '../../utils/saveFile'
 import { surfaceSx } from '../Games/GameParts'
+import { LearnIcon } from './LearnParts'
 import { useNotify } from './ManageLearn'
 
 // useExportModule hands the file of a module of the family, to send it to
@@ -150,6 +151,7 @@ const FamilyPacksCard = ({ modules }) => {
               alignItems='center'
               flexWrap='wrap'
             >
+              <LearnIcon entity={module} size={32} tile={false} />
               <Typography level='title-md'>{module.name}</Typography>
               {(module.levels || []).map(level => (
                 <Chip key={level} size='sm' variant='soft'>

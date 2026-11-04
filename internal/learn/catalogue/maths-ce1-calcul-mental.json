@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "maths-ce1-calcul-mental",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Calcul mental CE1",
+  "icone": "⚡",
   "description": "Les compléments à 100, les doubles et les moitiés, ajouter ou enlever 10 et 100, ajouter ou enlever 9 et 11.",
   "matiere": "maths",
   "niveaux": [

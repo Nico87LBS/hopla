@@ -1,8 +1,9 @@
 {
   "format": "hopla-module/1",
   "id": "francais-ce2",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nom": "Français CE2",
+  "icone": "📖",
   "description": "La conjugaison, la phrase, les accords, les homophones, le vocabulaire et la compréhension de petits textes.",
   "matiere": "francais",
   "niveaux": [
