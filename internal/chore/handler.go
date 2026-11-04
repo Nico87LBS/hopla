@@ -1742,7 +1742,7 @@ func (h *Handler) CompleteChore(c *gin.Context) {
 		}
 
 	} else {
-		nextDueDate, err = scheduleNextDueDate(c, chore, completedDate.UTC())
+		nextDueDate, err = nextDueAfterDone(c, chore, completedDate.UTC())
 		if err != nil {
 			logging.FromContext(c).Error("Failed to schedule next due date", "error", err)
 			c.JSON(500, gin.H{
@@ -2520,7 +2520,7 @@ func (h *Handler) ApproveChore(c *gin.Context) {
 			return
 		}
 	} else {
-		nextDueDate, err = scheduleNextDueDate(c, chore, completedDate.UTC())
+		nextDueDate, err = nextDueAfterDone(c, chore, completedDate.UTC())
 		if err != nil {
 			c.JSON(500, gin.H{
 				"error": "Error scheduling next due date",

@@ -407,7 +407,7 @@ func (h *API) CompleteChore(c *gin.Context) {
 		}
 
 	} else {
-		nextDueDate, err = scheduleNextDueDate(c, chore, completedDate.UTC())
+		nextDueDate, err = nextDueAfterDone(c, chore, completedDate.UTC())
 		if err != nil {
 			log.Debugw("chore.api.CompleteChore failed to schedule next due date", "error", err)
 			c.JSON(500, gin.H{

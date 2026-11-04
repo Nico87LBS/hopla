@@ -463,3 +463,37 @@ func firstDueDateOnSelectedWeekday(due time.Time, days []*string, loc *time.Loca
 	}
 	return due.UTC()
 }
+
+// maxCatchUp bounds the passages skipped for a task left undone a long time,
+// for a task repeated every hour.
+const maxCatchUp = 10000
+
+// nextDueAfterDone returns the next due date of a task done at doneAt. A task
+// done late skips the passages it missed: done on a given day, it is not due
+// again before the next day, so a task done this morning does not come back
+// tonight nor stay late. A task repeated every few hours only skips the
+// passages already gone when it is done. Rolling tasks already start from the
+// day they are done.
+func nextDueAfterDone(ctx context.Context, chore *chModel.Chore, doneAt time.Time) (*time.Time, error) {
+	next, err := scheduleNextDueDate(ctx, chore, doneAt)
+	if err != nil || next == nil || chore.IsRolling || chore.HasSlots() {
+		return next, err
+	}
+	notBefore := doneAt.UTC()
+	hourly := chore.FrequencyType == chModel.FrequencyTypeInterval && chore.FrequencyMetadataV2 != nil &&
+		chore.FrequencyMetadataV2.Unit != nil && *chore.FrequencyMetadataV2.Unit == "hours"
+	if !hourly {
+		notBefore = startOfDay(doneAt.In(choreLocation(chore))).AddDate(0, 0, 1).UTC()
+	}
+	copy := *chore
+	for i := 0; i < maxCatchUp && next.Before(notBefore); i++ {
+		at := next.UTC()
+		copy.NextDueDate = &at
+		later, err := scheduleNextDueDate(ctx, &copy, at)
+		if err != nil || later == nil || !later.After(at) {
+			return &at, err
+		}
+		next = later
+	}
+	return next, nil
+}
