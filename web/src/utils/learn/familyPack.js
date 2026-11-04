@@ -15,6 +15,22 @@ export const DICTATION_HINT = 'Écoute le mot et écris-le.'
 
 const MAX_ID = 60
 
+// OPEN_AFTER is how well a chapter must be known, in percent, for the next
+// one to open, unless the family chose otherwise; 0 opens it from the start.
+export const OPEN_AFTER = 80
+
+export const OPEN_AFTER_CHOICES = [0, 50, 60, 70, 80, 90, 100]
+
+// openAfterOf tells when a chapter of the editor opens: the first one always
+// is open; the next ones by their own threshold, or OPEN_AFTER when they have
+// none (a pack saved before the editor wrote it).
+export const openAfterOf = (chapter, index) =>
+  index === 0
+    ? 0
+    : Number.isInteger(chapter.ouvert_apres)
+      ? chapter.ouvert_apres
+      : OPEN_AFTER
+
 const clean = text => String(text ?? '').trim()
 
 const list = values => (values || []).map(clean).filter(Boolean)
@@ -96,6 +112,15 @@ export const fromDocument = doc => {
   }
 }
 
+// newChapter is a chapter added in the editor, opened once the one before is
+// known at OPEN_AFTER.
+export const newChapter = () => ({
+  id: '',
+  nom: '',
+  ouvert_apres: OPEN_AFTER,
+  cards: [],
+})
+
 // newPack is the editor's start for a pack written from nothing.
 export const newPack = name => ({
   id: '',
@@ -105,7 +130,7 @@ export const newPack = name => ({
   level: '',
   subject: '',
   icon: '',
-  chapters: [{ id: '', nom: '', cards: [] }],
+  chapters: [newChapter()],
   rest: {},
 })
 
@@ -233,7 +258,12 @@ export const toDocument = pack => {
     const id =
       fields.id ||
       unique(slug(nom).slice(0, MAX_ID) || `chapitre-${index + 1}`, chapterIds)
-    chapitres.push({ ...fields, id, nom })
+    chapitres.push({
+      ...fields,
+      id,
+      nom,
+      ...(index > 0 && { ouvert_apres: openAfterOf(chapter, index) }),
+    })
     for (const card of cards) {
       fiches.push({
         ...card,
