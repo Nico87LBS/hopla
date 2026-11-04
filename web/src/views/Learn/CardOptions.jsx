@@ -225,7 +225,7 @@ const toggle = (list, name, on) =>
     : (list || []).filter(s => s !== name)
 
 // MoreOptions folds away what a card rarely needs, open when it holds some.
-export const MoreOptions = ({ children, start }) => {
+export const MoreOptions = ({ children, hint, start }) => {
   const { t } = useTranslation('learn')
   const [open, setOpen] = useState(!!start)
   const id = useId()
@@ -261,7 +261,7 @@ export const MoreOptions = ({ children, start }) => {
           <Typography level='title-sm'>{t('options.more')}</Typography>
           {!open && (
             <Typography level='body-xs' sx={{ color: 'text.secondary' }}>
-              {t('options.moreHint')}
+              {hint || t('options.moreHint')}
             </Typography>
           )}
         </Box>
@@ -278,6 +278,7 @@ export const MoreOptions = ({ children, start }) => {
 
 MoreOptions.propTypes = {
   children: PropTypes.node,
+  hint: PropTypes.string,
   start: PropTypes.bool,
 }
 

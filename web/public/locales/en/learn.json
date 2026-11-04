@@ -565,7 +565,7 @@
     "addCard": "A card",
     "addChapter": "Add a chapter",
     "paste": "Paste a list",
-    "settingsHint": "Questions per game, threshold, hops per star and cap are set as for the other packs.",
+    "settingsHint": "The settings of Manage › Learn, for the family or a person, come before those of the pack.",
     "save": "Save",
     "saveNeeds": "A name and at least one card are needed.",
     "created": "{{name}} is created. Turn it on in By person for whoever plays it.",
@@ -809,6 +809,64 @@
       "toSortTwice": "Two labels to sort are the same.",
       "tracedLength": "Write 1 to 8 characters to trace.",
       "zoneMissing": "Pick a picture, a zone and its name."
+    }
+  },
+  "packOptions": {
+    "hint": "Description, voice, writing, colour, prerequisites, game settings…",
+    "description": "Description",
+    "descriptionHint": "What the pack holds, shown in the catalogue.",
+    "author": "Author",
+    "language": "Language of the pack",
+    "taught": "Language taught",
+    "taughtHelp": "The one the device speaks for the words to hear.",
+    "taughtSame": "Same as the pack",
+    "languages": {
+      "fr": "French",
+      "en": "English",
+      "es": "Spanish",
+      "de": "German",
+      "it": "Italian"
+    },
+    "readAloud": "Reading aloud",
+    "readAlouds": {
+      "tout": "Everything: questions and answers",
+      "consigne": "Only the instructions (to learn to read)",
+      "rien": "Nothing"
+    },
+    "readBack": "Say the answer again once given",
+    "readBacks": {
+      "auto": "By subject (languages and reading)",
+      "oui": "Always",
+      "non": "Never"
+    },
+    "writing": "Writing",
+    "writings": {
+      "imprimerie": "In print",
+      "cursive": "In cursive",
+      "cursive_question": "Only the question in cursive"
+    },
+    "color": "Colour",
+    "colorHelp": "That of the cards and the game.",
+    "colorAuto": "By subject",
+    "prereqs": "Prerequisites",
+    "prereqsHelp": "The pack stays closed until these modules (or chapters) are known well enough.",
+    "prereqModule": "Module to know first",
+    "prereqChapter": "Chapter",
+    "prereqWhole": "The whole module",
+    "prereqPercent": "Known at",
+    "prereqRemove": "Remove the prerequisite",
+    "prereqAdd": "A prerequisite",
+    "game": "Game settings",
+    "gameHelp": "Left empty, the usual values apply. Those of Manage › Learn, for the family or a person, come first.",
+    "games": {
+      "questions_par_partie": "Questions per game",
+      "nouvelles_par_partie": "New per game",
+      "seuil": "Threshold (%)",
+      "hops_par_etoile": "Hops per star",
+      "plafond_jour": "Daily hop cap",
+      "memorisation": "Retention (%)",
+      "intervalle_max": "Longest wait (days)",
+      "nouvelles_par_jour": "New per day"
     }
   }
 }
