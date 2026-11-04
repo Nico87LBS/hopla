@@ -35,7 +35,6 @@
     "Ash": "Cendre",
     "Sand": "Sable"
   },
-  "refresh": "Actualiser",
   "copy": "Copier",
   "copied": "Copié !",
   "settings": "Paramètres",
@@ -199,7 +198,6 @@
   "apply": "Appliquer",
   "cancelAll": "Tout annuler",
   "backFromSearch": "Quitter la recherche",
-  "newVersionAvailable": "Une nouvelle version est disponible. Touche Actualiser pour mettre à jour.",
   "notFound": {
     "title": "Page introuvable",
     "description": "Ce lien ne mène nulle part. Il a peut-être changé, ou l'adresse contient une faute de frappe.",

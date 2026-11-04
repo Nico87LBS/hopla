@@ -1,10 +1,8 @@
 import './styles/safe-area.css'
 
-import { Box, Button, Snackbar, Typography, useColorScheme } from '@mui/joy'
-import { useCallback, useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { Box, useColorScheme } from '@mui/joy'
+import { useCallback, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
-import { useRegisterSW } from 'virtual:pwa-register/react'
 
 import MobileBottomNav from '@/views/components/MobileBottomNav'
 import NavBar from '@/views/components/NavBar'
@@ -32,96 +30,6 @@ const remove = className => {
   document.getElementById('root').classList.remove(className)
 }
 
-const SERVICE_WORKER_UPDATE_INTERVAL_MS = 60 * 60 * 1000
-
-/**
- * Registers and manages the PWA service worker.
- */
-const WebServiceWorkerManager = () => {
-  const { t } = useTranslation()
-  const [isUpdating, setIsUpdating] = useState(false)
-  const [registration, setRegistration] = useState(null)
-  const {
-    needRefresh: [needRefresh],
-    updateServiceWorker,
-  } = useRegisterSW({
-    onRegisteredSW(_swUrl, registeredServiceWorker) {
-      setRegistration(registeredServiceWorker ?? null)
-    },
-    onRegisterError(error) {
-      console.error('Service worker registration failed', error)
-    },
-  })
-
-  useEffect(() => {
-    if (!registration) return undefined
-
-    const checkForUpdate = () => {
-      if (
-        !navigator.onLine ||
-        document.visibilityState !== 'visible' ||
-        registration.installing
-      ) {
-        return
-      }
-
-      registration.update().catch(error => {
-        console.error('Service worker update check failed', error)
-      })
-    }
-
-    const checkWhenVisible = () => {
-      if (document.visibilityState === 'visible') checkForUpdate()
-    }
-
-    const intervalId = window.setInterval(
-      checkForUpdate,
-      SERVICE_WORKER_UPDATE_INTERVAL_MS,
-    )
-    window.addEventListener('online', checkForUpdate)
-    document.addEventListener('visibilitychange', checkWhenVisible)
-
-    return () => {
-      window.clearInterval(intervalId)
-      window.removeEventListener('online', checkForUpdate)
-      document.removeEventListener('visibilitychange', checkWhenVisible)
-    }
-  }, [registration])
-
-  const applyUpdate = async () => {
-    if (isUpdating) return
-
-    setIsUpdating(true)
-    try {
-      // With registerType: 'prompt', this asks the waiting worker to activate.
-      // vite-plugin-pwa reloads the page once the new worker takes control.
-      await updateServiceWorker(true)
-    } catch (error) {
-      console.error('Service worker update failed', error)
-      setIsUpdating(false)
-    }
-  }
-
-  return (
-    <Snackbar
-      anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-      open={needRefresh}
-      variant='solid'
-    >
-      <Typography level='body-md'>{t('newVersionAvailable')}</Typography>
-      <Button
-        color='secondary'
-        loading={isUpdating}
-        onClick={applyUpdate}
-        size='small'
-        sx={{ ml: 2 }}
-      >
-        {t('refresh')}
-      </Button>
-    </Snackbar>
-  )
-}
-
 const AppContent = () => {
   useSyncOnReconnect()
   // Every date follows the family's time zone: the pages are drawn again
@@ -132,7 +40,6 @@ const AppContent = () => {
 
   return (
     <div>
-      <WebServiceWorkerManager />
       <ImpersonateUserProvider>
         <NavBarTitleProvider>
           <Box

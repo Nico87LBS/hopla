@@ -35,7 +35,6 @@
     "Ash": "Ash",
     "Sand": "Sand"
   },
-  "refresh": "Refresh",
   "copy": "Copy",
   "copied": "Copied!",
   "settings": "Settings",
@@ -199,7 +198,6 @@
   "apply": "Apply",
   "cancelAll": "Cancel all",
   "backFromSearch": "Back from search",
-  "newVersionAvailable": "A new version is now available. Click on reload button to update.",
   "notFound": {
     "title": "Page not found",
     "description": "This link does not lead anywhere. It may have moved, or the address has a typo in it.",

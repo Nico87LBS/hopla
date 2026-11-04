@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 
 import App from '@/App'
+import AutoUpdate from '@/components/AutoUpdate'
 import { SETTINGS_SECTIONS } from '@/constants/settingsSections'
 import ChoreEdit from '@/views/ChoreEdit/ChoreEdit'
 import Error from '@/views/Error'
@@ -324,7 +325,12 @@ const Router = createBrowserRouter([
 ])
 
 const RouterContext = ({ children }) => {
-  return <RouterProvider router={Router} />
+  return (
+    <>
+      <AutoUpdate router={Router} />
+      <RouterProvider router={Router} />
+    </>
+  )
 }
 
 export default RouterContext
