@@ -308,6 +308,23 @@ par jour, dans la limite du plafond total. Les révisions s'arrêtent à
 **Révisions max par jour**, comptées sur toutes les parties : après des
 vacances, le reste attend le lendemain.
 
+### Préparer un contrôle
+
+Sur sa page Apprendre, un enfant (ou un parent pour elle, en ouvrant sa page)
+touche **Préparer un contrôle** : un nom, la date, et les chapitres qui
+tombent. Une carte « contrôle » montre alors les jours restants et le
+pourcentage **prêt** : la part des questions qu'on se rappellera encore avec
+9 chances sur 10 le jour du contrôle (selon leur stabilité FSRS). Les
+questions jamais vues ne comptent pas comme prêtes.
+
+**Réviser pour le contrôle** lance une partie des chapitres du contrôle, les
+questions les moins sûres d'abord, même si leur retour n'est pas dû. Elle
+rapporte des étoiles et des hops comme une partie normale (10 hops par jour
+au plus pour les contrôles, dans le plafond total) et compte pour la récré,
+mais **ne déplace aucune question** : les dates de retour restent celles
+d'avant, pour ne pas repousser les questions juste avant le contrôle. Le
+contrôle disparaît après sa date ; on peut aussi le supprimer.
+
 ## Le test de niveau
 
 Chaque paquet a son test de niveau, pour commencer au bon endroit sans tout

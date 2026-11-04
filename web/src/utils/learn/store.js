@@ -4,7 +4,7 @@
 // does no harm.
 
 import { familyDay } from '../familyTime'
-import { isDue, review, REVIEWS } from './engine'
+import { isDue, review, REVIEWS, TESTS } from './engine'
 
 const PLAYER_KEY = userId => `hopla.learn.player.${userId}`
 const QUEUE_KEY = 'hopla.learn.queue'
@@ -80,7 +80,11 @@ export const playLocally = (player, game, hops, bonus = 0) => {
   const fresh = {}
   let reviewed = 0
   const counted = new Set()
+  // A game that prepares a test moves no card: its questions come back
+  // when they were due.
+  const moves = game.module !== TESTS
   const moved = game.answers.map(answer => {
+    if (!moves) return null
     const module = answer.module || game.module
     const before = byKey.get(answer.key)
     if (!counted.has(answer.key)) {
@@ -102,7 +106,7 @@ export const playLocally = (player, game, hops, bonus = 0) => {
   const next = {
     ...player,
     earnedToday: (player.earnedToday || 0) + hops,
-    cards: mergeCards(player.cards, moved),
+    cards: mergeCards(player.cards, moved.filter(Boolean)),
     reviews: {
       ...reviews,
       done: (reviews.done || 0) + reviewed,

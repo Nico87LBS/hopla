@@ -1112,6 +1112,25 @@ const ImportLearnModule = async text =>
     }),
   )
 
+// CreateLearnTest keeps a test a person prepares: a name, a day and the
+// chapters it covers.
+const CreateLearnTest = async test =>
+  learnAnswer(
+    await Fetch(`/learn/tests`, {
+      method: 'POST',
+      headers: HEADERS(),
+      body: JSON.stringify(test),
+    }),
+  )
+
+const DeleteLearnTest = async id =>
+  learnAnswer(
+    await Fetch(`/learn/tests/${id}`, {
+      method: 'DELETE',
+      headers: HEADERS(),
+    }),
+  )
+
 const RemoveLearnModule = async ({ forget, id }) =>
   learnAnswer(
     await Fetch(
@@ -1390,6 +1409,7 @@ export {
   CreateChore,
   createChore,
   CreateLabel,
+  CreateLearnTest,
   CreateLongLiveToken,
   CreateReward,
   DeclineFamilyMemberRequest,
@@ -1403,6 +1423,7 @@ export {
   DeleteFamilyMember,
   DeleteLabel,
   DeleteLearnSpeech,
+  DeleteLearnTest,
   DeleteLongLiveToken,
   DeletePointsPreset,
   DeleteQuest,

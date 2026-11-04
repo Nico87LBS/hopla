@@ -533,6 +533,75 @@ func (h *Handler) getDetail(c *gin.Context) {
 	c.JSON(200, gin.H{"res": detail})
 }
 
+// createTest godoc
+//
+//	@Summary		Préparer un contrôle (date et chapitres)
+//	@Tags			Apprendre
+//	@Accept			json
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			controle	body	learn.TestChange	true	"Corps de la requête"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/tests [post]
+func (h *Handler) createTest(c *gin.Context) {
+	who, ok := h.caller(c)
+	if !ok {
+		return
+	}
+	var change learn.TestChange
+	if err := c.ShouldBindJSON(&change); err != nil {
+		c.JSON(400, gin.H{"error": "Invalid request"})
+		return
+	}
+	if !mayPlayFor(who, change.UserID) {
+		c.JSON(403, gin.H{"error": "You can only prepare your own tests"})
+		return
+	}
+	test, err := learn.CreateTest(h.db.WithContext(c), who.familyID, who.userID, change, time.Now().UTC())
+	if err != nil {
+		answerError(c, err, "create the test")
+		return
+	}
+	c.JSON(200, gin.H{"res": test})
+}
+
+// deleteTest godoc
+//
+//	@Summary		Supprimer un contrôle
+//	@Tags			Apprendre
+//	@Produce		json
+//	@Security		JWTKeyAuth
+//	@Security		APIKeyAuth
+//	@Param			id	path	int	true	"Identifiant du contrôle"
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/api/v1/learn/tests/{id} [delete]
+func (h *Handler) deleteTest(c *gin.Context) {
+	who, ok := h.caller(c)
+	if !ok {
+		return
+	}
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(400, gin.H{"error": "Invalid request"})
+		return
+	}
+	test, err := learn.TestByID(h.db.WithContext(c), who.familyID, id)
+	if err != nil {
+		answerError(c, err, "read the test")
+		return
+	}
+	if !mayPlayFor(who, test.UserID) {
+		c.JSON(403, gin.H{"error": "You can only remove your own tests"})
+		return
+	}
+	if err := learn.DeleteTest(h.db.WithContext(c), who.familyID, id); err != nil {
+		answerError(c, err, "remove the test")
+		return
+	}
+	c.JSON(200, gin.H{"res": "ok"})
+}
+
 // editCard godoc
 //
 //	@Summary		Corriger une fiche pour la famille
@@ -913,6 +982,8 @@ func Routes(r *gin.Engine, h *Handler, auth *jwt.GinJWTMiddleware) {
 		routes.PUT("/recre/settings", h.setRecre)
 		routes.POST("/recre", h.recordRecre)
 		routes.PUT("/cards", h.editCard)
+		routes.POST("/tests", h.createTest)
+		routes.DELETE("/tests/:id", h.deleteTest)
 		routes.POST("/reports", h.addReport)
 		routes.PUT("/reports/:id/resolve", h.resolveReport)
 		routes.GET("/reports/export", h.exportReports)

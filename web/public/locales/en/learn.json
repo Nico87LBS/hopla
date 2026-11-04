@@ -649,5 +649,22 @@
     "text_one": "This question gives you trouble: read it well.",
     "text_other": "These questions give you trouble: read them well.",
     "done": "Got it"
+  },
+  "tests": {
+    "inDays_zero": "today",
+    "inDays_one": "tomorrow",
+    "inDays_other": "in {{count}} days",
+    "remove": "Remove this test",
+    "ready": "{{percent}} % ready",
+    "left_one": "{{count}} question to strengthen",
+    "left_other": "{{count}} questions to strengthen",
+    "go": "Review for the test",
+    "new": "New test",
+    "save": "Save",
+    "name": "Name",
+    "namePlaceholder": "Conjugation test",
+    "day": "Day of the test",
+    "covers": "What it covers",
+    "add": "Prepare a test"
   }
 }

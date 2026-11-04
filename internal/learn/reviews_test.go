@@ -160,3 +160,55 @@ func TestAQuestionForgottenFiveTimesIsTough(t *testing.T) {
 	require.Equal(t, ToughForgot, card.Forgot, "the first miss is not an oubli")
 	require.Equal(t, ToughForgot+1, card.Wrong)
 }
+
+func TestATestKeepsItsDayAndChaptersAndItsGamesMoveNoCard(t *testing.T) {
+	db, now := reviewsSetup(t)
+	maths := "maths-ce2-multiplication"
+	var module Module
+	require.NoError(t, db.Where("module_key = ?", maths).First(&module).Error)
+	doc, err := Parse([]byte(module.Content))
+	require.NoError(t, err)
+	chapter := doc.Chapters[0].ID
+	day := now.Add(3 * 24 * time.Hour).Format(time.DateOnly)
+
+	_, err = CreateTest(db, 1, anna, TestChange{UserID: anna, Name: " ", Day: day,
+		Chapters: []TestChapter{{Module: maths, Chapter: chapter}}}, now)
+	require.Error(t, err, "a name")
+	_, err = CreateTest(db, 1, anna, TestChange{UserID: anna, Name: "Tables", Day: "2020-01-01",
+		Chapters: []TestChapter{{Module: maths, Chapter: chapter}}}, now)
+	require.Error(t, err, "a day to come")
+	_, err = CreateTest(db, 1, anna, TestChange{UserID: anna, Name: "Tables", Day: day,
+		Chapters: []TestChapter{{Module: maths, Chapter: "nope"}}}, now)
+	require.ErrorIs(t, err, ErrNotFound)
+	_, err = CreateTest(db, 1, anna, TestChange{UserID: anna, Name: "Tables", Day: day,
+		Chapters: []TestChapter{{Module: "anglais-aero-radio", Chapter: "x"}}}, now)
+	require.ErrorIs(t, err, ErrNotActive)
+
+	test, err := CreateTest(db, 1, anna, TestChange{UserID: anna, Name: "Tables", Day: day,
+		Chapters: []TestChapter{{Module: maths, Chapter: chapter}, {Module: maths, Chapter: chapter}}}, now)
+	require.NoError(t, err)
+	require.Len(t, test.Chapters, 1, "a chapter once")
+	player, err := PlayerFor(db, 1, anna, now)
+	require.NoError(t, err)
+	require.Len(t, player.Tests, 1)
+	past, err := PlayerFor(db, 1, anna, now.Add(5*24*time.Hour))
+	require.NoError(t, err)
+	require.Empty(t, past.Tests, "a test goes away once its day is past")
+
+	game := Game{ClientID: "test-game-001", UserID: anna, Module: TestsKey}
+	for _, key := range []string{"mul:2x2", "mul:2x3", "mul:2x4", "mul:2x5", "mul:2x6"} {
+		game.Answers = append(game.Answers, Answer{Key: key, Correct: true, Module: maths})
+	}
+	result, err := Record(db, 1, anna, game, now)
+	require.NoError(t, err)
+	require.Equal(t, 3, result.Session.Stars)
+	require.Equal(t, 3, result.Session.Points, "stars and hops as usual")
+	require.Empty(t, result.Cards)
+	var cards int64
+	require.NoError(t, db.Model(&Card{}).Where("user_id = ?", anna).Count(&cards).Error)
+	require.Zero(t, cards, "no card moved")
+
+	require.NoError(t, DeleteTest(db, 1, test.ID))
+	_, err = TestByID(db, 1, test.ID)
+	require.ErrorIs(t, err, ErrNotFound)
+}

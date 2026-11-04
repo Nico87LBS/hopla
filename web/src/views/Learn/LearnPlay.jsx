@@ -57,6 +57,8 @@ import {
   REVIEWS,
   reviewsLeft,
   stars,
+  testQuestions,
+  TESTS,
   totalLeft,
 } from '../../utils/learn/engine'
 import { EASY, HARD } from '../../utils/learn/fsrs'
@@ -1153,7 +1155,16 @@ const questionsFor = ({
   practice,
   recent,
   reviews,
+  test,
 }) => {
+  if (test) {
+    return testQuestions(
+      test,
+      byId,
+      cards,
+      DEFAULT_SETTINGS.questions_par_partie,
+    )
+  }
   if (reviews) {
     return reviewQuestions(
       dueReviews(player, byId, cards),
@@ -1214,6 +1225,17 @@ const reviewsOf = (player, name) => ({
   dailyCap: player.reviews?.dailyCap ?? DEFAULT_SETTINGS.plafond_jour,
 })
 
+// testOf is a test shown as a module: its name, an icon, and the day's cap.
+const testOf = test => ({
+  id: TESTS,
+  name: test.name,
+  icon: '📝',
+  subject: '',
+  settings: DEFAULT_SETTINGS,
+  earnedToday: 0,
+  dailyCap: DEFAULT_SETTINGS.plafond_jour,
+})
+
 // PracticeBanner tells, during practice, that it earns nothing.
 const PracticeBanner = () => {
   const { t } = useTranslation('learn')
@@ -1271,15 +1293,25 @@ const LearnPlay = ({ playMode = false }) => {
   // The day's reviews ask the questions due in every module; practice, in
   // a module up to date, asks those already seen for nothing.
   const reviews = moduleId === REVIEWS
-  const practice = !reviews && search.get('mode') === 'entrainement'
+  // A game that prepares a test (?id=) asks the chapters it covers, from
+  // several modules, and moves no card.
+  const controle = moduleId === TESTS
+  const test = controle
+    ? player?.tests?.find(x => x.id === Number(search.get('id')))
+    : undefined
+  const mixed = reviews || controle
+  const practice = !mixed && search.get('mode') === 'entrainement'
   const reviewsModule = useMemo(
     () => player && reviewsOf(player, t('reviews.title')),
     [player, t],
   )
-  const module = reviews
-    ? reviewsModule
-    : player?.modules.find(m => m.id === moduleId)
-  const compiled = reviews ? player && byId : byId[moduleId]
+  const testModule = useMemo(() => test && testOf(test), [test])
+  const module = controle
+    ? testModule
+    : reviews
+      ? reviewsModule
+      : player?.modules.find(m => m.id === moduleId)
+  const compiled = mixed ? player && byId : byId[moduleId]
 
   const [kept, setGame] = useState(null)
   // Going from a module up to date to its practice starts another game.
@@ -1319,6 +1351,7 @@ const LearnPlay = ({ playMode = false }) => {
           practice,
           recent,
           reviews,
+          test,
         }),
         answers: [],
         // play, then, when questions were missed, retryStart and retry:
@@ -1336,20 +1369,16 @@ const LearnPlay = ({ playMode = false }) => {
 
   const back = playMode ? '/play' : `/learn/${userId}`
   if (isLoading || (!game && compiled)) return <LoadingComponent />
-  if (
-    !module ||
-    !compiled ||
-    (!reviews && moduleLocked(compiled, byId, cards))
-  ) {
+  if (!module || !compiled || (!mixed && moduleLocked(compiled, byId, cards))) {
     return <Navigate to={back} replace />
   }
 
-  const color = reviews
+  const color = mixed
     ? HOPLA.violet
     : subjectColor(module.subject, module.document?.couleur)
   // The module of a question: in the day's reviews, each says its own.
   const moduleOf = asked =>
-    reviews ? player.modules.find(m => m.id === asked?.module) : module
+    mixed ? player.modules.find(m => m.id === asked?.module) : module
   // A grown-up says a right answer hard or easy with buttons; a child's is
   // easy when answered in half their usual time, on a question already seen.
   const buttons = player.grading === 'boutons'
@@ -1364,7 +1393,7 @@ const LearnPlay = ({ playMode = false }) => {
   const shown = feedback?.item || item
   // Read aloud, in the modules made to be read aloud, as a parent chose for
   // this person: everything, only the instructions, or nothing.
-  const doc = (reviews ? byId[shown?.module]?.doc : compiled.doc) || {}
+  const doc = (mixed ? byId[shown?.module]?.doc : compiled.doc) || {}
   const personVoice = player.voice || (player.readAloud ? 'tout' : 'rien')
   const voice = personVoice !== 'rien' && canSpeak() && doc.lecture_voix_haute
   const tell = voice
@@ -1564,6 +1593,9 @@ const LearnPlay = ({ playMode = false }) => {
   }
 
   // Nothing to ask: the module is up to date, or every review is done.
+  if (!game.questions.length && controle) {
+    return <Navigate to={back} replace />
+  }
   if (!game.questions.length) {
     const tomorrow = tomorrowOf({ byId, cards, compiled, module, player })
     return (
@@ -1757,7 +1789,7 @@ const LearnPlay = ({ playMode = false }) => {
         <ReportSheet
           item={feedback?.item || item}
           given={feedback ? game.answers.at(-1)?.given : ''}
-          moduleId={reviews ? (feedback?.item || item)?.module || '' : moduleId}
+          moduleId={mixed ? (feedback?.item || item)?.module || '' : moduleId}
           userId={userId}
           onClose={() => setReporting(false)}
         />
