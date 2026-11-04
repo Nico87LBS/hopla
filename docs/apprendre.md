@@ -277,6 +277,16 @@ c'est ce pourcentage qui ouvre les chapitres suivants. Les questions d'avant
 FSRS repartent de leur boîte à leur prochaine réponse ; chaque réponse est
 gardée (note, temps, jour).
 
+### Questions coriaces
+
+Une question **oubliée 5 fois** (mauvaise réponse alors qu'elle avait déjà été
+vue ; la toute première erreur ne compte pas) est **coriace**. Les stats d'un
+module les listent pour les parents, avec la bonne réponse, la dernière
+erreur et le nombre d'oublis. À la fin d'une partie qui en a posé, un écran
+**À retenir** montre leur réponse et ce qui aide à la retenir, que l'enfant
+lit à son rythme (« J'ai compris ») avant de voir son score. Rien n'est
+montré avant la question : la réponse ne serait plus à chercher.
+
 ### Module à jour et entraînement
 
 Un module qui n'a plus rien à revoir aujourd'hui et plus de nouvelle question

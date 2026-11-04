@@ -37,6 +37,9 @@ export const REVIEW_BONUS = 2
 // many of them are known, unless it sets its own objectif.
 export const DEFAULT_GOAL = 20
 export const MASTERED_BOX = 4
+// A question forgotten this many times is tough (ToughForgot on the server).
+export const TOUGH_FORGOT = 5
+export const isTough = card => (card?.forgot || 0) >= TOUGH_FORGOT
 // BOX_DAYS is the shortest wait of each box: a card's box tells how far it
 // got (boxOf), and is the stability of a card from before FSRS.
 export const BOX_DAYS = { 1: 1, 2: 2, 3: 4, 4: 8, 5: 16 }
@@ -710,6 +713,7 @@ export const review = (card, answer, day, settings) => {
     stability: 0,
     difficulty: 0,
     lapses: 0,
+    forgot: 0,
     ...card,
     key: card.key || answer.key,
   }
@@ -724,6 +728,7 @@ export const review = (card, answer, day, settings) => {
     )
   }
   if (grade === AGAIN && next.box >= MASTERED_BOX) next.lapses++
+  if (grade === AGAIN && next.seen > 0) next.forgot++
   Object.assign(next, nextState(next, elapsed, grade))
   next.seen++
   if (answer.correct) next.right++

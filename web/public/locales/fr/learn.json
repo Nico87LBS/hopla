@@ -232,7 +232,13 @@
     "wrongCount_other": "{{count}} erreurs, {{right}} réussites",
     "recent": "Dernières parties",
     "score": "{{correct}}/{{total}}",
-    "nobody": "Personne ne joue encore à ce module."
+    "nobody": "Personne ne joue encore à ce module.",
+    "tough_one": "Question coriace",
+    "tough_other": "Questions coriaces ({{count}})",
+    "toughHelp_one": "Oubliée au moins {{count}} fois.",
+    "toughHelp_other": "Oubliées au moins {{count}} fois.",
+    "forgotCount_one": "{{count}} oubli",
+    "forgotCount_other": "{{count}} oublis"
   },
   "chips": {
     "questions_one": "{{count}} question",
@@ -637,5 +643,11 @@
   },
   "practice": {
     "banner": "Entraînement : pas de {{units}}, ne compte ni pour la récré ni pour les révisions"
+  },
+  "remember": {
+    "title": "À retenir",
+    "text_one": "Cette question te donne du mal : lis-la bien.",
+    "text_other": "Ces questions te donnent du mal : lis-les bien.",
+    "done": "J'ai compris"
   }
 }

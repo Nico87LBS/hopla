@@ -143,3 +143,20 @@ func TestNoModuleTakesTheIdOfTheReviews(t *testing.T) {
 	_, err := Parse([]byte(doc))
 	require.Error(t, err)
 }
+
+func TestAQuestionForgottenFiveTimesIsTough(t *testing.T) {
+	db, now := reviewsSetup(t)
+	module := "maths-ce2-multiplication"
+	wrong := func(id string, at time.Time) {
+		g := Game{ClientID: id, UserID: anna, Module: module, Answers: []Answer{{Key: "mul:7x8", Given: "54"}}}
+		_, err := Record(db, 1, anna, g, at)
+		require.NoError(t, err)
+	}
+	for i := range ToughForgot + 1 {
+		wrong(fmt.Sprintf("tough-game-%d", i), now.Add(time.Duration(i)*time.Minute))
+	}
+	var card Card
+	require.NoError(t, db.Where("user_id = ? AND card_key = ?", anna, "mul:7x8").First(&card).Error)
+	require.Equal(t, ToughForgot, card.Forgot, "the first miss is not an oubli")
+	require.Equal(t, ToughForgot+1, card.Wrong)
+}

@@ -2050,6 +2050,9 @@ func Review(card *Card, answer Answer, day string, schedule Schedule) {
 	if grade == Again && card.Box >= MasteredBox {
 		card.Lapses++
 	}
+	if grade == Again && card.Seen > 0 {
+		card.Forgot++
+	}
 	card.Stability, card.Difficulty = NextState(card.Stability, card.Difficulty, elapsed, grade)
 	card.Seen++
 	switch {

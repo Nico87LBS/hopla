@@ -12,8 +12,10 @@ import { useLearnStats } from '../../queries/LearnQueries'
 import {
   cardMap,
   compile,
+  isTough,
   itemForKey,
   openChapters,
+  TOUGH_FORGOT,
 } from '../../utils/learn/engine'
 import LoadingComponent from '../components/Loading'
 import { MemberAvatar, surfaceSx } from '../Games/GameParts'
@@ -62,6 +64,9 @@ const personStats = (compiled, person, day) => {
       .filter(({ card }) => card.wrong > 0)
       .sort((a, b) => a.card.box - b.card.box || b.card.wrong - a.card.wrong)
       .slice(0, STRUGGLES),
+    tough: mine
+      .filter(({ card }) => isTough(card))
+      .sort((a, b) => b.card.forgot - a.card.forgot),
     recent: sessions.slice(-RECENT).reverse(),
   }
 }
@@ -213,6 +218,49 @@ const PersonCard = ({ member, person, stats }) => {
         />
         <Tile label={t('stats.due')} value={stats.due} />
       </Stack>
+
+      {stats.tough.length > 0 && (
+        <>
+          <Typography level='title-sm' sx={{ mt: 2 }}>
+            {t('stats.tough', { count: stats.tough.length })}
+          </Typography>
+          <Typography
+            level='body-xs'
+            sx={{ color: 'text.secondary', mb: 0.75 }}
+          >
+            {t('stats.toughHelp', { count: TOUGH_FORGOT })}
+          </Typography>
+          <Stack gap={0.75}>
+            {stats.tough.map(({ card, item }) => (
+              <Stack
+                key={card.key}
+                direction='row'
+                gap={1}
+                alignItems='baseline'
+                sx={{ flexWrap: 'wrap' }}
+              >
+                <Typography level='body-sm' sx={{ flex: '1 1 200px' }}>
+                  {item.prompt}{' '}
+                  {item.mode !== 'flip' && (
+                    <Typography
+                      component='span'
+                      sx={{ color: HOPLA.greenText, fontWeight: 700 }}
+                    >
+                      → {item.answer}
+                    </Typography>
+                  )}
+                </Typography>
+                <Typography level='body-xs' sx={{ color: HOPLA.carrotText }}>
+                  {card.lastAnswer
+                    ? t('stats.answered', { answer: card.lastAnswer })
+                    : ''}{' '}
+                  {t('stats.forgotCount', { count: card.forgot })}
+                </Typography>
+              </Stack>
+            ))}
+          </Stack>
+        </>
+      )}
 
       <Typography level='title-sm' sx={{ mt: 2, mb: 0.75 }}>
         {t('stats.struggles')}
