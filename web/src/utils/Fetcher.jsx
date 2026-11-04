@@ -1149,6 +1149,16 @@ const GetLearnDetail = async key =>
     }),
   )
 
+// GetLearnModuleFile is the document of a module of the family, as text.
+const GetLearnModuleFile = async key => {
+  const resp = await Fetch(`/learn/modules/${encodeURIComponent(key)}/file`, {
+    method: 'GET',
+    headers: HEADERS(),
+  })
+  if (!resp?.ok) await learnAnswer(resp)
+  return resp.text()
+}
+
 const EditLearnCard = async change =>
   learnAnswer(
     await Fetch(`/learn/cards`, {
@@ -1431,6 +1441,7 @@ export {
   GetLabels,
   GetLearnCatalogue,
   GetLearnDetail,
+  GetLearnModuleFile,
   GetLearnModules,
   GetLearnPlayer,
   GetLearnSpeech,

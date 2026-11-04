@@ -291,6 +291,14 @@ func TestImportChecksTheDocumentAndKeepsCatalogueIds(t *testing.T) {
 	require.NoError(t, err)
 	require.Len(t, modules, 3)
 
+	content, err := ModuleFile(db, 1, "mots")
+	require.NoError(t, err)
+	require.Contains(t, content, `"the cat"`, "the family's module is exported as written")
+	_, err = ModuleFile(db, 1, "maths-ce2-geometrie")
+	require.ErrorIs(t, err, ErrNotFound, "a catalogue module has no file of the family")
+	_, err = ModuleFile(db, 2, "mots")
+	require.ErrorIs(t, err, ErrNotFound)
+
 	require.NoError(t, Remove(db, 1, "mon-paquet", false))
 	require.ErrorIs(t, Remove(db, 1, "mon-paquet", false), ErrNotFound)
 }
@@ -808,4 +816,23 @@ func TestAModuleCutIntoSeveralKeepsWhoPlaysItTheirSettingsAndTheCorrections(t *t
 	var report Report
 	require.NoError(t, db.Where("client_id = ?", "r1").First(&report).Error)
 	require.Equal(t, owner, report.ModuleKey)
+}
+
+// TestImportTakesAPackOfTheEditor: the web editor writes this document for
+// a pack of the family (see web/src/utils/learn/familyPack.js).
+func TestImportTakesAPackOfTheEditor(t *testing.T) {
+	db := setup(t)
+	now := time.Now().UTC()
+	raw := `{"format":"hopla-module/1","id":"famille-dictee-semaine-45","version":"1.0.0","nom":"Dictée semaine 45","public":"enfant","niveaux":[],"langue":"fr","langue_apprise":"fr","lecture_voix_haute":true,"chapitres":[{"id":"dictee-semaine-45","nom":"Dictée semaine 45"}],"fiches":[{"type":"ecoute","question":"grenouille","reponse":"grenouille","sens":["dictee"],"tolerance":"une_faute","consigne":"Écoute le mot et écris-le.","id":"grenouille","chapitre":"dictee-semaine-45"},{"type":"ecoute","question":"chaussette","reponse":"chaussette","sens":["dictee"],"tolerance":"une_faute","consigne":"Écoute le mot et écris-le.","id":"chaussette","chapitre":"dictee-semaine-45"},{"type":"choix","question":"un ou une montagne ?","reponse":"une","pieges":["un"],"id":"un-ou-une-montagne","chapitre":"dictee-semaine-45"},{"type":"retourner","question":"Récite","reponse":"Le corbeau","id":"recite","chapitre":"dictee-semaine-45"},{"type":"saisie","question":"pluriel de cheval","reponse":"chevaux","autres_reponses":["des chevaux"],"tolerance":"une_faute","id":"pluriel-de-cheval","chapitre":"dictee-semaine-45"}]}`
+	module, err := Import(db, 1, []byte(raw), now)
+	require.NoError(t, err)
+	require.False(t, module.Builtin)
+	content, err := ModuleFile(db, 1, "famille-dictee-semaine-45")
+	require.NoError(t, err)
+	require.JSONEq(t, raw, content)
+
+	raw = strings.Replace(raw, `"version":"1.0.0"`, `"version":"1.0.1"`, 1)
+	module, err = Import(db, 1, []byte(raw), now)
+	require.NoError(t, err, "saving again replaces the pack")
+	require.Equal(t, "1.0.1", module.Version)
 }

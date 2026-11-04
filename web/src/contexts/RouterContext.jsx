@@ -25,6 +25,7 @@ import { LearnChooser, LearnHome } from '../views/Learn/LearnHome'
 import LearnPlay from '../views/Learn/LearnPlay'
 import LearnReports from '../views/Learn/LearnReports'
 import LearnStats from '../views/Learn/LearnStats'
+import PackEditor from '../views/Learn/PackEditor'
 import ManageLearn, {
   LearnCatalogue,
   LearnVoices,
@@ -239,6 +240,10 @@ const Router = createBrowserRouter([
       {
         path: '/manage/learn/signalements',
         element: <LearnReports />,
+      },
+      {
+        path: '/manage/learn/editeur/:moduleId',
+        element: <PackEditor />,
       },
       {
         path: '/manage/learn/detail/:moduleId',

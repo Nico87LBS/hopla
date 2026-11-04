@@ -1,8 +1,10 @@
 # Format des modules Apprendre (`hopla-module/1`)
 
 Un module est un fichier JSON. On l'importe dans Gérer › Modules
-d'apprentissage › Catalogue › « Importer un module » (fichier ou texte
-collé). Les modules fournis avec Hopla sont dans
+d'apprentissage › Catalogue › Paquets de la famille › « Importer » (fichier ou
+texte collé). Pour un petit paquet de fiches simples, l'éditeur « Créer un
+paquet » écrit ce fichier sans qu'on ait à le faire ; « Exporter » le
+redonne. Les modules fournis avec Hopla sont dans
 [`internal/learn/catalogue/`](../internal/learn/catalogue/) et servent
 d'exemples.
 
