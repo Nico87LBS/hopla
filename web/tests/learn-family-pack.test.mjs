@@ -123,7 +123,8 @@ test('a card keeps its id when it changes kind, and what the editor does not wri
   const changed = cardFrom('choix', { ...fields, traps: ['x'] }, card)
   assert.equal(changed.id, 'f1')
   assert.equal(changed.explication, 'parce que')
-  assert.equal(kindOf({ type: 'associer' }), 'autre')
+  assert.equal(kindOf({ type: 'associer' }), 'associer')
+  assert.equal(kindOf({ type: 'calcul' }), 'autre')
   assert.equal(kindOf({ type: 'choix', image: 'cat' }), 'choix')
   assert.equal(kindOf({ type: 'ecoute', sens: ['lire', 'dictee'] }), 'dictee')
   assert.equal(editable({ format: 'hopla-module/1', modules: ['a'] }), false)
@@ -310,4 +311,21 @@ test('the drawings offered are those of the app', async () => {
     have,
     'run the list again: node scripts/drawing-list.mjs',
   )
+})
+
+test('the zones offered are those of the pictures', async () => {
+  const { readdirSync, readFileSync } = await import('node:fs')
+  const { ZONE_PICTURES } = await import('../src/utils/learn/drawings.js')
+  const folder = new URL('../public/drawings/zones/', import.meta.url)
+  const pictures = readdirSync(folder)
+    .filter(name => name.endsWith('.svg'))
+    .map(name => name.slice(0, -4))
+    .sort()
+  assert.deepEqual(Object.keys(ZONE_PICTURES).sort(), pictures)
+  for (const picture of pictures) {
+    const svg = readFileSync(new URL(`${picture}.svg`, folder), 'utf8')
+    for (const [zone] of ZONE_PICTURES[picture]) {
+      assert.ok(svg.includes(`data-zone="${zone}"`), `${picture} ${zone}`)
+    }
+  }
 })

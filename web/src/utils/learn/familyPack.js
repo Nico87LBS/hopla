@@ -12,12 +12,26 @@ import {
   typed,
 } from './cardOptions.js'
 import { slug } from './generators.js'
+import { labelProblem, labelsFor } from './labelCards.js'
 
 export const FORMAT = 'hopla-module/1'
 
 // The kinds of cards the editor writes; any other card of a module is kept
 // as it is and only shown.
-export const KINDS = ['saisie', 'choix', 'dictee', 'retourner']
+export const KINDS = [
+  'saisie',
+  'choix',
+  'dictee',
+  'retourner',
+  'associer',
+  'ordre',
+  'classer',
+  'tracer',
+  'zones',
+]
+
+// The kinds made of labels, a letter to trace or a zone of a picture.
+export const LABEL_KINDS = ['associer', 'ordre', 'classer', 'tracer', 'zones']
 
 export const DICTATION_HINT = 'Écoute le mot et écris-le.'
 
@@ -49,9 +63,7 @@ export const kindOf = card => {
     const senses = card.sens || []
     return senses.every(sense => LISTENING.includes(sense)) ? 'dictee' : 'autre'
   }
-  return ['saisie', 'choix', 'retourner'].includes(card.type)
-    ? card.type
-    : 'autre'
+  return KINDS.includes(card.type) ? card.type : 'autre'
 }
 
 // editable tells whether a module document can be opened in the editor: a
@@ -164,14 +176,23 @@ const WRITTEN = [
   'a_classer',
 ]
 
-const TYPES = { dictee: 'ecoute', choix: 'choix', retourner: 'retourner' }
+const TYPES = {
+  dictee: 'ecoute',
+  choix: 'choix',
+  retourner: 'retourner',
+  associer: 'associer',
+  ordre: 'ordre',
+  classer: 'classer',
+  tracer: 'tracer',
+  zones: 'zones',
+}
 
 // cardFrom writes a card of one of KINDS from the editor's fields. Without
 // extras (a pasted list), the explanation and the instruction of the card
 // it replaces are kept.
 export const cardFrom = (
   kind,
-  { answer, extras, oneTypo, others, question, tolerance, traps },
+  { answer, extras, labels, oneTypo, others, question, tolerance, traps, zone },
   base = {},
 ) => {
   const keep = Object.fromEntries(
@@ -194,6 +215,27 @@ export const cardFrom = (
   const options = optionsFor(type, wanted, wrong)
   const card = { ...keep, type, question: q }
   switch (type) {
+    case 'associer':
+    case 'ordre':
+      Object.assign(card, labelsFor(type, labels || {}), options)
+      break
+    // A card to sort has no shared key: each label has its own.
+    case 'classer':
+      delete card.cle
+      Object.assign(card, labelsFor(type, labels || {}), options)
+      break
+    case 'tracer':
+      Object.assign(card, { reponse: clean(answer), ...options })
+      break
+    // A zone is asked by its id in the picture, and answered by its name.
+    case 'zones':
+      Object.assign(card, {
+        image: clean(zone?.picture),
+        question: clean(zone?.id),
+        reponse: clean(answer),
+        ...options,
+      })
+      break
     case 'ecoute': {
       // A dictation is answered by the word itself; heard and picked, or
       // typed as figures, it has its own answer, with its traps.
@@ -252,9 +294,13 @@ export const fieldsOf = card => {
 }
 
 // cardDone tells whether a card has what it needs to be played.
-export const cardDone = card =>
-  !!clean(card.question) &&
-  ((card.type === 'ecoute' && !listensFor(card.sens)) || !!clean(card.reponse))
+export const cardDone = card => {
+  if (!clean(card.question)) return false
+  if (LABEL_KINDS.includes(card.type)) return !labelProblem(card)
+  return (
+    (card.type === 'ecoute' && !listensFor(card.sens)) || !!clean(card.reponse)
+  )
+}
 
 const same = text => slug(text)
 
