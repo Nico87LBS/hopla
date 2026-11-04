@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
 
-import { compile } from '../src/utils/learn/engine.js'
+import { checkAnswer, compile } from '../src/utils/learn/engine.js'
 import {
   cardFrom,
   editable,
@@ -15,6 +15,7 @@ import {
   readList,
   toDocument,
 } from '../src/utils/learn/familyPack.js'
+import { cardItems } from '../src/utils/learn/generators.js'
 
 test('a pasted list of words gives dictation cards, without the doubles', () => {
   const { cards, skipped } = readList(
@@ -176,4 +177,45 @@ test('the chapters after the first open at 80 %, unless the family chose otherwi
   const pack = newPack('Z')
   pack.chapters.push(newChapter())
   assert.equal(toDocument(pack).chapitres[1].ouvert_apres, 80)
+})
+
+test('a dictation accepts the other spellings heard the same way', () => {
+  const { cards, skipped } = readList(
+    'cet ; cette\nchaussette\n ; \ngrenouille\tgrenouilles',
+    { as: 'words', oneTypo: false },
+  )
+  assert.equal(skipped, 1)
+  assert.deepEqual(
+    cards.map(c => [c.question, c.autres_reponses]),
+    [
+      ['cet', ['cette']],
+      ['chaussette', undefined],
+      ['grenouille', ['grenouilles']],
+    ],
+  )
+  assert.equal(kindOf(cards[0]), 'dictee')
+  assert.deepEqual(fieldsOf(cards[0]).others, ['cette'])
+
+  // The game takes « cette » as right when it says « cet », even without
+  // the small mistake allowed.
+  const item = cardItems(
+    { ...cards[0], id: 'cet', chapitre: 'c' },
+    'famille-dictee',
+    [],
+    'fr',
+  )[0]
+  assert.equal(checkAnswer(item, 'Cette').correct, true)
+  assert.equal(checkAnswer(item, 'ces').correct, false)
+
+  // Written again in the editor, the spellings stay.
+  const again = cardFrom(
+    'dictee',
+    { ...fieldsOf(cards[0]), others: ['cette', ''] },
+    cards[0],
+  )
+  assert.deepEqual(again.autres_reponses, ['cette'])
+  assert.equal(
+    cardFrom('dictee', { question: 'cet', others: [] }).autres_reponses,
+    undefined,
+  )
 })
