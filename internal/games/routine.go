@@ -396,7 +396,7 @@ func awardRoutines(tx *gorm.DB, familyID, userID int, performedAt, now time.Time
 	}
 	var completed []chModel.ChoreHistory
 	if err := tx.Where("completed_by = ? AND performed_at = ? AND status = ?",
-		userID, performedAt.UTC(), chModel.ChoreHistoryStatusCompleted).Find(&completed).Error; err != nil {
+		userID, performedAt, chModel.ChoreHistoryStatusCompleted).Find(&completed).Error; err != nil {
 		return err
 	}
 	completedIDs := make(map[int]bool, len(completed))
