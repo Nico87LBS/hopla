@@ -37,7 +37,9 @@ const RoutineChip = ({ chores, sx, userId }) => {
   const occurrenceItem = occurrence?.items?.find(
     item => item.choreId === selectedChoreId && item.available,
   )
-  const stepNumber = occurrenceItem ? occurrenceItem.position + 1 : progress.step
+  const stepNumber = occurrenceItem
+    ? occurrenceItem.position + 1
+    : progress.step
   const stepTotal = occurrence ? occurrence.items.length : progress.total
   const skipStep = async () => {
     const response = await SkipRoutineOccurrenceItem(
@@ -56,8 +58,8 @@ const RoutineChip = ({ chores, sx, userId }) => {
       component='span'
       title={t('routines.stepTitle', {
         name: routine.name,
-        step: progress.step,
-        total: progress.total,
+        step: stepNumber,
+        total: stepTotal,
       })}
       sx={theme => ({
         alignItems: 'center',
@@ -92,19 +94,21 @@ const RoutineChip = ({ chores, sx, userId }) => {
           {t('routines.step', { step: stepNumber, total: stepTotal })}
         </span>
       )}
-      {occurrence?.status === 'active' && occurrenceItem && userId !== undefined && (
-        <IconButton
-          size='sm'
-          variant='plain'
-          color='neutral'
-          title={t('routines.skip')}
-          aria-label={t('routines.skip')}
-          onClick={skipStep}
-          sx={{ minWidth: 22, minHeight: 22, p: 0 }}
-        >
-          <SkipNextRounded sx={{ fontSize: 16 }} />
-        </IconButton>
-      )}
+      {occurrence?.status === 'active' &&
+        occurrenceItem &&
+        userId !== undefined && (
+          <IconButton
+            size='sm'
+            variant='plain'
+            color='neutral'
+            title={t('routines.skip')}
+            aria-label={t('routines.skip')}
+            onClick={skipStep}
+            sx={{ minWidth: 22, minHeight: 22, p: 0 }}
+          >
+            <SkipNextRounded sx={{ fontSize: 16 }} />
+          </IconButton>
+        )}
     </Box>
   )
 }
