@@ -162,7 +162,12 @@ func (r *UserRepository) UpdatePasswordByToken(ctx context.Context, email string
 			return fmt.Errorf("account not found")
 		}
 
-		// Revoke every outstanding reset link for this account.
+		// Revoke outstanding refresh sessions as part of the same transaction.
+		if err := tx.Model(&uModel.UserSession{}).
+			Where("user_id IN (SELECT id FROM users WHERE email = ?) AND revoked_at IS NULL", email).
+			Update("revoked_at", now).Error; err != nil {
+			return err
+		}
 		return tx.Where("email = ?", email).Delete(&uModel.UserPasswordReset{}).Error
 	})
 }
@@ -232,7 +237,18 @@ func (r *UserRepository) DeleteAPIToken(c context.Context, userID int, tokenID s
 }
 
 func (r *UserRepository) UpdatePasswordByUserId(c context.Context, userID int, password string) error {
-	return r.db.WithContext(c).Model(&uModel.User{}).Where("id = ?", userID).Update("password", password).Error
+	return r.db.WithContext(c).Transaction(func(tx *gorm.DB) error {
+		result := tx.Model(&uModel.User{}).Where("id = ?", userID).Update("password", password)
+		if result.Error != nil {
+			return result.Error
+		}
+		if result.RowsAffected != 1 {
+			return gorm.ErrRecordNotFound
+		}
+		return tx.Model(&uModel.UserSession{}).
+			Where("user_id = ? AND revoked_at IS NULL", userID).
+			Update("revoked_at", time.Now().UTC()).Error
+	})
 }
 func (r *UserRepository) UpdateUserImage(c context.Context, userID int, image string) error {
 	return r.db.WithContext(c).Model(&uModel.User{}).Where("id = ?", userID).Update("image", image).Error
