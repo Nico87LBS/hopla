@@ -105,7 +105,7 @@ const removeRoutineStep = (draft, index) => {
 // and earns the bonus once all of their steps of the day are done.
 export const RoutinesCard = () => {
   const { t } = useTranslation('games')
-  const { showNotification, showError } = useNotification()
+  const { showError, showNotification } = useNotification()
   const queryClient = useQueryClient()
   const { data: choresData } = useChores()
   const { data: todayRoutines = [] } = useRoutinesToday()
@@ -150,7 +150,11 @@ export const RoutinesCard = () => {
   const liveOccurrences = todayRoutines.flatMap(routine =>
     (routine.members || [])
       .filter(progress => progress.occurrence)
-      .map(progress => ({ routine, progress, occurrence: progress.occurrence })),
+      .map(progress => ({
+        routine,
+        progress,
+        occurrence: progress.occurrence,
+      })),
   )
 
   const refresh = () => queryClient.invalidateQueries({ queryKey: ['games'] })
@@ -184,6 +188,17 @@ export const RoutinesCard = () => {
       ...draft,
       choreIds: [...draft.choreIds, choreId],
       slotIds: [...(draft.slotIds || draft.choreIds.map(() => '')), slotId],
+      dependencies: [
+        ...(draft.dependencies || []),
+        ...(draft.choreIds.length > 0
+          ? [
+              {
+                stepId: draft.choreIds.length + 1,
+                dependsOnStepId: draft.choreIds.length,
+              },
+            ]
+          : []),
+      ],
     })
   }
   const setPrerequisites = (position, prerequisites) => {
@@ -288,7 +303,9 @@ export const RoutinesCard = () => {
                         draft.id,
                       ).find(chore => chore.id === id)
                       const currentSlotId = draft.slotIds?.[index] || ''
-                      const availableSlots = (options?.routineAvailableSlots || []).filter(
+                      const availableSlots = (
+                        options?.routineAvailableSlots || []
+                      ).filter(
                         slot =>
                           slot.id === currentSlotId ||
                           !(draft.slotIds || []).some(
@@ -407,7 +424,10 @@ export const RoutinesCard = () => {
                 }
                 slots.forEach(slot =>
                   options.push(
-                    <Option key={`${chore.id}-${slot.id}`} value={`${chore.id}::${slot.id}`}>
+                    <Option
+                      key={`${chore.id}-${slot.id}`}
+                      value={`${chore.id}::${slot.id}`}
+                    >
                       {chore.name} · {slot.name || slot.time}
                     </Option>,
                   ),
@@ -519,30 +539,48 @@ export const RoutinesCard = () => {
         ))}
       </Stack>
       {liveOccurrences.length > 0 && (
-        <Stack gap={1} sx={{ mt: 2, pt: 1.5, borderTop: '1px solid', borderColor: 'divider' }}>
+        <Stack
+          gap={1}
+          sx={{
+            mt: 2,
+            pt: 1.5,
+            borderTop: '1px solid',
+            borderColor: 'divider',
+          }}
+        >
           <Typography level='title-sm'>
-            {t('routines.liveTitle', { defaultValue: 'Suivi des occurrences en cours' })}
+            {t('routines.liveTitle')}
           </Typography>
-          {liveOccurrences.map(({ routine, progress, occurrence }) => (
+          {liveOccurrences.map(({ progress, routine, occurrence }) => (
             <Box
               key={occurrence.id}
               sx={{ bgcolor: 'background.level1', borderRadius: 'md', p: 1 }}
             >
-              <Stack direction='row' alignItems='center' justifyContent='space-between'>
+              <Stack
+                direction='row'
+                alignItems='center'
+                justifyContent='space-between'
+              >
                 <Typography level='body-sm' fontWeight='lg'>
-                  {routine.name} · {t('routines.memberNumber', {
-                    id: progress.userId,
-                    defaultValue: `Membre ${progress.userId}`,
-                  })}
+                  {routine.name}
+                  {' · '}
+                  {t('routines.memberNumber', { id: progress.userId })}
                 </Typography>
-                <Chip size='sm' color={occurrence.status === 'finished' ? 'success' : 'primary'}>
-                  {occurrence.status}
+                <Chip
+                  size='sm'
+                  color={
+                    occurrence.status === 'finished' ? 'success' : 'primary'
+                  }
+                >
+                  {t(`routines.occurrenceStatus.${occurrence.status}`)}
                 </Chip>
               </Stack>
-              <Typography level='body-xs' sx={{ color: 'text.tertiary', mb: 0.75 }}>
+              <Typography
+                level='body-xs'
+                sx={{ color: 'text.tertiary', mb: 0.75 }}
+              >
                 {t('routines.expiresAt', {
                   time: new Date(occurrence.expiresAt).toLocaleString(),
-                  defaultValue: `Expire le ${new Date(occurrence.expiresAt).toLocaleString()}`,
                 })}
               </Typography>
               <Stack gap={0.5}>
@@ -555,19 +593,23 @@ export const RoutinesCard = () => {
                     gap={1}
                   >
                     <Typography level='body-xs' sx={{ flex: 1 }}>
-                      {item.choreName} · {t(`routines.itemStatus.${item.status}`, {
-                        defaultValue: item.status,
-                      })}
-                      {!item.required ? ` · ${t('routines.optional', { defaultValue: 'Facultative' })}` : ''}
+                      {item.choreName}
+                      {' · '}
+                      {t(`routines.itemStatus.${item.status}`)}
+                      {!item.required
+                        ? ` · ${t('routines.optional')}`
+                        : ''}
                     </Typography>
                     {item.status === 'pending' && item.available && (
                       <Button
                         size='sm'
                         variant='soft'
                         color='neutral'
-                        onClick={() => skipOccurrenceItem(occurrence.id, item.id)}
+                        onClick={() =>
+                          skipOccurrenceItem(occurrence.id, item.id)
+                        }
                       >
-                        {t('routines.skip', { defaultValue: 'Ignorer' })}
+                        {t('routines.skip')}
                       </Button>
                     )}
                   </Stack>
