@@ -2,6 +2,7 @@ package learn
 
 import (
 	"errors"
+	"strings"
 	"time"
 
 	fModel "github.com/nico87lbs/hopla/internal/family/model"
@@ -76,12 +77,17 @@ func syncPack(tx *gorm.DB, familyID int, player PackPlayer, levels []TestLevel, 
 	}
 	from, to := openLevels(levels, player, placement)
 	aside := map[string]bool{}
+	forced := map[string]bool{}
 	for _, key := range player.Excluded {
-		aside[key] = true
+		if strings.HasPrefix(key, "force-open:") {
+			forced[strings.TrimPrefix(key, "force-open:")] = true
+		} else {
+			aside[key] = true
+		}
 	}
 	var on, off []string
 	for i, level := range levels {
-		open := i >= from && i <= to && !aside[level.ID]
+		open := (i >= from && i <= to || forced[level.ID]) && !aside[level.ID]
 		for _, module := range level.Modules {
 			if open && !aside[module.ID] {
 				on = append(on, module.ID)
@@ -211,6 +217,56 @@ func SetAside(db *gorm.DB, familyID, userID int, pack, key string, aside bool, n
 			}
 		}
 		if aside {
+			kept = append(kept, key)
+		}
+		player.Excluded, player.UpdatedAt = kept, now
+		if err := tx.Save(&player).Error; err != nil {
+			return err
+		}
+		return syncPack(tx, familyID, player, levels, now)
+	})
+}
+
+
+// SetPackAccess chooses how a level is opened: auto follows the placement
+// and mastery progression, open forces it on, and locked keeps it off.
+func SetPackAccess(db *gorm.DB, familyID, userID int, pack, key, mode string, now time.Time) error {
+	if mode != "auto" && mode != "open" && mode != "locked" {
+		return invalid("mode d'ouverture invalide")
+	}
+	modules, err := Modules(db, familyID, now)
+	if err != nil {
+		return err
+	}
+	_, levels, err := testLevels(modules, pack)
+	if err != nil {
+		return err
+	}
+	found := false
+	for _, level := range levels {
+		found = found || (len(levels) > 1 && level.ID == key)
+	}
+	if !found {
+		return invalid("ce niveau n'est pas dans le paquet")
+	}
+	return db.Transaction(func(tx *gorm.DB) error {
+		var player PackPlayer
+		if err := tx.Where("family_id = ? AND user_id = ? AND pack_key = ?", familyID, userID, pack).First(&player).Error; err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				return invalid("cette personne ne joue pas à ce paquet")
+			}
+			return err
+		}
+		kept := make([]string, 0, len(player.Excluded)+1)
+		for _, item := range player.Excluded {
+			if item != key && item != "force-open:"+key {
+				kept = append(kept, item)
+			}
+		}
+		switch mode {
+		case "open":
+			kept = append(kept, "force-open:"+key)
+		case "locked":
 			kept = append(kept, key)
 		}
 		player.Excluded, player.UpdatedAt = kept, now
