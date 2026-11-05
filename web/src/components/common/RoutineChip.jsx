@@ -1,13 +1,10 @@
-import { FormatListNumberedRounded, SkipNextRounded } from '@mui/icons-material'
-import { Box, IconButton } from '@mui/joy'
-import { useQueryClient } from '@tanstack/react-query'
+import { FormatListNumberedRounded } from '@mui/icons-material'
+import { Box } from '@mui/joy'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
 import { HOPLA } from '../../constants/theme'
 import { useRoutinesToday } from '../../queries/ChoreQueries'
-import { useNotification } from '../../service/NotificationProvider'
-import { SkipRoutineOccurrenceItem } from '../../utils/Fetcher'
 import { routineStepOf } from '../../utils/routines'
 
 // The routine a task is the step to do now of, with how far the child is:
@@ -15,8 +12,6 @@ import { routineStepOf } from '../../utils/routines'
 // step, show the routine's name only.
 const RoutineChip = ({ chores, sx, userId }) => {
   const { t } = useTranslation('chores')
-  const queryClient = useQueryClient()
-  const { showError } = useNotification()
   const { data: routines } = useRoutinesToday()
   const steps = chores
     .map(chore => ({
@@ -44,18 +39,6 @@ const RoutineChip = ({ chores, sx, userId }) => {
     ? occurrenceItem.position + 1
     : progress.step
   const stepTotal = occurrence ? occurrence.items.length : progress.total
-  const skipStep = async () => {
-    const response = await SkipRoutineOccurrenceItem(
-      occurrence.id,
-      occurrenceItem.id,
-    )
-    if (!response.ok) {
-      showError(t('routines.skipFailed'))
-      return
-    }
-    await queryClient.invalidateQueries({ queryKey: ['games'] })
-    await queryClient.invalidateQueries({ queryKey: ['chores'] })
-  }
   return (
     <Box
       component='span'
@@ -97,24 +80,7 @@ const RoutineChip = ({ chores, sx, userId }) => {
           {t('routines.step', { step: stepNumber, total: stepTotal })}
         </span>
       )}
-      {(occurrence?.status === 'active' ||
-        (occurrence?.status === 'finished' &&
-          occurrenceItem &&
-          !occurrenceItem.required)) &&
-        occurrenceItem &&
-        userId !== undefined && (
-          <IconButton
-            size='sm'
-            variant='plain'
-            color='neutral'
-            title={t('routines.skip')}
-            aria-label={t('routines.skip')}
-            onClick={skipStep}
-            sx={{ minWidth: 22, minHeight: 22, p: 0 }}
-          >
-            <SkipNextRounded sx={{ fontSize: 16 }} />
-          </IconButton>
-        )}
+
     </Box>
   )
 }
