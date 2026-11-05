@@ -776,9 +776,9 @@ FirstNameCard.propTypes = {
 const LevelRow = ({
   baseline,
   group,
+  member,
   onAccess,
   onSettings,
-  member,
   person,
   section,
 }) => {
