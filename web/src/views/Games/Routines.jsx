@@ -47,11 +47,13 @@ const remapDependencies = (draft, choreIds) => {
   )
   return (draft.dependencies || [])
     .filter(
-      edge => oldPositions.has(edge.stepId) &&
+      edge =>
+        oldPositions.has(edge.stepId) &&
         oldPositions.has(edge.dependsOnStepId),
     )
     .filter(
-      edge => positions.has(oldPositions.get(edge.stepId)) &&
+      edge =>
+        positions.has(oldPositions.get(edge.stepId)) &&
         positions.has(oldPositions.get(edge.dependsOnStepId)),
     )
     .map(edge => ({
