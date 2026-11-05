@@ -159,6 +159,9 @@ func SaveRoutine(db *gorm.DB, routine *Routine) error {
 				mine[id] = true
 			}
 		}
+		for _, choreID := range routine.OptionalChoreIDs {
+			if !slices.Contains(routine.ChoreIDs, choreID) { return ErrRoutineGraphStep }
+		}
 		others, err := Routines(tx, routine.FamilyID)
 		if err != nil {
 			return err
