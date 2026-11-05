@@ -50,7 +50,7 @@ type RoutineOccurrence struct {
 	ID int `json:"id" gorm:"primaryKey"`
 	FamilyID int `json:"-" gorm:"column:family_id;index;not null"`
 	RoutineID int `json:"routineId" gorm:"column:routine_id;index;not null"`
-	RoutineName string `json:"routineName" gorm:"-"`
+	RoutineName string `json:"routineName" gorm:"column:routine_name;size:120"`
 	UserID int `json:"userId" gorm:"column:user_id;index;not null"`
 	StartedAt time.Time `json:"startedAt" gorm:"column:started_at;not null"`
 	ExpiresAt time.Time `json:"expiresAt" gorm:"column:expires_at;index;not null"`
@@ -83,7 +83,7 @@ type RoutineOccurrenceItem struct {
 	StepID int `json:"stepId" gorm:"column:step_id;not null"`
 	Position int `json:"position" gorm:"column:position;not null"`
 	ChoreID int `json:"choreId" gorm:"column:chore_id;not null"`
-	ChoreName string `json:"choreName" gorm:"-"`
+	ChoreName string `json:"choreName" gorm:"column:chore_name;size:120"`
 	SlotID string `json:"slotId,omitempty" gorm:"column:slot_id;size:32"`
 	Required bool `json:"required" gorm:"column:required;not null;default:true"`
 	Status RoutineOccurrenceItemStatus `json:"status" gorm:"column:status;size:20;not null;default:pending"`
