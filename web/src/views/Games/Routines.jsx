@@ -65,7 +65,11 @@ const remapDependencies = (draft, choreIds) => {
 
 const moveRoutineStep = (draft, index, delta) => {
   const choreIds = moveStep(draft.choreIds, index, delta)
-  const slotIds = moveStep(draft.slotIds || draft.choreIds.map(() => ''), index, delta)
+  const slotIds = moveStep(
+    draft.slotIds || draft.choreIds.map(() => ''),
+    index,
+    delta,
+  )
   return {
     ...draft,
     choreIds,
@@ -77,7 +81,9 @@ const moveRoutineStep = (draft, index, delta) => {
 const removeRoutineStep = (draft, id) => {
   const index = draft.choreIds.indexOf(id)
   const choreIds = draft.choreIds.filter(other => other !== id)
-  const slotIds = (draft.slotIds || []).filter((other, position) => position !== index)
+  const slotIds = (draft.slotIds || []).filter(
+    (other, position) => position !== index,
+  )
   return {
     ...draft,
     choreIds,
@@ -221,13 +227,17 @@ export const RoutinesCard = () => {
                 >
                   <CloseRounded />
                 </IconButton>
-                {(chores.find(chore => chore.id === id)?.frequencyMetadata?.slots || []).length > 0 && (
+                {(
+                  chores.find(chore => chore.id === id)?.frequencyMetadata?.slots || []
+                ).length > 0 && (
                   <Select
                     size='sm'
                     value={draft.slotIds?.[index] || ''}
                     placeholder={t('routines.selectSlot')}
                     onChange={(event, value) => {
-                      const slotIds = [...(draft.slotIds || draft.choreIds.map(() => ''))]
+                      const slotIds = [
+                        ...(draft.slotIds || draft.choreIds.map(() => '')),
+                      ]
                       slotIds[index] = value || ''
                       setDraft({ ...draft, slotIds })
                     }}
@@ -249,7 +259,9 @@ export const RoutinesCard = () => {
                             </Option>
                           ))}
                           {currentSlotId &&
-                            !(options?.routineAvailableSlots || []).some(slot => slot.id === currentSlotId) && (
+                            !(options?.routineAvailableSlots || []).some(
+                              slot => slot.id === currentSlotId,
+                            ) && (
                               <Option value={currentSlotId}>
                                 {t('routines.missingSlot')}
                               </Option>
@@ -315,9 +327,7 @@ export const RoutinesCard = () => {
                 offered.length ? t('routines.addTask') : t('routines.noTask')
               }
               disabled={offered.length === 0}
-              onChange={(event, value) =>
-                value && setSteps(value)
-              }
+              onChange={(event, value) => value && setSteps(value)}
             >
               {offered.map(chore => (
                 <Option key={chore.id} value={chore.id}>
