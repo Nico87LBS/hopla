@@ -66,7 +66,7 @@ func (RoutineOccurrence) TableName() string { return "routine_occurrences" }
 type RoutineOccurrenceItem struct {
 	ID int `json:"id" gorm:"primaryKey"`
 	FamilyID int `json:"-" gorm:"column:family_id;index;not null"`
-	OccurrenceID int `json:"occurrenceId" gorm:"column:occurrence_id;index;not null;uniqueIndex:idx_routine_override_idempotency,priority:1"`
+	OccurrenceID int `json:"occurrenceId" gorm:"column:occurrence_id;index;not null"`
 	StepID int `json:"stepId" gorm:"column:step_id;not null"`
 	Position int `json:"position" gorm:"column:position;not null"`
 	ChoreID int `json:"choreId" gorm:"column:chore_id;not null"`
@@ -84,7 +84,7 @@ func (RoutineOccurrenceItem) TableName() string { return "routine_occurrence_ite
 type RoutineOverride struct {
 	ID int `json:"id" gorm:"primaryKey"`
 	FamilyID int `json:"-" gorm:"column:family_id;index;not null"`
-	OccurrenceID int `json:"occurrenceId" gorm:"column:occurrence_id;index;not null"`
+	OccurrenceID int `json:"occurrenceId" gorm:"column:occurrence_id;index;not null;uniqueIndex:idx_routine_override_idempotency,priority:1"`
 	ItemID int `json:"itemId" gorm:"column:item_id;index;not null;uniqueIndex:idx_routine_override_idempotency,priority:2"`
 	Action string `json:"action" gorm:"column:action;size:20;not null"`
 	Source string `json:"source" gorm:"column:source;size:20;not null"`
