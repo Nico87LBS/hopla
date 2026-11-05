@@ -44,7 +44,7 @@ const emptyRoutine = () => ({
   choreIds: [],
   slotIds: [],
   dependencies: [],
-  optionalChoreIds: [],
+  optionalStepIds: [],
 })
 
 const remapAfterMove = (dependencies, index, delta) => {
@@ -95,9 +95,9 @@ const removeRoutineStep = (draft, index) => {
         stepId: remapPosition(edge.stepId),
         dependsOnStepId: remapPosition(edge.dependsOnStepId),
       })),
-    optionalChoreIds: (draft.optionalChoreIds || []).filter(
-      id => id !== removedChoreID || choreIds.includes(id),
-    ),
+    optionalStepIds: (draft.optionalStepIds || []).filter(
+      stepId => stepId !== removedPosition,
+    ).map(stepId => stepId > removedPosition ? stepId - 1 : stepId),
   }
 }
 
@@ -176,7 +176,7 @@ export const RoutinesCard = () => {
       choreIds: draft.choreIds,
       slotIds: draft.slotIds || [],
       dependencies: draft.dependencies || [],
-      optionalChoreIds: draft.optionalChoreIds || [],
+      optionalStepIds: draft.optionalStepIds || [],
     })
     if (await sendOrWarn(resp, showNotification, t('routines.failed'))) {
       setDraft(null)
@@ -367,7 +367,7 @@ export const RoutinesCard = () => {
                 <Chip
                   size='sm'
                   variant={
-                    (draft.optionalChoreIds || []).includes(id)
+                    (draft.optionalStepIds || []).includes(index + 1)
                       ? 'solid'
                       : 'outlined'
                   }
@@ -513,7 +513,7 @@ export const RoutinesCard = () => {
                   choreIds: known(routine.choreIds),
                   slotIds: routine.slotIds || routine.choreIds.map(() => ''),
                   dependencies: routine.dependencies || [],
-                  optionalChoreIds: routine.optionalChoreIds || [],
+                  optionalStepIds: routine.optionalStepIds || (routine.optionalChoreIds || []).flatMap(id => routine.choreIds.flatMap((choreId, index) => choreId === id ? [index + 1] : [])),
                 })
               }
             >

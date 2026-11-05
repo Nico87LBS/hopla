@@ -29,6 +29,7 @@ type Routine struct {
 	Dependencies []RoutineDependency `json:"dependencies" gorm:"-"`
 	GraphEnabled bool `json:"graphEnabled" gorm:"column:graph_enabled;not null;default:false"`
 	OptionalChoreIDs []int `json:"optionalChoreIds" gorm:"-"`
+	OptionalStepIDs []int `json:"optionalStepIds" gorm:"-"`
 	CreatedBy int           `json:"createdBy" gorm:"column:created_by"`
 	CreatedAt time.Time     `json:"createdAt" gorm:"column:created_at"`
 	UpdatedAt time.Time     `json:"updatedAt" gorm:"column:updated_at"`
@@ -109,7 +110,10 @@ func Routines(db *gorm.DB, familyID int) ([]Routine, error) {
 		for _, step := range routines[i].Steps {
 			routines[i].ChoreIDs = append(routines[i].ChoreIDs, step.ChoreID)
 			routines[i].SlotIDs = append(routines[i].SlotIDs, step.SlotID)
-			if routines[i].GraphEnabled && step.Required != nil && !*step.Required { routines[i].OptionalChoreIDs = append(routines[i].OptionalChoreIDs, step.ChoreID) }
+			if routines[i].GraphEnabled && step.Required != nil && !*step.Required {
+				routines[i].OptionalChoreIDs = append(routines[i].OptionalChoreIDs, step.ChoreID)
+				routines[i].OptionalStepIDs = append(routines[i].OptionalStepIDs, step.Position+1)
+			}
 			positionByID[step.ID] = step.Position + 1
 		}
 		for j := range routines[i].Dependencies {
@@ -197,8 +201,18 @@ func SaveRoutine(db *gorm.DB, routine *Routine) error {
 				mine[id][slotID] = true
 			}
 		}
-		for _, choreID := range routine.OptionalChoreIDs {
-			if !slices.Contains(routine.ChoreIDs, choreID) { return ErrRoutineGraphStep }
+		optionalSteps := make(map[int]bool, len(routine.OptionalStepIDs))
+		if routine.OptionalStepIDs == nil {
+			// Older clients marked optional steps by chore ID; preserve that
+			// behavior when the new, step-specific field is absent.
+			for position, choreID := range routine.ChoreIDs {
+				if slices.Contains(routine.OptionalChoreIDs, choreID) { optionalSteps[position+1] = true }
+			}
+		} else {
+			for _, stepID := range routine.OptionalStepIDs {
+				if stepID < 1 || stepID > len(routine.ChoreIDs) { return ErrRoutineGraphStep }
+				optionalSteps[stepID] = true
+			}
 		}
 		others, err := Routines(tx, routine.FamilyID)
 		if err != nil {
@@ -235,7 +249,7 @@ func SaveRoutine(db *gorm.DB, routine *Routine) error {
 			if err := tx.Where("routine_id = ?", routine.ID).Delete(&RoutineStep{}).Error; err != nil { return err }
 		}
 		routine.Steps = nil
-		for i, choreID := range routine.ChoreIDs { required := !slices.Contains(routine.OptionalChoreIDs, choreID)
+		for i, choreID := range routine.ChoreIDs { required := !optionalSteps[i+1]
 		routine.Steps = append(routine.Steps, RoutineStep{RoutineID: routine.ID, Position: i, ChoreID: choreID, SlotID: routine.SlotIDs[i], Required: &required}) }
 		if err := tx.Create(&routine.Steps).Error; err != nil { return err }
 		for i := range routine.Dependencies {
