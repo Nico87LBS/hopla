@@ -298,6 +298,7 @@ type ChoreReq struct {
 	Points               *int                          `json:"points" binding:"omitempty"`
 	FlashPoints          *int                          `json:"flashPoints" binding:"omitempty,min=0,max=1000"`
 	FlashMinutes         *int                          `json:"flashMinutes" binding:"omitempty,min=1,max=720"`
+	DeadlineMinutes      *int                          `json:"deadlineMinutes" binding:"omitempty,min=1,max=527040"`
 	Description          *string                       `json:"description" binding:"omitempty"`
 	SubTasks             *[]stModel.SubTask            `json:"subTasks" binding:"omitempty,dive"`
 	RequireApproval      bool                          `json:"requireApproval" binding:"omitempty"`
@@ -503,6 +504,7 @@ func (h *Handler) CreateChore(c *gin.Context) {
 		Points:                 choreReq.Points,
 		FlashPoints:            choreReq.FlashPoints,
 		FlashMinutes:           choreReq.FlashMinutes,
+		DeadlineMinutes:        deadlineMinutes(choreReq),
 		CompletionWindow:       choreReq.CompletionWindow,
 		Description:            choreReq.Description,
 		Priority:               *choreReq.Priority,
@@ -809,6 +811,7 @@ func (h *Handler) EditChore(c *gin.Context) {
 		Points:                 choreReq.Points,
 		FlashPoints:            choreReq.FlashPoints,
 		FlashMinutes:           choreReq.FlashMinutes,
+		DeadlineMinutes:        deadlineMinutes(choreReq),
 		CompletionWindow:       choreReq.CompletionWindow,
 		Description:            choreReq.Description,
 		Priority:               *choreReq.Priority,

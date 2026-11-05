@@ -1,0 +1,36 @@
+{
+  "redeem": "Utiliser des {{units}}",
+  "sections": {
+    "overview": "Résumé"
+  },
+  "redeemModal": {
+    "placeholder": "Saisis un nombre {{ofUnits}}...",
+    "quickAdd": "Ajout rapide :",
+    "amount": "{{Units}} : {{count}}",
+    "remaining": "{{Units}} restant{{e}}s : {{count}}",
+    "user": "Membre"
+  },
+  "filter": {
+    "title": "Filtrer les {{units}}"
+  },
+  "cards": {
+    "available": {
+      "title": "Disponibles",
+      "subtext": "Prêts à être utilisés"
+    },
+    "redeemed": {
+      "title": "Utilisés",
+      "subtext": "Utilisés précédemment"
+    },
+    "total": {
+      "title": "Total",
+      "subtext": "Gagnés sur toute la période"
+    },
+    "period": {
+      "title": "{{Units}} de la période"
+    }
+  },
+  "summary": {
+    "selectUser": "Choisis le membre dont tu veux voir les {{units}}"
+  }
+}

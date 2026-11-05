@@ -172,6 +172,7 @@ func main() {
 			resource.Routes,
 			backup.Routes,
 			backup.Run,
+			chore.RunDeadlines,
 
 			dsync.Routes,
 			realtime.Routes, // (router, rtAuthMiddleware, pollingHandler, jwtAuth)

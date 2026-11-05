@@ -28,11 +28,12 @@ type JournalFilter struct {
 	Limit  int
 }
 
-// JournalRow is a ledger row, or a task done that earned nothing (ChoreName
-// set, no ledger row).
+// JournalRow is a ledger row, or a task done that earned nothing or missed
+// (ChoreName set, no ledger row).
 type JournalRow struct {
 	pModel.PointsHistory
 	ChoreName *string
+	Missed    bool
 }
 
 // The ledger actions of each kind.
@@ -43,12 +44,16 @@ var journalActions = map[JournalKind][]pModel.PointsHistoryAction{
 	JournalReward: {pModel.PointsHistoryActionRedeem},
 }
 
-// choreHistoryCompleted is chModel.ChoreHistoryStatusCompleted; the chore
-// package depends on this one.
-const choreHistoryCompleted = 1
+// choreHistoryCompleted and choreHistoryMissed are
+// chModel.ChoreHistoryStatusCompleted and ChoreHistoryStatusMissed; the
+// chore package depends on this one.
+const (
+	choreHistoryCompleted = 1
+	choreHistoryMissed    = 5
+)
 
 // Journal returns what happened in a family, newest first: every change to
-// the points, and the tasks done that earned none. A private task only shows
+// the points, the tasks done that earned none and the tasks missed. A private task only shows
 // to its creator and to whoever did it. The second value tells whether older
 // rows remain.
 func (r *PointsRepository) Journal(c context.Context, familyID, viewerID int, filter JournalFilter) ([]JournalRow, bool, error) {
@@ -81,10 +86,10 @@ func (r *PointsRepository) Journal(c context.Context, familyID, viewerID int, fi
 
 	if filter.Kind == JournalAll || filter.Kind == JournalTasks {
 		tasks := db.Table("chore_histories AS h").
-			Select("h.id, h.chore_id, h.completed_by, h.performed_at, c.name").
+			Select("h.id, h.chore_id, h.completed_by, h.performed_at, h.status, c.name").
 			Joins("JOIN chores AS c ON c.id = h.chore_id").
-			Where("c.family_id = ? AND h.status = ? AND h.performed_at IS NOT NULL", familyID, choreHistoryCompleted).
-			Where("h.points IS NULL OR h.points = 0").
+			Where("c.family_id = ? AND h.performed_at IS NOT NULL", familyID).
+			Where("(h.status = ? AND (h.points IS NULL OR h.points = 0)) OR h.status = ?", choreHistoryCompleted, choreHistoryMissed).
 			Where("c.is_private = ? OR c.created_by = ? OR h.completed_by = ?", false, viewerID, viewerID)
 		if filter.UserID != nil {
 			tasks = tasks.Where("h.completed_by = ?", *filter.UserID)
@@ -97,6 +102,7 @@ func (r *PointsRepository) Journal(c context.Context, familyID, viewerID int, fi
 			ChoreID     int
 			CompletedBy int
 			PerformedAt time.Time
+			Status      int
 			Name        string
 		}
 		if err := tasks.Order("h.performed_at desc, h.id desc").Limit(limit + 1).Scan(&done).Error; err != nil {
@@ -104,7 +110,7 @@ func (r *PointsRepository) Journal(c context.Context, familyID, viewerID int, fi
 		}
 		for _, d := range done {
 			choreID, name := d.ChoreID, d.Name
-			rows = append(rows, JournalRow{ChoreName: &name, PointsHistory: pModel.PointsHistory{
+			rows = append(rows, JournalRow{ChoreName: &name, Missed: d.Status == choreHistoryMissed, PointsHistory: pModel.PointsHistory{
 				ID: d.ID, Action: pModel.PointsHistoryActionAdd, ChoreID: &choreID, UserID: d.CompletedBy,
 				CreatedBy: d.CompletedBy, FamilyID: familyID, CreatedAt: d.PerformedAt}})
 		}

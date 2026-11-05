@@ -63,6 +63,7 @@ export const SHARED_FIELDS = [
   'points',
   'flashPoints',
   'flashMinutes',
+  'deadlineMinutes',
   'requireApproval',
   'isPrivate',
   'completionWindow',

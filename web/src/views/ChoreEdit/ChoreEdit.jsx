@@ -57,6 +57,7 @@ import {
 } from '../../queries/ChoreQueries.jsx'
 import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries.jsx'
 import { useNotification } from '../../service/NotificationProvider'
+import { deadlineApplies } from '../../utils/deadline'
 import { familyTimezone } from '../../utils/familyTime'
 import { GetAllFamilyMembers, GetChoreByID } from '../../utils/Fetcher'
 import { withRepeatTime } from '../../utils/repeatTime.js'
@@ -147,6 +148,7 @@ const ChoreEdit = () => {
   const [requireApproval, setRequireApproval] = useState(false)
   const [flashPoints, setFlashPoints] = useState(0)
   const [flashMinutes, setFlashMinutes] = useState(15)
+  const [deadlineMinutes, setDeadlineMinutes] = useState(null)
   const [isPrivate, setIsPrivate] = useState(false)
   const [subTasks, setSubTasks] = useState(null)
   const [completionWindow, setCompletionWindow] = useState(-1)
@@ -264,6 +266,7 @@ const ChoreEdit = () => {
     points,
     flashPoints,
     flashMinutes,
+    deadlineMinutes,
     requireApproval,
     isPrivate,
     isNotificable,
@@ -587,6 +590,10 @@ const ChoreEdit = () => {
         flashPoints > 0 && frequencyType !== 'always' ? flashPoints : null,
       flashMinutes:
         flashPoints > 0 && frequencyType !== 'always' ? flashMinutes : null,
+      deadlineMinutes:
+        dueDate && deadlineApplies(frequencyType, frequencyMetadata)
+          ? deadlineMinutes
+          : null,
       requireApproval: requireApproval,
       isPrivate: isPrivate,
       completionWindow:
@@ -788,6 +795,9 @@ const ChoreEdit = () => {
       setRequireApproval(data.res.requireApproval || false)
       setFlashPoints(data.res.flashPoints > 0 ? data.res.flashPoints : 0)
       setFlashMinutes(data.res.flashMinutes > 0 ? data.res.flashMinutes : 15)
+      setDeadlineMinutes(
+        data.res.deadlineMinutes > 0 ? data.res.deadlineMinutes : null,
+      )
       setIsPrivate(data.res.isPrivate || false)
       setCompletionWindow(
         data.res.completionWindow && data.res.completionWindow > -1
@@ -1156,8 +1166,11 @@ const ChoreEdit = () => {
       onFrequencyUpdate={setFrequency}
       frequencyMetadata={frequencyMetadata}
       onFrequencyMetadataUpdate={setFrequencyMetadata}
+      dueDate={dueDate}
       dueDateOnly={dueDateOnly}
       dueTime={dueTime}
+      deadlineMinutes={deadlineMinutes}
+      onDeadlineMinutesChange={setDeadlineMinutes}
       useCustomTime={useCustomTime}
       onDateChange={value => handleDueDateChange({ target: { value } })}
       onTimeChange={handleDueTimeChange}

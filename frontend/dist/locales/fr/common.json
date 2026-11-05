@@ -1,0 +1,598 @@
+{
+  "save": "Enregistrer",
+  "cancel": "Annuler",
+  "delete": "Supprimer",
+  "edit": "Modifier",
+  "close": "Fermer",
+  "confirm": "Confirmer",
+  "loading": "Chargement...",
+  "error": "Erreur",
+  "success": "Succès",
+  "warning": "Avertissement",
+  "colors": {
+    "Salmon": "Saumon",
+    "Teal": "Bleu canard",
+    "Sky Blue": "Bleu ciel",
+    "Grape": "Raisin",
+    "Sunshine": "Soleil",
+    "Coral": "Corail",
+    "Lavender": "Lavande",
+    "Rose": "Rose",
+    "Charcoal": "Anthracite",
+    "Sienna": "Terre de Sienne",
+    "Mint": "Menthe",
+    "Amber": "Ambre",
+    "Cobalt": "Cobalt",
+    "Emerald": "Émeraude",
+    "Peach": "Pêche",
+    "Ocean": "Océan",
+    "Mustard": "Moutarde",
+    "Ruby": "Rubis",
+    "Periwinkle": "Pervenche",
+    "Turquoise": "Turquoise",
+    "Lime": "Vert citron",
+    "Blush": "Rose poudré",
+    "Ash": "Cendre",
+    "Sand": "Sable"
+  },
+  "copy": "Copier",
+  "copied": "Copié !",
+  "settings": "Paramètres",
+  "yes": "Oui",
+  "no": "Non",
+  "back": "Retour",
+  "logout": "Déconnexion",
+  "version": "Version",
+  "navigation": {
+    "search": "Recherche",
+    "allTasks": "Tâches",
+    "home": "Aperçu",
+    "tasks": "Tâches",
+    "more": "Menu",
+    "archived": "Archivées",
+    "labels": "Étiquettes",
+    "filters": "Filtres",
+    "points": "{{Units}}",
+    "rewards": "Récompenses",
+    "settings": "Paramètres",
+    "primaryNavigation": "Navigation principale",
+    "profile": "Profil",
+    "today": "Aujourd'hui",
+    "family": "Famille",
+    "shop": "Boutique",
+    "manage": "Gérer",
+    "newTask": "Nouvelle tâche",
+    "learn": "Apprendre"
+  },
+  "search": {
+    "title": "Recherche",
+    "placeholder": "Rechercher dans Hopla",
+    "inputAriaLabel": "Rechercher des tâches, l'historique, des étiquettes et des paramètres",
+    "deviceNote": "Recherche dans le contenu disponible sur cet appareil",
+    "escape": "Échap",
+    "recent": "Récents",
+    "empty": {
+      "title": "Aucune correspondance directe",
+      "subtitle": "Tu peux tout de même filtrer la liste des tâches avec cette recherche.",
+      "actionsSubtitle": "Aucune vue ni action ne correspond. Appuie sur Retour arrière pour tout rechercher."
+    },
+    "groups": {
+      "tasks": "Tâches",
+      "history": "Historique",
+      "labels": "Étiquettes",
+      "people": "Personnes",
+      "settings": "Paramètres",
+      "actions": "Actions rapides"
+    },
+    "actions": {
+      "quickAction": "Action rapide",
+      "navigation": "Navigation",
+      "createTask": "Créer une tâche",
+      "createLabel": "Créer une étiquette",
+      "viewAllTasks": "Voir toutes les tâches",
+      "viewArchivedTasks": "Voir les tâches archivées",
+      "viewLabels": "Voir les étiquettes",
+      "viewJournal": "Voir le journal",
+      "viewPoints": "Voir les {{units}}",
+      "openSettings": "Ouvrir les paramètres",
+      "filterTasks": "Afficher les tâches correspondant à « {{query}} »",
+      "filterTasksSubtitle": "Filtrer la liste des tâches"
+    },
+    "footer": {
+      "navigate": "Naviguer",
+      "open": "Ouvrir",
+      "results_one": "{{count}} résultat",
+      "results_other": "{{count}} résultats",
+      "typeToSearch": "Tape du texte pour rechercher",
+      "slashHint": "/ pour aller à une vue"
+    },
+    "modes": {
+      "actions": {
+        "label": "Aller à",
+        "placeholder": "Aller à une vue ou une action"
+      }
+    },
+    "untitled": {
+      "task": "Tâche sans nom",
+      "label": "Étiquette sans nom"
+    },
+    "kinds": {
+      "task": "Tâche",
+      "note": "Note de tâche",
+      "label": "Étiquette",
+      "member": "Membre de la famille",
+      "settings": "Réglages"
+    }
+  },
+  "done": "Terminé",
+  "clearAll": "Tout effacer",
+  "upload": {
+    "quotaTitle": "Quota de stockage dépassé",
+    "quotaMessage": "Tu as dépassé ton quota d'envoi de fichiers.",
+    "tooLargeTitle": "Fichier trop volumineux",
+    "tooLargeMessage": "Le fichier que tu essaies d'envoyer est trop volumineux.",
+    "deniedTitle": "Autorisation refusée",
+    "deniedMessage": "Tu n'as pas l'autorisation d'envoyer des fichiers.",
+    "failedTitle": "Échec de l'envoi",
+    "failedMessage": "Échec de l'envoi de l'image.",
+    "processingMessage": "Une erreur s'est produite pendant le traitement de l'image.",
+    "failedFileMessage": "Le fichier n'a pas pu être envoyé.",
+    "processingFileMessage": "Une erreur est survenue pendant le traitement du fichier."
+  },
+  "imageLoadFailed": "Échec du chargement de l'image.",
+  "typeHere": "Tape du texte ici...",
+  "loadingOffline": "Tu es hors ligne",
+  "loadingOfflineSub": "Ce contenu n'est pas disponible hors ligne. Vérifie ta connexion Internet et réessaie.",
+  "loadingSlow": "Cela prend plus de temps que d'habitude. Il y a peut-être un problème.",
+  "navigateBack": "Revenir en arrière",
+  "profile": "Profil",
+  "errorScreen": {
+    "title": "Une erreur est survenue",
+    "fallback": "Une erreur inattendue s'est produite. Essaie de recharger la page — cela suffit généralement.",
+    "tryAgain": "Réessayer",
+    "home": "Accueil",
+    "login": "Connexion",
+    "hideDetails": "Masquer les détails de l'erreur",
+    "showDetails": "Afficher les détails de l'erreur",
+    "copyToClipboard": "Copier dans le presse-papiers",
+    "copied": "Détails de l'erreur copiés dans le presse-papiers",
+    "reportHint": "Si cela se reproduit, note ce que tu faisais pour qu'on puisse examiner le problème.",
+    "collectingDetails": "Collecte des détails de l'erreur..."
+  },
+  "userMenu": {
+    "actAsAnother": "Agir en tant qu'un autre utilisateur",
+    "stopImpersonating": "Quitter l'identité empruntée",
+    "returnToAccount": "Revenir à ton compte",
+    "accountPrefs": "Compte et préférences",
+    "invitePeople": "Inviter des personnes",
+    "addMembers": "Ajouter des membres à ta famille",
+    "sidePanelSettings": "Paramètres du panneau latéral",
+    "sidePanelSettingsDescription": "Personnaliser la mise en page et les cartes",
+    "switchUser": "Changer d'utilisateur",
+    "impersonateUser": "Emprunter une identité",
+    "switchToLight": "Passer au thème clair",
+    "switchToDark": "Passer au thème sombre",
+    "impersonating": "Identité empruntée",
+    "toggleThemeAppearance": "Changer l'apparence du thème"
+  },
+  "realtime": {
+    "newTaskTitle": "Nouvelle tâche créée",
+    "connected": "Tu reçois désormais les mises à jour en temps réel.",
+    "errorTitle": "Erreur en temps réel",
+    "parseTitle": "Erreur de message",
+    "parseMessage": "Échec de l'analyse du message du serveur",
+    "disabledTitle": "Connexion temporairement désactivée",
+    "failedTitle": "Échec de la connexion",
+    "stateConnectionError": "Une erreur de connexion s'est produite",
+    "stateAuthExpired": "Authentification expirée — actualisation du jeton...",
+    "stateTokenRefreshed": "Jeton actualisé — reconnexion...",
+    "stateRefreshInProgress": "Actualisation du jeton en cours — reconnexion imminente...",
+    "stateSessionExpired": "Session expirée — reconnecte-toi",
+    "stateAuthFailed": "Échec de l'authentification — reconnecte-toi",
+    "stateAuthError": "Erreur d'authentification — reconnecte-toi",
+    "stateTimeout": "Délai de connexion dépassé — reconnexion...",
+    "connectErrorTitle": "Erreur de connexion",
+    "connectErrorMessage": "Impossible d'établir la connexion en temps réel. Réessaie."
+  },
+  "removeAll": "Tout retirer",
+  "apply": "Appliquer",
+  "cancelAll": "Tout annuler",
+  "backFromSearch": "Quitter la recherche",
+  "notFound": {
+    "title": "Page introuvable",
+    "description": "Ce lien ne mène nulle part. Il a peut-être changé, ou l'adresse contient une faute de frappe.",
+    "goToMyTasks": "Aller à mes tâches",
+    "logIn": "Se connecter"
+  },
+  "pendingBadge": {
+    "completePending": "Fin de tâche en attente",
+    "skipPending": "Passage en attente",
+    "updatePending": "Modification en attente",
+    "createPending": "Création en attente",
+    "deletePending": "Suppression en attente",
+    "editHistoryPending": "Modification de l'historique en attente",
+    "deleteHistoryPending": "Suppression de l'historique en attente",
+    "reschedulePending": "Replanification en attente",
+    "archivePending": "Archivage en attente",
+    "restorePending": "Restauration en attente"
+  },
+  "sortAndFilter": {
+    "sortBy": "Trier par",
+    "ariaLabel": "Options de tri et de filtrage",
+    "title": "Tri et filtres",
+    "ascending": "Croissant",
+    "descending": "Décroissant",
+    "filter": "Filtrer"
+  },
+  "versionInfo": "Hopla {{version}}",
+  "versionInfoServer": "Hopla {{version}} (serveur {{serverVersion}})",
+  "sync": {
+    "aria": "Ouvrir l'état de synchronisation et du réseau",
+    "allSynced": "Toutes les modifications sont synchronisées",
+    "willSync": "Synchronisation dès le retour en ligne",
+    "cancelAll": "Tout annuler",
+    "commandLabels": {
+      "createChore": "Créer la tâche",
+      "updateChore": "Modifier la tâche",
+      "updateChoreHistory": "Modifier l'historique",
+      "completeChore": "Terminer la tâche",
+      "skipChore": "Passer la tâche",
+      "deleteChore": "Supprimer la tâche",
+      "deleteChoreHistory": "Supprimer l'historique",
+      "rescheduleChore": "Replanifier la tâche",
+      "archiveChore": "Archiver la tâche",
+      "unarchiveChore": "Restaurer la tâche",
+      "pendingAction": "Action en attente"
+    },
+    "never": "jamais",
+    "justNow": "à l'instant",
+    "secondsAgo": "il y a {{count}} s",
+    "minutesAgo": "il y a {{count}} min",
+    "hoursAgo": "il y a {{count}} h",
+    "online": "En ligne",
+    "offline": "Hors ligne",
+    "syncing": "Synchronisation...",
+    "lastSync": "Dernière synchronisation : {{time}}",
+    "offlineSince": "Hors ligne — {{duration}}",
+    "errorPrefix": "Erreur : {{message}}",
+    "pending": "En attente ({{count}})",
+    "failed": "Échecs ({{count}})",
+    "dismiss": "Ignorer",
+    "nextAutoSync": "Prochaine synchronisation automatique dans {{seconds}} s",
+    "checkingServer": "Vérification du serveur...",
+    "retryingIn": "Nouvelle tentative dans {{seconds}} s",
+    "syncNow": "Synchroniser maintenant",
+    "pendingSyncLabel_one": "{{count}} action en attente de synchronisation",
+    "pendingSyncLabel_other": "{{count}} actions en attente de synchronisation",
+    "pendingActionsTitle": "Actions en attente",
+    "actionsWaitingToSync_one": "{{count}} action en attente de synchronisation.",
+    "actionsWaitingToSync_other": "{{count}} actions en attente de synchronisation.",
+    "cancelActionAria": "Annuler {{label}}"
+  },
+  "attachments": "Pièces jointes",
+  "fileNumbered": "Fichier {{index}}",
+  "noAttachmentsTitle": "Aucune pièce jointe",
+  "noAttachmentsDescription": "Les photos et fichiers ajoutés à cette tâche apparaîtront ici.",
+  "kbSize": "{{size}} Ko",
+  "logoAlt": "Logo",
+  "notification": {
+    "error": "Erreur",
+    "success": "Succès",
+    "undoneSuccessfully": "Annulé avec succès",
+    "warning": "Avertissement",
+    "information": "Information",
+    "title": "Notification",
+    "unknown": "Notification inconnue",
+    "undo": "Annuler",
+    "dismiss": "Fermer"
+  },
+  "onboarding": {
+    "sources": {
+      "speak": "Dicter",
+      "snap": "Photographier",
+      "type": "Saisir"
+    },
+    "voiceWave": {
+      "listening": "Écoute en cours…"
+    },
+    "schedule": {
+      "due": "Échéance",
+      "done": "Terminé",
+      "next": "Suivante"
+    },
+    "family": {
+      "kitchenTitle": "Grand ménage de la cuisine",
+      "kitchenDue": "Échéance sam.",
+      "kitchenRepeat": "Toutes les semaines",
+      "takesTurns": "À tour de rôle"
+    },
+    "turns": {
+      "completed": "Terminée"
+    },
+    "widget": {
+      "today": "Aujourd'hui",
+      "left": "encore {{count}}"
+    },
+    "things": {
+      "monthly": "Tous les mois",
+      "daily": "Tous les jours",
+      "weekly": "Toutes les semaines"
+    },
+    "slides": {
+      "scheduleTitle": "La tâche revient exactement quand il faut"
+    },
+    "carousel": {
+      "skip": "Ignorer",
+      "ariaLabel": "Ce que tu peux faire avec Hopla",
+      "next": "Suivant"
+    },
+    "getStarted": {
+      "createAccount": "Créer un compte",
+      "alreadyHaveAccount": "J'ai déjà un compte",
+      "signIn": "Se connecter"
+    },
+    "heardAbout": {
+      "title": "Comment as-tu connu Hopla ?",
+      "subtitle": "Cela nous aide à savoir ce qui fonctionne. C'est entièrement facultatif.",
+      "continue": "Continuer",
+      "skip": "Ignorer",
+      "sources": {
+        "friend": "Amis ou famille",
+        "search": "Moteur de recherche",
+        "other": "Autre chose"
+      }
+    },
+    "privacy": {
+      "title": "Aide-nous à améliorer Hopla",
+      "subtitle": "Ton serveur, tes données. Ces deux options restent désactivées tant que tu ne les actives pas."
+    }
+  },
+  "familySetup": {
+    "inviteTitle": "Invite ta famille",
+    "inviteSubtitle": "Toutes les personnes qui rejoignent ta famille voient les mêmes tâches, prennent leur tour et restent synchronisées automatiquement.",
+    "joinTitle": "Rejoindre une famille",
+    "joinSubtitle": "Saisis le code qu'on t'a donné et nous enverrons une demande — un parent de la famille n'aura plus qu'à l'accepter.",
+    "loadingCode": "Chargement...",
+    "copyCodeAria": "Copier le code d'invitation",
+    "copyLinkInstead": "Copier le lien d'invitation à la place",
+    "continue": "Continuer",
+    "joinInstead": "Rejoindre plutôt une famille existante",
+    "codePlaceholder": "Saisis le code",
+    "joinButton": "Rejoindre la famille",
+    "back": "Retour",
+    "codeCopied": "Code copié dans le presse-papiers",
+    "linkCopied": "Lien copié dans le presse-papiers",
+    "requestSentTitle": "Demande envoyée",
+    "requestSentBody": "Ta demande a été envoyée ! Un parent de la famille devra l'accepter avant que tu puisses voir ses tâches. Tu recevras une notification dès que tu seras membre.",
+    "alreadyMember": "Tu fais déjà partie de cette famille",
+    "joinFailed": "Impossible de rejoindre la famille"
+  },
+  "joinFamily": {
+    "title": "Invitation à rejoindre une famille",
+    "incompleteTitle": "Lien d'invitation incomplet",
+    "incompleteSubtitle": "Il manque un code à ce lien d'invitation. Demande un nouveau lien à la personne qui te l'a transmis.",
+    "goToHopla": "Aller à Hopla",
+    "signedOutSubtitle": "Connecte-toi ou crée un compte Hopla pour continuer. Nous enverrons ta demande une fois la connexion effectuée.",
+    "signIn": "Se connecter",
+    "createAccount": "Créer un compte",
+    "sendingTitle": "Envoi de ta demande",
+    "sendingSubtitle": "Envoi de ta demande...",
+    "greetingSubtitle": "Bonjour {{name}}. Envoie une demande pour partager les tâches de cette famille.",
+    "adminReviewNote": "Un parent de la famille examinera ta demande avant de te donner accès.",
+    "sendRequest": "Envoyer la demande d'adhésion",
+    "requestSentTitle": "Demande envoyée",
+    "requestSentBody": "Ta demande a été envoyée. Un parent de la famille devra l'accepter avant que tu puisses voir ses tâches. Nous te préviendrons dès qu'elle sera acceptée.",
+    "gotIt": "J'ai compris",
+    "alreadyMember": "Tu fais déjà partie de cette famille",
+    "joinFailed": "Impossible de rejoindre la famille",
+    "requestError": "Impossible d'envoyer ta demande. Réessaie."
+  },
+  "selectUser": "Sélectionner un utilisateur",
+  "closeDialog": "Fermer la boîte de dialogue",
+  "activeFilterChips": {
+    "removeFilterAria": "Retirer le filtre {{label}}",
+    "addFilterCondition": "Ajouter une condition de filtre",
+    "moreCount": "+{{count}} de plus"
+  },
+  "filterBar": {
+    "filtersButton": "Filtres",
+    "clearAllButton": "Tout effacer",
+    "doneButton": "Terminé",
+    "showResults_one": "Afficher {{count}} résultat",
+    "showResults_other": "Afficher {{count}} résultats",
+    "selectedCount": "Sélection : {{count}}",
+    "dateRangeFallback": "Plage de dates",
+    "fromDate": "À partir du {{date}}",
+    "untilDate": "Jusqu'au {{date}}",
+    "presetToday": "Aujourd'hui",
+    "presetYesterday": "Hier",
+    "presetThisWeek": "Cette semaine",
+    "presetLast7Days": "7 derniers jours",
+    "presetThisMonth": "Ce mois-ci",
+    "presetLast30Days": "30 derniers jours",
+    "presetLast3Months": "3 derniers mois"
+  },
+  "liveTask": {
+    "title": {
+      "completed": "Tâche terminée",
+      "updated": "Tâche modifiée",
+      "status": "Statut de tâche modifié",
+      "skipped": "Tâche passée"
+    },
+    "message": "{{name}} : {{task}}"
+  },
+  "momentCalendar": {
+    "today": "[Aujourd’hui]",
+    "tomorrow": "[Demain]",
+    "yesterday": "[Hier]",
+    "lastWeek": "dddd [dernier]"
+  },
+  "network": {
+    "serverUnreachable": "Serveur injoignable. Les changements seront envoyés au retour de la connexion.",
+    "noInternet": "Pas de connexion Internet. Certaines fonctions peuvent manquer."
+  },
+  "attachment": "Pièce jointe",
+  "download": "Télécharger",
+  "note": "Note",
+  "family": {
+    "tabs": {
+      "progress": "Progrès",
+      "missions": "Missions",
+      "shop": "Boutique",
+      "journal": "Journal"
+    },
+    "hops_one": "{{count}} {{unit}}",
+    "hops_other": "{{count}} {{units}}",
+    "days_one": "{{count}} j",
+    "days_other": "{{count}} j",
+    "earned": "{{units}} gagné{{e}}s",
+    "earnedShort": "gagnés",
+    "toNextRank": "Vers le rang suivant",
+    "adjustFor": "Bonus ou pénalité pour {{name}}",
+    "manageHint": "Régler les quêtes, défis et périodes bonus",
+    "home": "À la maison",
+    "away": "Pas là",
+    "markAway": "Mettre en pause ses tâches : pas là",
+    "markHome": "De retour à la maison",
+    "week": {
+      "title": "Cette semaine",
+      "tasks_one": "{{count}} tâche",
+      "tasks_other": "{{count}} tâches",
+      "games_one": "{{count}} partie",
+      "games_other": "{{count}} parties",
+      "fromTasks": "tâches",
+      "fromGames": "jeux",
+      "fromBonus": "bonus",
+      "label": "{{Units}} de la semaine : {{tasks}} des tâches, {{games}} des jeux, {{bonus}} de bonus",
+      "away_one": "Pas là {{count}} jour cette semaine",
+      "away_other": "Pas là {{count}} jours cette semaine"
+    }
+  },
+  "shop": {
+    "pending": "Demandes à valider",
+    "rewards": "Récompenses"
+  },
+  "manage": {
+    "groups": {
+      "organize": "Organiser",
+      "parent": "Espace parent",
+      "account": "Compte"
+    },
+    "items": {
+      "tasks": {
+        "title": "Tâches",
+        "description": "Étiquettes, routines et archives"
+      },
+      "rewards": {
+        "title": "Récompenses",
+        "description": "Ce qu’on peut s’offrir avec ses {{units}}, et les bonus préparés"
+      },
+      "missions": {
+        "title": "Missions",
+        "description": "Quêtes, défis et périodes bonus"
+      },
+      "ranks": {
+        "title": "Rangs et règles",
+        "description": "Les rangs, les séries et la tâche surprise"
+      },
+      "learn": {
+        "title": "Modules d’apprentissage",
+        "description": "Choisir les jeux de chacun et leurs {{units}}"
+      },
+      "family": {
+        "title": "Famille",
+        "description": "Membres, comptes des enfants et fuseau horaire"
+      },
+      "account": {
+        "title": "Mon compte",
+        "description": "Profil, sécurité, thème et langue"
+      },
+      "advanced": {
+        "title": "Avancé",
+        "description": "Calendrier, connexions, modèle, hors ligne et remise à zéro"
+      }
+    },
+    "tabs": {
+      "tasks": {
+        "labels": "Étiquettes",
+        "routines": "Routines",
+        "archived": "Archives"
+      },
+      "rewards": {
+        "rewards": "Récompenses",
+        "presets": "Bonus préparés"
+      },
+      "missions": {
+        "quests": "Quêtes",
+        "challenges": "Défis",
+        "periods": "Périodes bonus"
+      },
+      "ranks": {
+        "ranks": "Rangs",
+        "rules": "Règles"
+      },
+      "family": {
+        "members": "Membres",
+        "children": "Enfants",
+        "settings": "Réglages"
+      },
+      "account": {
+        "profile": "Profil",
+        "security": "Sécurité",
+        "appearance": "Apparence"
+      }
+    }
+  },
+  "familyTimezone": {
+    "differs": "Cet appareil est à l'heure de {{device}}, la famille à celle de {{family}}. Hopla affiche l'heure de la famille.",
+    "move": "Passer la famille à cette heure",
+    "ignore": "Ignorer sur cet appareil",
+    "moved": "La famille passe à l'heure de {{city}}",
+    "movedMessage": "Les tâches gardent leur heure de la journée.",
+    "moveFailed": "Le fuseau n'a pas pu être changé"
+  },
+  "currency": {
+    "hops": {
+      "one": "hop",
+      "other": "hops",
+      "of": "de hops",
+      "a": "un hop",
+      "e": ""
+    },
+    "points": {
+      "one": "point",
+      "other": "points",
+      "of": "de points",
+      "a": "un point",
+      "e": ""
+    },
+    "stars": {
+      "one": "étoile",
+      "other": "étoiles",
+      "of": "d'étoiles",
+      "a": "une étoile",
+      "e": "e"
+    },
+    "carrots": {
+      "one": "carotte",
+      "other": "carottes",
+      "of": "de carottes",
+      "a": "une carotte",
+      "e": "e"
+    },
+    "coins": {
+      "one": "pièce",
+      "other": "pièces",
+      "of": "de pièces",
+      "a": "une pièce",
+      "e": "e"
+    },
+    "tokens": {
+      "one": "jeton",
+      "other": "jetons",
+      "of": "de jetons",
+      "a": "un jeton",
+      "e": ""
+    }
+  }
+}

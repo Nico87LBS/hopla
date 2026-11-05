@@ -13,6 +13,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import ChronoChip from '../../components/common/ChronoChip'
+import DeadlineChip from '../../components/common/DeadlineChip'
 import RoutineChip from '../../components/common/RoutineChip'
 import TaskMode from '../../components/common/TaskMode'
 import { HOPLA, memberColor } from '../../constants/theme'
@@ -25,6 +26,7 @@ import {
 import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries'
 import { useNotification } from '../../service/NotificationProvider'
 import { isTogether, taskMemberIds } from '../../utils/Chores.jsx'
+import { deadlineOf } from '../../utils/deadline'
 import {
   ApproveChore,
   MarkChoreComplete,
@@ -423,6 +425,13 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
     }))
   })
   const ahead = slotted ? new Set() : doneCopies(chores, now)
+  // The deadline of the first copy still to do.
+  const deadlineCopy = chores.find(
+    chore =>
+      deadlineOf(chore) &&
+      !ahead.has(chore.id) &&
+      chore.status !== PENDING_APPROVAL,
+  )
   // The speed bonus still to win on one of the copies.
   const { data: flashes } = useFlashes()
   const flash =
@@ -511,12 +520,15 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
           >
             {first.name}
           </Typography>
-          {(mode || meta.length > 0 || flash || inRoutine) && (
+          {(mode || meta.length > 0 || flash || inRoutine || deadlineCopy) && (
             <Typography
               level='body-xs'
               sx={{ color: 'text.secondary', mt: 0.25 }}
             >
               <ChronoChip flash={flash} sx={{ mr: 0.75 }} />
+              {deadlineCopy && (
+                <DeadlineChip chore={deadlineCopy} sx={{ mr: 0.75 }} />
+              )}
               <RoutineChip chores={chores} sx={{ mr: 0.75 }} />
               <TaskMode mode={mode} />
               {mode && meta.length > 0 && ' · '}

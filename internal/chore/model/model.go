@@ -80,6 +80,7 @@ type Chore struct {
 	Points                 *int                       `json:"points,omitempty" gorm:"column:points"`                                                  // Points for completing the chore
 	FlashPoints            *int                       `json:"flashPoints,omitempty" gorm:"column:flash_points"`                                       // Flash bonus: extra points when done in time
 	FlashMinutes           *int                       `json:"flashMinutes,omitempty" gorm:"column:flash_minutes"`                                     // Flash bonus: minutes after the due time it stays open
+	DeadlineMinutes        *int                       `json:"deadlineMinutes,omitempty" gorm:"column:deadline_minutes"`                               // Minutes after the due time the task is missed
 	Description            *string                    `json:"description,omitempty" gorm:"type:text;column:description"`                              // Description of the chore
 	SubTasks               *[]stModel.SubTask         `json:"subTasks,omitempty" gorm:"foreignkey:ChoreID;references:ID"`                             // Subtasks for the chore
 	RequireApproval        bool                       `json:"requireApproval" gorm:"column:require_approval"`                                         // Whether chore completion requires admin approval
@@ -189,6 +190,32 @@ type SlotStatus struct {
 // HasSlots reports whether the task is done at several times of the day.
 func (c *Chore) HasSlots() bool {
 	return c.FrequencyMetadataV2 != nil && len(c.FrequencyMetadataV2.Slots) > 0
+}
+
+// MaxDeadlineMinutes bounds how long after its due time a task can stay to
+// do: a year.
+const MaxDeadlineMinutes = 366 * 24 * 60
+
+// DeadlineAllowed reports whether a task of this frequency can have a
+// deadline: one with a due date that does not depend on when it is done, and
+// without slots, whose own times already close.
+func DeadlineAllowed(frequencyType FrequencyType, metadata *FrequencyMetadata) bool {
+	switch frequencyType {
+	case FrequencyTypeAlways, FrequencyTypeTrigger, FrequencyTypeAdaptive:
+		return false
+	}
+	return metadata == nil || len(metadata.Slots) == 0
+}
+
+// DeadlineAt returns when the task's current passage is missed, or nil when
+// it has no deadline.
+func (c *Chore) DeadlineAt() *time.Time {
+	if c.NextDueDate == nil || c.DeadlineMinutes == nil || *c.DeadlineMinutes <= 0 ||
+		!DeadlineAllowed(c.FrequencyType, c.FrequencyMetadataV2) {
+		return nil
+	}
+	at := c.NextDueDate.UTC().Add(time.Duration(*c.DeadlineMinutes) * time.Minute)
+	return &at
 }
 
 type Weekpattern string

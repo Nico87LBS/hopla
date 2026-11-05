@@ -65,3 +65,27 @@ func TestJournalMixesLedgerAndTasksWithoutPoints(t *testing.T) {
 	require.Equal(t, pModel.PointsHistoryActionBonus, rows[0].Action)
 	require.Equal(t, pModel.PointsHistoryActionGame, rows[1].Action)
 }
+
+// A task missed shows in the journal, without hops, for whoever missed it.
+func TestJournalShowsTasksMissed(t *testing.T) {
+	r, db := setup(t)
+	at := time.Date(2026, 11, 5, 20, 0, 0, 0, time.UTC)
+	chore := chModel.Chore{Name: "Ranger la chambre", FamilyID: 1, CreatedBy: 1}
+	other := chModel.Chore{Name: "Autre famille", FamilyID: 9, CreatedBy: 1}
+	require.NoError(t, db.Create(&chore).Error)
+	require.NoError(t, db.Create(&other).Error)
+	for _, c := range []chModel.Chore{chore, other} {
+		require.NoError(t, db.Create(&chModel.ChoreHistory{ChoreID: c.ID, CompletedBy: 2, PerformedAt: &at,
+			Status: chModel.ChoreHistoryStatusMissed}).Error)
+	}
+	skipped := at.Add(time.Minute)
+	require.NoError(t, db.Create(&chModel.ChoreHistory{ChoreID: chore.ID, CompletedBy: 2, PerformedAt: &skipped,
+		Status: chModel.ChoreHistoryStatusSkipped}).Error)
+
+	rows, _, err := r.Journal(context.Background(), 1, 3, JournalFilter{Kind: JournalTasks})
+	require.NoError(t, err)
+	require.Len(t, rows, 1, "neither the other family nor a skip")
+	require.True(t, rows[0].Missed)
+	require.Equal(t, 2, rows[0].UserID)
+	require.Equal(t, "Ranger la chambre", *rows[0].ChoreName)
+}
