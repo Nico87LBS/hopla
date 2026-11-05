@@ -238,6 +238,7 @@ func GetRoutineOccurrence(db *gorm.DB, familyID, occurrenceID int, now time.Time
 }
 
 type RoutineOverrideInput struct {
+	Action string
 	ItemID int
 	Source string
 	Reason string
@@ -301,6 +302,74 @@ func SkipRoutineOccurrenceItem(db *gorm.DB, familyID, occurrenceID int, input Ro
 		if err := tx.Create(&override).Error; err != nil { return err }
 		if err := settleRoutineOccurrence(tx, &run, now); err != nil { return err }
 		return tx.Preload("Items", func(q *gorm.DB) *gorm.DB { return q.Order("position") }).First(&run, run.ID).Error
+	})
+	if err != nil { return nil, err }
+	return GetRoutineOccurrence(db, familyID, occurrenceID, now)
+}
+
+
+func RestoreRoutineOccurrenceItem(db *gorm.DB, familyID, occurrenceID int, input RoutineOverrideInput, now time.Time) (*RoutineOccurrence, error) {
+	input.Source = strings.TrimSpace(input.Source)
+	input.Reason = strings.TrimSpace(input.Reason)
+	input.ExternalReference = strings.TrimSpace(input.ExternalReference)
+	input.IdempotencyKey = strings.TrimSpace(input.IdempotencyKey)
+	if input.ItemID <= 0 || input.Source != "external" || input.ExternalReference == "" ||
+		input.IdempotencyKey == "" || len(input.Reason) > 300 || len(input.ExternalReference) > 160 ||
+		(input.ExpiresAt != nil && (!input.ExpiresAt.After(now) || input.ExpiresAt.After(now.Add(48*time.Hour)))) {
+		return nil, ErrRoutineOccurrenceInvalid
+	}
+	var run RoutineOccurrence
+	err := db.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Clauses(clause.Locking{Strength:"UPDATE"}).
+			Where("id = ? AND family_id = ?", occurrenceID, familyID).First(&run).Error; err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) { return ErrRoutineOccurrenceNotFound }
+			return err
+		}
+		if run.Status != RoutineOccurrenceActive || !now.Before(run.ExpiresAt) { return ErrRoutineOccurrenceExpired }
+		var item RoutineOccurrenceItem
+		if err := tx.Clauses(clause.Locking{Strength:"UPDATE"}).
+			Where("id = ? AND occurrence_id = ?", input.ItemID, occurrenceID).First(&item).Error; err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) { return ErrRoutineOccurrenceItemNotFound }
+			return err
+		}
+		var existing RoutineOverride
+		err := tx.Where("occurrence_id = ? AND item_id = ? AND idempotency_key = ?", occurrenceID, item.ID, input.IdempotencyKey).First(&existing).Error
+		if err == nil {
+			if existing.Action != "restore" || existing.Reason != input.Reason || existing.ExternalReference != input.ExternalReference {
+				return ErrRoutineOccurrenceConflict
+			}
+			return nil
+		}
+		if !errors.Is(err, gorm.ErrRecordNotFound) { return err }
+		if item.Status != RoutineOccurrenceItemSkipped { return ErrRoutineOccurrenceConflict }
+		var latest RoutineOverride
+		if err := tx.Where("occurrence_id = ? AND item_id = ?", occurrenceID, item.ID).Order("created_at DESC").First(&latest).Error; err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) { return ErrRoutineOccurrenceConflict }
+			return err
+		}
+		if latest.Source != "external" || latest.Action != "skip" || latest.RevokedAt != nil {
+			return ErrRoutineOccurrenceConflict
+		}
+		var dependentSteps []int
+		if err := tx.Model(&RoutineDependency{}).Where("routine_id = ? AND depends_on_step_id = ?", run.RoutineID, item.StepID).
+			Pluck("step_id", &dependentSteps).Error; err != nil { return err }
+		var completed int64
+		if len(dependentSteps) > 0 {
+			if err := tx.Model(&RoutineOccurrenceItem{}).Where("occurrence_id = ? AND step_id IN ? AND status = ?",
+				run.ID, dependentSteps, RoutineOccurrenceItemCompleted).Count(&completed).Error; err != nil { return err }
+		}
+		if completed > 0 { return ErrRoutineOccurrenceConflict }
+		if err := tx.Model(&item).Updates(map[string]any{"status":RoutineOccurrenceItemPending,"updated_at":now.UTC()}).Error; err != nil { return err }
+		if err := tx.Model(&latest).Update("revoked_at", now.UTC()).Error; err != nil { return err }
+		key := input.IdempotencyKey
+		override := RoutineOverride{
+			FamilyID:familyID, OccurrenceID:occurrenceID, ItemID:item.ID,
+			Action:"restore", Source:"external", Reason:input.Reason,
+			ExternalReference:input.ExternalReference, IdempotencyKey:&key,
+			ExpiresAt:input.ExpiresAt, CreatedAt:now.UTC(),
+		}
+		if err := tx.Create(&override).Error; err != nil { return err }
+		return settleRoutineOccurrence(tx, &run, now)
 	})
 	if err != nil { return nil, err }
 	return GetRoutineOccurrence(db, familyID, occurrenceID, now)
