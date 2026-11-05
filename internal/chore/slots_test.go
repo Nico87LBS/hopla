@@ -111,7 +111,19 @@ func TestSlotStatuses(t *testing.T) {
 func TestNormalizeSlots(t *testing.T) {
 	metadata := &chModel.FrequencyMetadata{Slots: []chModel.Slot{{Name: " Soir ", Time: "19:30"}, {Name: "Matin", Time: "7:05"}}}
 	require.NoError(t, normalizeSlots(chModel.FrequencyTypeDaily, metadata))
-	require.Equal(t, []chModel.Slot{{Name: "Matin", Time: "07:05"}, {Name: "Soir", Time: "19:30"}}, metadata.Slots)
+	require.Len(t, metadata.Slots, 2)
+	require.Equal(t, "Matin", metadata.Slots[0].Name)
+	require.Equal(t, "07:05", metadata.Slots[0].Time)
+	require.Equal(t, "Soir", metadata.Slots[1].Name)
+	require.Equal(t, "19:30", metadata.Slots[1].Time)
+	require.NotEmpty(t, metadata.Slots[0].ID)
+	require.NotEmpty(t, metadata.Slots[1].ID)
+	morningID, eveningID := metadata.Slots[0].ID, metadata.Slots[1].ID
+	metadata.Slots[0].Name = "Matin renommé"
+	metadata.Slots[1].Time = "20:00"
+	require.NoError(t, normalizeSlots(chModel.FrequencyTypeDaily, metadata))
+	require.Equal(t, morningID, metadata.Slots[0].ID, "renaming does not change slot identity")
+	require.Equal(t, eveningID, metadata.Slots[1].ID, "retiming does not change slot identity")
 
 	weekly := &chModel.FrequencyMetadata{Slots: []chModel.Slot{{Time: "08:00"}}}
 	require.NoError(t, normalizeSlots(chModel.FrequencyTypeWeekly, weekly))
@@ -180,6 +192,7 @@ func newSlotTestRouter(t *testing.T) (*gin.Engine, *gorm.DB, *chModel.Chore) {
 			{Name: "Soir", Time: local.Add(5 * time.Hour).Format("15:04")},
 		}},
 	}
+	require.NoError(t, normalizeSlots(chore.FrequencyType, chore.FrequencyMetadataV2))
 	require.NoError(t, db.Create(chore).Error)
 	require.NoError(t, db.Create(&chModel.ChoreAssignees{ChoreID: chore.ID, UserID: child}).Error)
 
@@ -307,4 +320,57 @@ func TestSlotsFollowTheFamilyTimezone(t *testing.T) {
 	statuses = slotStatuses(context.Background(), chore, nil, now)
 	require.Equal(t, chModel.SlotOpen, statuses[0].State)
 	require.Equal(t, time.Date(2026, 10, 23, 7, 0, 0, 0, lisbon), statuses[0].At.In(lisbon))
+}
+ 
+func TestEnsureSlotIDsBackfillsExistingTasks(t *testing.T) {
+	_, db, _ := newSlotTestRouter(t)
+	legacy := teethChore("07:30", "19:30")
+	legacy.ID = 0
+	legacy.Name = "Legacy slots"
+	legacy.FamilyID = 1
+	require.NoError(t, db.Create(legacy).Error)
+	require.NoError(t, chModel.EnsureSlotIDs(db))
+	var stored chModel.Chore
+	require.NoError(t, db.First(&stored, legacy.ID).Error)
+	require.Len(t, stored.FrequencyMetadataV2.Slots, 2)
+	firstID, secondID := stored.FrequencyMetadataV2.Slots[0].ID, stored.FrequencyMetadataV2.Slots[1].ID
+	require.NotEmpty(t, firstID)
+	require.NotEmpty(t, secondID)
+	require.NoError(t, chModel.EnsureSlotIDs(db))
+	require.NoError(t, db.First(&stored, legacy.ID).Error)
+	require.Equal(t, firstID, stored.FrequencyMetadataV2.Slots[0].ID)
+	require.Equal(t, secondID, stored.FrequencyMetadataV2.Slots[1].ID)
+}
+
+func TestCannotDeleteASlotReferencedByARoutine(t *testing.T) {
+	_, db, chore := newSlotTestRouter(t)
+	morningID := chore.FrequencyMetadataV2.Slots[0].ID
+	require.NotEmpty(t, morningID)
+	require.NoError(t, db.Exec("INSERT INTO routines (id, family_id, name) VALUES (?, ?, ?)", 1, 1, "Matin").Error)
+	require.NoError(t, db.Exec("INSERT INTO routine_steps (routine_id, position, chore_id, slot_id, required) VALUES (?, ?, ?, ?, ?)",
+		1, 0, chore.ID, morningID, true).Error)
+
+	updated := *chore
+	updated.FrequencyMetadataV2 = &chModel.FrequencyMetadata{
+		Timezone: chore.FrequencyMetadataV2.Timezone,
+		Slots: append([]chModel.Slot(nil), chore.FrequencyMetadataV2.Slots[1:]...),
+	}
+	cfg := &config.Config{}
+	cfg.Database.Type = "sqlite"
+	repository := chRepo.NewChoreRepository(db, cfg)
+	err := repository.UpdateChoreVisibility(context.Background(), &updated, []int{2})
+	require.ErrorIs(t, err, chRepo.ErrRoutineSlotInUse)
+}
+
+
+func TestEnsureHistorySlotIDsBackfillsLegacySlotIndexes(t *testing.T) {
+	_, db, chore := newSlotTestRouter(t)
+	index := 1
+	history := chModel.ChoreHistory{ChoreID:chore.ID,Slot:&index}
+	require.NoError(t,db.Create(&history).Error)
+	require.NoError(t,chModel.EnsureHistorySlotIDs(db))
+	var stored chModel.ChoreHistory
+	require.NoError(t,db.First(&stored,history.ID).Error)
+	require.NotNil(t,stored.SlotID)
+	require.Equal(t,chore.FrequencyMetadataV2.Slots[index].ID,*stored.SlotID)
 }

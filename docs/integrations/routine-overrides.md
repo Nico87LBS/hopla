@@ -1,10 +1,10 @@
 # Routine overrides for external integrations
 
-Hopla exposes a narrowly scoped integration token for services such as Home Assistant. The token can only list active routine occurrences and apply skip/restore overrides; it cannot read the rest of the family's data or modify tasks.
+Hopla exposes a narrowly scoped integration token for services such as Home Assistant. The token can only list routine occurrences and apply skip/restore overrides; it cannot read the rest of the family's data or modify tasks.
 
 ## Create and revoke a token
 
-A family parent creates a token with the normal Hopla API authentication:
+A family parent creates a token through the normal authenticated Hopla API:
 
 ```http
 POST /api/v1/games/routines/integrations
@@ -27,7 +27,7 @@ GET /integration/v1/games/routines/occurrences
 X-Hopla-Routine-Token: <routine-integration-token>
 ```
 
-The response contains only active, unexpired occurrences in that token's family. Each occurrence includes its ID, member ID, routine name, start and expiry timestamps, and items. Items expose their task name, selected slot ID (if any), status, position, and whether they are currently available.
+The response contains unexpired active occurrences, plus finished occurrences that still have pending optional items, in that token's family. Each occurrence includes its ID, member ID, routine name, start and expiry timestamps, and items. Items expose their task name, selected slot ID (if any), status, position, and whether they are currently available.
 
 ## Skip an item
 
@@ -48,7 +48,7 @@ Content-Type: application/json
 }
 ```
 
-For a skip, `expiresAt` is required and must be in the future, no more than 48 hours away. The idempotency key is scoped to the occurrence item; retries with the same key and payload are safe.
+For a skip, `expiresAt` is required and must be in the future, no more than 48 hours away, and no later than the occurrence expiry. The idempotency key is scoped to the occurrence item; retries with the same key and payload are safe.
 
 ## Restore an externally skipped item
 

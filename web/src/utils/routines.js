@@ -52,24 +52,46 @@ export const taskKey = name => (name || '').trim().toLowerCase()
 // routineTasks lists the tasks a routine can chain: one per name (the copies
 // of a task are one step), active, minus the ones already in another routine.
 export const routineTasks = (chores, routines, editingId) => {
-  const taken = new Set()
+  const taken = new Map()
   for (const routine of routines || []) {
     if (routine.id === editingId) continue
-    for (const id of routine.choreIds || []) {
+    ;(routine.choreIds || []).forEach((id, index) => {
       const chore = chores.find(c => c.id === id)
-      if (chore) taken.add(taskKey(chore.name))
+      if (!chore) return
+      const key = taskKey(chore.name)
+      if (!taken.has(key)) taken.set(key, new Set())
+      const slotId = routine.slotIds?.[index] || ''
+      taken.get(key).add(slotId || '*')
+    })
+  }
+
+  const byName = new Map()
+  for (const chore of chores) {
+    if (chore.isActive === false) continue
+    const used = taken.get(taskKey(chore.name)) || new Set()
+    if (used.has('*')) continue
+    const slots = chore.frequencyMetadata?.slots || []
+    let available
+    if (slots.length) {
+      available = slots.filter(slot => slot.id && !used.has(slot.id))
+      if (available.length === 0) continue
+    } else {
+      if (used.size) continue
+      available = []
+    }
+    const key = taskKey(chore.name)
+    if (!byName.has(key)) {
+      byName.set(key, {
+        ...chore,
+        routineAvailableSlots: available,
+        routineCanUseAllSlots: used.size === 0,
+      })
     }
   }
-  const seen = new Set()
-  return chores
-    .filter(chore => chore.isActive !== false)
-    .filter(chore => {
-      const key = taskKey(chore.name)
-      if (taken.has(key) || seen.has(key)) return false
-      seen.add(key)
-      return true
-    })
-    .sort((a, b) => a.name.localeCompare(b.name))
+
+  // A step represents all member copies of a task, even when their names
+  // differ only by surrounding whitespace or letter case.
+  return [...byName.values()].sort((a, b) => a.name.localeCompare(b.name))
 }
 
 // moveStep moves the step at index by delta (-1 up, +1 down).

@@ -591,6 +591,8 @@ definitions:
       slot:
         description: The slot of the day, for a task done several times a day
         type: integer
+      slotId:
+        type: string
       status:
         allOf:
         - $ref: '#/definitions/model.ChoreHistoryStatus'
@@ -757,6 +759,8 @@ definitions:
     - NotificationTemplateUnitDay
   model.Slot:
     properties:
+      id:
+        type: string
       name:
         type: string
       time:
@@ -803,6 +807,8 @@ definitions:
       name:
         type: string
       opensAt:
+        type: string
+      slotId:
         type: string
       state:
         $ref: '#/definitions/model.SlotState'

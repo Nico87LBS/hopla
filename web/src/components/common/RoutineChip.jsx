@@ -14,19 +14,38 @@ const RoutineChip = ({ chores, sx, userId }) => {
   const { t } = useTranslation('chores')
   const { data: routines } = useRoutinesToday()
   const steps = chores
-    .map(chore => routineStepOf(routines, chore, userId))
-    .filter(Boolean)
+    .map(chore => ({
+      chore,
+      step: routineStepOf(routines, chore, userId),
+    }))
+    .filter(({ step }) => Boolean(step))
   if (steps.length === 0) return null
-  const [step] = steps
   const nameOnly = chores.length > 1
+  const selected =
+    steps.find(({ chore, step }) =>
+      step.progress.occurrence?.items?.some(
+        item => item.choreId === chore.id && item.available,
+      ),
+    ) || steps[0]
+  const { chore: selectedChore, step } = selected
   const { progress, routine } = step
+  const selectedChoreId = selectedChore.id
+  const occurrence = progress.occurrence
+  const routineName = occurrence?.routineName || routine.name
+  const occurrenceItem = occurrence?.items?.find(
+    item => item.choreId === selectedChoreId && item.available,
+  )
+  const stepNumber = occurrenceItem
+    ? occurrenceItem.position + 1
+    : progress.step
+  const stepTotal = occurrence ? occurrence.items.length : progress.total
   return (
     <Box
       component='span'
       title={t('routines.stepTitle', {
-        name: routine.name,
-        step: progress.step,
-        total: progress.total,
+        name: routineName,
+        step: stepNumber,
+        total: stepTotal,
       })}
       sx={theme => ({
         alignItems: 'center',
@@ -54,11 +73,11 @@ const RoutineChip = ({ chores, sx, userId }) => {
         component='span'
         sx={{ overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0 }}
       >
-        {routine.name}
+        {routineName}
       </Box>
       {!nameOnly && (
         <span>
-          {t('routines.step', { step: progress.step, total: progress.total })}
+          {t('routines.step', { step: stepNumber, total: stepTotal })}
         </span>
       )}
     </Box>

@@ -62,7 +62,11 @@ func AuthenticateRoutineIntegrationToken(db *gorm.DB, secret string, now time.Ti
 func ListRoutineIntegrationTokens(db *gorm.DB, familyID int) ([]RoutineIntegrationToken, error) {
 	var tokens []RoutineIntegrationToken
 	err := db.Where("family_id = ?", familyID).Order("created_at DESC").Find(&tokens).Error
-	return tokens, err
+	if err != nil { return nil, err }
+	// Never return the stored token fingerprint to callers; it is only used
+	// internally for authentication and uniqueness checks.
+	for i := range tokens { tokens[i].TokenHash = "" }
+	return tokens, nil
 }
 
 func RevokeRoutineIntegrationToken(db *gorm.DB, familyID, tokenID int, now time.Time) error {

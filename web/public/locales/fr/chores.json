@@ -1235,7 +1235,9 @@
   },
   "routines": {
     "step": "{{step}}/{{total}}",
-    "stepTitle": "Routine « {{name}} » : étape {{step}} sur {{total}}"
+    "stepTitle": "Routine « {{name}} » : étape {{step}} sur {{total}}",
+    "skip": "Ignorer cette étape",
+    "skipFailed": "Impossible d’ignorer cette étape."
   },
   "todayPanel": {
     "label": "Résumé du jour",

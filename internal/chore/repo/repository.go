@@ -20,6 +20,8 @@ import (
 	"gorm.io/gorm/clause"
 )
 
+var ErrRoutineSlotInUse = errors.New("a slot used by a routine cannot be deleted")
+
 type ChoreRepository struct {
 	db     *gorm.DB
 	dbType string
@@ -143,6 +145,30 @@ func (r *ChoreRepository) UpdateChoreVisibility(ctx context.Context, chore *chMo
 		if err := lockedQuery().Where("chore_id = ?", chore.ID).Find(&previousAssignees).Error; err != nil {
 			return err
 		}
+		var referencedSlots []string
+		// Routine tables are installed by the application migration. Some
+		// focused repository tests and older maintenance tools intentionally
+		// open a partial schema; without routine_steps there can be no slot
+		// references to protect.
+		if tx.Migrator().HasTable("routine_steps") {
+			if err := tx.Table("routine_steps").
+				Select("routine_steps.slot_id").
+				Joins("JOIN chores AS routine_chore ON routine_chore.id = routine_steps.chore_id").
+				Where("routine_chore.family_id = ? AND LOWER(TRIM(routine_chore.name)) = LOWER(TRIM(?)) AND routine_steps.slot_id <> ''",
+					chore.FamilyID, previousChore.Name).
+				Pluck("routine_steps.slot_id", &referencedSlots).Error; err != nil {
+				return err
+			}
+		}
+		availableSlots := map[string]bool{}
+		if chore.FrequencyMetadataV2 != nil {
+			for _, slot := range chore.FrequencyMetadataV2.Slots { availableSlots[slot.ID] = true }
+		}
+		for _, slotID := range referencedSlots {
+			if !availableSlots[slotID] { return ErrRoutineSlotInUse }
+		}
+
+
 		previousAssigneeIDs := make([]int, 0, len(previousAssignees))
 		for _, assignee := range previousAssignees {
 			previousAssigneeIDs = append(previousAssigneeIDs, assignee.UserID)

@@ -3,7 +3,6 @@ package database
 import (
 	"embed"
 	"fmt"
-	"os"
 
 	migrate "github.com/rubenv/sql-migrate"
 	"gorm.io/gorm"
@@ -59,6 +58,11 @@ func Migration(db *gorm.DB) error {
 		games.RoutineStep{},
 		games.RoutineDependency{},
 		games.RoutineWin{},
+		games.RoutineOccurrence{},
+		games.RoutineOccurrenceItem{},
+		games.RoutineOccurrenceDependency{},
+		games.RoutineIntegrationToken{},
+		games.RoutineOverride{},
 		learn.Module{},
 		learn.Activation{},
 		learn.PersonSetting{},
@@ -83,6 +87,13 @@ func Migration(db *gorm.DB) error {
 		rwModel.RewardRedemption{},
 		calModel.CalendarToken{},
 	); err != nil {
+		return err
+	}
+
+	if err := chModel.EnsureSlotIDs(db); err != nil {
+		return err
+	}
+	if err := chModel.EnsureHistorySlotIDs(db); err != nil {
 		return err
 	}
 
@@ -112,19 +123,7 @@ func MigrationScripts(gormDB *gorm.DB, cfg *config.Config) error {
 	if err != nil {
 		return err
 	}
-	var n int
-	if cfg.Database.Type == "sqlite" {
-
-		path := os.Getenv("HOPLA_SQLITE_PATH")
-		if path == "" {
-			path = "hopla.db"
-		}
-		n, err = migrate.Exec(db, "sqlite3", migrations, migrate.Up)
-	} else if cfg.Database.Type == "postgres" {
-		n, err = migrate.Exec(db, "postgres", migrations, migrate.Up)
-	}
-
-	n, err = migrate.Exec(db, dialect, migrations, migrate.Up)
+	n, err := migrate.Exec(db, dialect, migrations, migrate.Up)
 	if err != nil {
 		return err
 	}

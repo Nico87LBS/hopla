@@ -23,9 +23,14 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { HOPLA } from '../../constants/theme'
-import { useChores } from '../../queries/ChoreQueries'
+import { useChores, useRoutinesToday } from '../../queries/ChoreQueries'
 import { useNotification } from '../../service/NotificationProvider'
-import { DeleteRoutine, GetRoutines, SaveRoutine } from '../../utils/Fetcher'
+import {
+  DeleteRoutine,
+  GetRoutines,
+  SaveRoutine,
+  SkipRoutineOccurrenceItem,
+} from '../../utils/Fetcher'
 import { moveStep, routineTasks } from '../../utils/routines'
 import { surfaceSx } from './GameParts'
 import { CardHeader, sendOrWarn, useConfirmDelete } from './Progression'
@@ -35,50 +40,71 @@ const MAX_STEPS = 20
 const emptyRoutine = () => ({
   name: '',
   bonus: 5,
+  validityMinutes: 720,
   choreIds: [],
+  slotIds: [],
   dependencies: [],
-  optionalChoreIds: [],
+  optionalStepIds: [],
 })
 
-const remapDependencies = (draft, choreIds) => {
-  const positions = new Map(choreIds.map((id, index) => [id, index + 1]))
-  const oldPositions = new Map(
-    draft.choreIds.map((id, index) => [index + 1, id]),
-  )
-  return (draft.dependencies || [])
-    .filter(
-      edge =>
-        oldPositions.has(edge.stepId) && oldPositions.has(edge.dependsOnStepId),
-    )
-    .filter(
-      edge =>
-        positions.has(oldPositions.get(edge.stepId)) &&
-        positions.has(oldPositions.get(edge.dependsOnStepId)),
-    )
-    .map(edge => ({
-      stepId: positions.get(oldPositions.get(edge.stepId)),
-      dependsOnStepId: positions.get(oldPositions.get(edge.dependsOnStepId)),
-    }))
-}
-
-const moveRoutineStep = (draft, index, delta) => {
-  const choreIds = moveStep(draft.choreIds, index, delta)
-  return {
-    ...draft,
-    choreIds,
-    dependencies: remapDependencies(draft, choreIds),
+const remapAfterMove = (dependencies, index, delta) => {
+  const movedTo = index + delta
+  const movePosition = position => {
+    const oldIndex = position - 1
+    if (oldIndex === index) return movedTo + 1
+    if (oldIndex === movedTo) return index + 1
+    return position
   }
+  return (dependencies || []).map(edge => ({
+    stepId: movePosition(edge.stepId),
+    dependsOnStepId: movePosition(edge.dependsOnStepId),
+  }))
 }
 
-const removeRoutineStep = (draft, id) => {
-  const choreIds = draft.choreIds.filter(other => other !== id)
+const moveRoutineStep = (draft, index, delta) => ({
+  ...draft,
+  choreIds: moveStep(draft.choreIds, index, delta),
+  slotIds: moveStep(
+    draft.slotIds || draft.choreIds.map(() => ''),
+    index,
+    delta,
+  ),
+  dependencies: remapAfterMove(draft.dependencies, index, delta),
+  optionalStepIds: remapAfterMove(
+    (draft.optionalStepIds || []).map(stepId => ({
+      stepId,
+      dependsOnStepId: stepId,
+    })),
+    index,
+    delta,
+  ).map(edge => edge.stepId),
+})
+
+const removeRoutineStep = (draft, index) => {
+  const choreIds = draft.choreIds.filter((_, position) => position !== index)
+  const slotIds = (draft.slotIds || []).filter(
+    (_, position) => position !== index,
+  )
+  const removedPosition = index + 1
+  const remapPosition = position =>
+    position > removedPosition ? position - 1 : position
   return {
     ...draft,
     choreIds,
-    dependencies: remapDependencies(draft, choreIds),
-    optionalChoreIds: (draft.optionalChoreIds || []).filter(
-      other => other !== id,
-    ),
+    slotIds,
+    dependencies: (draft.dependencies || [])
+      .filter(
+        edge =>
+          edge.stepId !== removedPosition &&
+          edge.dependsOnStepId !== removedPosition,
+      )
+      .map(edge => ({
+        stepId: remapPosition(edge.stepId),
+        dependsOnStepId: remapPosition(edge.dependsOnStepId),
+      })),
+    optionalStepIds: (draft.optionalStepIds || [])
+      .filter(stepId => stepId !== removedPosition)
+      .map(stepId => (stepId > removedPosition ? stepId - 1 : stepId)),
   }
 }
 
@@ -86,9 +112,10 @@ const removeRoutineStep = (draft, id) => {
 // and earns the bonus once all of their steps of the day are done.
 export const RoutinesCard = () => {
   const { t } = useTranslation('games')
-  const { showNotification } = useNotification()
+  const { showError, showNotification } = useNotification()
   const queryClient = useQueryClient()
   const { data: choresData } = useChores()
+  const { data: todayRoutines = [] } = useRoutinesToday()
   const chores = useMemo(() => choresData?.res || [], [choresData?.res])
   const names = useMemo(
     () => new Map(chores.map(chore => [chore.id, chore.name])),
@@ -103,27 +130,84 @@ export const RoutinesCard = () => {
   // A step whose task was deleted is left out.
   const known = ids => ids.filter(id => names.has(id))
   const offered = draft
-    ? routineTasks(chores, routines, draft.id).filter(
-        chore => !draft.choreIds.includes(chore.id),
-      )
+    ? routineTasks(chores, routines, draft.id)
+        .map(chore => {
+          const selected = draft.choreIds
+            .map((id, index) => (id === chore.id ? index : -1))
+            .filter(index => index !== -1)
+          const slots = chore.frequencyMetadata?.slots || []
+          if (slots.length === 0) return selected.length === 0 ? chore : null
+          const selectedSlots = selected.map(
+            index => draft.slotIds?.[index] || '',
+          )
+          if (selectedSlots.includes('')) return null
+          const availableSlots = (chore.routineAvailableSlots || []).filter(
+            slot => !selectedSlots.includes(slot.id),
+          )
+          if (availableSlots.length === 0) return null
+          return {
+            ...chore,
+            routineAvailableSlots: availableSlots,
+            routineCanUseAllSlots:
+              selected.length === 0 && chore.routineCanUseAllSlots,
+          }
+        })
+        .filter(Boolean)
     : []
+  const liveOccurrences = todayRoutines.flatMap(routine =>
+    (routine.members || [])
+      .filter(progress => progress.occurrence)
+      .map(progress => ({
+        routine,
+        progress,
+        occurrence: progress.occurrence,
+      })),
+  )
 
   const refresh = () => queryClient.invalidateQueries({ queryKey: ['games'] })
+  const skipOccurrenceItem = async (occurrenceId, itemId) => {
+    const response = await SkipRoutineOccurrenceItem(occurrenceId, itemId)
+    if (!response.ok) {
+      showError(t('routines.skipFailed'))
+      return
+    }
+    await queryClient.invalidateQueries({ queryKey: ['games'] })
+    await queryClient.invalidateQueries({ queryKey: ['chores'] })
+  }
   const save = async () => {
     const resp = await SaveRoutine({
       id: draft.id,
       name: draft.name.trim(),
       bonus: Number(draft.bonus) || 0,
+      validityMinutes: Number(draft.validityMinutes) || 720,
       choreIds: draft.choreIds,
+      slotIds: draft.slotIds || [],
       dependencies: draft.dependencies || [],
-      optionalChoreIds: draft.optionalChoreIds || [],
+      optionalStepIds: draft.optionalStepIds || [],
     })
     if (await sendOrWarn(resp, showNotification, t('routines.failed'))) {
       setDraft(null)
       refresh()
     }
   }
-  const setSteps = choreIds => setDraft({ ...draft, choreIds })
+  const setSteps = (choreId, slotId = '') => {
+    setDraft({
+      ...draft,
+      choreIds: [...draft.choreIds, choreId],
+      slotIds: [...(draft.slotIds || draft.choreIds.map(() => '')), slotId],
+      dependencies: [
+        ...(draft.dependencies || []),
+        ...(draft.choreIds.length > 0
+          ? [
+              {
+                stepId: draft.choreIds.length + 1,
+                dependsOnStepId: draft.choreIds.length,
+              },
+            ]
+          : []),
+      ],
+    })
+  }
   const setPrerequisites = (position, prerequisites) => {
     const dependencies = (draft.dependencies || []).filter(
       edge => edge.stepId !== position,
@@ -154,7 +238,7 @@ export const RoutinesCard = () => {
           <Stack gap={0.5}>
             {draft.choreIds.map((id, index) => (
               <Box
-                key={id}
+                key={`${id}-${index}`}
                 sx={{
                   alignItems: 'center',
                   bgcolor: 'background.level1',
@@ -198,10 +282,75 @@ export const RoutinesCard = () => {
                 <IconButton
                   size='sm'
                   aria-label={t('routines.remove')}
-                  onClick={() => setDraft(removeRoutineStep(draft, id))}
+                  onClick={() => setDraft(removeRoutineStep(draft, index))}
                 >
                   <CloseRounded />
                 </IconButton>
+                {(
+                  chores.find(chore => chore.id === id)?.frequencyMetadata
+                    ?.slots || []
+                ).length > 0 && (
+                  <Select
+                    size='sm'
+                    value={draft.slotIds?.[index] || ''}
+                    placeholder={t('routines.selectSlot')}
+                    onChange={(event, value) => {
+                      const slotIds = [
+                        ...(draft.slotIds || draft.choreIds.map(() => '')),
+                      ]
+                      slotIds[index] = value || ''
+                      setDraft({ ...draft, slotIds })
+                    }}
+                    sx={{ minWidth: 130, maxWidth: 190 }}
+                  >
+                    {(() => {
+                      const options = routineTasks(
+                        chores,
+                        routines,
+                        draft.id,
+                      ).find(chore => chore.id === id)
+                      const currentSlotId = draft.slotIds?.[index] || ''
+                      const availableSlots = (
+                        options?.routineAvailableSlots || []
+                      ).filter(
+                        slot =>
+                          slot.id === currentSlotId ||
+                          !(draft.slotIds || []).some(
+                            (slotId, otherIndex) =>
+                              otherIndex !== index &&
+                              draft.choreIds[otherIndex] === id &&
+                              slotId === slot.id,
+                          ),
+                      )
+                      const canUseAllSlots =
+                        options?.routineCanUseAllSlots &&
+                        !(draft.choreIds || []).some(
+                          (otherId, otherIndex) =>
+                            otherIndex !== index && otherId === id,
+                        )
+                      return (
+                        <>
+                          {canUseAllSlots && (
+                            <Option value=''>{t('routines.allSlots')}</Option>
+                          )}
+                          {availableSlots.map(slot => (
+                            <Option key={slot.id} value={slot.id}>
+                              {slot.name || slot.time} · {slot.time}
+                            </Option>
+                          ))}
+                          {currentSlotId &&
+                            !(options?.routineAvailableSlots || []).some(
+                              slot => slot.id === currentSlotId,
+                            ) && (
+                              <Option value={currentSlotId}>
+                                {t('routines.missingSlot')}
+                              </Option>
+                            )}
+                        </>
+                      )
+                    })()}
+                  </Select>
+                )}
                 <Select
                   size='sm'
                   multiple
@@ -225,23 +374,25 @@ export const RoutinesCard = () => {
                 <Chip
                   size='sm'
                   variant={
-                    (draft.optionalChoreIds || []).includes(id)
+                    (draft.optionalStepIds || []).includes(index + 1)
                       ? 'solid'
                       : 'outlined'
                   }
                   color={
-                    (draft.optionalChoreIds || []).includes(id)
+                    (draft.optionalStepIds || []).includes(index + 1)
                       ? 'warning'
                       : 'neutral'
                   }
                   onClick={() =>
                     setDraft({
                       ...draft,
-                      optionalChoreIds: (draft.optionalChoreIds || []).includes(
-                        id,
+                      optionalStepIds: (draft.optionalStepIds || []).includes(
+                        index + 1,
                       )
-                        ? draft.optionalChoreIds.filter(other => other !== id)
-                        : [...(draft.optionalChoreIds || []), id],
+                        ? draft.optionalStepIds.filter(
+                            stepId => stepId !== index + 1,
+                          )
+                        : [...(draft.optionalStepIds || []), index + 1],
                     })
                   }
                 >
@@ -258,15 +409,41 @@ export const RoutinesCard = () => {
                 offered.length ? t('routines.addTask') : t('routines.noTask')
               }
               disabled={offered.length === 0}
-              onChange={(event, value) =>
-                value && setSteps([...draft.choreIds, value])
-              }
+              onChange={(event, value) => {
+                if (!value) return
+                const [id, slotId] = value.split('::')
+                setSteps(Number(id), slotId)
+              }}
             >
-              {offered.map(chore => (
-                <Option key={chore.id} value={chore.id}>
-                  {chore.name}
-                </Option>
-              ))}
+              {offered.flatMap(chore => {
+                const slots = chore.routineAvailableSlots || []
+                const options = []
+                if (chore.routineCanUseAllSlots) {
+                  options.push(
+                    <Option key={`${chore.id}-all`} value={`${chore.id}::`}>
+                      {chore.name} · {t('routines.allSlots')}
+                    </Option>,
+                  )
+                }
+                if (slots.length === 0 && options.length === 0) {
+                  options.push(
+                    <Option key={chore.id} value={`${chore.id}::`}>
+                      {chore.name}
+                    </Option>,
+                  )
+                }
+                slots.forEach(slot =>
+                  options.push(
+                    <Option
+                      key={`${chore.id}-${slot.id}`}
+                      value={`${chore.id}::${slot.id}`}
+                    >
+                      {chore.name} · {slot.name || slot.time}
+                    </Option>,
+                  ),
+                )
+                return options
+              })}
             </Select>
           )}
           <Input
@@ -280,8 +457,20 @@ export const RoutinesCard = () => {
             slotProps={{ input: { min: 0, max: 1000 } }}
             sx={{ alignSelf: 'flex-start', maxWidth: 260 }}
           />
+          <Input
+            size='sm'
+            type='number'
+            value={draft.validityMinutes ?? 720}
+            onChange={event =>
+              setDraft({ ...draft, validityMinutes: event.target.value })
+            }
+            startDecorator={t('routines.validity')}
+            slotProps={{ input: { min: 1, max: 2880 } }}
+            sx={{ alignSelf: 'flex-start', maxWidth: 300 }}
+          />
           <Typography level='body-xs' sx={{ color: 'text.tertiary' }}>
             {t('routines.help')}
+            {t('routines.validityHelp')}
           </Typography>
           <Stack direction='row' gap={1}>
             <Button
@@ -331,8 +520,15 @@ export const RoutinesCard = () => {
                 setDraft({
                   ...routine,
                   choreIds: known(routine.choreIds),
+                  slotIds: routine.slotIds || routine.choreIds.map(() => ''),
                   dependencies: routine.dependencies || [],
-                  optionalChoreIds: routine.optionalChoreIds || [],
+                  optionalStepIds:
+                    routine.optionalStepIds ||
+                    (routine.optionalChoreIds || []).flatMap(id =>
+                      routine.choreIds.flatMap((choreId, index) =>
+                        choreId === id ? [index + 1] : [],
+                      ),
+                    ),
                 })
               }
             >
@@ -358,6 +554,83 @@ export const RoutinesCard = () => {
           </Box>
         ))}
       </Stack>
+      {liveOccurrences.length > 0 && (
+        <Stack
+          gap={1}
+          sx={{
+            mt: 2,
+            pt: 1.5,
+            borderTop: '1px solid',
+            borderColor: 'divider',
+          }}
+        >
+          <Typography level='title-sm'>{t('routines.liveTitle')}</Typography>
+          {liveOccurrences.map(({ occurrence, progress, routine }) => (
+            <Box
+              key={occurrence.id}
+              sx={{ bgcolor: 'background.level1', borderRadius: 'md', p: 1 }}
+            >
+              <Stack
+                direction='row'
+                alignItems='center'
+                justifyContent='space-between'
+              >
+                <Typography level='body-sm' fontWeight='lg'>
+                  {routine.name}
+                  {' · '}
+                  {t('routines.memberNumber', { id: progress.userId })}
+                </Typography>
+                <Chip
+                  size='sm'
+                  color={
+                    occurrence.status === 'finished' ? 'success' : 'primary'
+                  }
+                >
+                  {t(`routines.occurrenceStatus.${occurrence.status}`)}
+                </Chip>
+              </Stack>
+              <Typography
+                level='body-xs'
+                sx={{ color: 'text.tertiary', mb: 0.75 }}
+              >
+                {t('routines.expiresAt', {
+                  time: new Date(occurrence.expiresAt).toLocaleString(),
+                })}
+              </Typography>
+              <Stack gap={0.5}>
+                {(occurrence.items || []).map(item => (
+                  <Stack
+                    key={item.id}
+                    direction='row'
+                    alignItems='center'
+                    justifyContent='space-between'
+                    gap={1}
+                  >
+                    <Typography level='body-xs' sx={{ flex: 1 }}>
+                      {item.choreName}
+                      {' · '}
+                      {t(`routines.itemStatus.${item.status}`)}
+                      {!item.required ? ` · ${t('routines.optional')}` : ''}
+                    </Typography>
+                    {item.status === 'pending' && item.available && (
+                      <Button
+                        size='sm'
+                        variant='soft'
+                        color='neutral'
+                        onClick={() =>
+                          skipOccurrenceItem(occurrence.id, item.id)
+                        }
+                      >
+                        {t('routines.skip')}
+                      </Button>
+                    )}
+                  </Stack>
+                ))}
+              </Stack>
+            </Box>
+          ))}
+        </Stack>
+      )}
       {modal}
     </Sheet>
   )

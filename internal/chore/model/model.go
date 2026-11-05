@@ -1,11 +1,16 @@
 package model
 
 import (
+	"crypto/rand"
 	"database/sql/driver"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strings"
 	"time"
+
+	"gorm.io/gorm"
 
 	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	lModel "github.com/nico87lbs/hopla/internal/label/model"
@@ -126,7 +131,8 @@ type ChoreHistory struct {
 	CreatedAt   time.Time          `json:"createdAt" gorm:"column:created_at;autoCreateTime;<-:create"` // When the record was created (immutable after insert)
 	Status      ChoreHistoryStatus `json:"status" gorm:"column:status"`                                 // Status of the chore (1=completed, 2=skipped)
 	Points      *int               `json:"points,omitempty" gorm:"column:points"`                       // Points for completing the chore
-	Slot        *int               `json:"slot,omitempty" gorm:"column:slot"`                           // The slot of the day, for a task done several times a day
+	Slot        *int               `json:"slot,omitempty" gorm:"column:slot"`                               // The slot of the day, for a task done several times a day
+	SlotID      *string            `json:"slotId,omitempty" gorm:"column:slot_id"`
 	FlashID     *int               `json:"flashId,omitempty" gorm:"column:flash_id"`                    // The flash launched by a parent this completion won
 	Duration    *int               `json:"duration,omitempty" gorm:"<-:false;-:migration"`              // Duration in seconds calculated from query (read-only, no DB column)
 	SyncVersion int64              `json:"syncVersion" gorm:"column:sync_version;not null;default:0;index:idx_chore_history_sync_version"`
@@ -159,6 +165,7 @@ type FrequencyMetadata struct {
 // Slot is one of the times of day a task is done at, such as brushing teeth
 // in the morning and in the evening.
 type Slot struct {
+	ID string `json:"id"`
 	Name string `json:"name"`
 	Time string `json:"time"` // "15:04", in the task's timezone
 }
@@ -177,6 +184,7 @@ const (
 // SlotStatus is a slot of today with its state.
 type SlotStatus struct {
 	Index       int       `json:"index"`
+	SlotID      string    `json:"slotId"`
 	Name        string    `json:"name"`
 	Time        string    `json:"time"`
 	At          time.Time `json:"at"`
@@ -185,6 +193,90 @@ type SlotStatus struct {
 	State       SlotState `json:"state"`
 	HistoryID   *int      `json:"historyId,omitempty"`
 	CompletedBy *int      `json:"completedBy,omitempty"`
+}
+
+
+ // NewSlotID creates a stable opaque identifier for a task slot.
+func NewSlotID() (string, error) {
+	var raw [16]byte
+	if _, err := rand.Read(raw[:]); err != nil { return "", err }
+	return hex.EncodeToString(raw[:]), nil
+}
+
+
+func EnsureHistorySlotIDs(db *gorm.DB) error {
+	var history []ChoreHistory
+	if err := db.Where("slot IS NOT NULL AND slot_id IS NULL").Find(&history).Error; err != nil { return err }
+	for _, entry := range history {
+		var chore Chore
+		if err := db.Select("id", "frequency_meta_v2").First(&chore, entry.ChoreID).Error; err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) { continue }
+			return err
+		}
+		if chore.FrequencyMetadataV2 == nil || entry.Slot == nil ||
+			*entry.Slot < 0 || *entry.Slot >= len(chore.FrequencyMetadataV2.Slots) { continue }
+		slotID := chore.FrequencyMetadataV2.Slots[*entry.Slot].ID
+		if slotID == "" { continue }
+		if err := db.Model(&ChoreHistory{}).Where("id = ?", entry.ID).Update("slot_id", slotID).Error; err != nil { return err }
+	}
+	return nil
+}
+
+// EnsureSlotIDs backfills identifiers for tasks created before slots had IDs.
+func EnsureSlotIDs(db *gorm.DB) error {
+	var chores []Chore
+	if err := db.Where("frequency_meta_v2 IS NOT NULL").Order("id").Find(&chores).Error; err != nil {
+		return err
+	}
+	canonical := make(map[string][]Slot)
+	for i := range chores {
+		chore := &chores[i]
+		metadata := chore.FrequencyMetadataV2
+		if metadata == nil || len(metadata.Slots) == 0 { continue }
+		group := fmt.Sprintf("%d:%s", chore.FamilyID, strings.ToLower(strings.TrimSpace(chore.Name)))
+		changed := false
+		known, grouped := canonical[group]
+		if !grouped {
+			seen := make(map[string]bool, len(metadata.Slots))
+			for j := range metadata.Slots {
+				if metadata.Slots[j].ID == "" || seen[metadata.Slots[j].ID] {
+					id, err := NewSlotID()
+					if err != nil { return err }
+					metadata.Slots[j].ID = id
+					changed = true
+				}
+				seen[metadata.Slots[j].ID] = true
+			}
+			known = append([]Slot(nil), metadata.Slots...)
+			canonical[group] = known
+		} else if len(metadata.Slots) == len(known) {
+			// Task copies share logical slot IDs. Their order is normalized by
+			// time, so corresponding positions describe the same daily slot.
+			for j := range metadata.Slots {
+				if metadata.Slots[j].ID != known[j].ID {
+					metadata.Slots[j].ID = known[j].ID
+					changed = true
+				}
+			}
+		} else {
+			seen := make(map[string]bool, len(metadata.Slots))
+			for j := range metadata.Slots {
+				if metadata.Slots[j].ID == "" || seen[metadata.Slots[j].ID] {
+					id, err := NewSlotID()
+					if err != nil { return err }
+					metadata.Slots[j].ID = id
+					changed = true
+				}
+				seen[metadata.Slots[j].ID] = true
+			}
+		}
+		if changed {
+			if err := db.Model(&Chore{}).Where("id = ?", chore.ID).Update("frequency_meta_v2", metadata).Error; err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }
 
 // HasSlots reports whether the task is done at several times of the day.

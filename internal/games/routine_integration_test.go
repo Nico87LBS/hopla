@@ -1,4 +1,4 @@
-package games
+package games_test
 
 import (
 	"testing"
@@ -6,6 +6,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 	"gorm.io/gorm"
+
+	. "github.com/nico87lbs/hopla/internal/games"
 )
 
 func TestRoutineIntegrationTokensAreScopedAndRevocable(t *testing.T) {

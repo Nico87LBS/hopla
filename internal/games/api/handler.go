@@ -646,9 +646,14 @@ func Routes(r *gin.Engine, h *Handler, auth *jwt.GinJWTMiddleware) {
 		routes.PUT("/challenges/:id", h.updateChallenge)
 		routes.DELETE("/challenges/:id", h.deleteChallenge)
 		routes.GET("/routines", h.getRoutines)
+		routes.GET("/routines/integrations", h.listRoutineIntegrationTokens)
+		routes.POST("/routines/integrations", h.createRoutineIntegrationToken)
+		routes.DELETE("/routines/integrations/:id", h.revokeRoutineIntegrationToken)
 		routes.POST("/routines", h.createRoutine)
 		routes.PUT("/routines/:id", h.updateRoutine)
 		routes.DELETE("/routines/:id", h.deleteRoutine)
+		routes.POST("/routines/:id/occurrences", h.startRoutineOccurrence)
+		routes.POST("/routines/occurrences/:id/items/skip", h.skipRoutineOccurrenceItem)
 	}
 }
 
@@ -671,5 +676,13 @@ func APIs(cfg *config.Config, h *Handler, r *gin.Engine, limiter *limiter.Limite
 		routes.GET("/quests", h.getQuests)
 		routes.GET("/challenges", h.getChallenges)
 		routes.GET("/routines", h.getRoutines)
+		routes.POST("/routines/occurrences/:id/overrides", h.externalRoutineOverride)
 	}
+	integrations := r.Group("integration/v1/games")
+	integrations.Use(
+		utils.TimeoutMiddleware(cfg.Server.WriteTimeout),
+		utils.RateLimitMiddleware(limiter),
+	)
+	integrations.GET("/routines/occurrences", h.listIntegrationRoutineOccurrences)
+	integrations.POST("/routines/occurrences/:id/overrides", h.integrationRoutineOverride)
 }

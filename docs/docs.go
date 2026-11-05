@@ -8128,6 +8128,9 @@ const docTemplate = `{
                     "description": "The slot of the day, for a task done several times a day",
                     "type": "integer"
                 },
+                "slotId": {
+                    "type": "string"
+                },
                 "status": {
                     "description": "Status of the chore (1=completed, 2=skipped)",
                     "allOf": [
@@ -8358,6 +8361,9 @@ const docTemplate = `{
         "model.Slot": {
             "type": "object",
             "properties": {
+                "id": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string"
                 },
@@ -8419,6 +8425,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "opensAt": {
+                    "type": "string"
+                },
+                "slotId": {
                     "type": "string"
                 },
                 "state": {

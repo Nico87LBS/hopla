@@ -825,6 +825,10 @@ func (h *Handler) EditChore(c *gin.Context) {
 		assigneeIDs = append(assigneeIDs, assignee.UserID)
 	}
 	if err := h.choreRepo.UpdateChoreVisibility(c, updatedChore, assigneeIDs); err != nil {
+		if errors.Is(err, chRepo.ErrRoutineSlotInUse) {
+			c.JSON(400, gin.H{"error": err.Error()})
+			return
+		}
 		c.JSON(500, gin.H{
 			"error": "Error adding chore",
 		})

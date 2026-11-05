@@ -3,6 +3,7 @@ package games
 import (
 	"errors"
 	"slices"
+	"strings"
 	"time"
 
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
@@ -19,13 +20,16 @@ type Routine struct {
 	FamilyID int    `json:"-" gorm:"column:family_id;index;not null"`
 	Name     string `json:"name" gorm:"column:name;not null"`
 	Bonus    int    `json:"bonus" gorm:"column:bonus;not null;default:0"`
+	ValidityMinutes int `json:"validityMinutes" gorm:"column:validity_minutes;not null;default:720"`
 	// ChoreIDs are the steps in order. A step stands for every task with the
 	// same name, so each child's copy of a task is the same step.
 	ChoreIDs  []int         `json:"choreIds" gorm:"-"`
+	SlotIDs []string `json:"slotIds" gorm:"-"`
 	Steps     []RoutineStep `json:"-" gorm:"foreignKey:RoutineID"`
 	Dependencies []RoutineDependency `json:"dependencies" gorm:"-"`
 	GraphEnabled bool `json:"graphEnabled" gorm:"column:graph_enabled;not null;default:false"`
 	OptionalChoreIDs []int `json:"optionalChoreIds" gorm:"-"`
+	OptionalStepIDs []int `json:"optionalStepIds" gorm:"-"`
 	CreatedBy int           `json:"createdBy" gorm:"column:created_by"`
 	CreatedAt time.Time     `json:"createdAt" gorm:"column:created_at"`
 	UpdatedAt time.Time     `json:"updatedAt" gorm:"column:updated_at"`
@@ -39,6 +43,7 @@ type RoutineStep struct {
 	RoutineID int `gorm:"column:routine_id;index;not null"`
 	Position  int `gorm:"column:position;not null"`
 	ChoreID   int  `gorm:"column:chore_id;not null"`
+	SlotID string `json:"slotId" gorm:"column:slot_id;size:32"`
 	Required  *bool `json:"required" gorm:"column:required;not null;default:true"`
 }
 
@@ -67,6 +72,7 @@ type RoutineProgress struct {
 	Done     int  `json:"done"`
 	Total    int  `json:"total"`
 	Finished bool `json:"finished"`
+	Occurrence *RoutineOccurrence `json:"occurrence,omitempty"`
 }
 
 // RoutineView is a routine with every task it covers and each member's
@@ -86,6 +92,7 @@ var (
 	ErrRoutineTaskTwice = errors.New("a task is twice in the routine")
 	ErrRoutineTaskTaken = errors.New("a task is already in another routine")
 	ErrRoutineTask      = errors.New("a task of the routine is not in the family")
+	ErrRoutineSlot = errors.New("a routine references a slot that does not exist on every copy of the task")
 )
 
 // Routines returns a family's routines with their steps, oldest first.
@@ -99,9 +106,14 @@ func Routines(db *gorm.DB, familyID int) ([]Routine, error) {
 		if err := db.Where("routine_id = ?", routines[i].ID).Find(&routines[i].Dependencies).Error; err != nil { return nil, err }
 		positionByID := make(map[int]int, len(routines[i].Steps))
 		routines[i].ChoreIDs = []int{}
+		routines[i].SlotIDs = []string{}
 		for _, step := range routines[i].Steps {
 			routines[i].ChoreIDs = append(routines[i].ChoreIDs, step.ChoreID)
-			if routines[i].GraphEnabled && step.Required != nil && !*step.Required { routines[i].OptionalChoreIDs = append(routines[i].OptionalChoreIDs, step.ChoreID) }
+			routines[i].SlotIDs = append(routines[i].SlotIDs, step.SlotID)
+			if routines[i].GraphEnabled && step.Required != nil && !*step.Required {
+				routines[i].OptionalChoreIDs = append(routines[i].OptionalChoreIDs, step.ChoreID)
+				routines[i].OptionalStepIDs = append(routines[i].OptionalStepIDs, step.Position+1)
+			}
 			positionByID[step.ID] = step.Position + 1
 		}
 		for j := range routines[i].Dependencies {
@@ -133,6 +145,15 @@ func stepTasks(db *gorm.DB, familyID int, choreIDs []int) (map[int][]int, error)
 	return tasks, nil
 }
 
+
+// routineSlotConflicts reports whether two references overlap. An empty slot
+// ID means the whole task, so it conflicts with every individual slot.
+func routineSlotConflicts(existing map[string]bool, candidate string) bool {
+	if len(existing) == 0 { return false }
+	if candidate == "" || existing[""] || existing[candidate] { return true }
+	return false
+}
+
 // SaveRoutine creates the routine, or replaces it when it has an ID, after
 // checking its tasks: in the family, each once, and in no other routine.
 func SaveRoutine(db *gorm.DB, routine *Routine) error {
@@ -142,43 +163,70 @@ func SaveRoutine(db *gorm.DB, routine *Routine) error {
 	if len(routine.ChoreIDs) > maxRoutineSteps {
 		return ErrRoutineTooLong
 	}
+	if len(routine.SlotIDs) != len(routine.ChoreIDs) {
+		// Older clients may omit slot IDs, or may edit a legacy whole-task
+		// routine without knowing about the parallel slot-ID array. Keep those
+		// routines editable; a partially selected array is ambiguous and rejected.
+		for _, slotID := range routine.SlotIDs {
+			if slotID != "" { return ErrRoutineSlot }
+		}
+		routine.SlotIDs = make([]string, len(routine.ChoreIDs))
+	}
 	return db.Transaction(func(tx *gorm.DB) error {
 		tasks, err := stepTasks(tx, routine.FamilyID, routine.ChoreIDs)
 		if err != nil {
 			return err
 		}
-		mine := map[int]bool{}
-		for _, choreID := range routine.ChoreIDs {
-			if len(tasks[choreID]) == 0 {
-				return ErrRoutineTask
-			}
-			for _, id := range tasks[choreID] {
-				if mine[id] {
-					return ErrRoutineTaskTwice
+		mine := map[int]map[string]bool{}
+		for position, choreID := range routine.ChoreIDs {
+			ids := tasks[choreID]
+			if len(ids) == 0 { return ErrRoutineTask }
+			slotID := routine.SlotIDs[position]
+			if slotID != "" {
+				var copies []chModel.Chore
+				if err := tx.Select("id", "frequency_meta_v2").Where("id IN ?", ids).Find(&copies).Error; err != nil { return err }
+				for _, copy := range copies {
+					found := false
+					if copy.FrequencyMetadataV2 != nil {
+						for _, slot := range copy.FrequencyMetadataV2.Slots {
+							if slot.ID == slotID { found = true; break }
+						}
+					}
+					if !found { return ErrRoutineSlot }
 				}
-				mine[id] = true
+			}
+			for _, id := range ids {
+				if mine[id] == nil { mine[id] = map[string]bool{} }
+				if routineSlotConflicts(mine[id], slotID) { return ErrRoutineTaskTwice }
+				mine[id][slotID] = true
 			}
 		}
-		for _, choreID := range routine.OptionalChoreIDs {
-			if !slices.Contains(routine.ChoreIDs, choreID) { return ErrRoutineGraphStep }
+		optionalSteps := make(map[int]bool, len(routine.OptionalStepIDs))
+		if routine.OptionalStepIDs == nil {
+			// Older clients marked optional steps by chore ID; preserve that
+			// behavior when the new, step-specific field is absent.
+			for position, choreID := range routine.ChoreIDs {
+				if slices.Contains(routine.OptionalChoreIDs, choreID) { optionalSteps[position+1] = true }
+			}
+		} else {
+			for _, stepID := range routine.OptionalStepIDs {
+				if stepID < 1 || stepID > len(routine.ChoreIDs) { return ErrRoutineGraphStep }
+				optionalSteps[stepID] = true
+			}
 		}
 		others, err := Routines(tx, routine.FamilyID)
 		if err != nil {
 			return err
 		}
 		for _, other := range others {
-			if other.ID == routine.ID {
-				continue
-			}
+			if other.ID == routine.ID { continue }
 			theirs, err := stepTasks(tx, routine.FamilyID, other.ChoreIDs)
-			if err != nil {
-				return err
-			}
-			for _, ids := range theirs {
-				for _, id := range ids {
-					if mine[id] {
-						return ErrRoutineTaskTaken
-					}
+			if err != nil { return err }
+			for position, choreID := range other.ChoreIDs {
+				otherSlotID := ""
+				if position < len(other.SlotIDs) { otherSlotID = other.SlotIDs[position] }
+				for _, id := range theirs[choreID] {
+					if mine[id] != nil && routineSlotConflicts(mine[id], otherSlotID) { return ErrRoutineTaskTaken }
 				}
 			}
 		}
@@ -194,15 +242,15 @@ func SaveRoutine(db *gorm.DB, routine *Routine) error {
 			if err := tx.Omit("Steps").Create(routine).Error; err != nil { return err }
 		} else {
 			if err := tx.Model(&Routine{}).Where("id = ? AND family_id = ?", routine.ID, routine.FamilyID).
-				Updates(map[string]any{"name": routine.Name, "bonus": routine.Bonus, "graph_enabled": routine.GraphEnabled, "updated_at": time.Now().UTC()}).Error; err != nil {
+				Updates(map[string]any{"name": routine.Name, "bonus": routine.Bonus, "validity_minutes": routine.ValidityMinutes, "graph_enabled": routine.GraphEnabled, "updated_at": time.Now().UTC()}).Error; err != nil {
 				return err
 			}
 			if err := tx.Where("routine_id = ?", routine.ID).Delete(&RoutineDependency{}).Error; err != nil { return err }
 			if err := tx.Where("routine_id = ?", routine.ID).Delete(&RoutineStep{}).Error; err != nil { return err }
 		}
 		routine.Steps = nil
-		for i, choreID := range routine.ChoreIDs { required := !slices.Contains(routine.OptionalChoreIDs, choreID)
-		routine.Steps = append(routine.Steps, RoutineStep{RoutineID: routine.ID, Position: i, ChoreID: choreID, Required: &required}) }
+		for i, choreID := range routine.ChoreIDs { required := !optionalSteps[i+1]
+		routine.Steps = append(routine.Steps, RoutineStep{RoutineID: routine.ID, Position: i, ChoreID: choreID, SlotID: routine.SlotIDs[i], Required: &required}) }
 		if err := tx.Create(&routine.Steps).Error; err != nil { return err }
 		for i := range routine.Dependencies {
 			from, to := routine.Dependencies[i].DependsOnStepID-1, routine.Dependencies[i].StepID-1
@@ -227,8 +275,52 @@ func DeleteRoutine(db *gorm.DB, familyID, routineID int) error {
 		}
 		if err := tx.Where("routine_id = ?", routineID).Delete(&RoutineDependency{}).Error; err != nil { return err }
 		if err := tx.Where("routine_id = ?", routineID).Delete(&RoutineStep{}).Error; err != nil { return err }
+		var occurrenceIDs []int
+		if err := tx.Model(&RoutineOccurrence{}).Where("routine_id = ?", routineID).Pluck("id", &occurrenceIDs).Error; err != nil { return err }
+		if len(occurrenceIDs) > 0 {
+			if err := tx.Where("occurrence_id IN ?", occurrenceIDs).Delete(&RoutineOverride{}).Error; err != nil { return err }
+			if err := tx.Where("occurrence_id IN ?", occurrenceIDs).Delete(&RoutineOccurrenceDependency{}).Error; err != nil { return err }
+			if err := tx.Where("occurrence_id IN ?", occurrenceIDs).Delete(&RoutineOccurrenceItem{}).Error; err != nil { return err }
+		}
+		if err := tx.Where("routine_id = ?", routineID).Delete(&RoutineOccurrence{}).Error; err != nil { return err }
 		return tx.Where("routine_id = ?", routineID).Delete(&RoutineWin{}).Error
 	})
+}
+
+
+func routineSlotDue(chore *chModel.Chore, slotID string, from, to time.Time) bool {
+	if chore == nil || slotID == "" || chore.FrequencyMetadataV2 == nil ||
+		(chore.FrequencyType != chModel.FrequencyTypeDaily && chore.FrequencyType != chModel.FrequencyTypeDayOfTheWeek) {
+		return false
+	}
+	var selected *chModel.Slot
+	for i := range chore.FrequencyMetadataV2.Slots {
+		if chore.FrequencyMetadataV2.Slots[i].ID == slotID {
+			selected = &chore.FrequencyMetadataV2.Slots[i]
+			break
+		}
+	}
+	if selected == nil { return false }
+	clock, err := time.Parse("15:04", selected.Time)
+	if err != nil { return false }
+	from = from.In(to.Location())
+	first := time.Date(from.Year(), from.Month(), from.Day(), 0, 0, 0, 0, to.Location())
+	last := time.Date(to.Year(), to.Month(), to.Day(), 0, 0, 0, 0, to.Location())
+	for day := first; !day.After(last); day = day.AddDate(0, 0, 1) {
+		runs := chore.FrequencyType == chModel.FrequencyTypeDaily
+		if chore.FrequencyType == chModel.FrequencyTypeDayOfTheWeek {
+			weekday := strings.ToLower(day.Weekday().String())
+			for _, value := range chore.FrequencyMetadataV2.Days {
+				if value != nil && strings.ToLower(*value) == weekday { runs = true; break }
+			}
+		}
+		if !runs { continue }
+		at := time.Date(day.Year(), day.Month(), day.Day(), clock.Hour(), clock.Minute(), 0, 0, to.Location())
+		// Every slot up to the occurrence expiry is applicable: this includes
+		// upcoming slots later today and earlier slots that can be caught up.
+		if !at.After(to) { return true }
+	}
+	return false
 }
 
 // membersNow are who a task is for now: its assignee, or all of its
@@ -252,13 +344,17 @@ type routineDay struct {
 	chores map[int]*chModel.Chore
 	// doneBy holds, per member, the tasks they completed today.
 	doneBy map[int]map[int]bool
-	away   map[int]bool
-	end    time.Time
+	doneSlotsBy map[int]map[int]map[string]bool
+	away map[int]bool
+	start time.Time
+	end time.Time
 }
 
 func loadRoutineDay(db *gorm.DB, familyID int, taskIDs []int, now time.Time) (*routineDay, error) {
 	loc := zone.Of(familyID)
-	day := &routineDay{chores: map[int]*chModel.Chore{}, doneBy: map[int]map[int]bool{}, end: endOfDay(now, loc)}
+	localNow := now.In(loc)
+	start := time.Date(localNow.Year(), localNow.Month(), localNow.Day(), 0, 0, 0, 0, loc)
+	day := &routineDay{chores: map[int]*chModel.Chore{}, doneBy: map[int]map[int]bool{}, doneSlotsBy: map[int]map[int]map[string]bool{}, start: start, end: endOfDay(now, loc)}
 	if len(taskIDs) == 0 {
 		return day, nil
 	}
@@ -270,9 +366,8 @@ func loadRoutineDay(db *gorm.DB, familyID int, taskIDs []int, now time.Time) (*r
 		day.chores[chore.ID] = chore
 	}
 	var done []chModel.ChoreHistory
-	start := day.end.Add(-24*time.Hour + time.Second)
-	if err := db.Select("chore_id", "completed_by").
-		Where("chore_id IN ? AND status = ? AND performed_at >= ?", taskIDs, chModel.ChoreHistoryStatusCompleted, start).
+	if err := db.Select("chore_id", "completed_by", "slot_id").
+		Where("chore_id IN ? AND status = ? AND performed_at >= ?", taskIDs, chModel.ChoreHistoryStatusCompleted, day.start).
 		Find(&done).Error; err != nil {
 		return nil, err
 	}
@@ -281,6 +376,19 @@ func loadRoutineDay(db *gorm.DB, familyID int, taskIDs []int, now time.Time) (*r
 			day.doneBy[row.CompletedBy] = map[int]bool{}
 		}
 		day.doneBy[row.CompletedBy][row.ChoreID] = true
+		slotID := ""
+		if row.SlotID != nil { slotID = *row.SlotID }
+		if slotID == "" && row.Slot != nil {
+			if chore := day.chores[row.ChoreID]; chore != nil && chore.FrequencyMetadataV2 != nil &&
+				*row.Slot >= 0 && *row.Slot < len(chore.FrequencyMetadataV2.Slots) {
+				slotID = chore.FrequencyMetadataV2.Slots[*row.Slot].ID
+			}
+		}
+		if slotID != "" {
+			if day.doneSlotsBy[row.CompletedBy] == nil { day.doneSlotsBy[row.CompletedBy] = map[int]map[string]bool{} }
+			if day.doneSlotsBy[row.CompletedBy][row.ChoreID] == nil { day.doneSlotsBy[row.CompletedBy][row.ChoreID] = map[string]bool{} }
+			day.doneSlotsBy[row.CompletedBy][row.ChoreID][slotID] = true
+		}
 	}
 	away, err := AwayMembers(db, familyID)
 	day.away = away
@@ -339,6 +447,60 @@ func (day *routineDay) progressOf(userID int, steps [][]int) RoutineProgress {
 	return progress
 }
 
+
+func (day *routineDay) progressFromOccurrence(userID int, run *RoutineOccurrence) RoutineProgress {
+	progress := RoutineProgress{UserID: userID, Available: []int{}, Occurrence: run}
+	policies := make(map[int]RoutineItemPolicy, len(run.Items))
+	states := make(map[int]RoutineItemState, len(run.Items))
+	dependencies := make([]RoutineDependency, 0, len(run.Dependencies))
+	for _, dependency := range run.Dependencies {
+		dependencies = append(dependencies, RoutineDependency{StepID:dependency.StepID,DependsOnStepID:dependency.DependsOnStepID})
+	}
+	for i := range run.Items {
+		item := &run.Items[i]
+		stepID := item.StepID
+		state := RoutineItemState(item.Status)
+		chore := day.chores[item.ChoreID]
+		if state == RoutineItemPending && chore != nil {
+			done := day.doneBy[userID][item.ChoreID] && isFor(chore, userID)
+			if item.SlotID != "" {
+				done = day.doneSlotsBy[userID][item.ChoreID][item.SlotID] && isFor(chore, userID)
+			}
+			if done {
+				state = RoutineItemCompleted
+				item.Status = RoutineOccurrenceItemCompleted
+			}
+		}
+		states[stepID] = state
+		policies[stepID] = RoutineItemPolicy{StepID:stepID,Required:item.Required}
+		if item.Required && state != RoutineItemNotApplicable {
+			progress.Total++
+			if state == RoutineItemCompleted || state == RoutineItemSkipped { progress.Done++ }
+		}
+	}
+	for i := range run.Items {
+		item := &run.Items[i]
+		item.Available = item.Status == RoutineOccurrenceItemPending &&
+			RoutineItemAvailable(item.StepID, dependencies, policies, states)
+		if !item.Available { continue }
+		chore := day.chores[item.ChoreID]
+		if chore == nil || !slices.Contains(membersNow(chore), userID) || Paused(chore, day.away) { continue }
+		due := chore.NextDueDate != nil && !chore.NextDueDate.After(run.ExpiresAt)
+		if item.SlotID != "" {
+			due = routineSlotDue(chore, item.SlotID, run.StartedAt.In(day.start.Location()), run.ExpiresAt.In(day.end.Location()))
+		}
+		if due { progress.Available = append(progress.Available, item.ChoreID) }
+	}
+	if len(progress.Available) > 0 {
+		progress.Current = &progress.Available[0]
+		for _, item := range run.Items {
+			if item.ChoreID == *progress.Current { progress.Step = item.Position + 1; break }
+		}
+	}
+	progress.Finished = run.Status == RoutineOccurrenceFinished || (progress.Total > 0 && progress.Done == progress.Total)
+	return progress
+}
+
 // RoutineViews returns the family's routines with the given members'
 // progress today.
 func RoutineViews(db *gorm.DB, familyID int, userIDs []int, now time.Time) ([]RoutineView, error) {
@@ -358,6 +520,19 @@ func RoutineViews(db *gorm.DB, familyID int, userIDs []int, now time.Time) ([]Ro
 			all = append(all, tasks[choreID]...)
 		}
 	}
+	if len(userIDs) > 0 {
+		var activeOccurrences []RoutineOccurrence
+		if err := db.Where("family_id = ? AND user_id IN ? AND status IN ? AND expires_at > ?",
+			familyID, userIDs, []RoutineOccurrenceStatus{RoutineOccurrenceActive, RoutineOccurrenceFinished}, now.UTC()).
+			Find(&activeOccurrences).Error; err != nil { return nil, err }
+		if len(activeOccurrences) > 0 {
+			occurrenceIDs := make([]int, 0, len(activeOccurrences))
+			for _, occurrence := range activeOccurrences { occurrenceIDs = append(occurrenceIDs, occurrence.ID) }
+			var occurrenceItems []RoutineOccurrenceItem
+			if err := db.Where("occurrence_id IN ?", occurrenceIDs).Find(&occurrenceItems).Error; err != nil { return nil, err }
+			for _, item := range occurrenceItems { all = append(all, item.ChoreID) }
+		}
+	}
 	day, err := loadRoutineDay(db, familyID, all, now)
 	if err != nil {
 		return nil, err
@@ -369,7 +544,32 @@ func RoutineViews(db *gorm.DB, familyID int, userIDs []int, now time.Time) ([]Ro
 			view.TaskIDs = append(view.TaskIDs, ids...)
 		}
 		for _, userID := range userIDs {
-			if progress := day.progressOfGraph(userID, steps[i], routine); progress.Total > 0 {
+			progress := day.progressOfGraph(userID, steps[i], routine)
+			var run *RoutineOccurrence
+			var latest RoutineOccurrence
+			latestErr := db.Where("routine_id = ? AND user_id = ? AND status IN ?",
+				routine.ID, userID, []RoutineOccurrenceStatus{RoutineOccurrenceActive, RoutineOccurrenceFinished}).
+				Order("started_at DESC").First(&latest).Error
+			if latestErr != nil && !errors.Is(latestErr, gorm.ErrRecordNotFound) { return nil, latestErr }
+			if latestErr == nil {
+				if now.Before(latest.ExpiresAt) {
+					run, latestErr = StartRoutineOccurrence(db, familyID, routine.ID, userID, now)
+					if latestErr != nil { return nil, latestErr }
+				} else if latest.Status == RoutineOccurrenceActive {
+					if _, latestErr = GetRoutineOccurrence(db, familyID, latest.ID, now); latestErr != nil { return nil, latestErr }
+				}
+			}
+			if run == nil && progress.Total > 0 && (!progress.Finished || len(progress.Available) > 0) {
+				run, latestErr = StartRoutineOccurrence(db, familyID, routine.ID, userID, now)
+				if latestErr != nil { return nil, latestErr }
+			}
+			if run != nil {
+				progress = day.progressFromOccurrence(userID, run)
+				for _, item := range run.Items {
+					if !slices.Contains(view.TaskIDs, item.ChoreID) { view.TaskIDs = append(view.TaskIDs, item.ChoreID) }
+				}
+			}
+			if progress.Total > 0 {
 				view.Members = append(view.Members, progress)
 			}
 		}
@@ -378,32 +578,76 @@ func RoutineViews(db *gorm.DB, familyID int, userIDs []int, now time.Time) ([]Ro
 	return views, nil
 }
 
-// awardRoutines pays the bonus of each routine the member finished today,
-// once a day.
+// awardRoutines advances live occurrences first. Routines that have never
+// used occurrences retain the legacy once-per-day reward for compatibility.
 func awardRoutines(tx *gorm.DB, familyID, userID int, performedAt, now time.Time) error {
-	loc := zone.Of(familyID)
-	if dayKey(performedAt, loc) != dayKey(now, loc) {
-		return nil
-	}
-	views, err := RoutineViews(tx, familyID, []int{userID}, now)
-	if err != nil {
+	var knownRoutineIDs []int
+	if err := tx.Model(&RoutineOccurrence{}).Where("family_id = ? AND user_id = ?", familyID, userID).
+		Distinct("routine_id").Pluck("routine_id", &knownRoutineIDs).Error; err != nil {
 		return err
 	}
+	var runs []RoutineOccurrence
+	if err := tx.Where("family_id = ? AND user_id = ? AND status IN ? AND started_at <= ? AND expires_at > ?",
+		familyID, userID, []RoutineOccurrenceStatus{RoutineOccurrenceActive, RoutineOccurrenceFinished}, performedAt.UTC(), performedAt.UTC()).Find(&runs).Error; err != nil {
+		return err
+	}
+	// Read all completions in the live occurrence window. Equality on a
+	// timestamp is brittle across SQL drivers and precision conversions.
+	completedIDs := make(map[int]bool)
+	completedSlots := make(map[int]map[string]bool)
+	if len(runs) > 0 {
+		earliest := runs[0].StartedAt
+		for _, run := range runs { if run.StartedAt.Before(earliest) { earliest = run.StartedAt } }
+		var completed []chModel.ChoreHistory
+		if err := tx.Where("completed_by = ? AND performed_at >= ? AND performed_at <= ? AND status = ?",
+			userID, earliest, performedAt, chModel.ChoreHistoryStatusCompleted).Find(&completed).Error; err != nil { return err }
+		for _, history := range completed {
+			completedIDs[history.ChoreID] = true
+			slotID := ""
+			if history.SlotID != nil { slotID = *history.SlotID }
+			if slotID == "" && history.Slot != nil {
+				var chore chModel.Chore
+				if err := tx.Select("id", "frequency_meta_v2").First(&chore, history.ChoreID).Error; err != nil { return err }
+				if chore.FrequencyMetadataV2 != nil && *history.Slot >= 0 && *history.Slot < len(chore.FrequencyMetadataV2.Slots) { slotID = chore.FrequencyMetadataV2.Slots[*history.Slot].ID }
+			}
+			if slotID != "" { if completedSlots[history.ChoreID] == nil { completedSlots[history.ChoreID] = map[string]bool{} }; completedSlots[history.ChoreID][slotID] = true }
+		}
+	}
+	for i := range runs {
+		run := &runs[i]
+		var items []RoutineOccurrenceItem
+		if err := tx.Where("occurrence_id = ?", run.ID).Find(&items).Error; err != nil { return err }
+		for _, item := range items {
+			if item.Status != RoutineOccurrenceItemPending || (run.Status == RoutineOccurrenceFinished && item.Required) { continue }
+			ids, err := SameTaskIDs(tx, familyID, item.ChoreID)
+			if err != nil { return err }
+			matched := false
+			for _, id := range ids {
+				if item.SlotID != "" && completedSlots[id][item.SlotID] { matched = true; break }
+				if item.SlotID == "" && completedIDs[id] { matched = true; break }
+			}
+			if !matched { continue }
+			if err := tx.Model(&item).Updates(map[string]any{"status":RoutineOccurrenceItemCompleted,"updated_at":now.UTC()}).Error; err != nil { return err }
+		}
+		if err := settleRoutineOccurrence(tx, run, now); err != nil { return err }
+	}
+	loc := zone.Of(familyID)
+	if dayKey(performedAt, loc) != dayKey(now, loc) { return nil }
+	views, err := RoutineViews(tx, familyID, []int{userID}, now)
+	if err != nil { return err }
 	for _, view := range views {
-		if view.Bonus <= 0 || len(view.Members) == 0 || !view.Members[0].Finished {
+		// If this is the first time the routine is opened, RoutineViews may
+		// create an occurrence while retaining a legacy completion from earlier
+		// in the same day. Pay that legacy win once; settleRoutineOccurrence
+		// sees the RoutineWin and suppresses a duplicate occurrence bonus.
+		if slices.Contains(knownRoutineIDs, view.ID) || view.Bonus <= 0 || len(view.Members) == 0 || !view.Members[0].Finished || (view.Members[0].Occurrence != nil && view.Members[0].Occurrence.BonusPaid) {
 			continue
 		}
 		result := tx.Clauses(clause.OnConflict{DoNothing: true}).
 			Create(&RoutineWin{RoutineID: view.ID, UserID: userID, Day: dayKey(now, loc)})
-		if result.Error != nil {
-			return result.Error
-		}
-		if result.RowsAffected == 0 {
-			continue
-		}
-		if _, err := giveBonus(tx, familyID, userID, view.Bonus, "Routine : "+view.Name); err != nil {
-			return err
-		}
+		if result.Error != nil { return result.Error }
+		if result.RowsAffected == 0 { continue }
+		if _, err := giveBonus(tx, familyID, userID, view.Bonus, "Routine : "+view.Name); err != nil { return err }
 	}
 	return nil
 }

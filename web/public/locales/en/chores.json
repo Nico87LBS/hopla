@@ -1235,7 +1235,9 @@
   },
   "routines": {
     "step": "{{step}}/{{total}}",
-    "stepTitle": "Routine “{{name}}”: step {{step}} of {{total}}"
+    "stepTitle": "Routine “{{name}}”: step {{step}} of {{total}}",
+    "skip": "Skip this step",
+    "skipFailed": "The step could not be skipped."
   },
   "todayPanel": {
     "label": "Today at a glance",
