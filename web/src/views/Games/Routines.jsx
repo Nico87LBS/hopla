@@ -71,7 +71,10 @@ const moveRoutineStep = (draft, index, delta) => ({
   ),
   dependencies: remapAfterMove(draft.dependencies, index, delta),
   optionalStepIds: remapAfterMove(
-    (draft.optionalStepIds || []).map(stepId => ({ stepId, dependsOnStepId: stepId })),
+    (draft.optionalStepIds || []).map(stepId => ({
+      stepId,
+      dependsOnStepId: stepId,
+    })),
     index,
     delta,
   ).map(edge => edge.stepId),
@@ -99,9 +102,9 @@ const removeRoutineStep = (draft, index) => {
         stepId: remapPosition(edge.stepId),
         dependsOnStepId: remapPosition(edge.dependsOnStepId),
       })),
-    optionalStepIds: (draft.optionalStepIds || []).filter(
-      stepId => stepId !== removedPosition,
-    ).map(stepId => stepId > removedPosition ? stepId - 1 : stepId),
+    optionalStepIds: (draft.optionalStepIds || [])
+      .filter(stepId => stepId !== removedPosition)
+      .map(stepId => (stepId > removedPosition ? stepId - 1 : stepId)),
   }
 }
 
@@ -376,18 +379,20 @@ export const RoutinesCard = () => {
                       : 'outlined'
                   }
                   color={
-                    (draft.optionalChoreIds || []).includes(id)
+                    (draft.optionalStepIds || []).includes(index + 1)
                       ? 'warning'
                       : 'neutral'
                   }
                   onClick={() =>
                     setDraft({
                       ...draft,
-                      optionalChoreIds: (draft.optionalChoreIds || []).includes(
-                        id,
+                      optionalStepIds: (draft.optionalStepIds || []).includes(
+                        index + 1,
                       )
-                        ? draft.optionalChoreIds.filter(other => other !== id)
-                        : [...(draft.optionalChoreIds || []), id],
+                        ? draft.optionalStepIds.filter(
+                            stepId => stepId !== index + 1,
+                          )
+                        : [...(draft.optionalStepIds || []), index + 1],
                     })
                   }
                 >
@@ -517,7 +522,13 @@ export const RoutinesCard = () => {
                   choreIds: known(routine.choreIds),
                   slotIds: routine.slotIds || routine.choreIds.map(() => ''),
                   dependencies: routine.dependencies || [],
-                  optionalStepIds: routine.optionalStepIds || (routine.optionalChoreIds || []).flatMap(id => routine.choreIds.flatMap((choreId, index) => choreId === id ? [index + 1] : [])),
+                  optionalStepIds:
+                    routine.optionalStepIds ||
+                    (routine.optionalChoreIds || []).flatMap(id =>
+                      routine.choreIds.flatMap((choreId, index) =>
+                        choreId === id ? [index + 1] : [],
+                      ),
+                    ),
                 })
               }
             >
