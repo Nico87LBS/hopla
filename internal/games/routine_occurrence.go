@@ -10,6 +10,7 @@ import (
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
+	"github.com/nico87lbs/hopla/internal/zone"
 )
 
 const (
@@ -153,7 +154,9 @@ func StartRoutineOccurrence(db *gorm.DB, familyID, routineID, userID int, now ti
 			if err := tx.Preload("Assignees").Where("id IN ? AND is_active = ?", ids, true).Find(&copies).Error; err != nil { return err }
 			applicable := false
 			for _, chore := range copies {
-				if chore.NextDueDate != nil && !chore.NextDueDate.After(run.ExpiresAt) && slices.Contains(membersNow(chore), userID) && !Paused(chore, away) {
+				due := chore.NextDueDate != nil && !chore.NextDueDate.After(run.ExpiresAt)
+				if step.SlotID != "" { due = routineSlotDue(chore, step.SlotID, now.In(zone.Of(familyID)), run.ExpiresAt.In(zone.Of(familyID))) }
+				if due && slices.Contains(membersNow(chore), userID) && !Paused(chore, away) {
 					applicable = true
 					break
 				}
