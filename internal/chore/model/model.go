@@ -203,6 +203,25 @@ func NewSlotID() (string, error) {
 	return hex.EncodeToString(raw[:]), nil
 }
 
+
+func EnsureHistorySlotIDs(db *gorm.DB) error {
+	var history []ChoreHistory
+	if err := db.Where("slot IS NOT NULL AND slot_id IS NULL").Find(&history).Error; err != nil { return err }
+	for _, entry := range history {
+		var chore Chore
+		if err := db.Select("id", "frequency_meta_v2").First(&chore, entry.ChoreID).Error; err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) { continue }
+			return err
+		}
+		if chore.FrequencyMetadataV2 == nil || entry.Slot == nil ||
+			*entry.Slot < 0 || *entry.Slot >= len(chore.FrequencyMetadataV2.Slots) { continue }
+		slotID := chore.FrequencyMetadataV2.Slots[*entry.Slot].ID
+		if slotID == "" { continue }
+		if err := db.Model(&ChoreHistory{}).Where("id = ?", entry.ID).Update("slot_id", slotID).Error; err != nil { return err }
+	}
+	return nil
+}
+
 // EnsureSlotIDs backfills identifiers for tasks created before slots had IDs.
 func EnsureSlotIDs(db *gorm.DB) error {
 	var chores []Chore
