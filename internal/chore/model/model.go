@@ -9,6 +9,8 @@ import (
 	"fmt"
 	"time"
 
+	"gorm.io/gorm"
+
 	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	lModel "github.com/nico87lbs/hopla/internal/label/model"
 	storageModel "github.com/nico87lbs/hopla/internal/storage/model"
