@@ -7,8 +7,14 @@ const dropContentTags = new Set([
   'TEMPLATE', 'FORM', 'INPUT', 'BUTTON', 'TEXTAREA',
 ])
 
+const hasControlCharacters = value =>
+  Array.from(value).some(character => {
+    const code = character.charCodeAt(0)
+    return code <= 31 || code === 127
+  })
+
 const safeUrl = (value, tag, attribute) => {
-  if (!value || /[\u0000-\u001f\\]/.test(value)) return false
+  if (!value || hasControlCharacters(value) || value.includes('\\')) return false
   const trimmed = value.trim()
   if (/^(?:javascript|vbscript|data):/i.test(trimmed) || trimmed.startsWith('//')) {
     return false
@@ -53,7 +59,7 @@ const sanitizeNode = node => {
       clean.setAttribute('src', value)
     } else if (['alt', 'title'].includes(key)) {
       clean.setAttribute(key, value)
-    } else if (key === 'data-hopla-path' && !/[\u0000-\u001f]/.test(value)) {
+    } else if (key === 'data-hopla-path' && !hasControlCharacters(value)) {
       clean.setAttribute(key, value)
     } else if (key === 'target' && node.tagName === 'A' && value === '_blank') {
       clean.setAttribute('target', '_blank')
