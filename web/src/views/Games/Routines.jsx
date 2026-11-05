@@ -384,7 +384,7 @@ export const RoutinesCard = () => {
                           {slots.length > 0
                             ? slots.find(
                                 slot =>
-                                  slot.id === (draft.slotIds?.[index] || ''),,
+                                  slot.id === (draft.slotIds?.[index] || ''),
                               )?.name ||
                               slots.find(slot => slot.id === (draft.slotIds?.[index] || ''))?.time ||
                               t('routines.selectSlot')
