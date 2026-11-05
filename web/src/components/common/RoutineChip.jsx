@@ -1,14 +1,14 @@
 import { FormatListNumberedRounded, SkipNextRounded } from '@mui/icons-material'
 import { Box, IconButton } from '@mui/joy'
+import { useQueryClient } from '@tanstack/react-query'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
-import { useQueryClient } from '@tanstack/react-query'
 
 import { HOPLA } from '../../constants/theme'
 import { useRoutinesToday } from '../../queries/ChoreQueries'
-import { routineStepOf } from '../../utils/routines'
-import { SkipRoutineOccurrenceItem } from '../../utils/Fetcher'
 import { useNotification } from '../../service/NotificationProvider'
+import { SkipRoutineOccurrenceItem } from '../../utils/Fetcher'
+import { routineStepOf } from '../../utils/routines'
 
 // The routine a task is the step to do now of, with how far the child is:
 // "Matin · 2/4". The copies of a task for several children, each at their own
@@ -30,7 +30,10 @@ const RoutineChip = ({ chores, sx, userId }) => {
     item => item.position === progress.step - 1 && item.available,
   )
   const skipStep = async () => {
-    const response = await SkipRoutineOccurrenceItem(occurrence.id, occurrenceItem.id)
+    const response = await SkipRoutineOccurrenceItem(
+      occurrence.id,
+      occurrenceItem.id,
+    )
     if (!response.ok) {
       showError(t('routines.skipFailed'))
       return
