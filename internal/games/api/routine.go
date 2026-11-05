@@ -269,6 +269,16 @@ type externalRoutineOverrideReq struct {
 // externalRoutineOverride is the generic integration endpoint used by
 // Home Assistant and other trusted API-token clients. It never changes the
 // routine definition, only one live occurrence.
+
+func (h *Handler) listIntegrationRoutineOccurrences(c *gin.Context) {
+	secret := c.GetHeader("X-Hopla-Routine-Token")
+	token, err := games.AuthenticateRoutineIntegrationToken(h.db.WithContext(c), secret, time.Now().UTC())
+	if err != nil { c.JSON(401, gin.H{"error":"Invalid routine integration token"}); return }
+	occurrences, err := games.ListActiveRoutineOccurrences(h.db.WithContext(c), token.FamilyID, time.Now().UTC())
+	if err != nil { c.JSON(500, gin.H{"error":"Could not load active routine occurrences"}); return }
+	c.JSON(200, occurrences)
+}
+
 func (h *Handler) externalRoutineOverride(c *gin.Context) {
 	_, familyID, ok := h.requireParent(c)
 	if !ok { return }
