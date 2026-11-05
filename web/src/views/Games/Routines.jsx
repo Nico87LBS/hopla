@@ -34,6 +34,34 @@ const MAX_STEPS = 20
 
 const emptyRoutine = () => ({ name: '', bonus: 5, choreIds: [], dependencies: [], optionalChoreIds: [] })
 
+const remapDependencies = (draft, choreIds) => {
+  const positions = new Map(choreIds.map((id, index) => [id, index + 1]))
+  const oldPositions = new Map(draft.choreIds.map((id, index) => [index + 1, id]))
+  return (draft.dependencies || [])
+    .filter(edge => oldPositions.has(edge.stepId) && oldPositions.has(edge.dependsOnStepId))
+    .filter(edge => positions.has(oldPositions.get(edge.stepId)) && positions.has(oldPositions.get(edge.dependsOnStepId)))
+    .map(edge => ({
+      stepId: positions.get(oldPositions.get(edge.stepId)),
+      dependsOnStepId: positions.get(oldPositions.get(edge.dependsOnStepId)),
+    }))
+}
+
+const moveRoutineStep = (draft, index, delta) => {
+  const choreIds = moveStep(draft.choreIds, index, delta)
+  return { ...draft, choreIds, dependencies: remapDependencies(draft, choreIds) }
+}
+
+const removeRoutineStep = (draft, id) => {
+  const choreIds = draft.choreIds.filter(other => other !== id)
+  return {
+    ...draft,
+    choreIds,
+    dependencies: remapDependencies(draft, choreIds),
+    optionalChoreIds: (draft.optionalChoreIds || []).filter(other => other !== id),
+  }
+}
+
+
 // The routines parents chain from tasks: each child sees one step at a time
 // and earns the bonus once all of their steps of the day are done.
 export const RoutinesCard = () => {
@@ -131,7 +159,7 @@ export const RoutinesCard = () => {
                   size='sm'
                   disabled={index === 0}
                   aria-label={t('routines.up')}
-                  onClick={() => setDraft({ ...draft, choreIds: moveStep(draft.choreIds, index, -1) })}
+                  onClick={() => setDraft(moveRoutineStep(draft, index, -1))}
                 >
                   <ArrowUpwardRounded />
                 </IconButton>
@@ -139,7 +167,7 @@ export const RoutinesCard = () => {
                   size='sm'
                   disabled={index === draft.choreIds.length - 1}
                   aria-label={t('routines.down')}
-                  onClick={() => setDraft({ ...draft, choreIds: moveStep(draft.choreIds, index, 1) })}
+                  onClick={() => setDraft(moveRoutineStep(draft, index, 1))}
                 >
                   <ArrowDownwardRounded />
                 </IconButton>
@@ -147,7 +175,7 @@ export const RoutinesCard = () => {
                   size='sm'
                   aria-label={t('routines.remove')}
                   onClick={() =>
-                    setSteps(draft.choreIds.filter(other => other !== id))
+                    setDraft(removeRoutineStep(draft, id))
                   }
                 >
                   <CloseRounded />
