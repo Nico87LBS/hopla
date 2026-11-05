@@ -47,7 +47,6 @@ import {
   useSetSetting,
 } from '../../queries/LearnQueries'
 import { useNotification } from '../../service/NotificationProvider'
-import { ExportLearnReports } from '../../utils/Fetcher'
 import {
   moduleProgress,
   REVIEW_BONUS,
@@ -61,7 +60,6 @@ import {
   sortItems,
 } from '../../utils/learn/listing'
 import { packsAbove, packTree } from '../../utils/learn/tree'
-import { saveFile } from '../../utils/saveFile'
 import LoadingComponent from '../components/Loading'
 import { MemberAvatar, surfaceSx } from '../Games/GameParts'
 import { ParentPage, useMembers } from '../Manage/ParentPages'
@@ -72,6 +70,7 @@ import { LearnIcon, useCompiled } from './LearnParts'
 import { VoicesCard } from './LearnVoices'
 import ListBar, { useListChoices } from './ListBar'
 import RemoveModal from './RemoveModal'
+import useExportReports from './useExportReports'
 
 const HEAD = 40
 
@@ -1685,29 +1684,6 @@ CatalogueCard.propTypes = {
 // of each person.
 // useExportReports sends the questions reported in the games, in one file,
 // to whoever writes the modules.
-export const useExportReports = () => {
-  const [busy, setBusy] = useState(false)
-  const exportAll = async () => {
-    setBusy(true)
-    try {
-      const reports = await ExportLearnReports()
-      const now = new Date()
-      const file = {
-        format: 'hopla-signalements/1',
-        hopla: import.meta.env.VITE_APP_VERSION,
-        exportedAt: now.toISOString(),
-        reports,
-      }
-      await saveFile(
-        `hopla-signalements-${now.toISOString().slice(0, 10)}.json`,
-        `${JSON.stringify(file, null, 2)}\n`,
-      )
-    } finally {
-      setBusy(false)
-    }
-  }
-  return [exportAll, busy]
-}
 
 // ReportsCard leads to the questions reported in the games.
 const ReportsCard = ({ count }) => {
