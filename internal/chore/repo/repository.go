@@ -146,16 +146,21 @@ func (r *ChoreRepository) UpdateChoreVisibility(ctx context.Context, chore *chMo
 			return err
 		}
 		var referencedSlots []string
-		if err := tx.Table("routine_steps").
-			Select("routine_steps.slot_id").
-			Joins("JOIN chores AS routine_chore ON routine_chore.id = routine_steps.chore_id").
-			Where("routine_chore.family_id = ? AND LOWER(TRIM(routine_chore.name)) = LOWER(TRIM(?)) AND routine_steps.slot_id <> ''",
-				chore.FamilyID, previousChore.Name).
-			Pluck("routine_steps.slot_id", &referencedSlots).Error; err != nil {
-			return err
+		// Routine tables are installed by the application migration. Some
+		// focused repository tests and older maintenance tools intentionally
+		// open a partial schema; without routine_steps there can be no slot
+		// references to protect.
+		if tx.Migrator().HasTable("routine_steps") {
+			if err := tx.Table("routine_steps").
+				Select("routine_steps.slot_id").
+				Joins("JOIN chores AS routine_chore ON routine_chore.id = routine_steps.chore_id").
+				Where("routine_chore.family_id = ? AND LOWER(TRIM(routine_chore.name)) = LOWER(TRIM(?)) AND routine_steps.slot_id <> ''",
+					chore.FamilyID, previousChore.Name).
+				Pluck("routine_steps.slot_id", &referencedSlots).Error; err != nil {
+				return err
+			}
 		}
-		availableSlots := map[string]bool{}
-		if chore.FrequencyMetadataV2 != nil {
+		availableSlots := map[string]bool{} 		if chore.FrequencyMetadataV2 != nil {
 			for _, slot := range chore.FrequencyMetadataV2.Slots { availableSlots[slot.ID] = true }
 		}
 		for _, slotID := range referencedSlots {

@@ -159,8 +159,15 @@ func SaveRoutine(db *gorm.DB, routine *Routine) error {
 	if len(routine.ChoreIDs) > maxRoutineSteps {
 		return ErrRoutineTooLong
 	}
-	if len(routine.SlotIDs) == 0 { routine.SlotIDs = make([]string, len(routine.ChoreIDs)) }
-	if len(routine.SlotIDs) != len(routine.ChoreIDs) { return ErrRoutineSlot }
+	if len(routine.SlotIDs) != len(routine.ChoreIDs) {
+		// Older clients may omit slot IDs, or may edit a legacy whole-task
+		// routine without knowing about the parallel slot-ID array. Keep those
+		// routines editable; a partially selected array is ambiguous and rejected.
+		for _, slotID := range routine.SlotIDs {
+			if slotID != "" { return ErrRoutineSlot }
+		}
+		routine.SlotIDs = make([]string, len(routine.ChoreIDs))
+	}
 	return db.Transaction(func(tx *gorm.DB) error {
 		tasks, err := stepTasks(tx, routine.FamilyID, routine.ChoreIDs)
 		if err != nil {
@@ -295,9 +302,9 @@ func routineSlotDue(chore *chModel.Chore, slotID string, from, to time.Time) boo
 		}
 		if !runs { continue }
 		at := time.Date(day.Year(), day.Month(), day.Day(), clock.Hour(), clock.Minute(), 0, 0, to.Location())
-		if !at.After(to) && (day.After(first) || !at.After(from)) { return true }
-		// On the first day, an earlier slot remains applicable as catch-up.
-		if day.Equal(first) && at.Before(from) && !at.After(to) { return true }
+		// Every slot up to the occurrence expiry is applicable: this includes
+		// upcoming slots later today and earlier slots that can be caught up.
+		if !at.After(to) { return true }
 	}
 	return false
 }
@@ -617,7 +624,11 @@ func awardRoutines(tx *gorm.DB, familyID, userID int, performedAt, now time.Time
 	views, err := RoutineViews(tx, familyID, []int{userID}, now)
 	if err != nil { return err }
 	for _, view := range views {
-		if slices.Contains(knownRoutineIDs, view.ID) || view.Bonus <= 0 || len(view.Members) == 0 || view.Members[0].Occurrence != nil || !view.Members[0].Finished {
+		// If this is the first time the routine is opened, RoutineViews may
+		// create an occurrence while retaining a legacy completion from earlier
+		// in the same day. Pay that legacy win once; settleRoutineOccurrence
+		// sees the RoutineWin and suppresses a duplicate occurrence bonus.
+		if slices.Contains(knownRoutineIDs, view.ID) || view.Bonus <= 0 || len(view.Members) == 0 || !view.Members[0].Finished {
 			continue
 		}
 		result := tx.Clauses(clause.OnConflict{DoNothing: true}).
