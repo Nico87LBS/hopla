@@ -240,7 +240,7 @@ const RichTextEditor = forwardRef(
           if (!initialContentSet.current && value) {
             patchDescriptionHtml(value).then(html => {
               if (editorRef.current && html !== value) {
-                editorRef.current.root.innerHTML = html
+                editorRef.current.root.innerHTML = sanitizeRichTextHTML(html)
               }
             })
           }
