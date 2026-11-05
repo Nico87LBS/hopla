@@ -740,7 +740,11 @@ const ChoreEdit = () => {
       // Cmd/Ctrl + Escape key to cancel
       if (event.key === 'Escape' && (event.ctrlKey || event.metaKey)) {
         event.preventDefault()
-        Navigate(choreId ? `/chores/${choreId}` : '/chores')
+        if (window.history.state?.idx > 0) Navigate(-1)
+        else
+          Navigate(choreId ? `/chores/${choreId}` : '/chores', {
+            replace: true,
+          })
         return
       }
     }
@@ -1036,7 +1040,12 @@ const ChoreEdit = () => {
     : null
 
   const saving = updateChoreMutation.isPending || createChoreMutation.isPending
-  const close = () => Navigate(choreId ? `/chores/${choreId}` : '/chores')
+  // Cancelling goes back where the editor was opened from, so the back arrow
+  // of that page still leads to the list instead of the editor again.
+  const close = () => {
+    if (window.history.state?.idx > 0) Navigate(-1)
+    else Navigate(choreId ? `/chores/${choreId}` : '/chores', { replace: true })
+  }
   const archive = () => {
     const ids = [
       choreId,
