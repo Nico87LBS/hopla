@@ -1036,6 +1036,28 @@ const SaveRoutine = routine => {
   )
 }
 
+const GetRoutineIntegrationTokens = async () => {
+  const resp = await Fetch('/games/routines/integrations', {
+    method: 'GET',
+    headers: HEADERS(),
+  })
+  if (!resp.ok) throw new Error('Unable to load integration tokens')
+  return resp.json()
+}
+
+const CreateRoutineIntegrationToken = name =>
+  Fetch('/games/routines/integrations', {
+    method: 'POST',
+    headers: HEADERS(),
+    body: JSON.stringify({ name }),
+  })
+
+const RevokeRoutineIntegrationToken = id =>
+  Fetch(`/games/routines/integrations/${id}`, {
+    method: 'DELETE',
+    headers: HEADERS(),
+  })
+
 const SkipRoutineOccurrenceItem = (occurrenceId, itemId, reason = '') => {
   return Fetch(`/games/routines/occurrences/${occurrenceId}/items/skip`, {
     method: 'POST',
@@ -1420,6 +1442,7 @@ export {
   CreateLearnTest,
   CreateLongLiveToken,
   CreateReward,
+  CreateRoutineIntegrationToken,
   DeclineFamilyMemberRequest,
   DeleteBonusPeriod,
   DeleteChallenge,
@@ -1485,6 +1508,7 @@ export {
   GetRedemptions,
   GetResource,
   GetRewards,
+  GetRoutineIntegrationTokens,
   GetRoutines,
   GetSlotsToday,
   GetStorageUsage,
@@ -1511,6 +1535,7 @@ export {
   RestoreBackup,
   RestoreFamilyBackup,
   RevokeCalendarURL,
+  RevokeRoutineIntegrationToken,
   RotateCalendarURL,
   SaveBonusPeriod,
   SaveChallenge,

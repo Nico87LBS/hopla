@@ -593,5 +593,29 @@
       "tooltipError": "Mises à jour en temps réel (SSE) : {{status}} - {{error}}",
       "tooltipJoin": "Mises à jour en temps réel (SSE) : {{status}} - Rejoins une famille pour les activer"
     }
+  },
+  "routineIntegrations": {
+    "title": "Jetons d’intégration des routines",
+    "description": "Identifiants dédiés à Home Assistant et aux autres intégrations. Ces jetons donnent uniquement accès aux occurrences et aux dérogations des routines.",
+    "create": "Créer un jeton d’intégration",
+    "nameLabel": "Nom du jeton",
+    "namePlaceholder": "Ex. Home Assistant",
+    "created": "Jeton d’intégration créé",
+    "secretWarning": "Copiez ce jeton maintenant. Il ne sera plus affiché ensuite.",
+    "copy": "Copier le jeton",
+    "copied": "Jeton d’intégration copié",
+    "createdAt": "Créé le {{date}}",
+    "lastUsed": "Dernière utilisation : {{date}}",
+    "neverUsed": "Jamais utilisé",
+    "revoked": "Révoqué",
+    "active": "Actif",
+    "revoke": "Révoquer",
+    "revokeTitle": "Révoquer ce jeton d’intégration ?",
+    "revokeMessage": "L’intégration « {{name}} » perdra immédiatement son accès. Cette action est irréversible.",
+    "revokedSuccess": "Jeton d’intégration révoqué",
+    "loadFailed": "Impossible de charger les jetons d’intégration",
+    "createFailed": "Impossible de créer le jeton d’intégration",
+    "revokeFailed": "Impossible de révoquer le jeton d’intégration",
+    "empty": "Aucun jeton d’intégration pour le moment."
   }
 }
