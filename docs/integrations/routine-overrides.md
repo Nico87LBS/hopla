@@ -1,6 +1,6 @@
 # Routine overrides for external integrations
 
-Hopla exposes a narrowly scoped integration token for services such as Home Assistant. The token can only list active routine occurrences and apply skip/restore overrides; it cannot read the rest of the family's data or modify tasks.
+Hopla exposes a narrowly scoped integration token for services such as Home Assistant. The token can only list routine occurrences and apply skip/restore overrides; it cannot read the rest of the family's data or modify tasks.
 
 ## Create and revoke a token
 
@@ -8,7 +8,7 @@ A family parent creates a token through the normal authenticated Hopla API:
 
 ```http
 POST /api/v1/games/routines/integrations
-Authorization: Bearer <parent-session-jwt>
+Authorization: Bearer <parent-api-token>
 Content-Type: application/json
 
 {"name":"Home Assistant"}
