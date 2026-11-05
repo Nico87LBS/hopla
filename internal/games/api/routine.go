@@ -166,6 +166,11 @@ func (h *Handler) startRoutineOccurrence(c *gin.Context) {
 			_, familyID, parent := h.requireParent(c)
 			if !parent { return }
 			if familyID != currentUser.FamilyID { c.JSON(403, gin.H{"error":"Forbidden"}); return }
+			members, err := h.familyRepo.GetFamilyUsers(c, familyID)
+			if err != nil { c.JSON(500, gin.H{"error":"Could not verify family member"}); return }
+			found := false
+			for _, member := range members { if member.UserID == req.UserID && member.IsActive { found = true; break } }
+			if !found { c.JSON(404, gin.H{"error":"Family member not found"}); return }
 			userID = req.UserID
 		}
 	}
@@ -190,7 +195,11 @@ func (h *Handler) skipRoutineOccurrenceItem(c *gin.Context) {
 	if err != nil { c.JSON(400, gin.H{"error":"Invalid occurrence ID"}); return }
 	var req skipRoutineOccurrenceReq
 	if err := c.ShouldBindJSON(&req); err != nil { c.JSON(400, gin.H{"error":"Invalid request"}); return }
-	run, err := games.RoutineOccurrenceForMember(h.db.WithContext(c), currentUser.FamilyID, occurrenceID, currentUser.ID, time.Now().UTC())
+	run, err := games.GetRoutineOccurrence(h.db.WithContext(c), currentUser.FamilyID, occurrenceID, time.Now().UTC())
+	if err == nil && run.UserID != currentUser.ID {
+		_, familyID, parent := h.requireParent(c)
+		if !parent || familyID != currentUser.FamilyID { return }
+	}
 	if err != nil {
 		status := 500
 		if errors.Is(err, games.ErrRoutineOccurrenceNotFound) { status = 404 }
