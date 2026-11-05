@@ -228,6 +228,9 @@
     "failed": "Could not save the routine",
     "deleteTitle": "Delete the routine?",
     "deleteMessage": "“{{name}}” will be deleted. Its tasks stay.",
-    "optional": "Optional"
+    "optional": "Optional",
+    "selectSlot": "Choose a slot",
+    "allSlots": "All slots",
+    "missingSlot": "Missing slot — choose another"
   }
 }
