@@ -145,3 +145,40 @@ func TestExpiredExternalSkipIsRevertedUnlessADependentStepWasPassed(t *testing.T
 	require.Equal(t, RoutineOccurrenceItemPending, afterExpiry.Items[0].Status)
 	require.True(t, afterExpiry.Items[0].Available)
 }
+
+
+func TestExternalRoutineSkipCanBeRestoredBeforeDependentStepPasses(t *testing.T) {
+	db := setup(t)
+	now := noon(0)
+	first := chore(t, db, "Manteau", 1, now, assignedTo(2))
+	second := chore(t, db, "Voiture", 1, now, assignedTo(2))
+	routine := Routine{FamilyID:1,Name:"Départ",ValidityMinutes:180,ChoreIDs:[]int{first.ID,second.ID},
+		GraphEnabled:true,Dependencies:[]RoutineDependency{{StepID:2,DependsOnStepID:1}}}
+	require.NoError(t,SaveRoutine(db,&routine))
+	run,err:=StartRoutineOccurrence(db,1,routine.ID,2,now)
+	require.NoError(t,err)
+	itemID:=run.Items[0].ID
+	expires:=now.Add(30*time.Minute)
+	skip:=RoutineOverrideInput{ItemID:itemID,Source:"external",Reason:"Pas besoin",
+		ExternalReference:"home-assistant/manteau",IdempotencyKey:"skip-1",ExpiresAt:&expires}
+	_,err=SkipRoutineOccurrenceItem(db,1,run.ID,skip,now.Add(time.Minute))
+	require.NoError(t,err)
+	restore:=RoutineOverrideInput{ItemID:itemID,Source:"external",Reason:"Le temps change",
+		ExternalReference:"home-assistant/manteau",IdempotencyKey:"restore-1"}
+	updated,err:=RestoreRoutineOccurrenceItem(db,1,run.ID,restore,now.Add(2*time.Minute))
+	require.NoError(t,err)
+	require.Equal(t,RoutineOccurrenceItemPending,updated.Items[0].Status)
+	require.True(t,updated.Items[0].Available)
+	_,err=RestoreRoutineOccurrenceItem(db,1,run.ID,restore,now.Add(3*time.Minute))
+	require.NoError(t,err,"repeated restore events are idempotent")
+
+	_,err=SkipRoutineOccurrenceItem(db,1,run.ID,skip,now.Add(4*time.Minute))
+	require.NoError(t,err)
+	var dependent RoutineOccurrenceItem
+	require.NoError(t,db.Where("occurrence_id = ? AND position = ?",run.ID,1).First(&dependent).Error)
+	require.NoError(t,db.Model(&dependent).Update("status",RoutineOccurrenceItemCompleted).Error)
+	_,err=RestoreRoutineOccurrenceItem(db,1,run.ID,RoutineOverrideInput{
+		ItemID:itemID,Source:"external",Reason:"Trop tard",ExternalReference:"home-assistant/manteau",IdempotencyKey:"restore-2",
+	},now.Add(5*time.Minute))
+	require.ErrorIs(t,err,ErrRoutineOccurrenceConflict,"do not roll back after a dependent step has passed")
+}
