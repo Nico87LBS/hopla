@@ -297,6 +297,7 @@ func SkipRoutineOccurrenceItem(db *gorm.DB, familyID, occurrenceID int, input Ro
 		if run.Status != RoutineOccurrenceActive || !now.Before(run.ExpiresAt) {
 			return ErrRoutineOccurrenceExpired
 		}
+		if input.ExpiresAt != nil && input.ExpiresAt.After(run.ExpiresAt) { return ErrRoutineOccurrenceInvalid }
 		if err := tx.Preload("Dependencies").First(&run, run.ID).Error; err != nil { return err }
 		var item RoutineOccurrenceItem
 		if err := tx.Clauses(clause.Locking{Strength:"UPDATE"}).
@@ -308,7 +309,9 @@ func SkipRoutineOccurrenceItem(db *gorm.DB, familyID, occurrenceID int, input Ro
 			var existing RoutineOverride
 			err := tx.Where("occurrence_id = ? AND item_id = ? AND idempotency_key = ?", occurrenceID, item.ID, input.IdempotencyKey).First(&existing).Error
 			if err == nil {
-				if existing.Action != "skip" || existing.Reason != input.Reason || existing.ExternalReference != input.ExternalReference {
+				sameExpiry := existing.ExpiresAt != nil && input.ExpiresAt != nil && existing.ExpiresAt.Equal(*input.ExpiresAt)
+				if existing.Action != "skip" || existing.Reason != input.Reason ||
+					existing.ExternalReference != input.ExternalReference || !sameExpiry {
 					return ErrRoutineOccurrenceConflict
 				}
 				return nil
@@ -360,6 +363,7 @@ func RestoreRoutineOccurrenceItem(db *gorm.DB, familyID, occurrenceID int, input
 			return err
 		}
 		if run.Status != RoutineOccurrenceActive || !now.Before(run.ExpiresAt) { return ErrRoutineOccurrenceExpired }
+		if input.ExpiresAt != nil && input.ExpiresAt.After(run.ExpiresAt) { return ErrRoutineOccurrenceInvalid }
 		if err := tx.Preload("Dependencies").First(&run, run.ID).Error; err != nil { return err }
 		var item RoutineOccurrenceItem
 		if err := tx.Clauses(clause.Locking{Strength:"UPDATE"}).
