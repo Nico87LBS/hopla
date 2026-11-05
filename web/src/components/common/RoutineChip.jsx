@@ -90,7 +90,7 @@ const RoutineChip = ({ chores, sx, userId }) => {
           {t('routines.step', { step: progress.step, total: progress.total })}
         </span>
       )}
-      {occurrence?.status === 'active' && occurrenceItem && (!nameOnly || userId !== undefined) && (
+      {occurrence?.status === 'active' && occurrenceItem && userId !== undefined && (
         <IconButton
           size='sm'
           variant='plain'
