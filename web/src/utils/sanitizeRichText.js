@@ -42,7 +42,7 @@ const hasControlCharacters = value =>
   })
 
 const safeUrl = (value, tag, attribute) => {
-  if (!value || hasControlCharacters(value) || value.includes('\\')) return false
+  if (!value || hasControlCharacters(value) || value.includes('\\')) {\n    return false\n  }
   const trimmed = value.trim()
   if (
     /^(?:javascript|vbscript|data):/i.test(trimmed) ||
