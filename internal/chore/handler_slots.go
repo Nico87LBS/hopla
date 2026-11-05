@@ -83,7 +83,7 @@ func (h *Handler) completeSlot(ctx context.Context, chore *chModel.Chore, comple
 	if err != nil {
 		return nil, err
 	}
-	at, index := slot.At.UTC(), slot.Index
+	at, index, slotID := slot.At.UTC(), slot.Index, slot.SlotID
 	performedAt := now
 	entry := &chModel.ChoreHistory{
 		ChoreID:     chore.ID,
@@ -93,6 +93,7 @@ func (h *Handler) completeSlot(ctx context.Context, chore *chModel.Chore, comple
 		DueDate:     &at,
 		Note:        note,
 		Slot:        &index,
+		SlotID:      &slotID,
 		Status:      chModel.ChoreHistoryStatusCompleted,
 	}
 	if chore.RequireApproval {
