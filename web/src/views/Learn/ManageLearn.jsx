@@ -2124,13 +2124,22 @@ export const ManageLearn = () => {
 export const LearnCatalogue = () => {
   const { data } = useLearnModules()
   const modules = data?.modules || []
-  const settings = useMemo(() => new Map((data?.settings || []).map(s => [`${s.userId}:${s.scope}`, s])), [data?.settings])
-  return <ParentPage page='learn'>
-    <LearnTabs current='catalogue' />
-    <FamilyPacksCard modules={modules} />
-    <CatalogueCard installed={new Set(modules.map(m => m.id))}
-      defaults={data?.defaults || {}} settings={settings} />
-  </ParentPage>
+  const settings = useMemo(
+    () =>
+      new Map((data?.settings || []).map(s => [`${s.userId}:${s.scope}`, s])),
+    [data?.settings],
+  )
+  return (
+    <ParentPage page='learn'>
+      <LearnTabs current='catalogue' />
+      <FamilyPacksCard modules={modules} />
+      <CatalogueCard
+        installed={new Set(modules.map(m => m.id))}
+        defaults={data?.defaults || {}}
+        settings={settings}
+      />
+    </ParentPage>
+  )
 }
 
 // /manage/learn/voix: the voice of this device for the questions read
