@@ -228,7 +228,8 @@ export const RoutinesCard = () => {
                   <CloseRounded />
                 </IconButton>
                 {(
-                  chores.find(chore => chore.id === id)?.frequencyMetadata?.slots || []
+                  chores.find(chore => chore.id === id)?.frequencyMetadata
+                    ?.slots || []
                 ).length > 0 && (
                   <Select
                     size='sm'
@@ -244,9 +245,11 @@ export const RoutinesCard = () => {
                     sx={{ minWidth: 130, maxWidth: 190 }}
                   >
                     {(() => {
-                      const options = routineTasks(chores, routines, draft.id).find(
-                        chore => chore.id === id,
-                      )
+                      const options = routineTasks(
+                        chores,
+                        routines,
+                        draft.id,
+                      ).find(chore => chore.id === id)
                       const currentSlotId = draft.slotIds?.[index] || ''
                       return (
                         <>
