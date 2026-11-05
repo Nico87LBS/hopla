@@ -236,12 +236,17 @@ func (h *Handler) externalRoutineOverride(c *gin.Context) {
 	occurrenceID, err := idParam(c)
 	if err != nil { c.JSON(400, gin.H{"error":"Invalid occurrence ID"}); return }
 	var req externalRoutineOverrideReq
-	if err := c.ShouldBindJSON(&req); err != nil || req.Action != "skip" {
-		c.JSON(400, gin.H{"error":"Only a skip action with an item ID, external reference and idempotency key is supported"}); return
+	if err := c.ShouldBindJSON(&req); err != nil || (req.Action != "skip" && req.Action != "restore") {
+		c.JSON(400, gin.H{"error":"Only skip and restore actions are supported"}); return
 	}
-	run, err := games.SkipRoutineOccurrenceItem(h.db.WithContext(c), familyID, occurrenceID,
-		games.RoutineOverrideInput{ItemID:req.ItemID, Source:"external", Reason:req.Reason,
-			ExternalReference:req.ExternalReference, IdempotencyKey:req.IdempotencyKey, ExpiresAt:req.ExpiresAt}, time.Now().UTC())
+	input := games.RoutineOverrideInput{Action:req.Action, ItemID:req.ItemID, Source:"external", Reason:req.Reason,
+		ExternalReference:req.ExternalReference, IdempotencyKey:req.IdempotencyKey, ExpiresAt:req.ExpiresAt}
+	var run *games.RoutineOccurrence
+	if req.Action == "restore" {
+		run, err = games.RestoreRoutineOccurrenceItem(h.db.WithContext(c), familyID, occurrenceID, input, time.Now().UTC())
+	} else {
+		run, err = games.SkipRoutineOccurrenceItem(h.db.WithContext(c), familyID, occurrenceID, input, time.Now().UTC())
+	}
 	if err != nil {
 		status := 500
 		if errors.Is(err, games.ErrRoutineOccurrenceNotFound) || errors.Is(err, games.ErrRoutineOccurrenceItemNotFound) { status = 404 }
