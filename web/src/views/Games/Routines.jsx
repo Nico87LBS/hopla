@@ -16,6 +16,7 @@ import {
   Select,
   Sheet,
   Stack,
+  Switch,
   Typography,
 } from '@mui/joy'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
@@ -126,6 +127,7 @@ export const RoutinesCard = () => {
     queryFn: async () => (await GetRoutines())?.res || [],
   })
   const [draft, setDraft] = useState(null)
+  const [expandedStep, setExpandedStep] = useState(0)
   const [askDelete, modal] = useConfirmDelete()
   // A step whose task was deleted is left out.
   const known = ids => ids.filter(id => names.has(id))
@@ -226,262 +228,389 @@ export const RoutinesCard = () => {
         onAdd={draft ? undefined : () => setDraft(emptyRoutine())}
       />
       {draft && (
-        <Stack gap={1} sx={{ mb: 1.5 }}>
-          <Input
-            size='sm'
-            autoFocus
-            placeholder={t('routines.name')}
-            value={draft.name}
-            onChange={event => setDraft({ ...draft, name: event.target.value })}
-            slotProps={{ input: { maxLength: 60 } }}
-          />
-          <Stack gap={0.5}>
-            {draft.choreIds.map((id, index) => (
-              <Box
-                key={`${id}-${index}`}
-                sx={{
-                  alignItems: 'center',
-                  bgcolor: 'background.level1',
-                  borderRadius: 'md',
-                  display: 'flex',
-                  gap: 1,
-                  pl: 1.25,
-                  pr: 0.5,
-                  py: 0.25,
-                }}
+        <Stack gap={1.5} sx={{ mb: 2 }}>
+          <Stack
+            direction={{ xs: 'column', md: 'row' }}
+            gap={1.5}
+            alignItems={{ md: 'flex-end' }}
+          >
+            <Box sx={{ flex: 1 }}>
+              <Typography level='body-sm' fontWeight='lg' sx={{ mb: 0.5 }}>
+                {t('routines.name')}
+              </Typography>
+              <Input
+                size='lg'
+                autoFocus
+                placeholder={t('routines.name')}
+                value={draft.name}
+                onChange={event => setDraft({ ...draft, name: event.target.value })}
+                slotProps={{ input: { maxLength: 60 } }}
+                sx={{ bgcolor: 'background.surface' }}
+              />
+            </Box>
+            <Box sx={{ width: { xs: '100%', md: 230 } }}>
+              <Typography level='body-sm' fontWeight='lg' sx={{ mb: 0.5 }}>
+                {t('routines.validity')}
+              </Typography>
+              <Select
+                size='lg'
+                value={String(draft.validityMinutes ?? 720)}
+                onChange={(event, value) =>
+                  setDraft({ ...draft, validityMinutes: Number(value) || 720 })
+                }
+                sx={{ bgcolor: 'background.surface' }}
               >
-                <Typography
-                  level='title-sm'
-                  sx={{ color: HOPLA.greenText, minWidth: 18 }}
-                >
-                  {index + 1}
-                </Typography>
-                <Typography
-                  level='body-sm'
-                  sx={{ flex: 1, minWidth: 0 }}
-                  noWrap
-                >
-                  {names.get(id)}
-                </Typography>
-                <IconButton
-                  size='sm'
-                  disabled={index === 0}
-                  aria-label={t('routines.up')}
-                  onClick={() => setDraft(moveRoutineStep(draft, index, -1))}
-                >
-                  <ArrowUpwardRounded />
-                </IconButton>
-                <IconButton
-                  size='sm'
-                  disabled={index === draft.choreIds.length - 1}
-                  aria-label={t('routines.down')}
-                  onClick={() => setDraft(moveRoutineStep(draft, index, 1))}
-                >
-                  <ArrowDownwardRounded />
-                </IconButton>
-                <IconButton
-                  size='sm'
-                  aria-label={t('routines.remove')}
-                  onClick={() => setDraft(removeRoutineStep(draft, index))}
-                >
-                  <CloseRounded />
-                </IconButton>
-                {(
-                  chores.find(chore => chore.id === id)?.frequencyMetadata
-                    ?.slots || []
-                ).length > 0 && (
-                  <Select
-                    size='sm'
-                    value={draft.slotIds?.[index] || ''}
-                    placeholder={t('routines.selectSlot')}
-                    onChange={(event, value) => {
-                      const slotIds = [
-                        ...(draft.slotIds || draft.choreIds.map(() => '')),
-                      ]
-                      slotIds[index] = value || ''
-                      setDraft({ ...draft, slotIds })
-                    }}
-                    sx={{ minWidth: 130, maxWidth: 190 }}
-                  >
-                    {(() => {
-                      const options = routineTasks(
-                        chores,
-                        routines,
-                        draft.id,
-                      ).find(chore => chore.id === id)
-                      const currentSlotId = draft.slotIds?.[index] || ''
-                      const availableSlots = (
-                        options?.routineAvailableSlots || []
-                      ).filter(
-                        slot =>
-                          slot.id === currentSlotId ||
-                          !(draft.slotIds || []).some(
-                            (slotId, otherIndex) =>
-                              otherIndex !== index &&
-                              draft.choreIds[otherIndex] === id &&
-                              slotId === slot.id,
-                          ),
-                      )
-                      const canUseAllSlots =
-                        options?.routineCanUseAllSlots &&
-                        !(draft.choreIds || []).some(
-                          (otherId, otherIndex) =>
-                            otherIndex !== index && otherId === id,
-                        )
-                      return (
-                        <>
-                          {canUseAllSlots && (
-                            <Option value=''>{t('routines.allSlots')}</Option>
-                          )}
-                          {availableSlots.map(slot => (
-                            <Option key={slot.id} value={slot.id}>
-                              {slot.name || slot.time} · {slot.time}
-                            </Option>
-                          ))}
-                          {currentSlotId &&
-                            !(options?.routineAvailableSlots || []).some(
-                              slot => slot.id === currentSlotId,
-                            ) && (
-                              <Option value={currentSlotId}>
-                                {t('routines.missingSlot')}
-                              </Option>
-                            )}
-                        </>
-                      )
-                    })()}
-                  </Select>
-                )}
-                <Select
-                  size='sm'
-                  multiple
-                  value={(draft.dependencies || [])
-                    .filter(edge => edge.stepId === index + 1)
-                    .map(edge => edge.dependsOnStepId)}
-                  placeholder={t('routines.addTask')}
-                  onChange={(event, value) =>
-                    setPrerequisites(index + 1, value)
-                  }
-                  sx={{ minWidth: 130, maxWidth: 200 }}
-                >
-                  {draft.choreIds.map((otherId, otherIndex) =>
-                    otherId === id ? null : (
-                      <Option key={otherId} value={otherIndex + 1}>
-                        {names.get(otherId)}
-                      </Option>
-                    ),
-                  )}
-                </Select>
-                <Chip
-                  size='sm'
-                  variant={
-                    (draft.optionalStepIds || []).includes(index + 1)
-                      ? 'solid'
-                      : 'outlined'
-                  }
-                  color={
-                    (draft.optionalStepIds || []).includes(index + 1)
-                      ? 'warning'
-                      : 'neutral'
-                  }
-                  onClick={() =>
-                    setDraft({
-                      ...draft,
-                      optionalStepIds: (draft.optionalStepIds || []).includes(
-                        index + 1,
-                      )
-                        ? draft.optionalStepIds.filter(
-                            stepId => stepId !== index + 1,
-                          )
-                        : [...(draft.optionalStepIds || []), index + 1],
-                    })
-                  }
-                >
-                  {t('routines.optional', { defaultValue: 'Facultative' })}
-                </Chip>
-              </Box>
-            ))}
+                <Option value='60'>1 heure</Option>
+                <Option value='240'>4 heures</Option>
+                <Option value='720'>12 heures</Option>
+                <Option value='1440'>24 heures</Option>
+                <Option value='2880'>48 heures</Option>
+              </Select>
+            </Box>
           </Stack>
-          {draft.choreIds.length < MAX_STEPS && (
-            <Select
-              size='sm'
-              value={null}
-              placeholder={
-                offered.length ? t('routines.addTask') : t('routines.noTask')
-              }
-              disabled={offered.length === 0}
-              onChange={(event, value) => {
-                if (!value) return
-                const [id, slotId] = value.split('::')
-                setSteps(Number(id), slotId)
-              }}
+
+          <Sheet
+            variant='outlined'
+            sx={{
+              p: { xs: 1, sm: 1.5 },
+              borderRadius: 'lg',
+              borderColor: 'divider',
+              bgcolor: 'background.surface',
+            }}
+          >
+            <Stack
+              direction='row'
+              alignItems='center'
+              justifyContent='space-between'
+              sx={{ mb: 1 }}
             >
-              {offered.flatMap(chore => {
-                const slots = chore.routineAvailableSlots || []
-                const options = []
-                if (chore.routineCanUseAllSlots) {
-                  options.push(
-                    <Option key={`${chore.id}-all`} value={`${chore.id}::`}>
-                      {chore.name} · {t('routines.allSlots')}
-                    </Option>,
-                  )
-                }
-                if (slots.length === 0 && options.length === 0) {
-                  options.push(
-                    <Option key={chore.id} value={`${chore.id}::`}>
-                      {chore.name}
-                    </Option>,
-                  )
-                }
-                slots.forEach(slot =>
-                  options.push(
-                    <Option
-                      key={`${chore.id}-${slot.id}`}
-                      value={`${chore.id}::${slot.id}`}
+              <Typography level='title-md'>
+                {t('routines.stepsTitle', { defaultValue: 'Les étapes de votre routine' })}
+              </Typography>
+              <Chip size='sm' variant='soft' color='primary'>
+                {draft.choreIds.length}/{MAX_STEPS}
+              </Chip>
+            </Stack>
+
+            <Stack gap={0.75}>
+              {draft.choreIds.map((id, index) => {
+                const chore = chores.find(item => item.id === id)
+                const slots = chore?.frequencyMetadata?.slots || []
+                const optional = (draft.optionalStepIds || []).includes(index + 1)
+                const expanded = expandedStep === index
+                const prerequisites = (draft.dependencies || [])
+                  .filter(edge => edge.stepId === index + 1)
+                  .map(edge => edge.dependsOnStepId)
+
+                return (
+                  <Sheet
+                    key={`${id}-${index}`}
+                    variant='outlined'
+                    sx={{
+                      overflow: 'hidden',
+                      borderRadius: 'md',
+                      borderColor: expanded ? 'primary.400' : 'divider',
+                      bgcolor: expanded ? 'background.level1' : 'background.surface',
+                    }}
+                  >
+                    <Stack
+                      direction='row'
+                      alignItems='center'
+                      gap={{ xs: 0.5, sm: 1 }}
+                      sx={{ px: { xs: 0.75, sm: 1 }, py: 1, cursor: 'pointer' }}
+                      onClick={() => setExpandedStep(expanded ? -1 : index)}
                     >
-                      {chore.name} · {slot.name || slot.time}
-                    </Option>,
-                  ),
+                      <Stack gap={0} onClick={event => event.stopPropagation()}>
+                        <IconButton
+                          size='sm'
+                          variant='plain'
+                          disabled={index === 0}
+                          aria-label={t('routines.up')}
+                          onClick={() => {
+                            setDraft(moveRoutineStep(draft, index, -1))
+                            setExpandedStep(index - 1)
+                          }}
+                        >
+                          <ArrowUpwardRounded />
+                        </IconButton>
+                        <IconButton
+                          size='sm'
+                          variant='plain'
+                          disabled={index === draft.choreIds.length - 1}
+                          aria-label={t('routines.down')}
+                          onClick={() => {
+                            setDraft(moveRoutineStep(draft, index, 1))
+                            setExpandedStep(index + 1)
+                          }}
+                        >
+                          <ArrowDownwardRounded />
+                        </IconButton>
+                      </Stack>
+                      <Typography
+                        level='title-sm'
+                        sx={{
+                          bgcolor: 'primary.softBg',
+                          color: 'primary.700',
+                          borderRadius: '50%',
+                          width: 30,
+                          height: 30,
+                          display: 'grid',
+                          placeItems: 'center',
+                          flexShrink: 0,
+                        }}
+                      >
+                        {index + 1}
+                      </Typography>
+                      <Box sx={{ flex: 1, minWidth: 0 }}>
+                        <Typography level='title-sm' noWrap>
+                          {names.get(id)}
+                        </Typography>
+                        <Typography level='body-xs' sx={{ color: 'text.tertiary' }}>
+                          {slots.length > 0
+                            ? slots.find(slot => slot.id === (draft.slotIds?.[index] || ''))?.name ||
+                              slots.find(slot => slot.id === (draft.slotIds?.[index] || ''))?.time ||
+                              t('routines.selectSlot')
+                            : t('routines.stepSubtitle', { defaultValue: 'Étape de la routine' })}
+                        </Typography>
+                      </Box>
+                      <Stack
+                        direction='row'
+                        alignItems='center'
+                        gap={0.5}
+                        onClick={event => event.stopPropagation()}
+                      >
+                        <Switch
+                          size='md'
+                          checked={!optional}
+                          onChange={event =>
+                            setDraft({
+                              ...draft,
+                              optionalStepIds: event.target.checked
+                                ? (draft.optionalStepIds || []).filter(stepId => stepId !== index + 1)
+                                : [...(draft.optionalStepIds || []), index + 1],
+                            })
+                          }
+                          slotProps={{
+                            input: {
+                              'aria-label': optional
+                                ? t('routines.makeRequired', { defaultValue: 'Rendre obligatoire' })
+                                : t('routines.makeOptional', { defaultValue: 'Rendre facultative' }),
+                            },
+                          }}
+                        />
+                        <Typography
+                          level='body-xs'
+                          sx={{ display: { xs: 'none', sm: 'block' }, minWidth: 76 }}
+                        >
+                          {optional
+                            ? t('routines.optional', { defaultValue: 'Facultative' })
+                            : t('routines.required', { defaultValue: 'Obligatoire' })}
+                        </Typography>
+                      </Stack>
+                      <IconButton
+                        size='sm'
+                        color='danger'
+                        variant='plain'
+                        aria-label={t('routines.remove')}
+                        onClick={event => {
+                          event.stopPropagation()
+                          setDraft(removeRoutineStep(draft, index))
+                          setExpandedStep(-1)
+                        }}
+                      >
+                        <CloseRounded />
+                      </IconButton>
+                      <Typography sx={{ color: 'text.tertiary', px: 0.25 }}>
+                        {expanded ? '⌃' : '⌄'}
+                      </Typography>
+                    </Stack>
+
+                    {expanded && (
+                      <Box
+                        sx={{
+                          borderTop: '1px solid',
+                          borderColor: 'divider',
+                          px: { xs: 1, sm: 2 },
+                          py: 1.5,
+                        }}
+                        onClick={event => event.stopPropagation()}
+                      >
+                        <Typography level='title-sm' sx={{ mb: 1 }}>
+                          {t('routines.advancedSettings', { defaultValue: 'Réglages avancés' })}
+                        </Typography>
+                        <Stack
+                          direction={{ xs: 'column', md: 'row' }}
+                          gap={1.5}
+                          alignItems='flex-start'
+                        >
+                          {slots.length > 0 && (
+                            <Box sx={{ flex: 1, minWidth: 0, width: '100%' }}>
+                              <Typography level='body-xs' fontWeight='lg' sx={{ mb: 0.5 }}>
+                                {t('routines.selectSlot')}
+                              </Typography>
+                              <Select
+                                size='md'
+                                value={draft.slotIds?.[index] || ''}
+                                placeholder={t('routines.selectSlot')}
+                                onChange={(event, value) => {
+                                  const slotIds = [
+                                    ...(draft.slotIds || draft.choreIds.map(() => '')),
+                                  ]
+                                  slotIds[index] = value || ''
+                                  setDraft({ ...draft, slotIds })
+                                }}
+                              >
+                                {(() => {
+                                  const options = routineTasks(chores, routines, draft.id)
+                                    .find(item => item.id === id)
+                                  const currentSlotId = draft.slotIds?.[index] || ''
+                                  const availableSlots = (options?.routineAvailableSlots || [])
+                                    .filter(slot =>
+                                      slot.id === currentSlotId ||
+                                      !(draft.slotIds || []).some(
+                                        (slotId, otherIndex) =>
+                                          otherIndex !== index &&
+                                          draft.choreIds[otherIndex] === id &&
+                                          slotId === slot.id,
+                                      ),
+                                    )
+                                  return (
+                                    <>
+                                      {options?.routineCanUseAllSlots && (
+                                        <Option value=''>{t('routines.allSlots')}</Option>
+                                      )}
+                                      {availableSlots.map(slot => (
+                                        <Option key={slot.id} value={slot.id}>
+                                          {slot.name || slot.time} · {slot.time}
+                                        </Option>
+                                      ))}
+                                      {currentSlotId &&
+                                        !availableSlots.some(slot => slot.id === currentSlotId) && (
+                                          <Option value={currentSlotId}>
+                                            {t('routines.missingSlot')}
+                                          </Option>
+                                        )}
+                                    </>
+                                  )
+                                })()}
+                              </Select>
+                            </Box>
+                          )}
+                          <Box sx={{ flex: 1, minWidth: 0, width: '100%' }}>
+                            <Typography level='body-xs' fontWeight='lg' sx={{ mb: 0.5 }}>
+                              {t('routines.prerequisites', { defaultValue: 'Prérequis' })}
+                            </Typography>
+                            <Select
+                              size='md'
+                              multiple
+                              value={prerequisites}
+                              placeholder={t('routines.noPrerequisite', { defaultValue: 'Aucun prérequis' })}
+                              onChange={(event, value) =>
+                                setPrerequisites(index + 1, value)
+                              }
+                            >
+                              {draft.choreIds.map((otherId, otherIndex) =>
+                                otherIndex >= index ? null : (
+                                  <Option key={`${otherId}-${otherIndex}`} value={otherIndex + 1}>
+                                    {names.get(otherId)}
+                                  </Option>
+                                ),
+                              )}
+                            </Select>
+                          </Box>
+                        </Stack>
+                        <Typography level='body-xs' sx={{ color: 'text.tertiary', mt: 1 }}>
+                          {optional
+                            ? t('routines.optionalHelp', {
+                                defaultValue: "Cette étape peut être ignorée sans bloquer la réussite de la routine.",
+                              })
+                            : t('routines.requiredHelp', {
+                                defaultValue: "Cette étape doit être terminée pour valider la routine.",
+                              })}
+                        </Typography>
+                      </Box>
+                    )}
+                  </Sheet>
                 )
-                return options
               })}
-            </Select>
-          )}
-          <Input
-            size='sm'
-            type='number'
-            value={draft.bonus}
-            onChange={event =>
-              setDraft({ ...draft, bonus: event.target.value })
-            }
-            startDecorator={t('routines.bonus')}
-            slotProps={{ input: { min: 0, max: 1000 } }}
-            sx={{ alignSelf: 'flex-start', maxWidth: 260 }}
-          />
-          <Input
-            size='sm'
-            type='number'
-            value={draft.validityMinutes ?? 720}
-            onChange={event =>
-              setDraft({ ...draft, validityMinutes: event.target.value })
-            }
-            startDecorator={t('routines.validity')}
-            slotProps={{ input: { min: 1, max: 2880 } }}
-            sx={{ alignSelf: 'flex-start', maxWidth: 300 }}
-          />
-          <Typography level='body-xs' sx={{ color: 'text.tertiary' }}>
-            {t('routines.help')}
-            {t('routines.validityHelp')}
-          </Typography>
-          <Stack direction='row' gap={1}>
+            </Stack>
+
+            {draft.choreIds.length < MAX_STEPS && (
+              <Select
+                size='lg'
+                value={null}
+                placeholder={offered.length ? t('routines.addTask') : t('routines.noTask')}
+                disabled={offered.length === 0}
+                onChange={(event, value) => {
+                  if (!value) return
+                  const [id, slotId] = value.split('::')
+                  setSteps(Number(id), slotId)
+                  setExpandedStep(draft.choreIds.length)
+                }}
+                sx={{ mt: 1, maxWidth: { xs: '100%', sm: 320 } }}
+              >
+                {offered.flatMap(chore => {
+                  const slots = chore.routineAvailableSlots || []
+                  const options = []
+                  if (chore.routineCanUseAllSlots) {
+                    options.push(
+                      <Option key={`${chore.id}-all`} value={`${chore.id}::`}>
+                        {chore.name} · {t('routines.allSlots')}
+                      </Option>,
+                    )
+                  }
+                  if (slots.length === 0 && options.length === 0) {
+                    options.push(
+                      <Option key={chore.id} value={`${chore.id}::`}>
+                        {chore.name}
+                      </Option>,
+                    )
+                  }
+                  slots.forEach(slot =>
+                    options.push(
+                      <Option key={`${chore.id}-${slot.id}`} value={`${chore.id}::${slot.id}`}>
+                        {chore.name} · {slot.name || slot.time}
+                      </Option>,
+                    ),
+                  )
+                  return options
+                })}
+              </Select>
+            )}
+          </Sheet>
+
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            gap={1.5}
+            alignItems={{ sm: 'flex-end' }}
+          >
+            <Box sx={{ width: { xs: '100%', sm: 220 } }}>
+              <Typography level='body-sm' fontWeight='lg' sx={{ mb: 0.5 }}>
+                {t('routines.bonus')}
+              </Typography>
+              <Input
+                size='lg'
+                type='number'
+                value={draft.bonus}
+                onChange={event => setDraft({ ...draft, bonus: event.target.value })}
+                slotProps={{ input: { min: 0, max: 1000 } }}
+              />
+            </Box>
+            <Typography level='body-xs' sx={{ color: 'text.tertiary', flex: 1 }}>
+              {t('routines.help')} {t('routines.validityHelp')}
+            </Typography>
+          </Stack>
+
+          <Stack direction='row' gap={1} justifyContent='flex-end'>
+            <Button size='lg' variant='outlined' color='neutral' onClick={() => setDraft(null)}>
+              {t('presets.cancel')}
+            </Button>
             <Button
-              size='sm'
+              size='lg'
               disabled={!draft.name.trim() || draft.choreIds.length === 0}
               onClick={save}
             >
               {t('presets.save')}
-            </Button>
-            <Button size='sm' variant='plain' onClick={() => setDraft(null)}>
-              {t('presets.cancel')}
             </Button>
           </Stack>
         </Stack>
