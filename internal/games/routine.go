@@ -590,7 +590,7 @@ func awardRoutines(tx *gorm.DB, familyID, userID int, performedAt, now time.Time
 	}
 
 	var runs []RoutineOccurrence
-	if err := tx.Where("family_id = ? AND user_id = ? AND status = ? AND started_at <= ? AND expires_at > ?",
+	if err := tx.Where("family_id = ? AND user_id = ? AND status IN ? AND started_at <= ? AND expires_at > ?",
 		familyID, userID, []RoutineOccurrenceStatus{RoutineOccurrenceActive, RoutineOccurrenceFinished}, performedAt.UTC(), performedAt.UTC()).Find(&runs).Error; err != nil {
 		return err
 	}
