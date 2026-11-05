@@ -684,5 +684,5 @@ func APIs(cfg *config.Config, h *Handler, r *gin.Engine, limiter *limiter.Limite
 		utils.RateLimitMiddleware(limiter),
 	)
 	integrations.GET("/routines/occurrences", h.listIntegrationRoutineOccurrences)
-	integrations.POST("/routines/occurrences/:id/overrides", h.externalRoutineOverride)
+	integrations.POST("/routines/occurrences/:id/overrides", h.integrationRoutineOverride)
 }
