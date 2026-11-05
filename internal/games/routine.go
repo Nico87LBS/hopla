@@ -22,7 +22,9 @@ type Routine struct {
 	// ChoreIDs are the steps in order. A step stands for every task with the
 	// same name, so each child's copy of a task is the same step.
 	ChoreIDs  []int         `json:"choreIds" gorm:"-"`
-	Steps     []RoutineStep `json:"-" gorm:"foreignKey:RoutineID"`
+	Steps     []RoutineStep `json:"steps" gorm:"foreignKey:RoutineID"`
+	Dependencies []RoutineDependency `json:"dependencies" gorm:"-"`
+	GraphEnabled bool `json:"graphEnabled" gorm:"-"`
 	CreatedBy int           `json:"createdBy" gorm:"column:created_by"`
 	CreatedAt time.Time     `json:"createdAt" gorm:"column:created_at"`
 	UpdatedAt time.Time     `json:"updatedAt" gorm:"column:updated_at"`
@@ -35,7 +37,8 @@ type RoutineStep struct {
 	ID        int `gorm:"primaryKey"`
 	RoutineID int `gorm:"column:routine_id;index;not null"`
 	Position  int `gorm:"column:position;not null"`
-	ChoreID   int `gorm:"column:chore_id;not null"`
+	ChoreID   int  `gorm:"column:chore_id;not null"`
+	Required  bool `json:"required" gorm:"column:required;not null;default:true"`
 }
 
 func (RoutineStep) TableName() string { return "routine_steps" }
@@ -89,6 +92,10 @@ func Routines(db *gorm.DB, familyID int) ([]Routine, error) {
 	err := db.Where("family_id = ?", familyID).
 		Preload("Steps", func(db *gorm.DB) *gorm.DB { return db.Order("position") }).
 		Order("id").Find(&routines).Error
+	if err != nil { return nil, err }
+	for i := range routines {
+		if err := db.Where("routine_id = ?", routines[i].ID).Find(&routines[i].Dependencies).Error; err != nil { return nil, err }
+	}
 	for i := range routines {
 		routines[i].ChoreIDs = []int{}
 		for _, step := range routines[i].Steps {
@@ -160,24 +167,34 @@ func SaveRoutine(db *gorm.DB, routine *Routine) error {
 				}
 			}
 		}
+		// Legacy clients omit graph data and retain the original strict sequence.
+		if !routine.GraphEnabled {
+			routine.Dependencies = make([]RoutineDependency, 0, len(routine.ChoreIDs)-1)
+			for i := 1; i < len(routine.ChoreIDs); i++ { routine.Dependencies = append(routine.Dependencies, RoutineDependency{StepID: i + 1, DependsOnStepID: i}) }
+		}
+		positions := make([]int, len(routine.ChoreIDs))
+		for i := range positions { positions[i] = i + 1 }
+		if err := ValidateRoutineGraph(positions, routine.Dependencies); err != nil { return err }
 		if routine.ID == 0 {
-			if err := tx.Omit("Steps").Create(routine).Error; err != nil {
-				return err
-			}
+			if err := tx.Omit("Steps").Create(routine).Error; err != nil { return err }
 		} else {
 			if err := tx.Model(&Routine{}).Where("id = ? AND family_id = ?", routine.ID, routine.FamilyID).
 				Updates(map[string]any{"name": routine.Name, "bonus": routine.Bonus, "updated_at": time.Now().UTC()}).Error; err != nil {
 				return err
 			}
-			if err := tx.Where("routine_id = ?", routine.ID).Delete(&RoutineStep{}).Error; err != nil {
-				return err
-			}
+			if err := tx.Where("routine_id = ?", routine.ID).Delete(&RoutineDependency{}).Error; err != nil { return err }
+			if err := tx.Where("routine_id = ?", routine.ID).Delete(&RoutineStep{}).Error; err != nil { return err }
 		}
 		routine.Steps = nil
-		for i, choreID := range routine.ChoreIDs {
-			routine.Steps = append(routine.Steps, RoutineStep{RoutineID: routine.ID, Position: i, ChoreID: choreID})
+		for i, choreID := range routine.ChoreIDs { routine.Steps = append(routine.Steps, RoutineStep{RoutineID: routine.ID, Position: i, ChoreID: choreID, Required: true}) }
+		if err := tx.Create(&routine.Steps).Error; err != nil { return err }
+		for i := range routine.Dependencies {
+			from, to := routine.Dependencies[i].DependsOnStepID-1, routine.Dependencies[i].StepID-1
+			routine.Dependencies[i].RoutineID = routine.ID
+			routine.Dependencies[i].DependsOnStepID = routine.Steps[from].ID
+			routine.Dependencies[i].StepID = routine.Steps[to].ID
 		}
-		return tx.Create(&routine.Steps).Error
+		return tx.Create(&routine.Dependencies).Error
 	})
 }
 
