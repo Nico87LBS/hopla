@@ -225,7 +225,7 @@ export const RoutinesCard = () => {
       <CardHeader
         title={t('routines.title')}
         subtitle={t('routines.subtitle')}
-        onAdd={draft ? undefined : () => setDraft(emptyRoutine())}
+        onAdd={draft ? undefined : () => { setExpandedStep(0); setDraft(emptyRoutine()) }}
       />
       {draft && (
         <Stack gap={1.5} sx={{ mb: 2 }}>
@@ -510,7 +510,7 @@ export const RoutinesCard = () => {
                               }
                             >
                               {draft.choreIds.map((otherId, otherIndex) =>
-                                otherIndex >= index ? null : (
+                                otherIndex === index ? null : (
                                   <Option key={`${otherId}-${otherIndex}`} value={otherIndex + 1}>
                                     {names.get(otherId)}
                                   </Option>
@@ -645,7 +645,8 @@ export const RoutinesCard = () => {
             <IconButton
               size='sm'
               aria-label={t('routines.edit')}
-              onClick={() =>
+              onClick={() => {
+                setExpandedStep(0)
                 setDraft({
                   ...routine,
                   choreIds: known(routine.choreIds),
@@ -659,7 +660,7 @@ export const RoutinesCard = () => {
                       ),
                     ),
                 })
-              }
+              }}
             >
               <EditRounded />
             </IconButton>
