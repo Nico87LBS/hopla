@@ -367,6 +367,7 @@ type PackChange struct {
 	// Key, Aside: the level or module set aside, or brought back.
 	Key   string `json:"key"`
 	Aside bool   `json:"aside"`
+	Mode  string `json:"mode"`
 }
 
 // setPackPlayer godoc
@@ -416,6 +417,15 @@ func (h *Handler) setAside(c *gin.Context) {
 	var change PackChange
 	if err := c.ShouldBindJSON(&change); err != nil || change.Key == "" {
 		c.JSON(400, gin.H{"error": "Invalid request"})
+		return
+	}
+	if change.Mode != "" {
+		err := learn.SetPackAccess(h.db.WithContext(c), who.familyID, change.UserID, change.Pack, change.Key, change.Mode, time.Now().UTC())
+		if err != nil {
+			answerError(c, err, "change level access")
+			return
+		}
+		h.getModules(c)
 		return
 	}
 	if err := learn.SetAside(h.db.WithContext(c), who.familyID, change.UserID, change.Pack, change.Key, change.Aside, time.Now().UTC()); err != nil {
