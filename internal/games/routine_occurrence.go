@@ -52,6 +52,7 @@ type RoutineOccurrence struct {
 	ExpiresAt time.Time `json:"expiresAt" gorm:"column:expires_at;index;not null"`
 	FinishedAt *time.Time `json:"finishedAt,omitempty" gorm:"column:finished_at"`
 	Status RoutineOccurrenceStatus `json:"status" gorm:"column:status;size:16;not null;index"`
+	BonusPaid bool `json:"bonusPaid" gorm:"column:bonus_paid;not null;default:false"`
 	Items []RoutineOccurrenceItem `json:"items,omitempty" gorm:"foreignKey:OccurrenceID"`
 }
 
@@ -61,6 +62,7 @@ func (RoutineOccurrence) TableName() string { return "routine_occurrences" }
 // starts. Editing a routine later cannot silently rewrite a run in progress.
 type RoutineOccurrenceItem struct {
 	ID int `json:"id" gorm:"primaryKey"`
+	FamilyID int `json:"-" gorm:"column:family_id;index;not null"`
 	OccurrenceID int `json:"occurrenceId" gorm:"column:occurrence_id;index;not null"`
 	StepID int `json:"stepId" gorm:"column:step_id;not null"`
 	Position int `json:"position" gorm:"column:position;not null"`
@@ -68,6 +70,7 @@ type RoutineOccurrenceItem struct {
 	Required bool `json:"required" gorm:"column:required;not null;default:true"`
 	Status RoutineOccurrenceItemStatus `json:"status" gorm:"column:status;size:20;not null;default:pending"`
 	UpdatedAt time.Time `json:"updatedAt" gorm:"column:updated_at;not null"`
+	Available bool `json:"available" gorm:"-"`
 }
 
 func (RoutineOccurrenceItem) TableName() string { return "routine_occurrence_items" }
@@ -86,6 +89,7 @@ type RoutineOverride struct {
 	IdempotencyKey *string `json:"-" gorm:"column:idempotency_key;uniqueIndex:idx_routine_override_idempotency"`
 	ExpiresAt *time.Time `json:"expiresAt,omitempty" gorm:"column:expires_at;index"`
 	CreatedAt time.Time `json:"createdAt" gorm:"column:created_at;not null"`
+	RevokedAt *time.Time `json:"revokedAt,omitempty" gorm:"column:revoked_at"`
 }
 
 func (RoutineOverride) TableName() string { return "routine_overrides" }
@@ -137,7 +141,7 @@ func StartRoutineOccurrence(db *gorm.DB, familyID, routineID, userID int, now ti
 		for _, step := range steps {
 			required := step.Required == nil || *step.Required
 			items = append(items, RoutineOccurrenceItem{
-				OccurrenceID: run.ID, StepID: step.ID, Position: step.Position,
+				FamilyID: familyID, OccurrenceID: run.ID, StepID: step.ID, Position: step.Position,
 				ChoreID: step.ChoreID, Required: required,
 				Status: RoutineOccurrenceItemPending, UpdatedAt: now.UTC(),
 			})
@@ -162,7 +166,9 @@ func GetRoutineOccurrence(db *gorm.DB, familyID, occurrenceID int, now time.Time
 			if err := tx.Model(&run).Update("status", RoutineOccurrenceExpired).Error; err != nil { return err }
 			run.Status = RoutineOccurrenceExpired
 		}
-		return tx.Preload("Items", func(q *gorm.DB) *gorm.DB { return q.Order("position") }).First(&run, run.ID).Error
+		if err := expireRoutineOverrides(tx, &run, now); err != nil { return err }
+		if err := tx.Preload("Items", func(q *gorm.DB) *gorm.DB { return q.Order("position") }).First(&run, run.ID).Error; err != nil { return err }
+		return applyRoutineOccurrenceAvailability(tx, &run)
 	})
 	return &run, err
 }
@@ -229,10 +235,10 @@ func SkipRoutineOccurrenceItem(db *gorm.DB, familyID, occurrenceID int, input Ro
 		}
 		if input.IdempotencyKey != "" { key := input.IdempotencyKey; override.IdempotencyKey = &key }
 		if err := tx.Create(&override).Error; err != nil { return err }
+		if err := settleRoutineOccurrence(tx, &run, now); err != nil { return err }
 		return tx.Preload("Items", func(q *gorm.DB) *gorm.DB { return q.Order("position") }).First(&run, run.ID).Error
 	})
 	if err != nil { return nil, err }
-	if err := FinishRoutineOccurrence(db, occurrenceID, now); err != nil { return nil, err }
 	return GetRoutineOccurrence(db, familyID, occurrenceID, now)
 }
 
@@ -248,6 +254,64 @@ func FinishRoutineOccurrence(db *gorm.DB, occurrenceID int, now time.Time) error
 	}
 	return db.Model(&RoutineOccurrence{}).Where("id = ? AND status = ?", occurrenceID, RoutineOccurrenceActive).
 		Updates(map[string]any{"status":RoutineOccurrenceFinished,"finished_at":now.UTC()}).Error
+}
+
+
+func expireRoutineOverrides(tx *gorm.DB, run *RoutineOccurrence, now time.Time) error {
+	var overrides []RoutineOverride
+	if err := tx.Where("occurrence_id = ? AND source = ? AND action = ? AND expires_at IS NOT NULL AND expires_at <= ? AND revoked_at IS NULL",
+		run.ID, "external", "skip", now.UTC()).Find(&overrides).Error; err != nil { return err }
+	for _, override := range overrides {
+		var item RoutineOccurrenceItem
+		if err := tx.Where("id = ? AND occurrence_id = ?", override.ItemID, run.ID).First(&item).Error; err != nil { return err }
+		var dependentSteps []int
+		if err := tx.Model(&RoutineDependency{}).Where("routine_id = ? AND depends_on_step_id = ?", run.RoutineID, item.StepID).
+			Pluck("step_id", &dependentSteps).Error; err != nil { return err }
+		var completed int64
+		if len(dependentSteps) > 0 {
+			if err := tx.Model(&RoutineOccurrenceItem{}).Where("occurrence_id = ? AND step_id IN ? AND status = ?",
+				run.ID, dependentSteps, RoutineOccurrenceItemCompleted).Count(&completed).Error; err != nil { return err }
+		}
+		if completed == 0 && item.Status == RoutineOccurrenceItemSkipped {
+			if err := tx.Model(&item).Updates(map[string]any{"status":RoutineOccurrenceItemPending,"updated_at":now.UTC()}).Error; err != nil { return err }
+		}
+		if err := tx.Model(&override).Update("revoked_at", now.UTC()).Error; err != nil { return err }
+	}
+	return nil
+}
+
+func applyRoutineOccurrenceAvailability(tx *gorm.DB, run *RoutineOccurrence) error {
+	var dependencies []RoutineDependency
+	if err := tx.Where("routine_id = ?", run.RoutineID).Find(&dependencies).Error; err != nil { return err }
+	policies := make(map[int]RoutineItemPolicy, len(run.Items))
+	states := make(map[int]RoutineItemState, len(run.Items))
+	for _, item := range run.Items {
+		policies[item.StepID] = RoutineItemPolicy{StepID:item.StepID, Required:item.Required}
+		states[item.StepID] = RoutineItemState(item.Status)
+	}
+	for i := range run.Items {
+		run.Items[i].Available = RoutineItemAvailable(run.Items[i].StepID, dependencies, policies, states)
+	}
+	return nil
+}
+
+// settleRoutineOccurrence closes a fully resolved run and pays its reward
+// once, even when completion happens after midnight.
+func settleRoutineOccurrence(tx *gorm.DB, run *RoutineOccurrence, now time.Time) error {
+	if err := FinishRoutineOccurrence(tx, run.ID, now); err != nil { return err }
+	if err := tx.First(run, run.ID).Error; err != nil { return err }
+	if run.Status != RoutineOccurrenceFinished || run.BonusPaid { return nil }
+	var routine Routine
+	if err := tx.Where("id = ? AND family_id = ?", run.RoutineID, run.FamilyID).First(&routine).Error; err != nil { return err }
+	result := tx.Model(&RoutineOccurrence{}).Where("id = ? AND bonus_paid = ?", run.ID, false).Update("bonus_paid", true)
+	if result.Error != nil { return result.Error }
+	if result.RowsAffected == 0 { return nil }
+	run.BonusPaid = true
+	if routine.Bonus > 0 {
+		_, err := giveBonus(tx, run.FamilyID, run.UserID, routine.Bonus, "Routine : "+routine.Name)
+		return err
+	}
+	return nil
 }
 
 // RoutineOccurrenceForMember prevents one family member from reading or
