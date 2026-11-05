@@ -1,19 +1,20 @@
 import { useEffect, useState } from 'react'
 
 import { patchDescriptionHtml } from '../utils/ImageCache'
+import { sanitizeRichTextHTML } from '../utils/sanitizeRichText'
 
 // Returns description HTML safe to render: embedded images with an expired
 // signed src are swapped for the offline-cached blob or a freshly signed URL.
 // Renders the raw HTML immediately and patches in place when needed.
 export const useDescriptionHtml = (html, meta = {}) => {
-  const [patched, setPatched] = useState(html)
+  const [patched, setPatched] = useState(() => sanitizeRichTextHTML(html))
 
   useEffect(() => {
     let cancelled = false
-    setPatched(html)
+    setPatched(sanitizeRichTextHTML(html))
     if (!html || !html.includes('data-hopla-path')) return undefined
     patchDescriptionHtml(html, meta).then(result => {
-      if (!cancelled && result !== html) setPatched(result)
+      if (!cancelled && result !== html) setPatched(sanitizeRichTextHTML(result))
     })
     return () => {
       cancelled = true
