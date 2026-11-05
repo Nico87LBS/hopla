@@ -281,7 +281,7 @@ export const RoutinesCard = () => {
             sx={{ alignSelf: 'flex-start', maxWidth: 260 }}
           />
           <Typography level='body-xs' sx={{ color: 'text.tertiary' }}>
-            {t('routines.help')}
+            {t('routines.help')}\n            {t('routines.validityHelp')}
           </Typography>
           <Stack direction='row' gap={1}>
             <Button
