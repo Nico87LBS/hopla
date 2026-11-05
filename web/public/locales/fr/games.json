@@ -227,6 +227,7 @@
     "empty": "Aucune routine. Une routine enchaîne des tâches existantes, comme habillage, dents puis cartable.",
     "failed": "Impossible d’enregistrer la routine",
     "deleteTitle": "Supprimer la routine ?",
-    "deleteMessage": "« {{name}} » sera supprimée. Ses tâches restent."
+    "deleteMessage": "« {{name}} » sera supprimée. Ses tâches restent.",
+    "optional": "Facultative"
   }
 }
