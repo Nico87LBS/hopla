@@ -57,7 +57,7 @@ type RoutineOccurrence struct {
 	Status RoutineOccurrenceStatus `json:"status" gorm:"column:status;size:16;not null;index"`
 	BonusPaid bool `json:"bonusPaid" gorm:"column:bonus_paid;not null;default:false"`
 	Items []RoutineOccurrenceItem `json:"items,omitempty" gorm:"foreignKey:OccurrenceID"`
-	Dependencies []RoutineOccurrenceDependency `json:"dependencies,omitempty" gorm:"foreignKey:OccurrenceID"`
+	Dependencies []RoutineOccurrenceDependency `json:"-" gorm:"foreignKey:OccurrenceID"`
 }
 
 func (RoutineOccurrence) TableName() string { return "routine_occurrences" }
