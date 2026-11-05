@@ -778,6 +778,7 @@ const LevelRow = ({
   group,
   onAccess,
   onSettings,
+  member,
   person,
   section,
 }) => {
@@ -829,7 +830,7 @@ const LevelRow = ({
             size='sm'
             disabled={!member}
             value={access}
-            onChange={(e, value) => value && onAccess(level.id, value)}
+            onChange={(_, value) => value && onAccess(level.id, value)}
             slotProps={{
               button: {
                 'aria-label': `${level.name} · ${person.displayName}`,
@@ -871,6 +872,7 @@ LevelRow.propTypes = {
   baseline: PropTypes.object,
   group: PropTypes.object.isRequired,
   onSettings: PropTypes.func.isRequired,
+  member: PropTypes.object,
   person: PropTypes.object.isRequired,
   section: PropTypes.object.isRequired,
 }
@@ -1370,6 +1372,7 @@ const ModuleGroup = ({
                 <LevelRow
                   group={group}
                   person={person}
+                  member={member}
                   section={section}
                   baseline={line}
                   onSettings={onPackSettings}
