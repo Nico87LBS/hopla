@@ -340,3 +340,23 @@ func TestEnsureSlotIDsBackfillsExistingTasks(t *testing.T) {
 	require.Equal(t, firstID, stored.FrequencyMetadataV2.Slots[0].ID)
 	require.Equal(t, secondID, stored.FrequencyMetadataV2.Slots[1].ID)
 }
+
+func TestCannotDeleteASlotReferencedByARoutine(t *testing.T) {
+	_, db, chore := newSlotTestRouter(t)
+	morningID := chore.FrequencyMetadataV2.Slots[0].ID
+	require.NotEmpty(t, morningID)
+	require.NoError(t, db.Exec("INSERT INTO routines (id, family_id, name) VALUES (?, ?, ?)", 1, 1, "Matin").Error)
+	require.NoError(t, db.Exec("INSERT INTO routine_steps (routine_id, position, chore_id, slot_id, required) VALUES (?, ?, ?, ?, ?)",
+		1, 0, chore.ID, morningID, true).Error)
+
+	updated := *chore
+	updated.FrequencyMetadataV2 = &chModel.FrequencyMetadata{
+		Timezone: chore.FrequencyMetadataV2.Timezone,
+		Slots: append([]chModel.Slot(nil), chore.FrequencyMetadataV2.Slots[1:]...),
+	}
+	cfg := &config.Config{}
+	cfg.Database.Type = "sqlite"
+	repository := chRepo.NewChoreRepository(db, cfg)
+	err := repository.UpdateChoreVisibility(context.Background(), &updated, []int{2})
+	require.ErrorIs(t, err, chRepo.ErrRoutineSlotInUse)
+}
