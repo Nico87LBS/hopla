@@ -1245,20 +1245,10 @@ const ModuleGroup = ({
                 {name}
               </Typography>
               {singleLevel && (
-                <Select
-                  size='sm'
-                  disabled={!member}
-                  value={singleAccess}
-                  onChange={(_, value) =>
-                    value && onAccess(group.pack.id, value)
-                  }
-                  slotProps={{
-                    button: {
-                      'aria-label': `${name} · ${person.displayName}`,
-                    },
-                  }}
-                  sx={{ minWidth: 154 }}
-                >
+                <Select size='sm' disabled={!member} value={singleAccess}
+                  onChange={(_, value) => value && onAccess(group.pack.id, value)}
+                  slotProps={{ button: { 'aria-label': `${name} · ${person.displayName}` } }}
+                  sx={{ minWidth: 154 }}>
                   <Option value='auto'>{t('manage.accessAuto')}</Option>
                   <Option value='open'>{t('manage.accessOpen')}</Option>
                   <Option value='locked'>{t('manage.accessLocked')}</Option>
