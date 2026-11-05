@@ -80,7 +80,6 @@ const RoutineChip = ({ chores, sx, userId }) => {
           {t('routines.step', { step: stepNumber, total: stepTotal })}
         </span>
       )}
-
     </Box>
   )
 }
