@@ -47,55 +47,56 @@ const emptyRoutine = () => ({
   optionalChoreIds: [],
 })
 
-const remapDependencies = (draft, choreIds) => {
-  const positions = new Map(choreIds.map((id, index) => [id, index + 1]))
-  const oldPositions = new Map(
-    draft.choreIds.map((id, index) => [index + 1, id]),
-  )
-  return (draft.dependencies || [])
-    .filter(
-      edge =>
-        oldPositions.has(edge.stepId) && oldPositions.has(edge.dependsOnStepId),
-    )
-    .filter(
-      edge =>
-        positions.has(oldPositions.get(edge.stepId)) &&
-        positions.has(oldPositions.get(edge.dependsOnStepId)),
-    )
-    .map(edge => ({
-      stepId: positions.get(oldPositions.get(edge.stepId)),
-      dependsOnStepId: positions.get(oldPositions.get(edge.dependsOnStepId)),
-    }))
+const remapAfterMove = (dependencies, index, delta) => {
+  const movedTo = index + delta
+  const movePosition = position => {
+    const oldIndex = position - 1
+    if (oldIndex === index) return movedTo + 1
+    if (oldIndex === movedTo) return index + 1
+    return position
+  }
+  return (dependencies || []).map(edge => ({
+    stepId: movePosition(edge.stepId),
+    dependsOnStepId: movePosition(edge.dependsOnStepId),
+  }))
 }
 
-const moveRoutineStep = (draft, index, delta) => {
-  const choreIds = moveStep(draft.choreIds, index, delta)
-  const slotIds = moveStep(
+const moveRoutineStep = (draft, index, delta) => ({
+  ...draft,
+  choreIds: moveStep(draft.choreIds, index, delta),
+  slotIds: moveStep(
     draft.slotIds || draft.choreIds.map(() => ''),
     index,
     delta,
-  )
-  return {
-    ...draft,
-    choreIds,
-    slotIds,
-    dependencies: remapDependencies(draft, choreIds),
-  }
-}
+  ),
+  dependencies: remapAfterMove(draft.dependencies, index, delta),
+})
 
-const removeRoutineStep = (draft, id) => {
-  const index = draft.choreIds.indexOf(id)
-  const choreIds = draft.choreIds.filter(other => other !== id)
+const removeRoutineStep = (draft, index) => {
+  const choreIds = draft.choreIds.filter((_, position) => position !== index)
   const slotIds = (draft.slotIds || []).filter(
-    (other, position) => position !== index,
+    (_, position) => position !== index,
   )
+  const removedPosition = index + 1
+  const remapPosition = position =>
+    position > removedPosition ? position - 1 : position
+  const removedChoreID = draft.choreIds[index]
   return {
     ...draft,
     choreIds,
     slotIds,
-    dependencies: remapDependencies(draft, choreIds),
+    dependencies: (draft.dependencies || [])
+      .filter(
+        edge =>
+          edge.stepId !== removedPosition &&
+          edge.dependsOnStepId !== removedPosition,
+      )
+      .map(edge => ({
+        stepId: remapPosition(edge.stepId),
+        dependsOnStepId: remapPosition(edge.dependsOnStepId),
+      })),
     optionalChoreIds: (draft.optionalChoreIds || []).filter(
-      other => other !== id,
+      id => id !== removedChoreID || choreIds.includes(id),
     ),
   }
 }
@@ -122,9 +123,18 @@ export const RoutinesCard = () => {
   // A step whose task was deleted is left out.
   const known = ids => ids.filter(id => names.has(id))
   const offered = draft
-    ? routineTasks(chores, routines, draft.id).filter(
-        chore => !draft.choreIds.includes(chore.id),
-      )
+    ? routineTasks(chores, routines, draft.id).filter(chore => {
+        const selected = draft.choreIds
+          .map((id, index) => (id === chore.id ? index : -1))
+          .filter(index => index !== -1)
+        const slots = chore.frequencyMetadata?.slots || []
+        if (slots.length === 0) return selected.length === 0
+        const selectedSlots = selected.map(index => draft.slotIds?.[index] || '')
+        if (selectedSlots.includes('')) return false
+        return (chore.routineAvailableSlots || []).some(
+          slot => !selectedSlots.includes(slot.id),
+        )
+      })
     : []
   const liveOccurrences = todayRoutines.flatMap(routine =>
     (routine.members || [])
@@ -158,13 +168,11 @@ export const RoutinesCard = () => {
       refresh()
     }
   }
-  const setSteps = choreId => {
-    const candidate = offered.find(chore => chore.id === choreId)
-    const slotId = candidate?.routineAvailableSlots?.[0]?.id || ''
+  const setSteps = (choreId, slotId = '') => {
     setDraft({
       ...draft,
       choreIds: [...draft.choreIds, choreId],
-      slotIds: [...(draft.slotIds || []), slotId],
+      slotIds: [...(draft.slotIds || draft.choreIds.map(() => '')), slotId],
     })
   }
   const setPrerequisites = (position, prerequisites) => {
@@ -197,7 +205,7 @@ export const RoutinesCard = () => {
           <Stack gap={0.5}>
             {draft.choreIds.map((id, index) => (
               <Box
-                key={id}
+                key={`${id}-${index}`}
                 sx={{
                   alignItems: 'center',
                   bgcolor: 'background.level1',
@@ -241,7 +249,7 @@ export const RoutinesCard = () => {
                 <IconButton
                   size='sm'
                   aria-label={t('routines.remove')}
-                  onClick={() => setDraft(removeRoutineStep(draft, id))}
+                  onClick={() => setDraft(removeRoutineStep(draft, index))}
                 >
                   <CloseRounded />
                 </IconButton>
@@ -269,12 +277,27 @@ export const RoutinesCard = () => {
                         draft.id,
                       ).find(chore => chore.id === id)
                       const currentSlotId = draft.slotIds?.[index] || ''
+                      const availableSlots = (options?.routineAvailableSlots || []).filter(
+                        slot =>
+                          slot.id === currentSlotId ||
+                          !(draft.slotIds || []).some(
+                            (slotId, otherIndex) =>
+                              otherIndex !== index &&
+                              draft.choreIds[otherIndex] === id &&
+                              slotId === slot.id,
+                          ),
+                      )
+                      const canUseAllSlots =
+                        options?.routineCanUseAllSlots &&
+                        !(draft.choreIds || []).some(
+                          (otherId, otherIndex) => otherIndex !== index && otherId === id,
+                        )
                       return (
                         <>
-                          {options?.routineCanUseAllSlots && (
+                          {canUseAllSlots && (
                             <Option value=''>{t('routines.allSlots')}</Option>
                           )}
-                          {(options?.routineAvailableSlots || []).map(slot => (
+                          {availableSlots.map(slot => (
                             <Option key={slot.id} value={slot.id}>
                               {slot.name || slot.time} · {slot.time}
                             </Option>
@@ -348,13 +371,38 @@ export const RoutinesCard = () => {
                 offered.length ? t('routines.addTask') : t('routines.noTask')
               }
               disabled={offered.length === 0}
-              onChange={(event, value) => value && setSteps(value)}
+              onChange={(event, value) => {
+                if (!value) return
+                const [id, slotId] = value.split('::')
+                setSteps(Number(id), slotId)
+              }}
             >
-              {offered.map(chore => (
-                <Option key={chore.id} value={chore.id}>
-                  {chore.name}
-                </Option>
-              ))}
+              {offered.flatMap(chore => {
+                const slots = chore.routineAvailableSlots || []
+                const options = []
+                if (chore.routineCanUseAllSlots) {
+                  options.push(
+                    <Option key={`${chore.id}-all`} value={`${chore.id}::`}>
+                      {chore.name} · {t('routines.allSlots')}
+                    </Option>,
+                  )
+                }
+                if (slots.length === 0 && options.length === 0) {
+                  options.push(
+                    <Option key={chore.id} value={`${chore.id}::`}>
+                      {chore.name}
+                    </Option>,
+                  )
+                }
+                slots.forEach(slot =>
+                  options.push(
+                    <Option key={`${chore.id}-${slot.id}`} value={`${chore.id}::${slot.id}`}>
+                      {chore.name} · {slot.name || slot.time}
+                    </Option>,
+                  ),
+                )
+                return options
+              })}
             </Select>
           )}
           <Input
