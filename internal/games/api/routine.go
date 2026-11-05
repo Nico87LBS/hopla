@@ -218,6 +218,45 @@ func (h *Handler) skipRoutineOccurrenceItem(c *gin.Context) {
 	c.JSON(200, gin.H{"res":updated})
 }
 
+
+type routineIntegrationTokenReq struct {
+	Name string `json:"name" binding:"required"`
+}
+
+func (h *Handler) createRoutineIntegrationToken(c *gin.Context) {
+	user, familyID, parent := h.requireParent(c)
+	if !parent { return }
+	var req routineIntegrationTokenReq
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(400, gin.H{"error":"A token name is required"}); return
+	}
+	token, secret, err := games.CreateRoutineIntegrationToken(h.db.WithContext(c), familyID, user.ID, req.Name, time.Now().UTC())
+	if err != nil {
+		c.JSON(400, gin.H{"error":"Could not create routine integration token"}); return
+	}
+	c.JSON(201, gin.H{"integration":token,"token":secret})
+}
+
+func (h *Handler) listRoutineIntegrationTokens(c *gin.Context) {
+	_, familyID, parent := h.requireParent(c)
+	if !parent { return }
+	tokens, err := games.ListRoutineIntegrationTokens(h.db.WithContext(c), familyID)
+	if err != nil { c.JSON(500, gin.H{"error":"Could not load routine integration tokens"}); return }
+	c.JSON(200, tokens)
+}
+
+func (h *Handler) revokeRoutineIntegrationToken(c *gin.Context) {
+	_, familyID, parent := h.requireParent(c)
+	if !parent { return }
+	id, err := idParam(c)
+	if err != nil { c.JSON(400, gin.H{"error":"Invalid token ID"}); return }
+	if err := games.RevokeRoutineIntegrationToken(h.db.WithContext(c), familyID, id, time.Now().UTC()); err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) { c.JSON(404, gin.H{"error":"Token not found"}); return }
+		c.JSON(500, gin.H{"error":"Could not revoke routine integration token"}); return
+	}
+	c.Status(204)
+}
+
 type externalRoutineOverrideReq struct {
 	ItemID int `json:"itemId" binding:"required"`
 	Action string `json:"action" binding:"required"`
