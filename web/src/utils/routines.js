@@ -52,23 +52,43 @@ export const taskKey = name => (name || '').trim().toLowerCase()
 // routineTasks lists the tasks a routine can chain: one per name (the copies
 // of a task are one step), active, minus the ones already in another routine.
 export const routineTasks = (chores, routines, editingId) => {
-  const taken = new Set()
+  const taken = new Map()
   for (const routine of routines || []) {
     if (routine.id === editingId) continue
-    for (const id of routine.choreIds || []) {
+    ;(routine.choreIds || []).forEach((id, index) => {
       const chore = chores.find(c => c.id === id)
-      if (chore) taken.add(taskKey(chore.name))
-    }
+      if (!chore) return
+      const key = taskKey(chore.name)
+      if (!taken.has(key)) taken.set(key, new Set())
+      const slotId = routine.slotIds?.[index] || ''
+      taken.get(key).add(slotId || '*')
+    })
   }
-  const seen = new Set()
+
   return chores
     .filter(chore => chore.isActive !== false)
-    .filter(chore => {
-      const key = taskKey(chore.name)
-      if (taken.has(key) || seen.has(key)) return false
-      seen.add(key)
-      return true
+    .map(chore => {
+      const used = taken.get(taskKey(chore.name)) || new Set()
+      if (used.has('*')) return null
+      const slots = chore.frequencyMetadata?.slots || []
+      if (slots.length) {
+        const availableSlots = slots.filter(slot => slot.id && !used.has(slot.id))
+        if (availableSlots.length === 0) return null
+        return {
+          ...chore,
+          routineAvailableSlots: availableSlots,
+          routineCanUseAllSlots: used.size === 0,
+        }
+      }
+      return used.size
+        ? null
+        : {
+            ...chore,
+            routineAvailableSlots: [],
+            routineCanUseAllSlots: true,
+          }
     })
+    .filter(Boolean)
     .sort((a, b) => a.name.localeCompare(b.name))
 }
 
