@@ -233,6 +233,22 @@
     "allSlots": "Tous les créneaux",
     "missingSlot": "Créneau supprimé — en choisir un autre",
     "validity": "Durée de validité (minutes)",
+    "skip": "Ignorer l’étape",
+    "skipFailed": "Impossible d’ignorer cette étape.",
+    "liveTitle": "Suivi des occurrences en cours",
+    "memberNumber": "Membre {{id}}",
+    "expiresAt": "Expire le {{time}}",
+    "occurrenceStatus": {
+      "active": "En cours",
+      "finished": "Étapes obligatoires terminées",
+      "expired": "Expirée"
+    },
+    "itemStatus": {
+      "pending": "À faire",
+      "completed": "Terminée",
+      "skipped": "Ignorée",
+      "not_applicable": "Non concernée"
+    },
     "validityHelp": "Une routine peut passer minuit et expire après cette durée (12 heures par défaut, jusqu’à 48 heures)."
   }
 }
