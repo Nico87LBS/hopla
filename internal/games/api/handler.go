@@ -649,6 +649,8 @@ func Routes(r *gin.Engine, h *Handler, auth *jwt.GinJWTMiddleware) {
 		routes.POST("/routines", h.createRoutine)
 		routes.PUT("/routines/:id", h.updateRoutine)
 		routes.DELETE("/routines/:id", h.deleteRoutine)
+		routes.POST("/routines/:id/occurrences", h.startRoutineOccurrence)
+		routes.POST("/routines/occurrences/:id/items/skip", h.skipRoutineOccurrenceItem)
 	}
 }
 
@@ -671,5 +673,6 @@ func APIs(cfg *config.Config, h *Handler, r *gin.Engine, limiter *limiter.Limite
 		routes.GET("/quests", h.getQuests)
 		routes.GET("/challenges", h.getChallenges)
 		routes.GET("/routines", h.getRoutines)
+		routes.POST("/routines/occurrences/:id/overrides", h.externalRoutineOverride)
 	}
 }
