@@ -111,7 +111,19 @@ func TestSlotStatuses(t *testing.T) {
 func TestNormalizeSlots(t *testing.T) {
 	metadata := &chModel.FrequencyMetadata{Slots: []chModel.Slot{{Name: " Soir ", Time: "19:30"}, {Name: "Matin", Time: "7:05"}}}
 	require.NoError(t, normalizeSlots(chModel.FrequencyTypeDaily, metadata))
-	require.Equal(t, []chModel.Slot{{Name: "Matin", Time: "07:05"}, {Name: "Soir", Time: "19:30"}}, metadata.Slots)
+	require.Len(t, metadata.Slots, 2)
+	require.Equal(t, "Matin", metadata.Slots[0].Name)
+	require.Equal(t, "07:05", metadata.Slots[0].Time)
+	require.Equal(t, "Soir", metadata.Slots[1].Name)
+	require.Equal(t, "19:30", metadata.Slots[1].Time)
+	require.NotEmpty(t, metadata.Slots[0].ID)
+	require.NotEmpty(t, metadata.Slots[1].ID)
+	morningID, eveningID := metadata.Slots[0].ID, metadata.Slots[1].ID
+	metadata.Slots[0].Name = "Matin renommé"
+	metadata.Slots[1].Time = "20:00"
+	require.NoError(t, normalizeSlots(chModel.FrequencyTypeDaily, metadata))
+	require.Equal(t, morningID, metadata.Slots[0].ID, "renaming does not change slot identity")
+	require.Equal(t, eveningID, metadata.Slots[1].ID, "retiming does not change slot identity")
 
 	weekly := &chModel.FrequencyMetadata{Slots: []chModel.Slot{{Time: "08:00"}}}
 	require.NoError(t, normalizeSlots(chModel.FrequencyTypeWeekly, weekly))
