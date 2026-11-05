@@ -131,8 +131,8 @@ type ChoreHistory struct {
 	CreatedAt   time.Time          `json:"createdAt" gorm:"column:created_at;autoCreateTime;<-:create"` // When the record was created (immutable after insert)
 	Status      ChoreHistoryStatus `json:"status" gorm:"column:status"`                                 // Status of the chore (1=completed, 2=skipped)
 	Points      *int               `json:"points,omitempty" gorm:"column:points"`                       // Points for completing the chore
-	Slot        *int               `json:"slot,omitempty" gorm:"column:slot"`
-	SlotID      *string            `json:"slotId,omitempty" gorm:"column:slot_id"`                           // The slot of the day, for a task done several times a day
+	Slot        *int               `json:"slot,omitempty" gorm:"column:slot"`                               // The slot of the day, for a task done several times a day
+	SlotID      *string            `json:"slotId,omitempty" gorm:"column:slot_id"`
 	FlashID     *int               `json:"flashId,omitempty" gorm:"column:flash_id"`                    // The flash launched by a parent this completion won
 	Duration    *int               `json:"duration,omitempty" gorm:"<-:false;-:migration"`              // Duration in seconds calculated from query (read-only, no DB column)
 	SyncVersion int64              `json:"syncVersion" gorm:"column:sync_version;not null;default:0;index:idx_chore_history_sync_version"`
