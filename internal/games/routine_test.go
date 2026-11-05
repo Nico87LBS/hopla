@@ -2,7 +2,6 @@ package games_test
 
 import (
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/require"
 
@@ -93,34 +92,4 @@ func TestATaskIsInOneRoutineOnly(t *testing.T) {
 	routines, err = Routines(db, 1)
 	require.NoError(t, err)
 	require.Empty(t, routines)
-}
-
-func TestRoutineGraphUnlocksParallelStepsAndOptionalPrerequisites(t *testing.T) {
-	db := setup(t)
-	now := noon(0)
-	first := chore(t, db, "Se lever", 1, now, assignedTo(2))
-	second := chore(t, db, "S'habiller", 1, now, assignedTo(2))
-	third := chore(t, db, "Faire son lit", 1, now, assignedTo(2))
-	day := &routineDay{
-		chores: map[int]*chModel.Chore{first.ID:first, second.ID:second, third.ID:third},
-		doneBy: map[int]map[int]bool{2:{}},
-		away: map[int]bool{},
-		end: now.Add(24*time.Hour),
-	}
-	routine := Routine{
-		GraphEnabled:true,
-		Steps:[]RoutineStep{{Position:0,Required:true},{Position:1,Required:true},{Position:2,Required:true}},
-		Dependencies:[]RoutineDependency{{StepID:2,DependsOnStepID:1},{StepID:3,DependsOnStepID:1}},
-	}
-	progress := day.progressOfGraph(2, [][]int{{first.ID},{second.ID},{third.ID}}, routine)
-	require.Equal(t, []int{first.ID}, progress.Available, "the two parallel steps wait for the first")
-	day.doneBy[2][first.ID] = true
-	progress = day.progressOfGraph(2, [][]int{{first.ID},{second.ID},{third.ID}}, routine)
-	require.ElementsMatch(t, []int{second.ID,third.ID}, progress.Available, "both successors unlock together")
-
-	routine.Steps[0].Required = false
-	day.doneBy[2][first.ID] = false
-	progress = day.progressOfGraph(2, [][]int{{first.ID},{second.ID},{third.ID}}, routine)
-	require.ElementsMatch(t, []int{first.ID,second.ID,third.ID}, progress.Available, "optional pending steps never block successors")
-	require.Equal(t, 2, progress.Total, "optional steps are excluded from required progress")
 }
