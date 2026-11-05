@@ -1,0 +1,64 @@
+package games
+
+import "slices"
+
+// progressOfGraph evaluates the routine for one member. A step is applicable
+// only when one of the member's task copies is due in the current family day.
+// Non-applicable steps are resolved for dependency purposes. Optional steps
+// remain visible when unlocked, but do not count toward completion or block
+// successors.
+func (day *routineDay) progressOfGraph(userID int, steps [][]int, routine Routine) RoutineProgress {
+	progress := RoutineProgress{UserID: userID, Available: []int{}}
+	states := make(map[int]RoutineItemState, len(steps))
+	policies := make(map[int]RoutineItemPolicy, len(steps))
+	todos := make(map[int]int, len(steps))
+
+	for i, ids := range steps {
+		position := i + 1
+		required := i >= len(routine.Steps) || routine.Steps[i].Required
+		policies[position] = RoutineItemPolicy{StepID: position, Required: required}
+		var todo int
+		done := false
+		for _, id := range ids {
+			chore := day.chores[id]
+			if day.doneBy[userID][id] && isFor(chore, userID) {
+				done = true
+				break
+			}
+			if todo == 0 && chore != nil && chore.NextDueDate != nil && !chore.NextDueDate.After(day.end) &&
+				slices.Contains(membersNow(chore), userID) && !Paused(chore, day.away) {
+				todo = chore.ID
+			}
+		}
+		switch {
+		case done:
+			states[position] = RoutineItemCompleted
+			if required { progress.Done++; progress.Total++ }
+		case todo != 0:
+			states[position] = RoutineItemPending
+			todos[position] = todo
+			if required { progress.Total++ }
+		default:
+			states[position] = RoutineItemNotApplicable
+		}
+	}
+
+	for position, taskID := range todos {
+		if RoutineItemAvailable(position, routine.Dependencies, policies, states) {
+			progress.Available = append(progress.Available, taskID)
+		}
+	}
+	// Keep Current for older clients; new clients can display every available
+	// parallel step through Available.
+	if len(progress.Available) > 0 {
+		progress.Current = &progress.Available[0]
+		for i, ids := range steps {
+			if slices.Contains(ids, *progress.Current) {
+				progress.Step = i + 1
+				break
+			}
+		}
+	}
+	progress.Finished = progress.Total > 0 && progress.Done == progress.Total
+	return progress
+}
