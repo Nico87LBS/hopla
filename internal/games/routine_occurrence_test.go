@@ -84,3 +84,63 @@ func TestRoutineOccurrenceRejectsExpiredAndOverlongOverrides(t *testing.T) {
 		ExternalReference:"ha/1",IdempotencyKey:"event-2",ExpiresAt:&tooLate}, now.Add(time.Hour))
 	require.ErrorIs(t, err, ErrRoutineOccurrenceInvalid)
 }
+
+
+func TestRoutineOccurrenceCompletesFromTaskHistoryAndPaysPerRun(t *testing.T) {
+	db := setup(t)
+	now := noon(0)
+	task := chore(t, db, "Se brosser les dents", 1, now, assignedTo(2))
+	routine := Routine{FamilyID:1, Name:"Matin", Bonus:7, ValidityMinutes:180, ChoreIDs:[]int{task.ID}}
+	require.NoError(t, SaveRoutine(db, &routine))
+	run, err := StartRoutineOccurrence(db, 1, routine.ID, 2, now)
+	require.NoError(t, err)
+	require.Len(t, run.Items, 1)
+	require.True(t, run.Items[0].Available)
+
+	done(t, db, task.ID, 2, now)
+	require.NoError(t, AfterTask(db, 1, 2, now, now))
+	finished, err := GetRoutineOccurrence(db, 1, run.ID, now)
+	require.NoError(t, err)
+	require.Equal(t, RoutineOccurrenceFinished, finished.Status)
+	require.True(t, finished.BonusPaid)
+	require.Equal(t, RoutineOccurrenceItemCompleted, finished.Items[0].Status)
+
+	var member fModel.UserFamily
+	require.NoError(t, db.Where("user_id = ?", 2).First(&member).Error)
+	require.Equal(t, 7, member.Points, "the reward is attached to this run")
+
+	nextDay := now.AddDate(0, 0, 1)
+	require.NoError(t, db.Model(task).Update("next_due_date", nextDay).Error)
+	second, err := StartRoutineOccurrence(db, 1, routine.ID, 2, nextDay)
+	require.NoError(t, err)
+	done(t, db, task.ID, 2, nextDay)
+	require.NoError(t, AfterTask(db, 1, 2, nextDay, nextDay))
+	second, err = GetRoutineOccurrence(db, 1, second.ID, nextDay)
+	require.NoError(t, err)
+	require.Equal(t, RoutineOccurrenceFinished, second.Status)
+	require.True(t, second.BonusPaid)
+	require.NoError(t, db.Where("user_id = ?", 2).First(&member).Error)
+	require.Equal(t, 14, member.Points, "each occurrence pays at most once")
+}
+
+func TestExpiredExternalSkipIsRevertedUnlessADependentStepWasPassed(t *testing.T) {
+	db := setup(t)
+	now := noon(0)
+	first := chore(t, db, "Manteau", 1, now, assignedTo(2))
+	second := chore(t, db, "Voiture", 1, now, assignedTo(2))
+	routine := Routine{FamilyID:1, Name:"Départ", ValidityMinutes:180, ChoreIDs:[]int{first.ID, second.ID},
+		GraphEnabled:true, Dependencies:[]RoutineDependency{{StepID:2, DependsOnStepID:1}}}
+	require.NoError(t, SaveRoutine(db, &routine))
+	run, err := StartRoutineOccurrence(db, 1, routine.ID, 2, now)
+	require.NoError(t, err)
+	var item RoutineOccurrenceItem
+	for _, candidate := range run.Items { if candidate.Position == 0 { item = candidate } }
+	expires := now.Add(20*time.Minute)
+	_, err = SkipRoutineOccurrenceItem(db, 1, run.ID, RoutineOverrideInput{ItemID:item.ID,Source:"external",
+		Reason:"Pas besoin",ExternalReference:"ha/coat",IdempotencyKey:"weather-1",ExpiresAt:&expires}, now.Add(time.Minute))
+	require.NoError(t, err)
+	afterExpiry, err := GetRoutineOccurrence(db, 1, run.ID, now.Add(21*time.Minute))
+	require.NoError(t, err)
+	require.Equal(t, RoutineOccurrenceItemPending, afterExpiry.Items[0].Status)
+	require.True(t, afterExpiry.Items[0].Available)
+}
