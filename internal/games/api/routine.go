@@ -18,6 +18,7 @@ type RoutineReq struct {
 	Bonus int `json:"bonus"`
 	ValidityMinutes int `json:"validityMinutes"`
 	ChoreIDs []int `json:"choreIds"`
+	SlotIDs []string `json:"slotIds"`
 	OptionalChoreIDs []int `json:"optionalChoreIds"`
 	// Dependencies use 1-based positions in choreIds. Omitted means legacy sequence;
 	// an explicit empty array means all steps may start independently.
@@ -50,7 +51,7 @@ func (h *Handler) bindRoutine(c *gin.Context) (RoutineReq, bool) {
 // answerRoutineError answers a routine that could not be saved.
 func answerRoutineError(c *gin.Context, err error) {
 	for _, known := range []error{games.ErrRoutineEmpty, games.ErrRoutineTooLong, games.ErrRoutineTaskTwice,
-		games.ErrRoutineTaskTaken, games.ErrRoutineTask, games.ErrRoutineGraphStep, games.ErrRoutineGraphCycle, games.ErrRoutineGraphDuplicate} {
+		games.ErrRoutineTaskTaken, games.ErrRoutineTask, games.ErrRoutineSlot, games.ErrRoutineGraphStep, games.ErrRoutineGraphCycle, games.ErrRoutineGraphDuplicate} {
 		if errors.Is(err, known) {
 			c.JSON(400, gin.H{"error": known.Error()})
 			return
@@ -103,7 +104,7 @@ func (h *Handler) createRoutine(c *gin.Context) {
 		return
 	}
 	now := time.Now().UTC()
-	routine := games.Routine{FamilyID: familyID, Name: req.Name, Bonus: req.Bonus, ValidityMinutes: req.ValidityMinutes, ChoreIDs: req.ChoreIDs,
+	routine := games.Routine{FamilyID: familyID, Name: req.Name, Bonus: req.Bonus, ValidityMinutes: req.ValidityMinutes, ChoreIDs: req.ChoreIDs, SlotIDs: req.SlotIDs,
 		GraphEnabled: req.Dependencies != nil, OptionalChoreIDs: req.OptionalChoreIDs, CreatedBy: parentID, CreatedAt: now, UpdatedAt: now}
 	if req.Dependencies != nil { routine.Dependencies = *req.Dependencies }
 	if err := games.SaveRoutine(h.db.WithContext(c), &routine); err != nil {
@@ -137,7 +138,7 @@ func (h *Handler) updateRoutine(c *gin.Context) {
 	if !ok {
 		return
 	}
-	routine.Name, routine.Bonus, routine.ValidityMinutes, routine.ChoreIDs = req.Name, req.Bonus, req.ValidityMinutes, req.ChoreIDs
+	routine.Name, routine.Bonus, routine.ValidityMinutes, routine.ChoreIDs, routine.SlotIDs = req.Name, req.Bonus, req.ValidityMinutes, req.ChoreIDs, req.SlotIDs
 	routine.OptionalChoreIDs = req.OptionalChoreIDs
 	routine.GraphEnabled = req.Dependencies != nil
 	if req.Dependencies != nil { routine.Dependencies = *req.Dependencies } else { routine.Dependencies = nil }
