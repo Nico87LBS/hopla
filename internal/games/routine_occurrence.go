@@ -66,7 +66,7 @@ func (RoutineOccurrence) TableName() string { return "routine_occurrences" }
 type RoutineOccurrenceItem struct {
 	ID int `json:"id" gorm:"primaryKey"`
 	FamilyID int `json:"-" gorm:"column:family_id;index;not null"`
-	OccurrenceID int `json:"occurrenceId" gorm:"column:occurrence_id;index;not null"`
+	OccurrenceID int `json:"occurrenceId" gorm:"column:occurrence_id;index;not null;uniqueIndex:idx_routine_override_idempotency,priority:1"`
 	StepID int `json:"stepId" gorm:"column:step_id;not null"`
 	Position int `json:"position" gorm:"column:position;not null"`
 	ChoreID int `json:"choreId" gorm:"column:chore_id;not null"`
@@ -85,12 +85,12 @@ type RoutineOverride struct {
 	ID int `json:"id" gorm:"primaryKey"`
 	FamilyID int `json:"-" gorm:"column:family_id;index;not null"`
 	OccurrenceID int `json:"occurrenceId" gorm:"column:occurrence_id;index;not null"`
-	ItemID int `json:"itemId" gorm:"column:item_id;index;not null"`
+	ItemID int `json:"itemId" gorm:"column:item_id;index;not null;uniqueIndex:idx_routine_override_idempotency,priority:2"`
 	Action string `json:"action" gorm:"column:action;size:20;not null"`
 	Source string `json:"source" gorm:"column:source;size:20;not null"`
 	Reason string `json:"reason,omitempty" gorm:"column:reason;size:300"`
 	ExternalReference string `json:"externalReference,omitempty" gorm:"column:external_reference;size:160"`
-	IdempotencyKey *string `json:"-" gorm:"column:idempotency_key;uniqueIndex:idx_routine_override_idempotency"`
+	IdempotencyKey *string `json:"-" gorm:"column:idempotency_key;uniqueIndex:idx_routine_override_idempotency,priority:3"`
 	ExpiresAt *time.Time `json:"expiresAt,omitempty" gorm:"column:expires_at;index"`
 	CreatedAt time.Time `json:"createdAt" gorm:"column:created_at;not null"`
 	RevokedAt *time.Time `json:"revokedAt,omitempty" gorm:"column:revoked_at"`
