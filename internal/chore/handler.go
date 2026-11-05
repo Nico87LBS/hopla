@@ -399,7 +399,7 @@ func (h *Handler) CreateChore(c *gin.Context) {
 			"details": err.Error(),
 		})
 		return
-	} 
+	}
 	if choreReq.Description != nil {
 		safeDescription := sanitize.RichTextHTML(*choreReq.Description)
 		choreReq.Description = &safeDescription
