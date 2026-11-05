@@ -536,7 +536,9 @@ export const RoutinesCard = () => {
                                         </Option>
                                       ))}
                                       {currentSlotId &&
-                                        !availableSlots.some(slot => slot.id === currentSlotId) && (
+                                        !availableSlots.some(
+                                          slot => slot.id === currentSlotId,
+                                        ) && (
                                           <Option value={currentSlotId}>
                                             {t('routines.missingSlot')}
                                           </Option>
