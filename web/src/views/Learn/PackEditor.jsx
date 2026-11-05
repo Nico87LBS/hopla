@@ -32,6 +32,7 @@ import {
   useLearnModuleFile,
   useLearnModules,
   useRemoveModule,
+  useSetSetting,
 } from '../../queries/LearnQueries'
 import {
   extrasOf,
@@ -664,12 +665,19 @@ const PackForm = ({ isNew, moduleId, start }) => {
   const { data: catalogue = [] } = useLearnCatalogue()
   const save = useImportModule()
   const remove = useRemoveModule()
+  const setSetting = useSetSetting()
   const [exportModule, exporting] = useExportModule()
   const [pack, setPack] = useState(start)
   const [open, setOpen] = useState(null)
   const [pasting, setPasting] = useState(null)
   const [removing, setRemoving] = useState(false)
   const [error, setError] = useState('')
+  const familyUnlock = installed?.settings?.find(
+    setting => setting.userId === 0 && setting.scope === moduleId,
+  )?.unlockPercent
+  const [unlockDraft, setUnlockDraft] = useState(null)
+  const unlockPercent =
+    unlockDraft ?? (familyUnlock == null ? '' : String(familyUnlock))
   const back = <BackLink />
 
   const change = fields => setPack(p => ({ ...p, ...fields }))
@@ -698,6 +706,14 @@ const PackForm = ({ isNew, moduleId, start }) => {
     })
     try {
       await save.mutateAsync(JSON.stringify(doc))
+      const currentUnlock = familyUnlock == null ? '' : String(familyUnlock)
+      if (unlockPercent !== currentUnlock) {
+        await setSetting.mutateAsync({
+          family: true,
+          scope: doc.id,
+          unlockPercent: unlockPercent === '' ? -1 : Number(unlockPercent),
+        })
+      }
       notify(
         'success',
         t(isNew ? 'pack.created' : 'pack.saved', { name: doc.nom }),
@@ -866,6 +882,20 @@ const PackForm = ({ isNew, moduleId, start }) => {
             )}
             onChange={rest => change({ rest })}
           />
+          <Box sx={{ mt: 2 }}>
+            {field(
+              t('manage.unlock'),
+              <Input
+                type='number'
+                value={unlockPercent}
+                placeholder={t('manage.moduleOwn')}
+                slotProps={{ input: { min: 0, max: 100 } }}
+                endDecorator='%'
+                onChange={e => setUnlockDraft(e.target.value)}
+              />,
+              'pack-unlock-percent',
+            )}
+          </Box>
         </Box>
       </Sheet>
 
