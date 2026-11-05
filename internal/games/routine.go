@@ -394,6 +394,14 @@ func awardRoutines(tx *gorm.DB, familyID, userID int, performedAt, now time.Time
 		Distinct("routine_id").Pluck("routine_id", &knownRoutineIDs).Error; err != nil {
 		return err
 	}
+	var completed []chModel.ChoreHistory
+	if err := tx.Where("completed_by = ? AND performed_at = ? AND status = ?",
+		userID, performedAt.UTC(), chModel.ChoreHistoryStatusCompleted).Find(&completed).Error; err != nil {
+		return err
+	}
+	completedIDs := make(map[int]bool, len(completed))
+	for _, history := range completed { completedIDs[history.ChoreID] = true }
+
 	var runs []RoutineOccurrence
 	if err := tx.Where("family_id = ? AND user_id = ? AND status = ? AND started_at <= ? AND expires_at > ?",
 		familyID, userID, RoutineOccurrenceActive, performedAt.UTC(), performedAt.UTC()).Find(&runs).Error; err != nil {
@@ -407,24 +415,9 @@ func awardRoutines(tx *gorm.DB, familyID, userID int, performedAt, now time.Time
 			if item.Status != RoutineOccurrenceItemPending { continue }
 			ids, err := SameTaskIDs(tx, familyID, item.ChoreID)
 			if err != nil { return err }
-			if !slices.Contains(ids, currentCompletedChoreID(tx, familyID, userID, item.ChoreID, performedAt)) {
-				// The completed task can be a member's copy of the routine's
-				// representative chore. The exact ID is read from its history.
-				var history chModel.ChoreHistory
-				if err := tx.Where("completed_by = ? AND performed_at = ? AND status = ? AND chore_id IN ?",
-					userID, performedAt.UTC(), chModel.ChoreHistoryStatusCompleted, ids).Order("id DESC").First(&history).Error; err != nil {
-					if errors.Is(err, gorm.ErrRecordNotFound) { continue }
-					return err
-				}
-			}
-			// Resolve the actual completed copy from the latest history entry
-			// at this timestamp, rather than assuming every copy has the same ID.
-			var history chModel.ChoreHistory
-			if err := tx.Where("completed_by = ? AND performed_at = ? AND status = ? AND chore_id IN ?",
-				userID, performedAt.UTC(), chModel.ChoreHistoryStatusCompleted, ids).Order("id DESC").First(&history).Error; err != nil {
-				if errors.Is(err, gorm.ErrRecordNotFound) { continue }
-				return err
-			}
+			matched := false
+			for _, id := range ids { if completedIDs[id] { matched = true; break } }
+			if !matched { continue }
 			if err := tx.Model(&item).Updates(map[string]any{"status":RoutineOccurrenceItemCompleted,"updated_at":now.UTC()}).Error; err != nil { return err }
 		}
 		if err := settleRoutineOccurrence(tx, run, now); err != nil { return err }
