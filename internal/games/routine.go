@@ -258,6 +258,7 @@ func DeleteRoutine(db *gorm.DB, familyID, routineID int) error {
 		if err := tx.Model(&RoutineOccurrence{}).Where("routine_id = ?", routineID).Pluck("id", &occurrenceIDs).Error; err != nil { return err }
 		if len(occurrenceIDs) > 0 {
 			if err := tx.Where("occurrence_id IN ?", occurrenceIDs).Delete(&RoutineOverride{}).Error; err != nil { return err }
+			if err := tx.Where("occurrence_id IN ?", occurrenceIDs).Delete(&RoutineOccurrenceDependency{}).Error; err != nil { return err }
 			if err := tx.Where("occurrence_id IN ?", occurrenceIDs).Delete(&RoutineOccurrenceItem{}).Error; err != nil { return err }
 		}
 		if err := tx.Where("routine_id = ?", routineID).Delete(&RoutineOccurrence{}).Error; err != nil { return err }
