@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	"gorm.io/gorm"
@@ -205,23 +206,55 @@ func NewSlotID() (string, error) {
 // EnsureSlotIDs backfills identifiers for tasks created before slots had IDs.
 func EnsureSlotIDs(db *gorm.DB) error {
 	var chores []Chore
-	if err := db.Where("frequency_meta_v2 IS NOT NULL").Find(&chores).Error; err != nil { return err }
+	if err := db.Where("frequency_meta_v2 IS NOT NULL").Order("id").Find(&chores).Error; err != nil {
+		return err
+	}
+	canonical := make(map[string][]Slot)
 	for i := range chores {
-		metadata := chores[i].FrequencyMetadataV2
+		chore := &chores[i]
+		metadata := chore.FrequencyMetadataV2
 		if metadata == nil || len(metadata.Slots) == 0 { continue }
-		seen := make(map[string]bool, len(metadata.Slots))
+		group := fmt.Sprintf("%d:%s", chore.FamilyID, strings.ToLower(strings.TrimSpace(chore.Name)))
 		changed := false
-		for j := range metadata.Slots {
-			if metadata.Slots[j].ID == "" || seen[metadata.Slots[j].ID] {
-				id, err := NewSlotID()
-				if err != nil { return err }
-				metadata.Slots[j].ID = id
-				changed = true
+		known, grouped := canonical[group]
+		if !grouped {
+			seen := make(map[string]bool, len(metadata.Slots))
+			for j := range metadata.Slots {
+				if metadata.Slots[j].ID == "" || seen[metadata.Slots[j].ID] {
+					id, err := NewSlotID()
+					if err != nil { return err }
+					metadata.Slots[j].ID = id
+					changed = true
+				}
+				seen[metadata.Slots[j].ID] = true
 			}
-			seen[metadata.Slots[j].ID] = true
+			known = append([]Slot(nil), metadata.Slots...)
+			canonical[group] = known
+		} else if len(metadata.Slots) == len(known) {
+			// Task copies share logical slot IDs. Their order is normalized by
+			// time, so corresponding positions describe the same daily slot.
+			for j := range metadata.Slots {
+				if metadata.Slots[j].ID != known[j].ID {
+					metadata.Slots[j].ID = known[j].ID
+					changed = true
+				}
+			}
+		} else {
+			seen := make(map[string]bool, len(metadata.Slots))
+			for j := range metadata.Slots {
+				if metadata.Slots[j].ID == "" || seen[metadata.Slots[j].ID] {
+					id, err := NewSlotID()
+					if err != nil { return err }
+					metadata.Slots[j].ID = id
+					changed = true
+				}
+				seen[metadata.Slots[j].ID] = true
+			}
 		}
 		if changed {
-			if err := db.Model(&Chore{}).Where("id = ?", chores[i].ID).Update("frequency_meta_v2", metadata).Error; err != nil { return err }
+			if err := db.Model(&Chore{}).Where("id = ?", chore.ID).Update("frequency_meta_v2", metadata).Error; err != nil {
+				return err
+			}
 		}
 	}
 	return nil
