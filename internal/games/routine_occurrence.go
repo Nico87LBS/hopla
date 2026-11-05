@@ -295,9 +295,7 @@ func SkipRoutineOccurrenceItem(db *gorm.DB, familyID, occurrenceID int, input Ro
 			if errors.Is(err, gorm.ErrRecordNotFound) { return ErrRoutineOccurrenceNotFound }
 			return err
 		}
-		if run.Status != RoutineOccurrenceActive || !now.Before(run.ExpiresAt) {
-			return ErrRoutineOccurrenceExpired
-		}
+		if !now.Before(run.ExpiresAt) { return ErrRoutineOccurrenceExpired }
 		if input.ExpiresAt != nil && input.ExpiresAt.After(run.ExpiresAt) { return ErrRoutineOccurrenceInvalid }
 		if err := tx.Preload("Dependencies").First(&run, run.ID).Error; err != nil { return err }
 		var item RoutineOccurrenceItem
@@ -318,6 +316,10 @@ func SkipRoutineOccurrenceItem(db *gorm.DB, familyID, occurrenceID int, input Ro
 				return nil
 			}
 			if !errors.Is(err, gorm.ErrRecordNotFound) { return err }
+		}
+		if run.Status != RoutineOccurrenceActive &&
+			!(run.Status == RoutineOccurrenceFinished && !item.Required && item.Status == RoutineOccurrenceItemPending) {
+			return ErrRoutineOccurrenceExpired
 		}
 		if item.Status == RoutineOccurrenceItemCompleted || item.Status == RoutineOccurrenceItemNotApplicable {
 			return ErrRoutineOccurrenceConflict
@@ -363,7 +365,7 @@ func RestoreRoutineOccurrenceItem(db *gorm.DB, familyID, occurrenceID int, input
 			if errors.Is(err, gorm.ErrRecordNotFound) { return ErrRoutineOccurrenceNotFound }
 			return err
 		}
-		if run.Status != RoutineOccurrenceActive || !now.Before(run.ExpiresAt) { return ErrRoutineOccurrenceExpired }
+		if !now.Before(run.ExpiresAt) { return ErrRoutineOccurrenceExpired }
 		if input.ExpiresAt != nil && input.ExpiresAt.After(run.ExpiresAt) { return ErrRoutineOccurrenceInvalid }
 		if err := tx.Preload("Dependencies").First(&run, run.ID).Error; err != nil { return err }
 		var item RoutineOccurrenceItem
@@ -381,6 +383,10 @@ func RestoreRoutineOccurrenceItem(db *gorm.DB, familyID, occurrenceID int, input
 			return nil
 		}
 		if !errors.Is(err, gorm.ErrRecordNotFound) { return err }
+		if run.Status != RoutineOccurrenceActive &&
+			!(run.Status == RoutineOccurrenceFinished && !item.Required && item.Status == RoutineOccurrenceItemSkipped) {
+			return ErrRoutineOccurrenceExpired
+		}
 		if item.Status != RoutineOccurrenceItemSkipped { return ErrRoutineOccurrenceConflict }
 		var latest RoutineOverride
 		if err := tx.Where("occurrence_id = ? AND item_id = ?", occurrenceID, item.ID).Order("created_at DESC").First(&latest).Error; err != nil {
@@ -391,7 +397,9 @@ func RestoreRoutineOccurrenceItem(db *gorm.DB, familyID, occurrenceID int, input
 			return ErrRoutineOccurrenceConflict
 		}
 		dependentSteps := []int{}
-		for _, dependency := range run.Dependencies { if dependency.DependsOnStepID == item.StepID { dependentSteps = append(dependentSteps, dependency.StepID) } }
+		if item.Required {
+			for _, dependency := range run.Dependencies { if dependency.DependsOnStepID == item.StepID { dependentSteps = append(dependentSteps, dependency.StepID) } }
+		}
 		var completed int64
 		if len(dependentSteps) > 0 {
 			if err := tx.Model(&RoutineOccurrenceItem{}).Where("occurrence_id = ? AND step_id IN ? AND status = ?",
@@ -450,7 +458,8 @@ func expireRoutineOverrides(tx *gorm.DB, run *RoutineOccurrence, now time.Time) 
 		var latest RoutineOverride
 		latestErr := tx.Where("occurrence_id = ? AND item_id = ?", run.ID, item.ID).Order("created_at DESC").First(&latest).Error
 		if latestErr != nil && !errors.Is(latestErr, gorm.ErrRecordNotFound) { return latestErr }
-		if run.Status == RoutineOccurrenceActive && completed == 0 && item.Status == RoutineOccurrenceItemSkipped &&
+		canRestore := run.Status == RoutineOccurrenceActive || (run.Status == RoutineOccurrenceFinished && !item.Required)
+		if canRestore && completed == 0 && item.Status == RoutineOccurrenceItemSkipped &&
 			latestErr == nil && latest.ID == override.ID {
 			if err := tx.Model(&item).Updates(map[string]any{"status":RoutineOccurrenceItemPending,"updated_at":now.UTC()}).Error; err != nil { return err }
 		}
@@ -496,12 +505,14 @@ func settleRoutineOccurrence(tx *gorm.DB, run *RoutineOccurrence, now time.Time)
 
 func ListActiveRoutineOccurrences(db *gorm.DB, familyID int, now time.Time) ([]RoutineOccurrence, error) {
 	var active []RoutineOccurrence
-	if err := db.Where("family_id = ? AND status = ?", familyID, RoutineOccurrenceActive).
+	if err := db.Where("family_id = ? AND status IN ?", familyID, []RoutineOccurrenceStatus{RoutineOccurrenceActive, RoutineOccurrenceFinished}).
 		Order("started_at").Find(&active).Error; err != nil { return nil, err }
 	for i := range active {
 		run, err := GetRoutineOccurrence(db, familyID, active[i].ID, now)
 		if err != nil { return nil, err }
-		if run.Status == RoutineOccurrenceActive { active[i] = *run } else { active[i].ID = 0 }
+		hasPendingOptional := false
+		for _, item := range run.Items { if !item.Required && item.Status == RoutineOccurrenceItemPending { hasPendingOptional = true; break } }
+		if run.Status == RoutineOccurrenceActive || (run.Status == RoutineOccurrenceFinished && hasPendingOptional) { active[i] = *run } else { active[i].ID = 0 }
 	}
 	filtered := active[:0]
 	for _, run := range active { if run.ID != 0 { filtered = append(filtered, run) } }
