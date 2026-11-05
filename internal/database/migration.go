@@ -57,6 +57,7 @@ func Migration(db *gorm.DB) error {
 		games.Flash{},
 		games.Routine{},
 		games.RoutineStep{},
+		games.RoutineDependency{},
 		games.RoutineWin{},
 		learn.Module{},
 		learn.Activation{},
