@@ -60,19 +60,22 @@ func TestParentCanChooseAccessForSingleLevelPack(t *testing.T) {
 	player, err := PlayerFor(db, 1, anna, now)
 	require.NoError(t, err)
 	on := active(t, player)
-	require.False(t, on["anglais-aero"], "a locked single level stays off")
+	require.False(t, on["anglais-aero-meteo"], "a locked single level stays off")
+	require.False(t, on["anglais-aero-radio"], "every module of the locked level stays off")
 
 	require.NoError(t, SetPackAccess(db, 1, anna, "anglais-aero", "anglais-aero", "open", now))
 	player, err = PlayerFor(db, 1, anna, now)
 	require.NoError(t, err)
 	on = active(t, player)
-	require.True(t, on["anglais-aero"], "a forced-open single level is playable")
+	require.True(t, on["anglais-aero-meteo"], "a forced-open single level is playable")
+	require.True(t, on["anglais-aero-radio"], "every module of the forced-open level is playable")
 
 	require.NoError(t, SetPackAccess(db, 1, anna, "anglais-aero", "anglais-aero", "auto", now))
 	player, err = PlayerFor(db, 1, anna, now)
 	require.NoError(t, err)
 	on = active(t, player)
-	require.True(t, on["anglais-aero"], "automatic returns to the one-level progression")
+	require.True(t, on["anglais-aero-meteo"], "automatic returns to the one-level progression")
+	require.True(t, on["anglais-aero-radio"], "the whole level follows the progression")
 }
 
 func TestPeoplePlayingPacksModuleByModuleGetTheirPacksTicked(t *testing.T) {
