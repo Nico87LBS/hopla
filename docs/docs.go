@@ -7315,6 +7315,9 @@ const docTemplate = `{
                     "description": "Key, Aside: the level or module set aside, or brought back.",
                     "type": "string"
                 },
+                "mode": {
+                    "type": "string"
+                },
                 "on": {
                     "type": "boolean"
                 },
