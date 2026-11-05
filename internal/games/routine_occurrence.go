@@ -131,7 +131,7 @@ func StartRoutineOccurrence(db *gorm.DB, familyID, routineID, userID int, now ti
 			Order("started_at DESC").First(&latest).Error
 		if err == nil {
 			if now.Before(latest.ExpiresAt) {
-				if err := tx.Preload("Items", func(q *gorm.DB) *gorm.DB { return q.Order("position") }).First(&latest, latest.ID).Error; err != nil {
+				if err := tx.Preload("Items", func(q *gorm.DB) *gorm.DB { return q.Order("position") }).Preload("Dependencies").First(&latest, latest.ID).Error; err != nil {
 					return err
 				}
 				occurrence = &latest
@@ -426,6 +426,18 @@ func RestoreRoutineOccurrenceItem(db *gorm.DB, familyID, occurrenceID int, input
 // FinishRoutineOccurrence marks the run finished once every required item is
 // completed or explicitly skipped. Optional items never block completion.
 func FinishRoutineOccurrence(db *gorm.DB, occurrenceID int, now time.Time) error {
+	// A temporary external skip resolves the step for navigation, but it must
+	// not pay the final reward until the override expires or is revoked.
+	var temporarySkips []RoutineOverride
+	if err := db.Where(
+		"occurrence_id = ? AND source = ? AND action = ? AND expires_at > ? AND revoked_at IS NULL",
+		occurrenceID, "external", "skip", now.UTC(),
+	).Find(&temporarySkips).Error; err != nil { return err }
+	for _, override := range temporarySkips {
+		var item RoutineOccurrenceItem
+		if err := db.Where("id = ? AND occurrence_id = ?", override.ItemID, occurrenceID).First(&item).Error; err != nil { return err }
+		if item.Required { return nil }
+	}
 	var items []RoutineOccurrenceItem
 	if err := db.Where("occurrence_id = ?", occurrenceID).Find(&items).Error; err != nil { return err }
 	applicableRequired := 0
@@ -444,8 +456,10 @@ func FinishRoutineOccurrence(db *gorm.DB, occurrenceID int, now time.Time) error
 
 func expireRoutineOverrides(tx *gorm.DB, run *RoutineOccurrence, now time.Time) error {
 	var overrides []RoutineOverride
-	if err := tx.Where("occurrence_id = ? AND source = ? AND action = ? AND expires_at IS NOT NULL AND expires_at <= ? AND revoked_at IS NULL",
-		run.ID, "external", "skip", now.UTC()).Find(&overrides).Error; err != nil { return err }
+	query := tx.Where("occurrence_id = ? AND source = ? AND action = ? AND expires_at IS NOT NULL AND revoked_at IS NULL",
+		run.ID, "external", "skip")
+	if run.Status != RoutineOccurrenceExpired { query = query.Where("expires_at <= ?", now.UTC()) }
+	if err := query.Find(&overrides).Error; err != nil { return err }
 	for _, override := range overrides {
 		var item RoutineOccurrenceItem
 		if err := tx.Where("id = ? AND occurrence_id = ?", override.ItemID, run.ID).First(&item).Error; err != nil { return err }
@@ -467,6 +481,9 @@ func expireRoutineOverrides(tx *gorm.DB, run *RoutineOccurrence, now time.Time) 
 			if err := tx.Model(&item).Updates(map[string]any{"status":RoutineOccurrenceItemPending,"updated_at":now.UTC()}).Error; err != nil { return err }
 		}
 		if err := tx.Model(&override).Update("revoked_at", now.UTC()).Error; err != nil { return err }
+	}
+	if run.Status == RoutineOccurrenceActive || run.Status == RoutineOccurrenceFinished {
+		if err := settleRoutineOccurrence(tx, run, now); err != nil { return err }
 	}
 	return nil
 }
@@ -506,7 +523,18 @@ func settleRoutineOccurrence(tx *gorm.DB, run *RoutineOccurrence, now time.Time)
 			run.RoutineID, run.UserID, dayKey(run.StartedAt, loc)).First(&legacyWin).Error
 		if err == nil { return nil }
 		if !errors.Is(err, gorm.ErrRecordNotFound) { return err }
-		_, err := giveBonus(tx, run.FamilyID, run.UserID, run.Bonus, "Routine : "+run.RoutineName)
+		if err == nil {
+			localStart := run.StartedAt.In(loc)
+			dayStart := time.Date(localStart.Year(), localStart.Month(), localStart.Day(), 0, 0, 0, 0, loc)
+			dayEnd := dayStart.AddDate(0, 0, 1)
+			var earlierPaid int64
+			if err := tx.Model(&RoutineOccurrence{}).Where(
+				"routine_id = ? AND user_id = ? AND id <> ? AND started_at >= ? AND started_at < ? AND bonus_paid = ?",
+				run.RoutineID, run.UserID, run.ID, dayStart, dayEnd, true,
+			).Count(&earlierPaid).Error; err != nil { return err }
+			if earlierPaid == 0 { return nil }
+		} else if !errors.Is(err, gorm.ErrRecordNotFound) { return err }
+		_, err = giveBonus(tx, run.FamilyID, run.UserID, run.Bonus, "Routine : "+run.RoutineName)
 		return err
 	}
 	return nil
