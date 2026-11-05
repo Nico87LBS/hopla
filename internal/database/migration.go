@@ -94,6 +94,9 @@ func Migration(db *gorm.DB) error {
 	if err := chModel.EnsureSlotIDs(db); err != nil {
 		return err
 	}
+	if err := chModel.EnsureHistorySlotIDs(db); err != nil {
+		return err
+	}
 
 	if err := learn.FoldAllPacks(db); err != nil {
 		return err
