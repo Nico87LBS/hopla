@@ -1,10 +1,38 @@
 const allowedTags = new Set([
-  'P', 'BR', 'STRONG', 'B', 'EM', 'I', 'U', 'S', 'BLOCKQUOTE',
-  'PRE', 'CODE', 'UL', 'OL', 'LI', 'H1', 'H2', 'H3', 'H4', 'A', 'IMG',
+  'P',
+  'BR',
+  'STRONG',
+  'B',
+  'EM',
+  'I',
+  'U',
+  'S',
+  'BLOCKQUOTE',
+  'PRE',
+  'CODE',
+  'UL',
+  'OL',
+  'LI',
+  'H1',
+  'H2',
+  'H3',
+  'H4',
+  'A',
+  'IMG',
 ])
 const dropContentTags = new Set([
-  'SCRIPT', 'STYLE', 'IFRAME', 'OBJECT', 'EMBED', 'SVG', 'MATH',
-  'TEMPLATE', 'FORM', 'INPUT', 'BUTTON', 'TEXTAREA',
+  'SCRIPT',
+  'STYLE',
+  'IFRAME',
+  'OBJECT',
+  'EMBED',
+  'SVG',
+  'MATH',
+  'TEMPLATE',
+  'FORM',
+  'INPUT',
+  'BUTTON',
+  'TEXTAREA',
 ])
 
 const hasControlCharacters = value =>
@@ -16,7 +44,10 @@ const hasControlCharacters = value =>
 const safeUrl = (value, tag, attribute) => {
   if (!value || hasControlCharacters(value) || value.includes('\\')) return false
   const trimmed = value.trim()
-  if (/^(?:javascript|vbscript|data):/i.test(trimmed) || trimmed.startsWith('//')) {
+  if (
+    /^(?:javascript|vbscript|data):/i.test(trimmed) ||
+    trimmed.startsWith('//')
+  ) {
     return false
   }
   try {
@@ -25,11 +56,15 @@ const safeUrl = (value, tag, attribute) => {
       parsed.protocol === 'blob:' &&
       attribute === 'src' &&
       parsed.origin === window.location.origin
-    ) return true
+    ) {
+      return true
+    }
     if (
       !['http:', 'https:'].includes(parsed.protocol) &&
       !(attribute === 'href' && parsed.protocol === 'mailto:')
-    ) return false
+    ) {
+      return false
+    }
     return tag === 'A' || (tag === 'IMG' && attribute === 'src')
   } catch {
     return false
@@ -55,9 +90,17 @@ const sanitizeNode = node => {
   const clean = document.createElement(node.tagName.toLowerCase())
   Array.from(node.attributes).forEach(({ name, value }) => {
     const key = name.toLowerCase()
-    if (key === 'href' && node.tagName === 'A' && safeUrl(value, node.tagName, key)) {
+    if (
+      key === 'href' &&
+      node.tagName === 'A' &&
+      safeUrl(value, node.tagName, key)
+    ) {
       clean.setAttribute('href', value)
-    } else if (key === 'src' && node.tagName === 'IMG' && safeUrl(value, node.tagName, key)) {
+    } else if (
+      key === 'src' &&
+      node.tagName === 'IMG' &&
+      safeUrl(value, node.tagName, key)
+    ) {
       clean.setAttribute('src', value)
     } else if (['alt', 'title'].includes(key)) {
       clean.setAttribute(key, value)
