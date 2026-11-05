@@ -108,19 +108,20 @@ func StartRoutineOccurrence(db *gorm.DB, familyID, routineID, userID int, now ti
 		minutes := routine.ValidityMinutes
 		if minutes == 0 { minutes = DefaultRoutineValidityMinutes }
 		if minutes < 1 || minutes > MaxRoutineValidityMinutes { return ErrRoutineOccurrenceInvalid }
-		var active RoutineOccurrence
-		err := tx.Where("routine_id = ? AND user_id = ? AND status = ?", routineID, userID, RoutineOccurrenceActive).
-			Order("started_at DESC").First(&active).Error
+		var latest RoutineOccurrence
+		err := tx.Where("routine_id = ? AND user_id = ? AND status IN ?", routineID, userID,
+			[]RoutineOccurrenceStatus{RoutineOccurrenceActive, RoutineOccurrenceFinished}).
+			Order("started_at DESC").First(&latest).Error
 		if err == nil {
-			if now.Before(active.ExpiresAt) {
-				if err := tx.Preload("Items", func(q *gorm.DB) *gorm.DB { return q.Order("position") }).First(&active, active.ID).Error; err != nil {
+			if now.Before(latest.ExpiresAt) {
+				if err := tx.Preload("Items", func(q *gorm.DB) *gorm.DB { return q.Order("position") }).First(&latest, latest.ID).Error; err != nil {
 					return err
 				}
-				occurrence = &active
+				occurrence = &latest
 				return applyRoutineOccurrenceAvailability(tx, occurrence)
 			}
-			if err := tx.Model(&active).Update("status", RoutineOccurrenceExpired).Error; err != nil {
-				return err
+			if latest.Status == RoutineOccurrenceActive {
+				if err := tx.Model(&latest).Update("status", RoutineOccurrenceExpired).Error; err != nil { return err }
 			}
 		} else if !errors.Is(err, gorm.ErrRecordNotFound) {
 			return err
