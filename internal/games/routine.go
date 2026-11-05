@@ -39,7 +39,7 @@ type RoutineStep struct {
 	RoutineID int `gorm:"column:routine_id;index;not null"`
 	Position  int `gorm:"column:position;not null"`
 	ChoreID   int  `gorm:"column:chore_id;not null"`
-	Required  bool `json:"required" gorm:"column:required;not null;default:true"`
+	Required  bool `json:"required" gorm:"column:required;not null"`
 }
 
 func (RoutineStep) TableName() string { return "routine_steps" }
