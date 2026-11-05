@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	auth "github.com/nico87lbs/hopla/internal/auth"
 	"github.com/nico87lbs/hopla/internal/games"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	"gorm.io/gorm"
 )
 
@@ -270,11 +271,27 @@ type externalRoutineOverrideReq struct {
 // Home Assistant and other trusted API-token clients. It never changes the
 // routine definition, only one live occurrence.
 
+
+func (h *Handler) routineIntegrationFamily(c *gin.Context) (int, bool) {
+	token, err := games.AuthenticateRoutineIntegrationToken(h.db.WithContext(c), c.GetHeader("X-Hopla-Routine-Token"), time.Now().UTC())
+	if err != nil { c.JSON(401, gin.H{"error":"Invalid routine integration token"}); return 0, false }
+	members, err := h.familyRepo.GetFamilyUsers(c, token.FamilyID)
+	if err != nil { c.JSON(500, gin.H{"error":"Could not validate integration owner"}); return 0, false }
+	for _, member := range members {
+		if member.UserID == token.UserID && member.IsActive &&
+			(member.Role == fModel.UserRoleAdmin || member.Role == fModel.UserRoleManager) {
+			return token.FamilyID, true
+		}
+	}
+	_ = games.RevokeRoutineIntegrationToken(h.db.WithContext(c), token.FamilyID, token.ID, time.Now().UTC())
+	c.JSON(401, gin.H{"error":"Routine integration owner is no longer a family parent"})
+	return 0, false
+}
+
 func (h *Handler) listIntegrationRoutineOccurrences(c *gin.Context) {
-	secret := c.GetHeader("X-Hopla-Routine-Token")
-	token, err := games.AuthenticateRoutineIntegrationToken(h.db.WithContext(c), secret, time.Now().UTC())
-	if err != nil { c.JSON(401, gin.H{"error":"Invalid routine integration token"}); return }
-	occurrences, err := games.ListActiveRoutineOccurrences(h.db.WithContext(c), token.FamilyID, time.Now().UTC())
+	familyID, ok := h.routineIntegrationFamily(c)
+	if !ok { return }
+	occurrences, err := games.ListActiveRoutineOccurrences(h.db.WithContext(c), familyID, time.Now().UTC())
 	if err != nil { c.JSON(500, gin.H{"error":"Could not load active routine occurrences"}); return }
 	c.JSON(200, occurrences)
 }
