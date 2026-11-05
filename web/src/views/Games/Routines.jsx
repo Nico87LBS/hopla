@@ -386,7 +386,10 @@ export const RoutinesCard = () => {
                                 slot =>
                                   slot.id === (draft.slotIds?.[index] || ''),
                               )?.name ||
-                              slots.find(slot => slot.id === (draft.slotIds?.[index] || ''))?.time ||
+                              slots.find(
+                                slot =>
+                                  slot.id === (draft.slotIds?.[index] || ''),
+                              )?.time ||
                               t('routines.selectSlot')
                             : t('routines.stepSubtitle', {
                                 defaultValue: 'Étape de la routine',
@@ -493,7 +496,8 @@ export const RoutinesCard = () => {
                                 placeholder={t('routines.selectSlot')}
                                 onChange={(event, value) => {
                                   const slotIds = [
-                                    ...(draft.slotIds || draft.choreIds.map(() => '')),
+                                    ...(draft.slotIds ||
+                                      draft.choreIds.map(() => '')),
                                   ]
                                   slotIds[index] = value || ''
                                   setDraft({ ...draft, slotIds })
@@ -504,13 +508,13 @@ export const RoutinesCard = () => {
                                     chores,
                                     routines,
                                     draft.id,
-                                  )
-                                    .find(item => item.id === id)
-                                  const currentSlotId = draft.slotIds?.[index] || ''
+                                  ).find(item => item.id === id)
+                                  const currentSlotId =
+                                    draft.slotIds?.[index] || ''
                                   const availableSlots = (
                                     options?.routineAvailableSlots || []
-                                  )
-                                    .filter(slot =>
+                                  ).filter(
+                                    slot =>
                                       slot.id === currentSlotId ||
                                       !(draft.slotIds || []).some(
                                         (slotId, otherIndex) =>
@@ -518,7 +522,7 @@ export const RoutinesCard = () => {
                                           draft.choreIds[otherIndex] === id &&
                                           slotId === slot.id,
                                       ),
-                                    )
+                                  )
                                   return (
                                     <>
                                       {options?.routineCanUseAllSlots && (
