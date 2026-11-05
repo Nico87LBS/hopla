@@ -86,7 +86,7 @@ type RoutineOccurrenceItem struct {
 	ChoreID int `json:"choreId" gorm:"column:chore_id;not null"`
 	ChoreName string `json:"choreName" gorm:"column:chore_name;size:120"`
 	SlotID string `json:"slotId,omitempty" gorm:"column:slot_id;size:32"`
-	Required bool `json:"required" gorm:"column:required;not null;default:true"`
+	Required bool `json:"required" gorm:"column:required;not null"`
 	Status RoutineOccurrenceItemStatus `json:"status" gorm:"column:status;size:20;not null;default:pending"`
 	UpdatedAt time.Time `json:"updatedAt" gorm:"column:updated_at;not null"`
 	Available bool `json:"available" gorm:"-"`
