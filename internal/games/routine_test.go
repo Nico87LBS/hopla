@@ -93,3 +93,34 @@ func TestATaskIsInOneRoutineOnly(t *testing.T) {
 	require.NoError(t, err)
 	require.Empty(t, routines)
 }
+
+func TestRoutineGraphPersistsDependenciesAndOffersParallelTasks(t *testing.T) {
+	db := setup(t)
+	now := noon(0)
+	first := chore(t, db, "Se lever", 1, now, assignedTo(2))
+	second := chore(t, db, "S'habiller", 1, now, assignedTo(2))
+	third := chore(t, db, "Faire son lit", 1, now, assignedTo(2))
+	routine := Routine{
+		FamilyID: 1,
+		Name: "Matin",
+		ChoreIDs: []int{first.ID, second.ID, third.ID},
+		GraphEnabled: true,
+		Dependencies: []RoutineDependency{
+			{StepID: 2, DependsOnStepID: 1},
+			{StepID: 3, DependsOnStepID: 1},
+		},
+	}
+	require.NoError(t, SaveRoutine(db, &routine))
+	stored, err := Routines(db, 1)
+	require.NoError(t, err)
+	require.Len(t, stored, 1)
+	require.Equal(t, routine.Dependencies, stored[0].Dependencies)
+
+	views, err := RoutineViews(db, 1, []int{2}, now)
+	require.NoError(t, err)
+	require.ElementsMatch(t, []int{first.ID}, views[0].Members[0].Available)
+	done(t, db, first.ID, 2, now)
+	views, err = RoutineViews(db, 1, []int{2}, now)
+	require.NoError(t, err)
+	require.ElementsMatch(t, []int{second.ID, third.ID}, views[0].Members[0].Available)
+}
