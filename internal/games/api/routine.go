@@ -17,6 +17,7 @@ type RoutineReq struct {
 	Name string `json:"name" binding:"required"`
 	Bonus int `json:"bonus"`
 	ChoreIDs []int `json:"choreIds"`
+	OptionalChoreIDs []int `json:"optionalChoreIds"`
 	// Dependencies use 1-based positions in choreIds. Omitted means legacy sequence;
 	// an explicit empty array means all steps may start independently.
 	Dependencies *[]games.RoutineDependency `json:"dependencies"`
@@ -97,7 +98,7 @@ func (h *Handler) createRoutine(c *gin.Context) {
 	}
 	now := time.Now().UTC()
 	routine := games.Routine{FamilyID: familyID, Name: req.Name, Bonus: req.Bonus, ChoreIDs: req.ChoreIDs,
-		GraphEnabled: req.Dependencies != nil, CreatedBy: parentID, CreatedAt: now, UpdatedAt: now}
+		GraphEnabled: req.Dependencies != nil, OptionalChoreIDs: req.OptionalChoreIDs, CreatedBy: parentID, CreatedAt: now, UpdatedAt: now}
 	if req.Dependencies != nil { routine.Dependencies = *req.Dependencies }
 	if err := games.SaveRoutine(h.db.WithContext(c), &routine); err != nil {
 		answerRoutineError(c, err)
@@ -131,6 +132,7 @@ func (h *Handler) updateRoutine(c *gin.Context) {
 		return
 	}
 	routine.Name, routine.Bonus, routine.ChoreIDs = req.Name, req.Bonus, req.ChoreIDs
+	routine.OptionalChoreIDs = req.OptionalChoreIDs
 	routine.GraphEnabled = req.Dependencies != nil
 	if req.Dependencies != nil { routine.Dependencies = *req.Dependencies } else { routine.Dependencies = nil }
 	if err := games.SaveRoutine(h.db.WithContext(c), &routine); err != nil {
