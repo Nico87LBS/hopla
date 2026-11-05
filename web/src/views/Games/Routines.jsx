@@ -35,6 +35,7 @@ const MAX_STEPS = 20
 const emptyRoutine = () => ({
   name: '',
   bonus: 5,
+  validityMinutes: 720,
   choreIds: [],
   dependencies: [],
   optionalChoreIds: [],
@@ -114,6 +115,7 @@ export const RoutinesCard = () => {
       id: draft.id,
       name: draft.name.trim(),
       bonus: Number(draft.bonus) || 0,
+      validityMinutes: Number(draft.validityMinutes) || 720,
       choreIds: draft.choreIds,
       dependencies: draft.dependencies || [],
       optionalChoreIds: draft.optionalChoreIds || [],
@@ -280,8 +282,21 @@ export const RoutinesCard = () => {
             slotProps={{ input: { min: 0, max: 1000 } }}
             sx={{ alignSelf: 'flex-start', maxWidth: 260 }}
           />
+          <Input
+            size='sm'
+            type='number'
+            value={draft.validityMinutes ?? 720}
+            onChange={event =>
+              setDraft({ ...draft, validityMinutes: event.target.value })
+            }
+            startDecorator={t('routines.validity')}
+            slotProps={{ input: { min: 1, max: 2880 } }}
+            sx={{ alignSelf: 'flex-start', maxWidth: 300 }}
+          />
           <Typography level='body-xs' sx={{ color: 'text.tertiary' }}>
-            {t('routines.help')}\n            {t('routines.validityHelp')}
+            {t('routines.help')}
+            {t('routines.validityHelp')}
+            {t('routines.validityHelp')}
           </Typography>
           <Stack direction='row' gap={1}>
             <Button
