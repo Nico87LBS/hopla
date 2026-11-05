@@ -7,6 +7,7 @@ import {
   describeTask,
   frequencyTypeForKind,
   nextSlot,
+  rollingApplies,
   scheduleKind,
 } from '../src/views/ChoreEdit/editor/schedule.js'
 
@@ -134,3 +135,23 @@ for (const language of ['fr', 'en']) {
       })
   })
 }
+
+test('counting from the day it is done is offered only where it changes something', () => {
+  for (const type of ['daily', 'weekly', 'monthly', 'yearly', 'interval']) {
+    assert.equal(rollingApplies(type, {}), true, type)
+  }
+  for (const type of [
+    'days_of_the_week',
+    'day_of_the_month',
+    'adaptive',
+    'once',
+    'always',
+    'trigger',
+  ]) {
+    assert.equal(rollingApplies(type, {}), false, type)
+  }
+  assert.equal(
+    rollingApplies('daily', { slots: [{ name: 'Soir', time: '18:00' }] }),
+    false,
+  )
+})

@@ -24,6 +24,7 @@ import EditorCard, { FieldLabel, Pill, Segmented } from './EditorCard'
 import {
   frequencyTypeForKind,
   RHYTHMS,
+  rollingApplies,
   scheduleKind,
   SLOT_FREQUENCY_TYPES,
 } from './schedule'
@@ -578,7 +579,7 @@ export default function WhenCard({
             />
           )}
 
-          {!withSlots && frequencyType !== 'adaptive' && (
+          {rollingApplies(frequencyType, metadata) && (
             <Box
               component='label'
               sx={{

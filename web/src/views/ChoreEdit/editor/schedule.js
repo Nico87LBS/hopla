@@ -41,6 +41,16 @@ export const scheduleKind = frequencyType =>
 // The frequency type a kind starts on.
 export const frequencyTypeForKind = kind => (kind === 'repeat' ? 'daily' : kind)
 
+// Whether counting from the day a task is done changes anything: not for a
+// task on set days of the week or of the month, which keeps its days, nor for
+// a task with slots or an adaptive one.
+export const rollingApplies = (frequencyType, frequencyMetadata) =>
+  scheduleKind(frequencyType) === 'repeat' &&
+  !['days_of_the_week', 'day_of_the_month', 'adaptive'].includes(
+    frequencyType,
+  ) &&
+  !hasSlots(frequencyType, frequencyMetadata)
+
 export const hasSlots = (frequencyType, frequencyMetadata) =>
   SLOT_FREQUENCY_TYPES.includes(frequencyType) &&
   (frequencyMetadata?.slots?.length || 0) > 0

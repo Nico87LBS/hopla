@@ -80,7 +80,7 @@ import EditorPreview, { TaskSummary } from './editor/EditorPreview'
 import MoreOptions, { OptionRow } from './editor/MoreOptions'
 import { LabelsField } from './editor/OrganizationFields'
 import RewardCard from './editor/RewardCard'
-import { describeTask, nextSlot } from './editor/schedule'
+import { describeTask, nextSlot, rollingApplies } from './editor/schedule'
 import WhenCard from './editor/WhenCard'
 import WhoCard from './editor/WhoCard'
 import EditorContainer from './EditorContainer'
@@ -570,7 +570,8 @@ const ChoreEdit = () => {
       ),
       assignedTo: assignedToValue,
       assignStrategy: assignStrategyValue,
-      isRolling: isRolling,
+      // A hidden switch must not keep a value the person cannot see.
+      isRolling: isRolling && rollingApplies(frequencyType, frequencyMetadata),
       isActive: isActive,
       notification: isNotificable && planReminders.length > 0,
       labels: labels.map(l => l.name),
