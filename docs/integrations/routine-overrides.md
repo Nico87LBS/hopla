@@ -27,7 +27,7 @@ GET /integration/v1/games/routines/occurrences
 X-Hopla-Routine-Token: <routine-integration-token>
 ```
 
-The response contains only active, unexpired occurrences in that token's family. Each occurrence includes its ID, member ID, routine name, start and expiry timestamps, and items. Items expose their task name, selected slot ID (if any), status, position, and whether they are currently available.
+The response contains unexpired active occurrences, plus finished occurrences that still have pending optional items, in that token's family. Each occurrence includes its ID, member ID, routine name, start and expiry timestamps, and items. Items expose their task name, selected slot ID (if any), status, position, and whether they are currently available.
 
 ## Skip an item
 
