@@ -65,41 +65,33 @@ export const routineTasks = (chores, routines, editingId) => {
     })
   }
 
-  return chores
-    .filter(chore => chore.isActive !== false)
-    .map(chore => {
-      const used = taken.get(taskKey(chore.name)) || new Set()
-      if (used.has('*')) return null
-      const slots = chore.frequencyMetadata?.slots || []
-      if (slots.length) {
-        const availableSlots = slots.filter(
-          slot => slot.id && !used.has(slot.id),
-        )
-        if (availableSlots.length === 0) return null
-        return {
-          ...chore,
-          routineAvailableSlots: availableSlots,
-          routineCanUseAllSlots: used.size === 0,
-        }
-      }
-      return used.size
-        ? null
-        : {
-            ...chore,
-            routineAvailableSlots: [],
-            routineCanUseAllSlots: true,
-          }
-    })
-    .filter(Boolean)
-    // A step represents all member copies of a task, even when their names
-    // differ only by surrounding whitespace or letter case.
-    .filter(
-      (chore, index, all) =>
-        all.findIndex(
-          candidate => taskKey(candidate.name) === taskKey(chore.name),
-        ) === index,
-    )
-    .sort((a, b) => a.name.localeCompare(b.name))
+  const byName = new Map()
+  for (const chore of chores) {
+    if (chore.isActive === false) continue
+    const used = taken.get(taskKey(chore.name)) || new Set()
+    if (used.has('*')) continue
+    const slots = chore.frequencyMetadata?.slots || []
+    let available
+    if (slots.length) {
+      available = slots.filter(slot => slot.id && !used.has(slot.id))
+      if (available.length === 0) continue
+    } else {
+      if (used.size) continue
+      available = []
+    }
+    const key = taskKey(chore.name)
+    if (!byName.has(key)) {
+      byName.set(key, {
+        ...chore,
+        routineAvailableSlots: available,
+        routineCanUseAllSlots: used.size === 0,
+      })
+    }
+  }
+
+  // A step represents all member copies of a task, even when their names
+  // differ only by surrounding whitespace or letter case.
+  return [...byName.values()].sort((a, b) => a.name.localeCompare(b.name))
 }
 
 // moveStep moves the step at index by delta (-1 up, +1 down).

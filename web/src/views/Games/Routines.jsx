@@ -318,7 +318,8 @@ export const RoutinesCard = () => {
                       const canUseAllSlots =
                         options?.routineCanUseAllSlots &&
                         !(draft.choreIds || []).some(
-                          (otherId, otherIndex) => otherIndex !== index && otherId === id,
+                          (otherId, otherIndex) =>
+                            otherIndex !== index && otherId === id,
                         )
                       return (
                         <>
@@ -548,10 +549,8 @@ export const RoutinesCard = () => {
             borderColor: 'divider',
           }}
         >
-          <Typography level='title-sm'>
-            {t('routines.liveTitle')}
-          </Typography>
-          {liveOccurrences.map(({ progress, routine, occurrence }) => (
+          <Typography level='title-sm'>{t('routines.liveTitle')}</Typography>
+          {liveOccurrences.map(({ occurrence, progress, routine }) => (
             <Box
               key={occurrence.id}
               sx={{ bgcolor: 'background.level1', borderRadius: 'md', p: 1 }}
@@ -596,9 +595,7 @@ export const RoutinesCard = () => {
                       {item.choreName}
                       {' · '}
                       {t(`routines.itemStatus.${item.status}`)}
-                      {!item.required
-                        ? ` · ${t('routines.optional')}`
-                        : ''}
+                      {!item.required ? ` · ${t('routines.optional')}` : ''}
                     </Typography>
                     {item.status === 'pending' && item.available && (
                       <Button

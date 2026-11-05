@@ -303,7 +303,7 @@ func TestRoutineStartsAnOccurrenceForRemainingOptionalSteps(t *testing.T) {
 	routine:=Routine{FamilyID:1,Name:"Départ",Bonus:2,ValidityMinutes:120,
 		ChoreIDs:[]int{required.ID,optional.ID},OptionalChoreIDs:[]int{optional.ID},GraphEnabled:true}
 	require.NoError(t,SaveRoutine(db,&routine))
-	require.NoError(t,done(db,required.ID,2,now))
+	require.NoError(t,done(t, db, required.ID, 2, now))
 	require.NoError(t,AfterTask(db,1,2,now,now))
 	var member fModel.UserFamily
 	require.NoError(t,db.Where("user_id = 2").First(&member).Error)

@@ -26,11 +26,12 @@ const RoutineChip = ({ chores, sx, userId }) => {
     .filter(({ step }) => Boolean(step))
   if (steps.length === 0) return null
   const nameOnly = chores.length > 1
-  const selected = steps.find(({ chore, step }) =>
-    step.progress.occurrence?.items?.some(
-      item => item.choreId === chore.id && item.available,
-    ),
-  ) || steps[0]
+  const selected =
+    steps.find(({ chore, step }) =>
+      step.progress.occurrence?.items?.some(
+        item => item.choreId === chore.id && item.available,
+      ),
+    ) || steps[0]
   const { chore: selectedChore, step } = selected
   const { progress, routine } = step
   const selectedChoreId = selectedChore.id
