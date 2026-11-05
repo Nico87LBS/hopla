@@ -26,9 +26,9 @@ func (day *routineDay) progressOfGraph(userID int, steps [][]int, routine Routin
 		done := false
 		for _, id := range ids {
 			chore := day.chores[id]
-			done := day.doneBy[userID][id] && isFor(chore, userID)
-			if slotID != "" { done = day.doneSlotsBy[userID][id][slotID] && isFor(chore, userID) }
-			if done {
+			isDone := day.doneBy[userID][id] && isFor(chore, userID)
+			if slotID != "" { isDone = day.doneSlotsBy[userID][id][slotID] && isFor(chore, userID) }
+			if isDone {
 				done = true
 				break
 			}
