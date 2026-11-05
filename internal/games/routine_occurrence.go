@@ -493,14 +493,16 @@ func settleRoutineOccurrence(tx *gorm.DB, run *RoutineOccurrence, now time.Time)
 
 func ListActiveRoutineOccurrences(db *gorm.DB, familyID int, now time.Time) ([]RoutineOccurrence, error) {
 	var active []RoutineOccurrence
-	if err := db.Where("family_id = ? AND status = ? AND expires_at > ?", familyID, RoutineOccurrenceActive, now.UTC()).
+	if err := db.Where("family_id = ? AND status = ?", familyID, RoutineOccurrenceActive).
 		Order("started_at").Find(&active).Error; err != nil { return nil, err }
 	for i := range active {
 		run, err := GetRoutineOccurrence(db, familyID, active[i].ID, now)
 		if err != nil { return nil, err }
-		active[i] = *run
+		if run.Status == RoutineOccurrenceActive { active[i] = *run } else { active[i].ID = 0 }
 	}
-	return active, nil
+	filtered := active[:0]
+	for _, run := range active { if run.ID != 0 { filtered = append(filtered, run) } }
+	return filtered, nil
 }
 
 func RoutineOccurrenceForMember(db *gorm.DB, familyID, occurrenceID, userID int, now time.Time) (*RoutineOccurrence, error) {
