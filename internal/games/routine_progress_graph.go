@@ -15,7 +15,10 @@ func (day *routineDay) progressOfGraph(userID int, steps [][]int, routine Routin
 
 	for i, ids := range steps {
 		position := i + 1
-		required := !routine.GraphEnabled || i >= len(routine.Steps) || routine.Steps[i].Required
+		required := true
+		if routine.GraphEnabled && i < len(routine.Steps) && routine.Steps[i].Required != nil {
+			required = *routine.Steps[i].Required
+		}
 		policies[position] = RoutineItemPolicy{StepID: position, Required: required}
 		var todo int
 		done := false
