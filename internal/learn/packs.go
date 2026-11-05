@@ -244,7 +244,7 @@ func SetPackAccess(db *gorm.DB, familyID, userID int, pack, key, mode string, no
 	}
 	found := false
 	for _, level := range levels {
-		found = found || (len(levels) > 1 && level.ID == key)
+		found = found || level.ID == key
 	}
 	if !found {
 		return invalid("ce niveau n'est pas dans le paquet")

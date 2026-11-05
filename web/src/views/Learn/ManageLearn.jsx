@@ -47,7 +47,6 @@ import {
   useSetSetting,
 } from '../../queries/LearnQueries'
 import { useNotification } from '../../service/NotificationProvider'
-import { ExportLearnReports } from '../../utils/Fetcher'
 import {
   moduleProgress,
   REVIEW_BONUS,
@@ -61,7 +60,6 @@ import {
   sortItems,
 } from '../../utils/learn/listing'
 import { packsAbove, packTree } from '../../utils/learn/tree'
-import { saveFile } from '../../utils/saveFile'
 import LoadingComponent from '../components/Loading'
 import { MemberAvatar, surfaceSx } from '../Games/GameParts'
 import { ParentPage, useMembers } from '../Manage/ParentPages'
@@ -72,6 +70,7 @@ import { LearnIcon, useCompiled } from './LearnParts'
 import { VoicesCard } from './LearnVoices'
 import ListBar, { useListChoices } from './ListBar'
 import RemoveModal from './RemoveModal'
+import useExportReports from './useExportReports'
 
 const HEAD = 40
 
@@ -1030,6 +1029,13 @@ const ModuleGroup = ({
       .map(key => key.slice('force-open:'.length)),
   )
   const tiers = (group.tiers || []).filter(level => level.pack)
+  const singleLevel =
+    !!group.pack && tiers.length === 0 && group.modules.length > 0
+  const singleAccess = forcedKeys.has(group.pack?.id)
+    ? 'open'
+    : asideKeys.has(group.pack?.id)
+      ? 'locked'
+      : 'auto'
   const onAside = (key, aside) =>
     run(
       setAside.mutateAsync({
@@ -1112,9 +1118,11 @@ const ModuleGroup = ({
     const section = levelOf.get(module.id)
     return (
       !!member &&
-      (!section ||
-        section.access === 'open' ||
-        (section.open && !section.aside))
+      (section
+        ? section.access === 'open' || (section.open && !section.aside)
+        : singleLevel
+          ? singleAccess === 'open' || singleAccess === 'auto'
+          : true)
     )
   }
   const placedIn = new Set(
@@ -1226,14 +1234,34 @@ const ModuleGroup = ({
         )}
         <Box sx={{ flex: 1, minWidth: 0 }}>
           {group.pack ? (
-            <Typography
-              level='title-lg'
-              component={Link}
-              to={`/manage/learn/detail/${group.pack.id}`}
-              sx={{ color: 'inherit', textDecoration: 'none' }}
-            >
-              {name}
-            </Typography>
+            <Stack direction='row' alignItems='center' gap={1} flexWrap='wrap'>
+              <Typography
+                level='title-lg'
+                component={Link}
+                to={`/manage/learn/detail/${group.pack.id}`}
+                sx={{ color: 'inherit', textDecoration: 'none' }}
+              >
+                {name}
+              </Typography>
+              {singleLevel && (
+                <Select
+                  size='sm'
+                  disabled={!member}
+                  value={singleAccess}
+                  onChange={(_, value) =>
+                    value && onAccess(group.pack.id, value)
+                  }
+                  slotProps={{
+                    button: { 'aria-label': `${name} · ${person.displayName}` },
+                  }}
+                  sx={{ minWidth: 154 }}
+                >
+                  <Option value='auto'>{t('manage.accessAuto')}</Option>
+                  <Option value='open'>{t('manage.accessOpen')}</Option>
+                  <Option value='locked'>{t('manage.accessLocked')}</Option>
+                </Select>
+              )}
+            </Stack>
           ) : (
             <Typography level='title-lg'>{name}</Typography>
           )}
@@ -1656,29 +1684,6 @@ CatalogueCard.propTypes = {
 // of each person.
 // useExportReports sends the questions reported in the games, in one file,
 // to whoever writes the modules.
-export const useExportReports = () => {
-  const [busy, setBusy] = useState(false)
-  const exportAll = async () => {
-    setBusy(true)
-    try {
-      const reports = await ExportLearnReports()
-      const now = new Date()
-      const file = {
-        format: 'hopla-signalements/1',
-        hopla: import.meta.env.VITE_APP_VERSION,
-        exportedAt: now.toISOString(),
-        reports,
-      }
-      await saveFile(
-        `hopla-signalements-${now.toISOString().slice(0, 10)}.json`,
-        `${JSON.stringify(file, null, 2)}\n`,
-      )
-    } finally {
-      setBusy(false)
-    }
-  }
-  return [exportAll, busy]
-}
 
 // ReportsCard leads to the questions reported in the games.
 const ReportsCard = ({ count }) => {
