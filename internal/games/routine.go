@@ -19,6 +19,7 @@ type Routine struct {
 	FamilyID int    `json:"-" gorm:"column:family_id;index;not null"`
 	Name     string `json:"name" gorm:"column:name;not null"`
 	Bonus    int    `json:"bonus" gorm:"column:bonus;not null;default:0"`
+	ValidityMinutes int `json:"validityMinutes" gorm:"column:validity_minutes;not null;default:720"`
 	// ChoreIDs are the steps in order. A step stands for every task with the
 	// same name, so each child's copy of a task is the same step.
 	ChoreIDs  []int         `json:"choreIds" gorm:"-"`
@@ -194,7 +195,7 @@ func SaveRoutine(db *gorm.DB, routine *Routine) error {
 			if err := tx.Omit("Steps").Create(routine).Error; err != nil { return err }
 		} else {
 			if err := tx.Model(&Routine{}).Where("id = ? AND family_id = ?", routine.ID, routine.FamilyID).
-				Updates(map[string]any{"name": routine.Name, "bonus": routine.Bonus, "graph_enabled": routine.GraphEnabled, "updated_at": time.Now().UTC()}).Error; err != nil {
+				Updates(map[string]any{"name": routine.Name, "bonus": routine.Bonus, "validity_minutes": routine.ValidityMinutes, "graph_enabled": routine.GraphEnabled, "updated_at": time.Now().UTC()}).Error; err != nil {
 				return err
 			}
 			if err := tx.Where("routine_id = ?", routine.ID).Delete(&RoutineDependency{}).Error; err != nil { return err }
@@ -227,6 +228,7 @@ func DeleteRoutine(db *gorm.DB, familyID, routineID int) error {
 		}
 		if err := tx.Where("routine_id = ?", routineID).Delete(&RoutineDependency{}).Error; err != nil { return err }
 		if err := tx.Where("routine_id = ?", routineID).Delete(&RoutineStep{}).Error; err != nil { return err }
+		if err := tx.Where("routine_id = ?", routineID).Delete(&RoutineOccurrence{}).Error; err != nil { return err }
 		return tx.Where("routine_id = ?", routineID).Delete(&RoutineWin{}).Error
 	})
 }
