@@ -95,11 +95,15 @@ func Routines(db *gorm.DB, familyID int) ([]Routine, error) {
 	if err != nil { return nil, err }
 	for i := range routines {
 		if err := db.Where("routine_id = ?", routines[i].ID).Find(&routines[i].Dependencies).Error; err != nil { return nil, err }
-	}
-	for i := range routines {
+		positionByID := make(map[int]int, len(routines[i].Steps))
 		routines[i].ChoreIDs = []int{}
 		for _, step := range routines[i].Steps {
 			routines[i].ChoreIDs = append(routines[i].ChoreIDs, step.ChoreID)
+			positionByID[step.ID] = step.Position + 1
+		}
+		for j := range routines[i].Dependencies {
+			routines[i].Dependencies[j].StepID = positionByID[routines[i].Dependencies[j].StepID]
+			routines[i].Dependencies[j].DependsOnStepID = positionByID[routines[i].Dependencies[j].DependsOnStepID]
 		}
 	}
 	return routines, err
@@ -208,9 +212,8 @@ func DeleteRoutine(db *gorm.DB, familyID, routineID int) error {
 		if result.RowsAffected == 0 {
 			return gorm.ErrRecordNotFound
 		}
-		if err := tx.Where("routine_id = ?", routineID).Delete(&RoutineStep{}).Error; err != nil {
-			return err
-		}
+		if err := tx.Where("routine_id = ?", routineID).Delete(&RoutineDependency{}).Error; err != nil { return err }
+		if err := tx.Where("routine_id = ?", routineID).Delete(&RoutineStep{}).Error; err != nil { return err }
 		return tx.Where("routine_id = ?", routineID).Delete(&RoutineWin{}).Error
 	})
 }
