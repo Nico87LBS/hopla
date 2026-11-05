@@ -257,7 +257,7 @@ func TestOccurrenceKeepsItsFinalRewardWhenRoutineIsEdited(t *testing.T) {
 	edited.Bonus=10
 	require.NoError(t,SaveRoutine(db,&edited))
 
-	require.NoError(t,done(db,task.ID,2,now))
+	done(t, db, task.ID, 2, now)
 	require.NoError(t,AfterTask(db,1,2,now,now))
 	updated,err:=GetRoutineOccurrence(db,1,run.ID,now)
 	require.NoError(t,err)
@@ -279,7 +279,7 @@ func TestOptionalRoutineItemCanBeSkippedAfterRequiredStepsFinish(t *testing.T) {
 	require.NoError(t,SaveRoutine(db,&routine))
 	run,err:=StartRoutineOccurrence(db,1,routine.ID,2,now)
 	require.NoError(t,err)
-	require.NoError(t,done(db,required.ID,2,now))
+	done(t, db, required.ID, 2, now)
 	require.NoError(t,AfterTask(db,1,2,now,now))
 	run,err=GetRoutineOccurrence(db,1,run.ID,now)
 	require.NoError(t,err)
