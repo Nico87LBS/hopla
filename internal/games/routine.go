@@ -538,7 +538,7 @@ func RoutineViews(db *gorm.DB, familyID int, userIDs []int, now time.Time) ([]Ro
 					if _, latestErr = GetRoutineOccurrence(db, familyID, latest.ID, now); latestErr != nil { return nil, latestErr }
 				}
 			}
-			if run == nil && progress.Total > 0 && !progress.Finished {
+			if run == nil && progress.Total > 0 && (!progress.Finished || len(progress.Available) > 0) {
 				run, latestErr = StartRoutineOccurrence(db, familyID, routine.ID, userID, now)
 				if latestErr != nil { return nil, latestErr }
 			}
