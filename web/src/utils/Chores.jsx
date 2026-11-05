@@ -342,11 +342,19 @@ export const ChoreSorter = (a, b) => {
   return new Date(a.nextDueDate) - new Date(b.nextDueDate)
 }
 export const notInCompletionWindow = chore => {
-  return (
-    chore.completionWindow &&
-    chore.completionWindow > -1 &&
-    chore.nextDueDate &&
-    moment() < moment(chore.nextDueDate).add(-chore.completionWindow, 'hours')
+  // null/undefined (the default for new tasks) means no restriction, so the
+  // task can be completed before its due date. Zero is meaningful: it means
+  // completion is allowed only once the due date/time is reached.
+  if (
+    chore.completionWindow == null ||
+    chore.completionWindow < 0 ||
+    !chore.nextDueDate
+  ) {
+    return false
+  }
+
+  return moment().isBefore(
+    moment(chore.nextDueDate).subtract(chore.completionWindow, 'hours'),
   )
 }
 // A task for everyone together has no current assignee: it is for each of its
