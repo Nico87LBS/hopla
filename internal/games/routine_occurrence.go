@@ -3,9 +3,11 @@ package games
 import (
 	"errors"
 	"fmt"
+	"slices"
 	"strings"
 	"time"
 
+	chModel "github.com/nico87lbs/hopla/internal/chore/model"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -115,7 +117,7 @@ func StartRoutineOccurrence(db *gorm.DB, familyID, routineID, userID int, now ti
 					return err
 				}
 				occurrence = &active
-				return nil
+				return applyRoutineOccurrenceAvailability(tx, occurrence)
 			}
 			if err := tx.Model(&active).Update("status", RoutineOccurrenceExpired).Error; err != nil {
 				return err
@@ -137,17 +139,33 @@ func StartRoutineOccurrence(db *gorm.DB, familyID, routineID, userID int, now ti
 			Status: RoutineOccurrenceActive,
 		}
 		if err := tx.Create(&run).Error; err != nil { return err }
+		away, err := AwayMembers(tx, familyID)
+		if err != nil { return err }
 		items := make([]RoutineOccurrenceItem, 0, len(steps))
 		for _, step := range steps {
 			required := step.Required == nil || *step.Required
+			status := RoutineOccurrenceItemPending
+			ids, err := SameTaskIDs(tx, familyID, step.ChoreID)
+			if err != nil { return err }
+			var copies []*chModel.Chore
+			if err := tx.Preload("Assignees").Where("id IN ? AND is_active = ?", ids, true).Find(&copies).Error; err != nil { return err }
+			applicable := false
+			for _, chore := range copies {
+				if chore.NextDueDate != nil && !chore.NextDueDate.After(run.ExpiresAt) && slices.Contains(membersNow(chore), userID) && !Paused(chore, away) {
+					applicable = true
+					break
+				}
+			}
+			if !applicable { status = RoutineOccurrenceItemNotApplicable }
 			items = append(items, RoutineOccurrenceItem{
 				FamilyID: familyID, OccurrenceID: run.ID, StepID: step.ID, Position: step.Position,
 				ChoreID: step.ChoreID, Required: required,
-				Status: RoutineOccurrenceItemPending, UpdatedAt: now.UTC(),
+				Status: status, UpdatedAt: now.UTC(),
 			})
 		}
 		if err := tx.Create(&items).Error; err != nil { return err }
 		run.Items = items
+		if err := applyRoutineOccurrenceAvailability(tx, &run); err != nil { return err }
 		occurrence = &run
 		return nil
 	})
