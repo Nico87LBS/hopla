@@ -430,8 +430,10 @@ func (day *routineDay) progressFromOccurrence(userID int, steps [][]int, routine
 			for _, choreID := range steps[i] {
 				chore := day.chores[choreID]
 				done := day.doneBy[userID][choreID] && isFor(chore, userID)
-			if item.SlotID != "" { done = day.doneSlotsBy[userID][choreID][item.SlotID] && isFor(chore, userID) }
-			if done {
+				if item.SlotID != "" {
+					done = day.doneSlotsBy[userID][choreID][item.SlotID] && isFor(chore, userID)
+				}
+				if done {
 					state = RoutineItemCompleted
 					item.Status = RoutineOccurrenceItemCompleted
 					break
@@ -454,11 +456,14 @@ func (day *routineDay) progressFromOccurrence(userID int, steps [][]int, routine
 		if !item.Available || i >= len(steps) { continue }
 		for _, choreID := range steps[i] {
 			chore := day.chores[choreID]
-			if chore == nil || !slices.Contains(membersNow(chore), userID) || Paused(chore, day.away) ||
-				chore.NextDueDate == nil || chore.NextDueDate.After(run.ExpiresAt) {
+			if chore == nil || !slices.Contains(membersNow(chore), userID) || Paused(chore, day.away) {
 				continue
 			}
-			progress.Available = append(progress.Available, choreID)
+			due := chore.NextDueDate != nil && !chore.NextDueDate.After(run.ExpiresAt)
+			if item.SlotID != "" {
+				due = routineSlotDue(chore, item.SlotID, run.StartedAt.In(day.start.Location()), run.ExpiresAt.In(day.end.Location()))
+			}
+			if due { progress.Available = append(progress.Available, choreID) }
 		}
 	}
 	if len(progress.Available) > 0 {
