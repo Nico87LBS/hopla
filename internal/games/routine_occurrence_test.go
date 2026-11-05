@@ -204,3 +204,31 @@ func TestExternalRestoreCannotUndoAManualSkip(t *testing.T) {
 	},now.Add(2*time.Minute))
 	require.ErrorIs(t,err,ErrRoutineOccurrenceConflict)
 }
+
+
+func TestOccurrenceKeepsItsDependencySnapshotWhenRoutineIsEdited(t *testing.T) {
+	db:=setup(t)
+	now:=noon(0)
+	first:=chore(t,db,"Réveil",1,now,assignedTo(2))
+	second:=chore(t,db,"Habillage",1,now,assignedTo(2))
+	routine:=Routine{FamilyID:1,Name:"Matin",ValidityMinutes:180,ChoreIDs:[]int{first.ID,second.ID},
+		GraphEnabled:true,Dependencies:[]RoutineDependency{{StepID:2,DependsOnStepID:1}}}
+	require.NoError(t,SaveRoutine(db,&routine))
+	run,err:=StartRoutineOccurrence(db,1,routine.ID,2,now)
+	require.NoError(t,err)
+	require.Len(t,run.Dependencies,1)
+	require.True(t,run.Items[0].Available)
+	require.False(t,run.Items[1].Available)
+
+	stored,err:=Routines(db,1)
+	require.NoError(t,err)
+	edited:=stored[0]
+	edited.Dependencies=[]RoutineDependency{}
+	require.NoError(t,SaveRoutine(db,&edited))
+
+	reloaded,err:=GetRoutineOccurrence(db,1,run.ID,now.Add(time.Minute))
+	require.NoError(t,err)
+	require.Len(t,reloaded.Dependencies,1,"the running occurrence keeps its original dependency edge")
+	require.True(t,reloaded.Items[0].Available)
+	require.False(t,reloaded.Items[1].Available,"editing the routine must not unlock an in-progress occurrence")
+}
