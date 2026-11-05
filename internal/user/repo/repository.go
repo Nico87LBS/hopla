@@ -118,45 +118,53 @@ func (r *UserRepository) FindByEmail(c context.Context, email string) (*uModel.U
 }
 
 func (r *UserRepository) SetPasswordResetToken(c context.Context, email, token string) error {
-	// confirm user exists with email:
 	user, err := r.FindByEmail(c, email)
 	if err != nil {
 		return err
 	}
-	// save new token:
-	if err := r.db.WithContext(c).Model(&uModel.UserPasswordReset{}).Save(&uModel.UserPasswordReset{
-		UserID:         user.ID,
-		Token:          token,
-		Email:          email,
-		ExpirationDate: time.Now().UTC().Add(time.Hour * 24),
-	}).Error; err != nil {
-		return err
-	}
-	return nil
+
+	// Keep a single active reset token per account and never store the bearer
+	// token in plaintext. The raw value is sent only to the user's mailbox.
+	return r.db.WithContext(c).Transaction(func(tx *gorm.DB) error {
+		if err := tx.Where("user_id = ?", user.ID).Delete(&uModel.UserPasswordReset{}).Error; err != nil {
+			return err
+		}
+		return tx.Create(&uModel.UserPasswordReset{
+			UserID:         user.ID,
+			Token:          hashAPIToken(token),
+			Email:          email,
+			ExpirationDate: time.Now().UTC().Add(24 * time.Hour),
+		}).Error
+	})
 }
 
 func (r *UserRepository) UpdatePasswordByToken(ctx context.Context, email string, token string, password string) error {
 	logger := logging.FromContext(ctx)
-
 	logger.Debugw("account.db.UpdatePasswordByToken", "email", email)
-	upr := &uModel.UserPasswordReset{
-		Email: email,
-		Token: token,
-	}
-	result := r.db.WithContext(ctx).Where("email = ?", email).Where("token = ?", token).Delete(upr)
-	if result.RowsAffected <= 0 {
-		return fmt.Errorf("invalid token")
-	}
-	// find account by email and update password:
-	chain := r.db.WithContext(ctx).Model(&uModel.User{}).Where("email = ?", email).UpdateColumns(map[string]interface{}{"password": password})
-	if chain.Error != nil {
-		return chain.Error
-	}
-	if chain.RowsAffected == 0 {
-		return fmt.Errorf("account not found")
-	}
 
-	return nil
+	return r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		now := time.Now().UTC()
+		result := tx.Where("email = ? AND token = ? AND expiration_date > ?", email, hashAPIToken(token), now).
+			Delete(&uModel.UserPasswordReset{})
+		if result.Error != nil {
+			return result.Error
+		}
+		if result.RowsAffected != 1 {
+			return fmt.Errorf("invalid or expired token")
+		}
+
+		updated := tx.Model(&uModel.User{}).Where("email = ?", email).
+			UpdateColumns(map[string]interface{}{"password": password})
+		if updated.Error != nil {
+			return updated.Error
+		}
+		if updated.RowsAffected != 1 {
+			return fmt.Errorf("account not found")
+		}
+
+		// Revoke every outstanding reset link for this account.
+		return tx.Where("email = ?", email).Delete(&uModel.UserPasswordReset{}).Error
+	})
 }
 
 func (r *UserRepository) StoreAPIToken(c context.Context, userID int, name string, tokenBody string, tokenPrefix string) (*uModel.APIToken, error) {
