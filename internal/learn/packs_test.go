@@ -76,3 +76,32 @@ func TestPeoplePlayingPacksModuleByModuleGetTheirPacksTicked(t *testing.T) {
 		}
 	}
 }
+
+
+func TestParentCanChooseAutomaticOpenOrLockedPackLevel(t *testing.T) {
+	db := setup(t)
+	now := time.Now().UTC()
+	require.NoError(t, Install(db, 1, "maths-ecole", now))
+	require.NoError(t, SetPackPlayer(db, 1, anna, "maths-ecole", true, now))
+
+	// CE2 is normally beyond the first open level.
+	require.NoError(t, SetPackAccess(db, 1, anna, "maths-ecole", "maths-ce2", "open", now))
+	player, err := PlayerFor(db, 1, anna, now)
+	require.NoError(t, err)
+	on := active(t, player)
+	require.True(t, on["maths-ce2-multiplication"], "a forced-open level is playable")
+
+	// Locking the same level wins over both automatic and forced opening.
+	require.NoError(t, SetPackAccess(db, 1, anna, "maths-ecole", "maths-ce2", "locked", now))
+	player, err = PlayerFor(db, 1, anna, now)
+	require.NoError(t, err)
+	on = active(t, player)
+	require.False(t, on["maths-ce2-multiplication"], "a locked level stays off")
+
+	// Returning to automatic removes the override, not the progression.
+	require.NoError(t, SetPackAccess(db, 1, anna, "maths-ecole", "maths-ce2", "auto", now))
+	player, err = PlayerFor(db, 1, anna, now)
+	require.NoError(t, err)
+	on = active(t, player)
+	require.False(t, on["maths-ce2-multiplication"], "automatic follows the current progression")
+}
