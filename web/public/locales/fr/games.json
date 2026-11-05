@@ -228,6 +228,9 @@
     "failed": "Impossible d’enregistrer la routine",
     "deleteTitle": "Supprimer la routine ?",
     "deleteMessage": "« {{name}} » sera supprimée. Ses tâches restent.",
-    "optional": "Facultative"
+    "optional": "Facultative",
+    "selectSlot": "Choisir un créneau",
+    "allSlots": "Tous les créneaux",
+    "missingSlot": "Créneau supprimé — en choisir un autre"
   }
 }
