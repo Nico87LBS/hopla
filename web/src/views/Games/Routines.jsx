@@ -32,7 +32,7 @@ import { CardHeader, sendOrWarn, useConfirmDelete } from './Progression'
 
 const MAX_STEPS = 20
 
-const emptyRoutine = () => ({ name: '', bonus: 5, choreIds: [] })
+const emptyRoutine = () => ({ name: '', bonus: 5, choreIds: [], dependencies: [], optionalChoreIds: [] })
 
 // The routines parents chain from tasks: each child sees one step at a time
 // and earns the bonus once all of their steps of the day are done.
@@ -67,6 +67,8 @@ export const RoutinesCard = () => {
       name: draft.name.trim(),
       bonus: Number(draft.bonus) || 0,
       choreIds: draft.choreIds,
+      dependencies: draft.dependencies || [],
+      optionalChoreIds: draft.optionalChoreIds || [],
     })
     if (await sendOrWarn(resp, showNotification, t('routines.failed'))) {
       setDraft(null)
@@ -74,6 +76,11 @@ export const RoutinesCard = () => {
     }
   }
   const setSteps = choreIds => setDraft({ ...draft, choreIds })
+  const setPrerequisites = (position, prerequisites) => {
+    const dependencies = (draft.dependencies || []).filter(edge => edge.stepId !== position)
+    prerequisites.forEach(dependsOnStepId => dependencies.push({ stepId: position, dependsOnStepId }))
+    setDraft({ ...draft, dependencies })
+  }
 
   return (
     <Sheet sx={surfaceSx}>
@@ -124,7 +131,7 @@ export const RoutinesCard = () => {
                   size='sm'
                   disabled={index === 0}
                   aria-label={t('routines.up')}
-                  onClick={() => setSteps(moveStep(draft.choreIds, index, -1))}
+                  onClick={() => setDraft({ ...draft, choreIds: moveStep(draft.choreIds, index, -1) })}
                 >
                   <ArrowUpwardRounded />
                 </IconButton>
@@ -132,7 +139,7 @@ export const RoutinesCard = () => {
                   size='sm'
                   disabled={index === draft.choreIds.length - 1}
                   aria-label={t('routines.down')}
-                  onClick={() => setSteps(moveStep(draft.choreIds, index, 1))}
+                  onClick={() => setDraft({ ...draft, choreIds: moveStep(draft.choreIds, index, 1) })}
                 >
                   <ArrowDownwardRounded />
                 </IconButton>
@@ -145,6 +152,33 @@ export const RoutinesCard = () => {
                 >
                   <CloseRounded />
                 </IconButton>
+                <Select
+                  size='sm'
+                  multiple
+                  value={(draft.dependencies || []).filter(edge => edge.stepId === index + 1).map(edge => edge.dependsOnStepId)}
+                  placeholder={t('routines.addTask')}
+                  onChange={(event, value) => setPrerequisites(index + 1, value)}
+                  sx={{ minWidth: 130, maxWidth: 200 }}
+                >
+                  {draft.choreIds.map((otherId, otherIndex) =>
+                    otherId === id ? null : (
+                      <Option key={otherId} value={otherIndex + 1}>{names.get(otherId)}</Option>
+                    ),
+                  )}
+                </Select>
+                <Chip
+                  size='sm'
+                  variant={(draft.optionalChoreIds || []).includes(id) ? 'solid' : 'outlined'}
+                  color={(draft.optionalChoreIds || []).includes(id) ? 'warning' : 'neutral'}
+                  onClick={() => setDraft({
+                    ...draft,
+                    optionalChoreIds: (draft.optionalChoreIds || []).includes(id)
+                      ? draft.optionalChoreIds.filter(other => other !== id)
+                      : [...(draft.optionalChoreIds || []), id],
+                  })}
+                >
+                  {t('routines.optional', { defaultValue: 'Facultative' })}
+                </Chip>
               </Box>
             ))}
           </Stack>
@@ -226,7 +260,7 @@ export const RoutinesCard = () => {
               size='sm'
               aria-label={t('routines.edit')}
               onClick={() =>
-                setDraft({ ...routine, choreIds: known(routine.choreIds) })
+                setDraft({ ...routine, choreIds: known(routine.choreIds), dependencies: routine.dependencies || [], optionalChoreIds: routine.optionalChoreIds || [] })
               }
             >
               <EditRounded />
