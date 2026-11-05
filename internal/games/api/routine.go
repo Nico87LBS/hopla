@@ -299,6 +299,18 @@ func (h *Handler) listIntegrationRoutineOccurrences(c *gin.Context) {
 func (h *Handler) externalRoutineOverride(c *gin.Context) {
 	_, familyID, ok := h.requireParent(c)
 	if !ok { return }
+	h.applyExternalRoutineOverride(c, familyID)
+}
+
+// integrationRoutineOverride authenticates with a dedicated, revocable
+// routine integration token rather than a browser/API user session.
+func (h *Handler) integrationRoutineOverride(c *gin.Context) {
+	familyID, ok := h.routineIntegrationFamily(c)
+	if !ok { return }
+	h.applyExternalRoutineOverride(c, familyID)
+}
+
+func (h *Handler) applyExternalRoutineOverride(c *gin.Context, familyID int) {
 	occurrenceID, err := idParam(c)
 	if err != nil { c.JSON(400, gin.H{"error":"Invalid occurrence ID"}); return }
 	var req externalRoutineOverrideReq
