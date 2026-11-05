@@ -23,9 +23,14 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { HOPLA } from '../../constants/theme'
-import { useChores } from '../../queries/ChoreQueries'
+import { useChores, useRoutinesToday } from '../../queries/ChoreQueries'
 import { useNotification } from '../../service/NotificationProvider'
-import { DeleteRoutine, GetRoutines, SaveRoutine } from '../../utils/Fetcher'
+import {
+  DeleteRoutine,
+  GetRoutines,
+  SaveRoutine,
+  SkipRoutineOccurrenceItem,
+} from '../../utils/Fetcher'
 import { moveStep, routineTasks } from '../../utils/routines'
 import { surfaceSx } from './GameParts'
 import { CardHeader, sendOrWarn, useConfirmDelete } from './Progression'
@@ -99,9 +104,10 @@ const removeRoutineStep = (draft, id) => {
 // and earns the bonus once all of their steps of the day are done.
 export const RoutinesCard = () => {
   const { t } = useTranslation('games')
-  const { showNotification } = useNotification()
+  const { showNotification, showError } = useNotification()
   const queryClient = useQueryClient()
   const { data: choresData } = useChores()
+  const { data: todayRoutines = [] } = useRoutinesToday()
   const chores = useMemo(() => choresData?.res || [], [choresData?.res])
   const names = useMemo(
     () => new Map(chores.map(chore => [chore.id, chore.name])),
@@ -120,8 +126,22 @@ export const RoutinesCard = () => {
         chore => !draft.choreIds.includes(chore.id),
       )
     : []
+  const liveOccurrences = todayRoutines.flatMap(routine =>
+    (routine.members || [])
+      .filter(progress => progress.occurrence)
+      .map(progress => ({ routine, progress, occurrence: progress.occurrence })),
+  )
 
   const refresh = () => queryClient.invalidateQueries({ queryKey: ['games'] })
+  const skipOccurrenceItem = async (occurrenceId, itemId) => {
+    const response = await SkipRoutineOccurrenceItem(occurrenceId, itemId)
+    if (!response.ok) {
+      showError(t('routines.skipFailed'))
+      return
+    }
+    await queryClient.invalidateQueries({ queryKey: ['games'] })
+    await queryClient.invalidateQueries({ queryKey: ['chores'] })
+  }
   const save = async () => {
     const resp = await SaveRoutine({
       id: draft.id,
@@ -439,6 +459,65 @@ export const RoutinesCard = () => {
           </Box>
         ))}
       </Stack>
+      {liveOccurrences.length > 0 && (
+        <Stack gap={1} sx={{ mt: 2, pt: 1.5, borderTop: '1px solid', borderColor: 'divider' }}>
+          <Typography level='title-sm'>
+            {t('routines.liveTitle', { defaultValue: 'Suivi des occurrences en cours' })}
+          </Typography>
+          {liveOccurrences.map(({ routine, progress, occurrence }) => (
+            <Box
+              key={occurrence.id}
+              sx={{ bgcolor: 'background.level1', borderRadius: 'md', p: 1 }}
+            >
+              <Stack direction='row' alignItems='center' justifyContent='space-between'>
+                <Typography level='body-sm' fontWeight='lg'>
+                  {routine.name} · {t('routines.memberNumber', {
+                    id: progress.userId,
+                    defaultValue: `Membre ${progress.userId}`,
+                  })}
+                </Typography>
+                <Chip size='sm' color={occurrence.status === 'finished' ? 'success' : 'primary'}>
+                  {occurrence.status}
+                </Chip>
+              </Stack>
+              <Typography level='body-xs' sx={{ color: 'text.tertiary', mb: 0.75 }}>
+                {t('routines.expiresAt', {
+                  time: new Date(occurrence.expiresAt).toLocaleString(),
+                  defaultValue: `Expire le ${new Date(occurrence.expiresAt).toLocaleString()}`,
+                })}
+              </Typography>
+              <Stack gap={0.5}>
+                {(occurrence.items || []).map(item => (
+                  <Stack
+                    key={item.id}
+                    direction='row'
+                    alignItems='center'
+                    justifyContent='space-between'
+                    gap={1}
+                  >
+                    <Typography level='body-xs' sx={{ flex: 1 }}>
+                      {item.choreName} · {t(`routines.itemStatus.${item.status}`, {
+                        defaultValue: item.status,
+                      })}
+                      {!item.required ? ` · ${t('routines.optional', { defaultValue: 'Facultative' })}` : ''}
+                    </Typography>
+                    {item.status === 'pending' && item.available && (
+                      <Button
+                        size='sm'
+                        variant='soft'
+                        color='neutral'
+                        onClick={() => skipOccurrenceItem(occurrence.id, item.id)}
+                      >
+                        {t('routines.skip', { defaultValue: 'Ignorer' })}
+                      </Button>
+                    )}
+                  </Stack>
+                ))}
+              </Stack>
+            </Box>
+          ))}
+        </Stack>
+      )}
       {modal}
     </Sheet>
   )
