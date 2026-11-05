@@ -177,6 +177,7 @@ func StartRoutineOccurrence(db *gorm.DB, familyID, routineID, userID int, now ti
 			applicable := false
 			memberChoreID := step.ChoreID
 			memberChoreName := ""
+			if len(copies) > 0 { memberChoreName = copies[0].Name }
 			for _, chore := range copies {
 				due := chore.NextDueDate != nil && !chore.NextDueDate.After(run.ExpiresAt)
 				if step.SlotID != "" { due = routineSlotDue(chore, step.SlotID, now.In(zone.Of(familyID)), run.ExpiresAt.In(zone.Of(familyID))) }
@@ -196,7 +197,7 @@ func StartRoutineOccurrence(db *gorm.DB, familyID, routineID, userID int, now ti
 			}
 			items = append(items, RoutineOccurrenceItem{
 				FamilyID: familyID, OccurrenceID: run.ID, StepID: step.ID, Position: step.Position,
-				ChoreID: memberChoreID, SlotID: step.SlotID, Required: required,
+				ChoreID: memberChoreID, ChoreName: memberChoreName, SlotID: step.SlotID, Required: required,
 				Status: status, UpdatedAt: now.UTC(),
 			})
 		}
