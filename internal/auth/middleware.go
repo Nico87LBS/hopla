@@ -66,7 +66,9 @@ func NewAuthMiddleware(cfg *config.Config, userRepo *uRepo.UserRepository, mfaSe
 				return nil
 			}
 			user, err := userRepo.GetUserByUsername(c.Request.Context(), username)
-			if err != nil {
+			if err != nil || user.Disabled {
+				// Disabled accounts must lose access immediately, including
+				// sessions issued before the account was disabled.
 				return nil
 			}
 			return user
