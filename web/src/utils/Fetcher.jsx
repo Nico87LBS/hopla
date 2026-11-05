@@ -1036,6 +1036,14 @@ const SaveRoutine = routine => {
   )
 }
 
+const SkipRoutineOccurrenceItem = (occurrenceId, itemId, reason = '') => {
+  return Fetch(`/games/routines/occurrences/${occurrenceId}/items/skip`, {
+    method: 'POST',
+    headers: HEADERS(),
+    body: JSON.stringify({ itemId, reason }),
+  })
+}
+
 const DeleteRoutine = id => {
   return Fetch(`/games/routines/${id}`, {
     method: 'DELETE',
@@ -1513,6 +1521,7 @@ export {
   SaveQuest,
   SaveRanks,
   SaveRoutine,
+  SkipRoutineOccurrenceItem,
   SendLearnGame,
   SendLearnReport,
   SendPlacement,
