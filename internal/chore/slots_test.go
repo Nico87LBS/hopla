@@ -325,6 +325,7 @@ func TestSlotsFollowTheFamilyTimezone(t *testing.T) {
 func TestEnsureSlotIDsBackfillsExistingTasks(t *testing.T) {
 	_, db, _ := newSlotTestRouter(t)
 	legacy := teethChore("07:30", "19:30")
+	legacy.ID = 0
 	legacy.Name = "Legacy slots"
 	legacy.FamilyID = 1
 	require.NoError(t, db.Create(legacy).Error)
