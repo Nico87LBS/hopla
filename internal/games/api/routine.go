@@ -225,13 +225,13 @@ type routineIntegrationTokenReq struct {
 }
 
 func (h *Handler) createRoutineIntegrationToken(c *gin.Context) {
-	user, familyID, parent := h.requireParent(c)
+	userID, familyID, parent := h.requireParent(c)
 	if !parent { return }
 	var req routineIntegrationTokenReq
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(400, gin.H{"error":"A token name is required"}); return
 	}
-	token, secret, err := games.CreateRoutineIntegrationToken(h.db.WithContext(c), familyID, user.ID, req.Name, time.Now().UTC())
+	token, secret, err := games.CreateRoutineIntegrationToken(h.db.WithContext(c), familyID, userID, req.Name, time.Now().UTC())
 	if err != nil {
 		c.JSON(400, gin.H{"error":"Could not create routine integration token"}); return
 	}
