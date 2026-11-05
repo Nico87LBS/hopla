@@ -427,7 +427,7 @@ func (day *routineDay) progressOf(userID int, steps [][]int) RoutineProgress {
 }
 
 
-func (day *routineDay) progressFromOccurrence(userID int, steps [][]int, run *RoutineOccurrence) RoutineProgress {
+func (day *routineDay) progressFromOccurrence(userID int, run *RoutineOccurrence) RoutineProgress {
 	progress := RoutineProgress{UserID: userID, Available: []int{}, Occurrence: run}
 	policies := make(map[int]RoutineItemPolicy, len(run.Items))
 	states := make(map[int]RoutineItemState, len(run.Items))
@@ -439,53 +439,40 @@ func (day *routineDay) progressFromOccurrence(userID int, steps [][]int, run *Ro
 		item := &run.Items[i]
 		stepID := item.StepID
 		state := RoutineItemState(item.Status)
-		if state == RoutineItemPending && i < len(steps) {
-			for _, choreID := range steps[i] {
-				chore := day.chores[choreID]
-				done := day.doneBy[userID][choreID] && isFor(chore, userID)
-				if item.SlotID != "" {
-					done = day.doneSlotsBy[userID][choreID][item.SlotID] && isFor(chore, userID)
-				}
-				if done {
-					state = RoutineItemCompleted
-					item.Status = RoutineOccurrenceItemCompleted
-					break
-				}
+		chore := day.chores[item.ChoreID]
+		if state == RoutineItemPending && chore != nil {
+			done := day.doneBy[userID][item.ChoreID] && isFor(chore, userID)
+			if item.SlotID != "" {
+				done = day.doneSlotsBy[userID][item.ChoreID][item.SlotID] && isFor(chore, userID)
+			}
+			if done {
+				state = RoutineItemCompleted
+				item.Status = RoutineOccurrenceItemCompleted
 			}
 		}
 		states[stepID] = state
-		policies[stepID] = RoutineItemPolicy{StepID: stepID, Required: item.Required}
+		policies[stepID] = RoutineItemPolicy{StepID:stepID,Required:item.Required}
 		if item.Required && state != RoutineItemNotApplicable {
 			progress.Total++
-			if state == RoutineItemCompleted || state == RoutineItemSkipped {
-				progress.Done++
-			}
+			if state == RoutineItemCompleted || state == RoutineItemSkipped { progress.Done++ }
 		}
 	}
 	for i := range run.Items {
 		item := &run.Items[i]
-		stepID := item.StepID
-		item.Available = RoutineItemAvailable(stepID, dependencies, policies, states)
-		if !item.Available || i >= len(steps) { continue }
-		for _, choreID := range steps[i] {
-			chore := day.chores[choreID]
-			if chore == nil || !slices.Contains(membersNow(chore), userID) || Paused(chore, day.away) {
-				continue
-			}
-			due := chore.NextDueDate != nil && !chore.NextDueDate.After(run.ExpiresAt)
-			if item.SlotID != "" {
-				due = routineSlotDue(chore, item.SlotID, run.StartedAt.In(day.start.Location()), run.ExpiresAt.In(day.end.Location()))
-			}
-			if due { progress.Available = append(progress.Available, choreID) }
+		item.Available = RoutineItemAvailable(item.StepID, dependencies, policies, states)
+		if !item.Available { continue }
+		chore := day.chores[item.ChoreID]
+		if chore == nil || !slices.Contains(membersNow(chore), userID) || Paused(chore, day.away) { continue }
+		due := chore.NextDueDate != nil && !chore.NextDueDate.After(run.ExpiresAt)
+		if item.SlotID != "" {
+			due = routineSlotDue(chore, item.SlotID, run.StartedAt.In(day.start.Location()), run.ExpiresAt.In(day.end.Location()))
 		}
+		if due { progress.Available = append(progress.Available, item.ChoreID) }
 	}
 	if len(progress.Available) > 0 {
 		progress.Current = &progress.Available[0]
-		for position, ids := range steps {
-			if slices.Contains(ids, *progress.Current) {
-				progress.Step = position + 1
-				break
-			}
+		for _, item := range run.Items {
+			if item.ChoreID == *progress.Current { progress.Step = item.Position + 1; break }
 		}
 	}
 	progress.Finished = run.Status == RoutineOccurrenceFinished || (progress.Total > 0 && progress.Done == progress.Total)
@@ -542,7 +529,8 @@ func RoutineViews(db *gorm.DB, familyID int, userIDs []int, now time.Time) ([]Ro
 				if latestErr != nil { return nil, latestErr }
 			}
 			if run != nil {
-				progress = day.progressFromOccurrence(userID, steps[i], run)
+				progress = day.progressFromOccurrence(userID, run)
+				for _, item := range run.Items { view.TaskIDs[item.ChoreID] = true }
 			}
 			if progress.Total > 0 {
 				view.Members = append(view.Members, progress)
