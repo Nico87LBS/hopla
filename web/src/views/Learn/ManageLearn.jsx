@@ -1253,7 +1253,9 @@ const ModuleGroup = ({
                   size='sm'
                   disabled={!member}
                   value={singleAccess}
-                  onChange={(_, value) => value && onAccess(group.pack.id, value)}
+                  onChange={(_, value) =>
+                    value && onAccess(group.pack.id, value)
+                  }
                   slotProps={{
                     button: {
                       'aria-label': `${name} · ${person.displayName}`,
