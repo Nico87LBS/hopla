@@ -3,6 +3,7 @@ package games
 import (
 	"errors"
 	"slices"
+	"strings"
 	"time"
 
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
@@ -264,6 +265,42 @@ func DeleteRoutine(db *gorm.DB, familyID, routineID int) error {
 	})
 }
 
+
+func routineSlotDue(chore *chModel.Chore, slotID string, from, to time.Time) bool {
+	if chore == nil || slotID == "" || chore.FrequencyMetadataV2 == nil ||
+		(chore.FrequencyType != chModel.FrequencyTypeDaily && chore.FrequencyType != chModel.FrequencyTypeDayOfTheWeek) {
+		return false
+	}
+	var selected *chModel.Slot
+	for i := range chore.FrequencyMetadataV2.Slots {
+		if chore.FrequencyMetadataV2.Slots[i].ID == slotID {
+			selected = &chore.FrequencyMetadataV2.Slots[i]
+			break
+		}
+	}
+	if selected == nil { return false }
+	clock, err := time.Parse("15:04", selected.Time)
+	if err != nil { return false }
+	from = from.In(to.Location())
+	first := time.Date(from.Year(), from.Month(), from.Day(), 0, 0, 0, 0, to.Location())
+	last := time.Date(to.Year(), to.Month(), to.Day(), 0, 0, 0, 0, to.Location())
+	for day := first; !day.After(last); day = day.AddDate(0, 0, 1) {
+		runs := chore.FrequencyType == chModel.FrequencyTypeDaily
+		if chore.FrequencyType == chModel.FrequencyTypeDayOfTheWeek {
+			weekday := strings.ToLower(day.Weekday().String())
+			for _, value := range chore.FrequencyMetadataV2.Days {
+				if value != nil && strings.ToLower(*value) == weekday { runs = true; break }
+			}
+		}
+		if !runs { continue }
+		at := time.Date(day.Year(), day.Month(), day.Day(), clock.Hour(), clock.Minute(), 0, 0, to.Location())
+		if !at.After(to) && (day.After(first) || !at.After(from)) { return true }
+		// On the first day, an earlier slot remains applicable as catch-up.
+		if day.Equal(first) && at.Before(from) && !at.After(to) { return true }
+	}
+	return false
+}
+
 // membersNow are who a task is for now: its assignee, or all of its
 // assignees for a task everyone has at once.
 func membersNow(chore *chModel.Chore) []int {
@@ -285,13 +322,17 @@ type routineDay struct {
 	chores map[int]*chModel.Chore
 	// doneBy holds, per member, the tasks they completed today.
 	doneBy map[int]map[int]bool
-	away   map[int]bool
-	end    time.Time
+	doneSlotsBy map[int]map[int]map[string]bool
+	away map[int]bool
+	start time.Time
+	end time.Time
 }
 
 func loadRoutineDay(db *gorm.DB, familyID int, taskIDs []int, now time.Time) (*routineDay, error) {
 	loc := zone.Of(familyID)
-	day := &routineDay{chores: map[int]*chModel.Chore{}, doneBy: map[int]map[int]bool{}, end: endOfDay(now, loc)}
+	localNow := now.In(loc)
+	start := time.Date(localNow.Year(), localNow.Month(), localNow.Day(), 0, 0, 0, 0, loc)
+	day := &routineDay{chores: map[int]*chModel.Chore{}, doneBy: map[int]map[int]bool{}, doneSlotsBy: map[int]map[int]map[string]bool{}, start: start, end: endOfDay(now, loc)}
 	if len(taskIDs) == 0 {
 		return day, nil
 	}
@@ -303,9 +344,8 @@ func loadRoutineDay(db *gorm.DB, familyID int, taskIDs []int, now time.Time) (*r
 		day.chores[chore.ID] = chore
 	}
 	var done []chModel.ChoreHistory
-	start := day.end.Add(-24*time.Hour + time.Second)
-	if err := db.Select("chore_id", "completed_by").
-		Where("chore_id IN ? AND status = ? AND performed_at >= ?", taskIDs, chModel.ChoreHistoryStatusCompleted, start).
+	if err := db.Select("chore_id", "completed_by", "slot_id").
+		Where("chore_id IN ? AND status = ? AND performed_at >= ?", taskIDs, chModel.ChoreHistoryStatusCompleted, day.start).
 		Find(&done).Error; err != nil {
 		return nil, err
 	}
@@ -314,6 +354,11 @@ func loadRoutineDay(db *gorm.DB, familyID int, taskIDs []int, now time.Time) (*r
 			day.doneBy[row.CompletedBy] = map[int]bool{}
 		}
 		day.doneBy[row.CompletedBy][row.ChoreID] = true
+		if row.SlotID != nil && *row.SlotID != "" {
+			if day.doneSlotsBy[row.CompletedBy] == nil { day.doneSlotsBy[row.CompletedBy] = map[int]map[string]bool{} }
+			if day.doneSlotsBy[row.CompletedBy][row.ChoreID] == nil { day.doneSlotsBy[row.CompletedBy][row.ChoreID] = map[string]bool{} }
+			day.doneSlotsBy[row.CompletedBy][row.ChoreID][*row.SlotID] = true
+		}
 	}
 	away, err := AwayMembers(db, familyID)
 	day.away = away
@@ -384,7 +429,9 @@ func (day *routineDay) progressFromOccurrence(userID int, steps [][]int, routine
 		if state == RoutineItemPending && i < len(steps) {
 			for _, choreID := range steps[i] {
 				chore := day.chores[choreID]
-				if day.doneBy[userID][choreID] && isFor(chore, userID) {
+				done := day.doneBy[userID][choreID] && isFor(chore, userID)
+			if item.SlotID != "" { done = day.doneSlotsBy[userID][choreID][item.SlotID] && isFor(chore, userID) }
+			if done {
 					state = RoutineItemCompleted
 					item.Status = RoutineOccurrenceItemCompleted
 					break
