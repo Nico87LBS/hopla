@@ -349,27 +349,54 @@ func (day *routineDay) progressOf(userID int, steps [][]int) RoutineProgress {
 }
 
 
-func (day *routineDay) progressFromOccurrence(userID int, steps [][]int, run *RoutineOccurrence) RoutineProgress {
-	progress := RoutineProgress{UserID:userID, Available:[]int{}, Occurrence:run}
-	for _, item := range run.Items {
-		if item.Required && item.Status != RoutineOccurrenceItemNotApplicable {
-			progress.Total++
-			if item.Status == RoutineOccurrenceItemCompleted || item.Status == RoutineOccurrenceItemSkipped { progress.Done++ }
+func (day *routineDay) progressFromOccurrence(userID int, steps [][]int, routine Routine, run *RoutineOccurrence) RoutineProgress {
+	progress := RoutineProgress{UserID: userID, Available: []int{}, Occurrence: run}
+	policies := make(map[int]RoutineItemPolicy, len(run.Items))
+	states := make(map[int]RoutineItemState, len(run.Items))
+	for i := range run.Items {
+		item := &run.Items[i]
+		stepID := i + 1
+		state := RoutineItemState(item.Status)
+		if state == RoutineItemPending && i < len(steps) {
+			for _, choreID := range steps[i] {
+				chore := day.chores[choreID]
+				if day.doneBy[userID][choreID] && isFor(chore, userID) {
+					state = RoutineItemCompleted
+					item.Status = RoutineOccurrenceItemCompleted
+					break
+				}
+			}
 		}
-		if !item.Available { continue }
-		position := item.Position
-		if position < 0 || position >= len(steps) { continue }
-		for _, choreID := range steps[position] {
+		states[stepID] = state
+		policies[stepID] = RoutineItemPolicy{StepID: stepID, Required: item.Required}
+		if item.Required && state != RoutineItemNotApplicable {
+			progress.Total++
+			if state == RoutineItemCompleted || state == RoutineItemSkipped {
+				progress.Done++
+			}
+		}
+	}
+	for i := range run.Items {
+		item := &run.Items[i]
+		stepID := i + 1
+		item.Available = RoutineItemAvailable(stepID, routine.Dependencies, policies, states)
+		if !item.Available || i >= len(steps) { continue }
+		for _, choreID := range steps[i] {
 			chore := day.chores[choreID]
 			if chore == nil || !slices.Contains(membersNow(chore), userID) || Paused(chore, day.away) ||
-				chore.NextDueDate == nil || chore.NextDueDate.After(run.ExpiresAt) { continue }
+				chore.NextDueDate == nil || chore.NextDueDate.After(run.ExpiresAt) {
+				continue
+			}
 			progress.Available = append(progress.Available, choreID)
 		}
 	}
 	if len(progress.Available) > 0 {
 		progress.Current = &progress.Available[0]
 		for position, ids := range steps {
-			if slices.Contains(ids, *progress.Current) { progress.Step = position+1; break }
+			if slices.Contains(ids, *progress.Current) {
+				progress.Step = position + 1
+				break
+			}
 		}
 	}
 	progress.Finished = run.Status == RoutineOccurrenceFinished || (progress.Total > 0 && progress.Done == progress.Total)
@@ -410,7 +437,7 @@ func RoutineViews(db *gorm.DB, familyID int, userIDs []int, now time.Time) ([]Ro
 			if progress.Total > 0 && !progress.Finished {
 				run, err := StartRoutineOccurrence(db, familyID, routine.ID, userID, now)
 				if err != nil { return nil, err }
-				progress = day.progressFromOccurrence(userID, steps[i], run)
+				progress = day.progressFromOccurrence(userID, steps[i], routine, run)
 			}
 			if progress.Total > 0 {
 				view.Members = append(view.Members, progress)
