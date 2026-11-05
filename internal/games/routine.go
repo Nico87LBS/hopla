@@ -108,6 +108,11 @@ func Routines(db *gorm.DB, familyID int) ([]Routine, error) {
 			routines[i].Dependencies[j].StepID = positionByID[routines[i].Dependencies[j].StepID]
 			routines[i].Dependencies[j].DependsOnStepID = positionByID[routines[i].Dependencies[j].DependsOnStepID]
 		}
+		if !routines[i].GraphEnabled && len(routines[i].Dependencies) == 0 {
+			for position := 2; position <= len(routines[i].Steps); position++ {
+				routines[i].Dependencies = append(routines[i].Dependencies, RoutineDependency{StepID: position, DependsOnStepID: position - 1})
+			}
+		}
 	}
 	return routines, err
 }
