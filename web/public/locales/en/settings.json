@@ -593,5 +593,29 @@
       "tooltipError": "Real-time updates (SSE): {{status}} - {{error}}",
       "tooltipJoin": "Real-time updates (SSE): {{status}} - Join a family to enable real-time updates"
     }
+  },
+  "routineIntegrations": {
+    "title": "Routine integration tokens",
+    "description": "Dedicated credentials for Home Assistant and other integrations. These tokens only access routine occurrences and overrides.",
+    "create": "Create integration token",
+    "nameLabel": "Token name",
+    "namePlaceholder": "e.g. Home Assistant",
+    "created": "Integration token created",
+    "secretWarning": "Copy this token now. It will not be shown again.",
+    "copy": "Copy token",
+    "copied": "Integration token copied",
+    "createdAt": "Created {{date}}",
+    "lastUsed": "Last used {{date}}",
+    "neverUsed": "Never used",
+    "revoked": "Revoked",
+    "active": "Active",
+    "revoke": "Revoke",
+    "revokeTitle": "Revoke integration token?",
+    "revokeMessage": "The integration “{{name}}” will immediately lose access. This cannot be undone.",
+    "revokedSuccess": "Integration token revoked",
+    "loadFailed": "Could not load integration tokens",
+    "createFailed": "Could not create integration token",
+    "revokeFailed": "Could not revoke integration token",
+    "empty": "No integration tokens yet."
   }
 }

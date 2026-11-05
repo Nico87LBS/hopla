@@ -31,6 +31,7 @@ import LocalizationSettings from '../Settings/LocalizationSettings'
 import MFASettings from '../Settings/MFASettings'
 import PodiumCard from '../Settings/PodiumCard'
 import ProfileSettings from '../Settings/ProfileSettings'
+import RoutineIntegrationTokens from '../Settings/RoutineIntegrationTokens'
 import { SettingsEmbedContext } from '../Settings/settingsEmbed'
 import StorageSettings from '../Settings/StorageSettings'
 import TemplateSettings from '../Settings/TemplateSettings'
@@ -226,6 +227,7 @@ export const ManageAdvanced = () => {
       <Embedded mode='section'>
         <CalendarSettings />
         {isParent && <APITokenSettings />}
+        {isParent && <RoutineIntegrationTokens />}
         {isParent && <TemplateSettings />}
         <AdvancedSettings />
         <StorageSettings />
