@@ -55,6 +55,7 @@ var saved = []table{
 	{"absences", byFamily},
 	{"routines", byFamily},
 	{"routine_steps", byRoutine},
+	{"routine_dependencies", byRoutine},
 	{"routine_wins", byRoutine},
 	{"learn_modules", byFamily},
 	{"learn_activations", byFamily},
