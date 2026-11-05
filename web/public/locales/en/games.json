@@ -227,6 +227,7 @@
     "empty": "No routine yet. A routine chains existing tasks, such as getting dressed, teeth, then school bag.",
     "failed": "Could not save the routine",
     "deleteTitle": "Delete the routine?",
-    "deleteMessage": "“{{name}}” will be deleted. Its tasks stay."
+    "deleteMessage": "“{{name}}” will be deleted. Its tasks stay.",
+    "optional": "Optional"
   }
 }
