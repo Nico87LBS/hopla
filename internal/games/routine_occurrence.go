@@ -69,6 +69,7 @@ type RoutineOccurrenceItem struct {
 	StepID int `json:"stepId" gorm:"column:step_id;not null"`
 	Position int `json:"position" gorm:"column:position;not null"`
 	ChoreID int `json:"choreId" gorm:"column:chore_id;not null"`
+	SlotID string `json:"slotId,omitempty" gorm:"column:slot_id;size:32"`
 	Required bool `json:"required" gorm:"column:required;not null;default:true"`
 	Status RoutineOccurrenceItemStatus `json:"status" gorm:"column:status;size:20;not null;default:pending"`
 	UpdatedAt time.Time `json:"updatedAt" gorm:"column:updated_at;not null"`
@@ -160,7 +161,7 @@ func StartRoutineOccurrence(db *gorm.DB, familyID, routineID, userID int, now ti
 			if !applicable { status = RoutineOccurrenceItemNotApplicable }
 			items = append(items, RoutineOccurrenceItem{
 				FamilyID: familyID, OccurrenceID: run.ID, StepID: step.ID, Position: step.Position,
-				ChoreID: step.ChoreID, Required: required,
+				ChoreID: step.ChoreID, SlotID: step.SlotID, Required: required,
 				Status: status, UpdatedAt: now.UTC(),
 			})
 		}
