@@ -1030,17 +1030,8 @@ const ModuleGroup = ({
       .map(key => key.slice('force-open:'.length)),
   )
   const tiers = (group.tiers || []).filter(level => level.pack)
-  // A pack with one level has no separate level row: its access belongs to
-  // the pack itself and is shown beside the pack title.
-  const singleLevel =
-    !!group.pack &&
-    (group.tiers || []).length === 1 &&
-    !(group.tiers || [])[0].pack
-  const singleAccess = forcedKeys.has(group.pack?.id)
-    ? 'open'
-    : asideKeys.has(group.pack?.id)
-      ? 'locked'
-      : 'auto'
+  const singleLevel = !!group.pack && group.tiers?.length === 1 && !group.tiers[0].pack
+  const singleAccess = forcedKeys.has(group.pack?.id) ? 'open' : asideKeys.has(group.pack?.id) ? 'locked' : 'auto'
   const onAside = (key, aside) =>
     run(
       setAside.mutateAsync({
@@ -1249,20 +1240,10 @@ const ModuleGroup = ({
                 {name}
               </Typography>
               {singleLevel && (
-                <Select
-                  size='sm'
-                  disabled={!member}
-                  value={singleAccess}
-                  onChange={(_, value) =>
-                    value && onAccess(group.pack.id, value)
-                  }
-                  slotProps={{
-                    button: {
-                      'aria-label': `${name} · ${person.displayName}`,
-                    },
-                  }}
-                  sx={{ minWidth: 154 }}
-                >
+                <Select size='sm' disabled={!member} value={singleAccess}
+                  onChange={(_, value) => value && onAccess(group.pack.id, value)}
+                  slotProps={{ button: { 'aria-label': `${name} · ${person.displayName}` } }}
+                  sx={{ minWidth: 154 }}>
                   <Option value='auto'>{t('manage.accessAuto')}</Option>
                   <Option value='open'>{t('manage.accessOpen')}</Option>
                   <Option value='locked'>{t('manage.accessLocked')}</Option>
