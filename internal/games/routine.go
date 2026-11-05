@@ -523,9 +523,25 @@ func RoutineViews(db *gorm.DB, familyID int, userIDs []int, now time.Time) ([]Ro
 		}
 		for _, userID := range userIDs {
 			progress := day.progressOfGraph(userID, steps[i], routine)
-			if progress.Total > 0 && !progress.Finished {
-				run, err := StartRoutineOccurrence(db, familyID, routine.ID, userID, now)
-				if err != nil { return nil, err }
+			var run *RoutineOccurrence
+			var latest RoutineOccurrence
+			latestErr := db.Where("routine_id = ? AND user_id = ? AND status IN ?",
+				routine.ID, userID, []RoutineOccurrenceStatus{RoutineOccurrenceActive, RoutineOccurrenceFinished}).
+				Order("started_at DESC").First(&latest).Error
+			if latestErr != nil && !errors.Is(latestErr, gorm.ErrRecordNotFound) { return nil, latestErr }
+			if latestErr == nil {
+				if now.Before(latest.ExpiresAt) {
+					run, latestErr = StartRoutineOccurrence(db, familyID, routine.ID, userID, now)
+					if latestErr != nil { return nil, latestErr }
+				} else if latest.Status == RoutineOccurrenceActive {
+					if _, latestErr = GetRoutineOccurrence(db, familyID, latest.ID, now); latestErr != nil { return nil, latestErr }
+				}
+			}
+			if run == nil && progress.Total > 0 && !progress.Finished {
+				run, latestErr = StartRoutineOccurrence(db, familyID, routine.ID, userID, now)
+				if latestErr != nil { return nil, latestErr }
+			}
+			if run != nil {
 				progress = day.progressFromOccurrence(userID, steps[i], run)
 			}
 			if progress.Total > 0 {
