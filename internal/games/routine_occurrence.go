@@ -521,8 +521,7 @@ func settleRoutineOccurrence(tx *gorm.DB, run *RoutineOccurrence, now time.Time)
 		var legacyWin RoutineWin
 		err := tx.Where("routine_id = ? AND user_id = ? AND day = ?",
 			run.RoutineID, run.UserID, dayKey(run.StartedAt, loc)).First(&legacyWin).Error
-		if err == nil { return nil }
-		if !errors.Is(err, gorm.ErrRecordNotFound) { return err }
+		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) { return err }
 		if err == nil {
 			localStart := run.StartedAt.In(loc)
 			dayStart := time.Date(localStart.Year(), localStart.Month(), localStart.Day(), 0, 0, 0, 0, loc)
@@ -533,7 +532,7 @@ func settleRoutineOccurrence(tx *gorm.DB, run *RoutineOccurrence, now time.Time)
 				run.RoutineID, run.UserID, run.ID, dayStart, dayEnd, true,
 			).Count(&earlierPaid).Error; err != nil { return err }
 			if earlierPaid == 0 { return nil }
-		} else if !errors.Is(err, gorm.ErrRecordNotFound) { return err }
+		}
 		_, err = giveBonus(tx, run.FamilyID, run.UserID, run.Bonus, "Routine : "+run.RoutineName)
 		return err
 	}
