@@ -2,8 +2,8 @@ package sanitize
 
 import (
 	"bytes"
-	"strings"
 	"net/url"
+	"strings"
 
 	"golang.org/x/net/html"
 )
