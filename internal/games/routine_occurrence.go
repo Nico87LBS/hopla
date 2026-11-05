@@ -442,7 +442,11 @@ func expireRoutineOverrides(tx *gorm.DB, run *RoutineOccurrence, now time.Time) 
 			if err := tx.Model(&RoutineOccurrenceItem{}).Where("occurrence_id = ? AND step_id IN ? AND status = ?",
 				run.ID, dependentSteps, RoutineOccurrenceItemCompleted).Count(&completed).Error; err != nil { return err }
 		}
-		if run.Status == RoutineOccurrenceActive && completed == 0 && item.Status == RoutineOccurrenceItemSkipped {
+		var latest RoutineOverride
+		latestErr := tx.Where("occurrence_id = ? AND item_id = ?", run.ID, item.ID).Order("created_at DESC").First(&latest).Error
+		if latestErr != nil && !errors.Is(latestErr, gorm.ErrRecordNotFound) { return latestErr }
+		if run.Status == RoutineOccurrenceActive && completed == 0 && item.Status == RoutineOccurrenceItemSkipped &&
+			latestErr == nil && latest.ID == override.ID {
 			if err := tx.Model(&item).Updates(map[string]any{"status":RoutineOccurrenceItemPending,"updated_at":now.UTC()}).Error; err != nil { return err }
 		}
 		if err := tx.Model(&override).Update("revoked_at", now.UTC()).Error; err != nil { return err }
