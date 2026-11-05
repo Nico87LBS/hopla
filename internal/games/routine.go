@@ -533,7 +533,14 @@ func awardRoutines(tx *gorm.DB, familyID, userID int, performedAt, now time.Time
 		return err
 	}
 	completedIDs := make(map[int]bool, len(completed))
-	for _, history := range completed { completedIDs[history.ChoreID] = true }
+	completedSlots := make(map[int]map[string]bool)
+	for _, history := range completed {
+		completedIDs[history.ChoreID] = true
+		if history.SlotID != nil && *history.SlotID != "" {
+			if completedSlots[history.ChoreID] == nil { completedSlots[history.ChoreID] = map[string]bool{} }
+			completedSlots[history.ChoreID][*history.SlotID] = true
+		}
+	}
 
 	var runs []RoutineOccurrence
 	if err := tx.Where("family_id = ? AND user_id = ? AND status = ? AND started_at <= ? AND expires_at > ?",
@@ -549,7 +556,10 @@ func awardRoutines(tx *gorm.DB, familyID, userID int, performedAt, now time.Time
 			ids, err := SameTaskIDs(tx, familyID, item.ChoreID)
 			if err != nil { return err }
 			matched := false
-			for _, id := range ids { if completedIDs[id] { matched = true; break } }
+			for _, id := range ids {
+				if item.SlotID != "" && completedSlots[id][item.SlotID] { matched = true; break }
+				if item.SlotID == "" && completedIDs[id] { matched = true; break }
+			}
 			if !matched { continue }
 			if err := tx.Model(&item).Updates(map[string]any{"status":RoutineOccurrenceItemCompleted,"updated_at":now.UTC()}).Error; err != nil { return err }
 		}
