@@ -21,7 +21,7 @@ export const routineStepOf = (routines, chore, userId) => {
   if (!routine) return null
   const progress = (routine.members || []).find(
     p =>
-      p.current === chore.id &&
+      (p.current === chore.id || p.available?.includes(chore.id)) &&
       (userId === undefined
         ? membersOf(chore).includes(p.userId)
         : p.userId === userId),
