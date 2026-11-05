@@ -24,6 +24,9 @@ func TestRoutineOccurrenceCanCrossMidnightAndExpires(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, first.ID, reused.ID, "the same run continues after midnight")
 	require.Len(t, reused.Items, 2)
+	views, err := RoutineViews(db, 1, []int{2}, now.Add(2*time.Hour))
+	require.NoError(t, err)
+	require.Equal(t, first.ID, views[0].Members[0].Occurrence.ID, "the active run remains visible after midnight")
 
 	next, err := StartRoutineOccurrence(db, 1, routine.ID, 2, now.Add(4*time.Hour))
 	require.NoError(t, err)
