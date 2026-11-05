@@ -161,7 +161,13 @@ func StartRoutineOccurrence(db *gorm.DB, familyID, routineID, userID int, now ti
 					break
 				}
 			}
-			if !applicable { status = RoutineOccurrenceItemNotApplicable }
+			if !applicable {
+				status = RoutineOccurrenceItemNotApplicable
+			} else {
+				done, err := routineItemCompletedBeforeStart(tx, familyID, userID, step, run.StartedAt, run.ExpiresAt)
+				if err != nil { return err }
+				if done { status = RoutineOccurrenceItemCompleted }
+			}
 			items = append(items, RoutineOccurrenceItem{
 				FamilyID: familyID, OccurrenceID: run.ID, StepID: step.ID, Position: step.Position,
 				ChoreID: step.ChoreID, SlotID: step.SlotID, Required: required,
@@ -171,10 +177,45 @@ func StartRoutineOccurrence(db *gorm.DB, familyID, routineID, userID int, now ti
 		if err := tx.Create(&items).Error; err != nil { return err }
 		run.Items = items
 		if err := applyRoutineOccurrenceAvailability(tx, &run); err != nil { return err }
+		if err := settleRoutineOccurrence(tx, &run, now); err != nil { return err }
+		if err := tx.Preload("Items", func(q *gorm.DB) *gorm.DB { return q.Order("position") }).First(&run, run.ID).Error; err != nil { return err }
 		occurrence = &run
 		return nil
 	})
 	return occurrence, err
+}
+
+
+func routineItemCompletedBeforeStart(tx *gorm.DB, familyID, userID int, step RoutineStep, startedAt, expiresAt time.Time) (bool, error) {
+	ids, err := SameTaskIDs(tx, familyID, step.ChoreID)
+	if err != nil { return false, err }
+	loc := zone.Of(familyID)
+	localStart := startedAt.In(loc)
+	dayStart := time.Date(localStart.Year(), localStart.Month(), localStart.Day(), 0, 0, 0, 0, loc)
+	var history []chModel.ChoreHistory
+	if err := tx.Where("chore_id IN ? AND completed_by = ? AND status = ? AND performed_at >= ? AND performed_at <= ?",
+		ids, userID, chModel.ChoreHistoryStatusCompleted, dayStart, startedAt).Find(&history).Error; err != nil {
+		return false, err
+	}
+	for _, entry := range history {
+		dueAt := entry.PerformedAt
+		if entry.DueDate != nil { dueAt = entry.DueDate }
+		if dueAt != nil && dueAt.After(expiresAt) { continue }
+		if step.SlotID != "" {
+			slotID := ""
+			if entry.SlotID != nil { slotID = *entry.SlotID }
+			if slotID == "" && entry.Slot != nil {
+				var chore chModel.Chore
+				if err := tx.Select("id", "frequency_meta_v2").First(&chore, entry.ChoreID).Error; err != nil { return false, err }
+				if chore.FrequencyMetadataV2 != nil && *entry.Slot >= 0 && *entry.Slot < len(chore.FrequencyMetadataV2.Slots) {
+					slotID = chore.FrequencyMetadataV2.Slots[*entry.Slot].ID
+				}
+			}
+			if slotID != step.SlotID { continue }
+		}
+		return true, nil
+	}
+	return false, nil
 }
 
 // GetRoutineOccurrence checks family ownership and expires an overdue run.
@@ -270,11 +311,15 @@ func SkipRoutineOccurrenceItem(db *gorm.DB, familyID, occurrenceID int, input Ro
 func FinishRoutineOccurrence(db *gorm.DB, occurrenceID int, now time.Time) error {
 	var items []RoutineOccurrenceItem
 	if err := db.Where("occurrence_id = ?", occurrenceID).Find(&items).Error; err != nil { return err }
+	applicableRequired := 0
 	for _, item := range items {
-		if item.Required && item.Status != RoutineOccurrenceItemCompleted && item.Status != RoutineOccurrenceItemSkipped && item.Status != RoutineOccurrenceItemNotApplicable {
+		if !item.Required || item.Status == RoutineOccurrenceItemNotApplicable { continue }
+		applicableRequired++
+		if item.Status != RoutineOccurrenceItemCompleted && item.Status != RoutineOccurrenceItemSkipped {
 			return nil
 		}
 	}
+	if applicableRequired == 0 { return nil }
 	return db.Model(&RoutineOccurrence{}).Where("id = ? AND status = ?", occurrenceID, RoutineOccurrenceActive).
 		Updates(map[string]any{"status":RoutineOccurrenceFinished,"finished_at":now.UTC()}).Error
 }
@@ -295,7 +340,7 @@ func expireRoutineOverrides(tx *gorm.DB, run *RoutineOccurrence, now time.Time) 
 			if err := tx.Model(&RoutineOccurrenceItem{}).Where("occurrence_id = ? AND step_id IN ? AND status = ?",
 				run.ID, dependentSteps, RoutineOccurrenceItemCompleted).Count(&completed).Error; err != nil { return err }
 		}
-		if completed == 0 && item.Status == RoutineOccurrenceItemSkipped {
+		if run.Status == RoutineOccurrenceActive && completed == 0 && item.Status == RoutineOccurrenceItemSkipped {
 			if err := tx.Model(&item).Updates(map[string]any{"status":RoutineOccurrenceItemPending,"updated_at":now.UTC()}).Error; err != nil { return err }
 		}
 		if err := tx.Model(&override).Update("revoked_at", now.UTC()).Error; err != nil { return err }
