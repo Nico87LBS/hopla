@@ -172,6 +172,7 @@ func TestExternalRoutineSkipCanBeRestoredBeforeDependentStepPasses(t *testing.T)
 	_,err=RestoreRoutineOccurrenceItem(db,1,run.ID,restore,now.Add(3*time.Minute))
 	require.NoError(t,err,"repeated restore events are idempotent")
 
+	skip.IdempotencyKey = "skip-2"
 	_,err=SkipRoutineOccurrenceItem(db,1,run.ID,skip,now.Add(4*time.Minute))
 	require.NoError(t,err)
 	var dependent RoutineOccurrenceItem
