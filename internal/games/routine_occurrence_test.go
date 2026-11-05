@@ -267,3 +267,29 @@ func TestOccurrenceKeepsItsFinalRewardWhenRoutineIsEdited(t *testing.T) {
 	require.NoError(t,db.Where("user_id = 2").First(&member).Error)
 	require.Equal(t,3,member.Points,"the in-flight occurrence pays its snapshotted bonus")
 }
+
+
+func TestOptionalRoutineItemCanBeSkippedAfterRequiredStepsFinish(t *testing.T) {
+	db:=setup(t)
+	now:=noon(0)
+	required:=chore(t,db,"Se lever",1,now,assignedTo(2))
+	optional:=chore(t,db,"Mettre le manteau",1,now,assignedTo(2))
+	routine:=Routine{FamilyID:1,Name:"Départ",Bonus:2,ValidityMinutes:120,
+		ChoreIDs:[]int{required.ID,optional.ID},OptionalChoreIDs:[]int{optional.ID},GraphEnabled:true}
+	require.NoError(t,SaveRoutine(db,&routine))
+	run,err:=StartRoutineOccurrence(db,1,routine.ID,2,now)
+	require.NoError(t,err)
+	require.NoError(t,done(db,required.ID,2,now))
+	require.NoError(t,AfterTask(db,1,2,now,now))
+	run,err=GetRoutineOccurrence(db,1,run.ID,now)
+	require.NoError(t,err)
+	require.Equal(t,RoutineOccurrenceFinished,run.Status)
+	require.Equal(t,RoutineOccurrenceItemPending,run.Items[1].Status)
+	require.True(t,run.Items[1].Available)
+	updated,err:=SkipRoutineOccurrenceItem(db,1,run.ID,RoutineOverrideInput{
+		ItemID:run.Items[1].ID,Source:"manual",Reason:"Pas nécessaire aujourd'hui",
+	},now.Add(time.Minute))
+	require.NoError(t,err)
+	require.Equal(t,RoutineOccurrenceFinished,updated.Status)
+	require.Equal(t,RoutineOccurrenceItemSkipped,updated.Items[1].Status)
+}
