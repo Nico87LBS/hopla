@@ -50,6 +50,7 @@ type RoutineOccurrence struct {
 	ID int `json:"id" gorm:"primaryKey"`
 	FamilyID int `json:"-" gorm:"column:family_id;index;not null"`
 	RoutineID int `json:"routineId" gorm:"column:routine_id;index;not null"`
+	RoutineName string `json:"routineName" gorm:"-"`
 	UserID int `json:"userId" gorm:"column:user_id;index;not null"`
 	StartedAt time.Time `json:"startedAt" gorm:"column:started_at;not null"`
 	ExpiresAt time.Time `json:"expiresAt" gorm:"column:expires_at;index;not null"`
@@ -82,6 +83,7 @@ type RoutineOccurrenceItem struct {
 	StepID int `json:"stepId" gorm:"column:step_id;not null"`
 	Position int `json:"position" gorm:"column:position;not null"`
 	ChoreID int `json:"choreId" gorm:"column:chore_id;not null"`
+	ChoreName string `json:"choreName" gorm:"-"`
 	SlotID string `json:"slotId,omitempty" gorm:"column:slot_id;size:32"`
 	Required bool `json:"required" gorm:"column:required;not null;default:true"`
 	Status RoutineOccurrenceItemStatus `json:"status" gorm:"column:status;size:20;not null;default:pending"`
@@ -173,12 +175,14 @@ func StartRoutineOccurrence(db *gorm.DB, familyID, routineID, userID int, now ti
 			if err := tx.Preload("Assignees").Where("id IN ? AND is_active = ?", ids, true).Find(&copies).Error; err != nil { return err }
 			applicable := false
 			memberChoreID := step.ChoreID
+			memberChoreName := ""
 			for _, chore := range copies {
 				due := chore.NextDueDate != nil && !chore.NextDueDate.After(run.ExpiresAt)
 				if step.SlotID != "" { due = routineSlotDue(chore, step.SlotID, now.In(zone.Of(familyID)), run.ExpiresAt.In(zone.Of(familyID))) }
 				if due && slices.Contains(membersNow(chore), userID) && !Paused(chore, away) {
 					applicable = true
 					memberChoreID = chore.ID
+					memberChoreName = chore.Name
 					break
 				}
 			}
@@ -482,6 +486,19 @@ func settleRoutineOccurrence(tx *gorm.DB, run *RoutineOccurrence, now time.Time)
 
 // RoutineOccurrenceForMember prevents one family member from reading or
 // changing another member's run through the member-facing API.
+
+func ListActiveRoutineOccurrences(db *gorm.DB, familyID int, now time.Time) ([]RoutineOccurrence, error) {
+	var active []RoutineOccurrence
+	if err := db.Where("family_id = ? AND status = ? AND expires_at > ?", familyID, RoutineOccurrenceActive, now.UTC()).
+		Order("started_at").Find(&active).Error; err != nil { return nil, err }
+	for i := range active {
+		run, err := GetRoutineOccurrence(db, familyID, active[i].ID, now)
+		if err != nil { return nil, err }
+		active[i] = *run
+	}
+	return active, nil
+}
+
 func RoutineOccurrenceForMember(db *gorm.DB, familyID, occurrenceID, userID int, now time.Time) (*RoutineOccurrence, error) {
 	var run RoutineOccurrence
 	err := db.Where("id = ? AND family_id = ? AND user_id = ?", occurrenceID, familyID, userID).First(&run).Error
