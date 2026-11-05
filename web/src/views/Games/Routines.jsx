@@ -252,20 +252,17 @@ export const RoutinesCard = () => {
               <Typography level='body-sm' fontWeight='lg' sx={{ mb: 0.5 }}>
                 {t('routines.validity')}
               </Typography>
-              <Select
+              <Input
                 size='lg'
-                value={String(draft.validityMinutes ?? 720)}
-                onChange={(event, value) =>
-                  setDraft({ ...draft, validityMinutes: Number(value) || 720 })
+                type='number'
+                value={draft.validityMinutes ?? 720}
+                onChange={event =>
+                  setDraft({ ...draft, validityMinutes: event.target.value })
                 }
+                endDecorator='min'
+                slotProps={{ input: { min: 1, max: 2880 } }}
                 sx={{ bgcolor: 'background.surface' }}
-              >
-                <Option value='60'>1 heure</Option>
-                <Option value='240'>4 heures</Option>
-                <Option value='720'>12 heures</Option>
-                <Option value='1440'>24 heures</Option>
-                <Option value='2880'>48 heures</Option>
-              </Select>
+              />
             </Box>
           </Stack>
 
