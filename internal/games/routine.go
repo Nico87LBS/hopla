@@ -228,7 +228,6 @@ func DeleteRoutine(db *gorm.DB, familyID, routineID int) error {
 		}
 		if err := tx.Where("routine_id = ?", routineID).Delete(&RoutineDependency{}).Error; err != nil { return err }
 		if err := tx.Where("routine_id = ?", routineID).Delete(&RoutineStep{}).Error; err != nil { return err }
-		if err := tx.Where("routine_id = ?", routineID).Find(&[]RoutineOccurrence{}).Error; err != nil { return err }
 		var occurrenceIDs []int
 		if err := tx.Model(&RoutineOccurrence{}).Where("routine_id = ?", routineID).Pluck("id", &occurrenceIDs).Error; err != nil { return err }
 		if len(occurrenceIDs) > 0 {
@@ -387,32 +386,62 @@ func RoutineViews(db *gorm.DB, familyID int, userIDs []int, now time.Time) ([]Ro
 	return views, nil
 }
 
-// awardRoutines pays the bonus of each routine the member finished today,
-// once a day.
+// awardRoutines advances live occurrences first. Routines that have never
+// used occurrences retain the legacy once-per-day reward for compatibility.
 func awardRoutines(tx *gorm.DB, familyID, userID int, performedAt, now time.Time) error {
-	loc := zone.Of(familyID)
-	if dayKey(performedAt, loc) != dayKey(now, loc) {
-		return nil
-	}
-	views, err := RoutineViews(tx, familyID, []int{userID}, now)
-	if err != nil {
+	var knownRoutineIDs []int
+	if err := tx.Model(&RoutineOccurrence{}).Where("family_id = ? AND user_id = ?", familyID, userID).
+		Distinct("routine_id").Pluck("routine_id", &knownRoutineIDs).Error; err != nil {
 		return err
 	}
+	var runs []RoutineOccurrence
+	if err := tx.Where("family_id = ? AND user_id = ? AND status = ? AND started_at <= ? AND expires_at > ?",
+		familyID, userID, RoutineOccurrenceActive, performedAt.UTC(), performedAt.UTC()).Find(&runs).Error; err != nil {
+		return err
+	}
+	for i := range runs {
+		run := &runs[i]
+		var items []RoutineOccurrenceItem
+		if err := tx.Where("occurrence_id = ?", run.ID).Find(&items).Error; err != nil { return err }
+		for _, item := range items {
+			if item.Status != RoutineOccurrenceItemPending { continue }
+			ids, err := SameTaskIDs(tx, familyID, item.ChoreID)
+			if err != nil { return err }
+			if !slices.Contains(ids, currentCompletedChoreID(tx, familyID, userID, item.ChoreID, performedAt)) {
+				// The completed task can be a member's copy of the routine's
+				// representative chore. The exact ID is read from its history.
+				var history chModel.ChoreHistory
+				if err := tx.Where("completed_by = ? AND performed_at = ? AND status = ? AND chore_id IN ?",
+					userID, performedAt.UTC(), chModel.ChoreHistoryStatusCompleted, ids).Order("id DESC").First(&history).Error; err != nil {
+					if errors.Is(err, gorm.ErrRecordNotFound) { continue }
+					return err
+				}
+			}
+			// Resolve the actual completed copy from the latest history entry
+			// at this timestamp, rather than assuming every copy has the same ID.
+			var history chModel.ChoreHistory
+			if err := tx.Where("completed_by = ? AND performed_at = ? AND status = ? AND chore_id IN ?",
+				userID, performedAt.UTC(), chModel.ChoreHistoryStatusCompleted, ids).Order("id DESC").First(&history).Error; err != nil {
+				if errors.Is(err, gorm.ErrRecordNotFound) { continue }
+				return err
+			}
+			if err := tx.Model(&item).Updates(map[string]any{"status":RoutineOccurrenceItemCompleted,"updated_at":now.UTC()}).Error; err != nil { return err }
+		}
+		if err := settleRoutineOccurrence(tx, run, now); err != nil { return err }
+	}
+	loc := zone.Of(familyID)
+	if dayKey(performedAt, loc) != dayKey(now, loc) { return nil }
+	views, err := RoutineViews(tx, familyID, []int{userID}, now)
+	if err != nil { return err }
 	for _, view := range views {
-		if view.Bonus <= 0 || len(view.Members) == 0 || !view.Members[0].Finished {
+		if slices.Contains(knownRoutineIDs, view.ID) || view.Bonus <= 0 || len(view.Members) == 0 || !view.Members[0].Finished {
 			continue
 		}
 		result := tx.Clauses(clause.OnConflict{DoNothing: true}).
 			Create(&RoutineWin{RoutineID: view.ID, UserID: userID, Day: dayKey(now, loc)})
-		if result.Error != nil {
-			return result.Error
-		}
-		if result.RowsAffected == 0 {
-			continue
-		}
-		if _, err := giveBonus(tx, familyID, userID, view.Bonus, "Routine : "+view.Name); err != nil {
-			return err
-		}
+		if result.Error != nil { return result.Error }
+		if result.RowsAffected == 0 { continue }
+		if _, err := giveBonus(tx, familyID, userID, view.Bonus, "Routine : "+view.Name); err != nil { return err }
 	}
 	return nil
 }
