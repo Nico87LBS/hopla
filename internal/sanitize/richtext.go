@@ -58,18 +58,25 @@ var dropContentTags = map[string]bool{
 }
 
 func renderSafe(out *bytes.Buffer, node *html.Node) {
+	for _, safe := range safeNodes(node) {
+		_ = html.Render(out, safe)
+	}
+}
+
+func safeNodes(node *html.Node) []*html.Node {
 	switch node.Type {
 	case html.TextNode:
-		_ = html.Render(out, &html.Node{Type: html.TextNode, Data: node.Data})
+		return []*html.Node{{Type: html.TextNode, Data: node.Data}}
 	case html.ElementNode:
 		if dropContentTags[node.Data] {
-			return
+			return nil
 		}
 		if !allowedTags[node.Data] {
+			var flattened []*html.Node
 			for child := node.FirstChild; child != nil; child = child.NextSibling {
-				renderSafe(out, child)
+				flattened = append(flattened, safeNodes(child)...)
 			}
-			return
+			return flattened
 		}
 
 		safe := &html.Node{Type: html.ElementNode, Data: node.Data}
@@ -77,14 +84,13 @@ func renderSafe(out *bytes.Buffer, node *html.Node) {
 			key, value := strings.ToLower(attr.Key), strings.TrimSpace(attr.Val)
 			switch key {
 			case "href", "src":
-				if !safeURL(value) {
-					continue
+				if safeURL(value) {
+					safe.Attr = append(safe.Attr, html.Attribute{Key: key, Val: value})
 				}
-				safe.Attr = append(safe.Attr, html.Attribute{Key: key, Val: value})
 			case "alt", "title":
 				safe.Attr = append(safe.Attr, html.Attribute{Key: key, Val: value})
 			case "data-hopla-path":
-				if value != "" && !strings.ContainsAny(value, "\r\n\x00") {
+				if value != "" && !strings.ContainsAny(value, "\\r\\n\\x00") {
 					safe.Attr = append(safe.Attr, html.Attribute{Key: key, Val: value})
 				}
 			case "target":
@@ -96,19 +102,17 @@ func renderSafe(out *bytes.Buffer, node *html.Node) {
 		if node.Data == "a" {
 			safe.Attr = append(safe.Attr, html.Attribute{Key: "rel", Val: "noopener noreferrer"})
 		}
-		if node.Data == "img" {
-			if !hasAttr(safe, "src") {
-				return
-			}
-			_ = html.Render(out, safe)
-			return
+		if node.Data == "img" && !hasAttr(safe, "src") {
+			return nil
 		}
-		_ = html.RenderStartTag(out, safe)
 		for child := node.FirstChild; child != nil; child = child.NextSibling {
-			renderSafe(out, child)
+			for _, safeChild := range safeNodes(child) {
+				safe.AppendChild(safeChild)
+			}
 		}
-		_ = html.RenderEndTag(out, safe)
+		return []*html.Node{safe}
 	}
+	return nil
 }
 
 func hasAttr(node *html.Node, key string) bool {
