@@ -24,7 +24,8 @@ type Routine struct {
 	ChoreIDs  []int         `json:"choreIds" gorm:"-"`
 	Steps     []RoutineStep `json:"steps" gorm:"foreignKey:RoutineID"`
 	Dependencies []RoutineDependency `json:"dependencies" gorm:"-"`
-	GraphEnabled bool `json:"graphEnabled" gorm:"-"`
+	GraphEnabled bool `json:"graphEnabled" gorm:"column:graph_enabled;not null;default:false"`
+	OptionalChoreIDs []int `json:"optionalChoreIds" gorm:"-"`
 	CreatedBy int           `json:"createdBy" gorm:"column:created_by"`
 	CreatedAt time.Time     `json:"createdAt" gorm:"column:created_at"`
 	UpdatedAt time.Time     `json:"updatedAt" gorm:"column:updated_at"`
@@ -100,6 +101,7 @@ func Routines(db *gorm.DB, familyID int) ([]Routine, error) {
 		routines[i].ChoreIDs = []int{}
 		for _, step := range routines[i].Steps {
 			routines[i].ChoreIDs = append(routines[i].ChoreIDs, step.ChoreID)
+			if !step.Required { routines[i].OptionalChoreIDs = append(routines[i].OptionalChoreIDs, step.ChoreID) }
 			positionByID[step.ID] = step.Position + 1
 		}
 		for j := range routines[i].Dependencies {
@@ -184,14 +186,14 @@ func SaveRoutine(db *gorm.DB, routine *Routine) error {
 			if err := tx.Omit("Steps").Create(routine).Error; err != nil { return err }
 		} else {
 			if err := tx.Model(&Routine{}).Where("id = ? AND family_id = ?", routine.ID, routine.FamilyID).
-				Updates(map[string]any{"name": routine.Name, "bonus": routine.Bonus, "updated_at": time.Now().UTC()}).Error; err != nil {
+				Updates(map[string]any{"name": routine.Name, "bonus": routine.Bonus, "graph_enabled": routine.GraphEnabled, "updated_at": time.Now().UTC()}).Error; err != nil {
 				return err
 			}
 			if err := tx.Where("routine_id = ?", routine.ID).Delete(&RoutineDependency{}).Error; err != nil { return err }
 			if err := tx.Where("routine_id = ?", routine.ID).Delete(&RoutineStep{}).Error; err != nil { return err }
 		}
 		routine.Steps = nil
-		for i, choreID := range routine.ChoreIDs { routine.Steps = append(routine.Steps, RoutineStep{RoutineID: routine.ID, Position: i, ChoreID: choreID, Required: true}) }
+		for i, choreID := range routine.ChoreIDs { routine.Steps = append(routine.Steps, RoutineStep{RoutineID: routine.ID, Position: i, ChoreID: choreID, Required: !slices.Contains(routine.OptionalChoreIDs, choreID)}) }
 		if err := tx.Create(&routine.Steps).Error; err != nil { return err }
 		for i := range routine.Dependencies {
 			from, to := routine.Dependencies[i].DependsOnStepID-1, routine.Dependencies[i].StepID-1
