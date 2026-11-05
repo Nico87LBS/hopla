@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/require"
+	fModel "github.com/nico87lbs/hopla/internal/family/model"
 	. "github.com/nico87lbs/hopla/internal/games"
 )
 
