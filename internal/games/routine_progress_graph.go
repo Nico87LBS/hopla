@@ -15,6 +15,8 @@ func (day *routineDay) progressOfGraph(userID int, steps [][]int, routine Routin
 
 	for i, ids := range steps {
 		position := i + 1
+		slotID := ""
+		if i < len(routine.Steps) { slotID = routine.Steps[i].SlotID }
 		required := true
 		if routine.GraphEnabled && i < len(routine.Steps) && routine.Steps[i].Required != nil {
 			required = *routine.Steps[i].Required
@@ -24,12 +26,15 @@ func (day *routineDay) progressOfGraph(userID int, steps [][]int, routine Routin
 		done := false
 		for _, id := range ids {
 			chore := day.chores[id]
-			if day.doneBy[userID][id] && isFor(chore, userID) {
+			done := day.doneBy[userID][id] && isFor(chore, userID)
+			if slotID != "" { done = day.doneSlotsBy[userID][id][slotID] && isFor(chore, userID) }
+			if done {
 				done = true
 				break
 			}
-			if todo == 0 && chore != nil && chore.NextDueDate != nil && !chore.NextDueDate.After(day.end) &&
-				slices.Contains(membersNow(chore), userID) && !Paused(chore, day.away) {
+			due := chore != nil && chore.NextDueDate != nil && !chore.NextDueDate.After(day.end)
+			if slotID != "" { due = routineSlotDue(chore, slotID, day.start, day.end) }
+			if todo == 0 && due && slices.Contains(membersNow(chore), userID) && !Paused(chore, day.away) {
 				todo = chore.ID
 			}
 		}
