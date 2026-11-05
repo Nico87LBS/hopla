@@ -19,20 +19,21 @@ const RoutineChip = ({ chores, sx, userId }) => {
   const { showError } = useNotification()
   const { data: routines } = useRoutinesToday()
   const steps = chores
-    .map(chore => routineStepOf(routines, chore, userId))
-    .filter(Boolean)
+    .map(chore => ({
+      chore,
+      step: routineStepOf(routines, chore, userId),
+    }))
+    .filter(({ step }) => Boolean(step))
   if (steps.length === 0) return null
   const nameOnly = chores.length > 1
-  const stepWithOccurrenceItem = steps.find(({ progress }, index) =>
-    progress.occurrence?.items?.some(
-      item => item.choreId === chores[index].id && item.available,
+  const selected = steps.find(({ chore, step }) =>
+    step.progress.occurrence?.items?.some(
+      item => item.choreId === chore.id && item.available,
     ),
-  )
-  const stepIndex = stepWithOccurrenceItem
-    ? steps.indexOf(stepWithOccurrenceItem)
-    : 0
-  const { progress, routine } = steps[stepIndex]
-  const selectedChoreId = chores[stepIndex]?.id
+  ) || steps[0]
+  const { chore: selectedChore, step } = selected
+  const { progress, routine } = step
+  const selectedChoreId = selectedChore.id
   const occurrence = progress.occurrence
   const routineName = occurrence?.routineName || routine.name
   const occurrenceItem = occurrence?.items?.find(
