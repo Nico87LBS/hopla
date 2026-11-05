@@ -207,6 +207,7 @@ func SaveRoutine(db *gorm.DB, routine *Routine) error {
 			routine.Dependencies[i].DependsOnStepID = routine.Steps[from].ID
 			routine.Dependencies[i].StepID = routine.Steps[to].ID
 		}
+		if len(routine.Dependencies) == 0 { return nil }
 		return tx.Create(&routine.Dependencies).Error
 	})
 }
