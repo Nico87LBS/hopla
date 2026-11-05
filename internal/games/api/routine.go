@@ -16,6 +16,7 @@ const maxRoutineName = 60
 type RoutineReq struct {
 	Name string `json:"name" binding:"required"`
 	Bonus int `json:"bonus"`
+	ValidityMinutes int `json:"validityMinutes"`
 	ChoreIDs []int `json:"choreIds"`
 	OptionalChoreIDs []int `json:"optionalChoreIds"`
 	// Dependencies use 1-based positions in choreIds. Omitted means legacy sequence;
@@ -32,6 +33,11 @@ func (h *Handler) bindRoutine(c *gin.Context) (RoutineReq, bool) {
 	req.Name = strings.TrimSpace(req.Name)
 	if req.Name == "" || len([]rune(req.Name)) > maxRoutineName {
 		c.JSON(400, gin.H{"error": "A routine needs a name of 60 characters at most"})
+		return req, false
+	}
+	if req.ValidityMinutes == 0 { req.ValidityMinutes = games.DefaultRoutineValidityMinutes }
+	if req.ValidityMinutes < 1 || req.ValidityMinutes > games.MaxRoutineValidityMinutes {
+		c.JSON(400, gin.H{"error": "A routine validity is 1 to 2880 minutes"})
 		return req, false
 	}
 	if req.Bonus < 0 || req.Bonus > maxBonus {
@@ -97,7 +103,7 @@ func (h *Handler) createRoutine(c *gin.Context) {
 		return
 	}
 	now := time.Now().UTC()
-	routine := games.Routine{FamilyID: familyID, Name: req.Name, Bonus: req.Bonus, ChoreIDs: req.ChoreIDs,
+	routine := games.Routine{FamilyID: familyID, Name: req.Name, Bonus: req.Bonus, ValidityMinutes: req.ValidityMinutes, ChoreIDs: req.ChoreIDs,
 		GraphEnabled: req.Dependencies != nil, OptionalChoreIDs: req.OptionalChoreIDs, CreatedBy: parentID, CreatedAt: now, UpdatedAt: now}
 	if req.Dependencies != nil { routine.Dependencies = *req.Dependencies }
 	if err := games.SaveRoutine(h.db.WithContext(c), &routine); err != nil {
@@ -131,7 +137,7 @@ func (h *Handler) updateRoutine(c *gin.Context) {
 	if !ok {
 		return
 	}
-	routine.Name, routine.Bonus, routine.ChoreIDs = req.Name, req.Bonus, req.ChoreIDs
+	routine.Name, routine.Bonus, routine.ValidityMinutes, routine.ChoreIDs = req.Name, req.Bonus, req.ValidityMinutes, req.ChoreIDs
 	routine.OptionalChoreIDs = req.OptionalChoreIDs
 	routine.GraphEnabled = req.Dependencies != nil
 	if req.Dependencies != nil { routine.Dependencies = *req.Dependencies } else { routine.Dependencies = nil }
