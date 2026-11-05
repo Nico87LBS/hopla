@@ -7,6 +7,7 @@ import (
 
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
 	fModel "github.com/nico87lbs/hopla/internal/family/model"
+	"github.com/nico87lbs/hopla/internal/zone"
 	. "github.com/nico87lbs/hopla/internal/games"
 )
 
