@@ -192,6 +192,7 @@ func newSlotTestRouter(t *testing.T) (*gin.Engine, *gorm.DB, *chModel.Chore) {
 			{Name: "Soir", Time: local.Add(5 * time.Hour).Format("15:04")},
 		}},
 	}
+	require.NoError(t, normalizeSlots(chore.FrequencyType, chore.FrequencyMetadataV2))
 	require.NoError(t, db.Create(chore).Error)
 	require.NoError(t, db.Create(&chModel.ChoreAssignees{ChoreID: chore.ID, UserID: child}).Error)
 
@@ -319,4 +320,23 @@ func TestSlotsFollowTheFamilyTimezone(t *testing.T) {
 	statuses = slotStatuses(context.Background(), chore, nil, now)
 	require.Equal(t, chModel.SlotOpen, statuses[0].State)
 	require.Equal(t, time.Date(2026, 10, 23, 7, 0, 0, 0, lisbon), statuses[0].At.In(lisbon))
+}
+ 
+func TestEnsureSlotIDsBackfillsExistingTasks(t *testing.T) {
+	_, db, _ := newSlotTestRouter(t)
+	legacy := teethChore("07:30", "19:30")
+	legacy.Name = "Legacy slots"
+	legacy.FamilyID = 1
+	require.NoError(t, db.Create(legacy).Error)
+	require.NoError(t, chModel.EnsureSlotIDs(db))
+	var stored chModel.Chore
+	require.NoError(t, db.First(&stored, legacy.ID).Error)
+	require.Len(t, stored.FrequencyMetadataV2.Slots, 2)
+	firstID, secondID := stored.FrequencyMetadataV2.Slots[0].ID, stored.FrequencyMetadataV2.Slots[1].ID
+	require.NotEmpty(t, firstID)
+	require.NotEmpty(t, secondID)
+	require.NoError(t, chModel.EnsureSlotIDs(db))
+	require.NoError(t, db.First(&stored, legacy.ID).Error)
+	require.Equal(t, firstID, stored.FrequencyMetadataV2.Slots[0].ID)
+	require.Equal(t, secondID, stored.FrequencyMetadataV2.Slots[1].ID)
 }
