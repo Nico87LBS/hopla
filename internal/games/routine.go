@@ -60,6 +60,7 @@ type RoutineProgress struct {
 	UserID int `json:"userId"`
 	// Current is the task of the step to do now, nil when nothing is left.
 	Current *int `json:"current"`
+	Available []int `json:"available"`
 	// Step is the place of the current step, from 1, among Total.
 	Step     int  `json:"step"`
 	Done     int  `json:"done"`
@@ -356,7 +357,7 @@ func RoutineViews(db *gorm.DB, familyID int, userIDs []int, now time.Time) ([]Ro
 			view.TaskIDs = append(view.TaskIDs, ids...)
 		}
 		for _, userID := range userIDs {
-			if progress := day.progressOf(userID, steps[i]); progress.Total > 0 {
+			if progress := day.progressOfGraph(userID, steps[i], routine); progress.Total > 0 {
 				view.Members = append(view.Members, progress)
 			}
 		}
