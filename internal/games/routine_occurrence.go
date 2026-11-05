@@ -384,10 +384,6 @@ func RestoreRoutineOccurrenceItem(db *gorm.DB, familyID, occurrenceID int, input
 			return nil
 		}
 		if !errors.Is(err, gorm.ErrRecordNotFound) { return err }
-		if run.Status != RoutineOccurrenceActive &&
-			!(run.Status == RoutineOccurrenceFinished && !item.Required && item.Status == RoutineOccurrenceItemSkipped) {
-			return ErrRoutineOccurrenceExpired
-		}
 		if item.Status != RoutineOccurrenceItemSkipped { return ErrRoutineOccurrenceConflict }
 		var latest RoutineOverride
 		if err := tx.Where("occurrence_id = ? AND item_id = ?", occurrenceID, item.ID).Order("created_at DESC").First(&latest).Error; err != nil {
@@ -396,6 +392,10 @@ func RestoreRoutineOccurrenceItem(db *gorm.DB, familyID, occurrenceID int, input
 		}
 		if latest.Source != "external" || latest.Action != "skip" || latest.RevokedAt != nil {
 			return ErrRoutineOccurrenceConflict
+		}
+		if run.Status != RoutineOccurrenceActive &&
+			!(run.Status == RoutineOccurrenceFinished && !item.Required) {
+			return ErrRoutineOccurrenceExpired
 		}
 		dependentSteps := []int{}
 		if item.Required {
