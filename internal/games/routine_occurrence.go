@@ -137,7 +137,7 @@ func StartRoutineOccurrence(db *gorm.DB, familyID, routineID, userID int, now ti
 				occurrence = &latest
 				return applyRoutineOccurrenceAvailability(tx, occurrence)
 			}
-			if latest.Status == RoutineOccurrenceActive {
+			if latest.Status != RoutineOccurrenceExpired {
 				if err := tx.Model(&latest).Update("status", RoutineOccurrenceExpired).Error; err != nil { return err }
 			}
 		} else if !errors.Is(err, gorm.ErrRecordNotFound) {
@@ -154,7 +154,7 @@ func StartRoutineOccurrence(db *gorm.DB, familyID, routineID, userID int, now ti
 			return ErrRoutineEmpty
 		}
 		run := RoutineOccurrence{
-			FamilyID: familyID, RoutineID: routineID, UserID: userID,
+			FamilyID: familyID, RoutineID: routineID, RoutineName: routine.Name, Bonus: routine.Bonus, UserID: userID,
 			StartedAt: now.UTC(), ExpiresAt: now.UTC().Add(time.Duration(minutes)*time.Minute),
 			Status: RoutineOccurrenceActive,
 		}
@@ -176,12 +176,15 @@ func StartRoutineOccurrence(db *gorm.DB, familyID, routineID, userID int, now ti
 			if err := tx.Preload("Assignees").Where("id IN ? AND is_active = ?", ids, true).Find(&copies).Error; err != nil { return err }
 			applicable := false
 			memberChoreID := step.ChoreID
+			memberChoreName := ""
+			if len(copies) > 0 { memberChoreName = copies[0].Name }
 			for _, chore := range copies {
 				due := chore.NextDueDate != nil && !chore.NextDueDate.After(run.ExpiresAt)
 				if step.SlotID != "" { due = routineSlotDue(chore, step.SlotID, now.In(zone.Of(familyID)), run.ExpiresAt.In(zone.Of(familyID))) }
 				if due && slices.Contains(membersNow(chore), userID) && !Paused(chore, away) {
 					applicable = true
 					memberChoreID = chore.ID
+					memberChoreName = chore.Name
 					break
 				}
 			}
@@ -252,7 +255,7 @@ func GetRoutineOccurrence(db *gorm.DB, familyID, occurrenceID int, now time.Time
 			return err
 		}
 		if err := tx.Preload("Dependencies").First(&run, run.ID).Error; err != nil { return err }
-		if run.Status == RoutineOccurrenceActive && !now.Before(run.ExpiresAt) {
+		if (run.Status == RoutineOccurrenceActive || run.Status == RoutineOccurrenceFinished) && !now.Before(run.ExpiresAt) {
 			if err := tx.Model(&run).Update("status", RoutineOccurrenceExpired).Error; err != nil { return err }
 			run.Status = RoutineOccurrenceExpired
 		}
@@ -440,7 +443,6 @@ func FinishRoutineOccurrence(db *gorm.DB, occurrenceID int, now time.Time) error
 
 
 func expireRoutineOverrides(tx *gorm.DB, run *RoutineOccurrence, now time.Time) error {
-	if run.Status != RoutineOccurrenceActive && run.Status != RoutineOccurrenceFinished { return nil }
 	var overrides []RoutineOverride
 	if err := tx.Where("occurrence_id = ? AND source = ? AND action = ? AND expires_at IS NOT NULL AND expires_at <= ? AND revoked_at IS NULL",
 		run.ID, "external", "skip", now.UTC()).Find(&overrides).Error; err != nil { return err }
