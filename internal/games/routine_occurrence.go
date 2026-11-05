@@ -442,6 +442,7 @@ func FinishRoutineOccurrence(db *gorm.DB, occurrenceID int, now time.Time) error
 
 
 func expireRoutineOverrides(tx *gorm.DB, run *RoutineOccurrence, now time.Time) error {
+	if run.Status != RoutineOccurrenceActive && run.Status != RoutineOccurrenceFinished { return nil }
 	var overrides []RoutineOverride
 	if err := tx.Where("occurrence_id = ? AND source = ? AND action = ? AND expires_at IS NOT NULL AND expires_at <= ? AND revoked_at IS NULL",
 		run.ID, "external", "skip", now.UTC()).Find(&overrides).Error; err != nil { return err }
@@ -449,7 +450,9 @@ func expireRoutineOverrides(tx *gorm.DB, run *RoutineOccurrence, now time.Time) 
 		var item RoutineOccurrenceItem
 		if err := tx.Where("id = ? AND occurrence_id = ?", override.ItemID, run.ID).First(&item).Error; err != nil { return err }
 		dependentSteps := []int{}
-		for _, dependency := range run.Dependencies { if dependency.DependsOnStepID == item.StepID { dependentSteps = append(dependentSteps, dependency.StepID) } }
+		if item.Required {
+			for _, dependency := range run.Dependencies { if dependency.DependsOnStepID == item.StepID { dependentSteps = append(dependentSteps, dependency.StepID) } }
+		}
 		var completed int64
 		if len(dependentSteps) > 0 {
 			if err := tx.Model(&RoutineOccurrenceItem{}).Where("occurrence_id = ? AND step_id IN ? AND status = ?",
