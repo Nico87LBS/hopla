@@ -219,7 +219,7 @@
     "addTask": "Add a task",
     "noTask": "No task left to add",
     "bonus": "Finishing bonus",
-    "help": "Each child only sees the step to do. Tasks that are not theirs that day are skipped. The bonus is given once a day, when all their steps are done.",
+    "help": "Each child sees the steps available to them. Tasks not due during this run are not applicable. The bonus is paid once when all required steps are resolved.",
     "up": "Move up",
     "down": "Move down",
     "remove": "Remove",
@@ -231,6 +231,8 @@
     "optional": "Optional",
     "selectSlot": "Choose a slot",
     "allSlots": "All slots",
-    "missingSlot": "Missing slot — choose another"
+    "missingSlot": "Missing slot — choose another",
+    "validity": "Validity (minutes)",
+    "validityHelp": "A run can cross midnight and expires after this time (12 hours by default; up to 48 hours)."
   }
 }
