@@ -97,7 +97,9 @@ const RoutineChip = ({ chores, sx, userId }) => {
         </span>
       )}
       {(occurrence?.status === 'active' ||
-        (occurrence?.status === 'finished' && occurrenceItem && !occurrenceItem.required)) &&
+        (occurrence?.status === 'finished' &&
+          occurrenceItem &&
+          !occurrenceItem.required)) &&
         occurrenceItem &&
         userId !== undefined && (
           <IconButton
