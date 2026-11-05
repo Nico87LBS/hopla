@@ -34,6 +34,7 @@ const RoutineChip = ({ chores, sx, userId }) => {
   const { progress, routine } = steps[stepIndex]
   const selectedChoreId = chores[stepIndex]?.id
   const occurrence = progress.occurrence
+  const routineName = occurrence?.routineName || routine.name
   const occurrenceItem = occurrence?.items?.find(
     item => item.choreId === selectedChoreId && item.available,
   )
@@ -57,7 +58,7 @@ const RoutineChip = ({ chores, sx, userId }) => {
     <Box
       component='span'
       title={t('routines.stepTitle', {
-        name: routine.name,
+        name: routineName,
         step: stepNumber,
         total: stepTotal,
       })}
@@ -87,7 +88,7 @@ const RoutineChip = ({ chores, sx, userId }) => {
         component='span'
         sx={{ overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0 }}
       >
-        {routine.name}
+        {routineName}
       </Box>
       {!nameOnly && (
         <span>
