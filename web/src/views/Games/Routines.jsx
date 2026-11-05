@@ -70,6 +70,11 @@ const moveRoutineStep = (draft, index, delta) => ({
     delta,
   ),
   dependencies: remapAfterMove(draft.dependencies, index, delta),
+  optionalStepIds: remapAfterMove(
+    (draft.optionalStepIds || []).map(stepId => ({ stepId, dependsOnStepId: stepId })),
+    index,
+    delta,
+  ).map(edge => edge.stepId),
 })
 
 const removeRoutineStep = (draft, index) => {
@@ -80,7 +85,6 @@ const removeRoutineStep = (draft, index) => {
   const removedPosition = index + 1
   const remapPosition = position =>
     position > removedPosition ? position - 1 : position
-  const removedChoreID = draft.choreIds[index]
   return {
     ...draft,
     choreIds,
