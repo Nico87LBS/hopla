@@ -49,6 +49,32 @@ func TestATickedPackOpensItsFirstLevelThenTheNextOnceKnown(t *testing.T) {
 	require.Empty(t, player.Modules, "unticked, nothing stays on")
 }
 
+func TestParentCanChooseAccessForSingleLevelPack(t *testing.T) {
+	db := setup(t)
+	now := time.Now().UTC()
+	require.NoError(t, Install(db, 1, "anglais-aero", now))
+	require.NoError(t, SetPackPlayer(db, 1, anna, "anglais-aero", true, now))
+
+	// A single-level pack uses the pack key as its only level key.
+	require.NoError(t, SetPackAccess(db, 1, anna, "anglais-aero", "anglais-aero", "locked", now))
+	player, err := PlayerFor(db, 1, anna, now)
+	require.NoError(t, err)
+	on := active(t, player)
+	require.False(t, on["anglais-aero"], "a locked single level stays off")
+
+	require.NoError(t, SetPackAccess(db, 1, anna, "anglais-aero", "anglais-aero", "open", now))
+	player, err = PlayerFor(db, 1, anna, now)
+	require.NoError(t, err)
+	on = active(t, player)
+	require.True(t, on["anglais-aero"], "a forced-open single level is playable")
+
+	require.NoError(t, SetPackAccess(db, 1, anna, "anglais-aero", "anglais-aero", "auto", now))
+	player, err = PlayerFor(db, 1, anna, now)
+	require.NoError(t, err)
+	on = active(t, player)
+	require.True(t, on["anglais-aero"], "automatic returns to the one-level progression")
+}
+
 func TestPeoplePlayingPacksModuleByModuleGetTheirPacksTicked(t *testing.T) {
 	db := setup(t)
 	now := time.Now().UTC()
