@@ -413,6 +413,7 @@ export const RoutinesCard = () => {
                 setDraft({
                   ...routine,
                   choreIds: known(routine.choreIds),
+                  slotIds: routine.slotIds || routine.choreIds.map(() => ''),
                   dependencies: routine.dependencies || [],
                   optionalChoreIds: routine.optionalChoreIds || [],
                 })
