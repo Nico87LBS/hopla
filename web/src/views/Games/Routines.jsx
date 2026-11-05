@@ -123,18 +123,29 @@ export const RoutinesCard = () => {
   // A step whose task was deleted is left out.
   const known = ids => ids.filter(id => names.has(id))
   const offered = draft
-    ? routineTasks(chores, routines, draft.id).filter(chore => {
-        const selected = draft.choreIds
-          .map((id, index) => (id === chore.id ? index : -1))
-          .filter(index => index !== -1)
-        const slots = chore.frequencyMetadata?.slots || []
-        if (slots.length === 0) return selected.length === 0
-        const selectedSlots = selected.map(index => draft.slotIds?.[index] || '')
-        if (selectedSlots.includes('')) return false
-        return (chore.routineAvailableSlots || []).some(
-          slot => !selectedSlots.includes(slot.id),
-        )
-      })
+    ? routineTasks(chores, routines, draft.id)
+        .map(chore => {
+          const selected = draft.choreIds
+            .map((id, index) => (id === chore.id ? index : -1))
+            .filter(index => index !== -1)
+          const slots = chore.frequencyMetadata?.slots || []
+          if (slots.length === 0) return selected.length === 0 ? chore : null
+          const selectedSlots = selected.map(
+            index => draft.slotIds?.[index] || '',
+          )
+          if (selectedSlots.includes('')) return null
+          const availableSlots = (chore.routineAvailableSlots || []).filter(
+            slot => !selectedSlots.includes(slot.id),
+          )
+          if (availableSlots.length === 0) return null
+          return {
+            ...chore,
+            routineAvailableSlots: availableSlots,
+            routineCanUseAllSlots:
+              selected.length === 0 && chore.routineCanUseAllSlots,
+          }
+        })
+        .filter(Boolean)
     : []
   const liveOccurrences = todayRoutines.flatMap(routine =>
     (routine.members || [])
