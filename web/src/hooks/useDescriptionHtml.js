@@ -14,7 +14,9 @@ export const useDescriptionHtml = (html, meta = {}) => {
     setPatched(sanitizeRichTextHTML(html))
     if (!html || !html.includes('data-hopla-path')) return undefined
     patchDescriptionHtml(html, meta).then(result => {
-      if (!cancelled && result !== html) setPatched(sanitizeRichTextHTML(result))
+      if (!cancelled && result !== html) {
+        setPatched(sanitizeRichTextHTML(result))
+      }
     })
     return () => {
       cancelled = true
