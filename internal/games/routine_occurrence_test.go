@@ -183,3 +183,24 @@ func TestExternalRoutineSkipCanBeRestoredBeforeDependentStepPasses(t *testing.T)
 	},now.Add(5*time.Minute))
 	require.ErrorIs(t,err,ErrRoutineOccurrenceConflict,"do not roll back after a dependent step has passed")
 }
+
+
+func TestExternalRestoreCannotUndoAManualSkip(t *testing.T) {
+	db := setup(t)
+	now := noon(0)
+	task := chore(t, db, "Manteau", 1, now, assignedTo(2))
+	routine := Routine{FamilyID:1,Name:"Départ",ValidityMinutes:120,ChoreIDs:[]int{task.ID}}
+	require.NoError(t,SaveRoutine(db,&routine))
+	run,err:=StartRoutineOccurrence(db,1,routine.ID,2,now)
+	require.NoError(t,err)
+	itemID:=run.Items[0].ID
+	_,err=SkipRoutineOccurrenceItem(db,1,run.ID,RoutineOverrideInput{
+		ItemID:itemID,Source:"manual",Reason:"Décision du parent",
+	},now.Add(time.Minute))
+	require.NoError(t,err)
+	_,err=RestoreRoutineOccurrenceItem(db,1,run.ID,RoutineOverrideInput{
+		ItemID:itemID,Source:"external",Reason:"Météo modifiée",
+		ExternalReference:"home-assistant/manteau",IdempotencyKey:"restore-manual",
+	},now.Add(2*time.Minute))
+	require.ErrorIs(t,err,ErrRoutineOccurrenceConflict)
+}
