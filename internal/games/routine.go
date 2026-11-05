@@ -498,6 +498,19 @@ func RoutineViews(db *gorm.DB, familyID int, userIDs []int, now time.Time) ([]Ro
 			all = append(all, tasks[choreID]...)
 		}
 	}
+	if len(userIDs) > 0 {
+		var activeOccurrences []RoutineOccurrence
+		if err := db.Where("family_id = ? AND user_id IN ? AND status IN ? AND expires_at > ?",
+			familyID, userIDs, []RoutineOccurrenceStatus{RoutineOccurrenceActive, RoutineOccurrenceFinished}, now.UTC()).
+			Find(&activeOccurrences).Error; err != nil { return nil, err }
+		if len(activeOccurrences) > 0 {
+			occurrenceIDs := make([]int, 0, len(activeOccurrences))
+			for _, occurrence := range activeOccurrences { occurrenceIDs = append(occurrenceIDs, occurrence.ID) }
+			var occurrenceItems []RoutineOccurrenceItem
+			if err := db.Where("occurrence_id IN ?", occurrenceIDs).Find(&occurrenceItems).Error; err != nil { return nil, err }
+			for _, item := range occurrenceItems { all = append(all, item.ChoreID) }
+		}
+	}
 	day, err := loadRoutineDay(db, familyID, all, now)
 	if err != nil {
 		return nil, err
@@ -530,7 +543,9 @@ func RoutineViews(db *gorm.DB, familyID int, userIDs []int, now time.Time) ([]Ro
 			}
 			if run != nil {
 				progress = day.progressFromOccurrence(userID, run)
-				for _, item := range run.Items { view.TaskIDs[item.ChoreID] = true }
+				for _, item := range run.Items {
+					if !slices.Contains(view.TaskIDs, item.ChoreID) { view.TaskIDs = append(view.TaskIDs, item.ChoreID) }
+				}
 			}
 			if progress.Total > 0 {
 				view.Members = append(view.Members, progress)
