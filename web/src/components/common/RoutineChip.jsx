@@ -37,6 +37,8 @@ const RoutineChip = ({ chores, sx, userId }) => {
   const occurrenceItem = occurrence?.items?.find(
     item => item.choreId === selectedChoreId && item.available,
   )
+  const stepNumber = occurrenceItem ? occurrenceItem.position + 1 : progress.step
+  const stepTotal = occurrence ? occurrence.items.length : progress.total
   const skipStep = async () => {
     const response = await SkipRoutineOccurrenceItem(
       occurrence.id,
@@ -87,7 +89,7 @@ const RoutineChip = ({ chores, sx, userId }) => {
       </Box>
       {!nameOnly && (
         <span>
-          {t('routines.step', { step: progress.step, total: progress.total })}
+          {t('routines.step', { step: stepNumber, total: stepTotal })}
         </span>
       )}
       {occurrence?.status === 'active' && occurrenceItem && userId !== undefined && (
