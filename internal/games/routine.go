@@ -22,7 +22,7 @@ type Routine struct {
 	// ChoreIDs are the steps in order. A step stands for every task with the
 	// same name, so each child's copy of a task is the same step.
 	ChoreIDs  []int         `json:"choreIds" gorm:"-"`
-	Steps     []RoutineStep `json:"steps" gorm:"foreignKey:RoutineID"`
+	Steps     []RoutineStep `json:"-" gorm:"foreignKey:RoutineID"`
 	Dependencies []RoutineDependency `json:"dependencies" gorm:"-"`
 	GraphEnabled bool `json:"graphEnabled" gorm:"column:graph_enabled;not null;default:false"`
 	OptionalChoreIDs []int `json:"optionalChoreIds" gorm:"-"`
