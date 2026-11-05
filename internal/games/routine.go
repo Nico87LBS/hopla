@@ -68,6 +68,7 @@ type RoutineProgress struct {
 	Done     int  `json:"done"`
 	Total    int  `json:"total"`
 	Finished bool `json:"finished"`
+	Occurrence *RoutineOccurrence `json:"occurrence,omitempty"`
 }
 
 // RoutineView is a routine with every task it covers and each member's
@@ -347,6 +348,34 @@ func (day *routineDay) progressOf(userID int, steps [][]int) RoutineProgress {
 	return progress
 }
 
+
+func (day *routineDay) progressFromOccurrence(userID int, steps [][]int, run *RoutineOccurrence) RoutineProgress {
+	progress := RoutineProgress{UserID:userID, Available:[]int{}, Occurrence:run}
+	for _, item := range run.Items {
+		if item.Required && item.Status != RoutineOccurrenceItemNotApplicable {
+			progress.Total++
+			if item.Status == RoutineOccurrenceItemCompleted || item.Status == RoutineOccurrenceItemSkipped { progress.Done++ }
+		}
+		if !item.Available { continue }
+		position := item.Position
+		if position < 0 || position >= len(steps) { continue }
+		for _, choreID := range steps[position] {
+			chore := day.chores[choreID]
+			if chore == nil || !slices.Contains(membersNow(chore), userID) || Paused(chore, day.away) ||
+				chore.NextDueDate == nil || chore.NextDueDate.After(run.ExpiresAt) { continue }
+			progress.Available = append(progress.Available, choreID)
+		}
+	}
+	if len(progress.Available) > 0 {
+		progress.Current = &progress.Available[0]
+		for position, ids := range steps {
+			if slices.Contains(ids, *progress.Current) { progress.Step = position+1; break }
+		}
+	}
+	progress.Finished = run.Status == RoutineOccurrenceFinished || (progress.Total > 0 && progress.Done == progress.Total)
+	return progress
+}
+
 // RoutineViews returns the family's routines with the given members'
 // progress today.
 func RoutineViews(db *gorm.DB, familyID int, userIDs []int, now time.Time) ([]RoutineView, error) {
@@ -377,7 +406,13 @@ func RoutineViews(db *gorm.DB, familyID int, userIDs []int, now time.Time) ([]Ro
 			view.TaskIDs = append(view.TaskIDs, ids...)
 		}
 		for _, userID := range userIDs {
-			if progress := day.progressOfGraph(userID, steps[i], routine); progress.Total > 0 {
+			progress := day.progressOfGraph(userID, steps[i], routine)
+			if progress.Total > 0 && !progress.Finished {
+				run, err := StartRoutineOccurrence(db, familyID, routine.ID, userID, now)
+				if err != nil { return nil, err }
+				progress = day.progressFromOccurrence(userID, steps[i], run)
+			}
+			if progress.Total > 0 {
 				view.Members = append(view.Members, progress)
 			}
 		}
