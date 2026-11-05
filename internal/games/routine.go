@@ -354,10 +354,18 @@ func loadRoutineDay(db *gorm.DB, familyID int, taskIDs []int, now time.Time) (*r
 			day.doneBy[row.CompletedBy] = map[int]bool{}
 		}
 		day.doneBy[row.CompletedBy][row.ChoreID] = true
-		if row.SlotID != nil && *row.SlotID != "" {
+		slotID := ""
+		if row.SlotID != nil { slotID = *row.SlotID }
+		if slotID == "" && row.Slot != nil {
+			if chore := day.chores[row.ChoreID]; chore != nil && chore.FrequencyMetadataV2 != nil &&
+				*row.Slot >= 0 && *row.Slot < len(chore.FrequencyMetadataV2.Slots) {
+				slotID = chore.FrequencyMetadataV2.Slots[*row.Slot].ID
+			}
+		}
+		if slotID != "" {
 			if day.doneSlotsBy[row.CompletedBy] == nil { day.doneSlotsBy[row.CompletedBy] = map[int]map[string]bool{} }
 			if day.doneSlotsBy[row.CompletedBy][row.ChoreID] == nil { day.doneSlotsBy[row.CompletedBy][row.ChoreID] = map[string]bool{} }
-			day.doneSlotsBy[row.CompletedBy][row.ChoreID][*row.SlotID] = true
+			day.doneSlotsBy[row.CompletedBy][row.ChoreID][slotID] = true
 		}
 	}
 	away, err := AwayMembers(db, familyID)
@@ -541,9 +549,18 @@ func awardRoutines(tx *gorm.DB, familyID, userID int, performedAt, now time.Time
 	completedSlots := make(map[int]map[string]bool)
 	for _, history := range completed {
 		completedIDs[history.ChoreID] = true
-		if history.SlotID != nil && *history.SlotID != "" {
+		slotID := ""
+		if history.SlotID != nil { slotID = *history.SlotID }
+		if slotID == "" && history.Slot != nil {
+			var chore chModel.Chore
+			if err := tx.Select("id", "frequency_meta_v2").First(&chore, history.ChoreID).Error; err != nil { return err }
+			if chore.FrequencyMetadataV2 != nil && *history.Slot >= 0 && *history.Slot < len(chore.FrequencyMetadataV2.Slots) {
+				slotID = chore.FrequencyMetadataV2.Slots[*history.Slot].ID
+			}
+		}
+		if slotID != "" {
 			if completedSlots[history.ChoreID] == nil { completedSlots[history.ChoreID] = map[string]bool{} }
-			completedSlots[history.ChoreID][*history.SlotID] = true
+			completedSlots[history.ChoreID][slotID] = true
 		}
 	}
 
