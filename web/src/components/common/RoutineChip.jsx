@@ -28,12 +28,14 @@ const RoutineChip = ({ chores, sx, userId }) => {
       item => item.choreId === chores[index].id && item.available,
     ),
   )
-  const [step] = stepWithOccurrenceItem ? [stepWithOccurrenceItem] : steps
-  const { progress, routine } = step
+  const stepIndex = stepWithOccurrenceItem
+    ? steps.indexOf(stepWithOccurrenceItem)
+    : 0
+  const { progress, routine } = steps[stepIndex]
+  const selectedChoreId = chores[stepIndex]?.id
   const occurrence = progress.occurrence
   const occurrenceItem = occurrence?.items?.find(
-    item => item.choreId === chores.find(chore => chore.id === item.choreId)?.id &&
-      item.available,
+    item => item.choreId === selectedChoreId && item.available,
   )
   const skipStep = async () => {
     const response = await SkipRoutineOccurrenceItem(
