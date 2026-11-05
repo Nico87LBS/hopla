@@ -59,6 +59,7 @@ var saved = []table{
 	{"routine_wins", byRoutine},
 	{"routine_occurrences", byFamily},
 	{"routine_occurrence_items", byFamily},
+	{"routine_occurrence_dependencies", byFamily},
 	{"routine_overrides", byFamily},
 	{"learn_modules", byFamily},
 	{"learn_activations", byFamily},
