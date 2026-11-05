@@ -1021,10 +1021,14 @@ const ModuleGroup = ({
         p => p.userId === person.userId && p.pack === group.pack.id,
       )
     : null
-  const asideKeys = new Set((member?.excluded || []).filter(key => !key.startsWith('force-open:')))
-  const forcedKeys = new Set((member?.excluded || [])
-    .filter(key => key.startsWith('force-open:'))
-    .map(key => key.slice('force-open:'.length)))
+  const asideKeys = new Set(
+    (member?.excluded || []).filter(key => !key.startsWith('force-open:')),
+  )
+  const forcedKeys = new Set(
+    (member?.excluded || [])
+      .filter(key => key.startsWith('force-open:'))
+      .map(key => key.slice('force-open:'.length)),
+  )
   const tiers = (group.tiers || []).filter(level => level.pack)
   const onAside = (key, aside) =>
     run(
