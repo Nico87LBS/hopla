@@ -153,11 +153,13 @@ func StartRoutineOccurrence(db *gorm.DB, familyID, routineID, userID int, now ti
 			var copies []*chModel.Chore
 			if err := tx.Preload("Assignees").Where("id IN ? AND is_active = ?", ids, true).Find(&copies).Error; err != nil { return err }
 			applicable := false
+			memberChoreID := step.ChoreID
 			for _, chore := range copies {
 				due := chore.NextDueDate != nil && !chore.NextDueDate.After(run.ExpiresAt)
 				if step.SlotID != "" { due = routineSlotDue(chore, step.SlotID, now.In(zone.Of(familyID)), run.ExpiresAt.In(zone.Of(familyID))) }
 				if due && slices.Contains(membersNow(chore), userID) && !Paused(chore, away) {
 					applicable = true
+					memberChoreID = chore.ID
 					break
 				}
 			}
@@ -170,7 +172,7 @@ func StartRoutineOccurrence(db *gorm.DB, familyID, routineID, userID int, now ti
 			}
 			items = append(items, RoutineOccurrenceItem{
 				FamilyID: familyID, OccurrenceID: run.ID, StepID: step.ID, Position: step.Position,
-				ChoreID: step.ChoreID, SlotID: step.SlotID, Required: required,
+				ChoreID: memberChoreID, SlotID: step.SlotID, Required: required,
 				Status: status, UpdatedAt: now.UTC(),
 			})
 		}
