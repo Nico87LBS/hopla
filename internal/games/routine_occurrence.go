@@ -176,15 +176,12 @@ func StartRoutineOccurrence(db *gorm.DB, familyID, routineID, userID int, now ti
 			if err := tx.Preload("Assignees").Where("id IN ? AND is_active = ?", ids, true).Find(&copies).Error; err != nil { return err }
 			applicable := false
 			memberChoreID := step.ChoreID
-			memberChoreName := ""
-			if len(copies) > 0 { memberChoreName = copies[0].Name }
 			for _, chore := range copies {
 				due := chore.NextDueDate != nil && !chore.NextDueDate.After(run.ExpiresAt)
 				if step.SlotID != "" { due = routineSlotDue(chore, step.SlotID, now.In(zone.Of(familyID)), run.ExpiresAt.In(zone.Of(familyID))) }
 				if due && slices.Contains(membersNow(chore), userID) && !Paused(chore, away) {
 					applicable = true
 					memberChoreID = chore.ID
-					memberChoreName = chore.Name
 					break
 				}
 			}
