@@ -15,6 +15,11 @@ const safeUrl = (value, tag, attribute) => {
   }
   try {
     const parsed = new URL(trimmed, window.location.origin)
+    if (
+      parsed.protocol === 'blob:' &&
+      attribute === 'src' &&
+      parsed.origin === window.location.origin
+    ) return true
     if (!['http:', 'https:', 'mailto:'].includes(parsed.protocol)) return false
     if (attribute === 'src' && parsed.origin !== window.location.origin) return false
     return tag === 'A' || (tag === 'IMG' && attribute === 'src')
