@@ -61,6 +61,7 @@ func Migration(db *gorm.DB) error {
 		games.RoutineWin{},
 		games.RoutineOccurrence{},
 		games.RoutineOccurrenceItem{},
+		games.RoutineOccurrenceDependency{},
 		games.RoutineOverride{},
 		learn.Module{},
 		learn.Activation{},
