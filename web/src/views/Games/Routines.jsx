@@ -296,7 +296,6 @@ export const RoutinesCard = () => {
           <Typography level='body-xs' sx={{ color: 'text.tertiary' }}>
             {t('routines.help')}
             {t('routines.validityHelp')}
-            {t('routines.validityHelp')}
           </Typography>
           <Stack direction='row' gap={1}>
             <Button
