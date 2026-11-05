@@ -210,7 +210,7 @@ func SkipRoutineOccurrenceItem(db *gorm.DB, familyID, occurrenceID int, input Ro
 	input.IdempotencyKey = strings.TrimSpace(input.IdempotencyKey)
 	if input.ItemID <= 0 || (input.Source != "manual" && input.Source != "external") ||
 		len(input.Reason) > 300 || len(input.ExternalReference) > 160 ||
-		(input.Source == "external" && (input.ExternalReference == "" || input.IdempotencyKey == "")) ||
+		(input.Source == "external" && (input.ExternalReference == "" || input.IdempotencyKey == "" || input.ExpiresAt == nil)) ||
 		(input.ExpiresAt != nil && (!input.ExpiresAt.After(now) || input.ExpiresAt.After(now.Add(48*time.Hour)))) {
 		return nil, ErrRoutineOccurrenceInvalid
 	}
