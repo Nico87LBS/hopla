@@ -626,7 +626,7 @@ func awardRoutines(tx *gorm.DB, familyID, userID int, performedAt, now time.Time
 		// create an occurrence while retaining a legacy completion from earlier
 		// in the same day. Pay that legacy win once; settleRoutineOccurrence
 		// sees the RoutineWin and suppresses a duplicate occurrence bonus.
-		if slices.Contains(knownRoutineIDs, view.ID) || view.Bonus <= 0 || len(view.Members) == 0 || !view.Members[0].Finished {
+		if slices.Contains(knownRoutineIDs, view.ID) || view.Bonus <= 0 || len(view.Members) == 0 || !view.Members[0].Finished || (view.Members[0].Occurrence != nil && view.Members[0].Occurrence.BonusPaid) {
 			continue
 		}
 		result := tx.Clauses(clause.OnConflict{DoNothing: true}).
