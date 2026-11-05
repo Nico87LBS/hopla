@@ -322,3 +322,46 @@ func TestRoutineStartsAnOccurrenceForRemainingOptionalSteps(t *testing.T) {
 	require.NoError(t,db.Where("user_id = 2").First(&member).Error)
 	require.Equal(t,2,member.Points,"starting the occurrence must not pay the legacy reward twice")
 }
+
+
+func TestTemporaryExternalSkipDoesNotFinishOrPayUntilItExpires(t *testing.T) {
+	db := setup(t)
+	now := noon(0)
+	task := chore(t, db, "Mettre le manteau", 1, now, assignedTo(2))
+	routine := Routine{FamilyID: 1, Name: "Départ", Bonus: 9, ValidityMinutes: 120, ChoreIDs: []int{task.ID}}
+	require.NoError(t, SaveRoutine(db, &routine))
+	run, err := StartRoutineOccurrence(db, 1, routine.ID, 2, now)
+	require.NoError(t, err)
+
+	overrideExpiry := now.Add(15 * time.Minute)
+	_, err = SkipRoutineOccurrenceItem(db, 1, run.ID, RoutineOverrideInput{
+		ItemID: run.Items[0].ID,
+		Source: "external",
+		Reason: "Condition météo temporaire",
+		ExternalReference: "home-assistant/manteau",
+		IdempotencyKey: "weather-temporary-1",
+		ExpiresAt: &overrideExpiry,
+	}, now.Add(time.Minute))
+	require.NoError(t, err)
+
+	pendingReward, err := GetRoutineOccurrence(db, 1, run.ID, now.Add(2*time.Minute))
+	require.NoError(t, err)
+	require.Equal(t, RoutineOccurrenceActive, pendingReward.Status)
+	require.False(t, pendingReward.BonusPaid)
+
+	restored, err := GetRoutineOccurrence(db, 1, run.ID, overrideExpiry.Add(time.Minute))
+	require.NoError(t, err)
+	require.Equal(t, RoutineOccurrenceActive, restored.Status)
+	require.Equal(t, RoutineOccurrenceItemPending, restored.Items[0].Status)
+	require.False(t, restored.BonusPaid)
+
+	done(t, db, task.ID, 2, overrideExpiry.Add(2*time.Minute))
+	require.NoError(t, AfterTask(db, 1, 2, overrideExpiry.Add(2*time.Minute), overrideExpiry.Add(2*time.Minute)))
+	finished, err := GetRoutineOccurrence(db, 1, run.ID, overrideExpiry.Add(2*time.Minute))
+	require.NoError(t, err)
+	require.Equal(t, RoutineOccurrenceFinished, finished.Status)
+	require.True(t, finished.BonusPaid)
+	var member fModel.UserFamily
+	require.NoError(t, db.Where("user_id = ?", 2).First(&member).Error)
+	require.Equal(t, 9, member.Points)
+}
