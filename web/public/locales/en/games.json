@@ -249,6 +249,16 @@
       "skipped": "Skipped",
       "not_applicable": "Not applicable"
     },
-    "validityHelp": "A run can cross midnight and expires after this time (12 hours by default; up to 48 hours)."
+    "validityHelp": "A run can cross midnight and expires after this time (12 hours by default; up to 48 hours).",
+    "stepsTitle": "Routine steps",
+    "advancedSettings": "Advanced settings",
+    "prerequisites": "Prerequisites",
+    "noPrerequisite": "No prerequisites",
+    "required": "Required",
+    "stepSubtitle": "Routine step",
+    "makeRequired": "Make required",
+    "makeOptional": "Make optional",
+    "optionalHelp": "This step can be skipped without preventing the routine from being completed.",
+    "requiredHelp": "This step must be completed for the routine to be completed."
   }
 }
