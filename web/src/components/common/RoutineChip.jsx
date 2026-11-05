@@ -22,12 +22,18 @@ const RoutineChip = ({ chores, sx, userId }) => {
     .map(chore => routineStepOf(routines, chore, userId))
     .filter(Boolean)
   if (steps.length === 0) return null
-  const [step] = steps
   const nameOnly = chores.length > 1
+  const stepWithOccurrenceItem = steps.find(({ progress }, index) =>
+    progress.occurrence?.items?.some(
+      item => item.choreId === chores[index].id && item.available,
+    ),
+  )
+  const [step] = stepWithOccurrenceItem ? [stepWithOccurrenceItem] : steps
   const { progress, routine } = step
   const occurrence = progress.occurrence
   const occurrenceItem = occurrence?.items?.find(
-    item => item.position === progress.step - 1 && item.available,
+    item => item.choreId === chores.find(chore => chore.id === item.choreId)?.id &&
+      item.available,
   )
   const skipStep = async () => {
     const response = await SkipRoutineOccurrenceItem(
@@ -82,7 +88,7 @@ const RoutineChip = ({ chores, sx, userId }) => {
           {t('routines.step', { step: progress.step, total: progress.total })}
         </span>
       )}
-      {occurrence?.status === 'active' && occurrenceItem && (
+      {occurrence?.status === 'active' && occurrenceItem && (!nameOnly || userId !== undefined) && (
         <IconButton
           size='sm'
           variant='plain'
