@@ -361,3 +361,16 @@ func TestCannotDeleteASlotReferencedByARoutine(t *testing.T) {
 	err := repository.UpdateChoreVisibility(context.Background(), &updated, []int{2})
 	require.ErrorIs(t, err, chRepo.ErrRoutineSlotInUse)
 }
+
+
+func TestEnsureHistorySlotIDsBackfillsLegacySlotIndexes(t *testing.T) {
+	_, db, chore := newSlotTestRouter(t)
+	index := 1
+	history := chModel.ChoreHistory{ChoreID:chore.ID,Slot:&index}
+	require.NoError(t,db.Create(&history).Error)
+	require.NoError(t,chModel.EnsureHistorySlotIDs(db))
+	var stored chModel.ChoreHistory
+	require.NoError(t,db.First(&stored,history.ID).Error)
+	require.NotNil(t,stored.SlotID)
+	require.Equal(t,chore.FrequencyMetadataV2.Slots[index].ID,*stored.SlotID)
+}
