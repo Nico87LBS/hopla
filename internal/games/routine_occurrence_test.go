@@ -241,3 +241,29 @@ func TestOccurrenceKeepsItsDependencySnapshotWhenRoutineIsEdited(t *testing.T) {
 	require.True(t,reloaded.Items[0].Available)
 	require.False(t,reloaded.Items[1].Available,"editing the routine must not unlock an in-progress occurrence")
 }
+
+
+func TestOccurrenceKeepsItsFinalRewardWhenRoutineIsEdited(t *testing.T) {
+	db:=setup(t)
+	now:=noon(0)
+	task:=chore(t,db,"Ranger les chaussures",1,now,assignedTo(2))
+	routine:=Routine{FamilyID:1,Name:"Départ",Bonus:3,ValidityMinutes:120,ChoreIDs:[]int{task.ID}}
+	require.NoError(t,SaveRoutine(db,&routine))
+	run,err:=StartRoutineOccurrence(db,1,routine.ID,2,now)
+	require.NoError(t,err)
+	stored,err:=Routines(db,1)
+	require.NoError(t,err)
+	edited:=stored[0]
+	edited.Bonus=10
+	require.NoError(t,SaveRoutine(db,&edited))
+
+	require.NoError(t,done(db,task.ID,2,now))
+	require.NoError(t,AfterTask(db,1,2,now,now))
+	updated,err:=GetRoutineOccurrence(db,1,run.ID,now)
+	require.NoError(t,err)
+	require.Equal(t,3,updated.Bonus)
+	require.True(t,updated.BonusPaid)
+	var member fModel.UserFamily
+	require.NoError(t,db.Where("user_id = 2").First(&member).Error)
+	require.Equal(t,3,member.Points,"the in-flight occurrence pays its snapshotted bonus")
+}
