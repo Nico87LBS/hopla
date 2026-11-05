@@ -827,6 +827,7 @@ const LevelRow = ({
         <Slot>
           <Select
             size='sm'
+            disabled={!member}
             value={access}
             onChange={(e, value) => value && onAccess(level.id, value)}
             slotProps={{
@@ -1103,7 +1104,12 @@ const ModuleGroup = ({
   const moduleOpen = module => {
     if (!group.pack) return true
     const section = levelOf.get(module.id)
-    return !!member && (!section || (section.access === 'open' || (section.open && !section.aside)))
+    return (
+      !!member &&
+      (!section ||
+        section.access === 'open' ||
+        (section.open && !section.aside))
+    )
   }
   const placedIn = new Set(
     (placement?.opened || []).map(chapter => chapter.split('/')[0]),
@@ -1367,7 +1373,7 @@ const ModuleGroup = ({
                   section={section}
                   baseline={line}
                   onSettings={onPackSettings}
-                  onAside={onAside}
+                  onAccess={onAccess}
                 />
                 {section.modules.map(module =>
                   renderModule(module, section.line),
