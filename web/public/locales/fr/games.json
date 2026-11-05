@@ -249,6 +249,16 @@
       "skipped": "Ignorée",
       "not_applicable": "Non concernée"
     },
-    "validityHelp": "Une routine peut passer minuit et expire après cette durée (12 heures par défaut, jusqu’à 48 heures)."
+    "validityHelp": "Une routine peut passer minuit et expire après cette durée (12 heures par défaut, jusqu’à 48 heures).",
+    "stepsTitle": "Les étapes de votre routine",
+    "advancedSettings": "Réglages avancés",
+    "prerequisites": "Prérequis",
+    "noPrerequisite": "Aucun prérequis",
+    "required": "Obligatoire",
+    "stepSubtitle": "Étape de la routine",
+    "makeRequired": "Rendre obligatoire",
+    "makeOptional": "Rendre facultative",
+    "optionalHelp": "Cette étape peut être ignorée sans bloquer la réussite de la routine.",
+    "requiredHelp": "Cette étape doit être terminée pour valider la routine."
   }
 }
