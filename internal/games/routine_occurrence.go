@@ -290,6 +290,12 @@ func SkipRoutineOccurrenceItem(db *gorm.DB, familyID, occurrenceID int, input Ro
 		if item.Status == RoutineOccurrenceItemCompleted || item.Status == RoutineOccurrenceItemNotApplicable {
 			return ErrRoutineOccurrenceConflict
 		}
+		if item.Status == RoutineOccurrenceItemSkipped {
+			var latest RoutineOverride
+			if err := tx.Where("occurrence_id = ? AND item_id = ?", occurrenceID, item.ID).Order("created_at DESC").First(&latest).Error; err == nil {
+				if input.Source == "external" && latest.Source == "manual" { return ErrRoutineOccurrenceConflict }
+			} else if !errors.Is(err, gorm.ErrRecordNotFound) { return err }
+		}
 		if item.Status != RoutineOccurrenceItemSkipped {
 			if err := tx.Model(&item).Updates(map[string]any{"status":RoutineOccurrenceItemSkipped,"updated_at":now.UTC()}).Error; err != nil { return err }
 		}
@@ -360,7 +366,7 @@ func RestoreRoutineOccurrenceItem(db *gorm.DB, familyID, occurrenceID int, input
 		}
 		if completed > 0 { return ErrRoutineOccurrenceConflict }
 		if err := tx.Model(&item).Updates(map[string]any{"status":RoutineOccurrenceItemPending,"updated_at":now.UTC()}).Error; err != nil { return err }
-		if err := tx.Model(&latest).Update("revoked_at", now.UTC()).Error; err != nil { return err }
+		if err := tx.Model(&RoutineOverride{}).Where("occurrence_id = ? AND item_id = ? AND source = ? AND action = ? AND revoked_at IS NULL", occurrenceID, item.ID, "external", "skip").Update("revoked_at", now.UTC()).Error; err != nil { return err }
 		key := input.IdempotencyKey
 		override := RoutineOverride{
 			FamilyID:familyID, OccurrenceID:occurrenceID, ItemID:item.ID,
