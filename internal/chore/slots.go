@@ -57,8 +57,15 @@ func normalizeSlots(frequencyType chModel.FrequencyType, metadata *chModel.Frequ
 		return fmt.Errorf("a task has at most %d slots", maxSlots)
 	}
 	seen := map[string]bool{}
+	seenIDs := map[string]bool{}
 	for i := range metadata.Slots {
 		slot := &metadata.Slots[i]
+		if slot.ID == "" || seenIDs[slot.ID] {
+			id, err := chModel.NewSlotID()
+			if err != nil { return err }
+			slot.ID = id
+		}
+		seenIDs[slot.ID] = true
 		hour, minute, err := parseSlotTime(slot.Time)
 		if err != nil {
 			return err
@@ -120,7 +127,7 @@ func slotWindows(chore *chModel.Chore, day time.Time) []chModel.SlotStatus {
 		} else if previous := windows[len(windows)-1].At; opens.Before(previous.Add(at.Sub(previous) / 2)) {
 			opens = previous.Add(at.Sub(previous) / 2)
 		}
-		windows = append(windows, chModel.SlotStatus{Index: i, Name: slot.Name, Time: slot.Time, At: at, OpensAt: opens, ClosesAt: next})
+		windows = append(windows, chModel.SlotStatus{Index: i, SlotID: slot.ID, Name: slot.Name, Time: slot.Time, At: at, OpensAt: opens, ClosesAt: next})
 	}
 	for i := 0; i+1 < len(windows); i++ {
 		windows[i].ClosesAt = windows[i+1].OpensAt
@@ -136,7 +143,7 @@ func slotStatuses(ctx context.Context, chore *chModel.Chore, history []*chModel.
 	statuses := slotWindows(chore, day)
 	for i := range statuses {
 		status := &statuses[i]
-		if entry := slotEntry(history, status.Index, day); entry != nil {
+		if entry := slotEntry(history, status.Index, status.SlotID, day); entry != nil {
 			id, by := entry.ID, entry.CompletedBy
 			status.HistoryID, status.CompletedBy = &id, &by
 			if entry.Status == chModel.ChoreHistoryStatusPendingApproval {
@@ -160,11 +167,14 @@ func slotStatuses(ctx context.Context, chore *chModel.Chore, history []*chModel.
 
 // slotEntry returns the newest completion of a slot on the given day, done
 // or waiting for a parent; a rejected one leaves the slot to do again.
-func slotEntry(history []*chModel.ChoreHistory, index int, day time.Time) *chModel.ChoreHistory {
+func slotEntry(history []*chModel.ChoreHistory, index int, slotID string, day time.Time) *chModel.ChoreHistory {
 	var found *chModel.ChoreHistory
 	next := day.AddDate(0, 0, 1)
 	for _, entry := range history {
-		if entry.Slot == nil || *entry.Slot != index || entry.DueDate == nil {
+		if entry.DueDate == nil { continue }
+		if entry.SlotID != nil {
+			if *entry.SlotID != slotID { continue }
+		} else if entry.Slot == nil || *entry.Slot != index {
 			continue
 		}
 		if entry.Status != chModel.ChoreHistoryStatusCompleted && entry.Status != chModel.ChoreHistoryStatusPendingApproval {
