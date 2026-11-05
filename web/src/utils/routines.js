@@ -72,7 +72,9 @@ export const routineTasks = (chores, routines, editingId) => {
       if (used.has('*')) return null
       const slots = chore.frequencyMetadata?.slots || []
       if (slots.length) {
-        const availableSlots = slots.filter(slot => slot.id && !used.has(slot.id))
+        const availableSlots = slots.filter(
+          slot => slot.id && !used.has(slot.id),
+        )
         if (availableSlots.length === 0) return null
         return {
           ...chore,
