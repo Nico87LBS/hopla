@@ -43,8 +43,8 @@ func (day *routineDay) progressOfGraph(userID int, steps [][]int, routine Routin
 		}
 	}
 
-	for position, taskID := range todos {
-		if RoutineItemAvailable(position, routine.Dependencies, policies, states) {
+	for position := 1; position <= len(steps); position++ {
+		if taskID, ok := todos[position]; ok && RoutineItemAvailable(position, routine.Dependencies, policies, states) {
 			progress.Available = append(progress.Available, taskID)
 		}
 	}
