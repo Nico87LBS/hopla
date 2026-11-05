@@ -776,13 +776,14 @@ FirstNameCard.propTypes = {
 const LevelRow = ({
   baseline,
   group,
-  onAside,
+  member,
+  onAccess,
   onSettings,
   person,
   section,
 }) => {
   const { t } = useTranslation('learn')
-  const { aside, level, line, open } = section
+  const { access, level, line, open } = section
   // Only what is set on the level for the person or the family, other
   // than on its pack.
   const chips = CHIPS.filter(
@@ -825,17 +826,25 @@ const LevelRow = ({
           </IconButton>
         </Slot>
         <Slot>
-          <Switch
-            checked={open && !aside}
-            disabled={!open}
-            onChange={e => onAside(level.id, !e.target.checked)}
+          <Select
+            size='sm'
+            disabled={!member}
+            value={access}
+            onChange={(_, value) => value && onAccess(level.id, value)}
             slotProps={{
-              input: { 'aria-label': `${level.name} · ${person.displayName}` },
+              button: {
+                'aria-label': `${level.name} · ${person.displayName}`,
+              },
             }}
-          />
+            sx={{ minWidth: 154 }}
+          >
+            <Option value='auto'>{t('manage.accessAuto')}</Option>
+            <Option value='open'>{t('manage.accessOpen')}</Option>
+            <Option value='locked'>{t('manage.accessLocked')}</Option>
+          </Select>
         </Slot>
       </Stack>
-      {!open && (
+      {!open && access === 'auto' && (
         <Typography level='body-xs' sx={{ color: 'text.tertiary', pl: 4 }}>
           {t('manage.levelClosed')}
         </Typography>
@@ -859,10 +868,11 @@ const LevelRow = ({
 }
 
 LevelRow.propTypes = {
-  onAside: PropTypes.func.isRequired,
+  onAccess: PropTypes.func.isRequired,
   baseline: PropTypes.object,
   group: PropTypes.object.isRequired,
   onSettings: PropTypes.func.isRequired,
+  member: PropTypes.object,
   person: PropTypes.object.isRequired,
   section: PropTypes.object.isRequired,
 }
@@ -1011,7 +1021,14 @@ const ModuleGroup = ({
         p => p.userId === person.userId && p.pack === group.pack.id,
       )
     : null
-  const asideKeys = new Set(member?.excluded || [])
+  const asideKeys = new Set(
+    (member?.excluded || []).filter(key => !key.startsWith('force-open:')),
+  )
+  const forcedKeys = new Set(
+    (member?.excluded || [])
+      .filter(key => key.startsWith('force-open:'))
+      .map(key => key.slice('force-open:'.length)),
+  )
   const tiers = (group.tiers || []).filter(level => level.pack)
   const onAside = (key, aside) =>
     run(
@@ -1020,6 +1037,15 @@ const ModuleGroup = ({
         pack: group.pack.id,
         key,
         aside,
+      }),
+    )
+  const onAccess = (key, mode) =>
+    run(
+      setAside.mutateAsync({
+        userId: person.userId,
+        pack: group.pack.id,
+        key,
+        mode,
       }),
     )
 
@@ -1069,7 +1095,12 @@ const ModuleGroup = ({
   }
   sections.forEach(section => {
     section.open = levelOpen(section.level.id)
-    section.aside = asideKeys.has(section.level.id)
+    section.access = forcedKeys.has(section.level.id)
+      ? 'open'
+      : asideKeys.has(section.level.id)
+        ? 'locked'
+        : 'auto'
+    section.aside = section.access === 'locked'
   })
   // moduleOpen tells whether a module of the pack can be played: its
   // level open and not set aside.
@@ -1079,7 +1110,12 @@ const ModuleGroup = ({
   const moduleOpen = module => {
     if (!group.pack) return true
     const section = levelOf.get(module.id)
-    return !!member && (!section || (section.open && !section.aside))
+    return (
+      !!member &&
+      (!section ||
+        section.access === 'open' ||
+        (section.open && !section.aside))
+    )
   }
   const placedIn = new Set(
     (placement?.opened || []).map(chapter => chapter.split('/')[0]),
@@ -1340,10 +1376,11 @@ const ModuleGroup = ({
                 <LevelRow
                   group={group}
                   person={person}
+                  member={member}
                   section={section}
                   baseline={line}
                   onSettings={onPackSettings}
-                  onAside={onAside}
+                  onAccess={onAccess}
                 />
                 {section.modules.map(module =>
                   renderModule(module, section.line),
