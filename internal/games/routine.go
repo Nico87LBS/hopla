@@ -572,34 +572,32 @@ func awardRoutines(tx *gorm.DB, familyID, userID int, performedAt, now time.Time
 		Distinct("routine_id").Pluck("routine_id", &knownRoutineIDs).Error; err != nil {
 		return err
 	}
-	var completed []chModel.ChoreHistory
-	if err := tx.Where("completed_by = ? AND performed_at = ? AND status = ?",
-		userID, performedAt, chModel.ChoreHistoryStatusCompleted).Find(&completed).Error; err != nil {
-		return err
-	}
-	completedIDs := make(map[int]bool, len(completed))
-	completedSlots := make(map[int]map[string]bool)
-	for _, history := range completed {
-		completedIDs[history.ChoreID] = true
-		slotID := ""
-		if history.SlotID != nil { slotID = *history.SlotID }
-		if slotID == "" && history.Slot != nil {
-			var chore chModel.Chore
-			if err := tx.Select("id", "frequency_meta_v2").First(&chore, history.ChoreID).Error; err != nil { return err }
-			if chore.FrequencyMetadataV2 != nil && *history.Slot >= 0 && *history.Slot < len(chore.FrequencyMetadataV2.Slots) {
-				slotID = chore.FrequencyMetadataV2.Slots[*history.Slot].ID
-			}
-		}
-		if slotID != "" {
-			if completedSlots[history.ChoreID] == nil { completedSlots[history.ChoreID] = map[string]bool{} }
-			completedSlots[history.ChoreID][slotID] = true
-		}
-	}
-
 	var runs []RoutineOccurrence
 	if err := tx.Where("family_id = ? AND user_id = ? AND status IN ? AND started_at <= ? AND expires_at > ?",
 		familyID, userID, []RoutineOccurrenceStatus{RoutineOccurrenceActive, RoutineOccurrenceFinished}, performedAt.UTC(), performedAt.UTC()).Find(&runs).Error; err != nil {
 		return err
+	}
+	// Read all completions in the live occurrence window. Equality on a
+	// timestamp is brittle across SQL drivers and precision conversions.
+	completedIDs := make(map[int]bool)
+	completedSlots := make(map[int]map[string]bool)
+	if len(runs) > 0 {
+		earliest := runs[0].StartedAt
+		for _, run := range runs { if run.StartedAt.Before(earliest) { earliest = run.StartedAt } }
+		var completed []chModel.ChoreHistory
+		if err := tx.Where("completed_by = ? AND performed_at >= ? AND performed_at <= ? AND status = ?",
+			userID, earliest, performedAt, chModel.ChoreHistoryStatusCompleted).Find(&completed).Error; err != nil { return err }
+		for _, history := range completed {
+			completedIDs[history.ChoreID] = true
+			slotID := ""
+			if history.SlotID != nil { slotID = *history.SlotID }
+			if slotID == "" && history.Slot != nil {
+				var chore chModel.Chore
+				if err := tx.Select("id", "frequency_meta_v2").First(&chore, history.ChoreID).Error; err != nil { return err }
+				if chore.FrequencyMetadataV2 != nil && *history.Slot >= 0 && *history.Slot < len(chore.FrequencyMetadataV2.Slots) { slotID = chore.FrequencyMetadataV2.Slots[*history.Slot].ID }
+			}
+			if slotID != "" { if completedSlots[history.ChoreID] == nil { completedSlots[history.ChoreID] = map[string]bool{} }; completedSlots[history.ChoreID][slotID] = true }
+		}
 	}
 	for i := range runs {
 		run := &runs[i]
@@ -628,7 +626,7 @@ func awardRoutines(tx *gorm.DB, familyID, userID int, performedAt, now time.Time
 		// create an occurrence while retaining a legacy completion from earlier
 		// in the same day. Pay that legacy win once; settleRoutineOccurrence
 		// sees the RoutineWin and suppresses a duplicate occurrence bonus.
-		if slices.Contains(knownRoutineIDs, view.ID) || view.Bonus <= 0 || len(view.Members) == 0 || !view.Members[0].Finished {
+		if slices.Contains(knownRoutineIDs, view.ID) || view.Bonus <= 0 || len(view.Members) == 0 || !view.Members[0].Finished || view.Members[0].Occurrence != nil {
 			continue
 		}
 		result := tx.Clauses(clause.OnConflict{DoNothing: true}).

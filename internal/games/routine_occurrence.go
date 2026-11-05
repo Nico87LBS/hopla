@@ -207,6 +207,7 @@ func StartRoutineOccurrence(db *gorm.DB, familyID, routineID, userID int, now ti
 		if err := applyRoutineOccurrenceAvailability(tx, &run); err != nil { return err }
 		if err := settleRoutineOccurrence(tx, &run, now); err != nil { return err }
 		if err := tx.Preload("Items", func(q *gorm.DB) *gorm.DB { return q.Order("position") }).Preload("Dependencies").First(&run, run.ID).Error; err != nil { return err }
+		if err := applyRoutineOccurrenceAvailability(tx, &run); err != nil { return err }
 		occurrence = &run
 		return nil
 	})
