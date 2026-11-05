@@ -90,7 +90,7 @@ func safeNodes(node *html.Node) []*html.Node {
 			case "alt", "title":
 				safe.Attr = append(safe.Attr, html.Attribute{Key: key, Val: value})
 			case "data-hopla-path":
-				if value != "" && !strings.ContainsAny(value, "\\r\\n\\x00") {
+				if value != "" && !strings.ContainsAny(value, "\r\n\x00") {
 					safe.Attr = append(safe.Attr, html.Attribute{Key: key, Val: value})
 				}
 			case "target":
