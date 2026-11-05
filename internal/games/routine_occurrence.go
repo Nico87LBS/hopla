@@ -51,6 +51,7 @@ type RoutineOccurrence struct {
 	FamilyID int `json:"-" gorm:"column:family_id;index;not null"`
 	RoutineID int `json:"routineId" gorm:"column:routine_id;index;not null"`
 	RoutineName string `json:"routineName" gorm:"column:routine_name;size:120"`
+	Bonus int `json:"bonus" gorm:"column:bonus;not null"`
 	UserID int `json:"userId" gorm:"column:user_id;index;not null"`
 	StartedAt time.Time `json:"startedAt" gorm:"column:started_at;not null"`
 	ExpiresAt time.Time `json:"expiresAt" gorm:"column:expires_at;index;not null"`
@@ -479,14 +480,12 @@ func settleRoutineOccurrence(tx *gorm.DB, run *RoutineOccurrence, now time.Time)
 	if err := FinishRoutineOccurrence(tx, run.ID, now); err != nil { return err }
 	if err := tx.First(run, run.ID).Error; err != nil { return err }
 	if run.Status != RoutineOccurrenceFinished || run.BonusPaid { return nil }
-	var routine Routine
-	if err := tx.Where("id = ? AND family_id = ?", run.RoutineID, run.FamilyID).First(&routine).Error; err != nil { return err }
 	result := tx.Model(&RoutineOccurrence{}).Where("id = ? AND bonus_paid = ?", run.ID, false).Update("bonus_paid", true)
 	if result.Error != nil { return result.Error }
 	if result.RowsAffected == 0 { return nil }
 	run.BonusPaid = true
-	if routine.Bonus > 0 {
-		_, err := giveBonus(tx, run.FamilyID, run.UserID, routine.Bonus, "Routine : "+routine.Name)
+	if run.Bonus > 0 {
+		_, err := giveBonus(tx, run.FamilyID, run.UserID, run.Bonus, "Routine : "+run.RoutineName)
 		return err
 	}
 	return nil
