@@ -695,6 +695,14 @@ const PackForm = ({ isNew, moduleId, start }) => {
 
   const send = async () => {
     setError('')
+    const unlockNumber = Number(unlockPercent)
+    if (
+      unlockPercent !== '' &&
+      (!Number.isInteger(unlockNumber) || unlockNumber < 0 || unlockNumber > 100)
+    ) {
+      setError(`${t('manage.unlock')} : 0–100.`)
+      return
+    }
     const taken = [
       ...(installed?.modules || []).map(m => m.id),
       ...catalogue.map(entry => entry.id),
