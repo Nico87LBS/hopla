@@ -91,6 +91,14 @@ export const routineTasks = (chores, routines, editingId) => {
           }
     })
     .filter(Boolean)
+    // A step represents all member copies of a task, even when their names
+    // differ only by surrounding whitespace or letter case.
+    .filter(
+      (chore, index, all) =>
+        all.findIndex(
+          candidate => taskKey(candidate.name) === taskKey(chore.name),
+        ) === index,
+    )
     .sort((a, b) => a.name.localeCompare(b.name))
 }
 
