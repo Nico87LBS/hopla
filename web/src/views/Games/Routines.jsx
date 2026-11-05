@@ -140,9 +140,7 @@ export const RoutinesCard = () => {
   }
   const setSteps = choreId => {
     const candidate = offered.find(chore => chore.id === choreId)
-    const slotId = candidate?.routineCanUseAllSlots
-      ? ''
-      : candidate?.routineAvailableSlots?.[0]?.id || ''
+    const slotId = candidate?.routineAvailableSlots?.[0]?.id || ''
     setDraft({
       ...draft,
       choreIds: [...draft.choreIds, choreId],
