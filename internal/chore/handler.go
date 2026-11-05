@@ -659,7 +659,7 @@ func (h *Handler) EditChore(c *gin.Context) {
 		return
 	}
 
-		if choreReq.Description != nil {
+	if choreReq.Description != nil {
 		safeDescription := sanitize.RichTextHTML(*choreReq.Description)
 		choreReq.Description = &safeDescription
 	}
