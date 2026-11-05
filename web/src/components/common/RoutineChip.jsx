@@ -1,17 +1,22 @@
-import { FormatListNumberedRounded } from '@mui/icons-material'
-import { Box } from '@mui/joy'
+import { FormatListNumberedRounded, SkipNextRounded } from '@mui/icons-material'
+import { Box, IconButton } from '@mui/joy'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
+import { useQueryClient } from '@tanstack/react-query'
 
 import { HOPLA } from '../../constants/theme'
 import { useRoutinesToday } from '../../queries/ChoreQueries'
 import { routineStepOf } from '../../utils/routines'
+import { SkipRoutineOccurrenceItem } from '../../utils/Fetcher'
+import { useNotification } from '../../service/NotificationProvider'
 
 // The routine a task is the step to do now of, with how far the child is:
 // "Matin · 2/4". The copies of a task for several children, each at their own
 // step, show the routine's name only.
 const RoutineChip = ({ chores, sx, userId }) => {
   const { t } = useTranslation('chores')
+  const queryClient = useQueryClient()
+  const { showError } = useNotification()
   const { data: routines } = useRoutinesToday()
   const steps = chores
     .map(chore => routineStepOf(routines, chore, userId))
@@ -20,6 +25,19 @@ const RoutineChip = ({ chores, sx, userId }) => {
   const [step] = steps
   const nameOnly = chores.length > 1
   const { progress, routine } = step
+  const occurrence = progress.occurrence
+  const occurrenceItem = occurrence?.items?.find(
+    item => item.position === progress.step - 1 && item.available,
+  )
+  const skipStep = async () => {
+    const response = await SkipRoutineOccurrenceItem(occurrence.id, occurrenceItem.id)
+    if (!response.ok) {
+      showError(t('routines.skipFailed'))
+      return
+    }
+    await queryClient.invalidateQueries({ queryKey: ['games'] })
+    await queryClient.invalidateQueries({ queryKey: ['chores'] })
+  }
   return (
     <Box
       component='span'
@@ -60,6 +78,19 @@ const RoutineChip = ({ chores, sx, userId }) => {
         <span>
           {t('routines.step', { step: progress.step, total: progress.total })}
         </span>
+      )}
+      {occurrence?.status === 'active' && occurrenceItem && (
+        <IconButton
+          size='sm'
+          variant='plain'
+          color='neutral'
+          title={t('routines.skip')}
+          aria-label={t('routines.skip')}
+          onClick={skipStep}
+          sx={{ minWidth: 22, minHeight: 22, p: 0 }}
+        >
+          <SkipNextRounded sx={{ fontSize: 16 }} />
+        </IconButton>
       )}
     </Box>
   )
