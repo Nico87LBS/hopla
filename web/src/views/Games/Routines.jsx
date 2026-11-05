@@ -37,6 +37,7 @@ const emptyRoutine = () => ({
   bonus: 5,
   validityMinutes: 720,
   choreIds: [],
+  slotIds: [],
   dependencies: [],
   optionalChoreIds: [],
 })
@@ -64,18 +65,23 @@ const remapDependencies = (draft, choreIds) => {
 
 const moveRoutineStep = (draft, index, delta) => {
   const choreIds = moveStep(draft.choreIds, index, delta)
+  const slotIds = moveStep(draft.slotIds || draft.choreIds.map(() => ''), index, delta)
   return {
     ...draft,
     choreIds,
+    slotIds,
     dependencies: remapDependencies(draft, choreIds),
   }
 }
 
 const removeRoutineStep = (draft, id) => {
+  const index = draft.choreIds.indexOf(id)
   const choreIds = draft.choreIds.filter(other => other !== id)
+  const slotIds = (draft.slotIds || []).filter((other, position) => position !== index)
   return {
     ...draft,
     choreIds,
+    slotIds,
     dependencies: remapDependencies(draft, choreIds),
     optionalChoreIds: (draft.optionalChoreIds || []).filter(
       other => other !== id,
@@ -117,6 +123,7 @@ export const RoutinesCard = () => {
       bonus: Number(draft.bonus) || 0,
       validityMinutes: Number(draft.validityMinutes) || 720,
       choreIds: draft.choreIds,
+      slotIds: draft.slotIds || [],
       dependencies: draft.dependencies || [],
       optionalChoreIds: draft.optionalChoreIds || [],
     })
@@ -125,7 +132,17 @@ export const RoutinesCard = () => {
       refresh()
     }
   }
-  const setSteps = choreIds => setDraft({ ...draft, choreIds })
+  const setSteps = choreId => {
+    const candidate = offered.find(chore => chore.id === choreId)
+    const slotId = candidate?.routineCanUseAllSlots
+      ? ''
+      : candidate?.routineAvailableSlots?.[0]?.id || ''
+    setDraft({
+      ...draft,
+      choreIds: [...draft.choreIds, choreId],
+      slotIds: [...(draft.slotIds || []), slotId],
+    })
+  }
   const setPrerequisites = (position, prerequisites) => {
     const dependencies = (draft.dependencies || []).filter(
       edge => edge.stepId !== position,
@@ -204,6 +221,44 @@ export const RoutinesCard = () => {
                 >
                   <CloseRounded />
                 </IconButton>
+                {(chores.find(chore => chore.id === id)?.frequencyMetadata?.slots || []).length > 0 && (
+                  <Select
+                    size='sm'
+                    value={draft.slotIds?.[index] || ''}
+                    placeholder={t('routines.selectSlot')}
+                    onChange={(event, value) => {
+                      const slotIds = [...(draft.slotIds || draft.choreIds.map(() => ''))]
+                      slotIds[index] = value || ''
+                      setDraft({ ...draft, slotIds })
+                    }}
+                    sx={{ minWidth: 130, maxWidth: 190 }}
+                  >
+                    {(() => {
+                      const options = routineTasks(chores, routines, draft.id).find(
+                        chore => chore.id === id,
+                      )
+                      const currentSlotId = draft.slotIds?.[index] || ''
+                      return (
+                        <>
+                          {(options?.routineCanUseAllSlots || !currentSlotId) && (
+                            <Option value=''>{t('routines.allSlots')}</Option>
+                          )}
+                          {(options?.routineAvailableSlots || []).map(slot => (
+                            <Option key={slot.id} value={slot.id}>
+                              {slot.name || slot.time} · {slot.time}
+                            </Option>
+                          ))}
+                          {currentSlotId &&
+                            !(options?.routineAvailableSlots || []).some(slot => slot.id === currentSlotId) && (
+                              <Option value={currentSlotId}>
+                                {t('routines.missingSlot')}
+                              </Option>
+                            )}
+                        </>
+                      )
+                    })()}
+                  </Select>
+                )}
                 <Select
                   size='sm'
                   multiple
@@ -261,7 +316,7 @@ export const RoutinesCard = () => {
               }
               disabled={offered.length === 0}
               onChange={(event, value) =>
-                value && setSteps([...draft.choreIds, value])
+                value && setSteps(value)
               }
             >
               {offered.map(chore => (
