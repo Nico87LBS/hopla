@@ -57,9 +57,21 @@ type RoutineOccurrence struct {
 	Status RoutineOccurrenceStatus `json:"status" gorm:"column:status;size:16;not null;index"`
 	BonusPaid bool `json:"bonusPaid" gorm:"column:bonus_paid;not null;default:false"`
 	Items []RoutineOccurrenceItem `json:"items,omitempty" gorm:"foreignKey:OccurrenceID"`
+	Dependencies []RoutineOccurrenceDependency `json:"dependencies,omitempty" gorm:"foreignKey:OccurrenceID"`
 }
 
 func (RoutineOccurrence) TableName() string { return "routine_occurrences" }
+
+
+type RoutineOccurrenceDependency struct {
+	ID int `json:"id" gorm:"primaryKey"`
+	FamilyID int `json:"-" gorm:"column:family_id;index;not null"`
+	OccurrenceID int `json:"occurrenceId" gorm:"column:occurrence_id;index;not null"`
+	StepID int `json:"stepId" gorm:"column:step_id;not null"`
+	DependsOnStepID int `json:"dependsOnStepId" gorm:"column:depends_on_step_id;not null"`
+}
+
+func (RoutineOccurrenceDependency) TableName() string { return "routine_occurrence_dependencies" }
 
 // RoutineOccurrenceItem is a snapshot of a routine step at the time a run
 // starts. Editing a routine later cannot silently rewrite a run in progress.
@@ -129,6 +141,8 @@ func StartRoutineOccurrence(db *gorm.DB, familyID, routineID, userID int, now ti
 			return err
 		}
 
+		var dependencies []RoutineDependency
+		if err := tx.Where("routine_id = ?", routineID).Find(&dependencies).Error; err != nil { return err }
 		var steps []RoutineStep
 		if err := tx.Where("routine_id = ?", routineID).Order("position").Find(&steps).Error; err != nil {
 			return err
@@ -144,6 +158,11 @@ func StartRoutineOccurrence(db *gorm.DB, familyID, routineID, userID int, now ti
 		if err := tx.Create(&run).Error; err != nil { return err }
 		away, err := AwayMembers(tx, familyID)
 		if err != nil { return err }
+		runDependencies := make([]RoutineOccurrenceDependency, 0, len(dependencies))
+		for _, dependency := range dependencies {
+			runDependencies = append(runDependencies, RoutineOccurrenceDependency{FamilyID:familyID,OccurrenceID:run.ID,StepID:dependency.StepID,DependsOnStepID:dependency.DependsOnStepID})
+		}
+		if len(runDependencies) > 0 { if err := tx.Create(&runDependencies).Error; err != nil { return err } }
 		items := make([]RoutineOccurrenceItem, 0, len(steps))
 		for _, step := range steps {
 			required := step.Required == nil || *step.Required
@@ -178,9 +197,10 @@ func StartRoutineOccurrence(db *gorm.DB, familyID, routineID, userID int, now ti
 		}
 		if err := tx.Create(&items).Error; err != nil { return err }
 		run.Items = items
+		run.Dependencies = runDependencies
 		if err := applyRoutineOccurrenceAvailability(tx, &run); err != nil { return err }
 		if err := settleRoutineOccurrence(tx, &run, now); err != nil { return err }
-		if err := tx.Preload("Items", func(q *gorm.DB) *gorm.DB { return q.Order("position") }).First(&run, run.ID).Error; err != nil { return err }
+		if err := tx.Preload("Items", func(q *gorm.DB) *gorm.DB { return q.Order("position") }).Preload("Dependencies").First(&run, run.ID).Error; err != nil { return err }
 		occurrence = &run
 		return nil
 	})
@@ -233,7 +253,7 @@ func GetRoutineOccurrence(db *gorm.DB, familyID, occurrenceID int, now time.Time
 			run.Status = RoutineOccurrenceExpired
 		}
 		if err := expireRoutineOverrides(tx, &run, now); err != nil { return err }
-		if err := tx.Preload("Items", func(q *gorm.DB) *gorm.DB { return q.Order("position") }).First(&run, run.ID).Error; err != nil { return err }
+		if err := tx.Preload("Items", func(q *gorm.DB) *gorm.DB { return q.Order("position") }).Preload("Dependencies").First(&run, run.ID).Error; err != nil { return err }
 		return applyRoutineOccurrenceAvailability(tx, &run)
 	})
 	return &run, err
@@ -358,9 +378,8 @@ func RestoreRoutineOccurrenceItem(db *gorm.DB, familyID, occurrenceID int, input
 		if latest.Source != "external" || latest.Action != "skip" || latest.RevokedAt != nil {
 			return ErrRoutineOccurrenceConflict
 		}
-		var dependentSteps []int
-		if err := tx.Model(&RoutineDependency{}).Where("routine_id = ? AND depends_on_step_id = ?", run.RoutineID, item.StepID).
-			Pluck("step_id", &dependentSteps).Error; err != nil { return err }
+		dependentSteps := []int{}
+		for _, dependency := range run.Dependencies { if dependency.DependsOnStepID == item.StepID { dependentSteps = append(dependentSteps, dependency.StepID) } }
 		var completed int64
 		if len(dependentSteps) > 0 {
 			if err := tx.Model(&RoutineOccurrenceItem{}).Where("occurrence_id = ? AND step_id IN ? AND status = ?",
@@ -409,9 +428,8 @@ func expireRoutineOverrides(tx *gorm.DB, run *RoutineOccurrence, now time.Time) 
 	for _, override := range overrides {
 		var item RoutineOccurrenceItem
 		if err := tx.Where("id = ? AND occurrence_id = ?", override.ItemID, run.ID).First(&item).Error; err != nil { return err }
-		var dependentSteps []int
-		if err := tx.Model(&RoutineDependency{}).Where("routine_id = ? AND depends_on_step_id = ?", run.RoutineID, item.StepID).
-			Pluck("step_id", &dependentSteps).Error; err != nil { return err }
+		dependentSteps := []int{}
+		for _, dependency := range run.Dependencies { if dependency.DependsOnStepID == item.StepID { dependentSteps = append(dependentSteps, dependency.StepID) } }
 		var completed int64
 		if len(dependentSteps) > 0 {
 			if err := tx.Model(&RoutineOccurrenceItem{}).Where("occurrence_id = ? AND step_id IN ? AND status = ?",
@@ -426,8 +444,8 @@ func expireRoutineOverrides(tx *gorm.DB, run *RoutineOccurrence, now time.Time) 
 }
 
 func applyRoutineOccurrenceAvailability(tx *gorm.DB, run *RoutineOccurrence) error {
-	var dependencies []RoutineDependency
-	if err := tx.Where("routine_id = ?", run.RoutineID).Find(&dependencies).Error; err != nil { return err }
+	dependencies := make([]RoutineDependency, 0, len(run.Dependencies))
+	for _, dependency := range run.Dependencies { dependencies = append(dependencies, RoutineDependency{StepID:dependency.StepID,DependsOnStepID:dependency.DependsOnStepID}) }
 	policies := make(map[int]RoutineItemPolicy, len(run.Items))
 	states := make(map[int]RoutineItemState, len(run.Items))
 	for _, item := range run.Items {
