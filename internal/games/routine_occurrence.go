@@ -499,21 +499,14 @@ func settleRoutineOccurrence(tx *gorm.DB, run *RoutineOccurrence, now time.Time)
 	run.BonusPaid = true
 	if run.Bonus > 0 {
 		loc := zone.Of(run.FamilyID)
-		localStart := run.StartedAt.In(loc)
-		dayStart := time.Date(localStart.Year(), localStart.Month(), localStart.Day(), 0, 0, 0, 0, loc)
-		dayEnd := dayStart.AddDate(0, 0, 1)
-		var previous int64
-		if err := tx.Model(&RoutineOccurrence{}).Where(
-			"routine_id = ? AND user_id = ? AND id <> ? AND started_at >= ? AND started_at < ?",
-			run.RoutineID, run.UserID, run.ID, dayStart, dayEnd,
-		).Count(&previous).Error; err != nil { return err }
-		if previous == 0 {
-			var legacyWin RoutineWin
-			err := tx.Where("routine_id = ? AND user_id = ? AND day = ?",
-				run.RoutineID, run.UserID, dayKey(run.StartedAt, loc)).First(&legacyWin).Error
-			if err == nil { return nil }
-			if !errors.Is(err, gorm.ErrRecordNotFound) { return err }
-		}
+		// An occurrence is the reward unit, not a calendar day: a routine can
+		// have distinct slot-specific runs on the same day. Only suppress the
+		// new reward when the legacy daily routine already paid for that day.
+		var legacyWin RoutineWin
+		err := tx.Where("routine_id = ? AND user_id = ? AND day = ?",
+			run.RoutineID, run.UserID, dayKey(run.StartedAt, loc)).First(&legacyWin).Error
+		if err == nil { return nil }
+		if !errors.Is(err, gorm.ErrRecordNotFound) { return err }
 		_, err := giveBonus(tx, run.FamilyID, run.UserID, run.Bonus, "Routine : "+run.RoutineName)
 		return err
 	}
