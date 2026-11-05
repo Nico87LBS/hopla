@@ -459,7 +459,8 @@ func (day *routineDay) progressFromOccurrence(userID int, run *RoutineOccurrence
 	}
 	for i := range run.Items {
 		item := &run.Items[i]
-		item.Available = RoutineItemAvailable(item.StepID, dependencies, policies, states)
+		item.Available = item.Status == RoutineOccurrenceItemPending &&
+			RoutineItemAvailable(item.StepID, dependencies, policies, states)
 		if !item.Available { continue }
 		chore := day.chores[item.ChoreID]
 		if chore == nil || !slices.Contains(membersNow(chore), userID) || Paused(chore, day.away) { continue }
