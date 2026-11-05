@@ -39,7 +39,7 @@ type RoutineStep struct {
 	RoutineID int `gorm:"column:routine_id;index;not null"`
 	Position  int `gorm:"column:position;not null"`
 	ChoreID   int  `gorm:"column:chore_id;not null"`
-	Required  bool `json:"required" gorm:"column:required;not null"`
+	Required  *bool `json:"required" gorm:"column:required;not null;default:true"`
 }
 
 func (RoutineStep) TableName() string { return "routine_steps" }
@@ -101,7 +101,7 @@ func Routines(db *gorm.DB, familyID int) ([]Routine, error) {
 		routines[i].ChoreIDs = []int{}
 		for _, step := range routines[i].Steps {
 			routines[i].ChoreIDs = append(routines[i].ChoreIDs, step.ChoreID)
-			if routines[i].GraphEnabled && !step.Required { routines[i].OptionalChoreIDs = append(routines[i].OptionalChoreIDs, step.ChoreID) }
+			if routines[i].GraphEnabled && step.Required != nil && !*step.Required { routines[i].OptionalChoreIDs = append(routines[i].OptionalChoreIDs, step.ChoreID) }
 			positionByID[step.ID] = step.Position + 1
 		}
 		for j := range routines[i].Dependencies {
@@ -198,7 +198,8 @@ func SaveRoutine(db *gorm.DB, routine *Routine) error {
 			if err := tx.Where("routine_id = ?", routine.ID).Delete(&RoutineStep{}).Error; err != nil { return err }
 		}
 		routine.Steps = nil
-		for i, choreID := range routine.ChoreIDs { routine.Steps = append(routine.Steps, RoutineStep{RoutineID: routine.ID, Position: i, ChoreID: choreID, Required: !slices.Contains(routine.OptionalChoreIDs, choreID)}) }
+		for i, choreID := range routine.ChoreIDs { required := !slices.Contains(routine.OptionalChoreIDs, choreID)
+		routine.Steps = append(routine.Steps, RoutineStep{RoutineID: routine.ID, Position: i, ChoreID: choreID, Required: &required}) }
 		if err := tx.Create(&routine.Steps).Error; err != nil { return err }
 		for i := range routine.Dependencies {
 			from, to := routine.Dependencies[i].DependsOnStepID-1, routine.Dependencies[i].StepID-1
