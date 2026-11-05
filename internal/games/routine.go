@@ -101,7 +101,7 @@ func Routines(db *gorm.DB, familyID int) ([]Routine, error) {
 		routines[i].ChoreIDs = []int{}
 		for _, step := range routines[i].Steps {
 			routines[i].ChoreIDs = append(routines[i].ChoreIDs, step.ChoreID)
-			if !step.Required { routines[i].OptionalChoreIDs = append(routines[i].OptionalChoreIDs, step.ChoreID) }
+			if routines[i].GraphEnabled && !step.Required { routines[i].OptionalChoreIDs = append(routines[i].OptionalChoreIDs, step.ChoreID) }
 			positionByID[step.ID] = step.Position + 1
 		}
 		for j := range routines[i].Dependencies {
