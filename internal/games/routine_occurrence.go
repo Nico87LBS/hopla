@@ -248,6 +248,7 @@ func GetRoutineOccurrence(db *gorm.DB, familyID, occurrenceID int, now time.Time
 			if errors.Is(err, gorm.ErrRecordNotFound) { return ErrRoutineOccurrenceNotFound }
 			return err
 		}
+		if err := tx.Preload("Dependencies").First(&run, run.ID).Error; err != nil { return err }
 		if run.Status == RoutineOccurrenceActive && !now.Before(run.ExpiresAt) {
 			if err := tx.Model(&run).Update("status", RoutineOccurrenceExpired).Error; err != nil { return err }
 			run.Status = RoutineOccurrenceExpired
@@ -292,6 +293,7 @@ func SkipRoutineOccurrenceItem(db *gorm.DB, familyID, occurrenceID int, input Ro
 		if run.Status != RoutineOccurrenceActive || !now.Before(run.ExpiresAt) {
 			return ErrRoutineOccurrenceExpired
 		}
+		if err := tx.Preload("Dependencies").First(&run, run.ID).Error; err != nil { return err }
 		var item RoutineOccurrenceItem
 		if err := tx.Clauses(clause.Locking{Strength:"UPDATE"}).
 			Where("id = ? AND occurrence_id = ?", input.ItemID, occurrenceID).First(&item).Error; err != nil {
@@ -354,6 +356,7 @@ func RestoreRoutineOccurrenceItem(db *gorm.DB, familyID, occurrenceID int, input
 			return err
 		}
 		if run.Status != RoutineOccurrenceActive || !now.Before(run.ExpiresAt) { return ErrRoutineOccurrenceExpired }
+		if err := tx.Preload("Dependencies").First(&run, run.ID).Error; err != nil { return err }
 		var item RoutineOccurrenceItem
 		if err := tx.Clauses(clause.Locking{Strength:"UPDATE"}).
 			Where("id = ? AND occurrence_id = ?", input.ItemID, occurrenceID).First(&item).Error; err != nil {
