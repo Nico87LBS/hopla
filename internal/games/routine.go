@@ -591,7 +591,7 @@ func awardRoutines(tx *gorm.DB, familyID, userID int, performedAt, now time.Time
 
 	var runs []RoutineOccurrence
 	if err := tx.Where("family_id = ? AND user_id = ? AND status = ? AND started_at <= ? AND expires_at > ?",
-		familyID, userID, RoutineOccurrenceActive, performedAt.UTC(), performedAt.UTC()).Find(&runs).Error; err != nil {
+		familyID, userID, []RoutineOccurrenceStatus{RoutineOccurrenceActive, RoutineOccurrenceFinished}, performedAt.UTC(), performedAt.UTC()).Find(&runs).Error; err != nil {
 		return err
 	}
 	for i := range runs {
@@ -599,7 +599,7 @@ func awardRoutines(tx *gorm.DB, familyID, userID int, performedAt, now time.Time
 		var items []RoutineOccurrenceItem
 		if err := tx.Where("occurrence_id = ?", run.ID).Find(&items).Error; err != nil { return err }
 		for _, item := range items {
-			if item.Status != RoutineOccurrenceItemPending { continue }
+			if item.Status != RoutineOccurrenceItemPending || (run.Status == RoutineOccurrenceFinished && item.Required) { continue }
 			ids, err := SameTaskIDs(tx, familyID, item.ChoreID)
 			if err != nil { return err }
 			matched := false
