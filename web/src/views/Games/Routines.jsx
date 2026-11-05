@@ -225,7 +225,14 @@ export const RoutinesCard = () => {
       <CardHeader
         title={t('routines.title')}
         subtitle={t('routines.subtitle')}
-        onAdd={draft ? undefined : () => { setExpandedStep(0); setDraft(emptyRoutine()) }}
+        onAdd={
+          draft
+            ? undefined
+            : () => {
+                setExpandedStep(0)
+                setDraft(emptyRoutine())
+              }
+        }
       />
       {draft && (
         <Stack gap={1.5} sx={{ mb: 2 }}>
@@ -243,7 +250,9 @@ export const RoutinesCard = () => {
                 autoFocus
                 placeholder={t('routines.name')}
                 value={draft.name}
-                onChange={event => setDraft({ ...draft, name: event.target.value })}
+                onChange={event =>
+                  setDraft({ ...draft, name: event.target.value })
+                }
                 slotProps={{ input: { maxLength: 60 } }}
                 sx={{ bgcolor: 'background.surface' }}
               />
@@ -282,7 +291,9 @@ export const RoutinesCard = () => {
               sx={{ mb: 1 }}
             >
               <Typography level='title-md'>
-                {t('routines.stepsTitle', { defaultValue: 'Les étapes de votre routine' })}
+                {t('routines.stepsTitle', {
+                  defaultValue: 'Les étapes de votre routine',
+                })}
               </Typography>
               <Chip size='sm' variant='soft' color='primary'>
                 {draft.choreIds.length}/{MAX_STEPS}
@@ -293,7 +304,9 @@ export const RoutinesCard = () => {
               {draft.choreIds.map((id, index) => {
                 const chore = chores.find(item => item.id === id)
                 const slots = chore?.frequencyMetadata?.slots || []
-                const optional = (draft.optionalStepIds || []).includes(index + 1)
+                const optional = (draft.optionalStepIds || []).includes(
+                  index + 1,
+                )
                 const expanded = expandedStep === index
                 const prerequisites = (draft.dependencies || [])
                   .filter(edge => edge.stepId === index + 1)
@@ -307,7 +320,9 @@ export const RoutinesCard = () => {
                       overflow: 'hidden',
                       borderRadius: 'md',
                       borderColor: expanded ? 'primary.400' : 'divider',
-                      bgcolor: expanded ? 'background.level1' : 'background.surface',
+                      bgcolor: expanded
+                        ? 'background.level1'
+                        : 'background.surface',
                     }}
                   >
                     <Stack
@@ -362,12 +377,18 @@ export const RoutinesCard = () => {
                         <Typography level='title-sm' noWrap>
                           {names.get(id)}
                         </Typography>
-                        <Typography level='body-xs' sx={{ color: 'text.tertiary' }}>
+                        <Typography
+                          level='body-xs'
+                          sx={{ color: 'text.tertiary' }}
+                        >
                           {slots.length > 0
-                            ? slots.find(slot => slot.id === (draft.slotIds?.[index] || ''))?.name ||
+                            ? slots.find(
+                                slot => slot.id === (draft.slotIds?.[index] || ''),
+                              )?.name ||
                               slots.find(slot => slot.id === (draft.slotIds?.[index] || ''))?.time ||
                               t('routines.selectSlot')
-                            : t('routines.stepSubtitle', { defaultValue: 'Étape de la routine' })}
+                            : t('routines.stepSubtitle', { defaultValue: 'Étape de la routine',
+                              })}
                         </Typography>
                       </Box>
                       <Stack
@@ -383,25 +404,34 @@ export const RoutinesCard = () => {
                             setDraft({
                               ...draft,
                               optionalStepIds: event.target.checked
-                                ? (draft.optionalStepIds || []).filter(stepId => stepId !== index + 1)
+                                ? (draft.optionalStepIds || []).filter(
+                                    stepId => stepId !== index + 1,
+                                  )
                                 : [...(draft.optionalStepIds || []), index + 1],
                             })
                           }
                           slotProps={{
                             input: {
                               'aria-label': optional
-                                ? t('routines.makeRequired', { defaultValue: 'Rendre obligatoire' })
-                                : t('routines.makeOptional', { defaultValue: 'Rendre facultative' }),
+                                ? t('routines.makeRequired', { defaultValue: 'Rendre obligatoire',
+                                })
+                                : t('routines.makeOptional', { defaultValue: 'Rendre facultative',
+                                }),
                             },
                           }}
                         />
                         <Typography
                           level='body-xs'
-                          sx={{ display: { xs: 'none', sm: 'block' }, minWidth: 76 }}
+                          sx={{
+                            display: { xs: 'none', sm: 'block' },
+                            minWidth: 76,
+                          }}
                         >
                           {optional
-                            ? t('routines.optional', { defaultValue: 'Facultative' })
-                            : t('routines.required', { defaultValue: 'Obligatoire' })}
+                            ? t('routines.optional', { defaultValue: 'Facultative',
+                              })
+                            : t('routines.required', { defaultValue: 'Obligatoire',
+                              })}
                         </Typography>
                       </Stack>
                       <IconButton
@@ -433,7 +463,9 @@ export const RoutinesCard = () => {
                         onClick={event => event.stopPropagation()}
                       >
                         <Typography level='title-sm' sx={{ mb: 1 }}>
-                          {t('routines.advancedSettings', { defaultValue: 'Réglages avancés' })}
+                          {t('routines.advancedSettings', {
+                            defaultValue: 'Réglages avancés',
+                          })}
                         </Typography>
                         <Stack
                           direction={{ xs: 'column', md: 'row' }}
@@ -442,7 +474,11 @@ export const RoutinesCard = () => {
                         >
                           {slots.length > 0 && (
                             <Box sx={{ flex: 1, minWidth: 0, width: '100%' }}>
-                              <Typography level='body-xs' fontWeight='lg' sx={{ mb: 0.5 }}>
+                              <Typography
+                                  level='body-xs'
+                                  fontWeight='lg'
+                                  sx={{ mb: 0.5 }}
+                                >
                                 {t('routines.selectSlot')}
                               </Typography>
                               <Select
@@ -458,10 +494,16 @@ export const RoutinesCard = () => {
                                 }}
                               >
                                 {(() => {
-                                  const options = routineTasks(chores, routines, draft.id)
+                                  const options = routineTasks(
+                                    chores,
+                                    routines,
+                                    draft.id,
+                                  )
                                     .find(item => item.id === id)
                                   const currentSlotId = draft.slotIds?.[index] || ''
-                                  const availableSlots = (options?.routineAvailableSlots || [])
+                                  const availableSlots = (
+                                    options?.routineAvailableSlots || []
+                                  )
                                     .filter(slot =>
                                       slot.id === currentSlotId ||
                                       !(draft.slotIds || []).some(
@@ -474,7 +516,9 @@ export const RoutinesCard = () => {
                                   return (
                                     <>
                                       {options?.routineCanUseAllSlots && (
-                                        <Option value=''>{t('routines.allSlots')}</Option>
+                                        <Option value=''>
+                                          {t('routines.allSlots')}
+                                        </Option>
                                       )}
                                       {availableSlots.map(slot => (
                                         <Option key={slot.id} value={slot.id}>
@@ -482,7 +526,9 @@ export const RoutinesCard = () => {
                                         </Option>
                                       ))}
                                       {currentSlotId &&
-                                        !availableSlots.some(slot => slot.id === currentSlotId) && (
+                                        !availableSlots.some(
+                                            slot => slot.id === currentSlotId,
+                                          ) && (
                                           <Option value={currentSlotId}>
                                             {t('routines.missingSlot')}
                                           </Option>
@@ -495,20 +541,25 @@ export const RoutinesCard = () => {
                           )}
                           <Box sx={{ flex: 1, minWidth: 0, width: '100%' }}>
                             <Typography level='body-xs' fontWeight='lg' sx={{ mb: 0.5 }}>
-                              {t('routines.prerequisites', { defaultValue: 'Prérequis' })}
+                              {t('routines.prerequisites', { defaultValue: 'Prérequis',
+                              })}
                             </Typography>
                             <Select
                               size='md'
                               multiple
                               value={prerequisites}
-                              placeholder={t('routines.noPrerequisite', { defaultValue: 'Aucun prérequis' })}
+                              placeholder={t('routines.noPrerequisite', { defaultValue: 'Aucun prérequis',
+                              })}
                               onChange={(event, value) =>
                                 setPrerequisites(index + 1, value)
                               }
                             >
                               {draft.choreIds.map((otherId, otherIndex) =>
                                 otherIndex === index ? null : (
-                                  <Option key={`${otherId}-${otherIndex}`} value={otherIndex + 1}>
+                                  <Option
+                                    key={`${otherId}-${otherIndex}`}
+                                    value={otherIndex + 1}
+                                  >
                                     {names.get(otherId)}
                                   </Option>
                                 ),
@@ -516,13 +567,16 @@ export const RoutinesCard = () => {
                             </Select>
                           </Box>
                         </Stack>
-                        <Typography level='body-xs' sx={{ color: 'text.tertiary', mt: 1 }}>
+                        <Typography
+                            level='body-xs'
+                            sx={{ color: 'text.tertiary', mt: 1 }}
+                          >
                           {optional
                             ? t('routines.optionalHelp', {
-                                defaultValue: "Cette étape peut être ignorée sans bloquer la réussite de la routine.",
+                                defaultValue: 'Cette étape peut être ignorée sans bloquer la réussite de la routine.',
                               })
                             : t('routines.requiredHelp', {
-                                defaultValue: "Cette étape doit être terminée pour valider la routine.",
+                                defaultValue: 'Cette étape doit être terminée pour valider la routine.',
                               })}
                         </Typography>
                       </Box>
@@ -536,7 +590,9 @@ export const RoutinesCard = () => {
               <Select
                 size='lg'
                 value={null}
-                placeholder={offered.length ? t('routines.addTask') : t('routines.noTask')}
+                placeholder={
+                  offered.length ? t('routines.addTask') : t('routines.noTask')
+                }
                 disabled={offered.length === 0}
                 onChange={(event, value) => {
                   if (!value) return
@@ -565,7 +621,10 @@ export const RoutinesCard = () => {
                   }
                   slots.forEach(slot =>
                     options.push(
-                      <Option key={`${chore.id}-${slot.id}`} value={`${chore.id}::${slot.id}`}>
+                      <Option
+                        key={`${chore.id}-${slot.id}`}
+                        value={`${chore.id}::${slot.id}`}
+                      >
                         {chore.name} · {slot.name || slot.time}
                       </Option>,
                     ),
@@ -589,17 +648,27 @@ export const RoutinesCard = () => {
                 size='lg'
                 type='number'
                 value={draft.bonus}
-                onChange={event => setDraft({ ...draft, bonus: event.target.value })}
+                onChange={event =>
+                  setDraft({ ...draft, bonus: event.target.value })
+                }
                 slotProps={{ input: { min: 0, max: 1000 } }}
               />
             </Box>
-            <Typography level='body-xs' sx={{ color: 'text.tertiary', flex: 1 }}>
+            <Typography
+              level='body-xs'
+              sx={{ color: 'text.tertiary', flex: 1 }}
+            >
               {t('routines.help')} {t('routines.validityHelp')}
             </Typography>
           </Stack>
 
           <Stack direction='row' gap={1} justifyContent='flex-end'>
-            <Button size='lg' variant='outlined' color='neutral' onClick={() => setDraft(null)}>
+            <Button
+              size='lg'
+              variant='outlined'
+              color='neutral'
+              onClick={() => setDraft(null)}
+            >
               {t('presets.cancel')}
             </Button>
             <Button
