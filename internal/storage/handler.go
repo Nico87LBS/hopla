@@ -1,9 +1,11 @@
 package storage
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"io"
+	"path/filepath"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -99,26 +101,23 @@ func (h *Handler) AssetHandler(c *gin.Context) {
 	}
 	defer file.Close()
 
-	// Detect content type
-	// buf := make([]byte, 512)
-	// n, _ := file.Read(buf)
-	// contentType := http.DetectContentType(buf[:n])
-
-	// Reset reader to stream full file
-
-	// if err != nil {
-	// 	c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to read file"})
-	// 	return
-	// }
-
-	// Set headers
-	// c.Header("Content-Type", contentType)
-	c.Header("Cache-Control", "public, max-age=604800, immutable")
-	c.Header("Expires", time.Now().UTC().Add(7*24*time.Hour).Format(http.TimeFormat))
+	// Never let browsers interpret uploaded content as HTML or script.
+	// Only raster images are rendered inline; every other type is forced to download.
+	buf := make([]byte, 512)
+	n, _ := io.ReadFull(file, buf)
+	contentType := http.DetectContentType(buf[:n])
+	c.Header("X-Content-Type-Options", "nosniff")
+	if contentType == "image/jpeg" || contentType == "image/png" ||
+		contentType == "image/gif" || contentType == "image/webp" {
+		c.Header("Content-Type", contentType)
+	} else {
+		c.Header("Content-Type", "application/octet-stream")
+		c.Header("Content-Disposition", "attachment")
+	}
+	c.Header("Cache-Control", "private, max-age=300")
+	c.Header("Expires", time.Now().UTC().Add(5*time.Minute).Format(http.TimeFormat))
 	c.Status(http.StatusOK)
-
-	// Serve content
-	io.Copy(c.Writer, file)
+	_, _ = io.Copy(c.Writer, io.MultiReader(bytes.NewReader(buf[:n]), file))
 }
 
 // ChoreUploadHandler godoc
@@ -138,6 +137,10 @@ func (h *Handler) ChoreUploadHandler(c *gin.Context) {
 		log.Error("failed to get current user from context")
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 		return
+	}
+	// Bound the complete multipart body before FormFile parses it.
+	if h.maxFileSize > 0 {
+		c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, h.maxFileSize+(1<<20))
 	}
 	file, err := c.FormFile("file")
 	if err != nil {
@@ -163,21 +166,41 @@ func (h *Handler) ChoreUploadHandler(c *gin.Context) {
 		return
 	}
 
-	// save the file to storage:
+	// Inspect the actual content instead of trusting the client filename or MIME.
 	src, err := file.Open()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to open uploaded file"})
 		return
 	}
 	defer src.Close()
-	uuid := uuid.New().String()
-
-	// append the file extension to the uuid:
-	ext := file.Filename[strings.LastIndex(file.Filename, "."):]
-	path := fmt.Sprintf("users/%d/%s%s", currentUser.ID, uuid, ext)
+	header := make([]byte, 512)
+	n, readErr := io.ReadFull(src, header)
+	if readErr != nil && readErr != io.EOF && readErr != io.ErrUnexpectedEOF {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "unable to inspect uploaded file"})
+		return
+	}
+	contentType := http.DetectContentType(header[:n])
+	extensions := map[string]string{
+		"image/jpeg": ".jpg",
+		"image/png":  ".png",
+		"image/gif":  ".gif",
+		"image/webp": ".webp",
+		"application/pdf": ".pdf",
+	}
+	ext, allowed := extensions[contentType]
+	if !allowed {
+		c.JSON(http.StatusUnsupportedMediaType, gin.H{"error": "unsupported file type"})
+		return
+	}
+	if _, err := src.Seek(0, io.SeekStart); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "unable to rewind uploaded file"})
+		return
+	}
+	fileID := uuid.New().String()
+	path := fmt.Sprintf("users/%d/%s%s", currentUser.ID, fileID, ext)
 	mediaRecord := &storageModel.StorageFile{
 		FilePath:   path,
-		FileName:   file.Filename,
+		FileName:   filepath.Base(file.Filename),
 		SizeBytes:  int(file.Size),
 		UserID:     currentUser.ID,
 		EntityID:   entityID,
@@ -185,8 +208,7 @@ func (h *Handler) ChoreUploadHandler(c *gin.Context) {
 		DraftID:    draftID,
 	}
 
-	// Save the file first; only write the DB record if the upload succeeds
-	// so we never end up with a dangling record pointing at a missing file.
+	// Save the file first; only write the DB record if the upload succeeds.
 	if err = h.storage.Save(context.Background(), path, src); err != nil {
 		log.Error("failed to save file to storage", "error", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to save file"})
