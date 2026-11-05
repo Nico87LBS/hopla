@@ -383,11 +383,13 @@ export const RoutinesCard = () => {
                         >
                           {slots.length > 0
                             ? slots.find(
-                                slot => slot.id === (draft.slotIds?.[index] || ''),
+                                slot =>
+                                  slot.id === (draft.slotIds?.[index] || ''),,
                               )?.name ||
                               slots.find(slot => slot.id === (draft.slotIds?.[index] || ''))?.time ||
                               t('routines.selectSlot')
-                            : t('routines.stepSubtitle', { defaultValue: 'Étape de la routine',
+                            : t('routines.stepSubtitle', {
+                                defaultValue: 'Étape de la routine',
                               })}
                         </Typography>
                       </Box>
@@ -413,10 +415,12 @@ export const RoutinesCard = () => {
                           slotProps={{
                             input: {
                               'aria-label': optional
-                                ? t('routines.makeRequired', { defaultValue: 'Rendre obligatoire',
-                                })
-                                : t('routines.makeOptional', { defaultValue: 'Rendre facultative',
-                                }),
+                                ? t('routines.makeRequired', {
+                                    defaultValue: 'Rendre obligatoire',
+                                  })
+                                : t('routines.makeOptional', {
+                                    defaultValue: 'Rendre facultative',
+                                  }),
                             },
                           }}
                         />
@@ -428,9 +432,11 @@ export const RoutinesCard = () => {
                           }}
                         >
                           {optional
-                            ? t('routines.optional', { defaultValue: 'Facultative',
+                            ? t('routines.optional', {
+                                defaultValue: 'Facultative',
                               })
-                            : t('routines.required', { defaultValue: 'Obligatoire',
+                            : t('routines.required', {
+                                defaultValue: 'Obligatoire',
                               })}
                         </Typography>
                       </Stack>
@@ -475,10 +481,10 @@ export const RoutinesCard = () => {
                           {slots.length > 0 && (
                             <Box sx={{ flex: 1, minWidth: 0, width: '100%' }}>
                               <Typography
-                                  level='body-xs'
-                                  fontWeight='lg'
-                                  sx={{ mb: 0.5 }}
-                                >
+                                level='body-xs'
+                                fontWeight='lg'
+                                sx={{ mb: 0.5 }}
+                              >
                                 {t('routines.selectSlot')}
                               </Typography>
                               <Select
@@ -526,9 +532,7 @@ export const RoutinesCard = () => {
                                         </Option>
                                       ))}
                                       {currentSlotId &&
-                                        !availableSlots.some(
-                                            slot => slot.id === currentSlotId,
-                                          ) && (
+                                        !availableSlots.some(slot => slot.id === currentSlotId) && (
                                           <Option value={currentSlotId}>
                                             {t('routines.missingSlot')}
                                           </Option>
@@ -540,15 +544,21 @@ export const RoutinesCard = () => {
                             </Box>
                           )}
                           <Box sx={{ flex: 1, minWidth: 0, width: '100%' }}>
-                            <Typography level='body-xs' fontWeight='lg' sx={{ mb: 0.5 }}>
-                              {t('routines.prerequisites', { defaultValue: 'Prérequis',
+                            <Typography
+                              level='body-xs'
+                              fontWeight='lg'
+                              sx={{ mb: 0.5 }}
+                            >
+                              {t('routines.prerequisites', {
+                                defaultValue: 'Prérequis',
                               })}
                             </Typography>
                             <Select
                               size='md'
                               multiple
                               value={prerequisites}
-                              placeholder={t('routines.noPrerequisite', { defaultValue: 'Aucun prérequis',
+                              placeholder={t('routines.noPrerequisite', {
+                                defaultValue: 'Aucun prérequis',
                               })}
                               onChange={(event, value) =>
                                 setPrerequisites(index + 1, value)
@@ -568,15 +578,17 @@ export const RoutinesCard = () => {
                           </Box>
                         </Stack>
                         <Typography
-                            level='body-xs'
-                            sx={{ color: 'text.tertiary', mt: 1 }}
-                          >
+                          level='body-xs'
+                          sx={{ color: 'text.tertiary', mt: 1 }}
+                        >
                           {optional
                             ? t('routines.optionalHelp', {
-                                defaultValue: 'Cette étape peut être ignorée sans bloquer la réussite de la routine.',
+                                defaultValue:
+                                  'Cette étape peut être ignorée sans bloquer la réussite de la routine.',
                               })
                             : t('routines.requiredHelp', {
-                                defaultValue: 'Cette étape doit être terminée pour valider la routine.',
+                                defaultValue:
+                                  'Cette étape doit être terminée pour valider la routine.',
                               })}
                         </Typography>
                       </Box>
