@@ -293,3 +293,32 @@ func TestOptionalRoutineItemCanBeSkippedAfterRequiredStepsFinish(t *testing.T) {
 	require.Equal(t,RoutineOccurrenceFinished,updated.Status)
 	require.Equal(t,RoutineOccurrenceItemSkipped,updated.Items[1].Status)
 }
+
+
+func TestRoutineStartsAnOccurrenceForRemainingOptionalSteps(t *testing.T) {
+	db:=setup(t)
+	now:=noon(0)
+	required:=chore(t,db,"Se lever",1,now,assignedTo(2))
+	optional:=chore(t,db,"Mettre le manteau",1,now,assignedTo(2))
+	routine:=Routine{FamilyID:1,Name:"Départ",Bonus:2,ValidityMinutes:120,
+		ChoreIDs:[]int{required.ID,optional.ID},OptionalChoreIDs:[]int{optional.ID},GraphEnabled:true}
+	require.NoError(t,SaveRoutine(db,&routine))
+	require.NoError(t,done(db,required.ID,2,now))
+	require.NoError(t,AfterTask(db,1,2,now,now))
+	var member fModel.UserFamily
+	require.NoError(t,db.Where("user_id = 2").First(&member).Error)
+	require.Equal(t,2,member.Points,"legacy completion pays the reward once")
+
+	views,err:=RoutineViews(db,1,[]int{2},now.Add(time.Minute))
+	require.NoError(t,err)
+	require.Len(t,views,1)
+	require.Len(t,views[0].Members,1)
+	progress:=views[0].Members[0]
+	require.NotNil(t,progress.Occurrence)
+	require.Equal(t,RoutineOccurrenceFinished,progress.Occurrence.Status)
+	require.Equal(t,RoutineOccurrenceItemCompleted,progress.Occurrence.Items[0].Status)
+	require.Equal(t,RoutineOccurrenceItemPending,progress.Occurrence.Items[1].Status)
+	require.Contains(t,progress.Available,optional.ID)
+	require.NoError(t,db.Where("user_id = 2").First(&member).Error)
+	require.Equal(t,2,member.Points,"starting the occurrence must not pay the legacy reward twice")
+}
