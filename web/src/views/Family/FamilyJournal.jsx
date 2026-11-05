@@ -1,5 +1,6 @@
 import {
   AddRounded,
+  EventBusyRounded,
   GroupsRounded,
   RedeemRounded,
   RemoveRounded,
@@ -32,6 +33,12 @@ const LOOKS = {
     color: HOPLA.violet,
     bg: HOPLA.violetSoft,
     sign: 1,
+  },
+  missed: {
+    icon: EventBusyRounded,
+    color: HOPLA.carrotText,
+    bg: HOPLA.carrotSoft,
+    sign: 0,
   },
   undo: {
     icon: ReplayRounded,

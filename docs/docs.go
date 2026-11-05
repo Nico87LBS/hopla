@@ -7400,6 +7400,11 @@ const docTemplate = `{
                 "completionWindow": {
                     "type": "integer"
                 },
+                "deadlineMinutes": {
+                    "type": "integer",
+                    "maximum": 527040,
+                    "minimum": 1
+                },
                 "description": {
                     "type": "string"
                 },
@@ -7930,6 +7935,10 @@ const docTemplate = `{
                 },
                 "createdBy": {
                     "description": "Who created the chore",
+                    "type": "integer"
+                },
+                "deadlineMinutes": {
+                    "description": "Minutes after the due time the task is missed",
                     "type": "integer"
                 },
                 "description": {

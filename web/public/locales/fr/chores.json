@@ -1070,7 +1070,12 @@
       "alwaysHelp": "Elle reste toujours dans la liste, sans échéance.",
       "triggerHelp": "Elle reste en attente et apparaît quand un signal extérieur lui donne une échéance.",
       "triggerDue": "Échéance reçue",
-      "next": "Prochaine fois : {{when}} ({{slot}})"
+      "next": "Prochaine fois : {{when}} ({{slot}})",
+      "deadline": "À faire avant une limite",
+      "deadlineHelp": "Passé la limite, elle est manquée : pas de {{units}}, et c'est noté au journal.",
+      "deadlineAt": "Limite",
+      "deadlineAfterDue": "La limite doit venir après l'échéance.",
+      "deadlineRepeat": "Chaque fois, la limite tombe {{delay}} après l'échéance."
     },
     "reward": {
       "title": "Récompense",
@@ -1251,5 +1256,19 @@
   "viewAs": {
     "label": "Voir les tâches de",
     "everyone": "Tout le monde"
+  },
+  "deadline": {
+    "before": "Avant {{when}}",
+    "left": "Plus que {{left}}",
+    "title": "À faire avant {{when}}, sinon elle est manquée",
+    "minutes_one": "{{count}} min",
+    "minutes_other": "{{count}} min",
+    "hours_one": "{{count}} h",
+    "hours_other": "{{count}} h",
+    "hoursMinutes": "{{hours}} h {{minutes}}",
+    "days_one": "{{count}} jour",
+    "days_other": "{{count}} jours",
+    "daysHours_one": "{{count}} j {{hours}} h",
+    "daysHours_other": "{{count}} j {{hours}} h"
   }
 }

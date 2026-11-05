@@ -63,6 +63,10 @@ definitions:
         type: array
       completionWindow:
         type: integer
+      deadlineMinutes:
+        maximum: 527040
+        minimum: 1
+        type: integer
       description:
         type: string
       draftId:
@@ -454,6 +458,9 @@ definitions:
         type: string
       createdBy:
         description: Who created the chore
+        type: integer
+      deadlineMinutes:
+        description: Minutes after the due time the task is missed
         type: integer
       description:
         description: Description of the chore

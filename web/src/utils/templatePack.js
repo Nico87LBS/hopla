@@ -59,7 +59,7 @@ const exportSubtasks = subTasks => {
 // the time of day in dueTime instead.
 const withoutDate = metadata => {
   if (!metadata) return null
-  // eslint-disable-next-line no-unused-vars
+
   const { time, timezone, ...rest } = metadata
   return rest
 }
@@ -76,6 +76,7 @@ const exportTask = (chore, labelsById) => ({
   points: chore.points ?? null,
   flashPoints: chore.flashPoints ?? null,
   flashMinutes: chore.flashMinutes ?? null,
+  deadlineMinutes: chore.deadlineMinutes ?? null,
   requireApproval: !!chore.requireApproval,
   completionWindow: chore.completionWindow ?? null,
   notification: !!chore.notification,
@@ -246,6 +247,7 @@ export const taskRequests = (task, { labelIds, members, now, perMember }) => {
     points: task.points ?? null,
     flashPoints: task.flashPoints ?? null,
     flashMinutes: task.flashMinutes ?? null,
+    deadlineMinutes: due ? (task.deadlineMinutes ?? null) : null,
     requireApproval: !!task.requireApproval,
     completionWindow: due ? (task.completionWindow ?? null) : null,
     notification: !!task.notification,

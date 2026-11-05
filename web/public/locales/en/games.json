@@ -60,7 +60,8 @@
       "bonus": "Bonus",
       "penalty": "Penalty",
       "reset": "Reset",
-      "game": "Game"
+      "game": "Game",
+      "missed": "Task missed"
     }
   },
   "today": {

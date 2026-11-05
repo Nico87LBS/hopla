@@ -16,9 +16,11 @@ import {
 } from '@mui/joy'
 import moment from 'moment'
 import PropTypes from 'prop-types'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import NumberInput from '../../../components/common/NumberInput'
+import { deadlineApplies, shortDuration } from '../../../utils/deadline'
 import { familyTimezone } from '../../../utils/familyTime'
 import EditorCard, { FieldLabel, Pill, Segmented } from './EditorCard'
 import {
@@ -331,9 +333,106 @@ DateTime.propTypes = {
   useCustomTime: PropTypes.bool,
 }
 
+// The deadline the task can have, as a date and time after its due date:
+// past it, the task is missed. A repeated task keeps the same delay after each
+// due date.
+const DEFAULT_DEADLINE_MINUTES = 120
+
+// The deadline shown to the minute: a due date "any time of the day" is at
+// 23:59:59.
+const deadlineMoment = (dueDate, minutes) =>
+  moment(moment(dueDate).valueOf() + minutes * 60000 + 30000).startOf('minute')
+
+const Deadline = ({ dueDate, minutes, onChange, repeated }) => {
+  const { t } = useTranslation('chores')
+  const [draft, setDraft] = useState(null)
+  const on = minutes > 0
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.25 }}>
+      <Box
+        component='label'
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 1.5,
+          minHeight: 44,
+          cursor: 'pointer',
+        }}
+      >
+        <Box>
+          <Typography level='title-sm'>{t('editor.when.deadline')}</Typography>
+          <Typography level='body-xs' sx={{ color: 'text.secondary' }}>
+            {t('editor.when.deadlineHelp')}
+          </Typography>
+        </Box>
+        <Switch
+          checked={on}
+          onChange={e => {
+            setDraft(null)
+            onChange(e.target.checked ? DEFAULT_DEADLINE_MINUTES : null)
+          }}
+        />
+      </Box>
+      {on && (
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Typography level='body-sm' sx={{ color: 'text.secondary' }}>
+            {t('editor.when.deadlineAt')}
+          </Typography>
+          <Input
+            type='datetime-local'
+            aria-label={t('editor.when.deadlineAt')}
+            value={
+              draft ??
+              deadlineMoment(dueDate, minutes).format('YYYY-MM-DDTHH:mm')
+            }
+            onChange={e => {
+              const value = e.target.value
+              const after = value
+                ? Math.round(
+                    (moment(value).valueOf() - moment(dueDate).valueOf()) /
+                      60000,
+                  )
+                : 0
+              if (after > 0) {
+                setDraft(null)
+                onChange(after)
+              } else {
+                setDraft(value)
+              }
+            }}
+            sx={{ minHeight: 40 }}
+          />
+        </Box>
+      )}
+      {on && draft !== null && (
+        <Typography level='body-sm' color='danger'>
+          {t('editor.when.deadlineAfterDue')}
+        </Typography>
+      )}
+      {on && repeated && draft === null && (
+        <InfoLine>
+          {t('editor.when.deadlineRepeat', {
+            delay: shortDuration(minutes, t),
+          })}
+        </InfoLine>
+      )}
+    </Box>
+  )
+}
+
+Deadline.propTypes = {
+  dueDate: PropTypes.string.isRequired,
+  minutes: PropTypes.number,
+  onChange: PropTypes.func.isRequired,
+  repeated: PropTypes.bool,
+}
+
 // "When?": once, repeated, always there or set off from outside, and the
 // details of each.
 export default function WhenCard({
+  deadlineMinutes,
+  dueDate,
   dueDateOnly,
   dueTime,
   error,
@@ -344,6 +443,7 @@ export default function WhenCard({
   isRolling,
   nextLabel,
   onDateChange,
+  onDeadlineMinutesChange,
   onFrequencyMetadataUpdate,
   onFrequencyTypeUpdate,
   onFrequencyUpdate,
@@ -610,6 +710,18 @@ export default function WhenCard({
         </>
       )}
 
+      {(kind === 'once' || kind === 'repeat') &&
+        dueDate &&
+        dueDateOnly &&
+        deadlineApplies(frequencyType, metadata) && (
+          <Deadline
+            dueDate={dueDate}
+            minutes={deadlineMinutes}
+            onChange={onDeadlineMinutesChange}
+            repeated={kind === 'repeat'}
+          />
+        )}
+
       {kind === 'always' && <InfoLine>{t('editor.when.alwaysHelp')}</InfoLine>}
 
       {kind === 'trigger' && (
@@ -631,6 +743,8 @@ export default function WhenCard({
 }
 
 WhenCard.propTypes = {
+  deadlineMinutes: PropTypes.number,
+  dueDate: PropTypes.string,
   dueDateOnly: PropTypes.string,
   dueTime: PropTypes.string,
   error: PropTypes.node,
@@ -644,6 +758,7 @@ WhenCard.propTypes = {
   onFrequencyMetadataUpdate: PropTypes.func.isRequired,
   onFrequencyTypeUpdate: PropTypes.func.isRequired,
   onFrequencyUpdate: PropTypes.func.isRequired,
+  onDeadlineMinutesChange: PropTypes.func.isRequired,
   onIsRollingChange: PropTypes.func.isRequired,
   onTimeChange: PropTypes.func.isRequired,
   onUseTime: PropTypes.func.isRequired,

@@ -1070,7 +1070,12 @@
       "alwaysHelp": "It always stays in the list, with no due date.",
       "triggerHelp": "It waits and shows up when an outside signal gives it a due date.",
       "triggerDue": "Due date received",
-      "next": "Next time: {{when}} ({{slot}})"
+      "next": "Next time: {{when}} ({{slot}})",
+      "deadline": "To do before a deadline",
+      "deadlineHelp": "Past the deadline it is missed: no {{units}}, and the journal says so.",
+      "deadlineAt": "Deadline",
+      "deadlineAfterDue": "The deadline must come after the due date.",
+      "deadlineRepeat": "Each time, the deadline falls {{delay}} after the due date."
     },
     "reward": {
       "title": "Reward",
@@ -1251,5 +1256,19 @@
   "viewAs": {
     "label": "Show the tasks of",
     "everyone": "Everyone"
+  },
+  "deadline": {
+    "before": "Before {{when}}",
+    "left": "{{left}} left",
+    "title": "To do before {{when}}, or it is missed",
+    "minutes_one": "{{count}} min",
+    "minutes_other": "{{count}} min",
+    "hours_one": "{{count}} h",
+    "hours_other": "{{count}} h",
+    "hoursMinutes": "{{hours}} h {{minutes}}",
+    "days_one": "{{count}} day",
+    "days_other": "{{count}} days",
+    "daysHours_one": "{{count}} d {{hours}} h",
+    "daysHours_other": "{{count}} d {{hours}} h"
   }
 }

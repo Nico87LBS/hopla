@@ -128,6 +128,9 @@ func (h *Handler) getJournal(c *gin.Context) {
 		if row.ChoreName != nil {
 			entry.Reason, entry.Source = row.ChoreName, "task"
 		}
+		if row.Missed {
+			entry.Action = "missed"
+		}
 		entries = append(entries, entry)
 	}
 	var next *time.Time
