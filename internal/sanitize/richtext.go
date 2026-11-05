@@ -128,6 +128,11 @@ func safeURL(value string) bool {
 	if value == "" || strings.ContainsAny(value, "\r\n\x00\\") {
 		return false
 	}
+	for _, r := range value {
+		if r < 0x20 || r == 0x7f {
+			return false
+		}
+	}
 	lower := strings.ToLower(strings.TrimSpace(value))
 	if strings.HasPrefix(lower, "javascript:") || strings.HasPrefix(lower, "vbscript:") ||
 		strings.HasPrefix(lower, "data:") || strings.HasPrefix(lower, "//") {
