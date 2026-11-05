@@ -114,7 +114,7 @@ func TestRoutineGraphPersistsDependenciesAndOffersParallelTasks(t *testing.T) {
 	stored, err := Routines(db, 1)
 	require.NoError(t, err)
 	require.Len(t, stored, 1)
-	require.Equal(t, []RoutineDependency{{StepID: 2, DependsOnStepID: 1}, {StepID: 3, DependsOnStepID: 1}}, stored[0].Dependencies)
+	require.Equal(t, []RoutineDependency{{RoutineID: routine.ID, StepID: 2, DependsOnStepID: 1}, {RoutineID: routine.ID, StepID: 3, DependsOnStepID: 1}}, stored[0].Dependencies)
 
 	views, err := RoutineViews(db, 1, []int{2}, now)
 	require.NoError(t, err)
