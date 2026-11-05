@@ -116,7 +116,7 @@ func StartRoutineOccurrence(db *gorm.DB, familyID, routineID, userID int, now ti
 	var occurrence *RoutineOccurrence
 	err := db.Transaction(func(tx *gorm.DB) error {
 		var routine Routine
-		if err := tx.Where("id = ? AND family_id = ?", routineID, familyID).First(&routine).Error; err != nil {
+		if err := tx.Clauses(clause.Locking{Strength:"UPDATE"}).Where("id = ? AND family_id = ?", routineID, familyID).First(&routine).Error; err != nil {
 			return err
 		}
 		minutes := routine.ValidityMinutes
