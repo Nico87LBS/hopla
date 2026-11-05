@@ -23,6 +23,7 @@ type Routine struct {
 	// ChoreIDs are the steps in order. A step stands for every task with the
 	// same name, so each child's copy of a task is the same step.
 	ChoreIDs  []int         `json:"choreIds" gorm:"-"`
+	SlotIDs []string `json:"slotIds" gorm:"-"`
 	Steps     []RoutineStep `json:"-" gorm:"foreignKey:RoutineID"`
 	Dependencies []RoutineDependency `json:"dependencies" gorm:"-"`
 	GraphEnabled bool `json:"graphEnabled" gorm:"column:graph_enabled;not null;default:false"`
@@ -40,6 +41,7 @@ type RoutineStep struct {
 	RoutineID int `gorm:"column:routine_id;index;not null"`
 	Position  int `gorm:"column:position;not null"`
 	ChoreID   int  `gorm:"column:chore_id;not null"`
+	SlotID string `json:"slotId" gorm:"column:slot_id;size:32"`
 	Required  *bool `json:"required" gorm:"column:required;not null;default:true"`
 }
 
@@ -88,6 +90,7 @@ var (
 	ErrRoutineTaskTwice = errors.New("a task is twice in the routine")
 	ErrRoutineTaskTaken = errors.New("a task is already in another routine")
 	ErrRoutineTask      = errors.New("a task of the routine is not in the family")
+	ErrRoutineSlot = errors.New("a routine references a slot that does not exist on every copy of the task")
 )
 
 // Routines returns a family's routines with their steps, oldest first.
@@ -101,8 +104,10 @@ func Routines(db *gorm.DB, familyID int) ([]Routine, error) {
 		if err := db.Where("routine_id = ?", routines[i].ID).Find(&routines[i].Dependencies).Error; err != nil { return nil, err }
 		positionByID := make(map[int]int, len(routines[i].Steps))
 		routines[i].ChoreIDs = []int{}
+		routines[i].SlotIDs = []string{}
 		for _, step := range routines[i].Steps {
 			routines[i].ChoreIDs = append(routines[i].ChoreIDs, step.ChoreID)
+			routines[i].SlotIDs = append(routines[i].SlotIDs, step.SlotID)
 			if routines[i].GraphEnabled && step.Required != nil && !*step.Required { routines[i].OptionalChoreIDs = append(routines[i].OptionalChoreIDs, step.ChoreID) }
 			positionByID[step.ID] = step.Position + 1
 		}
@@ -135,6 +140,15 @@ func stepTasks(db *gorm.DB, familyID int, choreIDs []int) (map[int][]int, error)
 	return tasks, nil
 }
 
+
+// routineSlotConflicts reports whether two references overlap. An empty slot
+// ID means the whole task, so it conflicts with every individual slot.
+func routineSlotConflicts(existing map[string]bool, candidate string) bool {
+	if len(existing) == 0 { return false }
+	if candidate == "" || existing[""] || existing[candidate] { return true }
+	return false
+}
+
 // SaveRoutine creates the routine, or replaces it when it has an ID, after
 // checking its tasks: in the family, each once, and in no other routine.
 func SaveRoutine(db *gorm.DB, routine *Routine) error {
@@ -144,21 +158,35 @@ func SaveRoutine(db *gorm.DB, routine *Routine) error {
 	if len(routine.ChoreIDs) > maxRoutineSteps {
 		return ErrRoutineTooLong
 	}
+	if len(routine.SlotIDs) == 0 { routine.SlotIDs = make([]string, len(routine.ChoreIDs)) }
+	if len(routine.SlotIDs) != len(routine.ChoreIDs) { return ErrRoutineSlot }
 	return db.Transaction(func(tx *gorm.DB) error {
 		tasks, err := stepTasks(tx, routine.FamilyID, routine.ChoreIDs)
 		if err != nil {
 			return err
 		}
-		mine := map[int]bool{}
-		for _, choreID := range routine.ChoreIDs {
-			if len(tasks[choreID]) == 0 {
-				return ErrRoutineTask
-			}
-			for _, id := range tasks[choreID] {
-				if mine[id] {
-					return ErrRoutineTaskTwice
+		mine := map[int]map[string]bool{}
+		for position, choreID := range routine.ChoreIDs {
+			ids := tasks[choreID]
+			if len(ids) == 0 { return ErrRoutineTask }
+			slotID := routine.SlotIDs[position]
+			if slotID != "" {
+				var copies []chModel.Chore
+				if err := tx.Select("id", "frequency_meta_v2").Where("id IN ?", ids).Find(&copies).Error; err != nil { return err }
+				for _, copy := range copies {
+					found := false
+					if copy.FrequencyMetadataV2 != nil {
+						for _, slot := range copy.FrequencyMetadataV2.Slots {
+							if slot.ID == slotID { found = true; break }
+						}
+					}
+					if !found { return ErrRoutineSlot }
 				}
-				mine[id] = true
+			}
+			for _, id := range ids {
+				if mine[id] == nil { mine[id] = map[string]bool{} }
+				if routineSlotConflicts(mine[id], slotID) { return ErrRoutineTaskTwice }
+				mine[id][slotID] = true
 			}
 		}
 		for _, choreID := range routine.OptionalChoreIDs {
@@ -169,18 +197,14 @@ func SaveRoutine(db *gorm.DB, routine *Routine) error {
 			return err
 		}
 		for _, other := range others {
-			if other.ID == routine.ID {
-				continue
-			}
+			if other.ID == routine.ID { continue }
 			theirs, err := stepTasks(tx, routine.FamilyID, other.ChoreIDs)
-			if err != nil {
-				return err
-			}
-			for _, ids := range theirs {
-				for _, id := range ids {
-					if mine[id] {
-						return ErrRoutineTaskTaken
-					}
+			if err != nil { return err }
+			for position, choreID := range other.ChoreIDs {
+				otherSlotID := ""
+				if position < len(other.SlotIDs) { otherSlotID = other.SlotIDs[position] }
+				for _, id := range theirs[choreID] {
+					if mine[id] != nil && routineSlotConflicts(mine[id], otherSlotID) { return ErrRoutineTaskTaken }
 				}
 			}
 		}
@@ -204,7 +228,7 @@ func SaveRoutine(db *gorm.DB, routine *Routine) error {
 		}
 		routine.Steps = nil
 		for i, choreID := range routine.ChoreIDs { required := !slices.Contains(routine.OptionalChoreIDs, choreID)
-		routine.Steps = append(routine.Steps, RoutineStep{RoutineID: routine.ID, Position: i, ChoreID: choreID, Required: &required}) }
+		routine.Steps = append(routine.Steps, RoutineStep{RoutineID: routine.ID, Position: i, ChoreID: choreID, SlotID: routine.SlotIDs[i], Required: &required}) }
 		if err := tx.Create(&routine.Steps).Error; err != nil { return err }
 		for i := range routine.Dependencies {
 			from, to := routine.Dependencies[i].DependsOnStepID-1, routine.Dependencies[i].StepID-1
