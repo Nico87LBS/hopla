@@ -1030,7 +1030,7 @@ const ModuleGroup = ({
       .map(key => key.slice('force-open:'.length)),
   )
   const tiers = (group.tiers || []).filter(level => level.pack)
-  const singleLevel = !!group.pack && group.tiers?.length === 1 && !group.tiers[0].pack
+  const singleLevel = !!group.pack && tiers.length === 0 && group.modules.length > 0
   const singleAccess = forcedKeys.has(group.pack?.id) ? 'open' : asideKeys.has(group.pack?.id) ? 'locked' : 'auto'
   const onAside = (key, aside) =>
     run(
