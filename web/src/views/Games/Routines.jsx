@@ -240,7 +240,7 @@ export const RoutinesCard = () => {
                       const currentSlotId = draft.slotIds?.[index] || ''
                       return (
                         <>
-                          {(options?.routineCanUseAllSlots || !currentSlotId) && (
+                          {options?.routineCanUseAllSlots && (
                             <Option value=''>{t('routines.allSlots')}</Option>
                           )}
                           {(options?.routineAvailableSlots || []).map(slot => (
