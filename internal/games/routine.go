@@ -617,7 +617,7 @@ func awardRoutines(tx *gorm.DB, familyID, userID int, performedAt, now time.Time
 	views, err := RoutineViews(tx, familyID, []int{userID}, now)
 	if err != nil { return err }
 	for _, view := range views {
-		if slices.Contains(knownRoutineIDs, view.ID) || view.Bonus <= 0 || len(view.Members) == 0 || !view.Members[0].Finished {
+		if slices.Contains(knownRoutineIDs, view.ID) || view.Bonus <= 0 || len(view.Members) == 0 || view.Members[0].Occurrence != nil || !view.Members[0].Finished {
 			continue
 		}
 		result := tx.Clauses(clause.OnConflict{DoNothing: true}).
