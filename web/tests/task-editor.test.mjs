@@ -166,7 +166,7 @@ test('a task done every day gets a moment from its time and deadline', () => {
     timezone: 'Europe/Brussels',
   })
   assert.deepEqual(made.frequencyMetadata.slots, [
-    { name: '', time: '18:00', until: '19:30' },
+    { name: '', time: '18:00', until: '19:30', opensBefore: 0 },
   ])
   assert.equal(made.frequencyMetadata.timezone, 'Europe/Brussels')
   assert.equal(made.deadlineMinutes, null)
@@ -204,7 +204,7 @@ test('a task done once on a day gets a moment on that day', () => {
   )
   assert.equal(made.frequencyMetadata.day, '2026-11-10')
   assert.deepEqual(made.frequencyMetadata.slots, [
-    { name: '', time: '17:30', until: '18:30' },
+    { name: '', time: '17:30', until: '18:30', opensBefore: 0 },
   ])
   // Without a day it has no moment, and a repeated task keeps no day.
   assert.equal(ensureMoment('once', {}, {}).frequencyMetadata.slots, undefined)

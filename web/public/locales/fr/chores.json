@@ -1069,7 +1069,7 @@
       "allDay": "Toute la journée",
       "allDayHelp": "Sans heure : à faire à n'importe quel moment de la journée.",
       "slotsHelp": "Une tâche répétée a un moment : l'heure à laquelle elle est à faire. Ajoutes-en pour la faire plusieurs fois par jour (matin, soir…).",
-      "slotsRule": "Chaque moment se coche à part et rapporte les {{units}}. Il s'ouvre une heure avant son heure (réglable), est en retard dès son heure, et dure jusqu'au suivant ou jusqu'à l'heure de fin si tu en mets une : passée la fin, il est manqué. Un parent peut rattraper un moment oublié jusqu'à minuit.",
+      "slotsRule": "Chaque moment se coche à part et rapporte les {{units}}. Il s'ouvre à son heure (réglable : jusqu'à plusieurs heures avant), est en retard dès son heure, et dure jusqu'au suivant ou jusqu'à l'heure de fin si tu en mets une : passée la fin, il est manqué. Un parent peut rattraper un moment oublié jusqu'à minuit.",
       "today": "Aujourd'hui",
       "tomorrow": "Demain",
       "otherDate": "Autre date",

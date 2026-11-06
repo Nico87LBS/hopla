@@ -88,7 +88,7 @@ export const ensureMoment = (
   if (timed) {
     const [hour, minute] = time.split(':').map(Number)
     const end = hour * 60 + minute + (deadlineMinutes > 0 ? deadlineMinutes : 0)
-    slot = { name: '', time }
+    slot = { name: '', time, opensBefore: 0 }
     if (deadlineMinutes > 0 && end < 24 * 60) slot.until = clock(end)
   }
   return {

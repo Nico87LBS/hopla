@@ -224,13 +224,7 @@ const Slots = ({ frequencyMetadata, onFrequencyMetadataUpdate }) => {
                       (slot.allDay ? t('slots.allDay') : slot.time),
                   })}
                   value={slot.opensBefore ?? DEFAULT_LEAD}
-                  onChange={(_, value) =>
-                    change(
-                      index,
-                      'opensBefore',
-                      value === DEFAULT_LEAD ? undefined : value,
-                    )
-                  }
+                  onChange={(_, value) => change(index, 'opensBefore', value)}
                   sx={{ minHeight: 36, bgcolor: 'transparent', width: 120 }}
                 >
                   {OPEN_LEADS.map(minutes => (
@@ -254,7 +248,12 @@ const Slots = ({ frequencyMetadata, onFrequencyMetadataUpdate }) => {
                 onClick={() =>
                   update([
                     slot.allDay
-                      ? { ...slot, allDay: undefined, time: '08:00' }
+                      ? {
+                          ...slot,
+                          allDay: undefined,
+                          time: '08:00',
+                          opensBefore: 0,
+                        }
                       : {
                           ...slot,
                           allDay: true,
@@ -299,10 +298,13 @@ const Slots = ({ frequencyMetadata, onFrequencyMetadataUpdate }) => {
               update(
                 slots.some(slot => slot.allDay)
                   ? [
-                      { name: '', time: '08:00' },
-                      { name: '', time: '12:00' },
+                      { name: '', time: '08:00', opensBefore: 0 },
+                      { name: '', time: '12:00', opensBefore: 0 },
                     ]
-                  : [...slots, { name: '', time: nextSlotTime(slots) }],
+                  : [
+                      ...slots,
+                      { name: '', time: nextSlotTime(slots), opensBefore: 0 },
+                    ],
               )
             }
             sx={{
