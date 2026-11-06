@@ -16,7 +16,7 @@ import {
 } from '@mui/joy'
 import moment from 'moment'
 import PropTypes from 'prop-types'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import NumberInput from '../../../components/common/NumberInput'
@@ -472,20 +472,19 @@ DateTime.propTypes = {
   useCustomTime: PropTypes.bool,
 }
 
-// The deadline the task can have, as a date and time after its due date:
-// past it, the task is missed. A repeated task keeps the same delay after each
-// due date.
+// The limit a task can have: how long after its due time this passage is
+// missed. A repeated task keeps the same delay at each passage, and comes
+// back at the next one.
 const DEFAULT_DEADLINE_MINUTES = 120
+const DEADLINE_DELAYS = [15, 30, 60, 120, 180, 360, 720, 1440, 2880, 10080]
 
-// The deadline shown to the minute: a due date "any time of the day" is at
-// 23:59:59.
-const deadlineMoment = (dueDate, minutes) =>
-  moment(moment(dueDate).valueOf() + minutes * 60000 + 30000).startOf('minute')
-
-const Deadline = ({ dueDate, minutes, onChange, repeated }) => {
+const Deadline = ({ minutes, onChange }) => {
   const { t } = useTranslation('chores')
-  const [draft, setDraft] = useState(null)
   const on = minutes > 0
+  const delays =
+    on && !DEADLINE_DELAYS.includes(minutes)
+      ? [...DEADLINE_DELAYS, minutes].sort((a, b) => a - b)
+      : DEADLINE_DELAYS
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.25 }}>
       <Box
@@ -507,64 +506,41 @@ const Deadline = ({ dueDate, minutes, onChange, repeated }) => {
         </Box>
         <Switch
           checked={on}
-          onChange={e => {
-            setDraft(null)
+          onChange={e =>
             onChange(e.target.checked ? DEFAULT_DEADLINE_MINUTES : null)
-          }}
+          }
         />
       </Box>
       {on && (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Typography level='body-sm' sx={{ color: 'text.secondary' }}>
-            {t('editor.when.deadlineAt')}
+            {t('editor.when.deadlineAfterLabel')}
           </Typography>
-          <Input
-            type='datetime-local'
-            aria-label={t('editor.when.deadlineAt')}
-            value={
-              draft ??
-              deadlineMoment(dueDate, minutes).format('YYYY-MM-DDTHH:mm')
-            }
-            onChange={e => {
-              const value = e.target.value
-              const after = value
-                ? Math.round(
-                    (moment(value).valueOf() - moment(dueDate).valueOf()) /
-                      60000,
-                  )
-                : 0
-              if (after > 0) {
-                setDraft(null)
-                onChange(after)
-              } else {
-                setDraft(value)
-              }
-            }}
-            sx={{ minHeight: 40 }}
-          />
+          <Select
+            size='sm'
+            aria-label={t('editor.when.deadline')}
+            value={minutes}
+            onChange={(_, value) => onChange(value)}
+            sx={{ minHeight: 40, minWidth: 120 }}
+          >
+            {delays.map(delay => (
+              <Option key={delay} value={delay}>
+                {shortDuration(delay, t)}
+              </Option>
+            ))}
+          </Select>
+          <Typography level='body-sm' sx={{ color: 'text.secondary' }}>
+            {t('editor.when.deadlineAfterDue')}
+          </Typography>
         </Box>
-      )}
-      {on && draft !== null && (
-        <Typography level='body-sm' color='danger'>
-          {t('editor.when.deadlineAfterDue')}
-        </Typography>
-      )}
-      {on && repeated && draft === null && (
-        <InfoLine>
-          {t('editor.when.deadlineRepeat', {
-            delay: shortDuration(minutes, t),
-          })}
-        </InfoLine>
       )}
     </Box>
   )
 }
 
 Deadline.propTypes = {
-  dueDate: PropTypes.string.isRequired,
   minutes: PropTypes.number,
   onChange: PropTypes.func.isRequired,
-  repeated: PropTypes.bool,
 }
 
 // "When?": once, repeated, always there or set off from outside, and the
@@ -907,10 +883,8 @@ export default function WhenCard({
         dueDateOnly &&
         deadlineApplies(frequencyType, metadata) && (
           <Deadline
-            dueDate={dueDate}
             minutes={deadlineMinutes}
             onChange={onDeadlineMinutesChange}
-            repeated={kind === 'repeat'}
           />
         )}
 
