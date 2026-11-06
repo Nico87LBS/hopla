@@ -185,6 +185,18 @@ const ChoreEdit = () => {
   const unarchiveChore = useUnArchiveChore()
   const deleteChores = useDeleteChores()
   const isEditing = choreId > 0 && searchParams.get('clone') !== 'true'
+
+  // Coming from the quick add: start from what was already typed there.
+  // Keyed on the navigation, so opening it again from the create page
+  // still picks up the new text.
+  useEffect(() => {
+    if (choreId || !location.state?.fromQuickAdd) return
+    setName(location.state.name || '')
+    if (location.state.description) {
+      setDescription(location.state.description)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.key])
   const { data: allChores } = useChores(true, { enabled: isEditing })
   const copies = isEditing ? copiesOf(chore, allChores?.res) : []
   const syncCopies = applyToCopies && copies.length > 0
