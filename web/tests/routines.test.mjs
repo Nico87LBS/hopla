@@ -87,9 +87,7 @@ test('a task can belong to different routines through different stable slots', (
       ],
     },
   }
-  const slotRoutines = [
-    { id: 10, choreIds: [6], slotIds: ['morning'] },
-  ]
+  const slotRoutines = [{ id: 10, choreIds: [6], slotIds: ['morning'] }]
   const offered = routineTasks([multi], slotRoutines)
   assert.deepEqual(
     offered[0].routineAvailableSlots.map(slot => slot.id),

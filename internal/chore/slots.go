@@ -27,6 +27,9 @@ const (
 	maxSlotName = 30
 	// maxOpenLead is the longest a slot can open before its time, in minutes.
 	maxOpenLead = 12 * 60
+	// allDayTime is the time of a moment all day: it is due at the end of the
+	// day, and is open from midnight.
+	allDayTime = "23:59"
 )
 
 var (
@@ -106,6 +109,13 @@ func normalizeSlots(frequencyType chModel.FrequencyType, metadata *chModel.Frequ
 			slot.ID = id
 		}
 		seenIDs[slot.ID] = true
+		if slot.AllDay {
+			// A moment with no hour is the whole day, and the only one.
+			if len(metadata.Slots) > 1 {
+				return errors.New("a task with a moment all day has no other moment")
+			}
+			slot.Time, slot.Until, slot.OpensBefore = allDayTime, "", nil
+		}
 		hour, minute, err := parseSlotTime(slot.Time)
 		if err != nil {
 			return err

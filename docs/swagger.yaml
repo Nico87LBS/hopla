@@ -765,6 +765,11 @@ definitions:
     - NotificationTemplateUnitDay
   model.Slot:
     properties:
+      allDay:
+        description: |-
+          AllDay is a moment with no hour: open from midnight to midnight, due at
+          the end of the day. It is alone on its task; its time is then 23:59.
+        type: boolean
       id:
         type: string
       name:
@@ -808,6 +813,8 @@ definitions:
     - SlotMissed
   model.SlotStatus:
     properties:
+      allDay:
+        type: boolean
       at:
         type: string
       closesAt:

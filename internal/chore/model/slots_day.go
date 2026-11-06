@@ -57,6 +57,9 @@ func (c *Chore) SlotWindows(day time.Time) []SlotStatus {
 			lead = time.Duration(*slot.OpensBefore) * time.Minute
 		}
 		opens := at.Add(-lead)
+		if slot.AllDay {
+			opens = day
+		}
 		if len(windows) == 0 {
 			if opens.Before(day) {
 				opens = day
@@ -64,7 +67,7 @@ func (c *Chore) SlotWindows(day time.Time) []SlotStatus {
 		} else if previous := windows[len(windows)-1].At; opens.Before(previous.Add(at.Sub(previous) / 2)) {
 			opens = previous.Add(at.Sub(previous) / 2)
 		}
-		windows = append(windows, SlotStatus{Index: i, SlotID: slot.ID, Name: slot.Name, Time: slot.Time, Until: slot.Until, At: at, OpensAt: opens, ClosesAt: next})
+		windows = append(windows, SlotStatus{Index: i, SlotID: slot.ID, Name: slot.Name, Time: slot.Time, Until: slot.Until, AllDay: slot.AllDay, At: at, OpensAt: opens, ClosesAt: next})
 	}
 	for i := range windows {
 		if i+1 < len(windows) {

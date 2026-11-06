@@ -215,6 +215,7 @@ const TaskRow = ({
     url: titleUrl,
   } = splitTextAtFirstHttpUrl(chore.name)
   const pending = chore._pending || pendingCmds?.length > 0
+  const faceOnRight = !isMultiSelectMode && showActions && members.length === 1
 
   return (
     <Box
@@ -226,7 +227,10 @@ const TaskRow = ({
         gap: 0.5,
         minHeight: 64,
         pl: 0.5,
-        pr: 0.75,
+        // The head or the ring on the right sits 14px from the edge, as on
+        // the cards of several moments (12px, and 2px around the 40px head;
+        // 5px around the 26px ring in its 44px button).
+        pr: faceOnRight ? 1.5 : 0.625,
         position: 'relative',
         py: 0.75,
         transition: 'background-color 150ms ease',
@@ -420,7 +424,7 @@ const TaskRow = ({
           {chore.points}
         </Box>
       )}
-      {!isMultiSelectMode && showActions && members.length === 1 ? (
+      {faceOnRight ? (
         <CopyFace
           disabled={
             chore.status === PENDING_APPROVAL
