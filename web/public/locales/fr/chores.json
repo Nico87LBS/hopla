@@ -1056,7 +1056,7 @@
       "slotName": "Nom",
       "addSlot": "Créneau",
       "slotsHelp": "Plusieurs fois par jour ? Ajoute un créneau pour chaque fois (matin, soir…).",
-      "slotsRule": "Chaque créneau se coche à part et rapporte les {{units}}. Il s'ouvre une heure avant son heure et dure jusqu'au suivant, ou jusqu'à l'heure de fin si tu en mets une ; un parent peut rattraper un créneau oublié jusqu'à minuit.",
+      "slotsRule": "Chaque créneau se coche à part et rapporte les {{units}}. Il s'ouvre une heure avant son heure (réglable) et dure jusqu'au suivant, ou jusqu'à l'heure de fin si tu en mets une ; un parent peut rattraper un créneau oublié jusqu'à minuit.",
       "today": "Aujourd'hui",
       "tomorrow": "Demain",
       "otherDate": "Autre date",
@@ -1078,7 +1078,11 @@
       "deadlineAfterDue": "La limite doit venir après l'échéance.",
       "deadlineRepeat": "Chaque fois, la limite tombe {{delay}} après l'échéance.",
       "slotUntil": "jusqu'à",
-      "slotUntilLabel": "Fin du créneau {{name}} (facultatif)"
+      "slotUntilLabel": "Fin du créneau {{name}} (facultatif)",
+      "slotOpens": "s'ouvre",
+      "slotOpensLabel": "Ouverture du créneau {{name}}",
+      "slotOpensAtTime": "à l'heure",
+      "slotOpensBefore": "{{delay}} avant"
     },
     "reward": {
       "title": "Récompense",

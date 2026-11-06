@@ -69,6 +69,10 @@ const nextSlotTime = slots => {
   return `${String(Math.min(hour + 4, 23)).padStart(2, '0')}:${String(minute).padStart(2, '0')}`
 }
 
+// How long before its time a slot can open, in minutes: an hour unless set.
+const OPEN_LEADS = [0, 15, 30, 60, 120, 180]
+const DEFAULT_LEAD = 60
+
 const InfoLine = ({ children, icon: Icon = ScheduleRounded }) => (
   <Box
     sx={{
@@ -182,6 +186,38 @@ const Slots = ({ frequencyMetadata, onFrequencyMetadataUpdate }) => {
                 },
               }}
             />
+            <Typography
+              level='body-xs'
+              sx={{ color: 'text.tertiary', whiteSpace: 'nowrap' }}
+            >
+              {t('editor.when.slotOpens')}
+            </Typography>
+            <Select
+              variant='plain'
+              size='sm'
+              aria-label={t('editor.when.slotOpensLabel', {
+                name: slot.name || slot.time,
+              })}
+              value={slot.opensBefore ?? DEFAULT_LEAD}
+              onChange={(_, value) =>
+                change(
+                  index,
+                  'opensBefore',
+                  value === DEFAULT_LEAD ? undefined : value,
+                )
+              }
+              sx={{ minHeight: 36, bgcolor: 'transparent', width: 120 }}
+            >
+              {OPEN_LEADS.map(minutes => (
+                <Option key={minutes} value={minutes}>
+                  {minutes === 0
+                    ? t('editor.when.slotOpensAtTime')
+                    : t('editor.when.slotOpensBefore', {
+                        delay: shortDuration(minutes, t),
+                      })}
+                </Option>
+              ))}
+            </Select>
             <IconButton
               size='sm'
               variant='plain'

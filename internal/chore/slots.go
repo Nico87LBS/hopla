@@ -14,9 +14,9 @@ import (
 // A task can be done at several times of the day, its slots: brushing teeth
 // in the morning, at noon and in the evening. Each slot is ticked on its own,
 // earns the task's points and, when the task needs approval, waits for a
-// parent on its own. A slot opens an hour before its time, or halfway from
-// the previous slot when they are closer, and stays open until the next one
-// opens; the last one stays open until midnight. A slot can be given its own
+// parent on its own. A slot opens an hour before its time, or as long before
+// as it is set to, or halfway from the previous slot when they are closer,
+// and stays open until the next one opens; the last one stays open until midnight. A slot can be given its own
 // end instead, no later than the next slot's time. A slot closed without
 // being done is missed, and a parent can still catch it up until midnight. Slot
 // times are read in the family's time zone, like the games' days.
@@ -25,6 +25,8 @@ const (
 	maxSlots     = 6
 	maxSlotName  = 30
 	slotOpenLead = time.Hour
+	// maxOpenLead is the longest a slot can open before its time, in minutes.
+	maxOpenLead = 12 * 60
 )
 
 var (
@@ -87,6 +89,9 @@ func normalizeSlots(frequencyType chModel.FrequencyType, metadata *chModel.Frequ
 			if slot.Until <= slot.Time {
 				return fmt.Errorf("the slot at %s must end after it", slot.Time)
 			}
+		}
+		if slot.OpensBefore != nil && (*slot.OpensBefore < 0 || *slot.OpensBefore > maxOpenLead) {
+			return fmt.Errorf("the slot at %s opens at most %d minutes before", slot.Time, maxOpenLead)
 		}
 		slot.Name = strings.TrimSpace(slot.Name)
 		if len([]rune(slot.Name)) > maxSlotName {
@@ -152,7 +157,11 @@ func slotWindows(chore *chModel.Chore, day time.Time) []chModel.SlotStatus {
 			continue
 		}
 		at := time.Date(day.Year(), day.Month(), day.Day(), hour, minute, 0, 0, day.Location())
-		opens := at.Add(-slotOpenLead)
+		lead := slotOpenLead
+		if slot.OpensBefore != nil {
+			lead = time.Duration(*slot.OpensBefore) * time.Minute
+		}
+		opens := at.Add(-lead)
 		if len(windows) == 0 {
 			if opens.Before(day) {
 				opens = day

@@ -105,3 +105,25 @@ func TestSettleMissedSlots(t *testing.T) {
 	require.Equal(t, chore.FrequencyMetadataV2.Slots[1].ID, *missed[0].SlotID)
 	require.True(t, missed[0].PerformedAt.Equal(brussels(t, 25, 0, 0)), "closed at midnight")
 }
+
+// A slot opens as long before its time as it is set to, an hour if unset.
+func TestSlotOpensBefore(t *testing.T) {
+	familyIn(t, "Europe/Brussels")
+	chore := teethChore("07:30", "19:00")
+	half, none, big := 30, 0, 13*60
+	chore.FrequencyMetadataV2.Slots[0].OpensBefore = &half
+	chore.FrequencyMetadataV2.Slots[1].OpensBefore = &none
+	windows := slotWindows(chore, brussels(t, 23, 0, 0))
+	require.True(t, windows[0].OpensAt.Equal(brussels(t, 23, 7, 0)), "half an hour before")
+	require.True(t, windows[1].OpensAt.Equal(brussels(t, 23, 19, 0)), "exactly at its time")
+
+	unset := teethChore("07:30", "19:00")
+	windows = slotWindows(unset, brussels(t, 23, 0, 0))
+	require.True(t, windows[0].OpensAt.Equal(brussels(t, 23, 6, 30)), "an hour by default")
+
+	metadata := &chModel.FrequencyMetadata{Slots: []chModel.Slot{{Time: "07:30", OpensBefore: &big}}}
+	require.Error(t, normalizeSlots(chModel.FrequencyTypeDaily, metadata), "too long before")
+	neg := -5
+	metadata = &chModel.FrequencyMetadata{Slots: []chModel.Slot{{Time: "07:30", OpensBefore: &neg}}}
+	require.Error(t, normalizeSlots(chModel.FrequencyTypeDaily, metadata), "negative")
+}
