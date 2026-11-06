@@ -1266,7 +1266,18 @@
     "label": "Routine “{{name}}” under way",
     "until": "until {{time}}",
     "next": "Next: {{name}}",
-    "finished": "Done"
+    "finished": "Done",
+    "missed": "missed",
+    "momentMissed": "{{name}} · missed",
+    "momentLate": "{{name}} · late",
+    "steps_one": "{{count}} step",
+    "steps_other": "{{count}} steps",
+    "missedCount_one": "{{count}} missed",
+    "missedCount_other": "{{count}} missed",
+    "first": "First step: {{name}}",
+    "startsAt": "starts at {{time}}",
+    "endedAt": "ended at {{time}}",
+    "labelComing": "Routine “{{name}}” coming up"
   },
   "todayPanel": {
     "label": "Today at a glance",

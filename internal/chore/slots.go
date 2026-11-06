@@ -23,9 +23,8 @@ import (
 // times are read in the family's time zone, like the games' days.
 
 const (
-	maxSlots     = 6
-	maxSlotName  = 30
-	slotOpenLead = time.Hour
+	maxSlots    = 6
+	maxSlotName = 30
 	// maxOpenLead is the longest a slot can open before its time, in minutes.
 	maxOpenLead = 12 * 60
 	// allDayTime is the time of a moment all day: it is due at the end of the
@@ -41,11 +40,7 @@ var (
 
 // parseSlotTime reads a slot's "15:04" time of day.
 func parseSlotTime(value string) (hour, minute int, err error) {
-	t, err := time.Parse("15:04", strings.TrimSpace(value))
-	if err != nil {
-		return 0, 0, fmt.Errorf("invalid slot time %q", value)
-	}
-	return t.Hour(), t.Minute(), nil
+	return chModel.ParseSlotTime(value)
 }
 
 // isOnceType reports whether a task is done once, on a day.
@@ -174,20 +169,7 @@ func (h *Handler) shareSlotIDs(ctx context.Context, familyID int, name string, e
 
 // slotRunsOn reports whether the task's slots run on the given local day.
 func slotRunsOn(chore *chModel.Chore, day time.Time) bool {
-	switch chore.FrequencyType {
-	case chModel.FrequencyTypeOnce, chModel.FrequencyTypeNoRepeat:
-		return chore.FrequencyMetadataV2 != nil && chore.FrequencyMetadataV2.Day == day.Format("2006-01-02")
-	case chModel.FrequencyTypeDaily:
-		return true
-	case chModel.FrequencyTypeDayOfTheWeek:
-		weekday := strings.ToLower(day.Weekday().String())
-		for _, d := range chore.FrequencyMetadataV2.Days {
-			if d != nil && strings.ToLower(*d) == weekday {
-				return true
-			}
-		}
-	}
-	return false
+	return chore.SlotRunsOn(day)
 }
 
 // startOfDay returns local midnight of the day t falls on.
@@ -198,53 +180,7 @@ func startOfDay(t time.Time) time.Time {
 // slotWindows returns the task's slots on the day starting at the given local
 // midnight, with when each one opens and closes, or nothing on a day off.
 func slotWindows(chore *chModel.Chore, day time.Time) []chModel.SlotStatus {
-	if !chore.HasSlots() || !slotRunsOn(chore, day) {
-		return nil
-	}
-	next := day.AddDate(0, 0, 1)
-	windows := make([]chModel.SlotStatus, 0, len(chore.FrequencyMetadataV2.Slots))
-	for i, slot := range chore.FrequencyMetadataV2.Slots {
-		hour, minute, err := parseSlotTime(slot.Time)
-		if err != nil {
-			continue
-		}
-		at := time.Date(day.Year(), day.Month(), day.Day(), hour, minute, 0, 0, day.Location())
-		lead := slotOpenLead
-		if slot.OpensBefore != nil {
-			lead = time.Duration(*slot.OpensBefore) * time.Minute
-		}
-		opens := at.Add(-lead)
-		if slot.AllDay {
-			opens = day
-		}
-		if len(windows) == 0 {
-			if opens.Before(day) {
-				opens = day
-			}
-		} else if previous := windows[len(windows)-1].At; opens.Before(previous.Add(at.Sub(previous) / 2)) {
-			opens = previous.Add(at.Sub(previous) / 2)
-		}
-		windows = append(windows, chModel.SlotStatus{Index: i, SlotID: slot.ID, Name: slot.Name, Time: slot.Time, Until: slot.Until, AllDay: slot.AllDay, At: at, OpensAt: opens, ClosesAt: next})
-	}
-	for i := range windows {
-		if i+1 < len(windows) {
-			windows[i].ClosesAt = windows[i+1].OpensAt
-		}
-		if windows[i].Until == "" {
-			continue
-		}
-		hour, minute, err := parseSlotTime(windows[i].Until)
-		if err != nil {
-			continue
-		}
-		until := time.Date(day.Year(), day.Month(), day.Day(), hour, minute, 0, 0, day.Location())
-		windows[i].ClosesAt = until
-		// The next slot never opens while this one is still the one to do.
-		if i+1 < len(windows) && windows[i+1].OpensAt.Before(until) {
-			windows[i+1].OpensAt = until
-		}
-	}
-	return windows
+	return chore.SlotWindows(day)
 }
 
 // slotStatuses returns today's slots of the task with their state, from its

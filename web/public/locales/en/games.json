@@ -279,6 +279,16 @@
       "skipped": "Skipped",
       "not_applicable": "Not today"
     },
-    "addNone": "Add"
+    "addNone": "Add",
+    "startsAt": "Starts at",
+    "endsAt": "Ends at",
+    "clearHour": "Remove the “{{label}}” time",
+    "hoursHelp": "Every day a step is planned, the routine opens at {{start}} and ends at {{end}}. What is not done by {{end}} is missed: a parent can catch it up until midnight.",
+    "noHoursHelp": "Without times, the routine opens as soon as one of its steps is planned that day, for the time chosen below.",
+    "hoursError": {
+      "one": "Set both times, or neither.",
+      "order": "The end time must come after the start time, on the same day."
+    },
+    "previewBonusBy": "Bonus: {{bonus}} for finishing before {{time}}"
   }
 }
