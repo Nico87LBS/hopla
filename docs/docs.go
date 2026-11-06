@@ -8370,6 +8370,10 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
+                "opensBefore": {
+                    "description": "OpensBefore is how many minutes before its time the slot opens; unset,\nan hour. Zero opens it exactly at its time.",
+                    "type": "integer"
+                },
                 "time": {
                     "description": "\"15:04\", in the task's timezone",
                     "type": "string"

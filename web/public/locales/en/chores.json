@@ -1056,7 +1056,7 @@
       "slotName": "Name",
       "addSlot": "Slot",
       "slotsHelp": "Several times a day? Add a slot for each time (morning, evening…).",
-      "slotsRule": "Each slot is ticked on its own and earns the {{units}}. It opens an hour before its time and lasts until the next one, or until the end time if you set one; a parent can catch up a forgotten slot until midnight.",
+      "slotsRule": "Each slot is ticked on its own and earns the {{units}}. It opens an hour before its time (adjustable) and lasts until the next one, or until the end time if you set one; a parent can catch up a forgotten slot until midnight.",
       "today": "Today",
       "tomorrow": "Tomorrow",
       "otherDate": "Other date",
@@ -1078,7 +1078,11 @@
       "deadlineAfterDue": "The deadline must come after the due date.",
       "deadlineRepeat": "Each time, the deadline falls {{delay}} after the due date.",
       "slotUntil": "until",
-      "slotUntilLabel": "End of the {{name}} slot (optional)"
+      "slotUntilLabel": "End of the {{name}} slot (optional)",
+      "slotOpens": "opens",
+      "slotOpensLabel": "When the {{name}} slot opens",
+      "slotOpensAtTime": "at its time",
+      "slotOpensBefore": "{{delay}} before"
     },
     "reward": {
       "title": "Reward",
