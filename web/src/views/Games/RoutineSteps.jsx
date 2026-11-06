@@ -25,8 +25,6 @@ import {
   Checkbox,
   Chip,
   IconButton,
-  Option,
-  Select,
   Sheet,
   Stack,
   Typography,
@@ -145,34 +143,46 @@ const StepRow = ({ chore, draft, id, index, names, setDraft }) => {
           <Typography level='body-xs' fontWeight='lg' sx={{ mb: 0.5 }}>
             {t('routines.opensAfter')}
           </Typography>
-          <Select
-            key={draft.choreIds.map((_, i) => stepKey(draft, i)).join('|')}
-            multiple
-            size='sm'
-            value={prerequisites.length ? prerequisites : [0]}
-            onChange={(_, value) => {
-              // « Ouverte tout de suite » vide la liste ; choisir une étape
-              // la remplace.
-              const chosen = prerequisites.length
-                ? value.includes(0)
-                  ? []
-                  : value
-                : value.filter(other => other !== 0)
-              setDraft(setPrerequisites(draft, position, chosen))
-            }}
-          >
-            <Option value={0}>{t('routines.opensAtOnce')}</Option>
-            {draft.choreIds.map((otherId, otherIndex) =>
-              otherIndex === index || looping.has(otherIndex + 1) ? null : (
-                <Option
-                  key={`${otherIndex}-${stepKey(draft, otherIndex)}`}
-                  value={otherIndex + 1}
+          <Stack direction='row' gap={0.75} flexWrap='wrap'>
+            <Chip
+              size='sm'
+              variant={prerequisites.length === 0 ? 'solid' : 'outlined'}
+              color='primary'
+              onClick={() => setDraft(setPrerequisites(draft, position, []))}
+              slotProps={{
+                action: { 'aria-pressed': prerequisites.length === 0 },
+              }}
+            >
+              {t('routines.opensAtOnce')}
+            </Chip>
+            {draft.choreIds.map((otherId, otherIndex) => {
+              const other = otherIndex + 1
+              if (otherIndex === index || looping.has(other)) return null
+              const on = prerequisites.includes(other)
+              return (
+                <Chip
+                  key={`${other}-${stepKey(draft, otherIndex)}`}
+                  size='sm'
+                  variant={on ? 'solid' : 'outlined'}
+                  color='primary'
+                  onClick={() =>
+                    setDraft(
+                      setPrerequisites(
+                        draft,
+                        position,
+                        on
+                          ? prerequisites.filter(item => item !== other)
+                          : [...prerequisites, other],
+                      ),
+                    )
+                  }
+                  slotProps={{ action: { 'aria-pressed': on } }}
                 >
-                  {otherIndex + 1}. {names.get(otherId)}
-                </Option>
-              ),
-            )}
-          </Select>
+                  {other}. {names.get(otherId)}
+                </Chip>
+              )
+            })}
+          </Stack>
         </Box>
       )}
     </Sheet>
