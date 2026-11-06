@@ -8190,6 +8190,10 @@ const docTemplate = `{
         "model.FrequencyMetadata": {
             "type": "object",
             "properties": {
+                "day": {
+                    "description": "\"2006-01-02\": the day of a one-time task done at several times, in the family's time zone",
+                    "type": "string"
+                },
                 "days": {
                     "type": "array",
                     "items": {
