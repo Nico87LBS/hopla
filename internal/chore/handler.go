@@ -21,6 +21,7 @@ import (
 	lModel "github.com/nico87lbs/hopla/internal/label/model"
 	lRepo "github.com/nico87lbs/hopla/internal/label/repo"
 	"github.com/nico87lbs/hopla/internal/realtime"
+	"github.com/nico87lbs/hopla/internal/sanitize"
 	storage "github.com/nico87lbs/hopla/internal/storage"
 	storageModel "github.com/nico87lbs/hopla/internal/storage/model"
 	storageRepo "github.com/nico87lbs/hopla/internal/storage/repo"
@@ -399,6 +400,10 @@ func (h *Handler) CreateChore(c *gin.Context) {
 		})
 		return
 	}
+	if choreReq.Description != nil {
+		safeDescription := sanitize.RichTextHTML(*choreReq.Description)
+		choreReq.Description = &safeDescription
+	}
 
 	familyUsers, err := h.familyRepo.GetFamilyUsers(c, currentUser.FamilyID)
 	if err != nil {
@@ -654,6 +659,11 @@ func (h *Handler) EditChore(c *gin.Context) {
 		return
 	}
 
+	if choreReq.Description != nil {
+		safeDescription := sanitize.RichTextHTML(*choreReq.Description)
+		choreReq.Description = &safeDescription
+	}
+
 	familyUsers, err := h.familyRepo.GetFamilyUsers(c, currentUser.FamilyID)
 	if err != nil {
 		logger.Error("Failed to retrieve family users", "error", err)
@@ -825,6 +835,10 @@ func (h *Handler) EditChore(c *gin.Context) {
 		assigneeIDs = append(assigneeIDs, assignee.UserID)
 	}
 	if err := h.choreRepo.UpdateChoreVisibility(c, updatedChore, assigneeIDs); err != nil {
+		if errors.Is(err, chRepo.ErrRoutineSlotInUse) {
+			c.JSON(400, gin.H{"error": err.Error()})
+			return
+		}
 		c.JSON(500, gin.H{
 			"error": "Error adding chore",
 		})
@@ -1645,6 +1659,14 @@ func (h *Handler) CompleteChore(c *gin.Context) {
 			"error": "Invalid request",
 		})
 		return
+	}
+	if req.Notes != nil {
+		safeNote := sanitize.RichTextHTML(*req.Notes)
+		req.Notes = &safeNote
+	}
+	if req.Note != nil {
+		safeNote := sanitize.RichTextHTML(*req.Note)
+		req.Note = &safeNote
 	}
 
 	var completedDate time.Time

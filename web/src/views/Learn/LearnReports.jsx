@@ -18,7 +18,8 @@ import LoadingComponent from '../components/Loading'
 import { surfaceSx } from '../Games/GameParts'
 import { ParentPage } from '../Manage/ParentPages'
 import CardEditor, { ReportList } from './CardEditor'
-import { useExportReports, useNotify } from './ManageLearn'
+import { useNotify } from './ManageLearn'
+import useExportReports from './useExportReports'
 
 // FixCard opens the correction of a written card, as the module has it for
 // the family now, with its reports.

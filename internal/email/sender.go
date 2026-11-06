@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/nico87lbs/hopla/config"
-	"github.com/nico87lbs/hopla/logging"
 	gomail "gopkg.in/gomail.v2"
 )
 
@@ -15,7 +14,6 @@ type EmailSender struct {
 	client    *gomail.Dialer
 	appHost   string
 	fromMail  string
-	logRawURL bool
 }
 
 // Sender is the interface consumed by callers, so tests can swap the SMTP
@@ -45,7 +43,6 @@ func NewEmailSender(conf *config.Config) *EmailSender {
 		fromMail:  conf.EmailConfig.Email,
 		client:    client,
 		appHost:   conf.EmailConfig.AppHost,
-		logRawURL: conf.EmailConfig.LogRawURL,
 	}
 }
 
@@ -64,10 +61,7 @@ func (es *EmailSender) SendResetPasswordEmail(c context.Context, to, code, lang 
 	msg.SetBody("text/html", body)
 
 	if err := es.client.DialAndSend(msg); err != nil {
-		if es.logRawURL {
-			logging.FromContext(c).Infof("\n\n\n=== PASSWORD RESET LINK ===\nUser: %s\nURL:  %s\n==================================================\n\n\n", to, u)
-			return nil
-		}
+		// Reset URLs contain bearer credentials and must never be written to logs.
 		return err
 	}
 	return nil

@@ -47,7 +47,6 @@ import {
   useSetSetting,
 } from '../../queries/LearnQueries'
 import { useNotification } from '../../service/NotificationProvider'
-import { ExportLearnReports } from '../../utils/Fetcher'
 import {
   moduleProgress,
   REVIEW_BONUS,
@@ -61,7 +60,6 @@ import {
   sortItems,
 } from '../../utils/learn/listing'
 import { packsAbove, packTree } from '../../utils/learn/tree'
-import { saveFile } from '../../utils/saveFile'
 import LoadingComponent from '../components/Loading'
 import { MemberAvatar, surfaceSx } from '../Games/GameParts'
 import { ParentPage, useMembers } from '../Manage/ParentPages'
@@ -72,6 +70,7 @@ import { LearnIcon, useCompiled } from './LearnParts'
 import { VoicesCard } from './LearnVoices'
 import ListBar, { useListChoices } from './ListBar'
 import RemoveModal from './RemoveModal'
+import useExportReports from './useExportReports'
 
 const HEAD = 40
 
@@ -776,13 +775,14 @@ FirstNameCard.propTypes = {
 const LevelRow = ({
   baseline,
   group,
-  onAside,
+  member,
+  onAccess,
   onSettings,
   person,
   section,
 }) => {
   const { t } = useTranslation('learn')
-  const { aside, level, line, open } = section
+  const { access, level, line, open } = section
   // Only what is set on the level for the person or the family, other
   // than on its pack.
   const chips = CHIPS.filter(
@@ -825,17 +825,25 @@ const LevelRow = ({
           </IconButton>
         </Slot>
         <Slot>
-          <Switch
-            checked={open && !aside}
-            disabled={!open}
-            onChange={e => onAside(level.id, !e.target.checked)}
+          <Select
+            size='sm'
+            disabled={!member}
+            value={access}
+            onChange={(_, value) => value && onAccess(level.id, value)}
             slotProps={{
-              input: { 'aria-label': `${level.name} · ${person.displayName}` },
+              button: {
+                'aria-label': `${level.name} · ${person.displayName}`,
+              },
             }}
-          />
+            sx={{ minWidth: 154 }}
+          >
+            <Option value='auto'>{t('manage.accessAuto')}</Option>
+            <Option value='open'>{t('manage.accessOpen')}</Option>
+            <Option value='locked'>{t('manage.accessLocked')}</Option>
+          </Select>
         </Slot>
       </Stack>
-      {!open && (
+      {!open && access === 'auto' && (
         <Typography level='body-xs' sx={{ color: 'text.tertiary', pl: 4 }}>
           {t('manage.levelClosed')}
         </Typography>
@@ -859,10 +867,11 @@ const LevelRow = ({
 }
 
 LevelRow.propTypes = {
-  onAside: PropTypes.func.isRequired,
+  onAccess: PropTypes.func.isRequired,
   baseline: PropTypes.object,
   group: PropTypes.object.isRequired,
   onSettings: PropTypes.func.isRequired,
+  member: PropTypes.object,
   person: PropTypes.object.isRequired,
   section: PropTypes.object.isRequired,
 }
@@ -1011,8 +1020,22 @@ const ModuleGroup = ({
         p => p.userId === person.userId && p.pack === group.pack.id,
       )
     : null
-  const asideKeys = new Set(member?.excluded || [])
+  const asideKeys = new Set(
+    (member?.excluded || []).filter(key => !key.startsWith('force-open:')),
+  )
+  const forcedKeys = new Set(
+    (member?.excluded || [])
+      .filter(key => key.startsWith('force-open:'))
+      .map(key => key.slice('force-open:'.length)),
+  )
   const tiers = (group.tiers || []).filter(level => level.pack)
+  const singleLevel =
+    !!group.pack && tiers.length === 0 && group.modules.length > 0
+  const singleAccess = forcedKeys.has(group.pack?.id)
+    ? 'open'
+    : asideKeys.has(group.pack?.id)
+      ? 'locked'
+      : 'auto'
   const onAside = (key, aside) =>
     run(
       setAside.mutateAsync({
@@ -1020,6 +1043,15 @@ const ModuleGroup = ({
         pack: group.pack.id,
         key,
         aside,
+      }),
+    )
+  const onAccess = (key, mode) =>
+    run(
+      setAside.mutateAsync({
+        userId: person.userId,
+        pack: group.pack.id,
+        key,
+        mode,
       }),
     )
 
@@ -1069,7 +1101,12 @@ const ModuleGroup = ({
   }
   sections.forEach(section => {
     section.open = levelOpen(section.level.id)
-    section.aside = asideKeys.has(section.level.id)
+    section.access = forcedKeys.has(section.level.id)
+      ? 'open'
+      : asideKeys.has(section.level.id)
+        ? 'locked'
+        : 'auto'
+    section.aside = section.access === 'locked'
   })
   // moduleOpen tells whether a module of the pack can be played: its
   // level open and not set aside.
@@ -1079,7 +1116,14 @@ const ModuleGroup = ({
   const moduleOpen = module => {
     if (!group.pack) return true
     const section = levelOf.get(module.id)
-    return !!member && (!section || (section.open && !section.aside))
+    return (
+      !!member &&
+      (section
+        ? section.access === 'open' || (section.open && !section.aside)
+        : singleLevel
+          ? singleAccess === 'open' || singleAccess === 'auto'
+          : true)
+    )
   }
   const placedIn = new Set(
     (placement?.opened || []).map(chapter => chapter.split('/')[0]),
@@ -1190,14 +1234,34 @@ const ModuleGroup = ({
         )}
         <Box sx={{ flex: 1, minWidth: 0 }}>
           {group.pack ? (
-            <Typography
-              level='title-lg'
-              component={Link}
-              to={`/manage/learn/detail/${group.pack.id}`}
-              sx={{ color: 'inherit', textDecoration: 'none' }}
-            >
-              {name}
-            </Typography>
+            <Stack direction='row' alignItems='center' gap={1} flexWrap='wrap'>
+              <Typography
+                level='title-lg'
+                component={Link}
+                to={`/manage/learn/detail/${group.pack.id}`}
+                sx={{ color: 'inherit', textDecoration: 'none' }}
+              >
+                {name}
+              </Typography>
+              {singleLevel && (
+                <Select
+                  size='sm'
+                  disabled={!member}
+                  value={singleAccess}
+                  onChange={(_, value) =>
+                    value && onAccess(group.pack.id, value)
+                  }
+                  slotProps={{
+                    button: { 'aria-label': `${name} · ${person.displayName}` },
+                  }}
+                  sx={{ minWidth: 154 }}
+                >
+                  <Option value='auto'>{t('manage.accessAuto')}</Option>
+                  <Option value='open'>{t('manage.accessOpen')}</Option>
+                  <Option value='locked'>{t('manage.accessLocked')}</Option>
+                </Select>
+              )}
+            </Stack>
           ) : (
             <Typography level='title-lg'>{name}</Typography>
           )}
@@ -1340,10 +1404,11 @@ const ModuleGroup = ({
                 <LevelRow
                   group={group}
                   person={person}
+                  member={member}
                   section={section}
                   baseline={line}
                   onSettings={onPackSettings}
-                  onAside={onAside}
+                  onAccess={onAccess}
                 />
                 {section.modules.map(module =>
                   renderModule(module, section.line),
@@ -1619,29 +1684,6 @@ CatalogueCard.propTypes = {
 // of each person.
 // useExportReports sends the questions reported in the games, in one file,
 // to whoever writes the modules.
-export const useExportReports = () => {
-  const [busy, setBusy] = useState(false)
-  const exportAll = async () => {
-    setBusy(true)
-    try {
-      const reports = await ExportLearnReports()
-      const now = new Date()
-      const file = {
-        format: 'hopla-signalements/1',
-        hopla: import.meta.env.VITE_APP_VERSION,
-        exportedAt: now.toISOString(),
-        reports,
-      }
-      await saveFile(
-        `hopla-signalements-${now.toISOString().slice(0, 10)}.json`,
-        `${JSON.stringify(file, null, 2)}\n`,
-      )
-    } finally {
-      setBusy(false)
-    }
-  }
-  return [exportAll, busy]
-}
 
 // ReportsCard leads to the questions reported in the games.
 const ReportsCard = ({ count }) => {

@@ -219,7 +219,7 @@
     "addTask": "Add a task",
     "noTask": "No task left to add",
     "bonus": "Finishing bonus",
-    "help": "Each child only sees the step to do. Tasks that are not theirs that day are skipped. The bonus is given once a day, when all their steps are done.",
+    "help": "Each child sees the steps available to them. Tasks not due during this run are not applicable. The bonus is paid once when all required steps are resolved.",
     "up": "Move up",
     "down": "Move down",
     "remove": "Remove",
@@ -227,6 +227,38 @@
     "empty": "No routine yet. A routine chains existing tasks, such as getting dressed, teeth, then school bag.",
     "failed": "Could not save the routine",
     "deleteTitle": "Delete the routine?",
-    "deleteMessage": "“{{name}}” will be deleted. Its tasks stay."
+    "deleteMessage": "“{{name}}” will be deleted. Its tasks stay.",
+    "optional": "Optional",
+    "selectSlot": "Choose a slot",
+    "allSlots": "All slots",
+    "missingSlot": "Missing slot — choose another",
+    "validity": "Validity (minutes)",
+    "skip": "Skip step",
+    "skipFailed": "Could not skip this step.",
+    "liveTitle": "Live occurrence progress",
+    "memberNumber": "Member {{id}}",
+    "expiresAt": "Expires {{time}}",
+    "occurrenceStatus": {
+      "active": "In progress",
+      "finished": "Required steps complete",
+      "expired": "Expired"
+    },
+    "itemStatus": {
+      "pending": "To do",
+      "completed": "Completed",
+      "skipped": "Skipped",
+      "not_applicable": "Not applicable"
+    },
+    "validityHelp": "A run can cross midnight and expires after this time (12 hours by default; up to 48 hours).",
+    "stepsTitle": "Routine steps",
+    "advancedSettings": "Advanced settings",
+    "prerequisites": "Prerequisites",
+    "noPrerequisite": "No prerequisites",
+    "required": "Required",
+    "stepSubtitle": "Routine step",
+    "makeRequired": "Make required",
+    "makeOptional": "Make optional",
+    "optionalHelp": "This step can be skipped without preventing the routine from being completed.",
+    "requiredHelp": "This step must be completed for the routine to be completed."
   }
 }

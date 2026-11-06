@@ -219,7 +219,7 @@
     "addTask": "Ajouter une tâche",
     "noTask": "Plus de tâche à ajouter",
     "bonus": "Bonus de fin",
-    "help": "Chaque enfant ne voit que l’étape à faire. Les tâches qui ne sont pas les siennes ce jour-là sont sautées. Le bonus est donné une fois par jour, quand toutes ses étapes sont faites.",
+    "help": "Chaque enfant voit les étapes qui lui sont accessibles. Les tâches qui ne sont pas dues pendant cette occurrence ne s’appliquent pas. Le bonus est versé une fois toutes les étapes obligatoires résolues.",
     "up": "Monter",
     "down": "Descendre",
     "remove": "Retirer",
@@ -227,6 +227,38 @@
     "empty": "Aucune routine. Une routine enchaîne des tâches existantes, comme habillage, dents puis cartable.",
     "failed": "Impossible d’enregistrer la routine",
     "deleteTitle": "Supprimer la routine ?",
-    "deleteMessage": "« {{name}} » sera supprimée. Ses tâches restent."
+    "deleteMessage": "« {{name}} » sera supprimée. Ses tâches restent.",
+    "optional": "Facultative",
+    "selectSlot": "Choisir un créneau",
+    "allSlots": "Tous les créneaux",
+    "missingSlot": "Créneau supprimé — en choisir un autre",
+    "validity": "Durée de validité (minutes)",
+    "skip": "Ignorer l’étape",
+    "skipFailed": "Impossible d’ignorer cette étape.",
+    "liveTitle": "Suivi des occurrences en cours",
+    "memberNumber": "Membre {{id}}",
+    "expiresAt": "Expire le {{time}}",
+    "occurrenceStatus": {
+      "active": "En cours",
+      "finished": "Étapes obligatoires terminées",
+      "expired": "Expirée"
+    },
+    "itemStatus": {
+      "pending": "À faire",
+      "completed": "Terminée",
+      "skipped": "Ignorée",
+      "not_applicable": "Non concernée"
+    },
+    "validityHelp": "Une routine peut passer minuit et expire après cette durée (12 heures par défaut, jusqu’à 48 heures).",
+    "stepsTitle": "Les étapes de votre routine",
+    "advancedSettings": "Réglages avancés",
+    "prerequisites": "Prérequis",
+    "noPrerequisite": "Aucun prérequis",
+    "required": "Obligatoire",
+    "stepSubtitle": "Étape de la routine",
+    "makeRequired": "Rendre obligatoire",
+    "makeOptional": "Rendre facultative",
+    "optionalHelp": "Cette étape peut être ignorée sans bloquer la réussite de la routine.",
+    "requiredHelp": "Cette étape doit être terminée pour valider la routine."
   }
 }

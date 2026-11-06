@@ -130,6 +130,7 @@ func (r *ChoreRepository) AbsenceDays(ctx context.Context, familyID int, since, 
 // MissedSlot is a slot of a past day nobody did: who missed it.
 type MissedSlot struct {
 	Slot     int
+	SlotID   string
 	DueDate  time.Time
 	ClosedAt time.Time
 	Who      []int
@@ -147,6 +148,7 @@ func (r *ChoreRepository) RecordMissedSlots(ctx context.Context, chore *chModel.
 	return r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		for _, slot := range missed {
 			slot := slot
+			slotID := slot.SlotID
 			for _, who := range slot.Who {
 				entry := &chModel.ChoreHistory{
 					ChoreID:     chore.ID,
@@ -156,6 +158,7 @@ func (r *ChoreRepository) RecordMissedSlots(ctx context.Context, chore *chModel.
 					DueDate:     &slot.DueDate,
 					Status:      chModel.ChoreHistoryStatusMissed,
 					Slot:        &slot.Slot,
+					SlotID:      &slotID,
 					SyncVersion: version,
 				}
 				if err := tx.Create(entry).Error; err != nil {

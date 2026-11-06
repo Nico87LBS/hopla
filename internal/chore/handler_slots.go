@@ -83,7 +83,7 @@ func (h *Handler) completeSlot(ctx context.Context, chore *chModel.Chore, comple
 	if err != nil {
 		return nil, err
 	}
-	at, index := slot.At.UTC(), slot.Index
+	at, index, slotID := slot.At.UTC(), slot.Index, slot.SlotID
 	performedAt := now
 	entry := &chModel.ChoreHistory{
 		ChoreID:     chore.ID,
@@ -93,6 +93,7 @@ func (h *Handler) completeSlot(ctx context.Context, chore *chModel.Chore, comple
 		DueDate:     &at,
 		Note:        note,
 		Slot:        &index,
+		SlotID:      &slotID,
 		Status:      chModel.ChoreHistoryStatusCompleted,
 	}
 	if chore.RequireApproval {
@@ -333,7 +334,7 @@ func (h *Handler) CatchUpSlot(c *gin.Context) {
 		return
 	}
 	now := time.Now().UTC()
-	at, index := slot.At.UTC(), slot.Index
+	at, index, slotID := slot.At.UTC(), slot.Index, slot.SlotID
 	entry := &chModel.ChoreHistory{
 		ChoreID:     chore.ID,
 		PerformedAt: &now,
@@ -341,6 +342,7 @@ func (h *Handler) CatchUpSlot(c *gin.Context) {
 		AssignedTo:  chore.AssignedTo,
 		DueDate:     &at,
 		Slot:        &index,
+		SlotID:      &slotID,
 		Status:      chModel.ChoreHistoryStatusCompleted,
 	}
 	slot.State = chModel.SlotDone

@@ -7,6 +7,8 @@ definitions:
       key:
         description: 'Key, Aside: the level or module set aside, or brought back.'
         type: string
+      mode:
+        type: string
       "on":
         type: boolean
       pack:
@@ -591,6 +593,8 @@ definitions:
       slot:
         description: The slot of the day, for a task done several times a day
         type: integer
+      slotId:
+        type: string
       status:
         allOf:
         - $ref: '#/definitions/model.ChoreHistoryStatus'
@@ -757,10 +761,15 @@ definitions:
     - NotificationTemplateUnitDay
   model.Slot:
     properties:
+      id:
+        type: string
       name:
         type: string
       time:
         description: '"15:04", in the task''s timezone'
+        type: string
+      until:
+        description: '"15:04": when it stops being the time to do it, if set'
         type: string
     type: object
   model.SlotState:
@@ -804,9 +813,14 @@ definitions:
         type: string
       opensAt:
         type: string
+      slotId:
+        type: string
       state:
         $ref: '#/definitions/model.SlotState'
       time:
+        type: string
+      until:
+        description: the end the slot was given, if any
         type: string
     type: object
   model.Status:

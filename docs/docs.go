@@ -7315,6 +7315,9 @@ const docTemplate = `{
                     "description": "Key, Aside: the level or module set aside, or brought back.",
                     "type": "string"
                 },
+                "mode": {
+                    "type": "string"
+                },
                 "on": {
                     "type": "boolean"
                 },
@@ -8128,6 +8131,9 @@ const docTemplate = `{
                     "description": "The slot of the day, for a task done several times a day",
                     "type": "integer"
                 },
+                "slotId": {
+                    "type": "string"
+                },
                 "status": {
                     "description": "Status of the chore (1=completed, 2=skipped)",
                     "allOf": [
@@ -8358,11 +8364,18 @@ const docTemplate = `{
         "model.Slot": {
             "type": "object",
             "properties": {
+                "id": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string"
                 },
                 "time": {
                     "description": "\"15:04\", in the task's timezone",
+                    "type": "string"
+                },
+                "until": {
+                    "description": "\"15:04\": when it stops being the time to do it, if set",
                     "type": "string"
                 }
             }
@@ -8421,10 +8434,17 @@ const docTemplate = `{
                 "opensAt": {
                     "type": "string"
                 },
+                "slotId": {
+                    "type": "string"
+                },
                 "state": {
                     "$ref": "#/definitions/model.SlotState"
                 },
                 "time": {
+                    "type": "string"
+                },
+                "until": {
+                    "description": "the end the slot was given, if any",
                     "type": "string"
                 }
             }

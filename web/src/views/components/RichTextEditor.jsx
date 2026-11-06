@@ -49,6 +49,7 @@ import { useNotification } from '../../service/NotificationProvider'
 import { apiClient } from '../../utils/ApiClient'
 import { resolvePhotoURL } from '../../utils/Helpers'
 import { patchDescriptionHtml } from '../../utils/ImageCache'
+import { sanitizeRichTextHTML } from '../../utils/sanitizeRichText'
 
 const RichTextEditor = forwardRef(
   (
@@ -218,7 +219,7 @@ const RichTextEditor = forwardRef(
           placeholder: placeholder ?? t('descriptionPlaceholder'),
         })
         new QuillMarkdown(editorRef.current, {})
-        editorRef.current.root.innerHTML = value
+        editorRef.current.root.innerHTML = sanitizeRichTextHTML(value)
         editorRef.current.on('text-change', () => {
           if (onChange) {
             onChange(editorRef.current.root.innerHTML)
@@ -234,12 +235,12 @@ const RichTextEditor = forwardRef(
     useEffect(() => {
       if (editorRef.current && isEditable) {
         if (editorRef.current.root.innerHTML !== value) {
-          editorRef.current.root.innerHTML = value || ''
+          editorRef.current.root.innerHTML = sanitizeRichTextHTML(value || '')
           // On first load, swap expired image srcs for cached/re-signed ones
           if (!initialContentSet.current && value) {
             patchDescriptionHtml(value).then(html => {
               if (editorRef.current && html !== value) {
-                editorRef.current.root.innerHTML = html
+                editorRef.current.root.innerHTML = sanitizeRichTextHTML(html)
               }
             })
           }

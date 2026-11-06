@@ -129,6 +129,10 @@ func (s *TokenService) RefreshTokens(ctx context.Context, refreshToken string) (
 	if err != nil {
 		return nil, fmt.Errorf("failed to get user: %w", err)
 	}
+	if userData.Disabled {
+		_ = s.userRepo.RevokeAllUserSessions(ctx, session.UserID)
+		return nil, fmt.Errorf("account is disabled")
+	}
 
 	// Convert to UserDetails
 	user := &uModel.UserDetails{

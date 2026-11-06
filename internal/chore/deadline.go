@@ -145,7 +145,7 @@ func (h *Handler) SettleMissedSlots(ctx context.Context, now time.Time) error {
 			day := today.AddDate(0, 0, -back)
 			key := day.Format("2006-01-02")
 			for _, window := range slotWindows(chore, day) {
-				if window.At.Before(chore.CreatedAt) || slotSettled(history[chore.ID], window.Index, day) {
+				if window.At.Before(chore.CreatedAt) || slotSettled(history[chore.ID], window.Index, window.SlotID, day) {
 					continue
 				}
 				who := []int{}
@@ -157,7 +157,7 @@ func (h *Handler) SettleMissedSlots(ctx context.Context, now time.Time) error {
 				if len(who) == 0 {
 					continue
 				}
-				missed = append(missed, chRepo.MissedSlot{Slot: window.Index, DueDate: window.At.UTC(), ClosedAt: window.ClosesAt.UTC(), Who: who})
+				missed = append(missed, chRepo.MissedSlot{Slot: window.Index, SlotID: window.SlotID, DueDate: window.At.UTC(), ClosedAt: window.ClosesAt.UTC(), Who: who})
 			}
 		}
 		if err := h.choreRepo.RecordMissedSlots(ctx, chore, missed); err != nil {
@@ -169,10 +169,17 @@ func (h *Handler) SettleMissedSlots(ctx context.Context, now time.Time) error {
 
 // slotSettled reports whether a slot of a day was done, waits for a parent
 // or is already written missed.
-func slotSettled(history []*chModel.ChoreHistory, index int, day time.Time) bool {
+func slotSettled(history []*chModel.ChoreHistory, index int, slotID string, day time.Time) bool {
 	next := day.AddDate(0, 0, 1)
 	for _, entry := range history {
-		if entry.Slot == nil || *entry.Slot != index || entry.DueDate == nil || entry.DueDate.Before(day) || !entry.DueDate.Before(next) {
+		if entry.DueDate == nil || entry.DueDate.Before(day) || !entry.DueDate.Before(next) {
+			continue
+		}
+		if entry.SlotID != nil {
+			if *entry.SlotID != slotID {
+				continue
+			}
+		} else if entry.Slot == nil || *entry.Slot != index {
 			continue
 		}
 		switch entry.Status {

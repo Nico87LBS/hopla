@@ -1560,19 +1560,13 @@ func Routes(router *gin.Engine, h *Handler, jwtAuth *jwt.GinJWTMiddleware, multi
 		userRoutes.GET("/", h.GetAllUsers())
 		userRoutes.GET("/profile", h.GetUserProfile)
 		userRoutes.PUT("", h.UpdateUserDetails)
-		userRoutes.POST("/tokens", h.CreateLongLivedToken)
 		userRoutes.GET("/tokens", h.GetAllUserToken)
 		userRoutes.DELETE("/tokens/:id", h.DeleteUserToken)
-		userRoutes.PUT("change_password", h.updateUserPasswordLoggedInOnly)
 		userRoutes.POST("profile_photo", h.updateProfilePhoto)
 		userRoutes.GET("storage", h.getStorageUsage)
 		userRoutes.POST("/logout", h.logout) // Logout endpoint to clear cookies and expire refresh tokens
 
 		// MFA endpoints
-		userRoutes.GET("/mfa/status", h.getMFAStatus)
-		userRoutes.POST("/mfa/setup", h.setupMFA)
-		userRoutes.POST("/mfa/confirm", h.confirmMFA)
-		userRoutes.POST("/mfa/disable", h.disableMFA)
 
 		// Account deletion endpoints
 		userRoutes.POST("/delete/check", h.checkAccountDeletion)
@@ -1584,6 +1578,20 @@ func Routes(router *gin.Engine, h *Handler, jwtAuth *jwt.GinJWTMiddleware, multi
 		userRoutes.PUT("/subaccounts/password", h.updateChildPassword)
 		userRoutes.DELETE("/subaccounts/:id", h.deleteChildUser)
 		userRoutes.POST("/subaccounts/:id/profile_photo", h.updateChildProfilePhoto)
+	}
+
+	// API keys are deliberately excluded from account-security operations.
+	// A leaked integration key (for example, Home Assistant) must not be
+	// sufficient to mint another key, change the account password, or alter MFA.
+	sensitiveUserRoutes := router.Group("api/v1/users")
+	sensitiveUserRoutes.Use(jwtAuth.MiddlewareFunc(), utils.RateLimitMiddleware(limiter))
+	{
+		sensitiveUserRoutes.POST("/tokens", h.CreateLongLivedToken)
+		sensitiveUserRoutes.PUT("/change_password", h.updateUserPasswordLoggedInOnly)
+		sensitiveUserRoutes.GET("/mfa/status", h.getMFAStatus)
+		sensitiveUserRoutes.POST("/mfa/setup", h.setupMFA)
+		sensitiveUserRoutes.POST("/mfa/confirm", h.confirmMFA)
+		sensitiveUserRoutes.POST("/mfa/disable", h.disableMFA)
 	}
 
 	// Create new auth handler for enhanced token management

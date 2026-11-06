@@ -76,3 +76,29 @@ test('steps move up and down within the list', () => {
   assert.deepEqual(moveStep([1, 2, 3], 1, -1), [2, 1, 3])
   assert.deepEqual(moveStep([1, 2, 3], 2, 1), [1, 2, 3])
 })
+
+test('a task can belong to different routines through different stable slots', () => {
+  const multi = {
+    ...task(6, 'Dents', 2),
+    frequencyMetadata: {
+      slots: [
+        { id: 'morning', name: 'Matin', time: '07:00' },
+        { id: 'evening', name: 'Soir', time: '19:00' },
+      ],
+    },
+  }
+  const slotRoutines = [
+    { id: 10, choreIds: [6], slotIds: ['morning'] },
+  ]
+  const offered = routineTasks([multi], slotRoutines)
+  assert.deepEqual(
+    offered[0].routineAvailableSlots.map(slot => slot.id),
+    ['evening'],
+  )
+  assert.equal(offered[0].routineCanUseAllSlots, false)
+  assert.equal(
+    routineTasks([multi], slotRoutines, 10)[0].routineCanUseAllSlots,
+    true,
+    'editing the routine releases its own slot',
+  )
+})

@@ -49,6 +49,35 @@ func TestATickedPackOpensItsFirstLevelThenTheNextOnceKnown(t *testing.T) {
 	require.Empty(t, player.Modules, "unticked, nothing stays on")
 }
 
+func TestParentCanChooseAccessForSingleLevelPack(t *testing.T) {
+	db := setup(t)
+	now := time.Now().UTC()
+	require.NoError(t, Install(db, 1, "anglais-aero", now))
+	require.NoError(t, SetPackPlayer(db, 1, anna, "anglais-aero", true, now))
+
+	// A single-level pack uses the pack key as its only level key.
+	require.NoError(t, SetPackAccess(db, 1, anna, "anglais-aero", "anglais-aero", "locked", now))
+	player, err := PlayerFor(db, 1, anna, now)
+	require.NoError(t, err)
+	on := active(t, player)
+	require.False(t, on["anglais-aero-meteo"], "a locked single level stays off")
+	require.False(t, on["anglais-aero-radio"], "every module of the locked level stays off")
+
+	require.NoError(t, SetPackAccess(db, 1, anna, "anglais-aero", "anglais-aero", "open", now))
+	player, err = PlayerFor(db, 1, anna, now)
+	require.NoError(t, err)
+	on = active(t, player)
+	require.True(t, on["anglais-aero-meteo"], "a forced-open single level is playable")
+	require.True(t, on["anglais-aero-radio"], "every module of the forced-open level is playable")
+
+	require.NoError(t, SetPackAccess(db, 1, anna, "anglais-aero", "anglais-aero", "auto", now))
+	player, err = PlayerFor(db, 1, anna, now)
+	require.NoError(t, err)
+	on = active(t, player)
+	require.True(t, on["anglais-aero-meteo"], "automatic returns to the one-level progression")
+	require.True(t, on["anglais-aero-radio"], "the whole level follows the progression")
+}
+
 func TestPeoplePlayingPacksModuleByModuleGetTheirPacksTicked(t *testing.T) {
 	db := setup(t)
 	now := time.Now().UTC()
@@ -75,4 +104,33 @@ func TestPeoplePlayingPacksModuleByModuleGetTheirPacksTicked(t *testing.T) {
 			require.Contains(t, p.Excluded, "maths-gs")
 		}
 	}
+}
+
+
+func TestParentCanChooseAutomaticOpenOrLockedPackLevel(t *testing.T) {
+	db := setup(t)
+	now := time.Now().UTC()
+	require.NoError(t, Install(db, 1, "maths-ecole", now))
+	require.NoError(t, SetPackPlayer(db, 1, anna, "maths-ecole", true, now))
+
+	// CE2 is normally beyond the first open level.
+	require.NoError(t, SetPackAccess(db, 1, anna, "maths-ecole", "maths-ce2", "open", now))
+	player, err := PlayerFor(db, 1, anna, now)
+	require.NoError(t, err)
+	on := active(t, player)
+	require.True(t, on["maths-ce2-multiplication"], "a forced-open level is playable")
+
+	// Locking the same level wins over both automatic and forced opening.
+	require.NoError(t, SetPackAccess(db, 1, anna, "maths-ecole", "maths-ce2", "locked", now))
+	player, err = PlayerFor(db, 1, anna, now)
+	require.NoError(t, err)
+	on = active(t, player)
+	require.False(t, on["maths-ce2-multiplication"], "a locked level stays off")
+
+	// Returning to automatic removes the override, not the progression.
+	require.NoError(t, SetPackAccess(db, 1, anna, "maths-ecole", "maths-ce2", "auto", now))
+	player, err = PlayerFor(db, 1, anna, now)
+	require.NoError(t, err)
+	on = active(t, player)
+	require.False(t, on["maths-ce2-multiplication"], "automatic follows the current progression")
 }
