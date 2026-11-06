@@ -2,6 +2,7 @@ import {
   AccessTimeRounded,
   CheckRounded,
   CloseRounded,
+  ExpandMoreRounded,
   HourglassEmptyRounded,
   ReplayRounded,
   TollRounded,
@@ -34,7 +35,7 @@ import {
 } from '../../utils/Fetcher'
 import { routineStepOf } from '../../utils/routines'
 import { taskModeOf } from '../../utils/taskMode'
-import { doneCopies, hasSlots, todaySlots } from '../../utils/taskSlots'
+import { doneCopies, faceOf, hasSlots, todaySlots } from '../../utils/taskSlots'
 import { MemberAvatar } from '../Games/GameParts'
 
 const PENDING_APPROVAL = 3
@@ -307,9 +308,21 @@ const badgeSx = {
   '& svg': { color: 'inherit', fontSize: 12 },
 }
 
+// The colour of the small dot for a slot of the day.
+const DOT_COLOR = {
+  done: HOPLA.green,
+  other: '#B9B4AA',
+  pending: '#8A6F57',
+  missed: HOPLA.carrot,
+  open: HOPLA.violet,
+  upcoming: '#D9D4CC',
+}
+
 // One child's copy: their face to tap, the same as on the family board. A
-// copy waiting for a parent is faded with a clock, a done one has a check.
-export const CopyFace = ({ disabled, label, member, onClick, state }) => {
+// copy waiting for a parent is faded with a clock, a done one has a check, a
+// missed one a turning arrow for the parent to catch it up, one to come later
+// is pale. A task of several moments has a dot under the face for each.
+export const CopyFace = ({ disabled, dots, label, member, onClick, state }) => {
   const ring =
     state === 'todo' ? HOPLA.violet : state === 'pending' ? '#C9B8A8' : null
   const face = (
@@ -319,20 +332,62 @@ export const CopyFace = ({ disabled, label, member, onClick, state }) => {
         boxShadow: ring
           ? `0 0 0 2px var(--joy-palette-background-surface), 0 0 0 4px ${ring}`
           : 'none',
-        opacity: state === 'pending' ? 0.55 : 1,
+        opacity: state === 'pending' ? 0.55 : state === 'upcoming' ? 0.4 : 1,
       }}
     >
       <MemberAvatar member={member} size={FACE} />
     </Box>
   )
-  const badge = state !== 'todo' && (
+  const badge = ['done', 'pending', 'missed'].includes(state) && (
     <Box
       sx={{
         ...badgeSx,
-        bgcolor: state === 'done' ? HOPLA.green : '#8A6F57',
+        bgcolor:
+          state === 'done'
+            ? HOPLA.green
+            : state === 'missed'
+              ? HOPLA.carrot
+              : '#8A6F57',
       }}
     >
-      {state === 'done' ? <CheckRounded /> : <AccessTimeRounded />}
+      {state === 'done' ? (
+        <CheckRounded />
+      ) : state === 'missed' ? (
+        <ReplayRounded />
+      ) : (
+        <AccessTimeRounded />
+      )}
+    </Box>
+  )
+  const body = (
+    <Box
+      sx={{
+        alignItems: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '3px',
+      }}
+    >
+      <Box sx={{ position: 'relative' }}>
+        {face}
+        {badge}
+      </Box>
+      {dots?.length > 1 && (
+        <Box sx={{ display: 'flex', gap: '3px' }} aria-hidden>
+          {dots.map((dot, index) => (
+            <Box
+              key={index}
+              component='span'
+              sx={{
+                bgcolor: DOT_COLOR[dot] || DOT_COLOR.upcoming,
+                borderRadius: '50%',
+                height: 6,
+                width: 6,
+              }}
+            />
+          ))}
+        </Box>
+      )}
     </Box>
   )
   if (!onClick) {
@@ -341,12 +396,9 @@ export const CopyFace = ({ disabled, label, member, onClick, state }) => {
         role='img'
         aria-label={label}
         title={member.displayName}
-        sx={{ ...cellButtonSx, cursor: 'default', position: 'relative' }}
+        sx={{ ...cellButtonSx, cursor: 'default', height: 'auto' }}
       >
-        <Box sx={{ position: 'relative' }}>
-          {face}
-          {badge}
-        </Box>
+        {body}
       </Box>
     )
   }
@@ -360,25 +412,25 @@ export const CopyFace = ({ disabled, label, member, onClick, state }) => {
       onClick={onClick}
       sx={{
         ...cellButtonSx,
+        height: 'auto',
         touchAction: 'manipulation',
         '&:disabled': { cursor: 'default', opacity: 0.5 },
         '&:not(:disabled):active': { transform: 'scale(.92)' },
       }}
     >
-      <Box sx={{ position: 'relative' }}>
-        {face}
-        {badge}
-      </Box>
+      {body}
     </Box>
   )
 }
 
 CopyFace.propTypes = {
   disabled: PropTypes.bool,
+  dots: PropTypes.array,
   label: PropTypes.string.isRequired,
   member: PropTypes.object.isRequired,
   onClick: PropTypes.func,
-  state: PropTypes.oneOf(['todo', 'pending', 'done']).isRequired,
+  state: PropTypes.oneOf(['todo', 'pending', 'done', 'missed', 'upcoming'])
+    .isRequired,
 }
 
 // A task done by several children (one copy each), or several times a day, or
@@ -389,6 +441,7 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
   const { data: routines } = useRoutinesToday()
   const { showError } = useNotification()
   const [busy, setBusy] = useState(false)
+  const [details, setDetails] = useState(false)
   const first = chores[0]
   const slotted = hasSlots(first)
   const { data: slotsByTask } = useSlotsToday({ enabled: slotted })
@@ -448,6 +501,16 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
   const doneCount = all.filter(slot => slot.state === 'done').length
   const pendingCount = all.filter(slot => slot.state === 'pending').length
   const missedCount = all.filter(slot => slot.state === 'missed').length
+  // The moment to do now, else the next one, and the one after it.
+  const upNext = columns.filter(column =>
+    lines.some(line =>
+      ['open', 'upcoming'].includes(
+        line.slots.find(slot => slot.index === column.index)?.state,
+      ),
+    ),
+  )
+  const momentLabel = slot =>
+    [slot.name, slot.time].filter(Boolean).join(' ') || ''
 
   const refresh = () => {
     queryClient.invalidateQueries({ queryKey: ['chores'] })
@@ -503,12 +566,49 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
   const mode = taskModeOf(first, chores.length)
   const inRoutine = chores.some(chore => routineStepOf(routines, chore))
   const meta = []
-  if (slotted)
+  if (slotted && columns.length > 1 && upNext.length) {
+    meta.push(
+      upNext.length > 1
+        ? t('slots.nextThen', {
+            next: momentLabel(upNext[0]),
+            then: momentLabel(upNext[1]),
+          })
+        : momentLabel(upNext[0]),
+    )
+  } else if (slotted && columns.length === 1 && upNext.length) {
+    meta.push(momentLabel(upNext[0]))
+  } else if (slotted && doneCount) {
     meta.push(t('slots.summary', { done: doneCount, total: all.length }))
+  }
   if (!footer && canApprove && pendingCount)
     meta.push(t('slots.toApprove', { count: pendingCount }))
   if (!footer && canApprove && missedCount)
     meta.push(t('slots.missedCount', { count: missedCount }))
+
+  const hopChip = first.points > 0 && (
+    <Box
+      component='span'
+      sx={{
+        alignItems: 'center',
+        bgcolor: HOPLA.goldSoft,
+        borderRadius: 999,
+        color: HOPLA.goldText,
+        display: 'inline-flex',
+        flexShrink: 0,
+        mr: 0.75,
+        verticalAlign: 'middle',
+        font: '700 12px/18px var(--joy-fontFamily-body)',
+        gap: 0.25,
+        px: 0.875,
+        py: 0.25,
+      }}
+    >
+      <TollRounded sx={{ fontSize: 14 }} />
+      {slotted && columns.length > 1
+        ? t('slots.hopsPerSlot', { count: first.points })
+        : first.points}
+    </Box>
+  )
 
   return (
     <Box sx={{ bgcolor: 'background.surface', px: 1.5, py: 1.25 }}>
@@ -520,11 +620,17 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
           >
             {first.name}
           </Typography>
-          {(mode || meta.length > 0 || flash || inRoutine || deadlineCopy) && (
+          {(mode ||
+            meta.length > 0 ||
+            flash ||
+            inRoutine ||
+            deadlineCopy ||
+            (slotted && hopChip)) && (
             <Typography
               level='body-xs'
               sx={{ color: 'text.secondary', mt: 0.25 }}
             >
+              {slotted && hopChip}
               <ChronoChip flash={flash} sx={{ mr: 0.75 }} />
               {deadlineCopy && (
                 <DeadlineChip chore={deadlineCopy} sx={{ mr: 0.75 }} />
@@ -536,26 +642,39 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
             </Typography>
           )}
         </Box>
-        {first.points > 0 && (
-          <Box
-            component='span'
-            sx={{
-              alignItems: 'center',
-              bgcolor: HOPLA.goldSoft,
-              borderRadius: 999,
-              color: HOPLA.goldText,
-              display: 'inline-flex',
-              flexShrink: 0,
-              font: '700 12px/18px var(--joy-fontFamily-body)',
-              gap: 0.25,
-              px: 0.875,
-              py: 0.25,
-            }}
-          >
-            <TollRounded sx={{ fontSize: 14 }} />
-            {slotted
-              ? t('slots.hopsPerSlot', { count: first.points })
-              : first.points}
+        {!slotted && hopChip}
+        {slotted && columns.length > 0 && (
+          <Box sx={{ display: 'flex', flexShrink: 0, gap: 1 }}>
+            {lines.map(({ chore, member, slots }) => {
+              const label = member.displayName || ''
+              const face = faceOf(
+                slots,
+                canApprove,
+                member.userId === actingUserId,
+              )
+              const slot = face.slot
+              const on = slot ? onSlot(chore, member) : null
+              return (
+                <CopyFace
+                  key={`${chore.id}-${member.userId}`}
+                  disabled={busy}
+                  dots={slots.map(item => item.state)}
+                  label={t(`slots.face.${face.state}`, {
+                    label: `${label} · ${slot ? momentLabel(slot) : ''}`.trim(),
+                  })}
+                  member={member}
+                  onClick={
+                    face.action && slot
+                      ? event => {
+                          event.stopPropagation()
+                          on(face.action, slot)
+                        }
+                      : undefined
+                  }
+                  state={face.state}
+                />
+              )
+            })}
           </Box>
         )}
         {!slotted && (
@@ -605,7 +724,44 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
         )}
       </Box>
 
-      {slotted && columns.length > 0 && (
+      {slotted && (columns.length > 1 || (canApprove && pendingCount > 0)) && (
+        <Box
+          component='button'
+          type='button'
+          aria-expanded={details}
+          onClick={event => {
+            event.stopPropagation()
+            setDetails(value => !value)
+          }}
+          sx={{
+            alignItems: 'center',
+            background: 'none',
+            border: 0,
+            color: 'text.secondary',
+            cursor: 'pointer',
+            display: 'inline-flex',
+            font: '600 12px/1 var(--joy-fontFamily-body)',
+            gap: 0.25,
+            minHeight: 32,
+            mt: 0.25,
+            p: 0,
+            '&:focus-visible': {
+              outline: '2px solid',
+              outlineColor: 'primary.500',
+            },
+          }}
+        >
+          {details ? t('slots.hideDetails') : t('slots.details')}
+          <ExpandMoreRounded
+            sx={{
+              fontSize: 18,
+              transform: details ? 'rotate(180deg)' : 'none',
+            }}
+          />
+        </Box>
+      )}
+
+      {slotted && columns.length > 0 && details && (
         <Box
           onClick={event => event.stopPropagation()}
           sx={{

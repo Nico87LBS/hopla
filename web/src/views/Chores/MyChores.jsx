@@ -29,7 +29,11 @@ import EmptyState from '../../components/common/EmptyState'
 import { useImpersonateUser } from '../../contexts/ImpersonateUserContext.jsx'
 import { useNavBarTitle } from '../../contexts/NavBarTitleContext'
 import { useFilter } from '../../hooks/useFilter'
-import { useChores, useRoutinesToday } from '../../queries/ChoreQueries'
+import {
+  useChores,
+  useRoutinesToday,
+  useSlotsToday,
+} from '../../queries/ChoreQueries'
 import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries'
 import { useNotification } from '../../service/NotificationProvider'
 import {
@@ -127,6 +131,9 @@ const MyChores = () => {
     refetch: refetchChores,
   } = useChores(false)
   const { data: routines } = useRoutinesToday()
+  // Today's slots, fresher than the ones the task list came with: a task
+  // with a slot missed stays among today's until midnight.
+  const { data: slotsByTask } = useSlotsToday()
   const {
     data: membersData,
     isError: membersError,
@@ -412,9 +419,13 @@ const MyChores = () => {
       return []
     }
 
-    const choresToGroup = filteredForList.filter(
-      chore => !isActiveStep(underWay, chore),
-    )
+    const choresToGroup = filteredForList
+      .filter(chore => !isActiveStep(underWay, chore))
+      .map(chore =>
+        slotsByTask?.[chore.id]
+          ? { ...chore, slotsToday: slotsByTask[chore.id] }
+          : chore,
+      )
 
     const sections = ChoresGrouper(
       selectedChoreSection,
@@ -442,6 +453,7 @@ const MyChores = () => {
     chores,
     filteredForList,
     underWay,
+    slotsByTask,
     selectedChoreSection,
     selectedChoreFilter,
     choreSortBy,
