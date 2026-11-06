@@ -1089,6 +1089,7 @@
       "deadlineRepeat": "Chaque fois, la limite tombe {{delay}} après l'échéance.",
       "slotUntil": "jusqu'à",
       "slotUntilLabel": "Fin du moment {{name}} (facultatif)",
+      "slotUntilClear": "Retirer la fin du moment {{name}}",
       "slotOpens": "s'ouvre",
       "slotOpensLabel": "Ouverture du moment {{name}}",
       "slotOpensAtTime": "à l'heure",

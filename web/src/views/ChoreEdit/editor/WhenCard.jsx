@@ -187,6 +187,20 @@ const Slots = ({ frequencyMetadata, onFrequencyMetadataUpdate }) => {
                 },
               }}
             />
+            {slot.until && (
+              <IconButton
+                size='sm'
+                variant='plain'
+                color='neutral'
+                aria-label={t('editor.when.slotUntilClear', {
+                  name: slot.name || slot.time,
+                })}
+                onClick={() => change(index, 'until', '')}
+                sx={{ borderRadius: '50%' }}
+              >
+                <CloseRounded sx={{ fontSize: 16 }} />
+              </IconButton>
+            )}
             <Typography
               level='body-xs'
               sx={{ color: 'text.tertiary', whiteSpace: 'nowrap' }}

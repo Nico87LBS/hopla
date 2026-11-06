@@ -1089,6 +1089,7 @@
       "deadlineRepeat": "Each time, the deadline falls {{delay}} after the due date.",
       "slotUntil": "until",
       "slotUntilLabel": "End of the {{name}} moment (optional)",
+      "slotUntilClear": "Remove the end of the {{name}} moment",
       "slotOpens": "opens",
       "slotOpensLabel": "When the {{name}} moment opens",
       "slotOpensAtTime": "at its time",
