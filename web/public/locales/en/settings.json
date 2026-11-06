@@ -534,7 +534,7 @@
   "passwordChange": {
     "minLength": "Password must be at least 8 characters",
     "maxLength": "Password must be less than 64 characters",
-    "description": "Choose a password between 8 and 64 characters.",
+    "description": "Choose a password between 8 and 64 characters. You will be signed out of all your devices (this one too): sign in again with the new password.",
     "mismatch": "Passwords do not match",
     "newPassword": "New password",
     "newPasswordPlaceholder": "Enter password",

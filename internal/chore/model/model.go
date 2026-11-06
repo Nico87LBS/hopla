@@ -131,10 +131,10 @@ type ChoreHistory struct {
 	CreatedAt   time.Time          `json:"createdAt" gorm:"column:created_at;autoCreateTime;<-:create"` // When the record was created (immutable after insert)
 	Status      ChoreHistoryStatus `json:"status" gorm:"column:status"`                                 // Status of the chore (1=completed, 2=skipped)
 	Points      *int               `json:"points,omitempty" gorm:"column:points"`                       // Points for completing the chore
-	Slot        *int               `json:"slot,omitempty" gorm:"column:slot"`                               // The slot of the day, for a task done several times a day
+	Slot        *int               `json:"slot,omitempty" gorm:"column:slot"`                           // The slot of the day, for a task done several times a day
 	SlotID      *string            `json:"slotId,omitempty" gorm:"column:slot_id"`
-	FlashID     *int               `json:"flashId,omitempty" gorm:"column:flash_id"`                    // The flash launched by a parent this completion won
-	Duration    *int               `json:"duration,omitempty" gorm:"<-:false;-:migration"`              // Duration in seconds calculated from query (read-only, no DB column)
+	FlashID     *int               `json:"flashId,omitempty" gorm:"column:flash_id"`       // The flash launched by a parent this completion won
+	Duration    *int               `json:"duration,omitempty" gorm:"<-:false;-:migration"` // Duration in seconds calculated from query (read-only, no DB column)
 	SyncVersion int64              `json:"syncVersion" gorm:"column:sync_version;not null;default:0;index:idx_chore_history_sync_version"`
 }
 
@@ -197,29 +197,39 @@ type SlotStatus struct {
 	CompletedBy *int      `json:"completedBy,omitempty"`
 }
 
-
- // NewSlotID creates a stable opaque identifier for a task slot.
+// NewSlotID creates a stable opaque identifier for a task slot.
 func NewSlotID() (string, error) {
 	var raw [16]byte
-	if _, err := rand.Read(raw[:]); err != nil { return "", err }
+	if _, err := rand.Read(raw[:]); err != nil {
+		return "", err
+	}
 	return hex.EncodeToString(raw[:]), nil
 }
 
-
 func EnsureHistorySlotIDs(db *gorm.DB) error {
 	var history []ChoreHistory
-	if err := db.Where("slot IS NOT NULL AND slot_id IS NULL").Find(&history).Error; err != nil { return err }
+	if err := db.Where("slot IS NOT NULL AND slot_id IS NULL").Find(&history).Error; err != nil {
+		return err
+	}
 	for _, entry := range history {
 		var chore Chore
 		if err := db.Select("id", "frequency_meta_v2").First(&chore, entry.ChoreID).Error; err != nil {
-			if errors.Is(err, gorm.ErrRecordNotFound) { continue }
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				continue
+			}
 			return err
 		}
 		if chore.FrequencyMetadataV2 == nil || entry.Slot == nil ||
-			*entry.Slot < 0 || *entry.Slot >= len(chore.FrequencyMetadataV2.Slots) { continue }
+			*entry.Slot < 0 || *entry.Slot >= len(chore.FrequencyMetadataV2.Slots) {
+			continue
+		}
 		slotID := chore.FrequencyMetadataV2.Slots[*entry.Slot].ID
-		if slotID == "" { continue }
-		if err := db.Model(&ChoreHistory{}).Where("id = ?", entry.ID).Update("slot_id", slotID).Error; err != nil { return err }
+		if slotID == "" {
+			continue
+		}
+		if err := db.Model(&ChoreHistory{}).Where("id = ?", entry.ID).Update("slot_id", slotID).Error; err != nil {
+			return err
+		}
 	}
 	return nil
 }
@@ -269,7 +279,9 @@ func EnsureSlotIDs(db *gorm.DB) error {
 	for i := range chores {
 		chore := &chores[i]
 		metadata := chore.FrequencyMetadataV2
-		if metadata == nil || len(metadata.Slots) == 0 { continue }
+		if metadata == nil || len(metadata.Slots) == 0 {
+			continue
+		}
 		group := fmt.Sprintf("%d:%s", chore.FamilyID, strings.ToLower(strings.TrimSpace(chore.Name)))
 		changed := false
 		known, grouped := canonical[group]
@@ -278,7 +290,9 @@ func EnsureSlotIDs(db *gorm.DB) error {
 			for j := range metadata.Slots {
 				if metadata.Slots[j].ID == "" || seen[metadata.Slots[j].ID] {
 					id, err := NewSlotID()
-					if err != nil { return err }
+					if err != nil {
+						return err
+					}
 					metadata.Slots[j].ID = id
 					changed = true
 				}
@@ -307,7 +321,9 @@ func EnsureSlotIDs(db *gorm.DB) error {
 			for j := range metadata.Slots {
 				if metadata.Slots[j].ID == "" || seen[metadata.Slots[j].ID] {
 					id, err := NewSlotID()
-					if err != nil { return err }
+					if err != nil {
+						return err
+					}
 					metadata.Slots[j].ID = id
 					changed = true
 				}

@@ -162,12 +162,15 @@ func (r *ChoreRepository) UpdateChoreVisibility(ctx context.Context, chore *chMo
 		}
 		availableSlots := map[string]bool{}
 		if chore.FrequencyMetadataV2 != nil {
-			for _, slot := range chore.FrequencyMetadataV2.Slots { availableSlots[slot.ID] = true }
+			for _, slot := range chore.FrequencyMetadataV2.Slots {
+				availableSlots[slot.ID] = true
+			}
 		}
 		for _, slotID := range referencedSlots {
-			if !availableSlots[slotID] { return ErrRoutineSlotInUse }
+			if !availableSlots[slotID] {
+				return ErrRoutineSlotInUse
+			}
 		}
-
 
 		previousAssigneeIDs := make([]int, 0, len(previousAssignees))
 		for _, assignee := range previousAssignees {

@@ -16,7 +16,9 @@ func (day *routineDay) progressOfGraph(userID int, steps [][]int, routine Routin
 	for i, ids := range steps {
 		position := i + 1
 		slotID := ""
-		if i < len(routine.Steps) { slotID = routine.Steps[i].SlotID }
+		if i < len(routine.Steps) {
+			slotID = routine.Steps[i].SlotID
+		}
 		required := true
 		if routine.GraphEnabled && i < len(routine.Steps) && routine.Steps[i].Required != nil {
 			required = *routine.Steps[i].Required
@@ -27,13 +29,17 @@ func (day *routineDay) progressOfGraph(userID int, steps [][]int, routine Routin
 		for _, id := range ids {
 			chore := day.chores[id]
 			isDone := day.doneBy[userID][id] && isFor(chore, userID)
-			if slotID != "" { isDone = day.doneSlotsBy[userID][id][slotID] && isFor(chore, userID) }
+			if slotID != "" {
+				isDone = day.doneSlotsBy[userID][id][slotID] && isFor(chore, userID)
+			}
 			if isDone {
 				done = true
 				break
 			}
 			due := chore != nil && chore.NextDueDate != nil && !chore.NextDueDate.After(day.end)
-			if slotID != "" { due = routineSlotDue(chore, slotID, day.start, day.end) }
+			if slotID != "" {
+				due = routineSlotDue(chore, slotID, day.start, day.end)
+			}
 			if todo == 0 && due && slices.Contains(membersNow(chore), userID) && !Paused(chore, day.away) {
 				todo = chore.ID
 			}
@@ -41,11 +47,16 @@ func (day *routineDay) progressOfGraph(userID int, steps [][]int, routine Routin
 		switch {
 		case done:
 			states[position] = RoutineItemCompleted
-			if required { progress.Done++; progress.Total++ }
+			if required {
+				progress.Done++
+				progress.Total++
+			}
 		case todo != 0:
 			states[position] = RoutineItemPending
 			todos[position] = todo
-			if required { progress.Total++ }
+			if required {
+				progress.Total++
+			}
 		default:
 			states[position] = RoutineItemNotApplicable
 		}

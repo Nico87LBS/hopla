@@ -11,9 +11,9 @@ import (
 )
 
 type EmailSender struct {
-	client    *gomail.Dialer
-	appHost   string
-	fromMail  string
+	client   *gomail.Dialer
+	appHost  string
+	fromMail string
 }
 
 // Sender is the interface consumed by callers, so tests can swap the SMTP
@@ -40,9 +40,9 @@ func NewEmailSender(conf *config.Config) *EmailSender {
 
 	// auth := smtp.PlainAuth("", conf.EmailConfig.Email, conf.EmailConfig.Password, host)
 	return &EmailSender{
-		fromMail:  conf.EmailConfig.Email,
-		client:    client,
-		appHost:   conf.EmailConfig.AppHost,
+		fromMail: conf.EmailConfig.Email,
+		client:   client,
+		appHost:  conf.EmailConfig.AppHost,
 	}
 }
 

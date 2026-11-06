@@ -321,7 +321,7 @@ func TestSlotsFollowTheFamilyTimezone(t *testing.T) {
 	require.Equal(t, chModel.SlotOpen, statuses[0].State)
 	require.Equal(t, time.Date(2026, 10, 23, 7, 0, 0, 0, lisbon), statuses[0].At.In(lisbon))
 }
- 
+
 func TestEnsureSlotIDsBackfillsExistingTasks(t *testing.T) {
 	_, db, _ := newSlotTestRouter(t)
 	legacy := teethChore("07:30", "19:30")
@@ -353,7 +353,7 @@ func TestCannotDeleteASlotReferencedByARoutine(t *testing.T) {
 	updated := *chore
 	updated.FrequencyMetadataV2 = &chModel.FrequencyMetadata{
 		Timezone: chore.FrequencyMetadataV2.Timezone,
-		Slots: append([]chModel.Slot(nil), chore.FrequencyMetadataV2.Slots[1:]...),
+		Slots:    append([]chModel.Slot(nil), chore.FrequencyMetadataV2.Slots[1:]...),
 	}
 	cfg := &config.Config{}
 	cfg.Database.Type = "sqlite"
@@ -362,15 +362,14 @@ func TestCannotDeleteASlotReferencedByARoutine(t *testing.T) {
 	require.ErrorIs(t, err, chRepo.ErrRoutineSlotInUse)
 }
 
-
 func TestEnsureHistorySlotIDsBackfillsLegacySlotIndexes(t *testing.T) {
 	_, db, chore := newSlotTestRouter(t)
 	index := 1
-	history := chModel.ChoreHistory{ChoreID:chore.ID,Slot:&index}
-	require.NoError(t,db.Create(&history).Error)
-	require.NoError(t,chModel.EnsureHistorySlotIDs(db))
+	history := chModel.ChoreHistory{ChoreID: chore.ID, Slot: &index}
+	require.NoError(t, db.Create(&history).Error)
+	require.NoError(t, chModel.EnsureHistorySlotIDs(db))
 	var stored chModel.ChoreHistory
-	require.NoError(t,db.First(&stored,history.ID).Error)
-	require.NotNil(t,stored.SlotID)
-	require.Equal(t,chore.FrequencyMetadataV2.Slots[index].ID,*stored.SlotID)
+	require.NoError(t, db.First(&stored, history.ID).Error)
+	require.NotNil(t, stored.SlotID)
+	require.Equal(t, chore.FrequencyMetadataV2.Slots[index].ID, *stored.SlotID)
 }

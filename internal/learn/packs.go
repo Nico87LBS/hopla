@@ -227,7 +227,6 @@ func SetAside(db *gorm.DB, familyID, userID int, pack, key string, aside bool, n
 	})
 }
 
-
 // SetPackAccess chooses how a level is opened: auto follows the placement
 // and mastery progression, open forces it on, and locked keeps it off.
 func SetPackAccess(db *gorm.DB, familyID, userID int, pack, key, mode string, now time.Time) error {

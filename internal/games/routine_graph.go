@@ -6,8 +6,8 @@ import "errors"
 // has been resolved. Dependencies form a directed acyclic graph (DAG), not a
 // fixed sequence. A step with several prerequisites requires all of them.
 type RoutineDependency struct {
-	RoutineID      int `json:"routineId" gorm:"column:routine_id;index;not null"`
-	StepID         int `json:"stepId" gorm:"column:step_id;not null"`
+	RoutineID       int `json:"routineId" gorm:"column:routine_id;index;not null"`
+	StepID          int `json:"stepId" gorm:"column:step_id;not null"`
 	DependsOnStepID int `json:"dependsOnStepId" gorm:"column:depends_on_step_id;not null"`
 }
 

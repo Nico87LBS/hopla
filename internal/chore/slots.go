@@ -63,7 +63,9 @@ func normalizeSlots(frequencyType chModel.FrequencyType, metadata *chModel.Frequ
 		slot := &metadata.Slots[i]
 		if slot.ID == "" || seenIDs[slot.ID] {
 			id, err := chModel.NewSlotID()
-			if err != nil { return err }
+			if err != nil {
+				return err
+			}
 			slot.ID = id
 		}
 		seenIDs[slot.ID] = true
@@ -233,7 +235,9 @@ func slotEntry(history []*chModel.ChoreHistory, index int, slotID string, known 
 	var found *chModel.ChoreHistory
 	next := day.AddDate(0, 0, 1)
 	for _, entry := range history {
-		if entry.DueDate == nil { continue }
+		if entry.DueDate == nil {
+			continue
+		}
 		if !sameSlot(entry, index, slotID, known) {
 			continue
 		}
