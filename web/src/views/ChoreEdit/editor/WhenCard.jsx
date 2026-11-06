@@ -16,7 +16,7 @@ import {
 } from '@mui/joy'
 import moment from 'moment'
 import PropTypes from 'prop-types'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import NumberInput from '../../../components/common/NumberInput'
@@ -24,6 +24,7 @@ import { deadlineApplies, shortDuration } from '../../../utils/deadline'
 import { familyTimezone } from '../../../utils/familyTime'
 import EditorCard, { FieldLabel, Pill, Segmented } from './EditorCard'
 import {
+  ensureMoment,
   frequencyTypeForKind,
   RHYTHMS,
   rollingApplies,
@@ -218,18 +219,20 @@ const Slots = ({ frequencyMetadata, onFrequencyMetadataUpdate }) => {
                 </Option>
               ))}
             </Select>
-            <IconButton
-              size='sm'
-              variant='plain'
-              color='neutral'
-              aria-label={t('slots.editor.remove', {
-                name: slot.name || slot.time,
-              })}
-              onClick={() => update(slots.filter((_, i) => i !== index))}
-              sx={{ borderRadius: '50%' }}
-            >
-              <CloseRounded sx={{ fontSize: 16 }} />
-            </IconButton>
+            {slots.length > 1 && (
+              <IconButton
+                size='sm'
+                variant='plain'
+                color='neutral'
+                aria-label={t('slots.editor.remove', {
+                  name: slot.name || slot.time,
+                })}
+                onClick={() => update(slots.filter((_, i) => i !== index))}
+                sx={{ borderRadius: '50%' }}
+              >
+                <CloseRounded sx={{ fontSize: 16 }} />
+              </IconButton>
+            )}
           </Box>
         ))}
         {slots.length < MAX_SLOTS && (
@@ -519,6 +522,21 @@ export default function WhenCard({
   const metadata = frequencyMetadata || {}
   const withSlots =
     SLOT_FREQUENCY_TYPES.includes(frequencyType) && metadata.slots?.length > 0
+  // Every day or on some days, the task is made of moments: one that has none
+  // gets one from its time of day and its deadline.
+  const needsMoment =
+    SLOT_FREQUENCY_TYPES.includes(frequencyType) && !metadata.slots?.length
+  useEffect(() => {
+    if (!needsMoment) return
+    const made = ensureMoment(frequencyType, metadata, {
+      time: dueTime,
+      deadlineMinutes,
+      timezone: familyTimezone(),
+    })
+    onFrequencyMetadataUpdate(made.frequencyMetadata)
+    if (deadlineMinutes) onDeadlineMinutesChange(null)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [needsMoment, frequencyType])
   const pickRhythm = rhythm => {
     if (rhythm === frequencyType) return
     if (rhythm === 'interval') {

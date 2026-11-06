@@ -5,6 +5,7 @@ import { URL } from 'node:url'
 
 import {
   describeTask,
+  ensureMoment,
   frequencyTypeForKind,
   nextSlot,
   rollingApplies,
@@ -154,4 +155,43 @@ test('counting from the day it is done is offered only where it changes somethin
     rollingApplies('daily', { slots: [{ name: 'Soir', time: '18:00' }] }),
     false,
   )
+})
+
+test('a task done every day gets a moment from its time and deadline', () => {
+  const meta = { days: ['monday'] }
+  // Time of day and deadline become one moment.
+  const made = ensureMoment('daily', meta, {
+    time: '18:00',
+    deadlineMinutes: 90,
+    timezone: 'Europe/Brussels',
+  })
+  assert.deepEqual(made.frequencyMetadata.slots, [
+    { name: '', time: '18:00', until: '19:30' },
+  ])
+  assert.equal(made.frequencyMetadata.timezone, 'Europe/Brussels')
+  assert.equal(made.deadlineMinutes, null)
+  assert.deepEqual(made.frequencyMetadata.days, ['monday'])
+  // No time of day: 08:00, no deadline: no end.
+  assert.deepEqual(
+    ensureMoment('days_of_the_week', {}, {}).frequencyMetadata.slots,
+    [{ name: '', time: '08:00' }],
+  )
+  // A deadline running past midnight is dropped.
+  assert.equal(
+    ensureMoment('daily', {}, { time: '23:00', deadlineMinutes: 120 })
+      .frequencyMetadata.slots[0].until,
+    undefined,
+  )
+  // Moments already there, and other rhythms, are left alone.
+  const slots = [{ name: 'Matin', time: '07:00' }]
+  assert.equal(
+    ensureMoment('daily', { slots }, { deadlineMinutes: 30 }).frequencyMetadata
+      .slots,
+    slots,
+  )
+  assert.equal(
+    ensureMoment('once', meta, { time: '18:00' }).frequencyMetadata,
+    meta,
+  )
+  assert.equal(ensureMoment('interval', meta, {}).frequencyMetadata, meta)
 })

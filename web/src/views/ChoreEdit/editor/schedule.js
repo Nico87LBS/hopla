@@ -55,6 +55,40 @@ export const hasSlots = (frequencyType, frequencyMetadata) =>
   SLOT_FREQUENCY_TYPES.includes(frequencyType) &&
   (frequencyMetadata?.slots?.length || 0) > 0
 
+const clock = minutes =>
+  `${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`
+
+// A task done every day or on some days always has a moment, the time of day
+// it is for. One that had none, an older task or a rhythm just chosen, gets
+// one made of its time of day (08:00 without) and of its deadline, so the
+// editor shows a single "when" and saves it as a moment. A deadline that
+// would run past midnight is dropped: a moment ends the same day.
+export const ensureMoment = (
+  frequencyType,
+  frequencyMetadata,
+  { deadlineMinutes, time, timezone } = {},
+) => {
+  if (
+    !SLOT_FREQUENCY_TYPES.includes(frequencyType) ||
+    frequencyMetadata?.slots?.length
+  ) {
+    return { frequencyMetadata, deadlineMinutes }
+  }
+  const at = /^\d{2}:\d{2}$/.test(time || '') ? time : '08:00'
+  const [hour, minute] = at.split(':').map(Number)
+  const end = hour * 60 + minute + (deadlineMinutes > 0 ? deadlineMinutes : 0)
+  const slot = { name: '', time: at }
+  if (deadlineMinutes > 0 && end < 24 * 60) slot.until = clock(end)
+  return {
+    frequencyMetadata: {
+      ...frequencyMetadata,
+      ...(timezone ? { timezone } : {}),
+      slots: [slot],
+    },
+    deadlineMinutes: null,
+  }
+}
+
 // The next time a task with slots is due after `now`: the first slot still to
 // come today, else the first slot of the next day the task is on.
 export const nextSlot = (
