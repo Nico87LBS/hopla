@@ -167,6 +167,10 @@ func (h *Handler) SettleMissedSlots(ctx context.Context, now time.Time) error {
 		}
 		if err := h.choreRepo.RecordMissedSlots(ctx, chore, missed); err != nil {
 			logging.FromContext(ctx).Errorw("Failed to write the slots missed", "error", err, "choreID", chore.ID)
+			continue
+		}
+		if isOnceType(chore.FrequencyType) {
+			h.finishOnce(ctx, chore, history[chore.ID], today, now)
 		}
 	}
 	return nil
@@ -219,4 +223,35 @@ func RunDeadlines(lc fx.Lifecycle, h *Handler) {
 		},
 		OnStop: func(context.Context) error { cancel(); return nil },
 	})
+}
+
+// finishOnce archives a one-time task with moments once its day is over, or
+// all its moments are done, unless a moment still waits for a parent.
+func (h *Handler) finishOnce(ctx context.Context, chore *chModel.Chore, history []*chModel.ChoreHistory, today, now time.Time) {
+	day, ok := onceDay(chore)
+	if !ok || day.After(today) {
+		return
+	}
+	for _, entry := range history {
+		if entry.Status == chModel.ChoreHistoryStatusPendingApproval {
+			return
+		}
+	}
+	if day.Equal(today) {
+		for _, status := range slotStatuses(ctx, chore, history, now) {
+			if status.State != chModel.SlotDone {
+				return
+			}
+		}
+	}
+	version, err := h.choreRepo.FinishOnceChore(ctx, chore)
+	if err != nil {
+		logging.FromContext(ctx).Errorw("Failed to archive a task done", "error", err, "choreID", chore.ID)
+		return
+	}
+	chore.NextDueDate, chore.SyncVersion, chore.IsActive = nil, version, false
+	if h.realTimeService != nil {
+		h.realTimeService.GetEventBroadcaster().BroadcastChoreUpdated(chore, nil,
+			map[string]interface{}{"nextDueDate": nil, "isActive": false}, nil)
+	}
 }

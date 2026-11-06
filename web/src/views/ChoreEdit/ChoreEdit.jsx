@@ -230,8 +230,9 @@ const ChoreEdit = () => {
   const assignees = anyone ? performers : assignableTo
   // A task with slots is due at its next slot: the server sets the date.
   const hasSlots =
-    ['daily', 'days_of_the_week'].includes(frequencyType) &&
-    frequencyMetadata?.slots?.length > 0
+    ['daily', 'days_of_the_week', 'once', 'no_repeat'].includes(
+      frequencyType,
+    ) && frequencyMetadata?.slots?.length > 0
   // A shared task for several people can become one copy per person, when
   // created or later, as long as it has no copies yet.
   const canSplit =
