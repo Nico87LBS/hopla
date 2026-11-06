@@ -56,3 +56,32 @@ func TestNormalizeOnceSlots(t *testing.T) {
 	setOnceDay(chModel.FrequencyTypeOnce, given, &due, 1)
 	require.Equal(t, "2026-10-24", given.Day, "the family's day, not the UTC one")
 }
+
+// A moment all day is open from midnight, due at the end of the day.
+func TestAllDaySlot(t *testing.T) {
+	familyIn(t, "Europe/Brussels")
+	chore := teethChore("08:00")
+	chore.FrequencyType = chModel.FrequencyTypeOnce
+	chore.FrequencyMetadataV2 = &chModel.FrequencyMetadata{
+		Timezone: "Europe/Brussels", Day: "2026-10-24",
+		Slots: []chModel.Slot{{AllDay: true, Time: "07:00", Until: "09:00"}},
+	}
+	require.NoError(t, normalizeSlots(chore.FrequencyType, chore.FrequencyMetadataV2))
+	slot := chore.FrequencyMetadataV2.Slots[0]
+	require.Equal(t, "23:59", slot.Time, "no hour of its own")
+	require.Empty(t, slot.Until)
+
+	windows := slotWindows(chore, brussels(t, 24, 0, 0))
+	require.Len(t, windows, 1)
+	require.True(t, windows[0].AllDay)
+	require.True(t, windows[0].OpensAt.Equal(brussels(t, 24, 0, 0)))
+	require.True(t, windows[0].At.Equal(brussels(t, 24, 23, 59)))
+	require.True(t, windows[0].ClosesAt.Equal(brussels(t, 25, 0, 0)))
+
+	now := brussels(t, 24, 6, 0)
+	require.Equal(t, chModel.SlotOpen, slotStatuses(context.Background(), chore, nil, now)[0].State, "open since midnight")
+
+	// It stands alone.
+	two := &chModel.FrequencyMetadata{Day: "2026-10-24", Slots: []chModel.Slot{{AllDay: true}, {Time: "18:00"}}}
+	require.Error(t, normalizeSlots(chModel.FrequencyTypeOnce, two))
+}

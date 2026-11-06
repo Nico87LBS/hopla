@@ -974,6 +974,7 @@
     "hops_other": "{{count}} {{units}}"
   },
   "slots": {
+    "allDay": "All day",
     "cell": {
       "doneByOther": "{{label}}: done by someone else",
       "done": "{{label}}: done",
@@ -1065,6 +1066,8 @@
       "slots": "Moments",
       "slotName": "Name",
       "addSlot": "Moment",
+      "allDay": "All day",
+      "allDayHelp": "No hour: can be done at any time of the day.",
       "slotsHelp": "A repeated task has a moment: the time it is due. Add more to do it several times a day (morning, evening…).",
       "slotsRule": "Each moment is ticked on its own and earns the {{units}}. It opens an hour before its time (adjustable), is late from its time, and lasts until the next one or until the end time if you set one: past the end it is missed. A parent can catch up a forgotten moment until midnight.",
       "today": "Today",

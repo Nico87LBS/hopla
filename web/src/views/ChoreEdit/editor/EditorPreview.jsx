@@ -152,7 +152,7 @@ export default function EditorPreview({
                     color: index === 0 ? 'primary.softColor' : 'text.secondary',
                   }}
                 >
-                  {slot.name || slot.time}
+                  {slot.name || (slot.allDay ? t('slots.allDay') : slot.time)}
                 </Box>
               ))}
             </Box>

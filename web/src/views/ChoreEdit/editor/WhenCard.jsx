@@ -24,6 +24,7 @@ import { deadlineApplies, shortDuration } from '../../../utils/deadline'
 import { familyTimezone } from '../../../utils/familyTime'
 import EditorCard, { FieldLabel, Pill, Segmented } from './EditorCard'
 import {
+  ALL_DAY_TIME,
   ensureMoment,
   frequencyTypeForKind,
   ONCE_FREQUENCY_TYPES,
@@ -151,96 +152,135 @@ const Slots = ({ frequencyMetadata, onFrequencyMetadataUpdate }) => {
                 '--Input-focusedThickness': '0px',
               }}
             />
-            <Input
-              variant='plain'
-              type='time'
-              aria-label={t('slots.editor.time')}
-              value={slot.time || ''}
-              onChange={e => change(index, 'time', e.target.value)}
-              sx={{
-                width: 136,
-                minHeight: 36,
-                bgcolor: 'transparent',
-                '--Input-focusedThickness': '0px',
-              }}
-            />
-            <Typography
-              level='body-xs'
-              sx={{ color: 'text.tertiary', whiteSpace: 'nowrap' }}
-            >
-              {t('editor.when.slotUntil')}
-            </Typography>
-            <Input
-              variant='plain'
-              type='time'
-              aria-label={t('editor.when.slotUntilLabel', {
-                name: slot.name || slot.time,
-              })}
-              value={slot.until || ''}
-              onChange={e => change(index, 'until', e.target.value)}
-              sx={{
-                width: 136,
-                minHeight: 36,
-                bgcolor: 'transparent',
-                '--Input-focusedThickness': '0px',
-                '& input': {
-                  color: slot.until ? undefined : 'text.tertiary',
-                },
-              }}
-            />
-            {slot.until && (
-              <IconButton
-                size='sm'
-                variant='plain'
-                color='neutral'
-                aria-label={t('editor.when.slotUntilClear', {
-                  name: slot.name || slot.time,
-                })}
-                onClick={() => change(index, 'until', '')}
-                sx={{ borderRadius: '50%' }}
-              >
-                <CloseRounded sx={{ fontSize: 16 }} />
-              </IconButton>
+            {!slot.allDay && (
+              <>
+                <Input
+                  variant='plain'
+                  type='time'
+                  aria-label={t('slots.editor.time')}
+                  value={slot.time || ''}
+                  onChange={e => change(index, 'time', e.target.value)}
+                  sx={{
+                    width: 136,
+                    minHeight: 36,
+                    bgcolor: 'transparent',
+                    '--Input-focusedThickness': '0px',
+                  }}
+                />
+                <Typography
+                  level='body-xs'
+                  sx={{ color: 'text.tertiary', whiteSpace: 'nowrap' }}
+                >
+                  {t('editor.when.slotUntil')}
+                </Typography>
+                <Input
+                  variant='plain'
+                  type='time'
+                  aria-label={t('editor.when.slotUntilLabel', {
+                    name:
+                      slot.name ||
+                      (slot.allDay ? t('slots.allDay') : slot.time),
+                  })}
+                  value={slot.until || ''}
+                  onChange={e => change(index, 'until', e.target.value)}
+                  sx={{
+                    width: 136,
+                    minHeight: 36,
+                    bgcolor: 'transparent',
+                    '--Input-focusedThickness': '0px',
+                    '& input': {
+                      color: slot.until ? undefined : 'text.tertiary',
+                    },
+                  }}
+                />
+                {slot.until && (
+                  <IconButton
+                    size='sm'
+                    variant='plain'
+                    color='neutral'
+                    aria-label={t('editor.when.slotUntilClear', {
+                      name:
+                        slot.name ||
+                        (slot.allDay ? t('slots.allDay') : slot.time),
+                    })}
+                    onClick={() => change(index, 'until', '')}
+                    sx={{ borderRadius: '50%' }}
+                  >
+                    <CloseRounded sx={{ fontSize: 16 }} />
+                  </IconButton>
+                )}
+                <Typography
+                  level='body-xs'
+                  sx={{ color: 'text.tertiary', whiteSpace: 'nowrap' }}
+                >
+                  {t('editor.when.slotOpens')}
+                </Typography>
+                <Select
+                  variant='plain'
+                  size='sm'
+                  aria-label={t('editor.when.slotOpensLabel', {
+                    name:
+                      slot.name ||
+                      (slot.allDay ? t('slots.allDay') : slot.time),
+                  })}
+                  value={slot.opensBefore ?? DEFAULT_LEAD}
+                  onChange={(_, value) =>
+                    change(
+                      index,
+                      'opensBefore',
+                      value === DEFAULT_LEAD ? undefined : value,
+                    )
+                  }
+                  sx={{ minHeight: 36, bgcolor: 'transparent', width: 120 }}
+                >
+                  {OPEN_LEADS.map(minutes => (
+                    <Option key={minutes} value={minutes}>
+                      {minutes === 0
+                        ? t('editor.when.slotOpensAtTime')
+                        : t('editor.when.slotOpensBefore', {
+                            delay: shortDuration(minutes, t),
+                          })}
+                    </Option>
+                  ))}
+                </Select>
+              </>
             )}
-            <Typography
-              level='body-xs'
-              sx={{ color: 'text.tertiary', whiteSpace: 'nowrap' }}
-            >
-              {t('editor.when.slotOpens')}
-            </Typography>
-            <Select
-              variant='plain'
-              size='sm'
-              aria-label={t('editor.when.slotOpensLabel', {
-                name: slot.name || slot.time,
-              })}
-              value={slot.opensBefore ?? DEFAULT_LEAD}
-              onChange={(_, value) =>
-                change(
-                  index,
-                  'opensBefore',
-                  value === DEFAULT_LEAD ? undefined : value,
-                )
-              }
-              sx={{ minHeight: 36, bgcolor: 'transparent', width: 120 }}
-            >
-              {OPEN_LEADS.map(minutes => (
-                <Option key={minutes} value={minutes}>
-                  {minutes === 0
-                    ? t('editor.when.slotOpensAtTime')
-                    : t('editor.when.slotOpensBefore', {
-                        delay: shortDuration(minutes, t),
-                      })}
-                </Option>
-              ))}
-            </Select>
+            {slots.length === 1 && (
+              <Button
+                size='sm'
+                variant={slot.allDay ? 'soft' : 'plain'}
+                color={slot.allDay ? 'primary' : 'neutral'}
+                aria-pressed={Boolean(slot.allDay)}
+                onClick={() =>
+                  update([
+                    slot.allDay
+                      ? { ...slot, allDay: undefined, time: '08:00' }
+                      : {
+                          ...slot,
+                          allDay: true,
+                          time: ALL_DAY_TIME,
+                          until: undefined,
+                          opensBefore: undefined,
+                        },
+                  ])
+                }
+                sx={{
+                  borderRadius: '18px',
+                  minHeight: 36,
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {t('editor.when.allDay')}
+              </Button>
+            )}
             {slots.length > 1 && (
               <IconButton
                 size='sm'
                 variant='plain'
                 color='neutral'
                 aria-label={t('slots.editor.remove', {
-                  name: slot.name || slot.time,
+                  name:
+                    slot.name || (slot.allDay ? t('slots.allDay') : slot.time),
                 })}
                 onClick={() => update(slots.filter((_, i) => i !== index))}
                 sx={{ borderRadius: '50%' }}
@@ -256,7 +296,14 @@ const Slots = ({ frequencyMetadata, onFrequencyMetadataUpdate }) => {
             color='primary'
             startDecorator={<AddRounded />}
             onClick={() =>
-              update([...slots, { name: '', time: nextSlotTime(slots) }])
+              update(
+                slots.some(slot => slot.allDay)
+                  ? [
+                      { name: '', time: '08:00' },
+                      { name: '', time: '12:00' },
+                    ]
+                  : [...slots, { name: '', time: nextSlotTime(slots) }],
+              )
             }
             sx={{
               minHeight: 44,

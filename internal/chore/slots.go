@@ -28,6 +28,9 @@ const (
 	slotOpenLead = time.Hour
 	// maxOpenLead is the longest a slot can open before its time, in minutes.
 	maxOpenLead = 12 * 60
+	// allDayTime is the time of a moment all day: it is due at the end of the
+	// day, and is open from midnight.
+	allDayTime = "23:59"
 )
 
 var (
@@ -111,6 +114,13 @@ func normalizeSlots(frequencyType chModel.FrequencyType, metadata *chModel.Frequ
 			slot.ID = id
 		}
 		seenIDs[slot.ID] = true
+		if slot.AllDay {
+			// A moment with no hour is the whole day, and the only one.
+			if len(metadata.Slots) > 1 {
+				return errors.New("a task with a moment all day has no other moment")
+			}
+			slot.Time, slot.Until, slot.OpensBefore = allDayTime, "", nil
+		}
 		hour, minute, err := parseSlotTime(slot.Time)
 		if err != nil {
 			return err
@@ -204,6 +214,9 @@ func slotWindows(chore *chModel.Chore, day time.Time) []chModel.SlotStatus {
 			lead = time.Duration(*slot.OpensBefore) * time.Minute
 		}
 		opens := at.Add(-lead)
+		if slot.AllDay {
+			opens = day
+		}
 		if len(windows) == 0 {
 			if opens.Before(day) {
 				opens = day
@@ -211,7 +224,7 @@ func slotWindows(chore *chModel.Chore, day time.Time) []chModel.SlotStatus {
 		} else if previous := windows[len(windows)-1].At; opens.Before(previous.Add(at.Sub(previous) / 2)) {
 			opens = previous.Add(at.Sub(previous) / 2)
 		}
-		windows = append(windows, chModel.SlotStatus{Index: i, SlotID: slot.ID, Name: slot.Name, Time: slot.Time, Until: slot.Until, At: at, OpensAt: opens, ClosesAt: next})
+		windows = append(windows, chModel.SlotStatus{Index: i, SlotID: slot.ID, Name: slot.Name, Time: slot.Time, Until: slot.Until, AllDay: slot.AllDay, At: at, OpensAt: opens, ClosesAt: next})
 	}
 	for i := range windows {
 		if i+1 < len(windows) {

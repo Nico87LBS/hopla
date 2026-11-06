@@ -174,7 +174,7 @@ test('a task done every day gets a moment from its time and deadline', () => {
   // No time of day: 08:00, no deadline: no end.
   assert.deepEqual(
     ensureMoment('days_of_the_week', {}, {}).frequencyMetadata.slots,
-    [{ name: '', time: '08:00' }],
+    [{ name: '', allDay: true, time: '23:59' }],
   )
   // A deadline running past midnight is dropped.
   assert.equal(
@@ -227,5 +227,18 @@ test('a task done once on a day gets a moment on that day', () => {
       new Date(2026, 10, 11, 9, 0),
     ),
     null,
+  )
+})
+
+test('a moment with no hour is the whole day', () => {
+  const made = ensureMoment('once', {}, { day: '2026-11-10' })
+  assert.deepEqual(made.frequencyMetadata.slots, [
+    { name: '', allDay: true, time: '23:59' },
+  ])
+  // A deadline means nothing to it.
+  assert.equal(
+    ensureMoment('daily', {}, { deadlineMinutes: 90 }).frequencyMetadata
+      .slots[0].until,
+    undefined,
   )
 })
