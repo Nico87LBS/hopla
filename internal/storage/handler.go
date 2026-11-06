@@ -105,17 +105,18 @@ func (h *Handler) AssetHandler(c *gin.Context) {
 	// Only raster images are rendered inline; every other type is forced to download.
 	buf := make([]byte, 512)
 	n, _ := io.ReadFull(file, buf)
-	contentType := http.DetectContentType(buf[:n])
+	contentType := sniffContentType(buf[:n])
 	c.Header("X-Content-Type-Options", "nosniff")
-	if contentType == "image/jpeg" || contentType == "image/png" ||
-		contentType == "image/gif" || contentType == "image/webp" {
+	if inlineImage(contentType) {
 		c.Header("Content-Type", contentType)
 	} else {
 		c.Header("Content-Type", "application/octet-stream")
 		c.Header("Content-Disposition", "attachment")
 	}
-	c.Header("Cache-Control", "private, max-age=300")
-	c.Header("Expires", time.Now().UTC().Add(5*time.Minute).Format(http.TimeFormat))
+	// A file never changes under its name, so the device keeps it a week;
+	// "private" keeps shared caches from holding the family's photos.
+	c.Header("Cache-Control", "private, max-age=604800, immutable")
+	c.Header("Expires", time.Now().UTC().Add(7*24*time.Hour).Format(http.TimeFormat))
 	c.Status(http.StatusOK)
 	_, _ = io.Copy(c.Writer, io.MultiReader(bytes.NewReader(buf[:n]), file))
 }
@@ -179,12 +180,14 @@ func (h *Handler) ChoreUploadHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "unable to inspect uploaded file"})
 		return
 	}
-	contentType := http.DetectContentType(header[:n])
+	contentType := sniffContentType(header[:n])
 	extensions := map[string]string{
-		"image/jpeg": ".jpg",
-		"image/png":  ".png",
-		"image/gif":  ".gif",
-		"image/webp": ".webp",
+		"image/jpeg":      ".jpg",
+		"image/png":       ".png",
+		"image/gif":       ".gif",
+		"image/webp":      ".webp",
+		"image/heic":      ".heic",
+		"image/heif":      ".heif",
 		"application/pdf": ".pdf",
 	}
 	ext, allowed := extensions[contentType]

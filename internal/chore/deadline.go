@@ -144,8 +144,13 @@ func (h *Handler) SettleMissedSlots(ctx context.Context, now time.Time) error {
 		for back := slotLookback; back >= 1; back-- {
 			day := today.AddDate(0, 0, -back)
 			key := day.Format("2006-01-02")
-			for _, window := range slotWindows(chore, day) {
-				if window.At.Before(chore.CreatedAt) || slotSettled(history[chore.ID], window.Index, window.SlotID, day) {
+			windows := slotWindows(chore, day)
+			known := map[string]bool{}
+			for _, window := range windows {
+				known[window.SlotID] = true
+			}
+			for _, window := range windows {
+				if window.At.Before(chore.CreatedAt) || slotSettled(history[chore.ID], window.Index, window.SlotID, known, day) {
 					continue
 				}
 				who := []int{}
@@ -169,17 +174,13 @@ func (h *Handler) SettleMissedSlots(ctx context.Context, now time.Time) error {
 
 // slotSettled reports whether a slot of a day was done, waits for a parent
 // or is already written missed.
-func slotSettled(history []*chModel.ChoreHistory, index int, slotID string, day time.Time) bool {
+func slotSettled(history []*chModel.ChoreHistory, index int, slotID string, known map[string]bool, day time.Time) bool {
 	next := day.AddDate(0, 0, 1)
 	for _, entry := range history {
 		if entry.DueDate == nil || entry.DueDate.Before(day) || !entry.DueDate.Before(next) {
 			continue
 		}
-		if entry.SlotID != nil {
-			if *entry.SlotID != slotID {
-				continue
-			}
-		} else if entry.Slot == nil || *entry.Slot != index {
+		if !sameSlot(entry, index, slotID, known) {
 			continue
 		}
 		switch entry.Status {

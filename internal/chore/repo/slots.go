@@ -150,3 +150,22 @@ func (r *ChoreRepository) FillFlashes(ctx context.Context, chores []*chModel.Cho
 	}
 	return games.FillFlashes(r.db.WithContext(ctx), chores[0].FamilyID, chores, now)
 }
+
+// SiblingSlots returns the slots of the other copies of a task: the tasks of
+// the family with the same name, so that a slot has one identifier on all of
+// them.
+func (r *ChoreRepository) SiblingSlots(ctx context.Context, familyID int, name string, exceptID int) ([][]chModel.Slot, error) {
+	var copies []chModel.Chore
+	if err := r.db.WithContext(ctx).Select("id", "frequency_meta_v2").
+		Where("family_id = ? AND id <> ? AND LOWER(TRIM(name)) = LOWER(TRIM(?)) AND frequency_meta_v2 IS NOT NULL",
+			familyID, exceptID, name).Order("id").Find(&copies).Error; err != nil {
+		return nil, err
+	}
+	var slots [][]chModel.Slot
+	for _, copy := range copies {
+		if copy.FrequencyMetadataV2 != nil && len(copy.FrequencyMetadataV2.Slots) > 0 {
+			slots = append(slots, copy.FrequencyMetadataV2.Slots)
+		}
+	}
+	return slots, nil
+}

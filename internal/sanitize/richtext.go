@@ -16,6 +16,12 @@ func RichTextHTML(input string) string {
 		return ""
 	}
 
+	// Without a "<" there is no tag to clean: plain text, such as a note sent
+	// by another app, stays as written instead of "&" becoming "&amp;".
+	if !strings.Contains(input, "<") {
+		return input
+	}
+
 	doc, err := html.Parse(strings.NewReader(input))
 	if err != nil {
 		return ""
@@ -49,6 +55,43 @@ var allowedTags = map[string]bool{
 	"i": true, "u": true, "s": true, "blockquote": true, "pre": true,
 	"code": true, "ul": true, "ol": true, "li": true, "h1": true,
 	"h2": true, "h3": true, "h4": true, "a": true, "img": true,
+	// Quill 2 wraps code blocks in div elements.
+	"div": true,
+}
+
+// listKinds are the values Quill 2 writes in data-list: every list is an
+// ol element, and data-list tells bullets from numbers.
+var listKinds = map[string]bool{"bullet": true, "ordered": true, "checked": true, "unchecked": true}
+
+// safeClasses keeps only the editor's own layout classes: code blocks,
+// alignment and indentation.
+func safeClasses(value string) string {
+	kept := []string{}
+	for _, class := range strings.Fields(value) {
+		switch {
+		case class == "ql-code-block" || class == "ql-code-block-container",
+			class == "ql-align-center" || class == "ql-align-right" || class == "ql-align-justify",
+			class == "ql-direction-rtl":
+			kept = append(kept, class)
+		case strings.HasPrefix(class, "ql-indent-") && len(class) == len("ql-indent-")+1 &&
+			class[len(class)-1] >= '1' && class[len(class)-1] <= '9':
+			kept = append(kept, class)
+		}
+	}
+	return strings.Join(kept, " ")
+}
+
+// safeLanguage accepts a code block language such as plain or javascript.
+func safeLanguage(value string) bool {
+	if value == "" || len(value) > 32 {
+		return false
+	}
+	for _, r := range value {
+		if !(r >= 'a' && r <= 'z' || r >= '0' && r <= '9' || r == '-' || r == '+') {
+			return false
+		}
+	}
+	return true
 }
 
 var dropContentTags = map[string]bool{
@@ -92,6 +135,18 @@ func safeNodes(node *html.Node) []*html.Node {
 			case "data-hopla-path":
 				if value != "" && !strings.ContainsAny(value, "\r\n\x00") {
 					safe.Attr = append(safe.Attr, html.Attribute{Key: key, Val: value})
+				}
+			case "data-list":
+				if node.Data == "li" && listKinds[value] {
+					safe.Attr = append(safe.Attr, html.Attribute{Key: key, Val: value})
+				}
+			case "data-language":
+				if node.Data == "div" && safeLanguage(value) {
+					safe.Attr = append(safe.Attr, html.Attribute{Key: key, Val: value})
+				}
+			case "class":
+				if classes := safeClasses(value); classes != "" {
+					safe.Attr = append(safe.Attr, html.Attribute{Key: key, Val: classes})
 				}
 			case "target":
 				if node.Data == "a" && value == "_blank" {

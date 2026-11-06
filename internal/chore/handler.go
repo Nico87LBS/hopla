@@ -456,6 +456,10 @@ func (h *Handler) CreateChore(c *gin.Context) {
 	}
 	// Remove the auto-assignment logic - if no assignee then keep no assignee
 
+	if err := h.shareSlotIDs(c, currentUser.FamilyID, choreReq.Name, 0, choreReq.FrequencyMetadata); err != nil {
+		c.JSON(500, gin.H{"error": "Error reading the other copies of the task"})
+		return
+	}
 	if err := normalizeSlots(choreReq.FrequencyType, choreReq.FrequencyMetadata); err != nil {
 		c.JSON(400, gin.H{
 			"error": err.Error(),
@@ -775,6 +779,10 @@ func (h *Handler) EditChore(c *gin.Context) {
 	description := ""
 	if choreReq.Description != nil {
 		description = *choreReq.Description
+	}
+	if err := h.shareSlotIDs(c, currentUser.FamilyID, choreReq.Name, choreReq.ID, choreReq.FrequencyMetadata); err != nil {
+		c.JSON(500, gin.H{"error": "Error reading the other copies of the task"})
+		return
 	}
 	if err := normalizeSlots(choreReq.FrequencyType, choreReq.FrequencyMetadata); err != nil {
 		c.JSON(400, gin.H{

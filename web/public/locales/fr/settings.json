@@ -534,7 +534,7 @@
   "passwordChange": {
     "minLength": "Le mot de passe doit comporter au moins 8 caractères",
     "maxLength": "Le mot de passe doit comporter moins de 64 caractères",
-    "description": "Choisis un mot de passe de 8 à 64 caractères.",
+    "description": "Choisis un mot de passe de 8 à 64 caractères. Tu seras déconnecté de tous tes appareils (y compris celui-ci) : il faudra te reconnecter avec le nouveau mot de passe.",
     "mismatch": "Les mots de passe ne correspondent pas",
     "newPassword": "Nouveau mot de passe",
     "newPasswordPlaceholder": "Saisir le mot de passe",

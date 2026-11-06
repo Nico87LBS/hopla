@@ -2,6 +2,7 @@ import i18n from 'i18next'
 import moment from 'moment'
 
 import { TASK_COLOR } from './Colors.jsx'
+import { tooEarly } from './completionWindow.js'
 
 // ChoreGrouperOptions enum:
 export const GROUPING_OPTIONS = Object.freeze({
@@ -341,22 +342,7 @@ export const ChoreSorter = (a, b) => {
 
   return new Date(a.nextDueDate) - new Date(b.nextDueDate)
 }
-export const notInCompletionWindow = chore => {
-  // null/undefined (the default for new tasks) means no restriction, so the
-  // task can be completed before its due date. Zero is meaningful: it means
-  // completion is allowed only once the due date/time is reached.
-  if (
-    chore.completionWindow == null ||
-    chore.completionWindow < 0 ||
-    !chore.nextDueDate
-  ) {
-    return false
-  }
-
-  return moment().isBefore(
-    moment(chore.nextDueDate).subtract(chore.completionWindow, 'hours'),
-  )
-}
+export const notInCompletionWindow = chore => tooEarly(chore)
 // A task for everyone together has no current assignee: it is for each of its
 // assignees at once.
 export const isTogether = chore => chore?.assignStrategy === 'together'

@@ -8,8 +8,8 @@ import (
 
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
 	fModel "github.com/nico87lbs/hopla/internal/family/model"
-	"github.com/nico87lbs/hopla/internal/zone"
 	. "github.com/nico87lbs/hopla/internal/games"
+	"github.com/nico87lbs/hopla/internal/zone"
 )
 
 func assignedTo(userID int) func(*chModel.Chore) {
@@ -29,6 +29,7 @@ func TestARoutineShowsOneStepAtATimeAndPaysOnceFinished(t *testing.T) {
 	bag := chore(t, db, "Cartable", 1, now.AddDate(0, 0, 2), assignedTo(2))
 	routine := Routine{FamilyID: 1, Name: "Matin", Bonus: 4, ChoreIDs: []int{dress.ID, teeth.ID, bag.ID}}
 	require.NoError(t, SaveRoutine(db, &routine))
+	require.NoError(t, OpenRoutineOccurrences(db, now), "the day's routines are opened before the steps are done")
 
 	views, err := RoutineViews(db, 1, []int{2, 3}, now)
 	require.NoError(t, err)
@@ -103,9 +104,9 @@ func TestRoutineGraphPersistsDependenciesAndOffersParallelTasks(t *testing.T) {
 	second := chore(t, db, "S'habiller", 1, now, assignedTo(2))
 	third := chore(t, db, "Faire son lit", 1, now, assignedTo(2))
 	routine := Routine{
-		FamilyID: 1,
-		Name: "Matin",
-		ChoreIDs: []int{first.ID, second.ID, third.ID},
+		FamilyID:     1,
+		Name:         "Matin",
+		ChoreIDs:     []int{first.ID, second.ID, third.ID},
 		GraphEnabled: true,
 		Dependencies: []RoutineDependency{
 			{StepID: 2, DependsOnStepID: 1},
@@ -127,14 +128,13 @@ func TestRoutineGraphPersistsDependenciesAndOffersParallelTasks(t *testing.T) {
 	require.ElementsMatch(t, []int{second.ID, third.ID}, views[0].Members[0].Available)
 }
 
-
 func TestRoutineCanUseDifferentStableSlotsOfTheSameTask(t *testing.T) {
 	db := setup(t)
 	now := noon(0)
 	morningID, eveningID := "slot-morning-001", "slot-evening-001"
-	metadata := &chModel.FrequencyMetadata{Timezone:"Europe/Paris",Slots:[]chModel.Slot{
-		{ID:morningID,Name:"Matin",Time:"07:00"},
-		{ID:eveningID,Name:"Soir",Time:"19:00"},
+	metadata := &chModel.FrequencyMetadata{Timezone: "Europe/Paris", Slots: []chModel.Slot{
+		{ID: morningID, Name: "Matin", Time: "07:00"},
+		{ID: eveningID, Name: "Soir", Time: "19:00"},
 	}}
 	first := chore(t, db, "Brosser les dents", 1, now, assignedTo(2))
 	second := chore(t, db, "Brosser les dents", 1, now, assignedTo(3))
@@ -142,62 +142,121 @@ func TestRoutineCanUseDifferentStableSlotsOfTheSameTask(t *testing.T) {
 		task.FrequencyType = chModel.FrequencyTypeDaily
 		task.FrequencyMetadataV2 = metadata
 		require.NoError(t, db.Model(task).Updates(map[string]any{
-			"frequency_type": task.FrequencyType,
+			"frequency_type":    task.FrequencyType,
 			"frequency_meta_v2": metadata,
 		}).Error)
 	}
-	morning := Routine{FamilyID:1,Name:"Matin",ChoreIDs:[]int{first.ID},SlotIDs:[]string{morningID}}
-	require.NoError(t, SaveRoutine(db,&morning))
-	evening := Routine{FamilyID:1,Name:"Soir",ChoreIDs:[]int{second.ID},SlotIDs:[]string{eveningID}}
-	require.NoError(t, SaveRoutine(db,&evening), "the evening slot can belong to another routine")
+	morning := Routine{FamilyID: 1, Name: "Matin", ChoreIDs: []int{first.ID}, SlotIDs: []string{morningID}}
+	require.NoError(t, SaveRoutine(db, &morning))
+	evening := Routine{FamilyID: 1, Name: "Soir", ChoreIDs: []int{second.ID}, SlotIDs: []string{eveningID}}
+	require.NoError(t, SaveRoutine(db, &evening), "the evening slot can belong to another routine")
 
-	conflict := Routine{FamilyID:1,Name:"Encore le matin",ChoreIDs:[]int{first.ID},SlotIDs:[]string{morningID}}
-	require.ErrorIs(t, SaveRoutine(db,&conflict),ErrRoutineTaskTaken)
-	invalid := Routine{FamilyID:1,Name:"Créneau supprimé",ChoreIDs:[]int{first.ID},SlotIDs:[]string{"missing-slot"}}
-	require.ErrorIs(t, SaveRoutine(db,&invalid),ErrRoutineSlot)
+	conflict := Routine{FamilyID: 1, Name: "Encore le matin", ChoreIDs: []int{first.ID}, SlotIDs: []string{morningID}}
+	require.ErrorIs(t, SaveRoutine(db, &conflict), ErrRoutineTaskTaken)
+	invalid := Routine{FamilyID: 1, Name: "Créneau supprimé", ChoreIDs: []int{first.ID}, SlotIDs: []string{"missing-slot"}}
+	require.ErrorIs(t, SaveRoutine(db, &invalid), ErrRoutineSlot)
 
-	stored, err := Routines(db,1)
-	require.NoError(t,err)
-	require.Equal(t,[]string{morningID},stored[0].SlotIDs)
-	require.Equal(t,[]string{eveningID},stored[1].SlotIDs)
+	stored, err := Routines(db, 1)
+	require.NoError(t, err)
+	require.Equal(t, []string{morningID}, stored[0].SlotIDs)
+	require.Equal(t, []string{eveningID}, stored[1].SlotIDs)
 }
 
 func TestRoutineCompletionOnlyCountsTheSelectedSlot(t *testing.T) {
 	db := setup(t)
 	now := noon(0)
 	morningID, eveningID := "slot-morning-002", "slot-evening-002"
-	task := chore(t,db,"Brosser les dents",1,now,assignedTo(2))
-	metadata := &chModel.FrequencyMetadata{Timezone:"Europe/Paris",Slots:[]chModel.Slot{
-		{ID:morningID,Name:"Matin",Time:"07:00"},
-		{ID:eveningID,Name:"Soir",Time:"19:00"},
+	task := chore(t, db, "Brosser les dents", 1, now, assignedTo(2))
+	metadata := &chModel.FrequencyMetadata{Timezone: "Europe/Paris", Slots: []chModel.Slot{
+		{ID: morningID, Name: "Matin", Time: "07:00"},
+		{ID: eveningID, Name: "Soir", Time: "19:00"},
 	}}
 	task.FrequencyType = chModel.FrequencyTypeDaily
 	task.FrequencyMetadataV2 = metadata
-	require.NoError(t,db.Model(task).Updates(map[string]any{"frequency_type":task.FrequencyType,"frequency_meta_v2":metadata}).Error)
-	routine := Routine{FamilyID:1,Name:"Dents du matin",Bonus:3,ValidityMinutes:720,ChoreIDs:[]int{task.ID},SlotIDs:[]string{morningID}}
-	require.NoError(t,SaveRoutine(db,&routine))
+	require.NoError(t, db.Model(task).Updates(map[string]any{"frequency_type": task.FrequencyType, "frequency_meta_v2": metadata}).Error)
+	routine := Routine{FamilyID: 1, Name: "Dents du matin", Bonus: 3, ValidityMinutes: 720, ChoreIDs: []int{task.ID}, SlotIDs: []string{morningID}}
+	require.NoError(t, SaveRoutine(db, &routine))
+	require.NoError(t, OpenRoutineOccurrences(db, now))
 
 	day := now.In(zone.Of(1))
-	morningAt := time.Date(day.Year(),day.Month(),day.Day(),7,0,0,0,day.Location()).UTC()
-	eveningAt := time.Date(day.Year(),day.Month(),day.Day(),19,0,0,0,day.Location()).UTC()
+	morningAt := time.Date(day.Year(), day.Month(), day.Day(), 7, 0, 0, 0, day.Location()).UTC()
+	eveningAt := time.Date(day.Year(), day.Month(), day.Day(), 19, 0, 0, 0, day.Location()).UTC()
 	eveningSlot := 1
-	eveningHistory := chModel.ChoreHistory{ChoreID:task.ID,PerformedAt:&now,CompletedBy:2,DueDate:&eveningAt,Slot:&eveningSlot,SlotID:&eveningID,Status:chModel.ChoreHistoryStatusCompleted}
-	require.NoError(t,db.Create(&eveningHistory).Error)
+	eveningHistory := chModel.ChoreHistory{ChoreID: task.ID, PerformedAt: &now, CompletedBy: 2, DueDate: &eveningAt, Slot: &eveningSlot, SlotID: &eveningID, Status: chModel.ChoreHistoryStatusCompleted}
+	require.NoError(t, db.Create(&eveningHistory).Error)
 
-	views,err:=RoutineViews(db,1,[]int{2},now)
-	require.NoError(t,err)
-	require.Equal(t,[]int{task.ID},views[0].Members[0].Available,"evening completion does not complete the morning slot")
-	runID:=views[0].Members[0].Occurrence.ID
+	views, err := RoutineViews(db, 1, []int{2}, now)
+	require.NoError(t, err)
+	require.Equal(t, []int{task.ID}, views[0].Members[0].Available, "evening completion does not complete the morning slot")
+	runID := views[0].Members[0].Occurrence.ID
 
-	morningSlot:=0
-	morningHistory:=chModel.ChoreHistory{ChoreID:task.ID,PerformedAt:&now,CompletedBy:2,DueDate:&morningAt,Slot:&morningSlot,SlotID:&morningID,Status:chModel.ChoreHistoryStatusCompleted}
-	require.NoError(t,db.Create(&morningHistory).Error)
-	require.NoError(t,AfterTask(db,1,2,now,now))
-	run,err:=GetRoutineOccurrence(db,1,runID,now)
-	require.NoError(t,err)
-	require.Equal(t,RoutineOccurrenceFinished,run.Status)
-	require.Equal(t,RoutineOccurrenceItemCompleted,run.Items[0].Status)
+	morningSlot := 0
+	morningHistory := chModel.ChoreHistory{ChoreID: task.ID, PerformedAt: &now, CompletedBy: 2, DueDate: &morningAt, Slot: &morningSlot, SlotID: &morningID, Status: chModel.ChoreHistoryStatusCompleted}
+	require.NoError(t, db.Create(&morningHistory).Error)
+	require.NoError(t, AfterTask(db, 1, 2, now, now))
+	run, err := GetRoutineOccurrence(db, 1, runID, now)
+	require.NoError(t, err)
+	require.Equal(t, RoutineOccurrenceFinished, run.Status)
+	require.Equal(t, RoutineOccurrenceItemCompleted, run.Items[0].Status)
 	var member fModel.UserFamily
-	require.NoError(t,db.Where("user_id = 2").First(&member).Error)
-	require.Equal(t,3,member.Points)
+	require.NoError(t, db.Where("user_id = 2").First(&member).Error)
+	require.Equal(t, 3, member.Points)
+}
+
+func TestOptionalStepsAreSavedByPlace(t *testing.T) {
+	db := setup(t)
+	now := noon(0)
+	dress := chore(t, db, "S'habiller", 1, now, assignedTo(2))
+	teeth := chore(t, db, "Dents", 1, now, assignedTo(2))
+	routine := Routine{FamilyID: 1, Name: "Matin", ChoreIDs: []int{dress.ID, teeth.ID},
+		GraphEnabled: true, Dependencies: []RoutineDependency{}, OptionalStepIDs: []int{2}}
+	require.NoError(t, SaveRoutine(db, &routine))
+	stored, err := Routines(db, 1)
+	require.NoError(t, err)
+	require.Equal(t, []int{2}, stored[0].OptionalStepIDs, "the second step stays optional")
+
+	// Saving again without the optional steps makes every step required.
+	routine.OptionalStepIDs = []int{}
+	require.NoError(t, SaveRoutine(db, &routine))
+	stored, err = Routines(db, 1)
+	require.NoError(t, err)
+	require.Empty(t, stored[0].OptionalStepIDs)
+}
+
+// Showing the routines writes nothing; the occurrences are opened apart.
+func TestShowingRoutinesOpensNoOccurrence(t *testing.T) {
+	db := setup(t)
+	now := noon(0)
+	dress := chore(t, db, "S'habiller", 1, now, assignedTo(2))
+	teeth := chore(t, db, "Dents", 1, now, assignedTo(2))
+	routine := Routine{FamilyID: 1, Name: "Matin", Bonus: 4, ChoreIDs: []int{dress.ID, teeth.ID}}
+	require.NoError(t, SaveRoutine(db, &routine))
+	count := func() int64 {
+		var n int64
+		require.NoError(t, db.Model(&RoutineOccurrence{}).Count(&n).Error)
+		return n
+	}
+
+	views, err := RoutineViews(db, 1, []int{2}, now)
+	require.NoError(t, err)
+	require.Equal(t, dress.ID, *views[0].Members[0].Current, "the steps still show")
+	require.Zero(t, count(), "showing the routines wrote nothing")
+
+	require.NoError(t, OpenRoutineOccurrences(db, now))
+	require.EqualValues(t, 1, count(), "the job opens the occurrence")
+	views, err = RoutineViews(db, 1, []int{2}, now)
+	require.NoError(t, err)
+	require.NotNil(t, views[0].Members[0].Occurrence, "then it shows")
+	require.EqualValues(t, 1, count(), "showing again opens no second one")
+
+	// A run that ran out is left as it is by the display, closed by the job.
+	later := now.Add(30 * time.Hour)
+	_, err = RoutineViews(db, 1, []int{2}, later)
+	require.NoError(t, err)
+	var run RoutineOccurrence
+	require.NoError(t, db.First(&run).Error)
+	require.Equal(t, RoutineOccurrenceActive, run.Status)
+	require.NoError(t, OpenRoutineOccurrences(db, later))
+	require.NoError(t, db.First(&run).Error)
+	require.Equal(t, RoutineOccurrenceExpired, run.Status)
 }

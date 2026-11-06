@@ -10,7 +10,6 @@ import (
 	. "github.com/nico87lbs/hopla/internal/learn"
 )
 
-
 func TestATickedPackOpensItsFirstLevelThenTheNextOnceKnown(t *testing.T) {
 	db := setup(t)
 	now := time.Now().UTC()
@@ -105,7 +104,6 @@ func TestPeoplePlayingPacksModuleByModuleGetTheirPacksTicked(t *testing.T) {
 		}
 	}
 }
-
 
 func TestParentCanChooseAutomaticOpenOrLockedPackLevel(t *testing.T) {
 	db := setup(t)
