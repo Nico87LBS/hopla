@@ -42,11 +42,7 @@ const ChoreListView = ({
   // One action menu for the whole list rather than one per row. `chore` is kept
   // after closing so the menu can animate out with its content intact.
   const [actionMenuAnchor, setActionMenuAnchor] = useState(null)
-  const [actionMenuChore, setActionMenuChore] = useState(null)
-  const openActionMenu = useCallback((anchor, chore) => {
-    setActionMenuChore(chore)
-    setActionMenuAnchor(anchor)
-  }, [])
+  const [actionMenuChore] = useState(null)
   const closeActionMenu = useCallback(() => setActionMenuAnchor(null), [])
 
   // Every task is a flat row now, so the swipe tiles line up with its top.
@@ -75,7 +71,6 @@ const ChoreListView = ({
         isMultiSelectMode={isMultiSelectMode}
         isSelected={selectedChores.has(chore.id)}
         onSelectionToggle={() => toggleChoreSelection(chore.id)}
-        onOpenActionMenu={openActionMenu}
         showActions={showActions}
       />
     )

@@ -1689,6 +1689,13 @@ const ChoreEdit = () => {
             {withAside && (
               <Box sx={{ position: 'sticky', top: 0 }}>
                 <EditorPreview
+                  members={
+                    anyone
+                      ? []
+                      : performers.filter(p =>
+                          assignableTo.some(a => a.userId === p.userId),
+                        )
+                  }
                   name={name}
                   points={points}
                   mode={shownMode}

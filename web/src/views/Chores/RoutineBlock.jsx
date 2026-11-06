@@ -135,7 +135,7 @@ const ChildLine = ({
       <Stack sx={{ gap: 0.75 }}>
         {head}
         {bar}
-        {openSteps.map(stepLine)}
+        <Stack sx={{ gap: 2, py: 0.75 }}>{openSteps.map(stepLine)}</Stack>
       </Stack>
     )
   }
