@@ -1243,6 +1243,7 @@
     "skipFailed": "Impossible d’ignorer cette étape."
   },
   "routineBlock": {
+    "waiting": "En attente de l’étape précédente",
     "at": "Étape {{step}}/{{total}}",
     "label": "Routine « {{name}} » en cours",
     "until": "jusqu’à {{time}}",

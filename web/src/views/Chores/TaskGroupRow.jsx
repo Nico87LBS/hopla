@@ -309,7 +309,7 @@ const badgeSx = {
 
 // One child's copy: their face to tap, the same as on the family board. A
 // copy waiting for a parent is faded with a clock, a done one has a check.
-const CopyFace = ({ disabled, label, member, onClick, state }) => {
+export const CopyFace = ({ disabled, label, member, onClick, state }) => {
   const ring =
     state === 'todo' ? HOPLA.violet : state === 'pending' ? '#C9B8A8' : null
   const face = (

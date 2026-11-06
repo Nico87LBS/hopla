@@ -1224,19 +1224,8 @@ const MyChores = () => {
               key={routine.id}
               allChores={choresData?.res || []}
               chores={routineSteps}
-              members={membersData?.res || []}
               routine={routine}
-              listProps={{
-                viewMode,
-                membersData,
-                userLabels,
-                handleLabelFiltering,
-                handleChoreAction,
-                isMultiSelectMode,
-                selectedChores,
-                toggleChoreSelection,
-                onLongPressChore: enterMultiSelectWithChore,
-              }}
+              onAction={handleChoreAction}
             />
           ))}
         {searchTerm.length === 0 && viewMode !== 'calendar' && (
