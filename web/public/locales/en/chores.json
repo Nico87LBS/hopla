@@ -985,6 +985,16 @@
       "tick": "Tick {{label}}",
       "upcoming": "{{label}}: upcoming"
     },
+    "nextThen": "{{next}} then {{then}}",
+    "details": "Detail by moment",
+    "hideDetails": "Hide the detail",
+    "face": {
+      "todo": "Tick {{label}}",
+      "pending": "Approve {{label}}",
+      "missed": "Catch up {{label}}",
+      "upcoming": "{{label}}: later",
+      "done": "{{label}}: done"
+    },
     "catchUp": "Catch up",
     "failed": "The slot could not be updated",
     "summary": "{{done}} of {{total}} done today",
@@ -992,8 +1002,8 @@
     "toApprove_other": "{{count}} to approve",
     "missedCount_one": "{{count}} missed",
     "missedCount_other": "{{count}} missed",
-    "hopsPerSlot_one": "{{count}} {{unit}} per slot",
-    "hopsPerSlot_other": "{{count}} {{units}} per slot",
+    "hopsPerSlot_one": "{{count}} {{unit}} per moment",
+    "hopsPerSlot_other": "{{count}} {{units}} per moment",
     "approveAll_one": "Approve all ({{count}})",
     "approveAll_other": "Approve all ({{count}})",
     "editor": {
@@ -1078,16 +1088,16 @@
       "deadlineAfterDue": "The deadline must come after the due date.",
       "deadlineRepeat": "Each time, the deadline falls {{delay}} after the due date.",
       "slotUntil": "until",
-      "slotUntilLabel": "End of the {{name}} slot (optional)",
+      "slotUntilLabel": "End of the {{name}} moment (optional)",
       "slotOpens": "opens",
-      "slotOpensLabel": "When the {{name}} slot opens",
+      "slotOpensLabel": "When the {{name}} moment opens",
       "slotOpensAtTime": "at its time",
       "slotOpensBefore": "{{delay}} before"
     },
     "reward": {
       "title": "Reward",
       "hops": "{{Units}}",
-      "perSlot": "for each slot",
+      "perSlot": "for each moment",
       "perTime": "each time",
       "less": "{{AUnit}} less",
       "more": "{{AUnit}} more",
@@ -1102,7 +1112,7 @@
       "chronoRuleStart": "extra {{units}} if done at most",
       "chronoRuleEnd": "min {{after}}",
       "chronoAfterDue": "after the due time",
-      "chronoAfterSlot": "after each slot",
+      "chronoAfterSlot": "after each moment",
       "chronoAfterSignal": "after the signal"
     },
     "more": {

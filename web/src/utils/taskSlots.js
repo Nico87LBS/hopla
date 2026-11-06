@@ -108,3 +108,39 @@ export const doneCopies = (chores, now = new Date()) => {
       .map(chore => chore.id),
   )
 }
+
+// What one child's face shows for a task of several moments, and what a tap
+// on it does: tick the moment open now, approve one waiting for a parent, or
+// for a parent catch up one that was missed. The moment open now comes first,
+// then those waiting, then those missed; with nothing left to do today the
+// face is pale while one is still to come, else done.
+export const faceOf = (slots, canApprove, mine) => {
+  const find = state => slots.find(slot => slot.state === state)
+  const open = find('open')
+  if (open) {
+    return {
+      state: 'todo',
+      slot: open,
+      action: canApprove || mine ? 'tick' : null,
+    }
+  }
+  const pending = find('pending')
+  if (pending) {
+    return {
+      state: 'pending',
+      slot: pending,
+      action: canApprove ? 'approve' : null,
+    }
+  }
+  const missed = find('missed')
+  if (missed) {
+    return {
+      state: 'missed',
+      slot: missed,
+      action: canApprove ? 'catchup' : null,
+    }
+  }
+  const upcoming = find('upcoming')
+  if (upcoming) return { state: 'upcoming', slot: upcoming, action: null }
+  return { state: 'done', slot: slots[0] || null, action: null }
+}

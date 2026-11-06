@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import { test } from 'node:test'
 
 import {
+  faceOf,
   groupCopies,
   keepsTodayMissed,
   liveSlotState,
@@ -86,4 +87,33 @@ test('a task with a slot missed today stays among today’s', () => {
   assert.equal(keepsTodayMissed(done, now), false)
   assert.equal(keepsTodayMissed(later, now), false)
   assert.equal(keepsTodayMissed({ id: 4 }, now), false)
+})
+
+test('a face shows the moment to do, then those waiting, missed, to come', () => {
+  const st = state => ({ state })
+  assert.deepEqual(
+    faceOf([st('missed'), st('open')], true, false).state,
+    'todo',
+  )
+  assert.equal(faceOf([st('open')], false, false).action, null, 'not hers')
+  assert.equal(faceOf([st('open')], false, true).action, 'tick')
+  assert.equal(
+    faceOf([st('done'), st('pending')], true, false).action,
+    'approve',
+  )
+  assert.equal(faceOf([st('done'), st('pending')], false, true).action, null)
+  assert.equal(
+    faceOf([st('missed'), st('upcoming')], true, false).action,
+    'catchup',
+  )
+  assert.equal(
+    faceOf([st('missed'), st('upcoming')], false, true).state,
+    'missed',
+  )
+  assert.equal(
+    faceOf([st('done'), st('upcoming')], true, false).state,
+    'upcoming',
+  )
+  assert.equal(faceOf([st('done'), st('other')], true, false).state, 'done')
+  assert.equal(faceOf([], true, false).state, 'done')
 })

@@ -985,15 +985,25 @@
       "tick": "Cocher {{label}}",
       "upcoming": "{{label}} : à venir"
     },
+    "nextThen": "{{next}} puis {{then}}",
+    "details": "Détail par moment",
+    "hideDetails": "Masquer le détail",
+    "face": {
+      "todo": "Cocher {{label}}",
+      "pending": "Valider {{label}}",
+      "missed": "Rattraper {{label}}",
+      "upcoming": "{{label}} : à venir",
+      "done": "{{label}} : fait"
+    },
     "catchUp": "Rattraper",
-    "failed": "Le créneau n'a pas pu être mis à jour",
+    "failed": "Le moment n'a pas pu être mis à jour",
     "summary": "{{done}} sur {{total}} faits aujourd'hui",
     "toApprove_one": "{{count}} à valider",
     "toApprove_other": "{{count}} à valider",
     "missedCount_one": "{{count}} oublié",
     "missedCount_other": "{{count}} oubliés",
-    "hopsPerSlot_one": "{{count}} {{unit}} par créneau",
-    "hopsPerSlot_other": "{{count}} {{units}} par créneau",
+    "hopsPerSlot_one": "{{count}} {{unit}} par moment",
+    "hopsPerSlot_other": "{{count}} {{units}} par moment",
     "approveAll_one": "Tout valider ({{count}})",
     "approveAll_other": "Tout valider ({{count}})",
     "editor": {
@@ -1078,16 +1088,16 @@
       "deadlineAfterDue": "La limite doit venir après l'échéance.",
       "deadlineRepeat": "Chaque fois, la limite tombe {{delay}} après l'échéance.",
       "slotUntil": "jusqu'à",
-      "slotUntilLabel": "Fin du créneau {{name}} (facultatif)",
+      "slotUntilLabel": "Fin du moment {{name}} (facultatif)",
       "slotOpens": "s'ouvre",
-      "slotOpensLabel": "Ouverture du créneau {{name}}",
+      "slotOpensLabel": "Ouverture du moment {{name}}",
       "slotOpensAtTime": "à l'heure",
       "slotOpensBefore": "{{delay}} avant"
     },
     "reward": {
       "title": "Récompense",
       "hops": "{{Units}}",
-      "perSlot": "à chaque créneau",
+      "perSlot": "à chaque moment",
       "perTime": "à chaque fois",
       "less": "{{AUnit}} de moins",
       "more": "{{AUnit}} de plus",
@@ -1102,7 +1112,7 @@
       "chronoRuleStart": "{{units}} en plus si faite au plus tard",
       "chronoRuleEnd": "min {{after}}",
       "chronoAfterDue": "après l'heure prévue",
-      "chronoAfterSlot": "après chaque créneau",
+      "chronoAfterSlot": "après chaque moment",
       "chronoAfterSignal": "après le signal"
     },
     "more": {
