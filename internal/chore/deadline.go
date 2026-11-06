@@ -5,6 +5,7 @@ import (
 	"time"
 
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
+	chRepo "github.com/nico87lbs/hopla/internal/chore/repo"
 	"github.com/nico87lbs/hopla/internal/games"
 	"github.com/nico87lbs/hopla/logging"
 	"go.uber.org/fx"
@@ -108,8 +109,82 @@ func (h *Handler) SettleDeadlines(ctx context.Context, now time.Time) error {
 	return nil
 }
 
-// RunDeadlines looks every minute for the tasks whose deadline is over,
-// while the server runs.
+// slotLookback is how many past days the slots missed are looked for, for a
+// server off at midnight.
+const slotLookback = 2
+
+// SettleMissedSlots writes missed the slots of the past days nobody did, once
+// a parent can no longer catch them up. A slot is not missed by someone away
+// that day, nor before the task existed.
+func (h *Handler) SettleMissedSlots(ctx context.Context, now time.Time) error {
+	chores, err := h.choreRepo.ActiveSlotChores(ctx)
+	if err != nil || len(chores) == 0 {
+		return err
+	}
+	ids := make([]int, 0, len(chores))
+	for _, chore := range chores {
+		ids = append(ids, chore.ID)
+	}
+	history, err := h.choreRepo.GetSlotHistory(ctx, ids, now.Add(-time.Duration(slotLookback+2)*24*time.Hour), now.Add(time.Hour))
+	if err != nil {
+		return err
+	}
+	absences := map[int]map[int]map[string]bool{}
+	for _, chore := range chores {
+		loc := choreLocation(chore)
+		today := startOfDay(now.In(loc))
+		away, ok := absences[chore.FamilyID]
+		if !ok {
+			if away, err = h.choreRepo.AbsenceDays(ctx, chore.FamilyID, today.AddDate(0, 0, -slotLookback), now); err != nil {
+				return err
+			}
+			absences[chore.FamilyID] = away
+		}
+		var missed []chRepo.MissedSlot
+		for back := slotLookback; back >= 1; back-- {
+			day := today.AddDate(0, 0, -back)
+			key := day.Format("2006-01-02")
+			for _, window := range slotWindows(chore, day) {
+				if window.At.Before(chore.CreatedAt) || slotSettled(history[chore.ID], window.Index, day) {
+					continue
+				}
+				who := []int{}
+				for _, id := range chRepo.MissedBy(chore) {
+					if !away[id][key] {
+						who = append(who, id)
+					}
+				}
+				if len(who) == 0 {
+					continue
+				}
+				missed = append(missed, chRepo.MissedSlot{Slot: window.Index, DueDate: window.At.UTC(), ClosedAt: window.ClosesAt.UTC(), Who: who})
+			}
+		}
+		if err := h.choreRepo.RecordMissedSlots(ctx, chore, missed); err != nil {
+			logging.FromContext(ctx).Errorw("Failed to write the slots missed", "error", err, "choreID", chore.ID)
+		}
+	}
+	return nil
+}
+
+// slotSettled reports whether a slot of a day was done, waits for a parent
+// or is already written missed.
+func slotSettled(history []*chModel.ChoreHistory, index int, day time.Time) bool {
+	next := day.AddDate(0, 0, 1)
+	for _, entry := range history {
+		if entry.Slot == nil || *entry.Slot != index || entry.DueDate == nil || entry.DueDate.Before(day) || !entry.DueDate.Before(next) {
+			continue
+		}
+		switch entry.Status {
+		case chModel.ChoreHistoryStatusCompleted, chModel.ChoreHistoryStatusPendingApproval, chModel.ChoreHistoryStatusMissed:
+			return true
+		}
+	}
+	return false
+}
+
+// RunDeadlines looks every minute for the tasks whose deadline is over and
+// the slots missed, while the server runs.
 func RunDeadlines(lc fx.Lifecycle, h *Handler) {
 	ctx, cancel := context.WithCancel(context.Background())
 	lc.Append(fx.Hook{
@@ -118,8 +193,12 @@ func RunDeadlines(lc fx.Lifecycle, h *Handler) {
 				ticker := time.NewTicker(time.Minute)
 				defer ticker.Stop()
 				for {
-					if err := h.SettleDeadlines(ctx, time.Now().UTC()); err != nil {
+					now := time.Now().UTC()
+					if err := h.SettleDeadlines(ctx, now); err != nil {
 						logging.FromContext(ctx).Errorw("Failed to settle the deadlines", "error", err)
+					}
+					if err := h.SettleMissedSlots(ctx, now); err != nil {
+						logging.FromContext(ctx).Errorw("Failed to settle the slots missed", "error", err)
 					}
 					select {
 					case <-ctx.Done():

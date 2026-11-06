@@ -97,6 +97,12 @@ func absenceDays(db *gorm.DB, familyID int, since, now time.Time) (map[int]map[s
 	return days, nil
 }
 
+// AbsenceDays returns, per member, the local days ("2006-01-02") they were
+// away at some point since the given time.
+func AbsenceDays(db *gorm.DB, familyID int, since, now time.Time) (map[int]map[string]bool, error) {
+	return absenceDays(db, familyID, since, now)
+}
+
 // MistakeAbsence is how short an absence has to be to count as a mistake: a
 // member put away and back home within it was never away.
 const MistakeAbsence = 15 * time.Minute
