@@ -40,6 +40,7 @@ import {
   faceOf,
   hasSlots,
   momentName,
+  nextTimeLater,
   todaySlots,
 } from '../../utils/taskSlots'
 import { MemberAvatar } from '../Games/GameParts'
@@ -475,8 +476,11 @@ const TaskGroupRow = ({
     actingMember?.role === 'manager' ||
     chores.some(chore => chore.createdBy === actingUserId)
   const now = new Date()
+  // Every moment of today done: the task is due again on a later day and the
+  // row stands for that next time, not for today's, so the faces wait, pale.
+  const later = slotted && nextTimeLater(chores, slotsByTask, now)
   const lines = chores.flatMap(chore => {
-    const slots = slotted ? todaySlots(chore, slotsByTask, now) : []
+    const slots = slotted && !later ? todaySlots(chore, slotsByTask, now) : []
     if (!isTogether(chore)) {
       return [{ chore, member: performerOf(chore, performers), slots }]
     }
@@ -719,8 +723,8 @@ const TaskGroupRow = ({
           </Box>
         )}
         {slotted && columns.length === 0 && (
-          // A day with no moment today (a task for another day): the faces,
-          // pale, until the day comes.
+          // A day with no moment today (a task for another day), or every
+          // moment of today done: the faces, pale, until the next one comes.
           <Box sx={{ display: 'flex', flexShrink: 0, gap: 1 }}>
             {lines.map(({ chore, member }) => (
               <CopyFace
