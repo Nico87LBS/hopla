@@ -315,7 +315,7 @@ const DOT_COLOR = {
   pending: '#8A6F57',
   missed: HOPLA.carrot,
   open: HOPLA.violet,
-  upcoming: '#D9D4CC',
+  upcoming: '#B9B4AA',
 }
 
 // One child's copy: their face to tap, the same as on the family board. A
@@ -365,7 +365,9 @@ export const CopyFace = ({ disabled, dots, label, member, onClick, state }) => {
         alignItems: 'center',
         display: 'flex',
         flexDirection: 'column',
-        gap: '3px',
+        gap: '10px',
+        // The face ring takes 4px around it: leave room for the dots below.
+        pb: '2px',
       }}
     >
       <Box sx={{ position: 'relative' }}>
@@ -373,7 +375,7 @@ export const CopyFace = ({ disabled, dots, label, member, onClick, state }) => {
         {badge}
       </Box>
       {dots?.length > 1 && (
-        <Box sx={{ display: 'flex', gap: '3px' }} aria-hidden>
+        <Box sx={{ display: 'flex', gap: '5px' }} aria-hidden>
           {dots.map((dot, index) => (
             <Box
               key={index}
@@ -381,8 +383,8 @@ export const CopyFace = ({ disabled, dots, label, member, onClick, state }) => {
               sx={{
                 bgcolor: DOT_COLOR[dot] || DOT_COLOR.upcoming,
                 borderRadius: '50%',
-                height: 6,
-                width: 6,
+                height: 8,
+                width: 8,
               }}
             />
           ))}

@@ -33,9 +33,9 @@ import {
   splitTextAtFirstHttpUrl,
 } from '../../utils/ExternalLinks.js'
 import { taskModeOf } from '../../utils/taskMode'
-import { ChoreActionMenuTrigger } from '../components/ChoreActionMenu'
 import PendingBadge from '../components/PendingBadge'
 import { MemberAvatars } from '../Games/GameParts'
+import { CopyFace } from './TaskGroupRow'
 
 const RING = 26
 // How long the ticked ring shows before the task leaves the list.
@@ -178,7 +178,6 @@ const TaskRow = ({
   isSelected = false,
   onAction,
   onChipClick,
-  onOpenActionMenu,
   onSelectionToggle,
   performers = [],
   showActions = true,
@@ -253,8 +252,6 @@ const TaskRow = ({
             slotProps={{ checkbox: { sx: { borderRadius: '50%' } } }}
           />
         </Box>
-      ) : showActions ? (
-        <TaskRing canApprove={canApprove} chore={chore} onAction={onAction} />
       ) : (
         <Box sx={{ width: 8 }} />
       )}
@@ -423,25 +420,39 @@ const TaskRow = ({
           {chore.points}
         </Box>
       )}
-      {members.length > 0 && <MemberAvatars members={members} size={26} />}
-      {showActions && !isMultiSelectMode && onOpenActionMenu && (
-        <ChoreActionMenuTrigger
-          variant='plain'
+      {!isMultiSelectMode && showActions && members.length === 1 ? (
+        <CopyFace
+          disabled={
+            chore.status === PENDING_APPROVAL
+              ? !canApprove
+              : notInCompletionWindow(chore)
+          }
+          label={
+            chore.status === PENDING_APPROVAL
+              ? t('slots.cell.approve', { label: members[0].displayName })
+              : t('taskRow.complete', { name: chore.name })
+          }
+          member={members[0]}
           onClick={event => {
             event.stopPropagation()
-            onOpenActionMenu(event.currentTarget, chore)
+            onAction(
+              chore.status === PENDING_APPROVAL ? 'approve' : 'complete',
+              chore,
+            )
           }}
-          sx={{
-            color: 'text.tertiary',
-            flexShrink: 0,
-            height: 36,
-            width: 32,
-            '&:hover': {
-              bgcolor: 'background.level2',
-              color: 'text.secondary',
-            },
-          }}
+          state={chore.status === PENDING_APPROVAL ? 'pending' : 'todo'}
         />
+      ) : (
+        <>
+          {members.length > 1 && <MemberAvatars members={members} size={26} />}
+          {!isMultiSelectMode && showActions && (
+            <TaskRing
+              canApprove={canApprove}
+              chore={chore}
+              onAction={onAction}
+            />
+          )}
+        </>
       )}
     </Box>
   )
@@ -453,7 +464,6 @@ TaskRow.propTypes = {
   isSelected: PropTypes.bool,
   onAction: PropTypes.func.isRequired,
   onChipClick: PropTypes.func,
-  onOpenActionMenu: PropTypes.func,
   onSelectionToggle: PropTypes.func,
   performers: PropTypes.array,
   showActions: PropTypes.bool,

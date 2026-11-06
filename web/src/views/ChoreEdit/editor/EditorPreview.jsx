@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 
 import TaskMode from '../../../components/common/TaskMode'
 import { HOPLA } from '../../../constants/theme'
+import { CopyFace } from '../../Chores/TaskGroupRow'
 
 const goldText = theme => ({
   color: HOPLA.goldText,
@@ -48,6 +49,7 @@ TaskSummary.propTypes = {
 // buttons to save it.
 export default function EditorPreview({
   actions,
+  members = [],
   mode,
   name,
   parts,
@@ -82,20 +84,22 @@ export default function EditorPreview({
           p: 1.75,
           display: 'flex',
           gap: 1.5,
-          alignItems: 'flex-start',
+          alignItems: 'center',
         }}
       >
-        <Box
-          sx={{
-            flexShrink: 0,
-            width: 26,
-            height: 26,
-            mt: '2px',
-            borderRadius: '50%',
-            border: '2px solid',
-            borderColor: 'neutral.outlinedBorder',
-          }}
-        />
+        {members.length === 0 && (
+          <Box
+            sx={{
+              flexShrink: 0,
+              width: 26,
+              height: 26,
+              mt: '2px',
+              borderRadius: '50%',
+              border: '2px solid',
+              borderColor: 'neutral.outlinedBorder',
+            }}
+          />
+        )}
         <Box
           sx={{
             flex: 1,
@@ -154,6 +158,19 @@ export default function EditorPreview({
             </Box>
           )}
         </Box>
+        {members.length > 0 && (
+          <Box sx={{ display: 'flex', flexShrink: 0, gap: 1 }}>
+            {members.map(member => (
+              <CopyFace
+                key={member.userId}
+                dots={slots.map((_, i) => (i === 0 ? 'open' : 'upcoming'))}
+                label={member.displayName || ''}
+                member={member}
+                state='todo'
+              />
+            ))}
+          </Box>
+        )}
       </Box>
       <TaskSummary parts={parts} sx={{ fontSize: 14, lineHeight: 1.5 }} />
       {actions}
@@ -163,6 +180,7 @@ export default function EditorPreview({
 
 EditorPreview.propTypes = {
   actions: PropTypes.node,
+  members: PropTypes.array,
   mode: PropTypes.string,
   name: PropTypes.string,
   parts: PropTypes.array.isRequired,
