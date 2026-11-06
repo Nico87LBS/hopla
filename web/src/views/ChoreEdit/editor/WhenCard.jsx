@@ -77,6 +77,13 @@ const nextSlotTime = slots => {
 const OPEN_LEADS = [0, 15, 30, 60, 120, 180]
 const DEFAULT_LEAD = 60
 
+// The leads to pick from, plus the one the moment already has when it is not
+// one of them (a task put on moments keeps its old window).
+const openLeads = current =>
+  current == null || OPEN_LEADS.includes(current)
+    ? OPEN_LEADS
+    : [...OPEN_LEADS, current].sort((a, b) => a - b)
+
 const InfoLine = ({ children, icon: Icon = ScheduleRounded }) => (
   <Box
     sx={{
@@ -228,7 +235,7 @@ const Slots = ({ frequencyMetadata, onFrequencyMetadataUpdate }) => {
                   onChange={(_, value) => change(index, 'opensBefore', value)}
                   sx={{ minHeight: 36, bgcolor: 'transparent', width: 120 }}
                 >
-                  {OPEN_LEADS.map(minutes => (
+                  {openLeads(slot.opensBefore).map(minutes => (
                     <Option key={minutes} value={minutes}>
                       {minutes === 0
                         ? t('editor.when.slotOpensAtTime')
@@ -587,7 +594,6 @@ export default function WhenCard({
   const { t } = useTranslation('chores')
   const kind = scheduleKind(frequencyType)
   const metadata = frequencyMetadata || {}
-  const once = ONCE_FREQUENCY_TYPES.includes(frequencyType)
   const dated = isDatedType(frequencyType, metadata)
   const withMoments = momentsApply(frequencyType, metadata)
   const withSlots = withMoments && metadata.slots?.length > 0

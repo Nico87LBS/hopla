@@ -110,7 +110,7 @@ func TestSettleMissedSlots(t *testing.T) {
 func TestSlotOpensBefore(t *testing.T) {
 	familyIn(t, "Europe/Brussels")
 	chore := teethChore("07:30", "19:00")
-	half, none, big := 30, 0, 13*60
+	half, none, big := 30, 0, 25*60
 	chore.FrequencyMetadataV2.Slots[0].OpensBefore = &half
 	chore.FrequencyMetadataV2.Slots[1].OpensBefore = &none
 	windows := slotWindows(chore, brussels(t, 23, 0, 0))

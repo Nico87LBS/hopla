@@ -26,7 +26,7 @@ const (
 	maxSlots    = 6
 	maxSlotName = 30
 	// maxOpenLead is the longest a slot can open before its time, in minutes.
-	maxOpenLead = 12 * 60
+	maxOpenLead = chModel.MaxSlotLead
 	// allDayTime is the time of a moment all day: it is due at the end of the
 	// day, and is open from midnight.
 	allDayTime = "23:59"
