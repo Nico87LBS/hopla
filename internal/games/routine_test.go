@@ -201,3 +201,23 @@ func TestRoutineCompletionOnlyCountsTheSelectedSlot(t *testing.T) {
 	require.NoError(t,db.Where("user_id = 2").First(&member).Error)
 	require.Equal(t,3,member.Points)
 }
+
+func TestOptionalStepsAreSavedByPlace(t *testing.T) {
+	db := setup(t)
+	now := noon(0)
+	dress := chore(t, db, "S'habiller", 1, now, assignedTo(2))
+	teeth := chore(t, db, "Dents", 1, now, assignedTo(2))
+	routine := Routine{FamilyID: 1, Name: "Matin", ChoreIDs: []int{dress.ID, teeth.ID},
+		GraphEnabled: true, Dependencies: []RoutineDependency{}, OptionalStepIDs: []int{2}}
+	require.NoError(t, SaveRoutine(db, &routine))
+	stored, err := Routines(db, 1)
+	require.NoError(t, err)
+	require.Equal(t, []int{2}, stored[0].OptionalStepIDs, "the second step stays optional")
+
+	// Saving again without the optional steps makes every step required.
+	routine.OptionalStepIDs = []int{}
+	require.NoError(t, SaveRoutine(db, &routine))
+	stored, err = Routines(db, 1)
+	require.NoError(t, err)
+	require.Empty(t, stored[0].OptionalStepIDs)
+}
