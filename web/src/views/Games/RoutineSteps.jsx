@@ -40,10 +40,10 @@ import { HOPLA } from '../../constants/theme'
 import { useResponsiveModal } from '../../hooks/useResponsiveModal'
 import {
   addSteps,
+  draftOrderMode,
   loopingPrerequisites,
   MAX_ROUTINE_STEPS,
   moveStepTo,
-  orderModeOf,
   removeStepAt,
   routineTasks,
   setPrerequisites,
@@ -61,8 +61,7 @@ const StepRow = ({ chore, draft, id, index, names, setDraft }) => {
     useSortable({ id })
   const position = index + 1
   const optional = (draft.optionalStepIds || []).includes(position)
-  const custom =
-    orderModeOf(draft.dependencies, draft.choreIds.length) === 'custom'
+  const custom = draftOrderMode(draft) === 'custom'
   const slot = (chore?.frequencyMetadata?.slots || []).find(
     item => item.id === (draft.slotIds?.[index] || ''),
   )

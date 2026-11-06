@@ -15,9 +15,9 @@ import { useTranslation } from 'react-i18next'
 import { HOPLA } from '../../constants/theme'
 import {
   BONUS_PRESETS,
+  draftOrderMode,
   MAX_ROUTINE_STEPS,
   MAX_VALIDITY,
-  orderModeOf,
   previewSteps,
   VALIDITY_PRESETS,
   withOrder,
@@ -214,7 +214,7 @@ RoutineBlock.propTypes = {
 
 const OrderBlock = ({ draft, setDraft }) => {
   const { t } = useTranslation('games')
-  const mode = orderModeOf(draft.dependencies, draft.choreIds.length)
+  const mode = draftOrderMode(draft)
   const modes = ['sequence', 'free', 'custom']
   return (
     <Block number={3} title={t('routines.blockOrder')}>
