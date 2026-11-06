@@ -16,6 +16,12 @@ func RichTextHTML(input string) string {
 		return ""
 	}
 
+	// Without a "<" there is no tag to clean: plain text, such as a note sent
+	// by another app, stays as written instead of "&" becoming "&amp;".
+	if !strings.Contains(input, "<") {
+		return input
+	}
+
 	doc, err := html.Parse(strings.NewReader(input))
 	if err != nil {
 		return ""

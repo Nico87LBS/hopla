@@ -48,3 +48,15 @@ func TestRichTextHTMLKeepsEditorFormatting(t *testing.T) {
 		}
 	}
 }
+
+// A plain-text note keeps its characters; only text with tags is cleaned.
+func TestRichTextHTMLLeavesPlainTextAlone(t *testing.T) {
+	for _, text := range []string{"Fait & bien", "Rangé \"vite\" : 5 > 3", "Ligne 1\nLigne 2"} {
+		if got := RichTextHTML(text); got != text {
+			t.Fatalf("plain text changed: %q -> %q", text, got)
+		}
+	}
+	if got := RichTextHTML("a < b <script>x</script>"); strings.Contains(got, "<script") {
+		t.Fatalf("a script survived: %s", got)
+	}
+}
