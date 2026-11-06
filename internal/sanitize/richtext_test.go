@@ -31,3 +31,20 @@ func TestRichTextHTMLDropsUnsafeImageAndEmbeddedDocument(t *testing.T) {
 		t.Fatalf("safe surrounding text should be preserved: %s", got)
 	}
 }
+
+// The editor's own formatting survives: bullets stay bullets, a code block
+// keeps its lines, a centered paragraph stays centered.
+func TestRichTextHTMLKeepsEditorFormatting(t *testing.T) {
+	cases := map[string]string{
+		`<ol><li data-list="bullet">a</li><li data-list="ordered">b</li><li data-list="checked">c</li></ol>`:                                                                                  `<ol><li data-list="bullet">a</li><li data-list="ordered">b</li><li data-list="checked">c</li></ol>`,
+		`<div class="ql-code-block-container" spellcheck="false"><div class="ql-code-block" data-language="plain">x := 1</div><div class="ql-code-block" data-language="plain">y</div></div>`: `<div class="ql-code-block-container"><div class="ql-code-block" data-language="plain">x := 1</div><div class="ql-code-block" data-language="plain">y</div></div>`,
+		`<p class="ql-align-center ql-indent-2 evil">c</p>`:              `<p class="ql-align-center ql-indent-2">c</p>`,
+		`<ol><li data-list="x&quot; onclick=&quot;a">d</li></ol>`:        `<ol><li>d</li></ol>`,
+		`<div class="ql-code-block" data-language="java script">e</div>`: `<div class="ql-code-block">e</div>`,
+	}
+	for input, want := range cases {
+		if got := RichTextHTML(input); got != want {
+			t.Fatalf("RichTextHTML(%s)\n got %s\nwant %s", input, got, want)
+		}
+	}
+}

@@ -19,7 +19,32 @@ const allowedTags = new Set([
   'H4',
   'A',
   'IMG',
+  // Quill 2 wraps code blocks in div elements.
+  'DIV',
 ])
+
+// Quill 2 writes every list as an ol and tells bullets from numbers with
+// data-list: dropping it would turn bullets into numbers.
+export const LIST_KINDS = new Set(['bullet', 'ordered', 'checked', 'unchecked'])
+
+const SAFE_CLASSES = new Set([
+  'ql-code-block',
+  'ql-code-block-container',
+  'ql-align-center',
+  'ql-align-right',
+  'ql-align-justify',
+  'ql-direction-rtl',
+])
+
+// safeClasses keeps only the editor's own layout classes: code blocks,
+// alignment and indentation.
+export const safeClasses = value =>
+  String(value || '')
+    .split(/\s+/)
+    .filter(name => SAFE_CLASSES.has(name) || /^ql-indent-[1-9]$/.test(name))
+    .join(' ')
+
+export const safeLanguage = value => /^[a-z0-9+-]{1,32}$/.test(value || '')
 const dropContentTags = new Set([
   'SCRIPT',
   'STYLE',
@@ -108,6 +133,20 @@ const sanitizeNode = node => {
       clean.setAttribute(key, value)
     } else if (key === 'data-hopla-path' && !hasControlCharacters(value)) {
       clean.setAttribute(key, value)
+    } else if (
+      key === 'data-list' &&
+      node.tagName === 'LI' &&
+      LIST_KINDS.has(value)
+    ) {
+      clean.setAttribute(key, value)
+    } else if (
+      key === 'data-language' &&
+      node.tagName === 'DIV' &&
+      safeLanguage(value)
+    ) {
+      clean.setAttribute(key, value)
+    } else if (key === 'class' && safeClasses(value)) {
+      clean.setAttribute('class', safeClasses(value))
     } else if (key === 'target' && node.tagName === 'A' && value === '_blank') {
       clean.setAttribute('target', '_blank')
     }
