@@ -3,6 +3,7 @@ import { test } from 'node:test'
 
 import {
   groupCopies,
+  keepsTodayMissed,
   liveSlotState,
   pullCopiesTogether,
   todaySlots,
@@ -69,4 +70,20 @@ test('pullCopiesTogether brings later copies to the first section', () => {
     sections.map(s => s.content.map(c => c.id)),
     [[1, 3], [2]],
   )
+})
+
+test('a task with a slot missed today stays among today’s', () => {
+  const now = new Date(2026, 9, 23, 12, 30)
+  const withSlots = { frequencyMetadata: { slots: [{}] } }
+  const missed = { ...withSlots, id: 1, slotsToday: [slot(0, 6, 10, 'open')] }
+  const done = { ...withSlots, id: 2, slotsToday: [slot(0, 6, 10, 'done')] }
+  const later = {
+    ...withSlots,
+    id: 3,
+    slotsToday: [slot(1, 18, 23, 'upcoming')],
+  }
+  assert.equal(keepsTodayMissed(missed, now), true)
+  assert.equal(keepsTodayMissed(done, now), false)
+  assert.equal(keepsTodayMissed(later, now), false)
+  assert.equal(keepsTodayMissed({ id: 4 }, now), false)
 })
