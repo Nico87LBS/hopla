@@ -171,6 +171,8 @@ func (h *Handler) SettleMissedSlots(ctx context.Context, now time.Time) error {
 		}
 		if isOnceType(chore.FrequencyType) {
 			h.finishOnce(ctx, chore, history[chore.ID], today, now)
+		} else if isDatedType(chore.FrequencyType, chore.FrequencyMetadataV2) {
+			h.advancePassage(ctx, chore, today, now)
 		}
 	}
 	return nil
@@ -253,5 +255,31 @@ func (h *Handler) finishOnce(ctx context.Context, chore *chModel.Chore, history 
 	if h.realTimeService != nil {
 		h.realTimeService.GetEventBroadcaster().BroadcastChoreUpdated(chore, nil,
 			map[string]interface{}{"nextDueDate": nil, "isActive": false}, nil)
+	}
+}
+
+// advancePassage moves a task with moments on one day to its next passage once
+// its day is over.
+func (h *Handler) advancePassage(ctx context.Context, chore *chModel.Chore, today, now time.Time) {
+	day, ok := onceDay(chore)
+	if !ok || !day.Before(today) {
+		return
+	}
+	next := nextPassageStart(ctx, chore, now)
+	if next == nil {
+		return
+	}
+	loc := choreLocation(chore)
+	metadata := *chore.FrequencyMetadataV2
+	metadata.Day = startOfDay(next.In(loc)).Format("2006-01-02")
+	version, err := h.choreRepo.AdvancePassage(ctx, chore, &metadata, next)
+	if err != nil {
+		logging.FromContext(ctx).Errorw("Failed to move a task to its next passage", "error", err, "choreID", chore.ID)
+		return
+	}
+	chore.FrequencyMetadataV2, chore.NextDueDate, chore.SyncVersion = &metadata, next, version
+	if h.realTimeService != nil {
+		h.realTimeService.GetEventBroadcaster().BroadcastChoreUpdated(chore, nil,
+			map[string]interface{}{"nextDueDate": next, "isActive": chore.IsActive}, nil)
 	}
 }

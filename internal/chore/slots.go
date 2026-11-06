@@ -53,10 +53,27 @@ func isOnceType(frequencyType chModel.FrequencyType) bool {
 	return frequencyType == chModel.FrequencyTypeOnce || frequencyType == chModel.FrequencyTypeNoRepeat
 }
 
-// setOnceDay gives a one-time task with slots the day they are on when it was
-// not given one: the day of its due date, else today.
+// isDatedType reports whether a task's moments are on one day at a time, the
+// day of its current passage (frequencyMetadata.day): done once, or every
+// week, month, year, so many days, or on a day of the month. A task every day
+// or on set days of the week has its moments on all its days, and one repeated
+// every few hours has none.
+func isDatedType(frequencyType chModel.FrequencyType, metadata *chModel.FrequencyMetadata) bool {
+	switch frequencyType {
+	case chModel.FrequencyTypeOnce, chModel.FrequencyTypeNoRepeat, chModel.FrequencyTypeWeekly,
+		chModel.FrequencyTypeMonthly, chModel.FrequencyTypeYearly, chModel.FrequencyTypeAdaptive,
+		chModel.FrequencyTypeDayOfTheMonth:
+		return true
+	case chModel.FrequencyTypeInterval:
+		return metadata == nil || metadata.Unit == nil || *metadata.Unit != "hours"
+	}
+	return false
+}
+
+// setOnceDay gives a task with slots on one day the day they are on when it
+// was not given one: the day of its due date, else today.
 func setOnceDay(frequencyType chModel.FrequencyType, metadata *chModel.FrequencyMetadata, due *time.Time, familyID int) {
-	if metadata == nil || len(metadata.Slots) == 0 || !isOnceType(frequencyType) || strings.TrimSpace(metadata.Day) != "" {
+	if metadata == nil || len(metadata.Slots) == 0 || !isDatedType(frequencyType, metadata) || strings.TrimSpace(metadata.Day) != "" {
 		return
 	}
 	at := time.Now().UTC()
@@ -81,19 +98,19 @@ func normalizeSlots(frequencyType chModel.FrequencyType, metadata *chModel.Frequ
 	if metadata == nil {
 		return nil
 	}
-	if len(metadata.Slots) == 0 || !isOnceType(frequencyType) {
+	if len(metadata.Slots) == 0 || !isDatedType(frequencyType, metadata) {
 		metadata.Day = ""
 	}
 	if len(metadata.Slots) == 0 {
 		return nil
 	}
-	if frequencyType != chModel.FrequencyTypeDaily && frequencyType != chModel.FrequencyTypeDayOfTheWeek && !isOnceType(frequencyType) {
-		// Slots only make sense every day, on days of the week or once:
-		// switching the repeat to anything else drops them.
+	if frequencyType != chModel.FrequencyTypeDaily && frequencyType != chModel.FrequencyTypeDayOfTheWeek && !isDatedType(frequencyType, metadata) {
+		// Slots only make sense on a day: switching the repeat to a task every
+		// few hours, always there or set off from outside drops them.
 		metadata.Slots = nil
 		return nil
 	}
-	if isOnceType(frequencyType) {
+	if isDatedType(frequencyType, metadata) {
 		metadata.Day = strings.TrimSpace(metadata.Day)
 		if _, err := time.Parse("2006-01-02", metadata.Day); err != nil {
 			return fmt.Errorf("invalid day %q", metadata.Day)
@@ -175,8 +192,6 @@ func (h *Handler) shareSlotIDs(ctx context.Context, familyID int, name string, e
 // slotRunsOn reports whether the task's slots run on the given local day.
 func slotRunsOn(chore *chModel.Chore, day time.Time) bool {
 	switch chore.FrequencyType {
-	case chModel.FrequencyTypeOnce, chModel.FrequencyTypeNoRepeat:
-		return chore.FrequencyMetadataV2 != nil && chore.FrequencyMetadataV2.Day == day.Format("2006-01-02")
 	case chModel.FrequencyTypeDaily:
 		return true
 	case chModel.FrequencyTypeDayOfTheWeek:
@@ -187,7 +202,9 @@ func slotRunsOn(chore *chModel.Chore, day time.Time) bool {
 			}
 		}
 	}
-	return false
+	// A task with moments on one day, the day of its passage.
+	return isDatedType(chore.FrequencyType, chore.FrequencyMetadataV2) &&
+		chore.FrequencyMetadataV2 != nil && chore.FrequencyMetadataV2.Day == day.Format("2006-01-02")
 }
 
 // startOfDay returns local midnight of the day t falls on.
@@ -329,15 +346,15 @@ func nextSlotDue(ctx context.Context, chore *chModel.Chore, statuses []chModel.S
 		}
 	}
 	day := startOfDay(now.In(choreLocation(chore)))
-	if isOnceType(chore.FrequencyType) {
-		// A one-time task has no next day but its own, if still to come.
+	if isDatedType(chore.FrequencyType, chore.FrequencyMetadataV2) {
+		// Its own day if still to come, else its next passage, if it has one.
 		if when, ok := onceDay(chore); ok && when.After(day) {
 			if windows := slotWindows(chore, when); len(windows) > 0 {
 				at := windows[0].At.UTC()
 				return &at
 			}
 		}
-		return nil
+		return nextPassageStart(ctx, chore, now)
 	}
 	for i := 1; i <= 8; i++ {
 		if windows := slotWindows(chore, day.AddDate(0, 0, i)); len(windows) > 0 {
@@ -351,8 +368,8 @@ func nextSlotDue(ctx context.Context, chore *chModel.Chore, statuses []chModel.S
 // firstSlotAfterDay returns the first slot on the days after the one t falls
 // on: skipping a task with slots skips the rest of its day.
 func firstSlotAfterDay(ctx context.Context, chore *chModel.Chore, t time.Time) *time.Time {
-	if isOnceType(chore.FrequencyType) {
-		return nil
+	if isDatedType(chore.FrequencyType, chore.FrequencyMetadataV2) {
+		return nextPassageStart(ctx, chore, t)
 	}
 	day := startOfDay(t.In(choreLocation(chore)))
 	for i := 1; i <= 8; i++ {
@@ -387,4 +404,54 @@ func openSlot(statuses []chModel.SlotStatus, now time.Time) (*chModel.SlotStatus
 		return nil, errSlotTaken
 	}
 	return nil, errNoOpenSlot
+}
+
+// withoutSlots returns a copy of a task as if it had no moments, to ask the
+// usual schedule when its next passage falls.
+func withoutSlots(chore *chModel.Chore) *chModel.Chore {
+	copy := *chore
+	if chore.FrequencyMetadataV2 != nil {
+		metadata := *chore.FrequencyMetadataV2
+		metadata.Slots, metadata.Day = nil, ""
+		copy.FrequencyMetadataV2 = &metadata
+	}
+	return &copy
+}
+
+// withDay returns a copy of a task whose moments are on the given day.
+func withDay(chore *chModel.Chore, day time.Time) *chModel.Chore {
+	copy := *chore
+	if chore.FrequencyMetadataV2 != nil {
+		metadata := *chore.FrequencyMetadataV2
+		metadata.Day = day.Format("2006-01-02")
+		copy.FrequencyMetadataV2 = &metadata
+	}
+	return &copy
+}
+
+// nextPassageStart returns the time of the first moment of the passage after
+// the one the task is on, done at `from`: a task done once has none. The usual
+// schedule says which day, as for a task without moments.
+func nextPassageStart(ctx context.Context, chore *chModel.Chore, from time.Time) *time.Time {
+	if isOnceType(chore.FrequencyType) {
+		return nil
+	}
+	loc := choreLocation(chore)
+	shadow := withoutSlots(chore)
+	if when, ok := onceDay(chore); ok {
+		if windows := slotWindows(chore, when); len(windows) > 0 {
+			at := windows[0].At.UTC()
+			shadow.NextDueDate = &at
+		}
+	}
+	next, err := nextDueAfterDone(ctx, shadow, from)
+	if err != nil || next == nil {
+		return nil
+	}
+	day := startOfDay(next.In(loc))
+	if windows := slotWindows(withDay(chore, day), day); len(windows) > 0 {
+		at := windows[0].At.UTC()
+		return &at
+	}
+	return nil
 }

@@ -108,7 +108,9 @@ func (r *ChoreRepository) ActiveSlotChores(ctx context.Context) ([]*chModel.Chor
 	var chores []*chModel.Chore
 	if err := r.db.WithContext(ctx).Preload("Assignees").
 		Where("is_active = ? AND frequency_type IN ?", true,
-			[]chModel.FrequencyType{chModel.FrequencyTypeDaily, chModel.FrequencyTypeDayOfTheWeek, chModel.FrequencyTypeOnce, chModel.FrequencyTypeNoRepeat}).
+			[]chModel.FrequencyType{chModel.FrequencyTypeDaily, chModel.FrequencyTypeDayOfTheWeek, chModel.FrequencyTypeOnce, chModel.FrequencyTypeNoRepeat,
+				chModel.FrequencyTypeWeekly, chModel.FrequencyTypeMonthly, chModel.FrequencyTypeYearly, chModel.FrequencyTypeAdaptive,
+				chModel.FrequencyTypeInterval, chModel.FrequencyTypeDayOfTheMonth}).
 		Find(&chores).Error; err != nil {
 		return nil, err
 	}
@@ -182,6 +184,22 @@ func (r *ChoreRepository) FinishOnceChore(ctx context.Context, chore *chModel.Ch
 		"next_due_date": nil,
 		"status":        chModel.ChoreStatusNoStatus,
 		"sync_version":  version,
+	}).Error
+	return version, err
+}
+
+// AdvancePassage moves a task with moments on one day to the day of its next
+// passage.
+func (r *ChoreRepository) AdvancePassage(ctx context.Context, chore *chModel.Chore, metadata *chModel.FrequencyMetadata, next *time.Time) (int64, error) {
+	version, err := r.nextSyncVersion(ctx, chore.FamilyID)
+	if err != nil {
+		return 0, err
+	}
+	err = r.db.WithContext(ctx).Model(&chModel.Chore{}).Where("id = ? AND is_active = ?", chore.ID, true).Updates(map[string]interface{}{
+		"frequency_meta_v2": metadata,
+		"next_due_date":     next,
+		"status":            chModel.ChoreStatusNoStatus,
+		"sync_version":      version,
 	}).Error
 	return version, err
 }
