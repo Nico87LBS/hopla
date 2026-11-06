@@ -79,9 +79,12 @@ func syncPack(tx *gorm.DB, familyID int, player PackPlayer, levels []TestLevel, 
 	aside := map[string]bool{}
 	forced := map[string]bool{}
 	for _, key := range player.Excluded {
-		if strings.HasPrefix(key, "force-open:") {
+		switch {
+		case strings.HasPrefix(key, "force-open:"):
 			forced[strings.TrimPrefix(key, "force-open:")] = true
-		} else {
+		case strings.HasPrefix(key, chapterOpen), strings.HasPrefix(key, chapterShut):
+			// A chapter's access does not turn a module on or off.
+		default:
 			aside[key] = true
 		}
 	}
@@ -227,6 +230,99 @@ func SetAside(db *gorm.DB, familyID, userID int, pack, key string, aside bool, n
 	})
 }
 
+// What a parent chose for one chapter, kept with the levels and modules set
+// aside as "chapitre-ouvert:module/chapitre" and "chapitre-ferme:module/chapitre".
+const (
+	chapterOpen = "chapitre-ouvert:"
+	chapterShut = "chapitre-ferme:"
+)
+
+// ChapterAccess tells which chapters a parent opened or closed for a
+// person, by module: the chapter ids.
+func ChapterAccess(players []PackPlayer) (opened, shut map[string][]string) {
+	opened, shut = map[string][]string{}, map[string][]string{}
+	for _, player := range players {
+		for _, key := range player.Excluded {
+			target, prefix := opened, chapterOpen
+			if strings.HasPrefix(key, chapterShut) {
+				target, prefix = shut, chapterShut
+			} else if !strings.HasPrefix(key, chapterOpen) {
+				continue
+			}
+			if module, chapter, ok := strings.Cut(strings.TrimPrefix(key, prefix), "/"); ok {
+				target[module] = append(target[module], chapter)
+			}
+		}
+	}
+	return opened, shut
+}
+
+// SetChapterAccess chooses how chapters open for a person, each given as
+// "module/chapitre": auto follows the tests and the progression, open forces
+// them on, locked keeps them off. A parent's choice stays after a test.
+func SetChapterAccess(db *gorm.DB, familyID, userID int, pack string, chapters []string, mode string, now time.Time) error {
+	if mode != "auto" && mode != "open" && mode != "locked" {
+		return invalid("mode d'ouverture invalide")
+	}
+	if len(chapters) == 0 || len(chapters) > 500 {
+		return invalid("de 1 à 500 chapitres")
+	}
+	modules, err := Modules(db, familyID, now)
+	if err != nil {
+		return err
+	}
+	_, levels, err := testLevels(modules, pack)
+	if err != nil {
+		return err
+	}
+	known := map[string]bool{}
+	for _, level := range levels {
+		for _, module := range level.Modules {
+			doc, err := Parse(module.Document)
+			if err != nil {
+				continue
+			}
+			for _, chapter := range doc.Chapters {
+				known[module.ID+"/"+chapter.ID] = true
+			}
+		}
+	}
+	changed := map[string]bool{}
+	for _, chapter := range chapters {
+		if !known[chapter] {
+			return invalid("ce chapitre n'est pas dans le paquet")
+		}
+		changed[chapter] = true
+	}
+	return db.Transaction(func(tx *gorm.DB) error {
+		var player PackPlayer
+		if err := tx.Where("family_id = ? AND user_id = ? AND pack_key = ?", familyID, userID, pack).First(&player).Error; err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				return invalid("cette personne ne joue pas à ce paquet")
+			}
+			return err
+		}
+		kept := make([]string, 0, len(player.Excluded)+len(changed))
+		for _, item := range player.Excluded {
+			chapter := strings.TrimPrefix(strings.TrimPrefix(item, chapterOpen), chapterShut)
+			if chapter != item && changed[chapter] {
+				continue
+			}
+			kept = append(kept, item)
+		}
+		for _, chapter := range chapters {
+			switch mode {
+			case "open":
+				kept = append(kept, chapterOpen+chapter)
+			case "locked":
+				kept = append(kept, chapterShut+chapter)
+			}
+		}
+		player.Excluded, player.UpdatedAt = kept, now
+		return tx.Save(&player).Error
+	})
+}
+
 // SetPackAccess chooses how a level is opened: auto follows the placement
 // and mastery progression, open forces it on, and locked keeps it off.
 func SetPackAccess(db *gorm.DB, familyID, userID int, pack, key, mode string, now time.Time) error {
@@ -365,7 +461,7 @@ func MigratePackPlayers(db *gorm.DB) error {
 				done[key] = true
 			}
 			for _, pack := range modules {
-				if !pack.IsPack() || done[pack.Key] {
+				if done[pack.Key] {
 					continue
 				}
 				_, levels, err := testLevels(modules, pack.Key)

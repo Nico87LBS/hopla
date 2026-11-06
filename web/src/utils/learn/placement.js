@@ -1,15 +1,21 @@
-// The placement test of a pack finds where a person starts. It goes through
-// the chapters of a level in order, its modules one after the other, then
-// the next level: two questions a chapter, both right to pass it, and it
-// stops at the first chapter missed. When the very first chapter of the
-// level chosen to start is missed, it goes down a level, so that only the
-// levels below a level passed count as known.
+// The test of a pack is the test of a level, or of one chapter. It asks
+// QUESTIONS_BY_CHAPTER questions of each chapter of the level, all of them,
+// and a chapter is passed with at least PASS_PERCENT of right answers. What
+// is passed opens, and the next chapter with it. A chapter missed never
+// stops the test, nor closes anything.
 
 import { compile } from './engine.js'
 
-// QUESTIONS_BY_CHAPTER is how many questions a chapter asks, all right to
-// pass it.
-export const QUESTIONS_BY_CHAPTER = 2
+// QUESTIONS_BY_CHAPTER is how many questions a chapter asks.
+export const QUESTIONS_BY_CHAPTER = 8
+
+// PASS_PERCENT is the share of right answers that passes a chapter.
+export const PASS_PERCENT = 80
+
+// rightNeeded is how many right answers pass a chapter of asked questions:
+// 7 of 8 at 80 %.
+export const rightNeeded = (asked, percent = PASS_PERCENT) =>
+  Math.ceil((asked * percent) / 100 - 1e-9)
 
 // testPlan compiles the levels of a test: each level its chapters in order,
 // with the module each one is in.
@@ -32,86 +38,76 @@ export const testPlan = (test, context = {}) =>
 
 const chapterKey = step => `${step.module.id}/${step.chapter.id}`
 
-// startTest is the test before the first answer, from the level chosen.
-export const startTest = (plan, start = 0) => ({
-  level: Math.max(0, Math.min(start, plan.length - 1)),
-  index: 0,
-  // floor is the lowest level tested: the levels below count as known.
-  floor: Math.max(0, Math.min(start, plan.length - 1)),
-  // ceiling is the level whose first chapter was missed, when the test went
-  // down from it.
-  ceiling: null,
-  passed: [],
-  done: false,
-  reached: null,
-})
+// stepsOf lists the chapters a test asks, in order: all those of a level
+// ({ level: index }), of a module ({ module: id }), or one chapter
+// ({ chapter: "module/chapter" }).
+export const stepsOf = (plan, scope = {}) => {
+  const steps = []
+  plan.forEach((level, i) => {
+    for (const step of level.chapters) {
+      const wanted = scope.chapter
+        ? chapterKey(step) === scope.chapter
+        : scope.module
+          ? step.module.id === scope.module
+          : i === (scope.level ?? 0)
+      if (wanted) steps.push({ ...step, level: i })
+    }
+  })
+  return steps
+}
 
-const finish = (state, level) => ({ ...state, done: true, reached: level })
-
-// settle moves past the end of a level, and past the levels with no
-// chapter, which pass by themselves.
-const settle = (plan, state) => {
-  let s = state
-  while (!s.done && s.index >= plan[s.level].chapters.length) {
-    if (s.level + 1 >= plan.length) return finish(s, s.level)
-    if (s.level + 1 === s.ceiling) return finish(s, s.ceiling)
-    s = { ...s, level: s.level + 1, index: 0 }
-  }
-  return s
+// startTest is the test before the first answer.
+export const startTest = (plan, scope = {}) => {
+  const steps = stepsOf(plan, scope)
+  return { steps, index: 0, passed: [], missed: [], done: steps.length === 0 }
 }
 
 // currentStep is the chapter being tested, or null once done.
 export const currentStep = (plan, state) =>
-  state.done ? null : plan[state.level]?.chapters[state.index] || null
+  state.done ? null : state.steps[state.index] || null
 
 // answerChapter moves the test on once a chapter was passed or missed.
 export const answerChapter = (plan, state, passed) => {
-  const s = settle(plan, state)
-  if (s.done) return s
-  const step = plan[s.level].chapters[s.index]
-  if (passed) {
-    return settle(plan, {
-      ...s,
-      index: s.index + 1,
-      passed: [...s.passed, chapterKey(step)],
-    })
+  const step = currentStep(plan, state)
+  if (!step) return state
+  const index = state.index + 1
+  return {
+    ...state,
+    index,
+    done: index >= state.steps.length,
+    passed: passed ? [...state.passed, chapterKey(step)] : state.passed,
+    missed: passed ? state.missed : [...state.missed, chapterKey(step)],
   }
-  if (s.index === 0 && s.level === s.floor && s.level > 0) {
-    return settle(plan, {
-      ...s,
-      ceiling: s.level,
-      level: s.level - 1,
-      floor: s.level - 1,
-      index: 0,
-    })
-  }
-  return finish(s, s.level)
 }
 
-// beginTest is the start, past the levels with no chapter.
-export const beginTest = (plan, start = 0) =>
-  settle(plan, startTest(plan, start))
-
-// testResult is what a test opened: every chapter of the levels below the
-// lowest one tested, and the chapters passed.
+// testResult is what a test opened: the chapters passed, the highest level
+// with one passed (null when none), and the tally of each level tested.
 export const testResult = (plan, state) => {
-  const opened = []
-  plan.forEach((level, i) => {
-    if (i < state.floor) opened.push(...level.chapters.map(chapterKey))
-  })
-  opened.push(...state.passed)
-  const set = new Set(opened)
-  const levels = plan.map((level, i) => {
-    const open = level.chapters.filter(step => set.has(chapterKey(step)))
-    const next = level.chapters.find(step => !set.has(chapterKey(step)))
-    return {
-      id: level.id,
-      name: level.name,
-      opened: open.length,
-      total: level.chapters.length,
-      next: next ? next.chapter.name : null,
-      tested: i <= Math.max(state.reached, state.ceiling ?? -1),
+  const passed = new Set(state.passed)
+  let reached = null
+  const levels = []
+  state.steps.forEach(step => {
+    let line = levels.find(l => l.index === step.level)
+    if (!line) {
+      line = {
+        index: step.level,
+        id: plan[step.level].id,
+        name: plan[step.level].name,
+        passed: 0,
+        total: 0,
+        chapters: [],
+      }
+      levels.push(line)
     }
+    const ok = passed.has(chapterKey(step))
+    line.total += 1
+    line.passed += ok ? 1 : 0
+    line.chapters.push({ key: chapterKey(step), name: step.chapter.name, ok })
+    if (ok && (reached === null || step.level > reached)) reached = step.level
   })
-  return { reached: plan[state.reached]?.id, opened, levels }
+  return {
+    reached: reached === null ? null : plan[reached].id,
+    opened: state.steps.map(chapterKey).filter(key => passed.has(key)),
+    levels,
+  }
 }

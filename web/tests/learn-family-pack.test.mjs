@@ -329,3 +329,35 @@ test('the zones offered are those of the pictures', async () => {
     }
   }
 })
+
+test('a pack of the family keeps the level and the group of its chapters', () => {
+  const pack = newPack('Dictées')
+  pack.chapters = [
+    {
+      ...newChapter(),
+      nom: 'Semaine 1',
+      niveau: ' Automne ',
+      groupe: 'Mots en -ette',
+      cards: [],
+    },
+    {
+      ...newChapter(),
+      nom: 'Semaine 2',
+      niveau: 'Automne',
+      groupe: '',
+      cards: [],
+    },
+  ]
+  const doc = toDocument(pack)
+  assert.equal(doc.chapitres[0].niveau, 'Automne')
+  assert.equal(doc.chapitres[0].groupe, 'Mots en -ette')
+  assert.equal(doc.chapitres[1].niveau, 'Automne')
+  assert.equal(
+    'groupe' in doc.chapitres[1],
+    false,
+    'an empty group is left out',
+  )
+  const back = fromDocument(doc)
+  assert.equal(back.chapters[0].niveau, 'Automne')
+  assert.equal(toDocument(back).chapitres[0].groupe, 'Mots en -ette')
+})

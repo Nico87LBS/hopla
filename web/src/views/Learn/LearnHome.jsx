@@ -2,6 +2,8 @@ import {
   CheckCircleRounded,
   ChevronRightRounded,
   CloudOffRounded,
+  ExpandLessRounded,
+  ExpandMoreRounded,
   FactCheckOutlined,
   FitnessCenterRounded,
   SchoolRounded,
@@ -125,9 +127,11 @@ const ModuleCard = ({
   dayFull,
   dueLeft,
   module,
+  testTo,
   to,
 }) => {
   const { t } = useTranslation('learn')
+  const [showChapters, setShowChapters] = useState(false)
   const color = subjectColor(module.subject, module.document?.couleur)
   const locked = moduleLocked(compiled, compiledById, cards)
   // A module with nothing due and no new question left today is up to
@@ -137,6 +141,8 @@ const ModuleCard = ({
     settings: module.settings,
     unlockPercent: module.unlockPercent ?? undefined,
     placed: module.placed,
+    forced: module.forced,
+    shut: module.shut,
     newToday: module.newToday,
     dueLeft,
   })
@@ -146,6 +152,7 @@ const ModuleCard = ({
     cards,
     module.unlockPercent ?? undefined,
     module.placed,
+    module,
   )
   const current = [...chapters].reverse().find(c => c.open)
   // The bar is the chapter being learnt, the one that opens the next.
@@ -252,23 +259,102 @@ const ModuleCard = ({
   )
 
   return (
+    <Box>
+      <Sheet
+        variant='outlined'
+        component={locked || upToDate ? 'div' : Link}
+        to={locked || upToDate ? undefined : to}
+        sx={{
+          borderRadius: 'xl',
+          display: 'block',
+          opacity: locked ? 0.7 : 1,
+          ...(upToDate && { bgcolor: 'background.level1' }),
+          p: 1.5,
+          textDecoration: 'none',
+          '&:hover': locked ? {} : { borderColor: color },
+        }}
+      >
+        {body}
+      </Sheet>
+      {chapters.length > 0 && (
+        <Stack direction='row' justifyContent='flex-end'>
+          <Button
+            size='sm'
+            variant='plain'
+            color='neutral'
+            aria-expanded={showChapters}
+            onClick={() => setShowChapters(v => !v)}
+            endDecorator={
+              showChapters ? <ExpandLessRounded /> : <ExpandMoreRounded />
+            }
+          >
+            {t('home.chapters', { count: chapters.length })}
+          </Button>
+        </Stack>
+      )}
+      {showChapters && (
+        <ChapterRows chapters={chapters} module={module} testTo={testTo} />
+      )}
+    </Box>
+  )
+}
+
+// ChapterRows lists the chapters of a module with where each one stands,
+// and the test that opens it.
+const ChapterRows = ({ chapters, module, testTo }) => {
+  const { t } = useTranslation('learn')
+  return (
     <Sheet
-      variant='outlined'
-      component={locked || upToDate ? 'div' : Link}
-      to={locked || upToDate ? undefined : to}
-      sx={{
-        borderRadius: 'xl',
-        display: 'block',
-        opacity: locked ? 0.7 : 1,
-        ...(upToDate && { bgcolor: 'background.level1' }),
-        p: 1.5,
-        textDecoration: 'none',
-        '&:hover': locked ? {} : { borderColor: color },
-      }}
+      variant='soft'
+      sx={{ borderRadius: 'lg', display: 'grid', gap: 1, p: 1.25 }}
     >
-      {body}
+      {chapters.map(({ by, chapter, open, placed, progress }) => (
+        <Stack
+          key={chapter.id}
+          direction='row'
+          gap={1}
+          alignItems='center'
+          sx={{ opacity: open ? 1 : 0.75 }}
+        >
+          <Box sx={{ flex: 1, minWidth: 0 }}>
+            <Typography level='body-sm' sx={{ fontWeight: 600 }}>
+              {chapter.name}
+            </Typography>
+            <Typography level='body-xs' sx={{ color: 'text.secondary' }}>
+              {by === 'shut'
+                ? t('home.chapterShut')
+                : !open
+                  ? t('home.chapterClosed')
+                  : placed
+                    ? t('home.chapterByTest')
+                    : by === 'forced'
+                      ? t('home.chapterByParent', { percent: progress.percent })
+                      : t('home.chapterPercent', { percent: progress.percent })}
+            </Typography>
+          </Box>
+          {testTo && by !== 'shut' && (
+            <Button
+              size='sm'
+              variant='outlined'
+              component={Link}
+              to={testTo(
+                `chapitre=${encodeURIComponent(`${module.id}/${chapter.id}`)}`,
+              )}
+              startDecorator={<FactCheckOutlined />}
+            >
+              {t('test.chapter')}
+            </Button>
+          )}
+        </Stack>
+      ))}
     </Sheet>
   )
+}
+
+ChapterRows.propTypes = {
+  chapters: PropTypes.array.isRequired,
+  module: PropTypes.object.isRequired,
+  testTo: PropTypes.func,
 }
 
 ModuleCard.propTypes = {
@@ -279,6 +365,7 @@ ModuleCard.propTypes = {
   compiled: PropTypes.object.isRequired,
   compiledById: PropTypes.object.isRequired,
   module: PropTypes.object.isRequired,
+  testTo: PropTypes.func,
   to: PropTypes.string.isRequired,
 }
 
@@ -856,6 +943,12 @@ export const LearnModules = ({
                       day={player.day}
                       dayFull={left === 0}
                       dueLeft={reviewsLeft(player)}
+                      testTo={
+                        player.offline
+                          ? undefined
+                          : scope =>
+                              `${testPath(rootOf(player.packs, module.id)?.id || module.id)}?${scope}`
+                      }
                       to={playPath(module.id)}
                     />
                   ))}

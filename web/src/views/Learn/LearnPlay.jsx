@@ -1182,6 +1182,8 @@ const questionsFor = ({
     settings: module.settings,
     unlockPercent: module.unlockPercent ?? undefined,
     placed: module.placed,
+    forced: module.forced,
+    shut: module.shut,
     recent,
   }
   if (practice) return practiceQuestions(compiled, cards, options)
@@ -1275,6 +1277,8 @@ const nothingToday = ({ byId, cards, compiled, module, player }) => {
     settings: module.settings,
     unlockPercent: module.unlockPercent ?? undefined,
     placed: module.placed,
+    forced: module.forced,
+    shut: module.shut,
     newToday: module.newToday,
   })
   return { tomorrow, why }

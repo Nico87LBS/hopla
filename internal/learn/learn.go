@@ -1299,6 +1299,9 @@ type PlayerModule struct {
 	PlayedToday   int  `json:"playedToday"`
 	// Placed are the chapters a placement test opened.
 	Placed []string `json:"placed"`
+	// Forced and Shut are the chapters a parent opened or closed by hand.
+	Forced []string `json:"forced"`
+	Shut   []string `json:"shut"`
 	// UsualMs is the time the person usually takes to answer right in this
 	// module, 0 until enough answers are known.
 	UsualMs int `json:"usualMs"`
@@ -1432,6 +1435,7 @@ func PlayerFor(db *gorm.DB, familyID, userID int, now time.Time) (Player, error)
 	if err != nil {
 		return player, err
 	}
+	forced, shut := ChapterAccess(player.PackPlayers)
 	for _, module := range modules {
 		if module.IsPack() {
 			player.Packs = append(player.Packs, module)
@@ -1452,6 +1456,13 @@ func PlayerFor(db *gorm.DB, familyID, userID int, now time.Time) (Player, error)
 			Placed: placed[module.Key], UsualMs: usual[module.Key], NewToday: newToday[module.Key]}
 		if pm.Placed == nil {
 			pm.Placed = []string{}
+		}
+		pm.Forced, pm.Shut = forced[module.Key], shut[module.Key]
+		if pm.Forced == nil {
+			pm.Forced = []string{}
+		}
+		if pm.Shut == nil {
+			pm.Shut = []string{}
 		}
 		pm.DailyCap = limits.dailyCap(module.Key, activation, pm.Settings)
 		player.Modules = append(player.Modules, pm)
@@ -1607,6 +1618,8 @@ type PersonStats struct {
 	UnlockPercent *int `json:"unlockPercent"`
 	// Placed are the chapters a placement test opened.
 	Placed   []string  `json:"placed"`
+	Forced   []string  `json:"forced"`
+	Shut     []string  `json:"shut"`
 	Cards    []Card    `json:"cards"`
 	Sessions []Session `json:"sessions"`
 }
@@ -1674,6 +1687,18 @@ func Stats(db *gorm.DB, familyID int, key string, now time.Time) (ModuleStats, e
 		person.Placed = placedChapters(placements)[key]
 		if person.Placed == nil {
 			person.Placed = []string{}
+		}
+		players, err := PackPlayers(db, familyID, &member.UserID)
+		if err != nil {
+			return stats, err
+		}
+		forced, shut := ChapterAccess(players)
+		person.Forced, person.Shut = forced[key], shut[key]
+		if person.Forced == nil {
+			person.Forced = []string{}
+		}
+		if person.Shut == nil {
+			person.Shut = []string{}
 		}
 		if err := db.Where("family_id = ? AND user_id = ?", familyID, member.UserID).Find(&person.Cards).Error; err != nil {
 			return stats, err

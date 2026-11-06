@@ -907,6 +907,32 @@ const PackForm = ({ isNew, moduleId, start }) => {
               </IconButton>
             )}
           </Stack>
+          {pack.chapters.length > 1 && (
+            <Stack direction='row' gap={1} flexWrap='wrap' sx={{ mb: 1 }}>
+              {[
+                ['niveau', 'pack.levelName', 'pack.levelPlaceholder'],
+                ['groupe', 'pack.groupName', 'pack.groupPlaceholder'],
+              ].map(([field, label, placeholder]) => (
+                <Input
+                  key={field}
+                  size='sm'
+                  aria-label={t(label)}
+                  placeholder={t(placeholder)}
+                  value={chapter[field] || ''}
+                  onChange={e =>
+                    changeChapter(index, { [field]: e.target.value })
+                  }
+                  slotProps={{
+                    input: {
+                      list: `pack-${field}s`,
+                      maxLength: 60,
+                    },
+                  }}
+                  sx={{ flex: '1 1 140px', minWidth: 0 }}
+                />
+              ))}
+            </Stack>
+          )}
           {index > 0 && (
             <Stack
               direction='row'
@@ -980,15 +1006,35 @@ const PackForm = ({ isNew, moduleId, start }) => {
         </Sheet>
       ))}
 
+      {['niveau', 'groupe'].map(field => (
+        <datalist key={field} id={`pack-${field}s`}>
+          {[...new Set(pack.chapters.map(c => c[field]).filter(Boolean))].map(
+            value => (
+              <option key={value} value={value} />
+            ),
+          )}
+        </datalist>
+      ))}
       <Button
         variant='outlined'
         color='neutral'
         startDecorator={<AddRounded />}
         onClick={() =>
-          setPack(p => ({
-            ...p,
-            chapters: [...p.chapters, newChapter()],
-          }))
+          setPack(p => {
+            // The chapter added goes where the last one is.
+            const last = p.chapters[p.chapters.length - 1]
+            return {
+              ...p,
+              chapters: [
+                ...p.chapters,
+                {
+                  ...newChapter(),
+                  niveau: last?.niveau || '',
+                  groupe: last?.groupe || '',
+                },
+              ],
+            }
+          })
         }
         sx={{ borderStyle: 'dashed' }}
       >
