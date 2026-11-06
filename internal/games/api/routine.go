@@ -194,23 +194,23 @@ type skipRoutineOccurrenceReq struct {
 }
 
 func (h *Handler) skipRoutineOccurrenceItem(c *gin.Context) {
-	currentUser, ok := auth.CurrentUser(c)
-	if !ok { c.JSON(401, gin.H{"error":"Authentication failed"}); return }
+	// Skipping a step counts it as resolved and can pay the routine bonus, so
+	// it is for the parents only, never for the child whose routine it is.
+	_, familyID, parent := h.requireParent(c)
+	if !parent {
+		return
+	}
 	occurrenceID, err := idParam(c)
 	if err != nil { c.JSON(400, gin.H{"error":"Invalid occurrence ID"}); return }
 	var req skipRoutineOccurrenceReq
 	if err := c.ShouldBindJSON(&req); err != nil { c.JSON(400, gin.H{"error":"Invalid request"}); return }
-	run, err := games.GetRoutineOccurrence(h.db.WithContext(c), currentUser.FamilyID, occurrenceID, time.Now().UTC())
-	if err == nil && run.UserID != currentUser.ID {
-		_, familyID, parent := h.requireParent(c)
-		if !parent || familyID != currentUser.FamilyID { return }
-	}
+	run, err := games.GetRoutineOccurrence(h.db.WithContext(c), familyID, occurrenceID, time.Now().UTC())
 	if err != nil {
 		status := 500
 		if errors.Is(err, games.ErrRoutineOccurrenceNotFound) { status = 404 }
 		c.JSON(status, gin.H{"error":games.RoutineOccurrenceErrorMessage(err)}); return
 	}
-	updated, err := games.SkipRoutineOccurrenceItem(h.db.WithContext(c), currentUser.FamilyID, run.ID,
+	updated, err := games.SkipRoutineOccurrenceItem(h.db.WithContext(c), familyID, run.ID,
 		games.RoutineOverrideInput{ItemID:req.ItemID, Source:"manual", Reason:req.Reason}, time.Now().UTC())
 	if err != nil {
 		status := 500
