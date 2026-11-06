@@ -100,6 +100,21 @@ func normalizeSlots(frequencyType chModel.FrequencyType, metadata *chModel.Frequ
 	return nil
 }
 
+// shareSlotIDs gives the slots a task is saved with the identifiers of the
+// same slots on its other copies (one copy per child), so a routine or a
+// history entry means the same slot on every copy.
+func (h *Handler) shareSlotIDs(ctx context.Context, familyID int, name string, exceptID int, metadata *chModel.FrequencyMetadata) error {
+	if metadata == nil || len(metadata.Slots) == 0 {
+		return nil
+	}
+	siblings, err := h.choreRepo.SiblingSlots(ctx, familyID, name, exceptID)
+	if err != nil {
+		return err
+	}
+	chModel.AdoptSlotIDs(metadata.Slots, siblings)
+	return nil
+}
+
 // slotRunsOn reports whether the task's slots run on the given local day.
 func slotRunsOn(chore *chModel.Chore, day time.Time) bool {
 	switch chore.FrequencyType {
@@ -172,9 +187,13 @@ func slotStatuses(ctx context.Context, chore *chModel.Chore, history []*chModel.
 	loc := choreLocation(chore)
 	day := startOfDay(now.In(loc))
 	statuses := slotWindows(chore, day)
+	known := map[string]bool{}
+	for _, status := range statuses {
+		known[status.SlotID] = true
+	}
 	for i := range statuses {
 		status := &statuses[i]
-		if entry := slotEntry(history, status.Index, status.SlotID, day); entry != nil {
+		if entry := slotEntry(history, status.Index, status.SlotID, known, day); entry != nil {
 			id, by := entry.ID, entry.CompletedBy
 			status.HistoryID, status.CompletedBy = &id, &by
 			if entry.Status == chModel.ChoreHistoryStatusPendingApproval {
@@ -196,16 +215,26 @@ func slotStatuses(ctx context.Context, chore *chModel.Chore, history []*chModel.
 	return statuses
 }
 
+// sameSlot reports whether a history entry is about the slot: by identifier,
+// or by number when the entry has none or an identifier the task lost.
+func sameSlot(entry *chModel.ChoreHistory, index int, slotID string, known map[string]bool) bool {
+	if entry.SlotID != nil && *entry.SlotID != "" && (*entry.SlotID == slotID || known[*entry.SlotID]) {
+		return *entry.SlotID == slotID
+	}
+	return entry.Slot != nil && *entry.Slot == index
+}
+
 // slotEntry returns the newest completion of a slot on the given day, done
 // or waiting for a parent; a rejected one leaves the slot to do again.
-func slotEntry(history []*chModel.ChoreHistory, index int, slotID string, day time.Time) *chModel.ChoreHistory {
+//
+// An entry written under an identifier the task no longer has is found again
+// by its number, so a slot already done does not come back to do.
+func slotEntry(history []*chModel.ChoreHistory, index int, slotID string, known map[string]bool, day time.Time) *chModel.ChoreHistory {
 	var found *chModel.ChoreHistory
 	next := day.AddDate(0, 0, 1)
 	for _, entry := range history {
 		if entry.DueDate == nil { continue }
-		if entry.SlotID != nil {
-			if *entry.SlotID != slotID { continue }
-		} else if entry.Slot == nil || *entry.Slot != index {
+		if !sameSlot(entry, index, slotID, known) {
 			continue
 		}
 		if entry.Status != chModel.ChoreHistoryStatusCompleted && entry.Status != chModel.ChoreHistoryStatusPendingApproval {

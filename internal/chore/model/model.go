@@ -224,6 +224,41 @@ func EnsureHistorySlotIDs(db *gorm.DB) error {
 	return nil
 }
 
+// AdoptSlotIDs gives the slots without an identifier the one of the same slot
+// on another copy of the task: the copies of a task are one task, so a slot
+// has one identifier on all of them. A slot is the same one when it is at the
+// same time, else when it has the same name. What is left is given a new
+// identifier later, when the slots are normalized.
+func AdoptSlotIDs(slots []Slot, siblings [][]Slot) {
+	taken := make(map[string]bool, len(slots))
+	for _, slot := range slots {
+		if slot.ID != "" {
+			taken[slot.ID] = true
+		}
+	}
+	for i := range slots {
+		if slots[i].ID != "" {
+			continue
+		}
+		adopt := func(same func(other Slot) bool) bool {
+			for _, copy := range siblings {
+				for _, other := range copy {
+					if other.ID != "" && !taken[other.ID] && same(other) {
+						slots[i].ID = other.ID
+						taken[other.ID] = true
+						return true
+					}
+				}
+			}
+			return false
+		}
+		time, name := strings.TrimSpace(slots[i].Time), strings.ToLower(strings.TrimSpace(slots[i].Name))
+		if !adopt(func(other Slot) bool { return strings.TrimSpace(other.Time) == time }) && name != "" {
+			adopt(func(other Slot) bool { return strings.ToLower(strings.TrimSpace(other.Name)) == name })
+		}
+	}
+}
+
 // EnsureSlotIDs backfills identifiers for tasks created before slots had IDs.
 func EnsureSlotIDs(db *gorm.DB) error {
 	var chores []Chore
@@ -256,6 +291,13 @@ func EnsureSlotIDs(db *gorm.DB) error {
 			// time, so corresponding positions describe the same daily slot.
 			for j := range metadata.Slots {
 				if metadata.Slots[j].ID != known[j].ID {
+					// What was done under the old identifier stays done.
+					if old := metadata.Slots[j].ID; old != "" {
+						if err := db.Model(&ChoreHistory{}).Where("chore_id = ? AND slot_id = ?", chore.ID, old).
+							Update("slot_id", known[j].ID).Error; err != nil {
+							return err
+						}
+					}
 					metadata.Slots[j].ID = known[j].ID
 					changed = true
 				}
