@@ -50,7 +50,7 @@ import {
   isActiveStep,
   withoutWaitingSteps,
 } from '../../utils/routines.js'
-import { pullCopiesTogether } from '../../utils/taskSlots'
+import { pullCopiesTogether, todaySlots } from '../../utils/taskSlots'
 import TaskInput from '../components/AddTaskModal'
 import CalendarDual from '../components/CalendarDual'
 import CalendarMonthly from '../components/CalendarMonthly.jsx'
@@ -359,6 +359,7 @@ const MyChores = () => {
       choresData.res.filter(chore => !waitsForAbsent(chore, awayIds)),
       routines,
       moment().endOf('day').toDate(),
+      chore => todaySlots(chore, slotsByTask),
     ).sort(ChoreSorter)
 
     if (impersonatedUser) {
@@ -371,7 +372,13 @@ const MyChores = () => {
     }
 
     return sortedChores
-  }, [choresData?.res, membersData?.res, impersonatedUser, routines])
+  }, [
+    choresData?.res,
+    membersData?.res,
+    impersonatedUser,
+    routines,
+    slotsByTask,
+  ])
 
   // The routines under way show in their own block above the list, with the
   // steps to do now; those steps leave the list meanwhile.

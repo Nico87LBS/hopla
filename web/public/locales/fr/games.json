@@ -279,6 +279,16 @@
       "skipped": "Ignorée",
       "not_applicable": "Pas aujourd'hui"
     },
-    "addNone": "Ajouter"
+    "addNone": "Ajouter",
+    "startsAt": "Commence à",
+    "endsAt": "Finit à",
+    "clearHour": "Retirer l'heure « {{label}} »",
+    "hoursHelp": "Chaque jour où une étape est prévue, la routine s'ouvre à {{start}} et se termine à {{end}}. Ce qui n'est pas fait à {{end}} est manqué : un parent peut le rattraper jusqu'à minuit.",
+    "noHoursHelp": "Sans heures, la routine s'ouvre dès qu'une de ses étapes est prévue dans la journée, pour la durée choisie ci-dessous.",
+    "hoursError": {
+      "one": "Indique les deux heures, ou aucune.",
+      "order": "L'heure de fin doit venir après l'heure de début, le même jour."
+    },
+    "previewBonusBy": "Bonus : {{bonus}} en finissant avant {{time}}"
   }
 }

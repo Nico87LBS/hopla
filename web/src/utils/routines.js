@@ -29,21 +29,47 @@ export const routineStepOf = (routines, chore, userId) => {
   return progress ? { routine, progress } : null
 }
 
+// routineItemOf returns the step of a child's run for one of their tasks:
+// it says which moment of the task the step is about (slotId), and whether
+// the step was missed.
+export const routineItemOf = (progress, choreId) =>
+  (progress?.occurrence?.items || []).find(item => item.choreId === choreId) ||
+  null
+
+// routineSlotOf returns the moment of a task a routine is about, from the
+// children's runs, or '' for a step that is the whole task.
+const routineSlotOf = (routine, choreId) => {
+  for (const progress of routine?.members || []) {
+    const item = routineItemOf(progress, choreId)
+    if (item) return item.slotId || ''
+  }
+  return ''
+}
+
 // waitsInRoutine tells whether a task is a step due today that is nobody's
 // step to do now: it shows once the steps before it are done. Steps due on a
-// later day show as usual.
-export const waitsInRoutine = (routines, chore, endOfToday) => {
-  if (!routineOf(routines, chore?.id)) return false
+// later day show as usual. A step about one moment of a task leaves the
+// task's other moments in the list once that moment is done or missed.
+export const waitsInRoutine = (routines, chore, endOfToday, slotsOf) => {
+  const routine = routineOf(routines, chore?.id)
+  if (!routine) return false
   if (!chore.nextDueDate || new Date(chore.nextDueDate) > endOfToday) {
     return false
   }
-  return !routineStepOf(routines, chore)
+  if (routineStepOf(routines, chore)) return false
+  const slotId = routineSlotOf(routine, chore.id)
+  const slots = slotId && slotsOf ? slotsOf(chore) : []
+  const slot = slots.find(entry => entry.slotId === slotId)
+  if (slot && !['upcoming', 'open'].includes(slot.state)) return false
+  return true
 }
 
 // The tasks a list shows: steps waiting their turn are left out.
-export const withoutWaitingSteps = (chores, routines, endOfToday) =>
+export const withoutWaitingSteps = (chores, routines, endOfToday, slotsOf) =>
   routines?.length
-    ? chores.filter(chore => !waitsInRoutine(routines, chore, endOfToday))
+    ? chores.filter(
+        chore => !waitsInRoutine(routines, chore, endOfToday, slotsOf),
+      )
     : chores
 
 // taskKey is how a routine step stands for each child's copy of a task.
@@ -312,6 +338,8 @@ export const draftFromRoutine = (routine, knownIds) => {
     name: routine.name,
     bonus: routine.bonus,
     validityMinutes: routine.validityMinutes || DEFAULT_VALIDITY,
+    startsAt: routine.startsAt || '',
+    endsAt: routine.endsAt || '',
     choreIds: keep.map(([id]) => id),
     slotIds: keep.map(([, index]) => routine.slotIds?.[index] || ''),
     optionalStepIds: optional.map(p => places.get(p)).filter(Boolean),
@@ -328,10 +356,22 @@ export const draftFromRoutine = (routine, knownIds) => {
   }
 }
 
+// routineHoursError tells what is wrong with a draft's hours: 'one' when only
+// one is set, 'order' when the end is not after the start, '' when fine.
+export const routineHoursError = draft => {
+  const start = draft.startsAt || ''
+  const end = draft.endsAt || ''
+  if (!start && !end) return ''
+  if (!start || !end) return 'one'
+  return end > start ? '' : 'order'
+}
+
 export const emptyRoutineDraft = () => ({
   name: '',
   bonus: 5,
   validityMinutes: DEFAULT_VALIDITY,
+  startsAt: '',
+  endsAt: '',
   choreIds: [],
   slotIds: [],
   optionalStepIds: [],
@@ -341,9 +381,17 @@ export const emptyRoutineDraft = () => ({
 // A routine is under way for a child when a step is there to do now and the
 // routine is not finished. The home page shows these routines in their own
 // block, above the list.
+// A step missed keeps the routine in its block: a parent can catch it up
+// until midnight.
 const underWay = progress =>
   !progress.finished &&
-  ((progress.current ?? null) !== null || (progress.available || []).length > 0)
+  ((progress.current ?? null) !== null ||
+    (progress.available || []).length > 0 ||
+    (progress.missed || []).length > 0)
+
+// A routine with hours shows, in the hour before it opens, as coming.
+const coming = (routine, progress) =>
+  routine.window === 'upcoming' && progress.total > 0
 
 // activeRoutines lists the routines under way for at least one of the given
 // children (all of them when userIds is not given), each with the progress of
@@ -357,16 +405,22 @@ export const activeRoutines = (routines, userIds) =>
         progress => !userIds || userIds.includes(progress.userId),
       ),
     }))
-    .filter(routine => routine.members.some(underWay))
+    .filter(routine =>
+      routine.members.some(
+        progress => underWay(progress) || coming(routine, progress),
+      ),
+    )
 
 // isActiveStep tells whether a task is the step to do now of a routine under
 // way: such a task shows in the routine's block, not in the list.
 export const isActiveStep = (active, chore) =>
   Boolean(active?.length) && Boolean(routineStepOf(active, chore))
 
-// routineEndsAt is when a routine under way closes: the latest end among the
-// children's runs, or null when the routine has no time limit today.
+// routineEndsAt is when a routine under way closes: its end of today when
+// it has hours, else the latest end among the children's runs, or null when
+// the routine has no time limit today.
 export const routineEndsAt = routine => {
+  if (routine.closesAt) return new Date(routine.closesAt)
   const ends = (routine.members || [])
     .map(progress => progress.occurrence?.expiresAt)
     .filter(Boolean)
@@ -384,7 +438,12 @@ export const nextStepName = (routine, progress, chores) => {
   if (items?.length) {
     const next = [...items]
       .sort((a, b) => a.position - b.position)
-      .find(item => item.status === 'pending' && !available.has(item.choreId))
+      .find(
+        item =>
+          item.status === 'pending' &&
+          !item.missed &&
+          !available.has(item.choreId),
+      )
     return next?.choreName || ''
   }
   const ids = routine.choreIds || []
@@ -393,4 +452,38 @@ export const nextStepName = (routine, progress, chores) => {
   const index = ids.findIndex(id => taskKey(nameOf(id)) === currentName)
   if (index < 0) return ''
   return nameOf(ids[index + 1]) || ''
+}
+
+// missedSteps lists a child's steps missed in their run: the moment, or the
+// routine, closed before they were done.
+export const missedSteps = progress =>
+  [...(progress?.occurrence?.items || [])]
+    .filter(item => item.missed)
+    .sort((a, b) => a.position - b.position)
+
+// stepMoment tells which moment of a task a step is about today, and how it
+// stands: 'late' once its time is past, 'missed' once it closed, 'neutral'
+// before. A step that is the whole task stands for the moment open now.
+// Null for a task without moments.
+export const stepMoment = (item, slots, now = new Date()) => {
+  if (!slots?.length) return null
+  const slot = item?.slotId
+    ? slots.find(entry => entry.slotId === item.slotId)
+    : slots.find(entry => entry.state === 'open') ||
+      slots.find(entry => entry.state === 'upcoming')
+  if (!slot) return null
+  const tone =
+    item?.missed || slot.state === 'missed'
+      ? 'missed'
+      : slot.state === 'open' && slot.at && new Date(slot.at) <= now
+        ? 'late'
+        : 'neutral'
+  return { slot, tone }
+}
+
+// firstStepName is the first step of a routine by name, for a routine still
+// to come.
+export const firstStepName = (routine, chores) => {
+  const id = routine.choreIds?.[0]
+  return (chores || []).find(chore => chore.id === id)?.name || ''
 }

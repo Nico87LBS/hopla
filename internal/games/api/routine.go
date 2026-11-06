@@ -15,9 +15,12 @@ import (
 const maxRoutineName = 60
 
 type RoutineReq struct {
-	Name             string   `json:"name" binding:"required"`
-	Bonus            int      `json:"bonus"`
-	ValidityMinutes  int      `json:"validityMinutes"`
+	Name            string `json:"name" binding:"required"`
+	Bonus           int    `json:"bonus"`
+	ValidityMinutes int    `json:"validityMinutes"`
+	// StartsAt and EndsAt are the routine's hours, "15:04"; both or neither.
+	StartsAt         string   `json:"startsAt"`
+	EndsAt           string   `json:"endsAt"`
 	ChoreIDs         []int    `json:"choreIds"`
 	SlotIDs          []string `json:"slotIds"`
 	OptionalChoreIDs []int    `json:"optionalChoreIds"`
@@ -57,7 +60,7 @@ func (h *Handler) bindRoutine(c *gin.Context) (RoutineReq, bool) {
 // answerRoutineError answers a routine that could not be saved.
 func answerRoutineError(c *gin.Context, err error) {
 	for _, known := range []error{games.ErrRoutineEmpty, games.ErrRoutineTooLong, games.ErrRoutineTaskTwice,
-		games.ErrRoutineTaskTaken, games.ErrRoutineTask, games.ErrRoutineSlot, games.ErrRoutineGraphStep, games.ErrRoutineGraphCycle, games.ErrRoutineGraphDuplicate} {
+		games.ErrRoutineTaskTaken, games.ErrRoutineTask, games.ErrRoutineSlot, games.ErrRoutineHours, games.ErrRoutineGraphStep, games.ErrRoutineGraphCycle, games.ErrRoutineGraphDuplicate} {
 		if errors.Is(err, known) {
 			c.JSON(400, gin.H{"error": known.Error()})
 			return
@@ -110,7 +113,7 @@ func (h *Handler) createRoutine(c *gin.Context) {
 		return
 	}
 	now := time.Now().UTC()
-	routine := games.Routine{FamilyID: familyID, Name: req.Name, Bonus: req.Bonus, ValidityMinutes: req.ValidityMinutes, ChoreIDs: req.ChoreIDs, SlotIDs: req.SlotIDs,
+	routine := games.Routine{FamilyID: familyID, Name: req.Name, Bonus: req.Bonus, ValidityMinutes: req.ValidityMinutes, StartsAt: req.StartsAt, EndsAt: req.EndsAt, ChoreIDs: req.ChoreIDs, SlotIDs: req.SlotIDs,
 		GraphEnabled: req.Dependencies != nil, OptionalChoreIDs: req.OptionalChoreIDs, OptionalStepIDs: req.OptionalStepIDs, CreatedBy: parentID, CreatedAt: now, UpdatedAt: now}
 	if req.Dependencies != nil {
 		routine.Dependencies = *req.Dependencies
@@ -148,6 +151,7 @@ func (h *Handler) updateRoutine(c *gin.Context) {
 	}
 	routine.Name, routine.Bonus, routine.ValidityMinutes, routine.ChoreIDs, routine.SlotIDs = req.Name, req.Bonus, req.ValidityMinutes, req.ChoreIDs, req.SlotIDs
 	routine.OptionalChoreIDs, routine.OptionalStepIDs = req.OptionalChoreIDs, req.OptionalStepIDs
+	routine.StartsAt, routine.EndsAt = req.StartsAt, req.EndsAt
 	routine.GraphEnabled = req.Dependencies != nil
 	if req.Dependencies != nil {
 		routine.Dependencies = *req.Dependencies
@@ -217,7 +221,7 @@ func (h *Handler) startRoutineOccurrence(c *gin.Context) {
 			c.JSON(404, gin.H{"error": "Routine not found or empty"})
 			return
 		}
-		if errors.Is(err, games.ErrRoutineOccurrenceInvalid) {
+		if errors.Is(err, games.ErrRoutineOccurrenceInvalid) || errors.Is(err, games.ErrRoutineClosed) {
 			c.JSON(400, gin.H{"error": games.RoutineOccurrenceErrorMessage(err)})
 			return
 		}
