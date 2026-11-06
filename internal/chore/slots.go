@@ -56,7 +56,7 @@ func setOnceDay(frequencyType chModel.FrequencyType, metadata *chModel.Frequency
 	if metadata == nil || len(metadata.Slots) == 0 || !isOnceType(frequencyType) || strings.TrimSpace(metadata.Day) != "" {
 		return
 	}
-	at := time.Now()
+	at := time.Now().UTC()
 	if due != nil {
 		at = *due
 	}
