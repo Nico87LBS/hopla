@@ -1276,7 +1276,11 @@
     "first": "First step: {{name}}",
     "startsAt": "starts at {{time}}",
     "endedAt": "ended at {{time}}",
-    "labelComing": "Routine “{{name}}” coming up"
+    "labelComing": "Routine “{{name}}” coming up",
+    "toApprove_one": "{{count}} to approve",
+    "toApprove_other": "{{count}} to approve",
+    "labelSettled": "Routine “{{name}}” collapsed, tap to open",
+    "collapse": "Collapse routine “{{name}}”"
   },
   "todayPanel": {
     "label": "Today at a glance",
