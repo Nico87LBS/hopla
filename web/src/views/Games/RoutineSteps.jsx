@@ -146,6 +146,7 @@ const StepRow = ({ chore, draft, id, index, names, setDraft }) => {
             {t('routines.opensAfter')}
           </Typography>
           <Select
+            key={draft.choreIds.map((_, i) => stepKey(draft, i)).join('|')}
             multiple
             size='sm'
             value={prerequisites}
@@ -156,7 +157,10 @@ const StepRow = ({ chore, draft, id, index, names, setDraft }) => {
           >
             {draft.choreIds.map((otherId, otherIndex) =>
               otherIndex === index || looping.has(otherIndex + 1) ? null : (
-                <Option key={stepKey(draft, otherIndex)} value={otherIndex + 1}>
+                <Option
+                  key={`${otherIndex}-${stepKey(draft, otherIndex)}`}
+                  value={otherIndex + 1}
+                >
                   {otherIndex + 1}. {names.get(otherId)}
                 </Option>
               ),
