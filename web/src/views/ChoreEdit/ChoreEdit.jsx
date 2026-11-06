@@ -82,7 +82,12 @@ import EditorPreview, { TaskSummary } from './editor/EditorPreview'
 import MoreOptions, { OptionRow } from './editor/MoreOptions'
 import { LabelsField } from './editor/OrganizationFields'
 import RewardCard from './editor/RewardCard'
-import { describeTask, nextSlot, rollingApplies } from './editor/schedule'
+import {
+  describeTask,
+  momentsApply,
+  nextSlot,
+  rollingApplies,
+} from './editor/schedule'
 import WhenCard from './editor/WhenCard'
 import WhoCard from './editor/WhoCard'
 import EditorContainer from './EditorContainer'
@@ -230,9 +235,8 @@ const ChoreEdit = () => {
   const assignees = anyone ? performers : assignableTo
   // A task with slots is due at its next slot: the server sets the date.
   const hasSlots =
-    ['daily', 'days_of_the_week', 'once', 'no_repeat'].includes(
-      frequencyType,
-    ) && frequencyMetadata?.slots?.length > 0
+    momentsApply(frequencyType, frequencyMetadata) &&
+    frequencyMetadata?.slots?.length > 0
   // A shared task for several people can become one copy per person, when
   // created or later, as long as it has no copies yet.
   const canSplit =

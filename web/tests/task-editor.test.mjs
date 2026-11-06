@@ -242,3 +242,37 @@ test('a moment with no hour is the whole day', () => {
     undefined,
   )
 })
+
+test('a task every week has its moments on the day of its passage', () => {
+  const made = ensureMoment('weekly', {}, { day: '2026-11-13', time: '17:00' })
+  assert.equal(made.frequencyMetadata.day, '2026-11-13')
+  assert.equal(made.frequencyMetadata.slots[0].time, '17:00')
+  // Every few hours has no moments; every few days has.
+  assert.equal(
+    ensureMoment('interval', { unit: 'hours' }, { day: '2026-11-13' })
+      .frequencyMetadata.slots,
+    undefined,
+  )
+  assert.equal(
+    ensureMoment('interval', { unit: 'days' }, { day: '2026-11-13' })
+      .frequencyMetadata.day,
+    '2026-11-13',
+  )
+  // Counting from the day it is done still applies to it.
+  assert.equal(
+    rollingApplies('interval', {
+      unit: 'days',
+      day: '2026-11-13',
+      slots: [{ time: '17:00' }],
+    }),
+    true,
+  )
+  assert.equal(
+    nextSlot(
+      'weekly',
+      { day: '2026-11-13', slots: [{ time: '17:00' }] },
+      new Date(2026, 10, 9, 9, 0),
+    ).at.getDate(),
+    13,
+  )
+})

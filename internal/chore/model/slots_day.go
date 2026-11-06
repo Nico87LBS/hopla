@@ -22,8 +22,6 @@ func ParseSlotTime(value string) (hour, minute int, err error) {
 // SlotRunsOn reports whether the task's slots run on the given local day.
 func (c *Chore) SlotRunsOn(day time.Time) bool {
 	switch c.FrequencyType {
-	case FrequencyTypeOnce, FrequencyTypeNoRepeat:
-		return c.FrequencyMetadataV2 != nil && c.FrequencyMetadataV2.Day == day.Format("2006-01-02")
 	case FrequencyTypeDaily:
 		return true
 	case FrequencyTypeDayOfTheWeek:
@@ -33,6 +31,22 @@ func (c *Chore) SlotRunsOn(day time.Time) bool {
 				return true
 			}
 		}
+	}
+	// A task with moments on one day, the day of its passage.
+	return IsDatedType(c.FrequencyType, c.FrequencyMetadataV2) &&
+		c.FrequencyMetadataV2 != nil && c.FrequencyMetadataV2.Day == day.Format("2006-01-02")
+}
+
+// IsDatedType reports whether a rhythm is one whose moments are on one day,
+// the day of the current passage.
+func IsDatedType(frequencyType FrequencyType, metadata *FrequencyMetadata) bool {
+	switch frequencyType {
+	case FrequencyTypeOnce, FrequencyTypeNoRepeat, FrequencyTypeWeekly,
+		FrequencyTypeMonthly, FrequencyTypeYearly, FrequencyTypeAdaptive,
+		FrequencyTypeDayOfTheMonth:
+		return true
+	case FrequencyTypeInterval:
+		return metadata == nil || metadata.Unit == nil || *metadata.Unit != "hours"
 	}
 	return false
 }

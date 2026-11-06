@@ -125,9 +125,15 @@ func TestNormalizeSlots(t *testing.T) {
 	require.Equal(t, morningID, metadata.Slots[0].ID, "renaming does not change slot identity")
 	require.Equal(t, eveningID, metadata.Slots[1].ID, "retiming does not change slot identity")
 
-	weekly := &chModel.FrequencyMetadata{Slots: []chModel.Slot{{Time: "08:00"}}}
-	require.NoError(t, normalizeSlots(chModel.FrequencyTypeWeekly, weekly))
-	require.Empty(t, weekly.Slots)
+	// Moments are dropped from a task set off from outside or repeated every
+	// few hours.
+	trigger := &chModel.FrequencyMetadata{Slots: []chModel.Slot{{Time: "08:00"}}}
+	require.NoError(t, normalizeSlots(chModel.FrequencyTypeTrigger, trigger))
+	require.Empty(t, trigger.Slots)
+	hours := "hours"
+	hourly := &chModel.FrequencyMetadata{Unit: &hours, Slots: []chModel.Slot{{Time: "08:00"}}}
+	require.NoError(t, normalizeSlots(chModel.FrequencyTypeInterval, hourly))
+	require.Empty(t, hourly.Slots)
 	require.Error(t, normalizeSlots(chModel.FrequencyTypeDaily, &chModel.FrequencyMetadata{Slots: []chModel.Slot{{Time: "25:00"}}}))
 	require.Error(t, normalizeSlots(chModel.FrequencyTypeDaily, &chModel.FrequencyMetadata{Slots: []chModel.Slot{{Time: "08:00"}, {Time: "8:00"}}}))
 }

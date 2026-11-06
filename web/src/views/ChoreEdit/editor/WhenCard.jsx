@@ -27,7 +27,8 @@ import {
   ALL_DAY_TIME,
   ensureMoment,
   frequencyTypeForKind,
-  ONCE_FREQUENCY_TYPES,
+  isDatedType,
+  momentsApply,
   RHYTHMS,
   rollingApplies,
   scheduleKind,
@@ -587,15 +588,16 @@ export default function WhenCard({
   const kind = scheduleKind(frequencyType)
   const metadata = frequencyMetadata || {}
   const once = ONCE_FREQUENCY_TYPES.includes(frequencyType)
-  const withSlots =
-    (SLOT_FREQUENCY_TYPES.includes(frequencyType) || once) &&
-    metadata.slots?.length > 0
-  // Every day, on some days or once on a day, the task is made of moments: one
-  // that has none gets one from its time of day and its deadline.
+  const dated = isDatedType(frequencyType, metadata)
+  const withMoments = momentsApply(frequencyType, metadata)
+  const withSlots = withMoments && metadata.slots?.length > 0
+  // Every day or on some days the task is made of moments, and so is one on a
+  // date once it has one: a task that has none gets one from its time of day
+  // and its deadline.
   const needsMoment =
+    withMoments &&
     !metadata.slots?.length &&
-    (SLOT_FREQUENCY_TYPES.includes(frequencyType) ||
-      (once && Boolean(dueDateOnly)))
+    (SLOT_FREQUENCY_TYPES.includes(frequencyType) || Boolean(dueDateOnly))
   useEffect(() => {
     if (!needsMoment) return
     const made = ensureMoment(frequencyType, metadata, {
@@ -603,22 +605,30 @@ export default function WhenCard({
       time: useCustomTime ? dueTime : null,
       // Without a time of day, a deadline counted from the end of the day
       // would mean nothing to a moment.
-      deadlineMinutes: once && !useCustomTime ? null : deadlineMinutes,
+      deadlineMinutes: dated && !useCustomTime ? null : deadlineMinutes,
       timezone: familyTimezone(),
     })
     onFrequencyMetadataUpdate(made.frequencyMetadata)
     if (deadlineMinutes) onDeadlineMinutesChange(null)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [needsMoment, frequencyType])
-  // A task done once keeps its moments on the day picked.
-  const dayDrifted = once && withSlots && metadata.day !== (dueDateOnly || '')
+  // A task on a date keeps its moments on the day picked; one that cannot
+  // have moments (every few hours) loses them.
+  const dayDrifted =
+    withMoments && dated && withSlots && metadata.day !== (dueDateOnly || '')
+  const strayMoments = !withMoments && metadata.slots?.length > 0
   useEffect(() => {
-    if (!dayDrifted) return
-    if (dueDateOnly)
-      onFrequencyMetadataUpdate({ ...metadata, day: dueDateOnly })
-    else onFrequencyMetadataUpdate({ ...metadata, slots: [], day: undefined })
+    if (strayMoments) {
+      onFrequencyMetadataUpdate({ ...metadata, slots: [], day: undefined })
+    } else if (dayDrifted) {
+      if (dueDateOnly) {
+        onFrequencyMetadataUpdate({ ...metadata, day: dueDateOnly })
+      } else {
+        onFrequencyMetadataUpdate({ ...metadata, slots: [], day: undefined })
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dayDrifted, dueDateOnly])
+  }, [dayDrifted, strayMoments, dueDateOnly])
   const pickRhythm = rhythm => {
     if (rhythm === frequencyType) return
     if (rhythm === 'interval') {
@@ -838,16 +848,17 @@ export default function WhenCard({
             </Typography>
           )}
 
-          {SLOT_FREQUENCY_TYPES.includes(frequencyType) && (
+          {withMoments && (!dated || dueDateOnly) && (
             <Slots
               frequencyMetadata={metadata}
               onFrequencyMetadataUpdate={onFrequencyMetadataUpdate}
             />
           )}
 
-          {!withSlots && (
+          {(!withSlots || dated) && (
             <DateTime
               {...dateTimeProps}
+              hideTime={withSlots}
               dateLabel={
                 isEditing ? t('editor.when.nextOn') : t('editor.when.from')
               }

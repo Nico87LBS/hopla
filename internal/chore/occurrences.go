@@ -31,7 +31,7 @@ func Occurrences(ctx context.Context, chore *chModel.Chore, from, to time.Time, 
 		limit = maxOccurrences
 	}
 	if chore.HasSlots() {
-		return slotOccurrences(chore, from, to, limit)
+		return slotOccurrences(ctx, chore, from, to, limit)
 	}
 	if chore.NextDueDate == nil {
 		return nil
@@ -65,12 +65,14 @@ func Occurrences(ctx context.Context, chore *chModel.Chore, from, to time.Time, 
 	return out
 }
 
-// slotOccurrences lists the slots of a task day after day.
-func slotOccurrences(chore *chModel.Chore, from, to time.Time, limit int) []Occurrence {
+// slotOccurrences lists the slots of a task day after day. A task with slots
+// on one day has them on the days of its passages, which the usual schedule
+// gives as for a task without slots.
+func slotOccurrences(ctx context.Context, chore *chModel.Chore, from, to time.Time, limit int) []Occurrence {
 	loc := choreLocation(chore)
 	out := []Occurrence{}
-	for day := startOfDay(from.In(loc)); !day.After(to) && len(out) < limit; day = day.AddDate(0, 0, 1) {
-		windows := slotWindows(chore, day)
+	add := func(owner *chModel.Chore, day time.Time) {
+		windows := slotWindows(owner, day)
 		for i, w := range windows {
 			if w.At.Before(from) || w.At.After(to) || len(out) >= limit {
 				continue
@@ -83,6 +85,31 @@ func slotOccurrences(chore *chModel.Chore, from, to time.Time, limit int) []Occu
 			}
 			out = append(out, o)
 		}
+	}
+	if isDatedType(chore.FrequencyType, chore.FrequencyMetadataV2) {
+		day, ok := onceDay(chore)
+		if !ok {
+			return out
+		}
+		shadow := withoutSlots(chore)
+		recurs := !isOnceType(chore.FrequencyType) && !chore.IsRolling && chore.FrequencyType != chModel.FrequencyTypeAdaptive
+		for len(out) < limit && !day.After(to) {
+			add(withDay(chore, day), day)
+			if !recurs {
+				break
+			}
+			at := day.UTC()
+			shadow.NextDueDate = &at
+			next, err := scheduleNextDueDate(ctx, shadow, at)
+			if err != nil || next == nil || !next.After(at) {
+				break
+			}
+			day = startOfDay(next.In(loc))
+		}
+		return out
+	}
+	for day := startOfDay(from.In(loc)); !day.After(to) && len(out) < limit; day = day.AddDate(0, 0, 1) {
+		add(chore, day)
 	}
 	return out
 }

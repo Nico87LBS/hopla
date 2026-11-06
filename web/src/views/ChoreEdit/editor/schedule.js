@@ -9,6 +9,23 @@ export const SLOT_FREQUENCY_TYPES = ['daily', 'days_of_the_week']
 // A task done once, on a day, has moments too.
 export const ONCE_FREQUENCY_TYPES = ['once', 'no_repeat']
 
+// Whether a task has moments on one day at a time, the day of its passage
+// (`frequencyMetadata.day`): done once, every week, month, year, so many days
+// or on a day of the month. A task every day or on some days has them on all
+// its days.
+export const isDatedType = (frequencyType, frequencyMetadata) =>
+  ONCE_FREQUENCY_TYPES.includes(frequencyType) ||
+  ['weekly', 'monthly', 'yearly', 'adaptive', 'day_of_the_month'].includes(
+    frequencyType,
+  ) ||
+  (frequencyType === 'interval' && frequencyMetadata?.unit !== 'hours')
+
+// Whether a task can have moments at all: not one that is always there, set
+// off from outside or repeated every few hours.
+export const momentsApply = (frequencyType, frequencyMetadata) =>
+  SLOT_FREQUENCY_TYPES.includes(frequencyType) ||
+  isDatedType(frequencyType, frequencyMetadata)
+
 // The rhythms offered for a repeated task, in the order of the picker.
 export const RHYTHMS = [
   'daily',
@@ -51,11 +68,13 @@ export const rollingApplies = (frequencyType, frequencyMetadata) =>
   !['days_of_the_week', 'day_of_the_month', 'adaptive'].includes(
     frequencyType,
   ) &&
-  !hasSlots(frequencyType, frequencyMetadata)
+  !(
+    SLOT_FREQUENCY_TYPES.includes(frequencyType) &&
+    hasSlots(frequencyType, frequencyMetadata)
+  )
 
 export const hasSlots = (frequencyType, frequencyMetadata) =>
-  (SLOT_FREQUENCY_TYPES.includes(frequencyType) ||
-    ONCE_FREQUENCY_TYPES.includes(frequencyType)) &&
+  momentsApply(frequencyType, frequencyMetadata) &&
   (frequencyMetadata?.slots?.length || 0) > 0
 
 // A moment all day is due at the end of the day.
@@ -75,9 +94,9 @@ export const ensureMoment = (
   frequencyMetadata,
   { day, deadlineMinutes, time, timezone } = {},
 ) => {
-  const once = ONCE_FREQUENCY_TYPES.includes(frequencyType)
+  const dated = isDatedType(frequencyType, frequencyMetadata)
   if (
-    !(SLOT_FREQUENCY_TYPES.includes(frequencyType) || (once && day)) ||
+    !(SLOT_FREQUENCY_TYPES.includes(frequencyType) || (dated && day)) ||
     frequencyMetadata?.slots?.length
   ) {
     return { frequencyMetadata, deadlineMinutes }
@@ -95,7 +114,7 @@ export const ensureMoment = (
     frequencyMetadata: {
       ...frequencyMetadata,
       ...(timezone ? { timezone } : {}),
-      ...(once ? { day } : {}),
+      ...(dated ? { day } : {}),
       slots: [slot],
     },
     deadlineMinutes: null,
@@ -123,7 +142,7 @@ export const nextSlot = (
     )
       continue
     if (
-      ONCE_FREQUENCY_TYPES.includes(frequencyType) &&
+      isDatedType(frequencyType, frequencyMetadata) &&
       day.format('YYYY-MM-DD') !== frequencyMetadata.day
     )
       continue
