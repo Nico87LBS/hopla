@@ -16,8 +16,9 @@ import (
 // earns the task's points and, when the task needs approval, waits for a
 // parent on its own. A slot opens an hour before its time, or halfway from
 // the previous slot when they are closer, and stays open until the next one
-// opens; the last one stays open until midnight. A slot closed without being
-// done is missed, and a parent can still catch it up until midnight. Slot
+// opens; the last one stays open until midnight. A slot can be given its own
+// end instead, no later than the next slot's time. A slot closed without
+// being done is missed, and a parent can still catch it up until midnight. Slot
 // times are read in the family's time zone, like the games' days.
 
 const (
@@ -75,12 +76,27 @@ func normalizeSlots(frequencyType chModel.FrequencyType, metadata *chModel.Frequ
 			return fmt.Errorf("two slots at %s", slot.Time)
 		}
 		seen[slot.Time] = true
+		if slot.Until = strings.TrimSpace(slot.Until); slot.Until != "" {
+			untilHour, untilMinute, err := parseSlotTime(slot.Until)
+			if err != nil {
+				return err
+			}
+			slot.Until = fmt.Sprintf("%02d:%02d", untilHour, untilMinute)
+			if slot.Until <= slot.Time {
+				return fmt.Errorf("the slot at %s must end after it", slot.Time)
+			}
+		}
 		slot.Name = strings.TrimSpace(slot.Name)
 		if len([]rune(slot.Name)) > maxSlotName {
 			slot.Name = string([]rune(slot.Name)[:maxSlotName])
 		}
 	}
 	sort.SliceStable(metadata.Slots, func(a, b int) bool { return metadata.Slots[a].Time < metadata.Slots[b].Time })
+	for i := 0; i+1 < len(metadata.Slots); i++ {
+		if until := metadata.Slots[i].Until; until != "" && until > metadata.Slots[i+1].Time {
+			return fmt.Errorf("the slot at %s must end by the next one, at %s", metadata.Slots[i].Time, metadata.Slots[i+1].Time)
+		}
+	}
 	return nil
 }
 
@@ -127,10 +143,25 @@ func slotWindows(chore *chModel.Chore, day time.Time) []chModel.SlotStatus {
 		} else if previous := windows[len(windows)-1].At; opens.Before(previous.Add(at.Sub(previous) / 2)) {
 			opens = previous.Add(at.Sub(previous) / 2)
 		}
-		windows = append(windows, chModel.SlotStatus{Index: i, SlotID: slot.ID, Name: slot.Name, Time: slot.Time, At: at, OpensAt: opens, ClosesAt: next})
+		windows = append(windows, chModel.SlotStatus{Index: i, SlotID: slot.ID, Name: slot.Name, Time: slot.Time, Until: slot.Until, At: at, OpensAt: opens, ClosesAt: next})
 	}
-	for i := 0; i+1 < len(windows); i++ {
-		windows[i].ClosesAt = windows[i+1].OpensAt
+	for i := range windows {
+		if i+1 < len(windows) {
+			windows[i].ClosesAt = windows[i+1].OpensAt
+		}
+		if windows[i].Until == "" {
+			continue
+		}
+		hour, minute, err := parseSlotTime(windows[i].Until)
+		if err != nil {
+			continue
+		}
+		until := time.Date(day.Year(), day.Month(), day.Day(), hour, minute, 0, 0, day.Location())
+		windows[i].ClosesAt = until
+		// The next slot never opens while this one is still the one to do.
+		if i+1 < len(windows) && windows[i+1].OpensAt.Before(until) {
+			windows[i+1].OpensAt = until
+		}
 	}
 	return windows
 }

@@ -8373,6 +8373,10 @@ const docTemplate = `{
                 "time": {
                     "description": "\"15:04\", in the task's timezone",
                     "type": "string"
+                },
+                "until": {
+                    "description": "\"15:04\": when it stops being the time to do it, if set",
+                    "type": "string"
                 }
             }
         },
@@ -8437,6 +8441,10 @@ const docTemplate = `{
                     "$ref": "#/definitions/model.SlotState"
                 },
                 "time": {
+                    "type": "string"
+                },
+                "until": {
+                    "description": "the end the slot was given, if any",
                     "type": "string"
                 }
             }

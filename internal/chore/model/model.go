@@ -165,9 +165,10 @@ type FrequencyMetadata struct {
 // Slot is one of the times of day a task is done at, such as brushing teeth
 // in the morning and in the evening.
 type Slot struct {
-	ID string `json:"id"`
-	Name string `json:"name"`
-	Time string `json:"time"` // "15:04", in the task's timezone
+	ID    string `json:"id"`
+	Name  string `json:"name"`
+	Time  string `json:"time"`            // "15:04", in the task's timezone
+	Until string `json:"until,omitempty"` // "15:04": when it stops being the time to do it, if set
 }
 
 // SlotState is where a slot of the day stands.
@@ -190,6 +191,7 @@ type SlotStatus struct {
 	At          time.Time `json:"at"`
 	OpensAt     time.Time `json:"opensAt"`
 	ClosesAt    time.Time `json:"closesAt"`
+	Until       string    `json:"until,omitempty"` // the end the slot was given, if any
 	State       SlotState `json:"state"`
 	HistoryID   *int      `json:"historyId,omitempty"`
 	CompletedBy *int      `json:"completedBy,omitempty"`

@@ -126,6 +126,8 @@ const Slots = ({ frequencyMetadata, onFrequencyMetadataUpdate }) => {
               borderColor: 'primary.200',
               bgcolor: 'primary.softBg',
               borderRadius: '22px',
+              flexWrap: 'wrap',
+              maxWidth: '100%',
               '& input': { fontWeight: 600, color: 'primary.softColor' },
             }}
           >
@@ -154,6 +156,30 @@ const Slots = ({ frequencyMetadata, onFrequencyMetadataUpdate }) => {
                 minHeight: 36,
                 bgcolor: 'transparent',
                 '--Input-focusedThickness': '0px',
+              }}
+            />
+            <Typography
+              level='body-xs'
+              sx={{ color: 'text.tertiary', whiteSpace: 'nowrap' }}
+            >
+              {t('editor.when.slotUntil')}
+            </Typography>
+            <Input
+              variant='plain'
+              type='time'
+              aria-label={t('editor.when.slotUntilLabel', {
+                name: slot.name || slot.time,
+              })}
+              value={slot.until || ''}
+              onChange={e => change(index, 'until', e.target.value)}
+              sx={{
+                width: 136,
+                minHeight: 36,
+                bgcolor: 'transparent',
+                '--Input-focusedThickness': '0px',
+                '& input': {
+                  color: slot.until ? undefined : 'text.tertiary',
+                },
               }}
             />
             <IconButton
