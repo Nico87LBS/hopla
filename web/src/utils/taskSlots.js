@@ -95,6 +95,19 @@ export const pullCopiesTogether = sections => {
 
 const endOfDay = date => moment(date).endOf('day').toDate()
 
+// nextTimeLater says whether a task of several moments is done for today:
+// each copy has every moment of today done (or done by another child) and is
+// due again on a later day. Its row then stands for that next time.
+export const nextTimeLater = (chores, slotsByTask, now = new Date()) => {
+  const limit = endOfDay(now)
+  return chores.every(chore => {
+    if (!chore.nextDueDate || new Date(chore.nextDueDate) <= limit) return false
+    return todaySlots(chore, slotsByTask, now).every(slot =>
+      ['done', 'other'].includes(slot.state),
+    )
+  })
+}
+
 // doneCopies returns the ids of the copies already done for now: once a
 // child's copy is done (and approved), the server moves it to its next due
 // date, while the other child's copy is still due today. The row keeps both

@@ -6,6 +6,7 @@ import {
   groupCopies,
   keepsTodayMissed,
   liveSlotState,
+  nextTimeLater,
   pullCopiesTogether,
   todaySlots,
 } from '../src/utils/taskSlots.js'
@@ -116,4 +117,29 @@ test('a face shows the moment to do, then those waiting, missed, to come', () =>
   )
   assert.equal(faceOf([st('done'), st('other')], true, false).state, 'done')
   assert.equal(faceOf([], true, false).state, 'done')
+})
+
+test('a task with every moment of today done stands for its next time', () => {
+  const now = new Date(2026, 9, 23, 12, 30)
+  const tomorrow = new Date(2026, 9, 24, 7, 0).toISOString()
+  const today = new Date(2026, 9, 23, 18, 0).toISOString()
+  const done = {
+    id: 1,
+    nextDueDate: tomorrow,
+    slotsToday: [slot(0, 6, 10, 'done')],
+  }
+  // Done this morning and approved, due tomorrow: the faces wait.
+  assert.equal(nextTimeLater([done], null, now), true)
+  // Another child still has a moment to do today: the row stays today's.
+  const other = {
+    id: 2,
+    nextDueDate: today,
+    slotsToday: [slot(0, 6, 10, 'done'), slot(1, 17, 23, 'upcoming')],
+  }
+  assert.equal(nextTimeLater([done, other], null, now), false)
+  // Waiting for a parent, or missed: still today's.
+  const pending = { ...done, slotsToday: [slot(0, 6, 10, 'pending')] }
+  assert.equal(nextTimeLater([pending], null, now), false)
+  const missed = { ...done, slotsToday: [slot(0, 6, 10, 'open')] }
+  assert.equal(nextTimeLater([missed], null, now), false)
 })
