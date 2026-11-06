@@ -124,8 +124,8 @@ func TestWeeklySlots(t *testing.T) {
 // Once its day is over, a task every week moves to its next passage and a
 // task done once is archived.
 func TestSettlePassages(t *testing.T) {
-	familyIn(t, "Europe/Brussels")
 	_, db, _ := newSlotTestRouter(t)
+	familyIn(t, "Europe/Brussels")
 	cfg := &config.Config{}
 	cfg.Database.Type = "sqlite"
 	h := &Handler{choreRepo: chRepo.NewChoreRepository(db, cfg), familyRepo: fRepo.NewFamilyRepository(db)}
