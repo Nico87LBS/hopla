@@ -7,7 +7,7 @@ import {
   ReplayRounded,
   TollRounded,
 } from '@mui/icons-material'
-import { Box, Button, Typography } from '@mui/joy'
+import { Box, Button, Checkbox, Typography } from '@mui/joy'
 import { useQueryClient } from '@tanstack/react-query'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
@@ -43,6 +43,7 @@ import {
   todaySlots,
 } from '../../utils/taskSlots'
 import { MemberAvatar } from '../Games/GameParts'
+import { TaskDetails, TaskRing, TaskTitle } from './TaskParts'
 
 const PENDING_APPROVAL = 3
 const CELL = 44
@@ -443,7 +444,16 @@ CopyFace.propTypes = {
 
 // A task done by several children (one copy each), or several times a day, or
 // both: one card with a line per child and, for slots, a column per slot.
-const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
+const TaskGroupRow = ({
+  chores,
+  isMultiSelectMode = false,
+  isSelected = false,
+  onAction,
+  onChipClick,
+  onSelectionToggle,
+  performers = [],
+  showActions = true,
+}) => {
   const { t } = useTranslation('chores')
   const queryClient = useQueryClient()
   const { data: routines } = useRoutinesToday()
@@ -485,6 +495,12 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
       ),
     }))
   })
+  // A task nobody is assigned to has no head to tick: a round button instead.
+  const unassigned =
+    !slotted &&
+    chores.length === 1 &&
+    (lines.length === 0 ||
+      (lines.length === 1 && lines[0].member.userId == null))
   const ahead = slotted ? new Set() : doneCopies(chores, now)
   // The deadline of the first copy still to do.
   const deadlineCopy = chores.find(
@@ -621,14 +637,28 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
   )
 
   return (
-    <Box sx={{ bgcolor: 'background.surface', px: 1.5, py: 1.25 }}>
+    <Box
+      sx={{
+        bgcolor: isSelected ? 'primary.softBg' : 'background.surface',
+        px: 1.5,
+        py: 1.25,
+      }}
+    >
       <Box sx={{ alignItems: 'center', display: 'flex', gap: 1 }}>
+        {isMultiSelectMode && (
+          <Checkbox
+            checked={isSelected}
+            onChange={onSelectionToggle}
+            onClick={event => event.stopPropagation()}
+            slotProps={{ checkbox: { sx: { borderRadius: '50%' } } }}
+          />
+        )}
         <Box sx={{ flex: 1, minWidth: 0 }}>
           <Typography
             level='body-md'
             sx={{ fontWeight: 600, lineHeight: 1.35, overflowWrap: 'anywhere' }}
           >
-            {first.name}
+            <TaskTitle chore={first} />
           </Typography>
           {(mode ||
             meta.length > 0 ||
@@ -651,6 +681,7 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
               {meta.join(' · ')}
             </Typography>
           )}
+          {!slotted && <TaskDetails chore={first} onChipClick={onChipClick} />}
         </Box>
         {!slotted && hopChip}
         {slotted && columns.length > 0 && (
@@ -701,7 +732,10 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
             ))}
           </Box>
         )}
-        {!slotted && (
+        {!slotted && !isMultiSelectMode && showActions && unassigned && (
+          <TaskRing canApprove={canApprove} chore={first} onAction={onAction} />
+        )}
+        {!slotted && !isMultiSelectMode && !unassigned && (
           <Box sx={{ display: 'flex', flexShrink: 0, gap: 1 }}>
             {lines.map(({ chore, member }) => {
               const label = member.displayName || ''
@@ -732,14 +766,18 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
                         })
                   }
                   member={member}
-                  onClick={event => {
-                    event.stopPropagation()
-                    if (pending) onAction('approve', chore)
-                    else
-                      onAction('complete', chore, {
-                        completedBy: member.userId,
-                      })
-                  }}
+                  onClick={
+                    showActions
+                      ? event => {
+                          event.stopPropagation()
+                          if (pending) onAction('approve', chore)
+                          else
+                            onAction('complete', chore, {
+                              completedBy: member.userId,
+                            })
+                        }
+                      : undefined
+                  }
                   state={pending ? 'pending' : 'todo'}
                 />
               )
@@ -894,8 +932,13 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
 
 TaskGroupRow.propTypes = {
   chores: PropTypes.array.isRequired,
+  isMultiSelectMode: PropTypes.bool,
+  isSelected: PropTypes.bool,
   onAction: PropTypes.func.isRequired,
+  onChipClick: PropTypes.func,
+  onSelectionToggle: PropTypes.func,
   performers: PropTypes.array,
+  showActions: PropTypes.bool,
 }
 
 export default TaskGroupRow

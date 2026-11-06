@@ -6,8 +6,7 @@ import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
-import { isTogether } from '../../utils/Chores.jsx'
-import { groupCopies, hasSlots } from '../../utils/taskSlots'
+import { groupCopies } from '../../utils/taskSlots'
 import ChoreActionMenu from '../components/ChoreActionMenu'
 import ArchivedChoreCard from './ArchivedChoreCard'
 import ChoreSwipeableItem, {
@@ -16,11 +15,8 @@ import ChoreSwipeableItem, {
 import {
   getArchivedLeadingActions,
   getArchivedTrailingActions,
-  getChoreLeadingActions,
-  getChoreTrailingActions,
 } from './components/ChoreSwipeActions'
 import TaskGroupRow from './TaskGroupRow'
-import TaskRow from './TaskRow'
 
 const ChoreListView = ({
   chores,
@@ -48,33 +44,16 @@ const ChoreListView = ({
   // Every task is a flat row now, so the swipe tiles line up with its top.
   const usesCompactCard = true
 
-  const renderChoreCard = (chore, key) => {
-    if (isArchived) {
-      return (
-        <ArchivedChoreCard
-          key={key || chore.id}
-          chore={chore}
-          performers={membersData?.res}
-          isMultiSelectMode={isMultiSelectMode}
-          isSelected={selectedChores.has(chore.id)}
-          onSelectionToggle={() => toggleChoreSelection(chore.id)}
-        />
-      )
-    }
-    return (
-      <TaskRow
-        key={key || chore.id}
-        chore={chore}
-        performers={membersData?.res}
-        onChipClick={handleLabelFiltering}
-        onAction={handleChoreAction}
-        isMultiSelectMode={isMultiSelectMode}
-        isSelected={selectedChores.has(chore.id)}
-        onSelectionToggle={() => toggleChoreSelection(chore.id)}
-        showActions={showActions}
-      />
-    )
-  }
+  const renderArchivedCard = chore => (
+    <ArchivedChoreCard
+      key={chore.id}
+      chore={chore}
+      performers={membersData?.res}
+      isMultiSelectMode={isMultiSelectMode}
+      isSelected={selectedChores.has(chore.id)}
+      onSelectionToggle={() => toggleChoreSelection(chore.id)}
+    />
+  )
   const swipeActionArgs = chore => ({
     chore,
     handleChoreAction,
@@ -118,25 +97,31 @@ const ChoreListView = ({
             : groupCopies(chores)
           ).map(group => {
             const chore = group.chores[0]
-            // Each child's copy of a task, a task for everyone together, or
-            // a task done several times a day, shows as one card with a
-            // button per child: no swipe.
-            if (
-              group.chores.length > 1 ||
-              hasSlots(chore) ||
-              isTogether(chore)
-            ) {
+            if (!isArchived) {
+              // Every task is one card: a head per child, a column per
+              // moment. No swipe; a touch opens the task.
               return (
                 <ChoreSwipeableItem
                   key={chore.id}
-                  onClick={() => navigate(`/chores/${chore.id}`)}
+                  onClick={() => {
+                    if (isMultiSelectMode) {
+                      toggleChoreSelection(chore.id)
+                    } else {
+                      navigate(`/chores/${chore.id}`)
+                    }
+                  }}
                   longPressEnabled={Boolean(onLongPressChore)}
                   onLongPress={() => onLongPressChore?.(chore.id)}
                 >
                   <TaskGroupRow
                     chores={group.chores}
+                    isMultiSelectMode={isMultiSelectMode}
+                    isSelected={selectedChores.has(chore.id)}
                     onAction={handleChoreAction}
+                    onChipClick={handleLabelFiltering}
+                    onSelectionToggle={() => toggleChoreSelection(chore.id)}
                     performers={membersData?.res}
+                    showActions={showActions}
                   />
                 </ChoreSwipeableItem>
               )
@@ -144,19 +129,12 @@ const ChoreListView = ({
             return (
               <ChoreSwipeableItem
                 key={chore.id}
-                leadingActions={
-                  isArchived
-                    ? getArchivedLeadingActions(swipeActionArgs(chore))
-                    : getChoreLeadingActions(swipeActionArgs(chore))
-                }
-                trailingActions={
-                  isArchived
-                    ? getArchivedTrailingActions(swipeActionArgs(chore))
-                    : getChoreTrailingActions({
-                        ...swipeActionArgs(chore),
-                        navigate,
-                      })
-                }
+                leadingActions={getArchivedLeadingActions(
+                  swipeActionArgs(chore),
+                )}
+                trailingActions={getArchivedTrailingActions(
+                  swipeActionArgs(chore),
+                )}
                 onClick={() => {
                   if (isMultiSelectMode) {
                     toggleChoreSelection(chore.id)
@@ -167,7 +145,7 @@ const ChoreListView = ({
                 longPressEnabled={Boolean(onLongPressChore)}
                 onLongPress={() => onLongPressChore?.(chore.id)}
               >
-                {renderChoreCard(chore)}
+                {renderArchivedCard(chore)}
               </ChoreSwipeableItem>
             )
           })}
