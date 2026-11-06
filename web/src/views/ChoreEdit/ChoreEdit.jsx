@@ -57,6 +57,7 @@ import {
 } from '../../queries/ChoreQueries.jsx'
 import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries.jsx'
 import { useNotification } from '../../service/NotificationProvider'
+import { readCompletionWindow } from '../../utils/completionWindow'
 import { deadlineApplies } from '../../utils/deadline'
 import { familyTimezone } from '../../utils/familyTime'
 import { GetAllFamilyMembers, GetChoreByID } from '../../utils/Fetcher'
@@ -799,11 +800,7 @@ const ChoreEdit = () => {
         data.res.deadlineMinutes > 0 ? data.res.deadlineMinutes : null,
       )
       setIsPrivate(data.res.isPrivate || false)
-      setCompletionWindow(
-        data.res.completionWindow && data.res.completionWindow > -1
-          ? data.res.completionWindow
-          : -1,
-      )
+      setCompletionWindow(readCompletionWindow(data.res.completionWindow))
       setDeadlineOffset(
         data.res.deadlineOffset && data.res.deadlineOffset > -1
           ? data.res.deadlineOffset
