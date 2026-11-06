@@ -149,12 +149,19 @@ const StepRow = ({ chore, draft, id, index, names, setDraft }) => {
             key={draft.choreIds.map((_, i) => stepKey(draft, i)).join('|')}
             multiple
             size='sm'
-            value={prerequisites}
-            placeholder={t('routines.opensAtOnce')}
-            onChange={(_, value) =>
-              setDraft(setPrerequisites(draft, position, value))
-            }
+            value={prerequisites.length ? prerequisites : [0]}
+            onChange={(_, value) => {
+              // « Ouverte tout de suite » vide la liste ; choisir une étape
+              // la remplace.
+              const chosen = prerequisites.length
+                ? value.includes(0)
+                  ? []
+                  : value
+                : value.filter(other => other !== 0)
+              setDraft(setPrerequisites(draft, position, chosen))
+            }}
           >
+            <Option value={0}>{t('routines.opensAtOnce')}</Option>
             {draft.choreIds.map((otherId, otherIndex) =>
               otherIndex === index || looping.has(otherIndex + 1) ? null : (
                 <Option
