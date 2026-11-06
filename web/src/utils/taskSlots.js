@@ -7,6 +7,10 @@ import moment from 'moment'
 
 import { sameName } from './taskCopies.js'
 
+// What a moment is called: its name, else its hour, else "all day".
+export const momentName = (slot, t) =>
+  slot.name || (slot.allDay ? t('slots.allDay') : slot.time)
+
 export const hasSlots = chore => chore?.frequencyMetadata?.slots?.length > 0
 
 const TIMED = ['upcoming', 'open', 'missed']

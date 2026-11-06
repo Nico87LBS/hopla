@@ -170,6 +170,9 @@ type Slot struct {
 	Name  string `json:"name"`
 	Time  string `json:"time"`            // "15:04", in the task's timezone
 	Until string `json:"until,omitempty"` // "15:04": when it stops being the time to do it, if set
+	// AllDay is a moment with no hour: open from midnight to midnight, due at
+	// the end of the day. It is alone on its task; its time is then 23:59.
+	AllDay bool `json:"allDay,omitempty"`
 	// OpensBefore is how many minutes before its time the slot opens; unset,
 	// an hour. Zero opens it exactly at its time.
 	OpensBefore *int `json:"opensBefore,omitempty"`
@@ -196,6 +199,7 @@ type SlotStatus struct {
 	OpensAt     time.Time `json:"opensAt"`
 	ClosesAt    time.Time `json:"closesAt"`
 	Until       string    `json:"until,omitempty"` // the end the slot was given, if any
+	AllDay      bool      `json:"allDay,omitempty"`
 	State       SlotState `json:"state"`
 	HistoryID   *int      `json:"historyId,omitempty"`
 	CompletedBy *int      `json:"completedBy,omitempty"`

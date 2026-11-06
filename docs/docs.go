@@ -8368,6 +8368,10 @@ const docTemplate = `{
         "model.Slot": {
             "type": "object",
             "properties": {
+                "allDay": {
+                    "description": "AllDay is a moment with no hour: open from midnight to midnight, due at\nthe end of the day. It is alone on its task; its time is then 23:59.",
+                    "type": "boolean"
+                },
                 "id": {
                     "type": "string"
                 },
@@ -8421,6 +8425,9 @@ const docTemplate = `{
         "model.SlotStatus": {
             "type": "object",
             "properties": {
+                "allDay": {
+                    "type": "boolean"
+                },
                 "at": {
                     "type": "string"
                 },

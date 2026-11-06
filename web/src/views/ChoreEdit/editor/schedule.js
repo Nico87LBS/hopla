@@ -58,13 +58,16 @@ export const hasSlots = (frequencyType, frequencyMetadata) =>
     ONCE_FREQUENCY_TYPES.includes(frequencyType)) &&
   (frequencyMetadata?.slots?.length || 0) > 0
 
+// A moment all day is due at the end of the day.
+export const ALL_DAY_TIME = '23:59'
+
 const clock = minutes =>
   `${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`
 
 // A task done every day or on some days always has a moment, the time of day
 // it is for, and so has one done once on a day (`day`, YYYY-MM-DD). One that
 // had none, an older task or a rhythm just chosen, gets one made of its time
-// of day (08:00 without) and of its deadline, so the editor shows a single
+// of day (the whole day without) and of its deadline, so the editor shows a single
 // "when" and saves it as a moment. A deadline that would run past midnight is
 // dropped: a moment ends the same day.
 export const ensureMoment = (
@@ -79,11 +82,15 @@ export const ensureMoment = (
   ) {
     return { frequencyMetadata, deadlineMinutes }
   }
-  const at = /^\d{2}:\d{2}$/.test(time || '') ? time : '08:00'
-  const [hour, minute] = at.split(':').map(Number)
-  const end = hour * 60 + minute + (deadlineMinutes > 0 ? deadlineMinutes : 0)
-  const slot = { name: '', time: at }
-  if (deadlineMinutes > 0 && end < 24 * 60) slot.until = clock(end)
+  // No hour given: the moment is the whole day.
+  const timed = /^\d{2}:\d{2}$/.test(time || '')
+  let slot = { name: '', allDay: true, time: ALL_DAY_TIME }
+  if (timed) {
+    const [hour, minute] = time.split(':').map(Number)
+    const end = hour * 60 + minute + (deadlineMinutes > 0 ? deadlineMinutes : 0)
+    slot = { name: '', time, opensBefore: 0 }
+    if (deadlineMinutes > 0 && end < 24 * 60) slot.until = clock(end)
+  }
   return {
     frequencyMetadata: {
       ...frequencyMetadata,
@@ -178,7 +185,13 @@ export const describeTask = ({
       when = t('editor.summary.withSlots', {
         when,
         slots: spokenList(
-          metadata.slots.map(slot => (slot.name || slot.time || '').trim()),
+          metadata.slots.map(slot =>
+            (
+              slot.name ||
+              (slot.allDay ? t('slots.allDay') : slot.time) ||
+              ''
+            ).trim(),
+          ),
           language,
         ),
       })
@@ -198,7 +211,13 @@ export const describeTask = ({
       when = t('editor.summary.withSlots', {
         when,
         slots: spokenList(
-          metadata.slots.map(slot => (slot.name || slot.time || '').trim()),
+          metadata.slots.map(slot =>
+            (
+              slot.name ||
+              (slot.allDay ? t('slots.allDay') : slot.time) ||
+              ''
+            ).trim(),
+          ),
           language,
         ),
       })

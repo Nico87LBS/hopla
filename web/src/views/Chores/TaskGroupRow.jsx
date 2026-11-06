@@ -35,7 +35,13 @@ import {
 } from '../../utils/Fetcher'
 import { routineStepOf } from '../../utils/routines'
 import { taskModeOf } from '../../utils/taskMode'
-import { doneCopies, faceOf, hasSlots, todaySlots } from '../../utils/taskSlots'
+import {
+  doneCopies,
+  faceOf,
+  hasSlots,
+  momentName,
+  todaySlots,
+} from '../../utils/taskSlots'
 import { MemberAvatar } from '../Games/GameParts'
 
 const PENDING_APPROVAL = 3
@@ -512,7 +518,9 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
     ),
   )
   const momentLabel = slot =>
-    [slot.name, slot.time].filter(Boolean).join(' ') || ''
+    [slot.name, slot.allDay ? t('slots.allDay') : slot.time]
+      .filter(Boolean)
+      .join(' ') || ''
 
   const refresh = () => {
     queryClient.invalidateQueries({ queryKey: ['chores'] })
@@ -801,9 +809,9 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
                     fontWeight: 700,
                   }}
                 >
-                  {slot.name || slot.time}
+                  {momentName(slot, t)}
                 </Typography>
-                {slot.name && (
+                {slot.name && !slot.allDay && (
                   <Typography
                     level='body-xs'
                     sx={{
@@ -835,7 +843,7 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
                     canApprove={canApprove}
                     canTick={canApprove || member.userId === actingUserId}
                     color={memberColor(member.userId)}
-                    label={`${member.displayName || ''} · ${slot.name || slot.time}`}
+                    label={`${member.displayName || ''} · ${momentName(slot, t)}`}
                     onSlot={onSlot(chore, member)}
                     slot={slot}
                   />
