@@ -21,6 +21,7 @@ import (
 	"github.com/nico87lbs/hopla/internal/email"
 	"github.com/nico87lbs/hopla/internal/family"
 	fRepo "github.com/nico87lbs/hopla/internal/family/repo"
+	"github.com/nico87lbs/hopla/internal/games"
 	gamesAPI "github.com/nico87lbs/hopla/internal/games/api"
 	label "github.com/nico87lbs/hopla/internal/label"
 	lRepo "github.com/nico87lbs/hopla/internal/label/repo"
@@ -173,6 +174,7 @@ func main() {
 			backup.Routes,
 			backup.Run,
 			chore.RunDeadlines,
+			games.RunRoutineOccurrences,
 
 			dsync.Routes,
 			realtime.Routes, // (router, rtAuthMiddleware, pollingHandler, jwtAuth)

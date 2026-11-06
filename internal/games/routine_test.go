@@ -29,6 +29,7 @@ func TestARoutineShowsOneStepAtATimeAndPaysOnceFinished(t *testing.T) {
 	bag := chore(t, db, "Cartable", 1, now.AddDate(0, 0, 2), assignedTo(2))
 	routine := Routine{FamilyID: 1, Name: "Matin", Bonus: 4, ChoreIDs: []int{dress.ID, teeth.ID, bag.ID}}
 	require.NoError(t, SaveRoutine(db, &routine))
+	require.NoError(t, OpenRoutineOccurrences(db, now), "the day's routines are opened before the steps are done")
 
 	views, err := RoutineViews(db, 1, []int{2, 3}, now)
 	require.NoError(t, err)
@@ -176,6 +177,7 @@ func TestRoutineCompletionOnlyCountsTheSelectedSlot(t *testing.T) {
 	require.NoError(t,db.Model(task).Updates(map[string]any{"frequency_type":task.FrequencyType,"frequency_meta_v2":metadata}).Error)
 	routine := Routine{FamilyID:1,Name:"Dents du matin",Bonus:3,ValidityMinutes:720,ChoreIDs:[]int{task.ID},SlotIDs:[]string{morningID}}
 	require.NoError(t,SaveRoutine(db,&routine))
+	require.NoError(t,OpenRoutineOccurrences(db,now))
 
 	day := now.In(zone.Of(1))
 	morningAt := time.Date(day.Year(),day.Month(),day.Day(),7,0,0,0,day.Location()).UTC()
@@ -220,4 +222,42 @@ func TestOptionalStepsAreSavedByPlace(t *testing.T) {
 	stored, err = Routines(db, 1)
 	require.NoError(t, err)
 	require.Empty(t, stored[0].OptionalStepIDs)
+}
+
+// Showing the routines writes nothing; the occurrences are opened apart.
+func TestShowingRoutinesOpensNoOccurrence(t *testing.T) {
+	db := setup(t)
+	now := noon(0)
+	dress := chore(t, db, "S'habiller", 1, now, assignedTo(2))
+	teeth := chore(t, db, "Dents", 1, now, assignedTo(2))
+	routine := Routine{FamilyID: 1, Name: "Matin", Bonus: 4, ChoreIDs: []int{dress.ID, teeth.ID}}
+	require.NoError(t, SaveRoutine(db, &routine))
+	count := func() int64 {
+		var n int64
+		require.NoError(t, db.Model(&RoutineOccurrence{}).Count(&n).Error)
+		return n
+	}
+
+	views, err := RoutineViews(db, 1, []int{2}, now)
+	require.NoError(t, err)
+	require.Equal(t, dress.ID, *views[0].Members[0].Current, "the steps still show")
+	require.Zero(t, count(), "showing the routines wrote nothing")
+
+	require.NoError(t, OpenRoutineOccurrences(db, now))
+	require.EqualValues(t, 1, count(), "the job opens the occurrence")
+	views, err = RoutineViews(db, 1, []int{2}, now)
+	require.NoError(t, err)
+	require.NotNil(t, views[0].Members[0].Occurrence, "then it shows")
+	require.EqualValues(t, 1, count(), "showing again opens no second one")
+
+	// A run that ran out is left as it is by the display, closed by the job.
+	later := now.Add(30 * time.Hour)
+	_, err = RoutineViews(db, 1, []int{2}, later)
+	require.NoError(t, err)
+	var run RoutineOccurrence
+	require.NoError(t, db.First(&run).Error)
+	require.Equal(t, RoutineOccurrenceActive, run.Status)
+	require.NoError(t, OpenRoutineOccurrences(db, later))
+	require.NoError(t, db.First(&run).Error)
+	require.Equal(t, RoutineOccurrenceExpired, run.Status)
 }

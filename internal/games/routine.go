@@ -503,7 +503,16 @@ func (day *routineDay) progressFromOccurrence(userID int, run *RoutineOccurrence
 
 // RoutineViews returns the family's routines with the given members'
 // progress today.
+//
+// Showing the routines only reads: it never starts or closes an occurrence.
+// Occurrences are started when a step is done and by OpenRoutineOccurrences.
 func RoutineViews(db *gorm.DB, familyID int, userIDs []int, now time.Time) ([]RoutineView, error) {
+	return routineViews(db, familyID, userIDs, now, false)
+}
+
+// routineViews is RoutineViews; with write it also starts the occurrences
+// that are due and closes the ones that ran out.
+func routineViews(db *gorm.DB, familyID int, userIDs []int, now time.Time, write bool) ([]RoutineView, error) {
 	routines, err := Routines(db, familyID)
 	if err != nil || len(routines) == 0 {
 		return []RoutineView{}, err
@@ -553,13 +562,17 @@ func RoutineViews(db *gorm.DB, familyID int, userIDs []int, now time.Time) ([]Ro
 			if latestErr != nil && !errors.Is(latestErr, gorm.ErrRecordNotFound) { return nil, latestErr }
 			if latestErr == nil {
 				if now.Before(latest.ExpiresAt) {
-					run, latestErr = StartRoutineOccurrence(db, familyID, routine.ID, userID, now)
+					if write {
+						run, latestErr = StartRoutineOccurrence(db, familyID, routine.ID, userID, now)
+					} else {
+						run, latestErr = liveRoutineOccurrence(db, latest.ID)
+					}
 					if latestErr != nil { return nil, latestErr }
-				} else if latest.Status == RoutineOccurrenceActive {
+				} else if write && latest.Status == RoutineOccurrenceActive {
 					if _, latestErr = GetRoutineOccurrence(db, familyID, latest.ID, now); latestErr != nil { return nil, latestErr }
 				}
 			}
-			if run == nil && progress.Total > 0 && (!progress.Finished || len(progress.Available) > 0) {
+			if write && run == nil && progress.Total > 0 && (!progress.Finished || len(progress.Available) > 0) {
 				run, latestErr = StartRoutineOccurrence(db, familyID, routine.ID, userID, now)
 				if latestErr != nil { return nil, latestErr }
 			}
@@ -633,7 +646,7 @@ func awardRoutines(tx *gorm.DB, familyID, userID int, performedAt, now time.Time
 	}
 	loc := zone.Of(familyID)
 	if dayKey(performedAt, loc) != dayKey(now, loc) { return nil }
-	views, err := RoutineViews(tx, familyID, []int{userID}, now)
+	views, err := routineViews(tx, familyID, []int{userID}, now, true)
 	if err != nil { return err }
 	for _, view := range views {
 		// If this is the first time the routine is opened, RoutineViews may
