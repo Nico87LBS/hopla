@@ -9,6 +9,7 @@ import (
 	"time"
 
 	chModel "github.com/nico87lbs/hopla/internal/chore/model"
+	"github.com/nico87lbs/hopla/internal/zone"
 )
 
 // A task can be done at several times of the day, its slots: brushing teeth
@@ -44,17 +45,56 @@ func parseSlotTime(value string) (hour, minute int, err error) {
 	return t.Hour(), t.Minute(), nil
 }
 
+// isOnceType reports whether a task is done once, on a day.
+func isOnceType(frequencyType chModel.FrequencyType) bool {
+	return frequencyType == chModel.FrequencyTypeOnce || frequencyType == chModel.FrequencyTypeNoRepeat
+}
+
+// setOnceDay gives a one-time task with slots the day they are on when it was
+// not given one: the day of its due date, else today.
+func setOnceDay(frequencyType chModel.FrequencyType, metadata *chModel.FrequencyMetadata, due *time.Time, familyID int) {
+	if metadata == nil || len(metadata.Slots) == 0 || !isOnceType(frequencyType) || strings.TrimSpace(metadata.Day) != "" {
+		return
+	}
+	at := time.Now()
+	if due != nil {
+		at = *due
+	}
+	metadata.Day = at.In(zone.Of(familyID)).Format("2006-01-02")
+}
+
+// onceDay returns local midnight of the day a one-time task's slots are on.
+func onceDay(chore *chModel.Chore) (time.Time, bool) {
+	if chore.FrequencyMetadataV2 == nil || chore.FrequencyMetadataV2.Day == "" {
+		return time.Time{}, false
+	}
+	day, err := time.ParseInLocation("2006-01-02", chore.FrequencyMetadataV2.Day, choreLocation(chore))
+	return day, err == nil
+}
+
 // normalizeSlots checks a task's slots and sorts them by time. Slots are for
-// tasks done every day or on some days of the week.
+// tasks done every day, on some days of the week or once, on a day.
 func normalizeSlots(frequencyType chModel.FrequencyType, metadata *chModel.FrequencyMetadata) error {
-	if metadata == nil || len(metadata.Slots) == 0 {
+	if metadata == nil {
 		return nil
 	}
-	if frequencyType != chModel.FrequencyTypeDaily && frequencyType != chModel.FrequencyTypeDayOfTheWeek {
-		// Slots only make sense every day or on days of the week: switching
-		// the repeat to anything else drops them.
+	if len(metadata.Slots) == 0 || !isOnceType(frequencyType) {
+		metadata.Day = ""
+	}
+	if len(metadata.Slots) == 0 {
+		return nil
+	}
+	if frequencyType != chModel.FrequencyTypeDaily && frequencyType != chModel.FrequencyTypeDayOfTheWeek && !isOnceType(frequencyType) {
+		// Slots only make sense every day, on days of the week or once:
+		// switching the repeat to anything else drops them.
 		metadata.Slots = nil
 		return nil
+	}
+	if isOnceType(frequencyType) {
+		metadata.Day = strings.TrimSpace(metadata.Day)
+		if _, err := time.Parse("2006-01-02", metadata.Day); err != nil {
+			return fmt.Errorf("invalid day %q", metadata.Day)
+		}
 	}
 	if len(metadata.Slots) > maxSlots {
 		return fmt.Errorf("a task has at most %d slots", maxSlots)
@@ -125,6 +165,8 @@ func (h *Handler) shareSlotIDs(ctx context.Context, familyID int, name string, e
 // slotRunsOn reports whether the task's slots run on the given local day.
 func slotRunsOn(chore *chModel.Chore, day time.Time) bool {
 	switch chore.FrequencyType {
+	case chModel.FrequencyTypeOnce, chModel.FrequencyTypeNoRepeat:
+		return chore.FrequencyMetadataV2 != nil && chore.FrequencyMetadataV2.Day == day.Format("2006-01-02")
 	case chModel.FrequencyTypeDaily:
 		return true
 	case chModel.FrequencyTypeDayOfTheWeek:
@@ -274,6 +316,16 @@ func nextSlotDue(ctx context.Context, chore *chModel.Chore, statuses []chModel.S
 		}
 	}
 	day := startOfDay(now.In(choreLocation(chore)))
+	if isOnceType(chore.FrequencyType) {
+		// A one-time task has no next day but its own, if still to come.
+		if when, ok := onceDay(chore); ok && when.After(day) {
+			if windows := slotWindows(chore, when); len(windows) > 0 {
+				at := windows[0].At.UTC()
+				return &at
+			}
+		}
+		return nil
+	}
 	for i := 1; i <= 8; i++ {
 		if windows := slotWindows(chore, day.AddDate(0, 0, i)); len(windows) > 0 {
 			at := windows[0].At.UTC()
@@ -286,6 +338,9 @@ func nextSlotDue(ctx context.Context, chore *chModel.Chore, statuses []chModel.S
 // firstSlotAfterDay returns the first slot on the days after the one t falls
 // on: skipping a task with slots skips the rest of its day.
 func firstSlotAfterDay(ctx context.Context, chore *chModel.Chore, t time.Time) *time.Time {
+	if isOnceType(chore.FrequencyType) {
+		return nil
+	}
 	day := startOfDay(t.In(choreLocation(chore)))
 	for i := 1; i <= 8; i++ {
 		if windows := slotWindows(chore, day.AddDate(0, 0, i)); len(windows) > 0 {

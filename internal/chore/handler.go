@@ -460,6 +460,7 @@ func (h *Handler) CreateChore(c *gin.Context) {
 		c.JSON(500, gin.H{"error": "Error reading the other copies of the task"})
 		return
 	}
+	setOnceDay(choreReq.FrequencyType, choreReq.FrequencyMetadata, choreReq.NextDueDate, currentUser.FamilyID)
 	if err := normalizeSlots(choreReq.FrequencyType, choreReq.FrequencyMetadata); err != nil {
 		c.JSON(400, gin.H{
 			"error": err.Error(),
@@ -784,6 +785,7 @@ func (h *Handler) EditChore(c *gin.Context) {
 		c.JSON(500, gin.H{"error": "Error reading the other copies of the task"})
 		return
 	}
+	setOnceDay(choreReq.FrequencyType, choreReq.FrequencyMetadata, choreReq.NextDueDate, currentUser.FamilyID)
 	if err := normalizeSlots(choreReq.FrequencyType, choreReq.FrequencyMetadata); err != nil {
 		c.JSON(400, gin.H{
 			"error": err.Error(),

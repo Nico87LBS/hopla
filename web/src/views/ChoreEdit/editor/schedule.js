@@ -6,6 +6,8 @@ import moment from 'moment'
 import { familyTimezone } from '../../../utils/familyTime.js'
 
 export const SLOT_FREQUENCY_TYPES = ['daily', 'days_of_the_week']
+// A task done once, on a day, has moments too.
+export const ONCE_FREQUENCY_TYPES = ['once', 'no_repeat']
 
 // The rhythms offered for a repeated task, in the order of the picker.
 export const RHYTHMS = [
@@ -52,24 +54,27 @@ export const rollingApplies = (frequencyType, frequencyMetadata) =>
   !hasSlots(frequencyType, frequencyMetadata)
 
 export const hasSlots = (frequencyType, frequencyMetadata) =>
-  SLOT_FREQUENCY_TYPES.includes(frequencyType) &&
+  (SLOT_FREQUENCY_TYPES.includes(frequencyType) ||
+    ONCE_FREQUENCY_TYPES.includes(frequencyType)) &&
   (frequencyMetadata?.slots?.length || 0) > 0
 
 const clock = minutes =>
   `${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`
 
 // A task done every day or on some days always has a moment, the time of day
-// it is for. One that had none, an older task or a rhythm just chosen, gets
-// one made of its time of day (08:00 without) and of its deadline, so the
-// editor shows a single "when" and saves it as a moment. A deadline that
-// would run past midnight is dropped: a moment ends the same day.
+// it is for, and so has one done once on a day (`day`, YYYY-MM-DD). One that
+// had none, an older task or a rhythm just chosen, gets one made of its time
+// of day (08:00 without) and of its deadline, so the editor shows a single
+// "when" and saves it as a moment. A deadline that would run past midnight is
+// dropped: a moment ends the same day.
 export const ensureMoment = (
   frequencyType,
   frequencyMetadata,
-  { deadlineMinutes, time, timezone } = {},
+  { day, deadlineMinutes, time, timezone } = {},
 ) => {
+  const once = ONCE_FREQUENCY_TYPES.includes(frequencyType)
   if (
-    !SLOT_FREQUENCY_TYPES.includes(frequencyType) ||
+    !(SLOT_FREQUENCY_TYPES.includes(frequencyType) || (once && day)) ||
     frequencyMetadata?.slots?.length
   ) {
     return { frequencyMetadata, deadlineMinutes }
@@ -83,6 +88,7 @@ export const ensureMoment = (
     frequencyMetadata: {
       ...frequencyMetadata,
       ...(timezone ? { timezone } : {}),
+      ...(once ? { day } : {}),
       slots: [slot],
     },
     deadlineMinutes: null,
@@ -102,11 +108,16 @@ export const nextSlot = (
     .sort((a, b) => a.time.localeCompare(b.time))
   if (!slots.length) return null
   const days = frequencyMetadata.days || []
-  for (let offset = 0; offset < 8; offset++) {
+  for (let offset = 0; offset < 400; offset++) {
     const day = moment(now).add(offset, 'days')
     if (
       frequencyType === 'days_of_the_week' &&
       !days.includes(WEEK_DAYS[day.day()])
+    )
+      continue
+    if (
+      ONCE_FREQUENCY_TYPES.includes(frequencyType) &&
+      day.format('YYYY-MM-DD') !== frequencyMetadata.day
     )
       continue
     for (const slot of slots) {
@@ -163,6 +174,15 @@ export const describeTask = ({
           }),
         })
       : t('editor.summary.onceNoDate')
+    if (hasSlots(frequencyType, metadata)) {
+      when = t('editor.summary.withSlots', {
+        when,
+        slots: spokenList(
+          metadata.slots.map(slot => (slot.name || slot.time || '').trim()),
+          language,
+        ),
+      })
+    }
   } else if (kind === 'repeat') {
     when = t(`editor.summary.rhythm.${frequencyType}`, {
       count: Number(frequency) || 1,

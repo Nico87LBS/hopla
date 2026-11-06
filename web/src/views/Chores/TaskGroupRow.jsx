@@ -679,6 +679,20 @@ const TaskGroupRow = ({ chores, onAction, performers = [] }) => {
             })}
           </Box>
         )}
+        {slotted && columns.length === 0 && (
+          // A day with no moment today (a task for another day): the faces,
+          // pale, until the day comes.
+          <Box sx={{ display: 'flex', flexShrink: 0, gap: 1 }}>
+            {lines.map(({ chore, member }) => (
+              <CopyFace
+                key={`${chore.id}-${member.userId}`}
+                label={member.displayName || ''}
+                member={member}
+                state='upcoming'
+              />
+            ))}
+          </Box>
+        )}
         {!slotted && (
           <Box sx={{ display: 'flex', flexShrink: 0, gap: 1 }}>
             {lines.map(({ chore, member }) => {

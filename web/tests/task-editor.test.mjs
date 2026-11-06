@@ -195,3 +195,37 @@ test('a task done every day gets a moment from its time and deadline', () => {
   )
   assert.equal(ensureMoment('interval', meta, {}).frequencyMetadata, meta)
 })
+
+test('a task done once on a day gets a moment on that day', () => {
+  const made = ensureMoment(
+    'once',
+    {},
+    { day: '2026-11-10', time: '17:30', deadlineMinutes: 60 },
+  )
+  assert.equal(made.frequencyMetadata.day, '2026-11-10')
+  assert.deepEqual(made.frequencyMetadata.slots, [
+    { name: '', time: '17:30', until: '18:30' },
+  ])
+  // Without a day it has no moment, and a repeated task keeps no day.
+  assert.equal(ensureMoment('once', {}, {}).frequencyMetadata.slots, undefined)
+  assert.equal(
+    ensureMoment('daily', {}, { day: '2026-11-10' }).frequencyMetadata.day,
+    undefined,
+  )
+  // It is next due at its moment, on its day only.
+  const next = nextSlot(
+    'once',
+    { day: '2026-11-10', slots: [{ time: '17:30' }] },
+    new Date(2026, 10, 6, 9, 0),
+  )
+  assert.equal(next.at.getDate(), 10)
+  assert.equal(next.at.getHours(), 17)
+  assert.equal(
+    nextSlot(
+      'once',
+      { day: '2026-11-10', slots: [{ time: '17:30' }] },
+      new Date(2026, 10, 11, 9, 0),
+    ),
+    null,
+  )
+})

@@ -108,7 +108,7 @@ func (r *ChoreRepository) ActiveSlotChores(ctx context.Context) ([]*chModel.Chor
 	var chores []*chModel.Chore
 	if err := r.db.WithContext(ctx).Preload("Assignees").
 		Where("is_active = ? AND frequency_type IN ?", true,
-			[]chModel.FrequencyType{chModel.FrequencyTypeDaily, chModel.FrequencyTypeDayOfTheWeek}).
+			[]chModel.FrequencyType{chModel.FrequencyTypeDaily, chModel.FrequencyTypeDayOfTheWeek, chModel.FrequencyTypeOnce, chModel.FrequencyTypeNoRepeat}).
 		Find(&chores).Error; err != nil {
 		return nil, err
 	}
@@ -168,4 +168,20 @@ func (r *ChoreRepository) RecordMissedSlots(ctx context.Context, chore *chModel.
 		}
 		return nil
 	})
+}
+
+// FinishOnceChore archives a one-time task whose moments are all over, with no
+// due date left.
+func (r *ChoreRepository) FinishOnceChore(ctx context.Context, chore *chModel.Chore) (int64, error) {
+	version, err := r.nextSyncVersion(ctx, chore.FamilyID)
+	if err != nil {
+		return 0, err
+	}
+	err = r.db.WithContext(ctx).Model(&chModel.Chore{}).Where("id = ? AND is_active = ?", chore.ID, true).Updates(map[string]interface{}{
+		"is_active":     false,
+		"next_due_date": nil,
+		"status":        chModel.ChoreStatusNoStatus,
+		"sync_version":  version,
+	}).Error
+	return version, err
 }

@@ -160,6 +160,7 @@ type FrequencyMetadata struct {
 	WeekNumbers []int        `json:"weekNumbers,omitempty"` // DEPRECATED: use Occurrences instead
 	Occurrences []*int       `json:"occurrences,omitempty"` // e.g. ["1","3","last"] for 1st, 3rd, and last occurrence of the day
 	Slots       []Slot       `json:"slots,omitempty"`       // Times of day a daily task is done at, each one on its own
+	Day         string       `json:"day,omitempty"`         // "2006-01-02": the day of a one-time task done at several times, in the family's time zone
 }
 
 // Slot is one of the times of day a task is done at, such as brushing teeth
