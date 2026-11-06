@@ -20,7 +20,7 @@ import {
   routineStepOf,
   stepMoment,
 } from '../../utils/routines'
-import { todaySlots } from '../../utils/taskSlots'
+import { faceOf, todaySlots } from '../../utils/taskSlots'
 import { CopyFace } from './TaskGroupRow'
 
 // A routine under way, above the list: one line per child with the step to do
@@ -121,9 +121,43 @@ StepName.propTypes = {
   muted: PropTypes.bool,
 }
 
-// The face to tick a step to do now, or to approve it once ticked.
-const StepFace = ({ canApprove, chore, disabled, member, onAction }) => {
+// The face to tick a step to do now, or to approve it once ticked. A task of
+// several moments says it in its moments: the one open now is ticked, one
+// waiting for a parent shows the clock and is approved by a parent.
+const StepFace = ({
+  canApprove,
+  chore,
+  disabled,
+  member,
+  mine,
+  onAction,
+  onSlot,
+  slots,
+}) => {
   const { t } = useTranslation('chores')
+  if (slots?.length) {
+    const face = faceOf(slots, canApprove, mine)
+    const slot = face.slot
+    const moment = slot ? slot.name || slot.time : ''
+    return (
+      <CopyFace
+        disabled={disabled}
+        label={t(`slots.face.${face.state}`, {
+          label: `${member.displayName || ''} · ${moment}`.trim(),
+        })}
+        member={member}
+        onClick={
+          face.action && slot
+            ? event => {
+                event.stopPropagation()
+                onSlot(chore, member)(face.action, slot)
+              }
+            : undefined
+        }
+        state={face.state}
+      />
+    )
+  }
   const pending = chore.status === PENDING_APPROVAL
   return (
     <CopyFace
@@ -149,7 +183,10 @@ StepFace.propTypes = {
   chore: PropTypes.object.isRequired,
   disabled: PropTypes.bool,
   member: PropTypes.object.isRequired,
+  mine: PropTypes.bool,
   onAction: PropTypes.func.isRequired,
+  onSlot: PropTypes.func,
+  slots: PropTypes.array,
 }
 
 const StepLine = ({
@@ -157,8 +194,11 @@ const StepLine = ({
   chore,
   disabled,
   member,
+  mine,
   moment,
   onAction,
+  onSlot,
+  slots,
 }) => (
   <Box sx={{ alignItems: 'center', display: 'flex', gap: 1.25 }}>
     <StepName chore={chore}>
@@ -169,7 +209,10 @@ const StepLine = ({
       chore={chore}
       disabled={disabled}
       member={member}
+      mine={mine}
       onAction={onAction}
+      onSlot={onSlot}
+      slots={slots}
     />
   </Box>
 )
@@ -179,8 +222,11 @@ StepLine.propTypes = {
   chore: PropTypes.object.isRequired,
   disabled: PropTypes.bool,
   member: PropTypes.object.isRequired,
+  mine: PropTypes.bool,
   moment: PropTypes.object,
   onAction: PropTypes.func.isRequired,
+  onSlot: PropTypes.func,
+  slots: PropTypes.array,
 }
 
 // A missed step: greyed, with a turning arrow on the face that only a parent
@@ -222,6 +268,7 @@ const ChildLine = ({
   next,
   onAction,
   onCatchUp,
+  onSlot,
   openSteps,
   progress,
   slotsOf,
@@ -245,6 +292,12 @@ const ChildLine = ({
     }))
     .filter(entry => entry.chore)
   const momentOf = (chore, item) => stepMoment(item, slotsOf(chore))
+  // A step about one moment of a task is that moment's: its face says how
+  // that one stands, not the task's other moments.
+  const stepSlots = chore => {
+    const slotId = routineItemOf(progress, chore.id)?.slotId
+    return slotsOf(chore).filter(slot => !slotId || slot.slotId === slotId)
+  }
   const count = progress.finished
     ? t('routineBlock.finished')
     : coming
@@ -273,8 +326,11 @@ const ChildLine = ({
       chore={chore}
       disabled={member.userId !== actingUserId && !canApprove}
       member={member}
+      mine={member.userId === actingUserId}
       moment={momentOf(chore, routineItemOf(progress, chore.id))}
       onAction={onAction}
+      onSlot={onSlot}
+      slots={stepSlots(chore)}
     />
   )
   const missedLines = missed.map(({ chore, item }) => (
@@ -363,7 +419,10 @@ const ChildLine = ({
         chore={only}
         disabled={member.userId !== actingUserId && !canApprove}
         member={member}
+        mine={member.userId === actingUserId}
         onAction={onAction}
+        onSlot={onSlot}
+        slots={stepSlots(only)}
       />
     </Box>
   )
@@ -377,6 +436,7 @@ ChildLine.propTypes = {
   next: PropTypes.string,
   onAction: PropTypes.func.isRequired,
   onCatchUp: PropTypes.func.isRequired,
+  onSlot: PropTypes.func.isRequired,
   openSteps: PropTypes.array.isRequired,
   progress: PropTypes.object.isRequired,
   slotsOf: PropTypes.func.isRequired,
@@ -434,6 +494,37 @@ const RoutineBlock = ({
   const actingUserId = impersonatedUser?.userId || userProfile?.id
   const acting = members.find(member => member.userId === actingUserId)
   const canApprove = acting?.role === 'admin' || acting?.role === 'manager'
+  // What a touch on a step's face does for a task of several moments: a parent
+  // ticks the open one at once, a child's own tick may wait for a parent, and
+  // a parent approves or rejects a waiting one.
+  const onSlot = (chore, member) => async (action, slot) => {
+    try {
+      let response
+      if (action === 'tick' && !canApprove) {
+        const self = impersonatedUser
+          ? { completedBy: impersonatedUser.userId }
+          : null
+        response = await MarkChoreComplete(chore.id, self, null, null)
+      } else {
+        response = await SlotAction(
+          chore.id,
+          slot.index,
+          action === 'tick' ? 'catchup' : action,
+          action === 'tick' || action === 'catchup'
+            ? { completedBy: member.userId }
+            : undefined,
+        )
+      }
+      if (!response?.ok) {
+        const body = await response?.json().catch(() => null)
+        showError({ title: t('slots.failed'), message: body?.error || '' })
+      }
+    } catch {
+      showError({ title: t('slots.failed'), message: '' })
+    } finally {
+      refresh()
+    }
+  }
   const window = routine.window || ''
   const coming = window === 'upcoming'
   const over =
@@ -551,6 +642,7 @@ const RoutineBlock = ({
               }
               onAction={onAction}
               onCatchUp={onCatchUp}
+              onSlot={onSlot}
               openSteps={openStepsOf(progress.userId)}
               progress={progress}
               slotsOf={slotsOf}
