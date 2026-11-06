@@ -337,3 +337,60 @@ export const emptyRoutineDraft = () => ({
   optionalStepIds: [],
   dependencies: [],
 })
+
+// A routine is under way for a child when a step is there to do now and the
+// routine is not finished. The home page shows these routines in their own
+// block, above the list.
+const underWay = progress =>
+  !progress.finished &&
+  ((progress.current ?? null) !== null || (progress.available || []).length > 0)
+
+// activeRoutines lists the routines under way for at least one of the given
+// children (all of them when userIds is not given), each with the progress of
+// the children it is for. A child who already finished stays in the block
+// while the others are still going.
+export const activeRoutines = (routines, userIds) =>
+  (routines || [])
+    .map(routine => ({
+      ...routine,
+      members: (routine.members || []).filter(
+        progress => !userIds || userIds.includes(progress.userId),
+      ),
+    }))
+    .filter(routine => routine.members.some(underWay))
+
+// isActiveStep tells whether a task is the step to do now of a routine under
+// way: such a task shows in the routine's block, not in the list.
+export const isActiveStep = (active, chore) =>
+  Boolean(active?.length) && Boolean(routineStepOf(active, chore))
+
+// routineEndsAt is when a routine under way closes: the latest end among the
+// children's runs, or null when the routine has no time limit today.
+export const routineEndsAt = routine => {
+  const ends = (routine.members || [])
+    .map(progress => progress.occurrence?.expiresAt)
+    .filter(Boolean)
+    .map(value => new Date(value))
+  if (!ends.length) return null
+  return new Date(Math.max(...ends.map(end => end.getTime())))
+}
+
+// nextStepName is the step that comes after the current one for a child,
+// by name, or '' when the current step is the last one.
+export const nextStepName = (routine, progress, chores) => {
+  const available = new Set(progress.available || [])
+  if ((progress.current ?? null) !== null) available.add(progress.current)
+  const items = progress.occurrence?.items
+  if (items?.length) {
+    const next = [...items]
+      .sort((a, b) => a.position - b.position)
+      .find(item => item.status === 'pending' && !available.has(item.choreId))
+    return next?.choreName || ''
+  }
+  const ids = routine.choreIds || []
+  const nameOf = id => (chores || []).find(chore => chore.id === id)?.name
+  const currentName = taskKey(nameOf(progress.current))
+  const index = ids.findIndex(id => taskKey(nameOf(id)) === currentName)
+  if (index < 0) return ''
+  return nameOf(ids[index + 1]) || ''
+}

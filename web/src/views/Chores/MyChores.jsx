@@ -41,7 +41,11 @@ import {
 import { familyDay, fromPickedDay, pickedDay } from '../../utils/familyTime'
 import { INSIGHT_FILTER_DEFS } from '../../utils/insightFilters'
 import { awayMemberIds, waitsForAbsent } from '../../utils/presence.js'
-import { withoutWaitingSteps } from '../../utils/routines.js'
+import {
+  activeRoutines,
+  isActiveStep,
+  withoutWaitingSteps,
+} from '../../utils/routines.js'
 import { pullCopiesTogether } from '../../utils/taskSlots'
 import TaskInput from '../components/AddTaskModal'
 import CalendarDual from '../components/CalendarDual'
@@ -64,6 +68,7 @@ import { useChoreModals } from './hooks/useChoreModals'
 import { useCustomFilters } from './hooks/useCustomFilters'
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
 import { useMultiSelect } from './hooks/useMultiSelect'
+import RoutineBlock from './RoutineBlock'
 import TodayPanel from './TodayPanel'
 import ViewAsPills from './ViewAsPills'
 
@@ -361,20 +366,55 @@ const MyChores = () => {
     return sortedChores
   }, [choresData?.res, membersData?.res, impersonatedUser, routines])
 
+  // The routines under way show in their own block above the list, with the
+  // steps to do now; those steps leave the list meanwhile.
+  const underWay = useMemo(
+    () =>
+      activeRoutines(
+        routines,
+        impersonatedUser ? [impersonatedUser.userId] : undefined,
+      ),
+    [routines, impersonatedUser],
+  )
+
+  const filteredForList = useMemo(() => {
+    // Determine which chores to group based on active filter type
+    if (tempFilter) return customFilteredChores // Advanced/custom filter
+    if (hasQuickFilters) return quickFilteredChores // Due date, labels
+    return chores
+  }, [
+    chores,
+    customFilteredChores,
+    hasQuickFilters,
+    quickFilteredChores,
+    tempFilter,
+  ])
+
+  const routineSteps = useMemo(() => {
+    const assigneeFilter = ChoreFilters(
+      impersonatedUser?.userId || userProfile?.id,
+    )[selectedChoreFilter]
+    return filteredForList.filter(
+      chore =>
+        isActiveStep(underWay, chore) &&
+        (!assigneeFilter || assigneeFilter(chore)),
+    )
+  }, [
+    filteredForList,
+    underWay,
+    impersonatedUser?.userId,
+    userProfile?.id,
+    selectedChoreFilter,
+  ])
+
   const choreSections = useMemo(() => {
     if (!chores.length || !userProfile?.id) {
       return []
     }
 
-    // Determine which chores to group based on active filter type
-    let choresToGroup = chores
-    if (tempFilter) {
-      // Advanced/custom filter active
-      choresToGroup = customFilteredChores
-    } else if (hasQuickFilters) {
-      // Quick filter active (Due date, Labels)
-      choresToGroup = quickFilteredChores
-    }
+    const choresToGroup = filteredForList.filter(
+      chore => !isActiveStep(underWay, chore),
+    )
 
     const sections = ChoresGrouper(
       selectedChoreSection,
@@ -400,10 +440,8 @@ const MyChores = () => {
     )
   }, [
     chores,
-    quickFilteredChores,
-    customFilteredChores,
-    tempFilter,
-    hasQuickFilters,
+    filteredForList,
+    underWay,
     selectedChoreSection,
     selectedChoreFilter,
     choreSortBy,
@@ -879,9 +917,9 @@ const MyChores = () => {
     () =>
       choreSections.reduce(
         (total, section) => total + (section.content?.length || 0),
-        0,
+        routineSteps.length,
       ),
-    [choreSections],
+    [choreSections, routineSteps.length],
   )
 
   const clearNarrowing = () => {
@@ -1179,6 +1217,28 @@ const MyChores = () => {
             )}
           </>
         )}
+        {searchTerm.length === 0 &&
+          viewMode !== 'calendar' &&
+          underWay.map(routine => (
+            <RoutineBlock
+              key={routine.id}
+              allChores={choresData?.res || []}
+              chores={routineSteps}
+              members={membersData?.res || []}
+              routine={routine}
+              listProps={{
+                viewMode,
+                membersData,
+                userLabels,
+                handleLabelFiltering,
+                handleChoreAction,
+                isMultiSelectMode,
+                selectedChores,
+                toggleChoreSelection,
+                onLongPressChore: enterMultiSelectWithChore,
+              }}
+            />
+          ))}
         {searchTerm.length === 0 && viewMode !== 'calendar' && (
           <AccordionGroup transition='0.2s ease' disableDivider>
             {choreSections.map((section, index) => {

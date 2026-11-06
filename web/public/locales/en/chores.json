@@ -1242,6 +1242,13 @@
     "skip": "Skip this step",
     "skipFailed": "The step could not be skipped."
   },
+  "routineBlock": {
+    "at": "Step {{step}}/{{total}}",
+    "label": "Routine “{{name}}” under way",
+    "until": "until {{time}}",
+    "next": "Next: {{name}}",
+    "finished": "Done"
+  },
   "todayPanel": {
     "label": "Today at a glance",
     "away": "Away",
