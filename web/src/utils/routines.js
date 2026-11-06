@@ -138,17 +138,26 @@ export const orderModeOf = (dependencies, count) => {
   return sameEdges(edges, chainDependencies(count)) ? 'sequence' : 'custom'
 }
 
+// draftOrderMode is the order the editor shows. A custom order that still
+// looks like a sequence (or like a free order) stays custom once chosen.
+export const draftOrderMode = draft => {
+  const count = draft.choreIds.length
+  if (draft.orderMode === 'custom' && count > 1) return 'custom'
+  return orderModeOf(draft.dependencies, count)
+}
+
 // withOrder applies an order to a draft. Going to 'custom' starts from the
 // order it had, to be changed step by step.
 export const withOrder = (draft, mode) => {
   const count = draft.choreIds.length
   if (mode === 'sequence') {
-    return { ...draft, dependencies: chainDependencies(count) }
+    return { ...draft, orderMode: mode, dependencies: chainDependencies(count) }
   }
-  if (mode === 'free') return { ...draft, dependencies: [] }
-  const current = orderModeOf(draft.dependencies, count)
+  if (mode === 'free') return { ...draft, orderMode: mode, dependencies: [] }
+  const current = draftOrderMode(draft)
   return {
     ...draft,
+    orderMode: 'custom',
     dependencies:
       current === 'free'
         ? []
@@ -169,7 +178,7 @@ const remapped = (draft, choreIds, slotIds, places) => {
   const optionalStepIds = (draft.optionalStepIds || [])
     .map(place)
     .filter(Boolean)
-  const mode = orderModeOf(draft.dependencies, draft.choreIds.length)
+  const mode = draftOrderMode(draft)
   return {
     ...draft,
     choreIds,
@@ -224,7 +233,7 @@ export const removeStepAt = (draft, index) => {
 export const addSteps = (draft, entries) => {
   const room = MAX_ROUTINE_STEPS - draft.choreIds.length
   const added = entries.slice(0, Math.max(0, room))
-  const mode = orderModeOf(draft.dependencies, draft.choreIds.length)
+  const mode = draftOrderMode(draft)
   const next = {
     ...draft,
     choreIds: [...draft.choreIds, ...added.map(entry => entry.choreId)],

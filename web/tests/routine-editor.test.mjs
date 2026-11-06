@@ -5,6 +5,7 @@ import {
   addSteps,
   chainDependencies,
   draftFromRoutine,
+  draftOrderMode,
   loopingPrerequisites,
   moveStepTo,
   orderModeOf,
@@ -44,6 +45,22 @@ test('choosing an order sets the dependencies', () => {
     withOrder(withOrder(base, 'free'), 'custom').dependencies,
     [],
   )
+})
+
+test('choosing the custom order keeps it chosen', () => {
+  const fromSequence = withOrder(draft([10, 11, 12]), 'custom')
+  assert.equal(draftOrderMode(fromSequence), 'custom')
+  const fromFree = withOrder(withOrder(draft([10, 11, 12]), 'free'), 'custom')
+  assert.equal(draftOrderMode(fromFree), 'custom')
+  assert.equal(draftOrderMode(withOrder(fromFree, 'sequence')), 'sequence')
+  // Changing a step keeps the custom order, even back to a chain.
+  const opened = setPrerequisites(fromSequence, 2, [])
+  assert.equal(draftOrderMode(opened), 'custom')
+  assert.equal(draftOrderMode(setPrerequisites(opened, 2, [1])), 'custom')
+  // Moving a step in a custom order keeps each step's own prerequisites.
+  const moved = moveStepTo(opened, 2, 0)
+  assert.equal(draftOrderMode(moved), 'custom')
+  assert.deepEqual(moved.dependencies, [{ stepId: 1, dependsOnStepId: 3 }])
 })
 
 test('moving a step in a sequence keeps the sequence', () => {
