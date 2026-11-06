@@ -604,7 +604,8 @@
     "create": "Créer",
     "createAnother": "Créer une autre",
     "createAndAddAnother": "Créer et en ajouter une autre",
-    "createAndClose": "Créer et fermer"
+    "createAndClose": "Créer et fermer",
+    "moreOptions": "Plus d'options"
   },
   "repeat": {
     "days": {

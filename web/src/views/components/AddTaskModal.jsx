@@ -15,6 +15,7 @@ import moment from 'moment'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { flushSync } from 'react-dom'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 
 import KeyboardShortcutHint from '../../components/common/KeyboardShortcutHint'
 import ModalActions from '../../components/common/ModalActions'
@@ -132,6 +133,7 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
     useFamilyMembers()
   const createChoreMutation = useCreateChore()
   const queryClient = useQueryClient()
+  const navigate = useNavigate()
 
   const { data: userProfile } = useUserProfile()
 
@@ -725,6 +727,16 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
     setContinuousMode(false)
   }
 
+  // Opens the full editor with what was already typed, so nothing is lost
+  // when the quick add turns out to be too short for the task.
+  const openFullEditor = () => {
+    const name = (taskTitle || taskText || '').trim()
+    const state = { fromQuickAdd: true, name }
+    if (hasDescription && description) state.description = description
+    handleCloseModal()
+    navigate('/chores/create', { state })
+  }
+
   const createChore = (andContinue = false) => {
     // Handle different assignee scenarios
     let finalAssignees = assignees
@@ -877,6 +889,14 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
         title={t('addTask.title')}
         footer={
           <ModalActions>
+            <Button
+              variant='plain'
+              color='neutral'
+              onClick={openFullEditor}
+              sx={{ mr: 'auto', px: 1 }}
+            >
+              {t('addTask.moreOptions')}
+            </Button>
             <Button
               variant='outlined'
               color='neutral'
