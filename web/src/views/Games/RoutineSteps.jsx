@@ -157,7 +157,14 @@ const StepRow = ({ chore, draft, id, index, names, setDraft }) => {
             </Chip>
             {draft.choreIds.map((otherId, otherIndex) => {
               const other = otherIndex + 1
-              if (otherIndex === index || looping.has(other)) return null
+              // Only the steps before, and a later one this step still waits for.
+              if (
+                otherIndex === index ||
+                looping.has(other) ||
+                (otherIndex > index && !prerequisites.includes(other))
+              ) {
+                return null
+              }
               const on = prerequisites.includes(other)
               return (
                 <Chip

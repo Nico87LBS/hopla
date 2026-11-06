@@ -152,3 +152,46 @@ test('routine hours are both or none, the end after the start', () => {
   )
   assert.equal(routineHoursError({ startsAt: '07:00', endsAt: '08:30' }), '')
 })
+
+test('une routine sans rien à cocher se réduit, couleur selon son état', async () => {
+  const { settledRoutine } = await import('../src/utils/routines.js')
+  // Un enfant a fini : verte.
+  assert.deepEqual(
+    settledRoutine([{ finished: true, missed: 0, states: [] }]),
+    {
+      tone: 'green',
+      pending: 0,
+      missed: 0,
+    },
+  )
+  // Étapes à valider par un parent : orange.
+  assert.deepEqual(
+    settledRoutine([
+      { finished: false, missed: 0, states: ['pending', 'pending'] },
+    ]),
+    { tone: 'orange', pending: 2, missed: 0 },
+  )
+  // Étape manquée : rouge, même avec une étape à valider.
+  assert.equal(
+    settledRoutine([{ finished: false, missed: 1, states: ['pending'] }]).tone,
+    'red',
+  )
+  // Une étape à cocher, ou une étape qui attend la précédente : pas réduite.
+  assert.equal(
+    settledRoutine([{ finished: false, missed: 0, states: ['todo'] }]),
+    null,
+  )
+  assert.equal(
+    settledRoutine([{ finished: false, missed: 0, states: [] }]),
+    null,
+  )
+  // Un enfant a encore à faire : pas réduite.
+  assert.equal(
+    settledRoutine([
+      { finished: true, missed: 0, states: [] },
+      { finished: false, missed: 0, states: ['open'] },
+    ]),
+    null,
+  )
+  assert.equal(settledRoutine([]), null)
+})

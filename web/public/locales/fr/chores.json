@@ -1276,7 +1276,11 @@
     "first": "Première étape : {{name}}",
     "startsAt": "commence à {{time}}",
     "endedAt": "finie à {{time}}",
-    "labelComing": "Routine « {{name}} » à venir"
+    "labelComing": "Routine « {{name}} » à venir",
+    "toApprove_one": "{{count}} à valider",
+    "toApprove_other": "{{count}} à valider",
+    "labelSettled": "Routine « {{name}} » réduite, toucher pour l’ouvrir",
+    "collapse": "Réduire la routine « {{name}} »"
   },
   "todayPanel": {
     "label": "Résumé du jour",

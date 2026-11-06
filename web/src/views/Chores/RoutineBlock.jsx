@@ -1,7 +1,19 @@
-import { FormatListNumberedRounded } from '@mui/icons-material'
-import { Box, LinearProgress, Sheet, Stack, Typography } from '@mui/joy'
+import {
+  ExpandLessRounded,
+  ExpandMoreRounded,
+  FormatListNumberedRounded,
+} from '@mui/icons-material'
+import {
+  Box,
+  IconButton,
+  LinearProgress,
+  Sheet,
+  Stack,
+  Typography,
+} from '@mui/joy'
 import { useQueryClient } from '@tanstack/react-query'
 import PropTypes from 'prop-types'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
@@ -18,6 +30,7 @@ import {
   routineEndsAt,
   routineItemOf,
   routineStepOf,
+  settledRoutine,
   stepMoment,
 } from '../../utils/routines'
 import { faceOf, todaySlots } from '../../utils/taskSlots'
@@ -40,6 +53,32 @@ const TONES = {
   neutral: { bg: 'background.level1', color: 'text.secondary' },
   late: { bg: HOPLA.carrotSoft, color: HOPLA.carrotText },
   missed: { bg: HOPLA.redSoft, color: HOPLA.red },
+}
+
+// How a routine stands, as colours: green (all done), orange (late, or steps
+// waiting for a parent), red (steps missed).
+const STATES = {
+  green: {
+    border: HOPLA.green,
+    dark: '#8FD9AA',
+    glow: 'rgba(35, 147, 79, 0.18)',
+    soft: HOPLA.greenSoft,
+    text: HOPLA.greenText,
+  },
+  orange: {
+    border: HOPLA.carrot,
+    dark: '#FFB48A',
+    glow: 'rgba(255, 122, 47, 0.16)',
+    soft: HOPLA.carrotSoft,
+    text: HOPLA.carrotText,
+  },
+  red: {
+    border: HOPLA.red,
+    dark: '#FF9E94',
+    glow: 'rgba(180, 35, 24, 0.18)',
+    soft: HOPLA.redSoft,
+    text: HOPLA.red,
+  },
 }
 
 const MomentPill = ({ missed, moment }) => {
@@ -525,6 +564,7 @@ const RoutineBlock = ({
       refresh()
     }
   }
+  const [expanded, setExpanded] = useState(false)
   const window = routine.window || ''
   const coming = window === 'upcoming'
   const over =
@@ -543,22 +583,97 @@ const RoutineBlock = ({
     ) ||
     coming
   if (!visible) return null
+  // Nothing left for a child to tick: one line, its colour saying how it
+  // stands. A touch opens the block, to approve or catch steps up.
+  const settled = coming
+    ? null
+    : settledRoutine(
+        routine.members.map(progress => ({
+          finished: progress.finished,
+          missed: (progress.missed || []).length,
+          states: openStepsOf(progress.userId).map(chore => {
+            const slotId = routineItemOf(progress, chore.id)?.slotId
+            const slots = slotsOf(chore).filter(
+              slot => !slotId || slot.slotId === slotId,
+            )
+            if (slots.length) {
+              return faceOf(slots, canApprove, progress.userId === actingUserId)
+                .state
+            }
+            return chore.status === PENDING_APPROVAL ? 'pending' : 'todo'
+          }),
+        })),
+      )
+  const collapsed = Boolean(settled) && !expanded
   const clock = date =>
     new Intl.DateTimeFormat(i18n.language, {
       hour: 'numeric',
       minute: '2-digit',
     }).format(date)
-  const color = coming
-    ? 'text.secondary'
-    : over
-      ? HOPLA.carrotText
-      : HOPLA.greenText
+  const tone = STATES[settled ? settled.tone : over ? 'orange' : 'green']
+  const color = coming ? 'text.secondary' : tone.text
   const headRight = coming
     ? routine.opensAt &&
       t('routineBlock.startsAt', { time: clock(new Date(routine.opensAt)) })
     : over
       ? endsAt && t('routineBlock.endedAt', { time: clock(endsAt) })
       : endsAt && t('routineBlock.until', { time: clock(endsAt) })
+  if (collapsed) {
+    const summary = [
+      settled.missed &&
+        t('routineBlock.missedCount', { count: settled.missed }),
+      settled.pending &&
+        t('routineBlock.toApprove', { count: settled.pending }),
+    ]
+      .filter(Boolean)
+      .join(' · ')
+    return (
+      <Sheet
+        aria-expanded={false}
+        aria-label={t('routineBlock.labelSettled', { name: routine.name })}
+        component='button'
+        onClick={() => setExpanded(true)}
+        sx={theme => ({
+          alignItems: 'center',
+          background: tone.soft,
+          border: '2px solid',
+          borderColor: tone.border,
+          borderRadius: 'xl',
+          color: tone.text,
+          cursor: 'pointer',
+          display: 'flex',
+          font: 'inherit',
+          gap: 0.75,
+          mb: 2,
+          mt: 0.5,
+          px: 1.5,
+          py: 0.75,
+          textAlign: 'left',
+          width: '100%',
+          [theme.getColorSchemeSelector('dark')]: {
+            background: 'transparent',
+            color: tone.dark,
+          },
+        })}
+      >
+        <FormatListNumberedRounded sx={{ fontSize: 20 }} />
+        <Typography
+          level='title-md'
+          noWrap
+          sx={{ color: 'inherit', flex: 1, fontWeight: 800 }}
+        >
+          {routine.name}
+        </Typography>
+        <Typography
+          level='body-xs'
+          sx={{ color: 'inherit', fontWeight: 700, whiteSpace: 'nowrap' }}
+        >
+          {summary || t('routineBlock.finished')}
+        </Typography>
+        <ExpandMoreRounded sx={{ fontSize: 20 }} />
+      </Sheet>
+    )
+  }
   return (
     <Sheet
       aria-label={t(
@@ -571,13 +686,9 @@ const RoutineBlock = ({
       sx={theme => ({
         background: coming
           ? 'var(--joy-palette-background-level1)'
-          : `linear-gradient(${over ? HOPLA.carrotSoft : HOPLA.greenSoft}, transparent 140px)`,
+          : `linear-gradient(${tone.soft}, transparent 140px)`,
         border: '2px',
-        borderColor: coming
-          ? 'neutral.outlinedBorder'
-          : over
-            ? HOPLA.carrot
-            : HOPLA.green,
+        borderColor: coming ? 'neutral.outlinedBorder' : tone.border,
         borderStyle: coming ? 'dashed' : 'solid',
         borderRadius: 'xl',
         display: 'flex',
@@ -589,9 +700,7 @@ const RoutineBlock = ({
         [theme.getColorSchemeSelector('dark')]: {
           background: coming
             ? 'transparent'
-            : over
-              ? 'linear-gradient(rgba(255, 122, 47, 0.16), transparent 140px)'
-              : 'linear-gradient(rgba(35, 147, 79, 0.18), transparent 140px)',
+            : `linear-gradient(${tone.glow}, transparent 140px)`,
         },
       })}
     >
@@ -602,7 +711,7 @@ const RoutineBlock = ({
           display: 'flex',
           gap: 0.75,
           [theme.getColorSchemeSelector('dark')]: {
-            color: coming ? undefined : over ? '#FFB48A' : '#8FD9AA',
+            color: coming ? undefined : tone.dark,
           },
         })}
       >
@@ -621,6 +730,18 @@ const RoutineBlock = ({
           >
             {headRight}
           </Typography>
+        )}
+        {settled && (
+          <IconButton
+            aria-expanded
+            aria-label={t('routineBlock.collapse', { name: routine.name })}
+            color='neutral'
+            onClick={() => setExpanded(false)}
+            size='sm'
+            variant='plain'
+          >
+            <ExpandLessRounded />
+          </IconButton>
         )}
       </Box>
       <Stack sx={{ gap: 1.5 }}>

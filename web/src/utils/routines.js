@@ -411,6 +411,31 @@ export const activeRoutines = (routines, userIds) =>
       ),
     )
 
+// settledRoutine tells whether a routine has nothing left for a child to tick:
+// each child is finished, or has only steps waiting for a parent's approval,
+// or missed ones to catch up. It gives how it stands, for the one line it is
+// shown as: green (all done), orange (steps to approve), red (steps missed),
+// or null while a child still has something to do or to wait for.
+// `members` is [{ finished, missed, states }] with `states` the face of each
+// open step ('pending' when it waits for approval).
+export const settledRoutine = members => {
+  if (!members?.length) return null
+  let pending = 0
+  let missed = 0
+  for (const member of members) {
+    const steps = member.states || []
+    const waiting = !member.finished && !steps.length && !member.missed
+    if (waiting || steps.some(state => state !== 'pending')) return null
+    pending += steps.length
+    missed += member.missed || 0
+  }
+  return {
+    tone: missed ? 'red' : pending ? 'orange' : 'green',
+    pending,
+    missed,
+  }
+}
+
 // isActiveStep tells whether a task is the step to do now of a routine under
 // way: such a task shows in the routine's block, not in the list.
 export const isActiveStep = (active, chore) =>
