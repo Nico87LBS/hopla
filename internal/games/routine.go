@@ -21,6 +21,12 @@ type Routine struct {
 	Name            string `json:"name" gorm:"column:name;not null"`
 	Bonus           int    `json:"bonus" gorm:"column:bonus;not null;default:0"`
 	ValidityMinutes int    `json:"validityMinutes" gorm:"column:validity_minutes;not null;default:720"`
+	// StartsAt and EndsAt are the routine's hours, "15:04" in the family's
+	// time zone: it opens at the first and closes at the second, every day one
+	// of its steps is due. Without them, a run opens as soon as a step is due
+	// and lasts ValidityMinutes.
+	StartsAt string `json:"startsAt" gorm:"column:starts_at;size:5;not null;default:''"`
+	EndsAt   string `json:"endsAt" gorm:"column:ends_at;size:5;not null;default:''"`
 	// ChoreIDs are the steps in order. A step stands for every task with the
 	// same name, so each child's copy of a task is the same step.
 	ChoreIDs         []int               `json:"choreIds" gorm:"-"`
@@ -73,6 +79,10 @@ type RoutineProgress struct {
 	Total      int                `json:"total"`
 	Finished   bool               `json:"finished"`
 	Occurrence *RoutineOccurrence `json:"occurrence,omitempty"`
+	// Missed are the tasks of the steps whose moment, or the routine itself,
+	// is over without them being done: the child cannot tick them any more,
+	// a parent can catch them up until midnight.
+	Missed []int `json:"missed"`
 }
 
 // RoutineView is a routine with every task it covers and each member's
@@ -82,6 +92,13 @@ type RoutineView struct {
 	// TaskIDs are the tasks of every step, each child's copy included.
 	TaskIDs []int             `json:"taskIds"`
 	Members []RoutineProgress `json:"members"`
+	// Window is where a routine with hours stands today: "upcoming" in the
+	// hour before it opens, "open", then "over" until midnight; "closed"
+	// earlier in the day, and empty for a routine without hours.
+	Window string `json:"window,omitempty"`
+	// OpensAt and ClosesAt are today's hours of a routine that has them.
+	OpensAt  *time.Time `json:"opensAt,omitempty"`
+	ClosesAt *time.Time `json:"closesAt,omitempty"`
 }
 
 const maxRoutineSteps = 20
@@ -93,6 +110,7 @@ var (
 	ErrRoutineTaskTaken = errors.New("a task is already in another routine")
 	ErrRoutineTask      = errors.New("a task of the routine is not in the family")
 	ErrRoutineSlot      = errors.New("a routine references a slot that does not exist on every copy of the task")
+	ErrRoutineHours     = errors.New("a routine starts and ends on the same day, the end after the start")
 )
 
 // Routines returns a family's routines with their steps, oldest first.
@@ -169,6 +187,9 @@ func SaveRoutine(db *gorm.DB, routine *Routine) error {
 	}
 	if len(routine.ChoreIDs) > maxRoutineSteps {
 		return ErrRoutineTooLong
+	}
+	if err := checkRoutineHours(routine); err != nil {
+		return err
 	}
 	if len(routine.SlotIDs) != len(routine.ChoreIDs) {
 		// Older clients may omit slot IDs, or may edit a legacy whole-task
@@ -284,7 +305,7 @@ func SaveRoutine(db *gorm.DB, routine *Routine) error {
 			}
 		} else {
 			if err := tx.Model(&Routine{}).Where("id = ? AND family_id = ?", routine.ID, routine.FamilyID).
-				Updates(map[string]any{"name": routine.Name, "bonus": routine.Bonus, "validity_minutes": routine.ValidityMinutes, "graph_enabled": routine.GraphEnabled, "updated_at": time.Now().UTC()}).Error; err != nil {
+				Updates(map[string]any{"name": routine.Name, "bonus": routine.Bonus, "validity_minutes": routine.ValidityMinutes, "starts_at": routine.StartsAt, "ends_at": routine.EndsAt, "graph_enabled": routine.GraphEnabled, "updated_at": time.Now().UTC()}).Error; err != nil {
 				return err
 			}
 			if err := tx.Where("routine_id = ?", routine.ID).Delete(&RoutineDependency{}).Error; err != nil {
@@ -421,16 +442,21 @@ type routineDay struct {
 	// doneBy holds, per member, the tasks they completed today.
 	doneBy      map[int]map[int]bool
 	doneSlotsBy map[int]map[int]map[string]bool
-	away        map[int]bool
-	start       time.Time
-	end         time.Time
+	// waitingSlotsBy holds, per member, the slots they ticked today that
+	// wait for a parent.
+	waitingSlotsBy map[int]map[int]map[string]bool
+	away           map[int]bool
+	now            time.Time
+	start          time.Time
+	end            time.Time
 }
 
 func loadRoutineDay(db *gorm.DB, familyID int, taskIDs []int, now time.Time) (*routineDay, error) {
 	loc := zone.Of(familyID)
 	localNow := now.In(loc)
 	start := time.Date(localNow.Year(), localNow.Month(), localNow.Day(), 0, 0, 0, 0, loc)
-	day := &routineDay{chores: map[int]*chModel.Chore{}, doneBy: map[int]map[int]bool{}, doneSlotsBy: map[int]map[int]map[string]bool{}, start: start, end: endOfDay(now, loc)}
+	day := &routineDay{chores: map[int]*chModel.Chore{}, doneBy: map[int]map[int]bool{}, doneSlotsBy: map[int]map[int]map[string]bool{},
+		waitingSlotsBy: map[int]map[int]map[string]bool{}, start: start, end: endOfDay(now, loc), now: now}
 	if len(taskIDs) == 0 {
 		return day, nil
 	}
@@ -442,27 +468,30 @@ func loadRoutineDay(db *gorm.DB, familyID int, taskIDs []int, now time.Time) (*r
 		day.chores[chore.ID] = chore
 	}
 	var done []chModel.ChoreHistory
-	if err := db.Select("chore_id", "completed_by", "slot_id").
-		Where("chore_id IN ? AND status = ? AND performed_at >= ?", taskIDs, chModel.ChoreHistoryStatusCompleted, day.start).
+	if err := db.Select("chore_id", "completed_by", "slot_id", "slot", "status").
+		Where("chore_id IN ? AND status IN ? AND performed_at >= ?", taskIDs,
+			[]chModel.ChoreHistoryStatus{chModel.ChoreHistoryStatusCompleted, chModel.ChoreHistoryStatusPendingApproval}, day.start).
 		Find(&done).Error; err != nil {
 		return nil, err
 	}
 	for _, row := range done {
+		if row.Status == chModel.ChoreHistoryStatusPendingApproval {
+			if slotID := historySlotID(row, day.chores[row.ChoreID]); slotID != "" {
+				if day.waitingSlotsBy[row.CompletedBy] == nil {
+					day.waitingSlotsBy[row.CompletedBy] = map[int]map[string]bool{}
+				}
+				if day.waitingSlotsBy[row.CompletedBy][row.ChoreID] == nil {
+					day.waitingSlotsBy[row.CompletedBy][row.ChoreID] = map[string]bool{}
+				}
+				day.waitingSlotsBy[row.CompletedBy][row.ChoreID][slotID] = true
+			}
+			continue
+		}
 		if day.doneBy[row.CompletedBy] == nil {
 			day.doneBy[row.CompletedBy] = map[int]bool{}
 		}
 		day.doneBy[row.CompletedBy][row.ChoreID] = true
-		slotID := ""
-		if row.SlotID != nil {
-			slotID = *row.SlotID
-		}
-		if slotID == "" && row.Slot != nil {
-			if chore := day.chores[row.ChoreID]; chore != nil && chore.FrequencyMetadataV2 != nil &&
-				*row.Slot >= 0 && *row.Slot < len(chore.FrequencyMetadataV2.Slots) {
-				slotID = chore.FrequencyMetadataV2.Slots[*row.Slot].ID
-			}
-		}
-		if slotID != "" {
+		if slotID := historySlotID(row, day.chores[row.ChoreID]); slotID != "" {
 			if day.doneSlotsBy[row.CompletedBy] == nil {
 				day.doneSlotsBy[row.CompletedBy] = map[int]map[string]bool{}
 			}
@@ -475,6 +504,49 @@ func loadRoutineDay(db *gorm.DB, familyID int, taskIDs []int, now time.Time) (*r
 	away, err := AwayMembers(db, familyID)
 	day.away = away
 	return day, err
+}
+
+// historySlotID returns the slot a completion is about: by identifier, or by
+// number for an older entry.
+func historySlotID(row chModel.ChoreHistory, chore *chModel.Chore) string {
+	if row.SlotID != nil && *row.SlotID != "" {
+		return *row.SlotID
+	}
+	if row.Slot != nil && chore != nil && chore.FrequencyMetadataV2 != nil &&
+		*row.Slot >= 0 && *row.Slot < len(chore.FrequencyMetadataV2.Slots) {
+		return chore.FrequencyMetadataV2.Slots[*row.Slot].ID
+	}
+	return ""
+}
+
+// itemMissed tells whether a step still to do can no longer be ticked by the
+// child: its moment closed today without being done, or the routine is over.
+// A step that waits for a parent is not missed.
+func (day *routineDay) itemMissed(userID int, item *RoutineOccurrenceItem, chore *chModel.Chore, over bool) bool {
+	if chore == nil {
+		return false
+	}
+	if item.SlotID != "" {
+		if day.waitingSlotsBy[userID][item.ChoreID][item.SlotID] {
+			return false
+		}
+		if window, ok := slotToday(chore, item.SlotID, day.now); ok && !day.now.Before(window.ClosesAt) {
+			return true
+		}
+	} else if chore.Status == chModel.ChoreStatusPendingApproval {
+		return false
+	}
+	return over
+}
+
+// slotNotOpenYet tells whether a step's moment is still to come today: the
+// child cannot tick it before.
+func (day *routineDay) slotNotOpenYet(item *RoutineOccurrenceItem, chore *chModel.Chore) bool {
+	if item.SlotID == "" {
+		return false
+	}
+	window, ok := slotToday(chore, item.SlotID, day.now)
+	return ok && day.now.Before(window.OpensAt)
 }
 
 // isFor tells whether a task is one of the member's: a parent who does a
@@ -529,8 +601,12 @@ func (day *routineDay) progressOf(userID int, steps [][]int) RoutineProgress {
 	return progress
 }
 
-func (day *routineDay) progressFromOccurrence(userID int, run *RoutineOccurrence) RoutineProgress {
-	progress := RoutineProgress{UserID: userID, Available: []int{}, Occurrence: run}
+// progressFromOccurrence is where a member stands in their run. A step whose
+// moment closed without being done is missed: the child goes on with the
+// next steps, and the routine is finished only once a parent caught it up.
+// Once the routine is over, every step still to do is missed.
+func (day *routineDay) progressFromOccurrence(userID int, run *RoutineOccurrence, over bool) RoutineProgress {
+	progress := RoutineProgress{UserID: userID, Available: []int{}, Missed: []int{}, Occurrence: run}
 	policies := make(map[int]RoutineItemPolicy, len(run.Items))
 	states := make(map[int]RoutineItemState, len(run.Items))
 	dependencies := make([]RoutineDependency, 0, len(run.Dependencies))
@@ -550,9 +626,16 @@ func (day *routineDay) progressFromOccurrence(userID int, run *RoutineOccurrence
 			if done {
 				state = RoutineItemCompleted
 				item.Status = RoutineOccurrenceItemCompleted
+			} else if day.itemMissed(userID, item, chore, over) {
+				item.Missed = true
+				progress.Missed = append(progress.Missed, item.ChoreID)
 			}
 		}
+		// A missed step no longer holds back the ones after it.
 		states[stepID] = state
+		if item.Missed {
+			states[stepID] = RoutineItemSkipped
+		}
 		policies[stepID] = RoutineItemPolicy{StepID: stepID, Required: item.Required}
 		if item.Required && state != RoutineItemNotApplicable {
 			progress.Total++
@@ -563,12 +646,13 @@ func (day *routineDay) progressFromOccurrence(userID int, run *RoutineOccurrence
 	}
 	for i := range run.Items {
 		item := &run.Items[i]
-		item.Available = item.Status == RoutineOccurrenceItemPending &&
+		chore := day.chores[item.ChoreID]
+		item.Available = item.Status == RoutineOccurrenceItemPending && !item.Missed && !over &&
+			!day.slotNotOpenYet(item, chore) &&
 			RoutineItemAvailable(item.StepID, dependencies, policies, states)
 		if !item.Available {
 			continue
 		}
-		chore := day.chores[item.ChoreID]
 		if chore == nil || !slices.Contains(membersNow(chore), userID) || Paused(chore, day.away) {
 			continue
 		}
@@ -652,8 +736,19 @@ func routineViews(db *gorm.DB, familyID int, userIDs []int, now time.Time, write
 		for _, ids := range steps[i] {
 			view.TaskIDs = append(view.TaskIDs, ids...)
 		}
+		window := routineWindow(routine, now)
+		if opens, closes, ok := routineHoursOn(routine, now); ok {
+			view.Window, view.OpensAt, view.ClosesAt = window, &opens, &closes
+		}
 		for _, userID := range userIDs {
 			progress := day.progressOfGraph(userID, steps[i], routine)
+			if window == RoutineWindowClosed || window == RoutineWindowUpcoming || window == RoutineWindowOver {
+				// Outside its hours, nothing of the routine is to do now.
+				progress.Current, progress.Available, progress.Step, progress.Finished = nil, []int{}, 0, false
+			}
+			if progress.Missed == nil {
+				progress.Missed = []int{}
+			}
 			var run *RoutineOccurrence
 			var latest RoutineOccurrence
 			latestErr := db.Where("routine_id = ? AND user_id = ? AND status IN ?",
@@ -678,14 +773,32 @@ func routineViews(db *gorm.DB, familyID int, userIDs []int, now time.Time, write
 					}
 				}
 			}
-			if write && run == nil && progress.Total > 0 && (!progress.Finished || len(progress.Available) > 0) {
+			over := false
+			if run == nil && window == RoutineWindowOver {
+				// Today's run, closed at the end of the routine: what was not
+				// done is missed, and a parent can catch it up until midnight.
+				var today RoutineOccurrence
+				err := db.Where("routine_id = ? AND user_id = ? AND started_at >= ?", routine.ID, userID, day.start.UTC()).
+					Order("started_at DESC").First(&today).Error
+				if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+					return nil, err
+				}
+				if err == nil {
+					if run, err = liveRoutineOccurrence(db, today.ID); err != nil {
+						return nil, err
+					}
+					over = run.Status != RoutineOccurrenceFinished
+				}
+			}
+			opensNow := window == "" || window == RoutineWindowOpen
+			if write && run == nil && opensNow && progress.Total > 0 && (!progress.Finished || len(progress.Available) > 0) {
 				run, latestErr = StartRoutineOccurrence(db, familyID, routine.ID, userID, now)
 				if latestErr != nil {
 					return nil, latestErr
 				}
 			}
 			if run != nil {
-				progress = day.progressFromOccurrence(userID, run)
+				progress = day.progressFromOccurrence(userID, run, over)
 				for _, item := range run.Items {
 					if !slices.Contains(view.TaskIDs, item.ChoreID) {
 						view.TaskIDs = append(view.TaskIDs, item.ChoreID)
@@ -714,6 +827,17 @@ func awardRoutines(tx *gorm.DB, familyID, userID int, performedAt, now time.Time
 		familyID, userID, []RoutineOccurrenceStatus{RoutineOccurrenceActive, RoutineOccurrenceFinished}, performedAt.UTC(), performedAt.UTC()).Find(&runs).Error; err != nil {
 		return err
 	}
+	// A routine with hours that closed today can still be caught up by a
+	// parent until midnight: its missed steps count once done.
+	caughtUp, err := closedRoutineRunsToday(tx, familyID, userID, performedAt)
+	if err != nil {
+		return err
+	}
+	expired := map[int]bool{}
+	for _, run := range caughtUp {
+		expired[run.ID] = true
+	}
+	runs = append(runs, caughtUp...)
 	// Read all completions in the live occurrence window. Equality on a
 	// timestamp is brittle across SQL drivers and precision conversions.
 	completedIDs := make(map[int]bool)
@@ -782,6 +906,11 @@ func awardRoutines(tx *gorm.DB, familyID, userID int, performedAt, now time.Time
 				continue
 			}
 			if err := tx.Model(&item).Updates(map[string]any{"status": RoutineOccurrenceItemCompleted, "updated_at": now.UTC()}).Error; err != nil {
+				return err
+			}
+		}
+		if expired[run.ID] {
+			if err := finishCaughtUpRun(tx, run, now); err != nil {
 				return err
 			}
 		}

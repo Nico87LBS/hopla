@@ -24,6 +24,7 @@ var (
 	ErrRoutineOccurrenceItemNotFound = errors.New("routine occurrence item not found")
 	ErrRoutineOccurrenceConflict     = errors.New("routine occurrence override conflicts with an existing action")
 	ErrRoutineOccurrenceInvalid      = errors.New("invalid routine occurrence request")
+	ErrRoutineClosed                 = errors.New("the routine is not open at this hour")
 )
 
 type RoutineOccurrenceStatus string
@@ -89,6 +90,9 @@ type RoutineOccurrenceItem struct {
 	Status       RoutineOccurrenceItemStatus `json:"status" gorm:"column:status;size:20;not null;default:pending"`
 	UpdatedAt    time.Time                   `json:"updatedAt" gorm:"column:updated_at;not null"`
 	Available    bool                        `json:"available" gorm:"-"`
+	// Missed is a step still to do that the child can no longer tick: its
+	// moment, or the routine, is over. A parent can catch it up until midnight.
+	Missed bool `json:"missed" gorm:"-"`
 }
 
 func (RoutineOccurrenceItem) TableName() string { return "routine_occurrence_items" }
@@ -148,6 +152,15 @@ func StartRoutineOccurrence(db *gorm.DB, familyID, routineID, userID int, now ti
 		} else if !errors.Is(err, gorm.ErrRecordNotFound) {
 			return err
 		}
+		expiresAt := now.UTC().Add(time.Duration(minutes) * time.Minute)
+		if routine.hasHours() {
+			// A routine with hours runs once a day, from its start to its end.
+			opens, closes, ok := routineHoursOn(routine, now)
+			if !ok || now.Before(opens) || !now.Before(closes) {
+				return ErrRoutineClosed
+			}
+			expiresAt = closes.UTC()
+		}
 
 		var dependencies []RoutineDependency
 		if err := tx.Where("routine_id = ?", routineID).Find(&dependencies).Error; err != nil {
@@ -162,7 +175,7 @@ func StartRoutineOccurrence(db *gorm.DB, familyID, routineID, userID int, now ti
 		}
 		run := RoutineOccurrence{
 			FamilyID: familyID, RoutineID: routineID, RoutineName: routine.Name, Bonus: routine.Bonus, UserID: userID,
-			StartedAt: now.UTC(), ExpiresAt: now.UTC().Add(time.Duration(minutes) * time.Minute),
+			StartedAt: now.UTC(), ExpiresAt: expiresAt,
 			Status: RoutineOccurrenceActive,
 		}
 		if err := tx.Create(&run).Error; err != nil {
@@ -765,6 +778,8 @@ func RoutineOccurrenceErrorMessage(err error) string {
 		return "Routine item cannot be skipped in its current state"
 	case errors.Is(err, ErrRoutineOccurrenceInvalid):
 		return "Invalid routine occurrence request"
+	case errors.Is(err, ErrRoutineClosed):
+		return "The routine is not open at this hour"
 	default:
 		return fmt.Sprint(err)
 	}

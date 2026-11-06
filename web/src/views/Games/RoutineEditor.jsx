@@ -19,6 +19,7 @@ import {
   MAX_ROUTINE_STEPS,
   MAX_VALIDITY,
   previewSteps,
+  routineHoursError,
   VALIDITY_PRESETS,
   withOrder,
 } from '../../utils/routines'
@@ -95,6 +96,65 @@ const hoursLabel = (t, minutes) =>
     ? t('routines.allDay')
     : t('routines.hours', { count: +(minutes / 60).toFixed(1) })
 
+// The routine's hours: it opens at the first and closes at the second, every
+// day. Both or neither; without them the routine opens as soon as a step is
+// due, for the time chosen below.
+const HoursFields = ({ draft, setDraft }) => {
+  const { t } = useTranslation('games')
+  const wrong = routineHoursError(draft)
+  const field = (key, label) => (
+    <Box sx={{ flex: 1, minWidth: 130 }}>
+      <Typography level='body-xs' fontWeight='lg' sx={{ mb: 0.5 }}>
+        {label}
+      </Typography>
+      <Input
+        type='time'
+        value={draft[key] || ''}
+        onChange={event => setDraft({ ...draft, [key]: event.target.value })}
+        error={Boolean(wrong)}
+        endDecorator={
+          draft[key] ? (
+            <IconButton
+              size='sm'
+              variant='plain'
+              aria-label={t('routines.clearHour', { label })}
+              onClick={() => setDraft({ ...draft, [key]: '' })}
+            >
+              ×
+            </IconButton>
+          ) : null
+        }
+      />
+    </Box>
+  )
+  return (
+    <Box>
+      <Stack direction='row' gap={1} flexWrap='wrap'>
+        {field('startsAt', t('routines.startsAt'))}
+        {field('endsAt', t('routines.endsAt'))}
+      </Stack>
+      <Typography
+        level='body-xs'
+        sx={{ color: wrong ? 'danger.plainColor' : 'text.tertiary', mt: 0.75 }}
+      >
+        {wrong
+          ? t(`routines.hoursError.${wrong}`)
+          : draft.startsAt && draft.endsAt
+            ? t('routines.hoursHelp', {
+                start: draft.startsAt,
+                end: draft.endsAt,
+              })
+            : t('routines.noHoursHelp')}
+      </Typography>
+    </Box>
+  )
+}
+
+HoursFields.propTypes = {
+  draft: PropTypes.object.isRequired,
+  setDraft: PropTypes.func.isRequired,
+}
+
 const RoutineBlock = ({ draft, setDraft }) => {
   const { t } = useTranslation('games')
   const presetValidity = VALIDITY_PRESETS.includes(
@@ -157,51 +217,57 @@ const RoutineBlock = ({ draft, setDraft }) => {
             />
           )}
         </Box>
-        <Box>
-          <Typography level='body-xs' fontWeight='lg' sx={{ mb: 0.5 }}>
-            {t('routines.finishIn')}
-          </Typography>
-          <Choices
-            value={validity}
-            choices={[
-              ...VALIDITY_PRESETS.map(minutes => ({
-                key: String(minutes),
-                label: hoursLabel(t, minutes),
-                minutes,
-              })),
-              { key: 'other', label: t('routines.other') },
-            ]}
-            onPick={choice => {
-              setOtherValidity(choice.key === 'other')
-              if (choice.key !== 'other') {
-                setDraft({ ...draft, validityMinutes: choice.minutes })
-              }
-            }}
-          />
-          {otherValidity && (
-            <Input
-              sx={{ mt: 0.75, maxWidth: 180 }}
-              type='number'
-              value={+(Number(draft.validityMinutes) / 60).toFixed(2)}
-              onChange={event =>
-                setDraft({
-                  ...draft,
-                  validityMinutes: Math.min(
-                    MAX_VALIDITY,
-                    Math.max(1, Math.round(Number(event.target.value) * 60)),
-                  ),
-                })
-              }
-              endDecorator={t('routines.hoursUnit')}
-              slotProps={{
-                input: { min: 0.5, max: MAX_VALIDITY / 60, step: 0.5 },
+        <HoursFields draft={draft} setDraft={setDraft} />
+        {!draft.startsAt && !draft.endsAt && (
+          <Box>
+            <Typography level='body-xs' fontWeight='lg' sx={{ mb: 0.5 }}>
+              {t('routines.finishIn')}
+            </Typography>
+            <Choices
+              value={validity}
+              choices={[
+                ...VALIDITY_PRESETS.map(minutes => ({
+                  key: String(minutes),
+                  label: hoursLabel(t, minutes),
+                  minutes,
+                })),
+                { key: 'other', label: t('routines.other') },
+              ]}
+              onPick={choice => {
+                setOtherValidity(choice.key === 'other')
+                if (choice.key !== 'other') {
+                  setDraft({ ...draft, validityMinutes: choice.minutes })
+                }
               }}
             />
-          )}
-          <Typography level='body-xs' sx={{ color: 'text.tertiary', mt: 0.75 }}>
-            {t('routines.finishInHelp')}
-          </Typography>
-        </Box>
+            {otherValidity && (
+              <Input
+                sx={{ mt: 0.75, maxWidth: 180 }}
+                type='number'
+                value={+(Number(draft.validityMinutes) / 60).toFixed(2)}
+                onChange={event =>
+                  setDraft({
+                    ...draft,
+                    validityMinutes: Math.min(
+                      MAX_VALIDITY,
+                      Math.max(1, Math.round(Number(event.target.value) * 60)),
+                    ),
+                  })
+                }
+                endDecorator={t('routines.hoursUnit')}
+                slotProps={{
+                  input: { min: 0.5, max: MAX_VALIDITY / 60, step: 0.5 },
+                }}
+              />
+            )}
+            <Typography
+              level='body-xs'
+              sx={{ color: 'text.tertiary', mt: 0.75 }}
+            >
+              {t('routines.finishInHelp')}
+            </Typography>
+          </Box>
+        )}
       </Stack>
     </Block>
   )
@@ -305,10 +371,18 @@ const Preview = ({ draft, names }) => {
             py: 0.75,
           }}
         >
-          {t('routines.previewBonus', {
-            bonus: t('goals.reward', { count: Number(draft.bonus) }),
-            time: hoursLabel(t, Number(draft.validityMinutes)).toLowerCase(),
-          })}
+          {draft.startsAt && draft.endsAt
+            ? t('routines.previewBonusBy', {
+                bonus: t('goals.reward', { count: Number(draft.bonus) }),
+                time: draft.endsAt,
+              })
+            : t('routines.previewBonus', {
+                bonus: t('goals.reward', { count: Number(draft.bonus) }),
+                time: hoursLabel(
+                  t,
+                  Number(draft.validityMinutes),
+                ).toLowerCase(),
+              })}
         </Box>
       )}
     </Sheet>
@@ -332,7 +406,8 @@ export const RoutineEditor = ({
   setDraft,
 }) => {
   const { t } = useTranslation('games')
-  const valid = draft.name.trim() && draft.choreIds.length > 0
+  const valid =
+    draft.name.trim() && draft.choreIds.length > 0 && !routineHoursError(draft)
   return (
     <Stack gap={1.5}>
       <Stack direction='row' alignItems='center' gap={1}>

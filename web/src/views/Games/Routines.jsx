@@ -164,6 +164,8 @@ export const RoutinesCard = () => {
       name: draft.name.trim(),
       bonus: Number(draft.bonus) || 0,
       validityMinutes: Number(draft.validityMinutes) || 720,
+      startsAt: draft.startsAt || '',
+      endsAt: draft.endsAt || '',
       choreIds: draft.choreIds,
       slotIds: draft.slotIds || [],
       dependencies: draft.dependencies || [],

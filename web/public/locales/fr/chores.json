@@ -1263,7 +1263,18 @@
     "label": "Routine « {{name}} » en cours",
     "until": "jusqu’à {{time}}",
     "next": "Ensuite : {{name}}",
-    "finished": "Finie"
+    "finished": "Finie",
+    "missed": "manquée",
+    "momentMissed": "{{name}} · manquée",
+    "momentLate": "{{name}} · en retard",
+    "steps_one": "{{count}} étape",
+    "steps_other": "{{count}} étapes",
+    "missedCount_one": "{{count}} manquée",
+    "missedCount_other": "{{count}} manquées",
+    "first": "Première étape : {{name}}",
+    "startsAt": "commence à {{time}}",
+    "endedAt": "finie à {{time}}",
+    "labelComing": "Routine « {{name}} » à venir"
   },
   "todayPanel": {
     "label": "Résumé du jour",
