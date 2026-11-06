@@ -32,6 +32,13 @@ export const todaySlots = (chore, slotsByTask, now = new Date()) => {
     .map(slot => ({ ...slot, state: liveSlotState(slot, now) }))
 }
 
+// A slot missed today can still be caught up by a parent until midnight, so
+// the task stays among today's, even though the server already moved its due
+// date to the next slot, tomorrow.
+export const keepsTodayMissed = (chore, now = new Date()) =>
+  hasSlots(chore) &&
+  todaySlots(chore, null, now).some(slot => slot.state === 'missed')
+
 const assigneeOf = chore => chore.assignedTo ?? chore.assignees?.[0]?.userId
 
 // groupCopies puts each member's copy of a task (same name) together, at the

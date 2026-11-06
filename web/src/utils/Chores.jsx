@@ -3,6 +3,7 @@ import moment from 'moment'
 
 import { TASK_COLOR } from './Colors.jsx'
 import { tooEarly } from './completionWindow.js'
+import { keepsTodayMissed } from './taskSlots.js'
 
 // ChoreGrouperOptions enum:
 export const GROUPING_OPTIONS = Object.freeze({
@@ -120,7 +121,9 @@ const buildActualDateGroups = (chores, dateField = 'nextDueDate') => {
       return
     }
 
-    const dateKey = getDateGroupKey(chore[dateField])
+    const dateKey = getDateGroupKey(
+      keepsTodayMissed(chore) ? new Date() : chore[dateField],
+    )
     if (!groupedByDate[dateKey]) {
       groupedByDate[dateKey] = []
     }
@@ -177,7 +180,10 @@ export const ChoresGrouper = (groupBy, chores, filter, direction = 'asc') => {
           groupRaw['Anytime'].push(chore)
         } else if (new Date(chore.nextDueDate) < new Date()) {
           groupRaw['Overdue'].push(chore)
-        } else if (moment(chore.nextDueDate).isSame(moment(), 'day')) {
+        } else if (
+          moment(chore.nextDueDate).isSame(moment(), 'day') ||
+          keepsTodayMissed(chore)
+        ) {
           groupRaw['Today'].push(chore)
         } else if (
           moment(chore.nextDueDate).isSame(moment().add(1, 'day'), 'day')
