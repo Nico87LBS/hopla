@@ -42,6 +42,11 @@
       "review": "{{count}} to review",
       "closed": "{{count}} not open yet",
       "shut": "{{count}} closed by a parent"
+    },
+    "fold": {
+      "known": "Known ✓",
+      "groups_one": "{{count}} group",
+      "groups_other": "{{count}} groups"
     }
   },
   "play": {
