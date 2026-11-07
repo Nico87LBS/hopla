@@ -37,6 +37,8 @@ import { HOPLA } from '../../constants/theme'
 import { learnKeys, usePlayer } from '../../queries/LearnQueries'
 import { SendLearnGame } from '../../utils/Fetcher'
 import { capitalFor, isolated } from '../../utils/learn/display'
+import { recordGame, streakOf } from '../../utils/learn/streak'
+import { packTree, rootOf } from '../../utils/learn/tree'
 import {
   addDays,
   again,
@@ -44,6 +46,7 @@ import {
   checkAnswer,
   DEFAULT_SETTINGS,
   dueReviews,
+  EASY_GAMES,
   expectedHops,
   isDue,
   isTough,
@@ -864,6 +867,7 @@ const EndScreen = ({
     capped,
     correct,
     hops,
+    levelTest,
     mistakes,
     practice,
     stars: won,
@@ -953,6 +957,23 @@ const EndScreen = ({
               </Typography>
             ))}
           </Stack>
+        </Sheet>
+      )}
+      {levelTest && (
+        <Sheet
+          variant='soft'
+          sx={{ borderRadius: 'xl', p: 2, width: '100%', textAlign: 'center' }}
+        >
+          <Typography level='title-md'>{t('end.levelTest')}</Typography>
+          <Button
+            component={Link}
+            to={levelTest}
+            replace
+            size='lg'
+            sx={{ mt: 1, bgcolor: color, '&:hover': { bgcolor: color } }}
+          >
+            {t('end.levelTestGo')}
+          </Button>
         </Sheet>
       )}
       {recre?.on && recre.since >= recre.every && (
@@ -1161,6 +1182,7 @@ const questionsFor = ({
   practice,
   recent,
   reviews,
+  streak,
   test,
 }) => {
   if (test) {
@@ -1185,6 +1207,7 @@ const questionsFor = ({
     forced: module.forced,
     shut: module.shut,
     recent,
+    boost: streak >= 1,
   }
   if (practice) return practiceQuestions(compiled, cards, options)
   const perDay =
@@ -1372,6 +1395,7 @@ const LearnPlay = ({ playMode = false }) => {
           practice,
           recent,
           reviews,
+          streak: streakOf(userId, module.id),
           test,
         }),
         answers: [],
@@ -1381,7 +1405,7 @@ const LearnPlay = ({ playMode = false }) => {
       })
       // Only a new game picks new questions, not a card moved by this one.
     },
-    [compiled, module?.id, practice],
+    [compiled, module?.id, practice, userId],
   )
 
   useEffect(() => {
@@ -1507,7 +1531,18 @@ const LearnPlay = ({ playMode = false }) => {
         ? { ...played, ...(recre && { recre }), offline: kept.offline }
         : kept,
     )
+    // Two games in a row well played: the test of the next level is offered.
+    const streak = mixed ? 0 : recordGame(userId, module.id, correct, total)
+    const pack = mixed ? null : rootOf(player.packs, module.id)
+    const levels = pack
+      ? packTree(player.packs).groups.find(g => g.pack.id === pack.id)?.levels
+      : null
+    const levelTest =
+      streak >= EASY_GAMES && levels?.length > 1
+        ? `${playMode ? '/play' : '/learn'}/${userId}/test/${pack.id}`
+        : undefined
     const shown = {
+      levelTest,
       correct,
       total,
       stars: stars(correct, total, settings.seuil),
