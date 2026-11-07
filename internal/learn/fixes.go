@@ -245,7 +245,7 @@ func SetCardEdit(db *gorm.DB, familyID, userID int, change CardChange, now time.
 		if err != nil {
 			return err
 		}
-		if err := checkKeys(tx, familyID, doc, entries); err != nil {
+		if err := checkKeys(tx, familyID, doc, entries, nil); err != nil {
 			return err
 		}
 		return tx.Clauses(clause.OnConflict{UpdateAll: true}).Create(&next).Error

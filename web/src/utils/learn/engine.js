@@ -117,8 +117,6 @@ export const compile = (doc, context = {}) => {
   const chapters = (doc.chapitres || []).map(c => ({
     id: c.id,
     name: c.nom,
-    level: c.niveau || '',
-    group: c.groupe || '',
     openAfter: c.ouvert_apres || 0,
     goal: c.objectif || DEFAULT_GOAL,
     sources: [],

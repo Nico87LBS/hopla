@@ -68,7 +68,7 @@ test('a pack of the catalogue lists its levels, its modules as titles and its ch
   assert.deepEqual(keysOf(structure), ['mul/a', 'mul/b', 'div/c'])
 })
 
-test('a pack of the family has levels and groups written in its chapters', () => {
+test('a level of one module shows its chapters without a title', () => {
   const structure = packStructure({
     levels: [
       {
@@ -76,34 +76,21 @@ test('a pack of the family has levels and groups written in its chapters', () =>
         name: 'Dictée',
         modules: [
           {
-            id: 'famille-dictee',
+            id: 'famille-dictee-dictee',
             name: 'Dictée',
-            document: {
-              chapitres: [
-                chapter('a', { niveau: 'Automne', groupe: 'Mots en -ette' }),
-                chapter('b', { niveau: 'Automne', groupe: 'Mots en -ette' }),
-                chapter('c', { niveau: 'Hiver' }),
-              ],
-            },
+            document: { chapitres: [chapter('a'), chapter('b')] },
           },
         ],
       },
     ],
   })
-  const rows = packRows(structure)
   assert.deepEqual(
-    rows.map(row => [row.kind, row.name || row.key]),
+    packRows(structure).map(row => [row.kind, row.name || row.key]),
     [
-      ['niveau', 'Automne'],
-      ['group', 'Mots en -ette'],
-      ['chapter', 'famille-dictee/a'],
-      ['chapter', 'famille-dictee/b'],
-      ['niveau', 'Hiver'],
-      ['chapter', 'famille-dictee/c'],
+      ['chapter', 'famille-dictee-dictee/a'],
+      ['chapter', 'famille-dictee-dictee/b'],
     ],
   )
-  assert.deepEqual(rows[0].keys, ['famille-dictee/a', 'famille-dictee/b'])
-  assert.deepEqual(rows[4].keys, ['famille-dictee/c'])
 })
 
 test('the creator value of a setting is the one the modules share', () => {

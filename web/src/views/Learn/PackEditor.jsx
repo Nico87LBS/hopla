@@ -60,6 +60,7 @@ import {
   OPEN_AFTER_CHOICES,
   openAfterOf,
   readList,
+  startsModule,
   toDocument,
 } from '../../utils/learn/familyPack'
 import { iconFile, ICONS } from '../../utils/learn/icons'
@@ -674,6 +675,20 @@ const PackForm = ({ isNew, moduleId, start }) => {
   const [error, setError] = useState('')
   const back = <BackLink />
 
+  // own are the levels and modules the pack was cut into once installed.
+  const own = useMemo(() => {
+    const byId = new Map((installed?.modules || []).map(m => [m.id, m]))
+    const out = new Set()
+    const walk = id => {
+      for (const child of byId.get(id)?.children || []) {
+        if (out.has(child)) continue
+        out.add(child)
+        walk(child)
+      }
+    }
+    walk(pack.id)
+    return out
+  }, [installed, pack.id])
   const change = fields => setPack(p => ({ ...p, ...fields }))
   const changeChapter = (index, fields) =>
     setPack(p => ({
@@ -842,7 +857,7 @@ const PackForm = ({ isNew, moduleId, start }) => {
             rest={pack.rest}
             selfId={pack.id}
             modules={(installed?.modules || []).filter(
-              module => !module.children?.length,
+              module => !module.children?.length && !own.has(module.id),
             )}
             onChange={rest => change({ rest })}
           />
@@ -913,7 +928,7 @@ const PackForm = ({ isNew, moduleId, start }) => {
               ))}
             </Stack>
           )}
-          {index > 0 && (
+          {!startsModule(pack.chapters, index) && (
             <Stack
               direction='row'
               gap={1}
@@ -1021,6 +1036,11 @@ const PackForm = ({ isNew, moduleId, start }) => {
         {t('pack.addChapter')}
       </Button>
 
+      {pack.chapters.length > 1 && (
+        <Typography level='body-sm' sx={{ color: 'text.secondary' }}>
+          {t('pack.placesHint')}
+        </Typography>
+      )}
       <Typography level='body-sm' sx={{ color: 'text.secondary' }}>
         {t('pack.settingsHint')}
       </Typography>

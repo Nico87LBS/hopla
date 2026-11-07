@@ -41,37 +41,19 @@ export const packStructure = test =>
   }))
 
 // packRows lists what the page of a pack shows, in order: a row for each
-// level (when there are several), for each title of a group of chapters, for
-// each level written in a chapter of a pack the family wrote, and for each
-// chapter. A group is a title only: the name of the module in the catalogue,
-// or the one written in the chapter.
+// level (when there are several), for each module (when a level has
+// several) and for each chapter.
 export const packRows = structure => {
   const rows = []
-  let niveau = null
   structure.forEach(level => {
     if (structure.length > 1)
       rows.push({ kind: 'level', id: level.id, name: level.name })
     level.modules.forEach(module => {
-      let group = null
+      if (level.modules.length > 1)
+        rows.push({ kind: 'group', name: module.name, module: module.id })
       module.chapters.forEach(chapter => {
         const key = `${module.id}/${chapter.id}`
-        if (chapter.niveau && chapter.niveau !== niveau) {
-          niveau = chapter.niveau
-          rows.push({ kind: 'niveau', name: niveau, keys: [] })
-        }
-        const title =
-          chapter.groupe || (level.modules.length > 1 ? module.name : '')
-        if (title && title !== group) {
-          group = title
-          rows.push({ kind: 'group', name: title, module: module.id })
-        }
         rows.push({ kind: 'chapter', key, module: module.id, chapter })
-        for (let i = rows.length - 1; i >= 0; i--) {
-          if (rows[i].kind === 'niveau') {
-            rows[i].keys.push(key)
-            break
-          }
-        }
       })
     })
   })

@@ -13,7 +13,9 @@ import {
   newChapter,
   newPack,
   nextVersion,
+  placesOf,
   readList,
+  startsModule,
   toDocument,
 } from '../src/utils/learn/familyPack.js'
 import { cardItems } from '../src/utils/learn/generators.js'
@@ -375,4 +377,25 @@ test('the tags say who a pack is for', () => {
     'Anglais',
     'Adulte',
   ])
+})
+
+test('each level and group of the editor is a module, opened from its first chapter', () => {
+  const chapters = [
+    { groupe: 'Sons' },
+    { niveau: 'Automne', groupe: 'Mots en -ette' },
+    { groupe: 'Mots en -ette' },
+    { niveau: 'Hiver' },
+    {},
+  ]
+  assert.deepEqual(placesOf(chapters), [
+    { level: 'Automne', group: 'Sons' },
+    { level: 'Automne', group: 'Mots en -ette' },
+    { level: 'Automne', group: 'Mots en -ette' },
+    { level: 'Hiver', group: '' },
+    { level: 'Hiver', group: '' },
+  ])
+  assert.deepEqual(
+    chapters.map((_, i) => startsModule(chapters, i)),
+    [true, true, false, true, false],
+  )
 })
