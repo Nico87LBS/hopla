@@ -9,6 +9,7 @@ import {
   compile,
   expectedHops,
   moduleLocked,
+  newOrder,
   openChapters,
   pickQuestions,
   review,
@@ -98,6 +99,32 @@ test('the multiplication tables open one after another', () => {
   assert.ok(
     !openChapters(compiled, cardMap(known), 90)[1].open,
     'a parent may ask for more',
+  )
+})
+
+test('chapters open together give their new questions in list order', () => {
+  const compiled = compile(catalogue['anglais-gs-couleurs-nombres'])
+  assert.ok(openChapters(compiled, new Map()).every(c => c.open))
+  const questions = pickQuestions(compiled, new Map(), {
+    rng: seededRandom(2),
+    newLeft: 2,
+    settings: { questions_par_partie: 2 },
+  })
+  assert.equal(questions.length, 2)
+  assert.ok(
+    questions.every(q => q.chapter === 'colours'),
+    'the colours come before the numbers',
+  )
+  const step = (id, openAfter = 0) => ({ id, openAfter })
+  assert.deepEqual(
+    newOrder([
+      step('a'),
+      step('b'),
+      step('c', 60),
+      step('d'),
+      step('e', 60),
+    ]).map(c => c.id),
+    ['e', 'c', 'd', 'a', 'b'],
   )
 })
 

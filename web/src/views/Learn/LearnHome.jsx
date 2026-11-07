@@ -45,6 +45,7 @@ import {
   dueReviews,
   moduleLocked,
   moduleToday,
+  newOrder,
   openChapters,
   REVIEW_BONUS,
   REVIEWS,
@@ -269,8 +270,13 @@ const ModuleCard = ({
   const states = chapters.map(c =>
     chapterState(c, module.unlockPercent ?? undefined),
   )
-  const current = [...chapters].reverse().find(c => c.open)
-  // The bar is the chapter being learnt, the one that opens the next.
+  // The bar is the chapter being learnt: the one the new questions come
+  // from (newOrder), not known yet if one still is not.
+  const learning = newOrder(
+    chapters.filter(c => c.open).map(c => c.chapter),
+  ).map(chapter => chapters.findIndex(c => c.chapter === chapter))
+  const current =
+    chapters[learning.find(i => states[i] !== 'known') ?? learning[0]]
   const percent = current?.progress.percent ?? 0
   const capped = dayFull || module.earnedToday >= module.dailyCap
 
