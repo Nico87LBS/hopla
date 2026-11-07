@@ -78,7 +78,6 @@ const exportTask = (chore, labelsById) => ({
   flashMinutes: chore.flashMinutes ?? null,
   deadlineMinutes: chore.deadlineMinutes ?? null,
   requireApproval: !!chore.requireApproval,
-  completionWindow: chore.completionWindow ?? null,
   notification: !!chore.notification,
   notificationMetadata: chore.notificationMetadata || null,
   labels: (chore.labelsV2 || [])
@@ -249,7 +248,6 @@ export const taskRequests = (task, { labelIds, members, now, perMember }) => {
     flashMinutes: task.flashMinutes ?? null,
     deadlineMinutes: due ? (task.deadlineMinutes ?? null) : null,
     requireApproval: !!task.requireApproval,
-    completionWindow: due ? (task.completionWindow ?? null) : null,
     notification: !!task.notification,
     notificationMetadata: task.notificationMetadata || {},
     labelsV2: (task.labels || [])

@@ -18,7 +18,6 @@ import {
   getDueDateChipText,
   getRecurrentChipText,
 } from '../../utils/ChoreCardHelpers.jsx'
-import { notInCompletionWindow } from '../../utils/Chores.jsx'
 import {
   getUrlHostname,
   openExternalUrl,
@@ -51,7 +50,6 @@ export const TaskRing = ({ canApprove, chore, onAction }) => {
   const timer = useRef(null)
   useEffect(() => () => clearTimeout(timer.current), [])
 
-  const outOfWindow = notInCompletionWindow(chore)
   let label
   let ring
   let onClick
@@ -75,7 +73,6 @@ export const TaskRing = ({ canApprove, chore, onAction }) => {
     )
   } else {
     label = t('taskRow.complete', { name: chore.name })
-    disabled = outOfWindow
     onClick = () => {
       setTicked(true)
       timer.current = setTimeout(() => {
@@ -91,7 +88,6 @@ export const TaskRing = ({ canApprove, chore, onAction }) => {
           bgcolor: ticked ? 'primary.solidBg' : 'transparent',
           border: '2px solid',
           borderColor: ticked ? 'primary.solidBg' : 'neutral.outlinedBorder',
-          borderStyle: outOfWindow ? 'dashed' : 'solid',
           color: ticked ? '#fff' : 'transparent',
           transform: ticked ? 'scale(1.08)' : 'none',
         }}

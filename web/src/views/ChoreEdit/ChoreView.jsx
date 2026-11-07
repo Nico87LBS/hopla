@@ -48,11 +48,7 @@ import {
 } from '../../queries/ChoreQueries.jsx'
 import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries.jsx'
 import { useNotification } from '../../service/NotificationProvider'
-import {
-  ChoreHistoryStatus,
-  notInCompletionWindow,
-  taskMemberIds,
-} from '../../utils/Chores.jsx'
+import { ChoreHistoryStatus, taskMemberIds } from '../../utils/Chores.jsx'
 import { getTextColorFromBackgroundColor } from '../../utils/Colors.jsx'
 import { commandQueue, CommandType } from '../../utils/CommandQueue'
 import {
@@ -1199,9 +1195,7 @@ const ChoreView = () => {
                     fullWidth
                     size='lg'
                     onClick={handleTaskCompletion}
-                    disabled={
-                      notInCompletionWindow(chore) || chore.isActive === false
-                    }
+                    disabled={chore.isActive === false}
                     color='success'
                     startDecorator={<Check />}
                     sx={{
@@ -1215,9 +1209,7 @@ const ChoreView = () => {
                     fullWidth
                     size='lg'
                     onClick={confirmSkipTask}
-                    disabled={
-                      notInCompletionWindow(chore) || chore.isActive === false
-                    }
+                    disabled={chore.isActive === false}
                     startDecorator={<SwitchAccessShortcut />}
                     sx={{
                       flex: 1,
@@ -1228,18 +1220,6 @@ const ChoreView = () => {
                 </>
               )}
             </Box>
-            {notInCompletionWindow(chore) && (
-              <Typography
-                level='body-sm'
-                sx={{ color: 'warning.plainColor', textAlign: 'center', mb: 1 }}
-              >
-                {t('choreView.availableToCompleteStarting', {
-                  date: moment(chore.nextDueDate)
-                    .subtract(chore.completionWindow, 'hours')
-                    .format('MM/DD/YYYY hh:mm A'),
-                })}
-              </Typography>
-            )}
           </Box>
         )}
 

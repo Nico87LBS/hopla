@@ -60,40 +60,43 @@ func (s AssignmentStrategy) HasNoCurrentAssignee() bool {
 }
 
 type Chore struct {
-	ID                     int                        `json:"id" gorm:"primary_key"`
-	Name                   string                     `json:"name" gorm:"column:name"`                                                                // Chore description
-	FrequencyType          FrequencyType              `json:"frequencyType" gorm:"column:frequency_type"`                                             // "daily", "weekly", "monthly", "yearly", "adaptive",or "custom"
-	Frequency              int                        `json:"frequency" gorm:"column:frequency"`                                                      // Number of days, weeks, months, or years between chores
-	FrequencyMetadataV2    *FrequencyMetadata         `json:"frequencyMetadata" gorm:"column:frequency_meta_v2;type:json"`                            // Additional frequency information for v2 (if used)
-	NextDueDate            *time.Time                 `json:"nextDueDate" gorm:"column:next_due_date;index"`                                          // When the chore is due
-	IsRolling              bool                       `json:"isRolling" gorm:"column:is_rolling"`                                                     // Whether the chore is rolling
-	AssignedTo             *int                       `json:"assignedTo" gorm:"column:assigned_to"`                                                   // Who the chore is assigned to
-	Assignees              []ChoreAssignees           `json:"assignees" gorm:"foreignkey:ChoreID;references:ID"`                                      // Assignees of the chore
-	AssignStrategy         AssignmentStrategy         `json:"assignStrategy" gorm:"column:assign_strategy"`                                           // How the chore is assigned
-	IsActive               bool                       `json:"isActive" gorm:"column:is_active"`                                                       // Whether the chore is active
-	Notification           bool                       `json:"notification" gorm:"column:notification"`                                                // Whether the chore has notification
-	NotificationMetadataV2 *NotificationMetadata      `json:"notificationMetadata" gorm:"column:notification_meta_v2;type:json"`                      // Additional notification information
-	LabelsV2               *[]lModel.Label            `json:"labelsV2" gorm:"many2many:chore_labels"`                                                 // Labels for the chore
-	FamilyID               int                        `json:"familyId" gorm:"column:family_id;index;index:idx_chores_family_sync_version,priority:1"` // The family this chore is in
-	CreatedAt              time.Time                  `json:"createdAt" gorm:"column:created_at"`                                                     // When the chore was created
-	UpdatedAt              time.Time                  `json:"updatedAt" gorm:"column:updated_at"`                                                     // When the chore was last updated
-	CreatedBy              int                        `json:"createdBy" gorm:"column:created_by"`                                                     // Who created the chore
-	UpdatedBy              int                        `json:"updatedBy" gorm:"column:updated_by"`                                                     // Who last updated the chore
-	Status                 Status                     `json:"status" gorm:"column:status"`                                                            //
-	Priority               int                        `json:"priority" gorm:"column:priority"`                                                        //
-	CompletionWindow       *int                       `json:"completionWindow,omitempty" gorm:"column:completion_window"`                             // Number seconds before the chore is due that it can be completed
-	Points                 *int                       `json:"points,omitempty" gorm:"column:points"`                                                  // Points for completing the chore
-	FlashPoints            *int                       `json:"flashPoints,omitempty" gorm:"column:flash_points"`                                       // Flash bonus: extra points when done in time
-	FlashMinutes           *int                       `json:"flashMinutes,omitempty" gorm:"column:flash_minutes"`                                     // Flash bonus: minutes after the due time it stays open
-	DeadlineMinutes        *int                       `json:"deadlineMinutes,omitempty" gorm:"column:deadline_minutes"`                               // Minutes after the due time the task is missed
-	Description            *string                    `json:"description,omitempty" gorm:"type:text;column:description"`                              // Description of the chore
-	SubTasks               *[]stModel.SubTask         `json:"subTasks,omitempty" gorm:"foreignkey:ChoreID;references:ID"`                             // Subtasks for the chore
-	RequireApproval        bool                       `json:"requireApproval" gorm:"column:require_approval"`                                         // Whether chore completion requires admin approval
-	IsPrivate              bool                       `json:"isPrivate" gorm:"column:is_private;default:false"`                                       // Whether the chore is private
-	SyncVersion            int64                      `json:"syncVersion" gorm:"column:sync_version;not null;default:0;index;index:idx_chores_family_sync_version,priority:2"`
-	Attachments            []storageModel.StorageFile `json:"attachments,omitempty" gorm:"-"`
-	SlotsToday             []SlotStatus               `json:"slotsToday,omitempty" gorm:"-"` // Today's slots of a task done several times a day
-	Flash                  *FlashWindow               `json:"flash,omitempty" gorm:"-"`      // The flash bonus open now, if any
+	ID                     int                   `json:"id" gorm:"primary_key"`
+	Name                   string                `json:"name" gorm:"column:name"`                                                                // Chore description
+	FrequencyType          FrequencyType         `json:"frequencyType" gorm:"column:frequency_type"`                                             // "daily", "weekly", "monthly", "yearly", "adaptive",or "custom"
+	Frequency              int                   `json:"frequency" gorm:"column:frequency"`                                                      // Number of days, weeks, months, or years between chores
+	FrequencyMetadataV2    *FrequencyMetadata    `json:"frequencyMetadata" gorm:"column:frequency_meta_v2;type:json"`                            // Additional frequency information for v2 (if used)
+	NextDueDate            *time.Time            `json:"nextDueDate" gorm:"column:next_due_date;index"`                                          // When the chore is due
+	IsRolling              bool                  `json:"isRolling" gorm:"column:is_rolling"`                                                     // Whether the chore is rolling
+	AssignedTo             *int                  `json:"assignedTo" gorm:"column:assigned_to"`                                                   // Who the chore is assigned to
+	Assignees              []ChoreAssignees      `json:"assignees" gorm:"foreignkey:ChoreID;references:ID"`                                      // Assignees of the chore
+	AssignStrategy         AssignmentStrategy    `json:"assignStrategy" gorm:"column:assign_strategy"`                                           // How the chore is assigned
+	IsActive               bool                  `json:"isActive" gorm:"column:is_active"`                                                       // Whether the chore is active
+	Notification           bool                  `json:"notification" gorm:"column:notification"`                                                // Whether the chore has notification
+	NotificationMetadataV2 *NotificationMetadata `json:"notificationMetadata" gorm:"column:notification_meta_v2;type:json"`                      // Additional notification information
+	LabelsV2               *[]lModel.Label       `json:"labelsV2" gorm:"many2many:chore_labels"`                                                 // Labels for the chore
+	FamilyID               int                   `json:"familyId" gorm:"column:family_id;index;index:idx_chores_family_sync_version,priority:1"` // The family this chore is in
+	CreatedAt              time.Time             `json:"createdAt" gorm:"column:created_at"`                                                     // When the chore was created
+	UpdatedAt              time.Time             `json:"updatedAt" gorm:"column:updated_at"`                                                     // When the chore was last updated
+	CreatedBy              int                   `json:"createdBy" gorm:"column:created_by"`                                                     // Who created the chore
+	UpdatedBy              int                   `json:"updatedBy" gorm:"column:updated_by"`                                                     // Who last updated the chore
+	Status                 Status                `json:"status" gorm:"column:status"`                                                            //
+	Priority               int                   `json:"priority" gorm:"column:priority"`                                                        //
+	// CompletionWindow is how many hours before its due time a task could be
+	// done. No longer read: a moment's "s'ouvre" does that. The column is kept
+	// for the migration to moments and its way back.
+	CompletionWindow *int                       `json:"-" gorm:"column:completion_window"`
+	Points           *int                       `json:"points,omitempty" gorm:"column:points"`                      // Points for completing the chore
+	FlashPoints      *int                       `json:"flashPoints,omitempty" gorm:"column:flash_points"`           // Flash bonus: extra points when done in time
+	FlashMinutes     *int                       `json:"flashMinutes,omitempty" gorm:"column:flash_minutes"`         // Flash bonus: minutes after the due time it stays open
+	DeadlineMinutes  *int                       `json:"deadlineMinutes,omitempty" gorm:"column:deadline_minutes"`   // Minutes after the due time the task is missed
+	Description      *string                    `json:"description,omitempty" gorm:"type:text;column:description"`  // Description of the chore
+	SubTasks         *[]stModel.SubTask         `json:"subTasks,omitempty" gorm:"foreignkey:ChoreID;references:ID"` // Subtasks for the chore
+	RequireApproval  bool                       `json:"requireApproval" gorm:"column:require_approval"`             // Whether chore completion requires admin approval
+	IsPrivate        bool                       `json:"isPrivate" gorm:"column:is_private;default:false"`           // Whether the chore is private
+	SyncVersion      int64                      `json:"syncVersion" gorm:"column:sync_version;not null;default:0;index;index:idx_chores_family_sync_version,priority:2"`
+	Attachments      []storageModel.StorageFile `json:"attachments,omitempty" gorm:"-"`
+	SlotsToday       []SlotStatus               `json:"slotsToday,omitempty" gorm:"-"` // Today's slots of a task done several times a day
+	Flash            *FlashWindow               `json:"flash,omitempty" gorm:"-"`      // The flash bonus open now, if any
 }
 
 // FlashWindow is a flash bonus open on a task: Points more for doing it
@@ -357,14 +360,11 @@ func (c *Chore) HasSlots() bool {
 const MaxDeadlineMinutes = 366 * 24 * 60
 
 // DeadlineAllowed reports whether a task of this frequency can have a
-// deadline: one with a due date that does not depend on when it is done, and
-// without slots, whose own times already close.
+// deadline, a delay after its due time past which this turn is missed. Every
+// rhythm with moments has the end of its moments instead ("jusqu'à"); only an
+// interval in hours has none.
 func DeadlineAllowed(frequencyType FrequencyType, metadata *FrequencyMetadata) bool {
-	switch frequencyType {
-	case FrequencyTypeAlways, FrequencyTypeTrigger, FrequencyTypeAdaptive:
-		return false
-	}
-	return metadata == nil || len(metadata.Slots) == 0
+	return frequencyType == FrequencyTypeInterval && !IsDatedType(frequencyType, metadata)
 }
 
 // DeadlineAt returns when the task's current passage is missed, or nil when
@@ -425,7 +425,6 @@ type ChoreDetail struct {
 	Priority            int                        `json:"priority" gorm:"column:priority"`
 	Notes               *string                    `json:"notes" gorm:"column:notes"`
 	CreatedBy           int                        `json:"createdBy" gorm:"column:created_by"`
-	CompletionWindow    *int                       `json:"completionWindow,omitempty" gorm:"column:completion_window"`
 	Subtasks            *[]stModel.SubTask         `json:"subTasks,omitempty" gorm:"foreignkey:ChoreID;references:ID"`
 	Assignees           []ChoreAssignees           `json:"assignees" gorm:"foreignkey:ChoreID;references:ID"`
 	Status              Status                     `json:"status" gorm:"column:status"`

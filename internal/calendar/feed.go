@@ -121,9 +121,6 @@ func eventDuration(ch *chModel.Chore, o chore.Occurrence) time.Duration {
 		}
 		return time.Hour
 	}
-	if ch.CompletionWindow != nil && *ch.CompletionWindow > 0 {
-		return time.Duration(*ch.CompletionWindow) * time.Hour
-	}
 	return time.Hour
 }
 

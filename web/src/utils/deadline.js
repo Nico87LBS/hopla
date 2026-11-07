@@ -2,13 +2,11 @@
 // due, the task shows when the deadline is; once late, how long is left. Past
 // the deadline the server writes it missed and moves it on.
 
-const SLOTS_OR_UNDATED = ['always', 'trigger', 'adaptive']
-
-// Whether a task of this frequency can have a deadline: one with a due date
-// that does not depend on when it is done, and without slots.
+// Whether a task of this frequency can have a deadline, a delay after its due
+// time past which this turn is missed. Every rhythm with moments has the end
+// of its moments instead ("jusqu'à"); only an interval in hours has none.
 export const deadlineApplies = (frequencyType, frequencyMetadata) =>
-  !SLOTS_OR_UNDATED.includes(frequencyType) &&
-  !(frequencyMetadata?.slots?.length > 0)
+  frequencyType === 'interval' && frequencyMetadata?.unit === 'hours'
 
 // When the task's current passage is missed, or null.
 export const deadlineOf = chore => {

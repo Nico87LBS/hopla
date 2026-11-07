@@ -82,7 +82,6 @@
     "unableChangeDueDate": "Unable to change the due date",
     "failedDelegate": "Failed to delegate",
     "unableChangeAssignee": "Unable to change the assignee",
-    "availableToCompleteStarting": "Available to complete starting {{date}}",
     "delegateToSomeoneElse": "Delegate to someone else"
   },
   "toolbar": {
@@ -744,8 +743,6 @@
     "limitedVisibilityDescription": "Only you and assignees can see this task",
     "assignStrategy": "Assign strategy",
     "assignStrategyDescription": "How to pick the next assignee each recurrence",
-    "availableFrom": "Available from",
-    "availableFromDescription": "Hours before the due date the task becomes available",
     "strategy": {
       "keep_last_assigned": "Keep same assignee",
       "random": "Random",
@@ -753,7 +750,6 @@
       "round_robin": "Round robin"
     },
     "hrs": "hrs",
-    "setDueDateHint": "Set a due date to configure completion window",
     "more": "More"
   },
   "filterBuilder": {
@@ -1130,11 +1126,7 @@
       "reminderCount_one": "{{count}} reminder",
       "reminderCount_other": "{{count}} reminders",
       "remindersUnavailable": "No reminders for a task that is always available or set off by a signal.",
-      "early": "Can be done early",
-      "earlyValue": "{{hours}} h before",
       "no": "No",
-      "earlyHelp": "Can be ticked before the due date",
-      "earlyHours": "hours before the due date",
       "labelCount_one": "{{count}} label",
       "labelCount_other": "{{count}} labels",
       "visibility": "Visible to",

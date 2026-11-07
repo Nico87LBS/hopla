@@ -2,7 +2,6 @@ import i18n from 'i18next'
 import moment from 'moment'
 
 import { TASK_COLOR } from './Colors.jsx'
-import { tooEarly } from './completionWindow.js'
 import { keepsTodayMissed } from './taskSlots.js'
 
 // ChoreGrouperOptions enum:
@@ -348,7 +347,6 @@ export const ChoreSorter = (a, b) => {
 
   return new Date(a.nextDueDate) - new Date(b.nextDueDate)
 }
-export const notInCompletionWindow = chore => tooEarly(chore)
 // A task for everyone together has no current assignee: it is for each of its
 // assignees at once.
 export const isTogether = chore => chore?.assignStrategy === 'together'

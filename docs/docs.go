@@ -7407,9 +7407,6 @@ const docTemplate = `{
                         "$ref": "#/definitions/model.ChoreAssignees"
                     }
                 },
-                "completionWindow": {
-                    "type": "integer"
-                },
                 "deadlineMinutes": {
                     "type": "integer",
                     "maximum": 527040,
@@ -7938,10 +7935,6 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/model.StorageFile"
                     }
-                },
-                "completionWindow": {
-                    "description": "Number seconds before the chore is due that it can be completed",
-                    "type": "integer"
                 },
                 "createdAt": {
                     "description": "When the chore was created",
