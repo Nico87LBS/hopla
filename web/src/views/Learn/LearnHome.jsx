@@ -1,13 +1,18 @@
 import {
   CheckCircleRounded,
+  CheckRounded,
   ChevronRightRounded,
   CloudOffRounded,
+  EditRounded,
   ExpandLessRounded,
   ExpandMoreRounded,
   FactCheckOutlined,
   FitnessCenterRounded,
+  LockRounded,
+  ReplayRounded,
   SchoolRounded,
   SportsEsportsRounded,
+  StarRounded,
 } from '@mui/icons-material'
 import {
   Box,
@@ -22,7 +27,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import PropTypes from 'prop-types'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useParams } from 'react-router-dom'
 
 import { HOPLA } from '../../constants/theme'
 import { useIsParent } from '../../hooks/useIsParent'
@@ -32,13 +37,15 @@ import {
   usePlayer,
 } from '../../queries/LearnQueries'
 import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries'
-import { OpenNextLevel, SendPlacement } from '../../utils/Fetcher'
+import { OpenNextLevel } from '../../utils/Fetcher'
 import {
   addDays,
+  chapterState,
   DEFAULT_SETTINGS,
   dueReviews,
   moduleLocked,
   moduleToday,
+  newOrder,
   openChapters,
   REVIEW_BONUS,
   REVIEWS,
@@ -56,7 +63,6 @@ import { MemberAvatar } from '../Games/GameParts'
 import { clock } from '../Recre/games/common'
 import { LearnIcon, Progress, subjectColor, useCompiled } from './LearnParts'
 import ListBar, { useListChoices } from './ListBar'
-import { StartLevels } from './PlacementTest'
 import TestsSection from './TestPrep'
 
 const pageSx = { px: { xs: 2, sm: 3 }, pb: 6, pt: { xs: 1, sm: 3 } }
@@ -127,6 +133,124 @@ export const LearnChooser = () => {
   )
 }
 
+// The look of each chapter state: a round dot, the same as the faces on the
+// task lists, with an icon so colour is never the only sign, and the state
+// written beside it. The icons are white on a full dot (only « À découvrir »
+// keeps its violet ring, with a plain star) so they read at a glance, and the
+// state text has a lighter shade for the dark theme.
+const STATE_LOOK = {
+  new: {
+    Icon: StarRounded,
+    bg: '#fff',
+    color: HOPLA.violet,
+    border: HOPLA.violet,
+    text: HOPLA.blueberry,
+    textDark: '#B7AEFF',
+  },
+  learning: {
+    Icon: EditRounded,
+    bg: HOPLA.violet,
+    color: '#fff',
+    text: HOPLA.blueberry,
+    textDark: '#B7AEFF',
+  },
+  known: {
+    Icon: CheckRounded,
+    bg: HOPLA.green,
+    color: '#fff',
+    text: HOPLA.greenText,
+    textDark: '#7EDCA4',
+  },
+  review: {
+    Icon: ReplayRounded,
+    bg: HOPLA.carrot,
+    color: '#fff',
+    text: HOPLA.carrotText,
+    textDark: '#FFAE7A',
+  },
+  closed: {
+    Icon: LockRounded,
+    bg: '#8A857B',
+    color: '#fff',
+    text: '#6B6680',
+    textDark: '#C4BFB6',
+  },
+  shut: {
+    Icon: LockRounded,
+    bg: '#5E5A54',
+    color: '#fff',
+    border: '#5E5A54',
+    text: '#5E5A54',
+    textDark: '#D6D1C8',
+  },
+}
+
+// stateText is the colour of the words beside a dot, in both themes.
+const stateText = state => ({
+  color: STATE_LOOK[state].text,
+  '[data-joy-color-scheme="dark"] &': { color: STATE_LOOK[state].textDark },
+})
+
+const StateDot = ({ size = 28, state }) => {
+  const { Icon, bg, border, color } = STATE_LOOK[state]
+  return (
+    <Box
+      aria-hidden
+      sx={{
+        alignItems: 'center',
+        bgcolor: bg,
+        border: border ? `2px solid ${border}` : 'none',
+        borderRadius: '50%',
+        boxSizing: 'border-box',
+        color,
+        display: 'flex',
+        flexShrink: 0,
+        height: size,
+        justifyContent: 'center',
+        width: size,
+        // In the dark the grey locks would sink into the page: a thin light
+        // ring keeps the dot's edge.
+        '[data-joy-color-scheme="dark"] &': {
+          boxShadow: border ? 'none' : '0 0 0 1px rgba(255, 255, 255, 0.25)',
+        },
+      }}
+    >
+      <Icon sx={{ color: 'inherit', fontSize: size * 0.64 }} />
+    </Box>
+  )
+}
+
+StateDot.propTypes = {
+  size: PropTypes.number,
+  state: PropTypes.string.isRequired,
+}
+
+// StateDots is the row of small dots on the folded chapters bar: one per
+// chapter, in order.
+const StateDots = ({ states }) => (
+  <Box aria-hidden sx={{ display: 'flex', gap: '4px' }}>
+    {states.map((state, index) => {
+      const { bg, border } = STATE_LOOK[state]
+      return (
+        <Box
+          key={index}
+          component='span'
+          sx={{
+            bgcolor: bg,
+            border: border ? `2px solid ${border}` : 'none',
+            borderRadius: '50%',
+            boxSizing: 'border-box',
+            height: 10,
+            width: 10,
+          }}
+        />
+      )
+    })}
+  </Box>
+)
+
+StateDots.propTypes = { states: PropTypes.array.isRequired }
+
 const ModuleCard = ({
   cards,
   compiled,
@@ -162,8 +286,16 @@ const ModuleCard = ({
     module.placed,
     module,
   )
-  const current = [...chapters].reverse().find(c => c.open)
-  // The bar is the chapter being learnt, the one that opens the next.
+  const states = chapters.map(c =>
+    chapterState(c, module.unlockPercent ?? undefined),
+  )
+  // The bar is the chapter being learnt: the one the new questions come
+  // from (newOrder), not known yet if one still is not.
+  const learning = newOrder(
+    chapters.filter(c => c.open).map(c => c.chapter),
+  ).map(chapter => chapters.findIndex(c => c.chapter === chapter))
+  const current =
+    chapters[learning.find(i => states[i] !== 'known') ?? learning[0]]
   const percent = current?.progress.percent ?? 0
   const capped = dayFull || module.earnedToday >= module.dailyCap
 
@@ -297,6 +429,10 @@ const ModuleCard = ({
             variant='plain'
             color='neutral'
             aria-expanded={showChapters}
+            aria-label={t('home.chaptersSummary', {
+              count: chapters.length,
+              summary: summary(states, t),
+            })}
             onClick={() => setShowChapters(v => !v)}
             startDecorator={<FactCheckOutlined />}
             endDecorator={
@@ -307,19 +443,34 @@ const ModuleCard = ({
             <Box sx={{ flex: 1, textAlign: 'left' }}>
               {t('home.chapters', { count: chapters.length })}
             </Box>
+            <StateDots states={states} />
           </Button>
         </>
       )}
       {showChapters && (
-        <ChapterRows chapters={chapters} module={module} testTo={testTo} />
+        <ChapterRows
+          chapters={chapters}
+          module={module}
+          states={states}
+          testTo={testTo}
+        />
       )}
     </Sheet>
   )
 }
 
+// summary says in words how many chapters are in each state, for a screen
+// reader on the folded bar.
+const summary = (states, t) =>
+  Object.keys(STATE_LOOK)
+    .map(state => [state, states.filter(s => s === state).length])
+    .filter(([, count]) => count > 0)
+    .map(([state, count]) => t(`home.state.${state}`, { count }))
+    .join(', ')
+
 // ChapterRows lists the chapters of a module with where each one stands,
 // and the test that opens it.
-const ChapterRows = ({ chapters, module, testTo }) => {
+const ChapterRows = ({ chapters, module, states, testTo }) => {
   const { t } = useTranslation('learn')
   return (
     <Box
@@ -332,28 +483,38 @@ const ChapterRows = ({ chapters, module, testTo }) => {
         p: 1.25,
       }}
     >
-      {chapters.map(({ by, chapter, open, placed, progress }) => (
-        <Stack
-          key={chapter.id}
-          direction='row'
-          gap={1}
-          alignItems='center'
-          sx={{ opacity: open ? 1 : 0.75 }}
-        >
-          <Box sx={{ flex: 1, minWidth: 0 }}>
+      {chapters.map(({ by, chapter, open, placed, progress }, index) => (
+        <Stack key={chapter.id} direction='row' gap={1.25} alignItems='center'>
+          <StateDot state={states[index]} />
+          <Box sx={{ flex: 1, minWidth: 0, opacity: open ? 1 : 0.85 }}>
             <Typography level='body-sm' sx={{ fontWeight: 600 }}>
               {chapter.name}
             </Typography>
-            <Typography level='body-xs' sx={{ color: 'text.secondary' }}>
-              {by === 'shut'
+            <Typography
+              level='body-xs'
+              sx={{ ...stateText(states[index]), fontWeight: 700 }}
+            >
+              {states[index] === 'shut'
                 ? t('home.chapterShut')
-                : !open
+                : states[index] === 'closed'
                   ? t('home.chapterClosed')
-                  : placed
-                    ? t('home.chapterByTest')
-                    : by === 'forced'
-                      ? t('home.chapterByParent', { percent: progress.percent })
-                      : t('home.chapterPercent', { percent: progress.percent })}
+                  : states[index] === 'review'
+                    ? t('home.chapterReview', { count: progress.forgotten })
+                    : placed
+                      ? t('home.chapterByTest')
+                      : states[index] === 'new'
+                        ? t('home.chapterNew')
+                        : by === 'forced'
+                          ? t('home.chapterByParent', {
+                              percent: progress.percent,
+                            })
+                          : states[index] === 'known'
+                            ? t('home.chapterKnown', {
+                                percent: progress.percent,
+                              })
+                            : t('home.chapterLearning', {
+                                percent: progress.percent,
+                              })}
             </Typography>
           </Box>
           {testTo && by !== 'shut' && (
@@ -378,6 +539,7 @@ const ChapterRows = ({ chapters, module, testTo }) => {
 ChapterRows.propTypes = {
   chapters: PropTypes.array.isRequired,
   module: PropTypes.object.isRequired,
+  states: PropTypes.array.isRequired,
   testTo: PropTypes.func,
 }
 
@@ -568,60 +730,6 @@ const testablePacks = player => {
   return out
 }
 
-// TestOffer proposes the placement test of a pack never tested: it opens at
-// once what the person knows, from the level they choose.
-const TestOffer = ({ levels, onSkip, pack, to }) => {
-  const { t } = useTranslation('learn')
-  const navigate = useNavigate()
-  const [start, setStart] = useState(0)
-  const [skipping, setSkipping] = useState(false)
-  return (
-    <Sheet
-      variant='outlined'
-      sx={{ borderRadius: 'xl', display: 'grid', gap: 1.75, mb: 2, p: 2 }}
-    >
-      <Stack direction='row' gap={1.5} alignItems='center'>
-        <LearnIcon entity={pack} size={44} />
-        <Box sx={{ minWidth: 0 }}>
-          <Typography
-            level='body-xs'
-            sx={{ color: 'text.secondary', fontWeight: 600 }}
-          >
-            {t('test.newPack')}
-          </Typography>
-          <Typography level='title-lg'>{pack.name}</Typography>
-        </Box>
-      </Stack>
-      <Typography level='body-md'>{t('test.offer')}</Typography>
-      <StartLevels levels={levels} value={start} onPick={setStart} />
-      <Typography level='body-sm' sx={{ color: 'text.secondary' }}>
-        {t('test.rules')}
-      </Typography>
-      <Button size='lg' onClick={() => navigate(`${to}?depart=${start}`)}>
-        {t('test.start')}
-      </Button>
-      <Button
-        variant='plain'
-        loading={skipping}
-        onClick={async () => {
-          setSkipping(true)
-          await onSkip().catch(() => {})
-          setSkipping(false)
-        }}
-      >
-        {t('test.skip')}
-      </Button>
-    </Sheet>
-  )
-}
-
-TestOffer.propTypes = {
-  levels: PropTypes.array.isRequired,
-  onSkip: PropTypes.func.isRequired,
-  pack: PropTypes.object.isRequired,
-  to: PropTypes.string.isRequired,
-}
-
 // groupByPack puts the modules under their pack, in the pack's order; the
 // others come last.
 const groupByPack = player => {
@@ -708,17 +816,8 @@ export const LearnModules = ({
 
   const testPacks = player ? testablePacks(player) : []
   const tested = new Set((player?.placements || []).map(p => p.pack))
-  // One pack never tested at a time is offered its test, so the modules
-  // stay in sight; the others have theirs at the top of their group.
-  const offers = player?.offline
-    ? []
-    : testPacks.filter(({ pack }) => !tested.has(pack.id)).slice(0, 1)
   // The test is there anytime, next to the name of its pack.
   const testable = new Set(testPacks.map(({ pack }) => pack.id))
-  const skip = async pack => {
-    await SendPlacement({ userId, pack, status: 'skipped' })
-    queryClient.invalidateQueries({ queryKey: learnKeys.player(userId) })
-  }
 
   const waiting = queuedFor(userId)
   const left = totalLeft(player)
@@ -844,16 +943,6 @@ export const LearnModules = ({
       {((player?.recre?.on && count > 0) || player?.recre?.bank > 0) && (
         <RecreCard recre={player.recre} to={recrePath} />
       )}
-
-      {offers.map(({ levels, pack }) => (
-        <TestOffer
-          key={pack.id}
-          pack={pack}
-          levels={levels}
-          to={testPath(pack.id)}
-          onSkip={() => skip(pack.id)}
-        />
-      ))}
 
       {(player?.offline || waiting > 0) && (
         <Sheet

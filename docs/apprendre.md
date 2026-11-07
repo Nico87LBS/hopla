@@ -61,7 +61,7 @@ suivants s'ouvrent comme réglé dans l'éditeur. Le fichier reste d'un seul
 tenant : l'éditeur le rouvre, « Exporter » l'envoie tel quel, et l'enregistrer
 de nouveau déplace ce que chacun sait avec ses fiches, même quand un chapitre
 change de groupe ou de niveau. Les paquets de la famille enregistrés avant la
-version 1.93.0 sont découpés ainsi tout seuls, sans rien perdre.
+version 1.94.0 sont découpés ainsi tout seuls, sans rien perdre.
 
 Un paquet enregistré se coche ensuite dans Par personne, comme les autres.
 « Modifier » le rouvre : les fiches gardent leur identifiant, donc ce que

@@ -29,7 +29,20 @@
     "chapterClosed": "Not open yet",
     "chapterByTest": "Known thanks to the test",
     "chapterByParent": "Opened by a parent · {{percent}} %",
-    "chapterPercent": "{{percent}} %"
+    "chapterNew": "To discover",
+    "chapterLearning": "Learning · {{percent}} %",
+    "chapterKnown": "Known · {{percent}} %",
+    "chapterReview_one": "To review · {{count}} forgotten question",
+    "chapterReview_other": "To review · {{count}} forgotten questions",
+    "chaptersSummary": "{{count}} chapters: {{summary}}",
+    "state": {
+      "new": "{{count}} to discover",
+      "learning": "{{count}} learning",
+      "known": "{{count}} known",
+      "review": "{{count}} to review",
+      "closed": "{{count}} not open yet",
+      "shut": "{{count}} closed by a parent"
+    }
   },
   "play": {
     "quit": "Quit the game",
@@ -473,11 +486,9 @@
     }
   },
   "test": {
-    "newPack": "New pack",
     "offer": "Already know a bit? Take the test: it opens the chapters you know right away.",
     "rules": "8 questions per chapter, 7 right answers to open it · no hops",
     "start": "Take the test",
-    "skip": "Skip, start from the beginning",
     "button": "Test a level",
     "again": "Test a level",
     "title": "Test · {{pack}}",
