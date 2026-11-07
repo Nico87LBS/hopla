@@ -4,6 +4,7 @@ import { test } from 'node:test'
 
 import {
   cardMap,
+  chapterState,
   checkAnswer,
   compile,
   expectedHops,
@@ -650,4 +651,42 @@ test('a clock set and a tracing are graded', () => {
     correct: false,
     almost: true,
   })
+})
+
+test('chapterState tells the state of each chapter', () => {
+  const doc = {
+    id: 't',
+    nom: 'T',
+    chapitres: [
+      { id: 'a', nom: 'A' },
+      { id: 'b', nom: 'B', ouvert_apres: 80 },
+      { id: 'c', nom: 'C', ouvert_apres: 80 },
+    ],
+    fiches: ['a', 'b', 'c'].flatMap(chapitre =>
+      [1, 2].map(n => ({
+        id: `${chapitre}${n}`,
+        chapitre,
+        type: 'carte',
+        question: `${chapitre}${n}?`,
+        reponse: 'x',
+      })),
+    ),
+  }
+  const compiled = compile(doc)
+  const keys = compiled.chapters[0].sources[0].list().map(i => i.key)
+  const card = (key, extra) => ({ key, box: 4, seen: 3, ...extra })
+  const states = list =>
+    openChapters(compiled, cardMap(list)).map(c => chapterState(c))
+  assert.deepEqual(states([]), ['new', 'closed', 'closed'])
+  assert.deepEqual(states([card(keys[0], { box: 1 })]), [
+    'learning',
+    'closed',
+    'closed',
+  ])
+  assert.equal(states(keys.map(k => card(k)))[0], 'known')
+  // A question known once and missed since: the chapter is to review.
+  assert.equal(
+    states([card(keys[0]), card(keys[1], { box: 1, lapses: 1 })])[0],
+    'review',
+  )
 })

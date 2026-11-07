@@ -1,11 +1,16 @@
 import {
+  AutoAwesomeRounded,
   CheckCircleRounded,
+  CheckRounded,
   ChevronRightRounded,
   CloudOffRounded,
+  EditRounded,
   ExpandLessRounded,
   ExpandMoreRounded,
   FactCheckOutlined,
   FitnessCenterRounded,
+  LockRounded,
+  ReplayRounded,
   SchoolRounded,
   SportsEsportsRounded,
 } from '@mui/icons-material'
@@ -35,6 +40,7 @@ import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries'
 import { OpenNextLevel, SendPlacement } from '../../utils/Fetcher'
 import {
   addDays,
+  chapterState,
   DEFAULT_SETTINGS,
   dueReviews,
   moduleLocked,
@@ -127,6 +133,105 @@ export const LearnChooser = () => {
   )
 }
 
+// The look of each chapter state: a round dot, the same as the faces on the
+// task lists, with an icon so colour is never the only sign, and the state
+// written beside it.
+const STATE_LOOK = {
+  new: {
+    Icon: AutoAwesomeRounded,
+    bg: '#fff',
+    color: HOPLA.violet,
+    border: HOPLA.violet,
+    text: HOPLA.blueberry,
+  },
+  learning: {
+    Icon: EditRounded,
+    bg: HOPLA.violet,
+    color: '#fff',
+    text: HOPLA.blueberry,
+  },
+  known: {
+    Icon: CheckRounded,
+    bg: HOPLA.green,
+    color: '#fff',
+    text: HOPLA.greenText,
+  },
+  review: {
+    Icon: ReplayRounded,
+    bg: HOPLA.carrot,
+    color: '#fff',
+    text: HOPLA.carrotText,
+  },
+  closed: {
+    Icon: LockRounded,
+    bg: '#EEECE8',
+    color: '#6B6680',
+    border: '#B9B4AA',
+    text: '#6B6680',
+  },
+  shut: {
+    Icon: LockRounded,
+    bg: '#5E5A54',
+    color: '#fff',
+    text: '#5E5A54',
+  },
+}
+
+const StateDot = ({ size = 28, state }) => {
+  const { Icon, bg, border, color } = STATE_LOOK[state]
+  return (
+    <Box
+      aria-hidden
+      sx={{
+        alignItems: 'center',
+        bgcolor: bg,
+        border: border ? `2px solid ${border}` : 'none',
+        borderRadius: '50%',
+        boxSizing: 'border-box',
+        color,
+        display: 'flex',
+        flexShrink: 0,
+        height: size,
+        justifyContent: 'center',
+        width: size,
+      }}
+    >
+      <Icon sx={{ fontSize: size * 0.58 }} />
+    </Box>
+  )
+}
+
+StateDot.propTypes = {
+  size: PropTypes.number,
+  state: PropTypes.string.isRequired,
+}
+
+// StateDots is the row of small dots on the folded chapters bar: one per
+// chapter, in order.
+const StateDots = ({ states }) => (
+  <Box aria-hidden sx={{ display: 'flex', gap: '4px' }}>
+    {states.map((state, index) => {
+      const { bg, border } = STATE_LOOK[state]
+      return (
+        <Box
+          key={index}
+          component='span'
+          sx={{
+            bgcolor: bg,
+            border: border ? `2px solid ${border}` : 'none',
+            borderRadius: '50%',
+            boxSizing: 'border-box',
+            height: 10,
+            width: 10,
+          }}
+        />
+      )
+    })}
+  </Box>
+)
+
+StateDots.propTypes = { states: PropTypes.array.isRequired }
+
 const ModuleCard = ({
   cards,
   compiled,
@@ -161,6 +266,9 @@ const ModuleCard = ({
     module.unlockPercent ?? undefined,
     module.placed,
     module,
+  )
+  const states = chapters.map(c =>
+    chapterState(c, module.unlockPercent ?? undefined),
   )
   const current = [...chapters].reverse().find(c => c.open)
   // The bar is the chapter being learnt, the one that opens the next.
@@ -297,6 +405,10 @@ const ModuleCard = ({
             variant='plain'
             color='neutral'
             aria-expanded={showChapters}
+            aria-label={t('home.chaptersSummary', {
+              count: chapters.length,
+              summary: summary(states, t),
+            })}
             onClick={() => setShowChapters(v => !v)}
             startDecorator={<FactCheckOutlined />}
             endDecorator={
@@ -307,19 +419,34 @@ const ModuleCard = ({
             <Box sx={{ flex: 1, textAlign: 'left' }}>
               {t('home.chapters', { count: chapters.length })}
             </Box>
+            <StateDots states={states} />
           </Button>
         </>
       )}
       {showChapters && (
-        <ChapterRows chapters={chapters} module={module} testTo={testTo} />
+        <ChapterRows
+          chapters={chapters}
+          module={module}
+          states={states}
+          testTo={testTo}
+        />
       )}
     </Sheet>
   )
 }
 
+// summary says in words how many chapters are in each state, for a screen
+// reader on the folded bar.
+const summary = (states, t) =>
+  Object.keys(STATE_LOOK)
+    .map(state => [state, states.filter(s => s === state).length])
+    .filter(([, count]) => count > 0)
+    .map(([state, count]) => t(`home.state.${state}`, { count }))
+    .join(', ')
+
 // ChapterRows lists the chapters of a module with where each one stands,
 // and the test that opens it.
-const ChapterRows = ({ chapters, module, testTo }) => {
+const ChapterRows = ({ chapters, module, states, testTo }) => {
   const { t } = useTranslation('learn')
   return (
     <Box
@@ -332,28 +459,44 @@ const ChapterRows = ({ chapters, module, testTo }) => {
         p: 1.25,
       }}
     >
-      {chapters.map(({ by, chapter, open, placed, progress }) => (
+      {chapters.map(({ by, chapter, open, placed, progress }, index) => (
         <Stack
           key={chapter.id}
           direction='row'
-          gap={1}
+          gap={1.25}
           alignItems='center'
-          sx={{ opacity: open ? 1 : 0.75 }}
+          sx={{ opacity: open ? 1 : 0.85 }}
         >
+          <StateDot state={states[index]} />
           <Box sx={{ flex: 1, minWidth: 0 }}>
             <Typography level='body-sm' sx={{ fontWeight: 600 }}>
               {chapter.name}
             </Typography>
-            <Typography level='body-xs' sx={{ color: 'text.secondary' }}>
-              {by === 'shut'
+            <Typography
+              level='body-xs'
+              sx={{ color: STATE_LOOK[states[index]].text, fontWeight: 700 }}
+            >
+              {states[index] === 'shut'
                 ? t('home.chapterShut')
-                : !open
+                : states[index] === 'closed'
                   ? t('home.chapterClosed')
-                  : placed
-                    ? t('home.chapterByTest')
-                    : by === 'forced'
-                      ? t('home.chapterByParent', { percent: progress.percent })
-                      : t('home.chapterPercent', { percent: progress.percent })}
+                  : states[index] === 'review'
+                    ? t('home.chapterReview', { count: progress.forgotten })
+                    : placed
+                      ? t('home.chapterByTest')
+                      : states[index] === 'new'
+                        ? t('home.chapterNew')
+                        : by === 'forced'
+                          ? t('home.chapterByParent', {
+                              percent: progress.percent,
+                            })
+                          : states[index] === 'known'
+                            ? t('home.chapterKnown', {
+                                percent: progress.percent,
+                              })
+                            : t('home.chapterLearning', {
+                                percent: progress.percent,
+                              })}
             </Typography>
           </Box>
           {testTo && by !== 'shut' && (
@@ -378,6 +521,7 @@ const ChapterRows = ({ chapters, module, testTo }) => {
 ChapterRows.propTypes = {
   chapters: PropTypes.array.isRequired,
   module: PropTypes.object.isRequired,
+  states: PropTypes.array.isRequired,
   testTo: PropTypes.func,
 }
 

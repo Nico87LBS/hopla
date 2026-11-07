@@ -29,7 +29,20 @@
     "chapterClosed": "Not open yet",
     "chapterByTest": "Known thanks to the test",
     "chapterByParent": "Opened by a parent · {{percent}} %",
-    "chapterPercent": "{{percent}} %"
+    "chapterNew": "To discover",
+    "chapterLearning": "Learning · {{percent}} %",
+    "chapterKnown": "Known · {{percent}} %",
+    "chapterReview_one": "To review · {{count}} forgotten question",
+    "chapterReview_other": "To review · {{count}} forgotten questions",
+    "chaptersSummary": "{{count}} chapters: {{summary}}",
+    "state": {
+      "new": "{{count}} to discover",
+      "learning": "{{count}} learning",
+      "known": "{{count}} known",
+      "review": "{{count}} to review",
+      "closed": "{{count}} not open yet",
+      "shut": "{{count}} closed by a parent"
+    }
   },
   "play": {
     "quit": "Quit the game",

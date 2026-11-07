@@ -156,6 +156,9 @@ export const itemForKey = (chapters, key) => {
 }
 
 const known = card => card && card.box >= MASTERED_BOX
+// A question is forgotten when it was known once (it lapsed) and a wrong
+// answer sent it back below the known boxes since.
+const forgot = card => !!card && card.lapses > 0 && card.box < MASTERED_BOX
 
 // weight is how far a card got: a question known counts whole, one on its
 // way counts in part, so the bar moves from the first game.
@@ -166,6 +169,7 @@ const weight = card =>
 // how far it got, over all of them, or over its goal when its questions
 // never end.
 export const chapterProgress = (chapter, cards) => {
+  let forgotten = 0
   let mastered = 0
   let score = 0
   let seen = 0
@@ -178,6 +182,7 @@ export const chapterProgress = (chapter, cards) => {
         const card = cards.get(item.key)
         if (card) seen++
         if (known(card)) mastered++
+        if (forgot(card)) forgotten++
         score += weight(card)
       }
       continue
@@ -187,6 +192,7 @@ export const chapterProgress = (chapter, cards) => {
       if (!source.fromKey(card.key)) continue
       seen++
       if (known(card)) mastered++
+      if (forgot(card)) forgotten++
       weights.push(weight(card))
     }
     total += chapter.goal
@@ -196,7 +202,7 @@ export const chapterProgress = (chapter, cards) => {
       .reduce((sum, w) => sum + w, 0)
   }
   const percent = total ? Math.floor((score * 100) / total + 1e-9) : 0
-  return { mastered, score, seen, total, percent }
+  return { forgotten, mastered, score, seen, total, percent }
 }
 
 // openChapters tells, chapter by chapter, how well it is known and whether it
@@ -239,6 +245,23 @@ export const openChapters = (
     })
   })
   return out
+}
+
+// CHAPTER_STATES lists the states of a chapter, from the one shown first.
+// shut: closed by a parent; closed: not open yet; review: open with
+// questions forgotten; known: the threshold is reached or a test passed;
+// learning: begun; new: open, nothing seen.
+export const DEFAULT_THRESHOLD = 80
+export const chapterState = (entry, unlockPercent) => {
+  if (entry.by === 'shut') return 'shut'
+  if (!entry.open) return 'closed'
+  if (entry.progress.forgotten > 0) return 'review'
+  if (
+    entry.placed ||
+    entry.progress.percent >= (unlockPercent ?? DEFAULT_THRESHOLD)
+  )
+    return 'known'
+  return entry.progress.seen > 0 ? 'learning' : 'new'
 }
 
 // moduleProgress is how well the whole module is known.
