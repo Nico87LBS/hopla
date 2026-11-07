@@ -758,6 +758,131 @@ const groupByPack = player => {
 // A child with only a few modules finds them without searching.
 const BAR_FROM = 6
 
+// groupState sums up a group in one dot, from the states of its chapters:
+// one to see again makes it orange, all known makes it green.
+const groupState = states => {
+  if (!states.length) return 'new'
+  if (states.includes('review')) return 'review'
+  if (states.every(s => s === 'known')) return 'known'
+  if (states.every(s => s === 'shut')) return 'shut'
+  if (states.every(s => s === 'new' || s === 'closed' || s === 'shut'))
+    return 'new'
+  return 'learning'
+}
+
+// useFolds keeps on the device which packs and levels the person folded or
+// unfolded by hand; the others follow their default.
+const useFolds = key => {
+  const [folds, setFolds] = useState(() => {
+    try {
+      return JSON.parse(window.localStorage.getItem(key)) || {}
+    } catch {
+      return {}
+    }
+  })
+  const set = (id, open) =>
+    setFolds(current => {
+      const next = { ...current, [id]: open }
+      try {
+        window.localStorage.setItem(key, JSON.stringify(next))
+      } catch {
+        // A device that keeps nothing unfolds as by default next time.
+      }
+      return next
+    })
+  return [folds, set]
+}
+
+// FoldSummary is what a folded pack or level still tells: where it stands,
+// what is waiting, and a dot per group.
+const FoldSummary = ({ cap, due, earned, label, states, upToDate }) => {
+  const { t } = useTranslation('learn')
+  const parts = []
+  if (label) parts.push(<span key='label'>{label}</span>)
+  if (upToDate) {
+    parts.push(
+      <Typography
+        key='done'
+        component='span'
+        sx={{ color: HOPLA.greenText, fontWeight: 700 }}
+      >
+        {t('home.upToDate')}
+      </Typography>,
+    )
+  } else if (due > 0) {
+    parts.push(
+      <Typography
+        key='due'
+        component='span'
+        sx={{ color: HOPLA.carrotText, fontWeight: 700 }}
+      >
+        {t('list.toReview', { count: due })}
+      </Typography>,
+    )
+  }
+  if (cap > 0 && !upToDate) {
+    parts.push(
+      <Typography
+        key='hops'
+        component='span'
+        sx={{ color: HOPLA.goldText, fontWeight: 700 }}
+      >
+        {t('home.hopsToday', { earned, cap })}
+      </Typography>,
+    )
+  }
+  return (
+    <Stack direction='row' alignItems='center' gap={1} sx={{ minWidth: 0 }}>
+      <Typography
+        level='body-xs'
+        noWrap
+        sx={{ color: 'text.secondary', flex: 1, minWidth: 0 }}
+      >
+        {parts.flatMap((part, i) => (i ? [' · ', part] : [part]))}
+      </Typography>
+      <StateDots states={states} />
+    </Stack>
+  )
+}
+
+FoldSummary.propTypes = {
+  cap: PropTypes.number,
+  due: PropTypes.number,
+  earned: PropTypes.number,
+  label: PropTypes.string,
+  states: PropTypes.array.isRequired,
+  upToDate: PropTypes.bool,
+}
+
+// foldButtonSx makes a heading a plain button that folds what is under it.
+const foldButtonSx = {
+  alignItems: 'center',
+  bgcolor: 'transparent',
+  border: 0,
+  borderRadius: 'md',
+  color: 'inherit',
+  cursor: 'pointer',
+  display: 'flex',
+  font: 'inherit',
+  gap: 1,
+  minWidth: 0,
+  p: 0,
+  textAlign: 'left',
+  '&:focus-visible': {
+    outline: `2px solid ${HOPLA.violet}`,
+    outlineOffset: 2,
+  },
+}
+
+const Chevron = ({ open }) =>
+  open ? (
+    <ExpandLessRounded sx={{ color: 'text.tertiary', flexShrink: 0 }} />
+  ) : (
+    <ExpandMoreRounded sx={{ color: 'text.tertiary', flexShrink: 0 }} />
+  )
+
+Chevron.propTypes = { open: PropTypes.bool }
+
 // LearnModules is the list of a person's modules, with the day's total. The
 // family screen shows it too, signed in as nobody: it gets the member and
 // where a module opens rather than reading them from the account.
@@ -778,6 +903,7 @@ export const LearnModules = ({
     levels: [],
     sort: 'level',
   })
+  const [folds, setFold] = useFolds(`hopla.learn.folds.${userId}`)
 
   // A level known opens the next one, once.
   const opening = useRef(new Set())
@@ -870,6 +996,59 @@ export const LearnModules = ({
                 })),
               ),
         )
+
+  // Each group in one look, for the folded packs and levels.
+  const glance = module => {
+    const compiled = byId[module.id]
+    const unlockPercent = module.unlockPercent ?? undefined
+    const locked = !!moduleLocked(compiled, byId, cards)
+    const today = moduleToday(compiled, cards, {
+      day: player.day,
+      settings: module.settings,
+      unlockPercent,
+      placed: module.placed,
+      forced: module.forced,
+      shut: module.shut,
+      newToday: module.newToday,
+      dueLeft: reviewsLeft(player),
+    })
+    const states = openChapters(
+      compiled,
+      cards,
+      unlockPercent,
+      module.placed,
+      module,
+    ).map(c => chapterState(c, unlockPercent))
+    const done = locked || today.upToDate
+    return {
+      state: locked ? 'closed' : groupState(states),
+      due: done ? 0 : today.due,
+      done,
+      earned: module.earnedToday || 0,
+      cap: module.dailyCap || 0,
+    }
+  }
+  const sum = looks => ({
+    states: looks.map(l => l.state),
+    due: looks.reduce((n, l) => n + l.due, 0),
+    earned: looks.reduce((n, l) => n + l.earned, 0),
+    cap: looks.reduce((n, l) => n + l.cap, 0),
+    upToDate: looks.length > 0 && looks.every(l => l.done),
+  })
+  // A search or a filter shows everything it finds, unfolded; the list
+  // sorted by what to play first is one list, never folded.
+  const folding =
+    !(withBar && (query.trim() || choices.levels.length)) &&
+    !(withBar && choices.sort === 'first')
+  const looks = new Map(
+    player
+      ? sections.flatMap(section =>
+          section.levels.flatMap(({ group }) =>
+            group.items.map(module => [module.id, glance(module)]),
+          ),
+        )
+      : [],
+  )
 
   return (
     <Container maxWidth='sm' sx={pageSx}>
@@ -1012,81 +1191,185 @@ export const LearnModules = ({
       )}
 
       <Stack gap={2.5}>
-        {sections.map(section => (
-          <Sheet
-            component='section'
-            key={section.id || 'others'}
-            variant='soft'
-            sx={{ borderRadius: 'xl', p: 1.5 }}
-          >
-            <Stack direction='row' alignItems='center' gap={1} sx={{ mb: 1.5 }}>
-              {(packOf(section.id) || section.module) && (
-                <LearnIcon
-                  entity={packOf(section.id) || section.module}
-                  size={28}
-                  tile={false}
-                />
-              )}
-              <Typography level='title-lg' sx={{ flex: 1, minWidth: 0 }}>
-                {section.id === 'first'
-                  ? t('list.sort.first')
-                  : section.name || t('home.others')}
-              </Typography>
-              {(testable.has(section.id) || section.module) &&
-                !player.offline && (
-                  <Button
-                    component={Link}
-                    to={testPath(section.id)}
-                    size='sm'
-                    variant='plain'
-                    startDecorator={<FactCheckOutlined />}
-                  >
-                    {tested.has(section.id)
-                      ? t('test.again')
-                      : t('test.button')}
-                  </Button>
-                )}
-            </Stack>
-            <Stack gap={1.5}>
-              {section.levels.map(({ group, title }) => (
-                <Stack key={group.id || 'others'} gap={1}>
-                  {title && (
-                    <Typography
-                      level='title-md'
-                      sx={{
-                        borderLeft: '4px solid',
-                        borderColor: 'primary.solidBg',
-                        mt: 0.5,
-                        pl: 1,
-                      }}
-                    >
-                      {title}
-                    </Typography>
-                  )}
-                  {group.items.map(module => (
-                    <ModuleCard
-                      key={module.id}
-                      module={module}
-                      compiled={byId[module.id]}
-                      compiledById={byId}
-                      cards={cards}
-                      day={player.day}
-                      dayFull={left === 0}
-                      dueLeft={reviewsLeft(player)}
-                      testTo={
-                        player.offline
-                          ? undefined
-                          : scope =>
-                              `${testPath(rootOf(player.packs, module.id)?.id || module.id)}?${scope}`
-                      }
-                      to={playPath(module.id)}
+        {sections.map(section => {
+          const sectionKey = section.id || 'others'
+          const levelLooks = section.levels.map(({ group }) =>
+            sum(group.items.map(module => looks.get(module.id))),
+          )
+          const packLook = sum(
+            section.levels.flatMap(({ group }) =>
+              group.items.map(module => looks.get(module.id)),
+            ),
+          )
+          const last = section.levels.length - 1
+          // A pack with nothing left to play today folds by itself.
+          const packOpen = !folding || (folds[sectionKey] ?? !packLook.upToDate)
+          return (
+            <Sheet
+              component='section'
+              key={sectionKey}
+              variant='soft'
+              sx={{ borderRadius: 'xl', p: 1.5 }}
+            >
+              <Stack
+                direction='row'
+                alignItems='center'
+                gap={1}
+                sx={{ mb: packOpen ? 1.5 : 0 }}
+              >
+                <Box
+                  component={folding ? 'button' : 'div'}
+                  type={folding ? 'button' : undefined}
+                  aria-expanded={folding ? packOpen : undefined}
+                  onClick={
+                    folding ? () => setFold(sectionKey, !packOpen) : undefined
+                  }
+                  sx={{
+                    ...foldButtonSx,
+                    flex: 1,
+                    cursor: folding ? 'pointer' : 'default',
+                  }}
+                >
+                  {(packOf(section.id) || section.module) && (
+                    <LearnIcon
+                      entity={packOf(section.id) || section.module}
+                      size={28}
+                      tile={false}
                     />
-                  ))}
+                  )}
+                  <Box sx={{ flex: 1, minWidth: 0 }}>
+                    <Typography level='title-lg'>
+                      {section.id === 'first'
+                        ? t('list.sort.first')
+                        : section.name || t('home.others')}
+                    </Typography>
+                  </Box>
+                  {folding && <Chevron open={packOpen} />}
+                </Box>
+                {(testable.has(section.id) || section.module) &&
+                  !player.offline && (
+                    <Button
+                      component={Link}
+                      to={testPath(section.id)}
+                      size='sm'
+                      variant='plain'
+                      startDecorator={<FactCheckOutlined />}
+                    >
+                      {tested.has(section.id)
+                        ? t('test.again')
+                        : t('test.button')}
+                    </Button>
+                  )}
+              </Stack>
+              {!packOpen && (
+                <Box
+                  component='button'
+                  type='button'
+                  aria-expanded={false}
+                  onClick={() => setFold(sectionKey, true)}
+                  sx={{
+                    ...foldButtonSx,
+                    display: 'block',
+                    mt: 0.5,
+                    width: '100%',
+                  }}
+                >
+                  <FoldSummary
+                    {...packLook}
+                    label={section.levels[last]?.title || undefined}
+                    states={levelLooks[last]?.states || []}
+                  />
+                </Box>
+              )}
+              {packOpen && (
+                <Stack gap={1.5}>
+                  {section.levels.map(({ group, title }, index) => {
+                    const look = levelLooks[index]
+                    const known =
+                      look.states.length > 0 &&
+                      look.states.every(state => state === 'known')
+                    const levelKey = `${sectionKey}/${group.id || 'others'}`
+                    // The lower levels fold; the highest, the one being learnt, stays open.
+                    const levelFolds = folding && !!title && last > 0
+                    const levelOpen =
+                      !levelFolds || (folds[levelKey] ?? index === last)
+                    return (
+                      <Stack key={group.id || 'others'} gap={1}>
+                        {title && (
+                          <Box
+                            component={levelFolds ? 'button' : 'div'}
+                            type={levelFolds ? 'button' : undefined}
+                            aria-expanded={levelFolds ? levelOpen : undefined}
+                            onClick={
+                              levelFolds
+                                ? () => setFold(levelKey, !levelOpen)
+                                : undefined
+                            }
+                            sx={{
+                              ...foldButtonSx,
+                              cursor: levelFolds ? 'pointer' : 'default',
+                              mt: 0.5,
+                            }}
+                          >
+                            <Typography
+                              level='title-md'
+                              sx={{
+                                borderLeft: '4px solid',
+                                borderColor: known
+                                  ? HOPLA.green
+                                  : 'primary.solidBg',
+                                flexShrink: 0,
+                                pl: 1,
+                              }}
+                            >
+                              {title}
+                            </Typography>
+                            <Box sx={{ flex: 1, minWidth: 0 }}>
+                              {!levelOpen && (
+                                <FoldSummary
+                                  {...look}
+                                  cap={0}
+                                  label={
+                                    known
+                                      ? t('home.fold.known')
+                                      : t('home.fold.groups', {
+                                          count: look.states.length,
+                                        })
+                                  }
+                                />
+                              )}
+                            </Box>
+                            {levelFolds && <Chevron open={levelOpen} />}
+                          </Box>
+                        )}
+                        {levelOpen &&
+                          group.items.map(module => (
+                            <ModuleCard
+                              key={module.id}
+                              module={module}
+                              compiled={byId[module.id]}
+                              compiledById={byId}
+                              cards={cards}
+                              day={player.day}
+                              dayFull={left === 0}
+                              dueLeft={reviewsLeft(player)}
+                              testTo={
+                                player.offline
+                                  ? undefined
+                                  : scope =>
+                                      `${testPath(rootOf(player.packs, module.id)?.id || module.id)}?${scope}`
+                              }
+                              to={playPath(module.id)}
+                            />
+                          ))}
+                      </Stack>
+                    )
+                  })}
                 </Stack>
-              ))}
-            </Stack>
-          </Sheet>
-        ))}
+              )}
+            </Sheet>
+          )
+        })}
       </Stack>
     </Container>
   )
