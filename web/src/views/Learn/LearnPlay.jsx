@@ -37,8 +37,6 @@ import { HOPLA } from '../../constants/theme'
 import { learnKeys, usePlayer } from '../../queries/LearnQueries'
 import { SendLearnGame } from '../../utils/Fetcher'
 import { capitalFor, isolated } from '../../utils/learn/display'
-import { recordGame, streakOf } from '../../utils/learn/streak'
-import { packTree, rootOf } from '../../utils/learn/tree'
 import {
   addDays,
   again,
@@ -75,6 +73,8 @@ import {
   whenSilent,
 } from '../../utils/learn/speech'
 import { applyResult, playLocally, queueGame } from '../../utils/learn/store'
+import { recordGame, streakOf } from '../../utils/learn/streak'
+import { packTree, rootOf } from '../../utils/learn/tree'
 import { generateUUID } from '../../utils/UUID'
 import LoadingComponent from '../components/Loading'
 import { LearnIcon, Stars, subjectColor, useCompiled } from './LearnParts'
