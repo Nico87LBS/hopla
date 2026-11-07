@@ -486,11 +486,9 @@
     }
   },
   "test": {
-    "newPack": "Nouveau paquet",
     "offer": "Tu en sais déjà un peu ? Fais le test : il ouvre tout de suite les chapitres que tu connais.",
     "rules": "8 questions par chapitre, 7 bonnes réponses pour l'ouvrir · pas de hops",
     "start": "Faire le test",
-    "skip": "Passer, commencer au début",
     "button": "Tester un niveau",
     "again": "Tester un niveau",
     "title": "Test · {{pack}}",

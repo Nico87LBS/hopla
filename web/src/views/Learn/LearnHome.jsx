@@ -27,7 +27,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import PropTypes from 'prop-types'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useParams } from 'react-router-dom'
 
 import { HOPLA } from '../../constants/theme'
 import { useIsParent } from '../../hooks/useIsParent'
@@ -37,7 +37,7 @@ import {
   usePlayer,
 } from '../../queries/LearnQueries'
 import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries'
-import { OpenNextLevel, SendPlacement } from '../../utils/Fetcher'
+import { OpenNextLevel } from '../../utils/Fetcher'
 import {
   addDays,
   chapterState,
@@ -62,7 +62,6 @@ import { MemberAvatar } from '../Games/GameParts'
 import { clock } from '../Recre/games/common'
 import { LearnIcon, Progress, subjectColor, useCompiled } from './LearnParts'
 import ListBar, { useListChoices } from './ListBar'
-import { StartLevels } from './PlacementTest'
 import TestsSection from './TestPrep'
 
 const pageSx = { px: { xs: 2, sm: 3 }, pb: 6, pt: { xs: 1, sm: 3 } }
@@ -712,60 +711,6 @@ const testablePacks = player => {
   return out
 }
 
-// TestOffer proposes the placement test of a pack never tested: it opens at
-// once what the person knows, from the level they choose.
-const TestOffer = ({ levels, onSkip, pack, to }) => {
-  const { t } = useTranslation('learn')
-  const navigate = useNavigate()
-  const [start, setStart] = useState(0)
-  const [skipping, setSkipping] = useState(false)
-  return (
-    <Sheet
-      variant='outlined'
-      sx={{ borderRadius: 'xl', display: 'grid', gap: 1.75, mb: 2, p: 2 }}
-    >
-      <Stack direction='row' gap={1.5} alignItems='center'>
-        <LearnIcon entity={pack} size={44} />
-        <Box sx={{ minWidth: 0 }}>
-          <Typography
-            level='body-xs'
-            sx={{ color: 'text.secondary', fontWeight: 600 }}
-          >
-            {t('test.newPack')}
-          </Typography>
-          <Typography level='title-lg'>{pack.name}</Typography>
-        </Box>
-      </Stack>
-      <Typography level='body-md'>{t('test.offer')}</Typography>
-      <StartLevels levels={levels} value={start} onPick={setStart} />
-      <Typography level='body-sm' sx={{ color: 'text.secondary' }}>
-        {t('test.rules')}
-      </Typography>
-      <Button size='lg' onClick={() => navigate(`${to}?depart=${start}`)}>
-        {t('test.start')}
-      </Button>
-      <Button
-        variant='plain'
-        loading={skipping}
-        onClick={async () => {
-          setSkipping(true)
-          await onSkip().catch(() => {})
-          setSkipping(false)
-        }}
-      >
-        {t('test.skip')}
-      </Button>
-    </Sheet>
-  )
-}
-
-TestOffer.propTypes = {
-  levels: PropTypes.array.isRequired,
-  onSkip: PropTypes.func.isRequired,
-  pack: PropTypes.object.isRequired,
-  to: PropTypes.string.isRequired,
-}
-
 // groupByPack puts the modules under their pack, in the pack's order; the
 // others come last.
 const groupByPack = player => {
@@ -852,17 +797,8 @@ export const LearnModules = ({
 
   const testPacks = player ? testablePacks(player) : []
   const tested = new Set((player?.placements || []).map(p => p.pack))
-  // One pack never tested at a time is offered its test, so the modules
-  // stay in sight; the others have theirs at the top of their group.
-  const offers = player?.offline
-    ? []
-    : testPacks.filter(({ pack }) => !tested.has(pack.id)).slice(0, 1)
   // The test is there anytime, next to the name of its pack.
   const testable = new Set(testPacks.map(({ pack }) => pack.id))
-  const skip = async pack => {
-    await SendPlacement({ userId, pack, status: 'skipped' })
-    queryClient.invalidateQueries({ queryKey: learnKeys.player(userId) })
-  }
 
   const waiting = queuedFor(userId)
   const left = totalLeft(player)
@@ -988,16 +924,6 @@ export const LearnModules = ({
       {((player?.recre?.on && count > 0) || player?.recre?.bank > 0) && (
         <RecreCard recre={player.recre} to={recrePath} />
       )}
-
-      {offers.map(({ levels, pack }) => (
-        <TestOffer
-          key={pack.id}
-          pack={pack}
-          levels={levels}
-          to={testPath(pack.id)}
-          onSkip={() => skip(pack.id)}
-        />
-      ))}
 
       {(player?.offline || waiting > 0) && (
         <Sheet

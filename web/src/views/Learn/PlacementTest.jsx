@@ -54,7 +54,7 @@ import { DragToBox } from './PlayModes'
 
 // StartLevels lets the person pick the level the test starts at; the levels
 // before count as known.
-export const StartLevels = ({ levels, onPick, value }) => {
+const StartLevels = ({ levels, onPick, value }) => {
   const { t } = useTranslation('learn')
   if (levels.length < 2) return null
   return (
