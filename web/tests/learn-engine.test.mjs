@@ -717,3 +717,36 @@ test('chapterState tells the state of each chapter', () => {
     'review',
   )
 })
+
+test('two right answers never missed count a question as known at once', () => {
+  const compiled = compile(catalogue['anglais-gs-couleurs-nombres'])
+  const keys = compiled.chapters[0].sources[0].list().map(i => i.key)
+  const play = (cards, key, correct) =>
+    review(cards.get(key) || { key }, { key, correct }, '2026-11-07')
+  const percentOf = cards => openChapters(compiled, cards)[0].progress.percent
+  const cards = new Map()
+  for (const key of keys) cards.set(key, play(cards, key, true))
+  assert.ok(percentOf(cards) < 80)
+  for (const key of keys) cards.set(key, play(cards, key, true))
+  assert.equal(percentOf(cards), 100)
+  // A missed answer takes the shortcut away.
+  cards.set(keys[0], play(cards, keys[0], false))
+  assert.ok(percentOf(cards) < 100)
+})
+
+test('a game after a well played one brings more new questions', () => {
+  const compiled = compile(catalogue['anglais-gs-couleurs-nombres'])
+  const keys = compiled.chapters[0].sources[0].list().map(i => i.key)
+  const cards = new Map(
+    keys
+      .slice(0, 3)
+      .map(key => [key, review({ key }, { key, correct: true }, '2026-11-07')]),
+  )
+  const fresh = options =>
+    pickQuestions(compiled, cards, {
+      day: '2026-11-07',
+      rng: seededRandom(2),
+      ...options,
+    }).filter(q => !cards.has(q.key)).length
+  assert.ok(fresh({ boost: true }) > fresh({}))
+})

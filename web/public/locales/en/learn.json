@@ -94,6 +94,8 @@
     "refused": "The game couldn't be counted.",
     "review": "To review",
     "replay": "Play again",
+    "levelTest": "You know this well! Shall we try the next level?",
+    "levelTestGo": "Take the test",
     "back": "Back",
     "noHops": "No {{units}} this time, play again to earn some",
     "retried": "Second try: {{right}} out of {{total}}",

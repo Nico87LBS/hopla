@@ -94,6 +94,8 @@
     "refused": "La partie n'a pas pu être comptée.",
     "review": "À revoir",
     "replay": "Rejouer",
+    "levelTest": "Tu connais déjà bien ça ! On essaie le niveau suivant ?",
+    "levelTestGo": "Faire le test",
     "back": "Retour",
     "noHops": "Pas {{ofUnits}} cette fois, rejoue pour en gagner",
     "retried": "Au 2e essai : {{right}} sur {{total}}",

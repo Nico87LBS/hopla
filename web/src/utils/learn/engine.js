@@ -44,6 +44,12 @@ export const READY = 0.9
 // many of them are known, unless it sets its own objectif.
 export const DEFAULT_GOAL = 20
 export const MASTERED_BOX = 4
+// BOOST_PERCENT is the score of a game from which the next one brings
+// BOOST_NEW new questions at least; a streak of EASY_GAMES such games offers
+// the test of the next level.
+export const BOOST_PERCENT = 90
+export const BOOST_NEW = 6
+export const EASY_GAMES = 2
 // A question forgotten this many times is tough (ToughForgot on the server).
 export const TOUGH_FORGOT = 5
 export const isTough = card => (card?.forgot || 0) >= TOUGH_FORGOT
@@ -153,15 +159,29 @@ export const itemForKey = (chapters, key) => {
   return null
 }
 
-const known = card => card && card.box >= MASTERED_BOX
+// A question answered right at the first try in two different games, never
+// missed, counts as known at once (early): a child who already knows the
+// basics rises fast, while the card still comes back by its own schedule.
+export const EARLY_PASSES = 2
+const early = card =>
+  !!card &&
+  card.seen >= EARLY_PASSES &&
+  card.wrong === 0 &&
+  card.right >= EARLY_PASSES
+const known = card => !!card && (card.box >= MASTERED_BOX || early(card))
 // A question is forgotten when it was known once (it lapsed) and a wrong
 // answer sent it back below the known boxes since.
-const forgot = card => !!card && card.lapses > 0 && card.box < MASTERED_BOX
+const forgot = card =>
+  !!card && card.lapses > 0 && card.box < MASTERED_BOX && !early(card)
 
 // weight is how far a card got: a question known counts whole, one on its
 // way counts in part, so the bar moves from the first game.
 const weight = card =>
-  card ? Math.min(Math.max(card.box, 0), MASTERED_BOX) / MASTERED_BOX : 0
+  early(card)
+    ? 1
+    : card
+      ? Math.min(Math.max(card.box, 0), MASTERED_BOX) / MASTERED_BOX
+      : 0
 
 // chapterProgress tells how well a chapter is known: its questions, each by
 // how far it got, over all of them, or over its goal when its questions
@@ -556,7 +576,11 @@ export const pickQuestions = (compiled, cards, options = {}) => {
     }
     newLeft -= added
   }
-  addNew(Math.min(settings.nouvelles_par_partie, newLeft))
+  // After a game played at BOOST_PERCENT or more, more new questions come.
+  const perGame = options.boost
+    ? Math.max(settings.nouvelles_par_partie, BOOST_NEW)
+    : settings.nouvelles_par_partie
+  addNew(Math.min(perGame, newLeft))
   if (!picked.length) return []
 
   // Then the questions that come back soonest, first those the last game
