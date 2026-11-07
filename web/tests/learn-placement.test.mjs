@@ -11,8 +11,12 @@ import {
 } from '../src/utils/learn/engine.js'
 import {
   answerChapter,
-  beginTest,
   currentStep,
+  PASS_PERCENT,
+  QUESTIONS_BY_CHAPTER,
+  rightNeeded,
+  startTest,
+  stepsOf,
   testPlan,
   testResult,
 } from '../src/utils/learn/placement.js'
@@ -38,9 +42,9 @@ const plan = testPlan({
   levels: ['GS', 'CP', 'CE1', 'CE2'].map(n => level(n, 3)),
 })
 
-// run answers the chapters in turn, from the start level, true for passed.
-const run = (start, answers) => {
-  let state = beginTest(plan, start)
+// run answers the chapters of a scope in turn, true for passed.
+const run = (scope, answers) => {
+  let state = startTest(plan, scope)
   for (const passed of answers) {
     assert.ok(currentStep(plan, state), 'a chapter is asked')
     state = answerChapter(plan, state, passed)
@@ -48,68 +52,60 @@ const run = (start, answers) => {
   return state
 }
 
-test('the test goes level after level and stops at the first chapter missed', () => {
-  const state = run(0, [true, true, true, true, false])
+test('a chapter asks 8 questions and 7 right answers pass it', () => {
+  assert.equal(QUESTIONS_BY_CHAPTER, 8)
+  assert.equal(PASS_PERCENT, 80)
+  assert.equal(rightNeeded(8), 7)
+  assert.equal(rightNeeded(5), 4)
+  assert.equal(rightNeeded(10), 8)
+  assert.equal(rightNeeded(8, 100), 8)
+})
+
+test('the test of a level asks all its chapters, whatever the misses', () => {
+  const steps = stepsOf(plan, { level: 1 })
+  assert.deepEqual(
+    steps.map(s => `${s.module.id}/${s.chapter.id}`),
+    ['CP-m1/c1', 'CP-m1/c2', 'CP-m2/c1'],
+  )
+  const state = run({ level: 1 }, [true, false, true])
   assert.equal(state.done, true)
   assert.equal(currentStep(plan, state), null)
   const result = testResult(plan, state)
   assert.equal(result.reached, 'CP')
-  assert.deepEqual(result.opened, [
-    'GS-m1/c1',
-    'GS-m1/c2',
-    'GS-m2/c1',
-    'CP-m1/c1',
-  ])
+  assert.deepEqual(result.opened, ['CP-m1/c1', 'CP-m2/c1'])
   assert.deepEqual(
-    result.levels.map(l => [l.id, l.opened, l.total, l.tested]),
-    [
-      ['GS', 3, 3, true],
-      ['CP', 1, 3, true],
-      ['CE1', 0, 3, false],
-      ['CE2', 0, 3, false],
-    ],
+    result.levels.map(l => [l.id, l.passed, l.total]),
+    [['CP', 2, 3]],
   )
-  assert.equal(result.levels[1].next, 'CP 1.2', 'the chapter to start at')
+  assert.deepEqual(
+    result.levels[0].chapters.map(c => c.ok),
+    [true, false, true],
+  )
 })
 
-test('starting higher counts the levels below as known', () => {
-  const state = run(2, [true, false])
-  const result = testResult(plan, state)
+test('the test of one chapter asks only that chapter', () => {
+  const state = startTest(plan, { chapter: 'CE1-m2/c1' })
+  assert.equal(state.steps.length, 1)
+  assert.equal(state.steps[0].level, 2)
+  const done = answerChapter(plan, state, true)
+  assert.equal(done.done, true)
+  const result = testResult(plan, done)
   assert.equal(result.reached, 'CE1')
-  assert.equal(result.opened.length, 3 + 3 + 1)
+  assert.deepEqual(result.opened, ['CE1-m2/c1'])
 })
 
-test('a start level missed at once goes down a level, until the first', () => {
-  // CE1 missed at once: CP is tested, passed whole, so the test ends at CE1.
-  let result = testResult(plan, run(2, [false, true, true, true]))
-  assert.equal(result.reached, 'CE1')
-  assert.equal(result.opened.length, 3 + 3, 'GS known, CP passed, CE1 nothing')
-
-  // CE1 then CP missed at once: GS is tested.
-  result = testResult(plan, run(2, [false, false, true, false]))
-  assert.equal(result.reached, 'GS')
-  assert.deepEqual(result.opened, ['GS-m1/c1'])
-
-  // Down to GS missed at once: nothing opens.
-  result = testResult(plan, run(1, [false, false]))
-  assert.equal(result.reached, 'GS')
+test('nothing passed reaches no level and opens nothing', () => {
+  const result = testResult(plan, run({ level: 3 }, [false, false, false]))
+  assert.equal(result.reached, null)
   assert.deepEqual(result.opened, [])
-})
-
-test('everything passed reaches the last level', () => {
-  const state = run(3, [true, true, true])
-  const result = testResult(plan, state)
-  assert.equal(result.reached, 'CE2')
-  assert.equal(result.opened.length, 12)
 })
 
 test('a pack of modules is one level', () => {
   const single = testPlan({ levels: [level('aero', 4)] })
-  let state = beginTest(single, 0)
-  state = answerChapter(single, state, false)
-  const result = testResult(single, state)
-  assert.equal(result.reached, 'aero')
-  assert.deepEqual(result.opened, [])
+  assert.equal(stepsOf(single).length, 4)
+  let state = startTest(single)
+  state = answerChapter(single, state, true)
+  assert.equal(testResult(single, state).reached, 'aero')
 })
 
 test('a chapter the test passed opens, and so does the next', () => {
@@ -148,5 +144,82 @@ test('a chapter the test passed opens, and so does the next', () => {
   assert.ok(
     chapters.has('feelings'),
     'new questions come from the chapter to learn',
+  )
+})
+
+test('a parent opens a chapter by hand, which opens only it', () => {
+  const doc = JSON.parse(
+    readFileSync(
+      join(
+        import.meta.dirname,
+        '../../internal/learn/catalogue/maths-ce2-multiplication.json',
+      ),
+      'utf8',
+    ),
+  )
+  const compiled = compile(doc)
+  const cards = cardMap([])
+  const auto = openChapters(compiled, cards)
+  assert.deepEqual(
+    auto.map(c => c.open),
+    [true, false, false, false, false, false],
+  )
+  const hand = openChapters(compiled, cards, undefined, [], {
+    forced: ['tables-6-7', 'tables-8-9'],
+  })
+  assert.deepEqual(
+    hand.map(c => [c.chapter.id, c.open, c.by]),
+    [
+      ['tables-2-5', true, null],
+      ['tables-6-7', true, 'forced'],
+      ['tables-8-9', true, 'forced'],
+      ['dizaines', false, null],
+      ['deux-chiffres', false, null],
+      ['trois-chiffres', false, null],
+    ],
+  )
+})
+
+test('a parent closes a chapter, whatever a test or the progression say', () => {
+  const doc = JSON.parse(
+    readFileSync(
+      join(
+        import.meta.dirname,
+        '../../internal/learn/catalogue/maths-ce2-multiplication.json',
+      ),
+      'utf8',
+    ),
+  )
+  const compiled = compile(doc)
+  const cards = cardMap([])
+  const shut = openChapters(compiled, cards, undefined, ['tables-6-7'], {
+    shut: ['tables-6-7'],
+  })
+  assert.equal(shut[1].open, false)
+  assert.equal(shut[1].by, 'shut')
+  assert.equal(shut[1].placed, false)
+  assert.equal(shut[2].open, false, 'the next one stays behind it')
+  const both = openChapters(compiled, cards, undefined, [], {
+    forced: ['tables-6-7'],
+    shut: ['tables-6-7'],
+  })
+  assert.equal(both[1].open, false, 'closed wins')
+})
+
+test('a chapter carries its level and group titles', () => {
+  const compiled = compile({
+    id: 'famille-x',
+    nom: 'X',
+    chapitres: [
+      { id: 'a', nom: 'A', niveau: 'Automne', groupe: 'Mots' },
+      { id: 'b', nom: 'B' },
+    ],
+  })
+  assert.deepEqual(
+    compiled.chapters.map(c => [c.level, c.group]),
+    [
+      ['Automne', 'Mots'],
+      ['', ''],
+    ],
   )
 })

@@ -111,6 +111,8 @@ export const compile = (doc, context = {}) => {
   const chapters = (doc.chapitres || []).map(c => ({
     id: c.id,
     name: c.nom,
+    level: c.niveau || '',
+    group: c.groupe || '',
     openAfter: c.ouvert_apres || 0,
     goal: c.objectif || DEFAULT_GOAL,
     sources: [],
@@ -200,9 +202,19 @@ export const chapterProgress = (chapter, cards) => {
 // openChapters tells, chapter by chapter, how well it is known and whether it
 // is open. The first one always is; the next opens when the one before is
 // known well enough, by its own threshold or the one a parent set. A chapter
-// a placement test passed (placed, its ids) is open, and so is the next.
-export const openChapters = (compiled, cards, unlockPercent, placed = []) => {
+// a test passed (placed, its ids) is open, and so is the next. A parent can
+// also open a chapter by hand (manual.forced), which opens only it, or close
+// it (manual.shut), which wins over everything else.
+export const openChapters = (
+  compiled,
+  cards,
+  unlockPercent,
+  placed = [],
+  manual = {},
+) => {
   const passed = new Set(placed)
+  const forced = new Set(manual.forced || [])
+  const shut = new Set(manual.shut || [])
   const out = []
   compiled.chapters.forEach((chapter, i) => {
     const progress = chapterProgress(chapter, cards)
@@ -214,7 +226,17 @@ export const openChapters = (compiled, cards, unlockPercent, placed = []) => {
       needed = unlockPercent ?? chapter.openAfter
       open = before.placed || (before.open && before.progress.percent >= needed)
     }
-    out.push({ chapter, progress, open, needed, placed: byTest })
+    const byHand = forced.has(chapter.id)
+    if (byHand) open = true
+    if (shut.has(chapter.id)) open = false
+    out.push({
+      chapter,
+      progress,
+      open,
+      needed,
+      placed: byTest && !shut.has(chapter.id),
+      by: shut.has(chapter.id) ? 'shut' : byHand ? 'forced' : null,
+    })
   })
   return out
 }
@@ -359,7 +381,7 @@ const answered = card => !!card?.due
 export const isDue = (card, day) => answered(card) && card.due <= day
 
 const openOf = (compiled, cards, options = {}) =>
-  openChapters(compiled, cards, options.unlockPercent, options.placed)
+  openChapters(compiled, cards, options.unlockPercent, options.placed, options)
     .filter(c => c.open)
     .map(c => c.chapter)
 
@@ -425,6 +447,7 @@ const whyUpToDate = (compiled, cards, open, options) => {
     cards,
     options.unlockPercent,
     options.placed,
+    options,
   )
   const closed = chapters.findIndex(c => !c.open)
   if (closed < 1) return { kind: 'all' }
@@ -560,6 +583,8 @@ export const dueReviews = (player, compiledById, cards) => {
         openOf(compiledById[m.id], cards, {
           unlockPercent: m.unlockPercent ?? undefined,
           placed: m.placed,
+          forced: m.forced,
+          shut: m.shut,
         }),
       )
     return opens.get(m.id)

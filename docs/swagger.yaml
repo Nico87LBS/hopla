@@ -4,6 +4,13 @@ definitions:
     properties:
       aside:
         type: boolean
+      chapters:
+        description: |-
+          Chapters, with Mode, are the chapters opened or closed by hand, each
+          "module/chapitre".
+        items:
+          type: string
+        type: array
       key:
         description: 'Key, Aside: the level or module set aside, or brought back.'
         type: string
@@ -343,6 +350,12 @@ definitions:
     properties:
       keep:
         type: string
+      merge:
+        description: |-
+          Merge adds the chapters passed to those a person already opened, such
+          as after the test of a chapter or of a level, and never lowers the
+          level reached.
+        type: boolean
       opened:
         items:
           type: string
@@ -3233,7 +3246,8 @@ paths:
       security:
       - JWTKeyAuth: []
       - APIKeyAuth: []
-      summary: Écarter un niveau ou un module ouvert d'un paquet, ou le reprendre
+      summary: Écarter, ouvrir ou fermer à la main un niveau, un module ou des chapitres
+        d'un paquet
       tags:
       - Apprendre
   /api/v1/learn/packs/next:

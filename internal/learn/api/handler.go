@@ -368,6 +368,9 @@ type PackChange struct {
 	Key   string `json:"key"`
 	Aside bool   `json:"aside"`
 	Mode  string `json:"mode"`
+	// Chapters, with Mode, are the chapters opened or closed by hand, each
+	// "module/chapitre".
+	Chapters []string `json:"chapters"`
 }
 
 // setPackPlayer godoc
@@ -400,7 +403,7 @@ func (h *Handler) setPackPlayer(c *gin.Context) {
 
 // setAside godoc
 //
-//	@Summary		Écarter un niveau ou un module ouvert d'un paquet, ou le reprendre
+//	@Summary		Écarter, ouvrir ou fermer à la main un niveau, un module ou des chapitres d'un paquet
 //	@Tags			Apprendre
 //	@Accept			json
 //	@Produce		json
@@ -415,8 +418,17 @@ func (h *Handler) setAside(c *gin.Context) {
 		return
 	}
 	var change PackChange
-	if err := c.ShouldBindJSON(&change); err != nil || change.Key == "" {
+	if err := c.ShouldBindJSON(&change); err != nil || (change.Key == "" && len(change.Chapters) == 0) {
 		c.JSON(400, gin.H{"error": "Invalid request"})
+		return
+	}
+	if len(change.Chapters) > 0 {
+		err := learn.SetChapterAccess(h.db.WithContext(c), who.familyID, change.UserID, change.Pack, change.Chapters, change.Mode, time.Now().UTC())
+		if err != nil {
+			answerError(c, err, "change chapter access")
+			return
+		}
+		h.getModules(c)
 		return
 	}
 	if change.Mode != "" {

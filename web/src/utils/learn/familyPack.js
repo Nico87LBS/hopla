@@ -371,10 +371,13 @@ export const toDocument = pack => {
     const id =
       fields.id ||
       unique(slug(nom).slice(0, MAX_ID) || `chapitre-${index + 1}`, chapterIds)
+    const { groupe, niveau, ...others } = fields
     chapitres.push({
-      ...fields,
+      ...others,
       id,
       nom,
+      ...(clean(niveau) && { niveau: clean(niveau) }),
+      ...(clean(groupe) && { groupe: clean(groupe) }),
       ...(index > 0 && { ouvert_apres: openAfterOf(chapter, index) }),
     })
     for (const card of cards) {

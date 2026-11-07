@@ -74,14 +74,16 @@ type PlacementTest struct {
 }
 
 // testLevels are the levels of a pack, in order; a pack of modules is its
-// own single level. Only a pack no other pack gathers has a test.
+// own single level, and a module no pack gathers, such as one the family
+// wrote, is a pack of one level. Only a pack no other pack gathers has a
+// test.
 func testLevels(modules []Module, key string) (Module, []TestLevel, error) {
 	byKey := map[string]Module{}
 	for _, module := range modules {
 		byKey[module.Key] = module
 	}
 	pack, ok := byKey[key]
-	if !ok || !pack.IsPack() {
+	if !ok {
 		return pack, nil, ErrNotFound
 	}
 	for _, module := range modules {
@@ -90,6 +92,11 @@ func testLevels(modules []Module, key string) (Module, []TestLevel, error) {
 				return pack, nil, invalid("le test se fait sur le paquet du dessus")
 			}
 		}
+	}
+	if !pack.IsPack() {
+		// A pack of the family is one module: a pack of a single level.
+		return pack, []TestLevel{{ID: pack.Key, Name: pack.Name, Levels: pack.Levels,
+			Modules: []TestModule{{ID: pack.Key, Name: pack.Name, Document: json.RawMessage(pack.Content)}}}}, nil
 	}
 	level := func(m Module) TestLevel {
 		out := TestLevel{ID: m.Key, Name: m.Name, Levels: m.Levels, Modules: []TestModule{}}
@@ -156,6 +163,10 @@ type PlacementResult struct {
 	Reached string   `json:"reached"`
 	Keep    *string  `json:"keep"`
 	Opened  []string `json:"opened"`
+	// Merge adds the chapters passed to those a person already opened, such
+	// as after the test of a chapter or of a level, and never lowers the
+	// level reached.
+	Merge bool `json:"merge"`
 }
 
 // SavePlacement keeps a test and turns on the levels it gives.
@@ -183,7 +194,7 @@ func SavePlacement(db *gorm.DB, familyID int, result PlacementResult, now time.T
 			in[module.ID] = true
 		}
 	}
-	if result.Status == PlacementDone && !reached {
+	if result.Status == PlacementDone && !reached && !(result.Merge && result.Reached == "") {
 		return saved, invalid("niveau atteint inconnu")
 	}
 	opened := []string{}
@@ -206,11 +217,32 @@ func SavePlacement(db *gorm.DB, familyID int, result PlacementResult, now time.T
 		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 			return err
 		}
+		found := err == nil
+		reachedKey := result.Reached
+		if result.Merge && result.Status == PlacementDone {
+			var player PackPlayer
+			if err := tx.Where("family_id = ? AND user_id = ? AND pack_key = ?", familyID, result.UserID, result.Pack).
+				First(&player).Error; err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+				return err
+			}
+			if found {
+				opened = unionKeys(saved.Opened, opened)
+			}
+			best := -1
+			for _, key := range []string{saved.Reached, player.OpenTo, result.Reached} {
+				if key != "" && levelIndex(levels, key) > best {
+					best, reachedKey = levelIndex(levels, key), key
+				}
+			}
+			if best < 0 {
+				reachedKey = levels[0].ID
+			}
+		}
 		saved.FamilyID, saved.UserID, saved.PackKey = familyID, result.UserID, result.Pack
 		saved.Status, saved.Opened, saved.DoneAt, saved.UpdatedAt = result.Status, opened, now, now
 		saved.Reached = ""
 		if result.Status == PlacementDone {
-			saved.Reached = result.Reached
+			saved.Reached = reachedKey
 		}
 		if result.Keep != nil {
 			saved.Keep = *result.Keep
@@ -269,6 +301,21 @@ func placedChapters(placements []Placement) map[string][]string {
 		for _, chapter := range placement.Opened {
 			if module, id, ok := strings.Cut(chapter, "/"); ok {
 				out[module] = append(out[module], id)
+			}
+		}
+	}
+	return out
+}
+
+// unionKeys is the keys of a, then those of b not in a.
+func unionKeys(a, b []string) []string {
+	seen := map[string]bool{}
+	out := []string{}
+	for _, list := range [][]string{a, b} {
+		for _, key := range list {
+			if !seen[key] {
+				seen[key] = true
+				out = append(out, key)
 			}
 		}
 	}

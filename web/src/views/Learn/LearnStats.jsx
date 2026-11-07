@@ -38,6 +38,7 @@ const personStats = (compiled, person, day) => {
     cards,
     person.unlockPercent ?? undefined,
     person.placed,
+    person,
   )
   const mine = []
   for (const card of cards.values()) {

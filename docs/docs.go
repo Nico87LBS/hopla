@@ -3878,7 +3878,7 @@ const docTemplate = `{
                 "tags": [
                     "Apprendre"
                 ],
-                "summary": "Écarter un niveau ou un module ouvert d'un paquet, ou le reprendre",
+                "summary": "Écarter, ouvrir ou fermer à la main un niveau, un module ou des chapitres d'un paquet",
                 "parameters": [
                     {
                         "description": "Corps de la requête",
@@ -7311,6 +7311,13 @@ const docTemplate = `{
                 "aside": {
                     "type": "boolean"
                 },
+                "chapters": {
+                    "description": "Chapters, with Mode, are the chapters opened or closed by hand, each\n\"module/chapitre\".",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
                 "key": {
                     "description": "Key, Aside: the level or module set aside, or brought back.",
                     "type": "string"
@@ -7771,6 +7778,10 @@ const docTemplate = `{
             "properties": {
                 "keep": {
                     "type": "string"
+                },
+                "merge": {
+                    "description": "Merge adds the chapters passed to those a person already opened, such\nas after the test of a chapter or of a level, and never lowers the\nlevel reached.",
+                    "type": "boolean"
                 },
                 "opened": {
                     "type": "array",

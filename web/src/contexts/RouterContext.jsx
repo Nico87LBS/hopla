@@ -23,11 +23,13 @@ import LabelDetailView from '../views/Labels/LabelDetailView'
 import LabelView from '../views/Labels/LabelView'
 import LearnDetail from '../views/Learn/LearnDetail'
 import { LearnChooser, LearnHome } from '../views/Learn/LearnHome'
+import LearnPack from '../views/Learn/LearnPack'
 import LearnPlay from '../views/Learn/LearnPlay'
 import LearnReports from '../views/Learn/LearnReports'
 import LearnStats from '../views/Learn/LearnStats'
 import ManageLearn, {
   LearnCatalogue,
+  LearnPeople,
   LearnVoices,
 } from '../views/Learn/ManageLearn'
 import PackEditor from '../views/Learn/PackEditor'
@@ -229,6 +231,14 @@ const Router = createBrowserRouter([
       {
         path: '/manage/learn',
         element: <ManageLearn />,
+      },
+      {
+        path: '/manage/learn/personnes',
+        element: <LearnPeople />,
+      },
+      {
+        path: '/manage/learn/paquet/:packId',
+        element: <LearnPack />,
       },
       {
         path: '/manage/learn/catalogue',

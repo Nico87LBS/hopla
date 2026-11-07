@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+	"unicode/utf8"
 )
 
 // Format is the version of the module document this server reads.
@@ -17,6 +18,9 @@ const (
 	maxCards         = 5000
 	maxGenerators    = 200
 	maxChildren      = 40
+	// maxPlaceName is the longest name of the level and of the group of a
+	// chapter.
+	maxPlaceName = 60
 )
 
 // Settings defaults, used when a module leaves a setting out.
@@ -118,6 +122,10 @@ type Chapter struct {
 	// OpenAfter is how well the chapter before must be known, in percent, for
 	// this one to open. 0 leaves it open.
 	OpenAfter int `json:"ouvert_apres"`
+	// Level and Group place the chapter in a pack the family wrote: a level
+	// of the pack, and a title that gathers chapters. Both are optional.
+	Level string `json:"niveau,omitempty"`
+	Group string `json:"groupe,omitempty"`
 }
 
 type CardDef struct {
@@ -527,6 +535,9 @@ func (d Document) Check() error {
 		}
 		if chapter.OpenAfter < 0 || chapter.OpenAfter > 100 {
 			return fmt.Errorf("chapitre %s : ouvert_apres entre 0 et 100", chapter.ID)
+		}
+		if utf8.RuneCountInString(chapter.Level) > maxPlaceName || utf8.RuneCountInString(chapter.Group) > maxPlaceName {
+			return fmt.Errorf("chapitre %s : niveau et groupe de %d lettres au plus", chapter.ID, maxPlaceName)
 		}
 		chapters[chapter.ID] = true
 	}
