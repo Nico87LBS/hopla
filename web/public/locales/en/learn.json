@@ -486,11 +486,9 @@
     }
   },
   "test": {
-    "newPack": "New pack",
     "offer": "Already know a bit? Take the test: it opens the chapters you know right away.",
     "rules": "8 questions per chapter, 7 right answers to open it · no hops",
     "start": "Take the test",
-    "skip": "Skip, start from the beginning",
     "button": "Test a level",
     "again": "Test a level",
     "title": "Test · {{pack}}",
