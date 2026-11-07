@@ -50,6 +50,19 @@ point-virgule ou une tabulation (copiées d'un tableur), les colonnes
 suivantes étant les mauvaises réponses d'une fiche à choisir ou les autres
 réponses acceptées d'une fiche à taper. Les lignes déjà là sont sautées.
 
+Chaque chapitre peut nommer son **niveau** et son **groupe**. Un paquet de la
+famille s'installe alors exactement comme ceux du catalogue : chaque niveau
+devient un niveau du paquet (le premier ouvert, le suivant quand le précédent
+est su, test de niveau compris), et chaque groupe un module, avec sa carte
+côté enfant, son plafond de hops et ses réglages. Les chapitres sans groupe
+forment un module au nom du paquet ; un chapitre sans niveau prend celui du
+chapitre d'avant. Le premier chapitre d'un groupe est ouvert d'emblée, les
+suivants s'ouvrent comme réglé dans l'éditeur. Le fichier reste d'un seul
+tenant : l'éditeur le rouvre, « Exporter » l'envoie tel quel, et l'enregistrer
+de nouveau déplace ce que chacun sait avec ses fiches, même quand un chapitre
+change de groupe ou de niveau. Les paquets de la famille enregistrés avant la
+version 1.93.0 sont découpés ainsi tout seuls, sans rien perdre.
+
 Un paquet enregistré se coche ensuite dans Par personne, comme les autres.
 « Modifier » le rouvre : les fiches gardent leur identifiant, donc ce que
 chacun a appris. « Exporter » donne son fichier, à envoyer à une autre

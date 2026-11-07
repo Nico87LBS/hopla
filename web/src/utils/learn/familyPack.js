@@ -70,6 +70,28 @@ export const openAfterOf = (chapter, index) =>
 
 const clean = text => String(text ?? '').trim()
 
+// placesOf tells where each chapter of the editor goes once the pack is
+// installed, as the server cuts it: its level (that of the chapter before
+// when it names none, the first one named for those before) and its group.
+// Each level and group is a module of its own, as in the catalogue's packs.
+export const placesOf = chapters => {
+  let level = chapters.map(c => clean(c.niveau)).find(Boolean) || ''
+  return chapters.map(chapter => {
+    if (clean(chapter.niveau)) level = clean(chapter.niveau)
+    return { level, group: clean(chapter.groupe) }
+  })
+}
+
+// startsModule tells whether a chapter is the first of its module once
+// installed: it opens from the start, as the first chapter of every module.
+export const startsModule = (chapters, index) => {
+  const places = placesOf(chapters)
+  const { group, level } = places[index]
+  return !places
+    .slice(0, index)
+    .some(place => place.level === level && place.group === group)
+}
+
 const list = values => (values || []).map(clean).filter(Boolean)
 
 // kindOf tells how the editor shows a card: one of KINDS, or "autre".

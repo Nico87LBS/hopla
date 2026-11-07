@@ -170,7 +170,7 @@ const FamilyPacksCard = ({ modules }) => {
                 .join(' · ')}
             </Typography>
             <Stack direction='row' gap={1} sx={{ mt: 1 }} flexWrap='wrap'>
-              {!module.children?.length && (
+              {(module.editable || !module.children?.length) && (
                 <Button
                   size='sm'
                   variant='outlined'

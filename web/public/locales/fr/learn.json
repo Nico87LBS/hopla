@@ -544,6 +544,7 @@
     "addChapter": "Ajouter un chapitre",
     "paste": "Coller une liste",
     "settingsHint": "Les réglages de Gérer › Apprendre, pour la famille ou une personne, passent avant ceux du paquet.",
+    "placesHint": "Comme dans les paquets Hopla, chaque groupe devient une carte à part pour l'enfant, avec son plafond de hops, et chaque niveau s'ouvre quand le précédent est su. Le premier chapitre d'un groupe est ouvert d'emblée.",
     "save": "Enregistrer",
     "saveNeeds": "Il faut un nom et au moins une fiche.",
     "created": "{{name}} est créé. Coche-le dans Par personne pour qui doit y jouer.",
