@@ -6,6 +6,7 @@ import {
   FileDownloadRounded,
 } from '@mui/icons-material'
 import {
+  Autocomplete,
   Box,
   Button,
   Checkbox,
@@ -42,6 +43,7 @@ import {
   ZONE_WAYS,
 } from '../../utils/learn/cardOptions'
 import {
+  audienceOf,
   cardDone,
   cardFrom,
   DICTATION_HINT,
@@ -79,7 +81,7 @@ import RemoveModal from './RemoveModal'
 
 const NEW = 'nouveau'
 
-const AUDIENCES = ['enfant', 'adulte', 'tous']
+const TAGS = ['Adulte', 'Tout âge']
 const LEVELS = [
   'PS',
   'MS',
@@ -790,25 +792,6 @@ const PackForm = ({ isNew, moduleId, start }) => {
         <Typography level='title-md' sx={{ mb: 1 }}>
           {t('pack.forWho')}
         </Typography>
-        <Stack
-          direction='row'
-          gap={1}
-          role='group'
-          aria-label={t('pack.forWho')}
-        >
-          {AUDIENCES.map(audience => (
-            <Button
-              key={audience}
-              sx={{ flex: 1 }}
-              variant={pack.audience === audience ? 'soft' : 'outlined'}
-              color={pack.audience === audience ? 'primary' : 'neutral'}
-              aria-pressed={pack.audience === audience}
-              onClick={() => change({ audience })}
-            >
-              {t(`pack.audiences.${audience}`)}
-            </Button>
-          ))}
-        </Stack>
         <Box
           sx={{
             display: 'grid',
@@ -818,22 +801,19 @@ const PackForm = ({ isNew, moduleId, start }) => {
           }}
         >
           {field(
-            t('pack.level'),
-            <Select
-              slotProps={{ button: { id: 'pack-level' } }}
-              value={pack.level}
-              onChange={(_, level) => change({ level: level ?? '' })}
-            >
-              <Option value=''>{t('pack.none')}</Option>
-              {[...new Set([...LEVELS, pack.level].filter(Boolean))].map(
-                level => (
-                  <Option key={level} value={level}>
-                    {level}
-                  </Option>
-                ),
-              )}
-            </Select>,
-            'pack-level',
+            t('pack.tags'),
+            <Autocomplete
+              freeSolo
+              multiple
+              options={[...TAGS, ...LEVELS]}
+              slotProps={{ input: { id: 'pack-tags' } }}
+              value={pack.tags}
+              placeholder={pack.tags.length ? '' : t('pack.tagsPlaceholder')}
+              onChange={(_, tags) =>
+                change({ tags: tags.map(tag => tag.trim()).filter(Boolean) })
+              }
+            />,
+            'pack-tags',
           )}
           {field(
             t('pack.subject'),
@@ -858,7 +838,7 @@ const PackForm = ({ isNew, moduleId, start }) => {
         </Box>
         <Box sx={{ mt: 2 }}>
           <PackOptions
-            audience={pack.audience}
+            audience={audienceOf(pack.tags)}
             rest={pack.rest}
             selfId={pack.id}
             modules={(installed?.modules || []).filter(

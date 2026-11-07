@@ -114,8 +114,8 @@
     "moduleOwn": "Auteur",
     "catalogue": "Catalogue",
     "catalogueHelp": "Les paquets fournis avec Hopla. Un paquet installe tous ses niveaux, y compris ceux que ses mises à jour ajoutent.",
-    "modulesCount_one": "{{count}} module",
-    "modulesCount_other": "{{count}} modules",
+    "modulesCount_one": "{{count}} groupe",
+    "modulesCount_other": "{{count}} groupes",
     "levelsCount_one": "{{count}} niveau",
     "levelsCount_other": "{{count}} niveaux",
     "install": "Installer",
@@ -133,7 +133,7 @@
     "noTotal": "Sans plafond total",
     "totalShort_one": "{{count}} {{unit}} par jour au total",
     "totalShort_other": "{{count}} {{units}} par jour au total",
-    "capEach": "{{Units}}/jour par module",
+    "capEach": "{{Units}}/jour par groupe",
     "noTotalShort": "Aucun",
     "questions": "Questions par partie",
     "threshold": "1re étoile à (%)",
@@ -151,8 +151,8 @@
     "different": "différent : {{values}}",
     "totalOf": "Plafond total de {{name}}",
     "totalSettings": "Régler le plafond total de {{name}}",
-    "seeModules_one": "Voir son module",
-    "seeModules_other": "Voir ses {{count}} modules",
+    "seeModules_one": "Voir son contenu",
+    "seeModules_other": "Voir ses {{count}} groupes",
     "seeLevels_one": "Voir son niveau",
     "seeLevels_other": "Voir ses {{count}} niveaux",
     "seeDetail": "Voir le détail",
@@ -163,7 +163,7 @@
       "voices": "Voix"
     },
     "readAloud": "Lire à voix haute",
-    "readAloudHelp": "Ce que dit l’appareil dans les modules faits pour être lus à voix haute. Tout : la question, puis chaque réponse au premier toucher (un second toucher la choisit).",
+    "readAloudHelp": "Ce que dit l’appareil dans les paquets faits pour être lus à voix haute. Tout : la question, puis chaque réponse au premier toucher (un second toucher la choisit).",
     "readAloudFor": "Lire à voix haute pour {{name}}",
     "voice": {
       "tout": "Tout",
@@ -189,7 +189,7 @@
     "reviews": "Révisions du jour",
     "reviewsShort": "{{most}} questions au plus par jour · bonus {{bonus}} {{units}}",
     "reviewsFor": "Régler les révisions du jour de {{name}}",
-    "reviewsHelp": "Les révisions du jour reprennent les questions à revoir de tous les modules. Au-delà du maximum, le reste attend le lendemain (pratique au retour de vacances). Le bonus arrive une fois par jour, quand tout est révisé. Laisse vide pour garder la valeur par défaut.",
+    "reviewsHelp": "Les révisions du jour reprennent les questions à revoir de tous les paquets. Au-delà du maximum, le reste attend le lendemain (pratique au retour de vacances). Le bonus arrive une fois par jour, quand tout est révisé. Laisse vide pour garder la valeur par défaut.",
     "byDefault": "{{value}} (par défaut)",
     "searchPack": "Chercher un paquet",
     "createPack": "Créer un paquet",
@@ -222,7 +222,7 @@
     "wrongCount_other": "{{count}} erreurs, {{right}} réussites",
     "recent": "Dernières parties",
     "score": "{{correct}}/{{total}}",
-    "nobody": "Personne ne joue encore à ce module.",
+    "nobody": "Personne ne joue encore à ce paquet.",
     "tough_one": "Question coriace",
     "tough_other": "Questions coriaces ({{count}})",
     "toughHelp_one": "Oubliée au moins {{count}} fois.",
@@ -267,7 +267,7 @@
     "send": "Envoyer",
     "thanks": "Merci, c'est noté !",
     "comment": "Ce qui ne va pas (facultatif)",
-    "help": "Les parents le verront dans le détail du module.",
+    "help": "Les parents le verront dans le détail du paquet.",
     "reasons": {
       "pas-claire": "Question pas claire",
       "reponse-fausse": "Réponse fausse",
@@ -292,7 +292,7 @@
     "spellings": "Autres écritures acceptées, une par ligne",
     "spellingsHelp": "Par exemple « cette » pour « cet »",
     "keyHelp": "Clé : {{key}}. Ce qui est déjà appris sur cette fiche est gardé.",
-    "original": "Original du module",
+    "original": "Original du paquet",
     "revert": "Revenir à l'original",
     "instruction": "Consigne",
     "zone": "Zone « {{zone}} » de l’image « {{image}} »",
@@ -329,7 +329,7 @@
     "how": {
       "ipad": {
         "title": "iPad et iPhone",
-        "steps": "Réglages › Accessibilité › Contenu énoncé › Voix › Français : touchez une voix (Audrey, Thomas, Aurélie…) puis téléchargez sa version Premium ou Améliorée. Pareil dans Anglais pour les modules d’anglais."
+        "steps": "Réglages › Accessibilité › Contenu énoncé › Voix › Français : touchez une voix (Audrey, Thomas, Aurélie…) puis téléchargez sa version Premium ou Améliorée. Pareil dans Anglais pour les paquets d’anglais."
       },
       "mac": {
         "title": "Mac",
@@ -353,13 +353,13 @@
     }
   },
   "list": {
-    "search": "Chercher un module",
+    "search": "Chercher un paquet",
     "clearSearch": "Effacer la recherche",
     "sortBy": "Trier par",
-    "shown_one": "{{count}} module affiché",
-    "shown_other": "{{count}} modules affichés",
+    "shown_one": "{{count}} paquet affiché",
+    "shown_other": "{{count}} paquets affichés",
     "clear": "Tout effacer",
-    "nothing": "Aucun module ne correspond à la recherche ou aux filtres.",
+    "nothing": "Aucun paquet ne correspond à la recherche ou aux filtres.",
     "toReview_one": "{{count}} à revoir",
     "toReview_other": "{{count}} à revoir",
     "filter": {
@@ -389,7 +389,7 @@
     "none": "Aucune question signalée : tout est traité.",
     "fix": "Corriger",
     "generated": "Question fabriquée par le jeu : elle ne se corrige pas ici. Exporte-la pour la faire corriger.",
-    "seeModule": "Voir le module",
+    "seeModule": "Voir le paquet",
     "back": "Apprendre"
   },
   "recre": {
@@ -513,11 +513,12 @@
       "tous": "Tout âge"
     },
     "back": "Catalogue",
-    "notEditable": "Ce module ne se modifie pas ici : il contient des exercices que l'éditeur ne sait pas écrire. Exporte-le pour le changer dans le fichier.",
+    "notEditable": "Ce paquet ne se modifie pas ici : il contient des exercices que l'éditeur ne sait pas écrire. Exporte-le pour le changer dans le fichier.",
     "name": "Nom du paquet",
     "namePlaceholder": "Dictée de la semaine",
-    "forWho": "Pour qui",
-    "level": "Niveau",
+    "forWho": "Étiquettes et matière",
+    "tags": "Étiquettes (pour filtrer la liste)",
+    "tagsPlaceholder": "Ajouter : CE2, anglais, révision…",
     "subject": "Matière",
     "icon": "Icône",
     "iconAuto": "Selon la matière",
@@ -658,8 +659,8 @@
     "title": "Mes révisions",
     "count_one": "{{count}} question à revoir aujourd'hui",
     "count_other": "{{count}} questions à revoir aujourd'hui",
-    "modules_one": "{{count}} module",
-    "modules_other": "{{count}} modules",
+    "modules_one": "{{count}} paquet",
+    "modules_other": "{{count}} paquets",
     "go_one": "Réviser ({{count}} question)",
     "go_other": "Réviser ({{count}} questions)",
     "bonus_one": "Tout réviser aujourd'hui : +{{count}} {{unit}} en bonus",
@@ -681,7 +682,7 @@
     "why": {
       "daily": "Tes nouvelles questions du jour sont faites.",
       "chapter": "La suite s'ouvre quand « {{chapter}} » sera su à {{needed}} % (là : {{percent}} %). Ce pourcentage monte à chaque bonne réponse revue.",
-      "all": "Toutes les questions de ce module ont été vues."
+      "all": "Toutes les questions de ce paquet ont été vues."
     }
   },
   "practice": {
@@ -864,10 +865,10 @@
     "colorHelp": "Celle des cartes et de la partie.",
     "colorAuto": "Selon la matière",
     "prereqs": "Prérequis",
-    "prereqsHelp": "Le paquet reste fermé tant que ces modules (ou chapitres) ne sont pas assez sus.",
-    "prereqModule": "Module à savoir d’abord",
+    "prereqsHelp": "Le paquet reste fermé tant que ces groupes (ou chapitres) ne sont pas assez sus.",
+    "prereqModule": "Groupe à savoir d’abord",
     "prereqChapter": "Chapitre",
-    "prereqWhole": "Tout le module",
+    "prereqWhole": "Tout le groupe",
     "prereqPercent": "Su à",
     "prereqRemove": "Retirer le prérequis",
     "prereqAdd": "Un prérequis",

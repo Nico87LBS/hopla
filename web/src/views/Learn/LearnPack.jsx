@@ -758,6 +758,16 @@ export const LearnPack = () => {
               <EditOutlined />
             </IconButton>
           )}
+          {entry.modules.length === 1 && (
+            <IconButton
+              component={Link}
+              to={`/manage/learn/${entry.modules[0].id}`}
+              aria-label={t('manage.stats', { name: pack.name })}
+              variant='plain'
+            >
+              <InsightsRounded />
+            </IconButton>
+          )}
           <Button
             component={Link}
             to={`/manage/learn/detail/${pack.id}`}

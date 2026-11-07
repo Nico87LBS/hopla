@@ -65,7 +65,7 @@ test('the editor writes a module the game reads, and reads it back', () => {
   const pack = newPack('Dictée semaine 45')
   pack.id = moduleIdFor(pack.name, ['famille-dictee-semaine-45'])
   assert.equal(pack.id, 'famille-dictee-semaine-45-2')
-  pack.level = 'CE1'
+  pack.tags = ['CE1', ' CE1 ', 'Anglais']
   pack.chapters[0].cards = [
     ...readList('grenouille\nchaussette', { as: 'words', oneTypo: true }).cards,
     cardFrom('choix', {
@@ -85,7 +85,7 @@ test('the editor writes a module the game reads, and reads it back', () => {
   })
   const doc = toDocument(pack)
   assert.equal(doc.format, 'hopla-module/1')
-  assert.deepEqual(doc.niveaux, ['CE1'])
+  assert.deepEqual(doc.niveaux, ['CE1', 'Anglais'])
   assert.equal(doc.langue_apprise, 'fr')
   assert.equal(doc.lecture_voix_haute, true)
   assert.deepEqual(
@@ -360,4 +360,19 @@ test('a pack of the family keeps the level and the group of its chapters', () =>
   const back = fromDocument(doc)
   assert.equal(back.chapters[0].niveau, 'Automne')
   assert.equal(toDocument(back).chapitres[0].groupe, 'Mots en -ette')
+})
+
+test('the tags say who a pack is for', () => {
+  const pack = newPack('Vocabulaire pilote')
+  pack.id = 'famille-pilote'
+  assert.equal(toDocument(pack).public, 'enfant')
+  pack.tags = ['Adulte', 'Anglais']
+  const doc = toDocument(pack)
+  assert.equal(doc.public, 'adulte')
+  assert.equal(doc.lecture_voix_haute, undefined)
+  // Reading a pack written before the tags brings its audience back.
+  assert.deepEqual(fromDocument({ ...doc, niveaux: ['Anglais'] }).tags, [
+    'Anglais',
+    'Adulte',
+  ])
 })

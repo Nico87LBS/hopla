@@ -14,6 +14,21 @@ import {
 import { slug } from './generators.js'
 import { labelProblem, labelsFor } from './labelCards.js'
 
+// The tags carry who a pack is for: "Adulte" and "Tout âge" set the audience
+// the game reads; any other tags leave it to children.
+const AUDIENCE_TAGS = { adulte: 'adulte', 'tout âge': 'tous', tous: 'tous' }
+export const audienceOf = tags => {
+  for (const tag of tags || []) {
+    const audience = AUDIENCE_TAGS[String(tag).trim().toLowerCase()]
+    if (audience) return audience
+  }
+  return 'enfant'
+}
+const withAudience = (tags, audience) =>
+  audience !== 'enfant' && audienceOf(tags) === 'enfant'
+    ? [...tags, audience === 'adulte' ? 'Adulte' : 'Tout âge']
+    : tags
+
 export const FORMAT = 'hopla-module/1'
 
 // The kinds of cards the editor writes; any other card of a module is kept
@@ -120,7 +135,7 @@ export const fromDocument = doc => {
     version,
     name: nom,
     audience,
-    level: niveaux[0] || '',
+    tags: withAudience(niveaux, audience),
     subject: matiere,
     icon: icone,
     chapters: chapitres.map(chapter => ({
@@ -146,7 +161,7 @@ export const newPack = name => ({
   version: '1.0.0',
   name: name || '',
   audience: 'enfant',
-  level: '',
+  tags: [],
   subject: '',
   icon: '',
   chapters: [newChapter()],
@@ -396,13 +411,17 @@ export const toDocument = pack => {
     id: pack.id,
     version: pack.version,
     nom: clean(pack.name),
-    public: pack.audience,
-    niveaux: pack.level ? [pack.level] : [],
+    public: audienceOf(pack.tags),
+    niveaux: [
+      ...new Set(
+        (pack.tags || []).map(tag => clean(tag).slice(0, 30)).filter(Boolean),
+      ),
+    ].slice(0, 8),
     ...(pack.subject && { matiere: pack.subject }),
     ...(pack.icon && { icone: pack.icon }),
     langue: 'fr',
     ...(dictation && { langue_apprise: 'fr' }),
-    ...(pack.audience === 'enfant' && { lecture_voix_haute: true }),
+    ...(audienceOf(pack.tags) === 'enfant' && { lecture_voix_haute: true }),
     ...pack.rest,
     chapitres,
     fiches,

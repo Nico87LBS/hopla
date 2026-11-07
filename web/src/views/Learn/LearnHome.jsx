@@ -9,7 +9,15 @@ import {
   SchoolRounded,
   SportsEsportsRounded,
 } from '@mui/icons-material'
-import { Box, Button, Container, Sheet, Stack, Typography } from '@mui/joy'
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  Sheet,
+  Stack,
+  Typography,
+} from '@mui/joy'
 import { useQueryClient } from '@tanstack/react-query'
 import PropTypes from 'prop-types'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -259,43 +267,53 @@ const ModuleCard = ({
   )
 
   return (
-    <Box>
-      <Sheet
-        variant='outlined'
+    <Sheet
+      variant='outlined'
+      sx={{
+        borderRadius: 'xl',
+        overflow: 'hidden',
+        '&:hover': locked ? {} : { borderColor: color },
+        ...(upToDate && { bgcolor: 'background.level1' }),
+      }}
+    >
+      <Box
         component={locked || upToDate ? 'div' : Link}
         to={locked || upToDate ? undefined : to}
         sx={{
-          borderRadius: 'xl',
           display: 'block',
           opacity: locked ? 0.7 : 1,
-          ...(upToDate && { bgcolor: 'background.level1' }),
           p: 1.5,
           textDecoration: 'none',
-          '&:hover': locked ? {} : { borderColor: color },
         }}
       >
         {body}
-      </Sheet>
+      </Box>
       {chapters.length > 0 && (
-        <Stack direction='row' justifyContent='flex-end'>
+        <>
+          <Divider />
           <Button
+            fullWidth
             size='sm'
             variant='plain'
             color='neutral'
             aria-expanded={showChapters}
             onClick={() => setShowChapters(v => !v)}
+            startDecorator={<FactCheckOutlined />}
             endDecorator={
               showChapters ? <ExpandLessRounded /> : <ExpandMoreRounded />
             }
+            sx={{ borderRadius: 0, justifyContent: 'flex-start' }}
           >
-            {t('home.chapters', { count: chapters.length })}
+            <Box sx={{ flex: 1, textAlign: 'left' }}>
+              {t('home.chapters', { count: chapters.length })}
+            </Box>
           </Button>
-        </Stack>
+        </>
       )}
       {showChapters && (
         <ChapterRows chapters={chapters} module={module} testTo={testTo} />
       )}
-    </Box>
+    </Sheet>
   )
 }
 
@@ -304,9 +322,15 @@ const ModuleCard = ({
 const ChapterRows = ({ chapters, module, testTo }) => {
   const { t } = useTranslation('learn')
   return (
-    <Sheet
-      variant='soft'
-      sx={{ borderRadius: 'lg', display: 'grid', gap: 1, p: 1.25 }}
+    <Box
+      sx={{
+        bgcolor: 'background.level1',
+        borderTop: '1px solid',
+        borderColor: 'divider',
+        display: 'grid',
+        gap: 1,
+        p: 1.25,
+      }}
     >
       {chapters.map(({ by, chapter, open, placed, progress }) => (
         <Stack
@@ -347,7 +371,7 @@ const ChapterRows = ({ chapters, module, testTo }) => {
           )}
         </Stack>
       ))}
-    </Sheet>
+    </Box>
   )
 }
 
@@ -732,7 +756,21 @@ export const LearnModules = ({
           name: group.name,
           levels: [{ group, title: null }],
         }))
-      : byRootPack(groups, player?.packs || [])
+      : byRootPack(groups, player?.packs || []).flatMap(section =>
+          // A module on its own is a pack like the others: its own title.
+          section.id
+            ? [section]
+            : section.levels.flatMap(({ group }) =>
+                group.items.map(module => ({
+                  id: module.id,
+                  module,
+                  name: module.name,
+                  levels: [
+                    { group: { ...group, items: [module] }, title: null },
+                  ],
+                })),
+              ),
+        )
 
   return (
     <Container maxWidth='sm' sx={pageSx}>
@@ -886,49 +924,52 @@ export const LearnModules = ({
 
       <Stack gap={2.5}>
         {sections.map(section => (
-          <Box component='section' key={section.id || 'others'}>
-            <Stack
-              direction='row'
-              alignItems='center'
-              gap={1}
-              sx={{ mb: 1, px: 0.5 }}
-            >
-              {packOf(section.id) && (
-                <LearnIcon entity={packOf(section.id)} size={20} tile={false} />
+          <Sheet
+            component='section'
+            key={section.id || 'others'}
+            variant='soft'
+            sx={{ borderRadius: 'xl', p: 1.5 }}
+          >
+            <Stack direction='row' alignItems='center' gap={1} sx={{ mb: 1.5 }}>
+              {(packOf(section.id) || section.module) && (
+                <LearnIcon
+                  entity={packOf(section.id) || section.module}
+                  size={28}
+                  tile={false}
+                />
               )}
-              <Typography
-                level='body-xs'
-                sx={{
-                  color: 'text.tertiary',
-                  flex: 1,
-                  fontWeight: 700,
-                  letterSpacing: '.06em',
-                  textTransform: 'uppercase',
-                }}
-              >
+              <Typography level='title-lg' sx={{ flex: 1, minWidth: 0 }}>
                 {section.id === 'first'
                   ? t('list.sort.first')
                   : section.name || t('home.others')}
               </Typography>
-              {testable.has(section.id) && !player.offline && (
-                <Button
-                  component={Link}
-                  to={testPath(section.id)}
-                  size='sm'
-                  variant='plain'
-                  startDecorator={<FactCheckOutlined />}
-                >
-                  {tested.has(section.id) ? t('test.again') : t('test.button')}
-                </Button>
-              )}
+              {(testable.has(section.id) || section.module) &&
+                !player.offline && (
+                  <Button
+                    component={Link}
+                    to={testPath(section.id)}
+                    size='sm'
+                    variant='plain'
+                    startDecorator={<FactCheckOutlined />}
+                  >
+                    {tested.has(section.id)
+                      ? t('test.again')
+                      : t('test.button')}
+                  </Button>
+                )}
             </Stack>
             <Stack gap={1.5}>
               {section.levels.map(({ group, title }) => (
                 <Stack key={group.id || 'others'} gap={1}>
                   {title && (
                     <Typography
-                      level='title-sm'
-                      sx={{ color: 'text.secondary', px: 0.5 }}
+                      level='title-md'
+                      sx={{
+                        borderLeft: '4px solid',
+                        borderColor: 'primary.solidBg',
+                        mt: 0.5,
+                        pl: 1,
+                      }}
                     >
                       {title}
                     </Typography>
@@ -955,7 +996,7 @@ export const LearnModules = ({
                 </Stack>
               ))}
             </Stack>
-          </Box>
+          </Sheet>
         ))}
       </Stack>
     </Container>
