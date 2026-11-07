@@ -516,7 +516,7 @@
     "notEditable": "Ce paquet ne se modifie pas ici : il contient des exercices que l'éditeur ne sait pas écrire. Exporte-le pour le changer dans le fichier.",
     "name": "Nom du paquet",
     "namePlaceholder": "Dictée de la semaine",
-    "forWho": "Pour qui",
+    "forWho": "Étiquettes et matière",
     "tags": "Étiquettes (pour filtrer la liste)",
     "tagsPlaceholder": "Ajouter : CE2, anglais, révision…",
     "subject": "Matière",

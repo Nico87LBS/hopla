@@ -516,7 +516,7 @@
     "notEditable": "This pack can't be edited here: it holds exercises the editor can't write. Export it to change the file.",
     "name": "Pack name",
     "namePlaceholder": "This week's spelling",
-    "forWho": "For whom",
+    "forWho": "Tags and subject",
     "tags": "Tags (to filter the list)",
     "tagsPlaceholder": "Add: Year 4, English, revision…",
     "subject": "Subject",

@@ -43,6 +43,7 @@ import {
   ZONE_WAYS,
 } from '../../utils/learn/cardOptions'
 import {
+  audienceOf,
   cardDone,
   cardFrom,
   DICTATION_HINT,
@@ -80,7 +81,7 @@ import RemoveModal from './RemoveModal'
 
 const NEW = 'nouveau'
 
-const AUDIENCES = ['enfant', 'adulte', 'tous']
+const TAGS = ['Adulte', 'Tout âge']
 const LEVELS = [
   'PS',
   'MS',
@@ -791,25 +792,6 @@ const PackForm = ({ isNew, moduleId, start }) => {
         <Typography level='title-md' sx={{ mb: 1 }}>
           {t('pack.forWho')}
         </Typography>
-        <Stack
-          direction='row'
-          gap={1}
-          role='group'
-          aria-label={t('pack.forWho')}
-        >
-          {AUDIENCES.map(audience => (
-            <Button
-              key={audience}
-              sx={{ flex: 1 }}
-              variant={pack.audience === audience ? 'soft' : 'outlined'}
-              color={pack.audience === audience ? 'primary' : 'neutral'}
-              aria-pressed={pack.audience === audience}
-              onClick={() => change({ audience })}
-            >
-              {t(`pack.audiences.${audience}`)}
-            </Button>
-          ))}
-        </Stack>
         <Box
           sx={{
             display: 'grid',
@@ -823,7 +805,7 @@ const PackForm = ({ isNew, moduleId, start }) => {
             <Autocomplete
               freeSolo
               multiple
-              options={LEVELS}
+              options={[...TAGS, ...LEVELS]}
               slotProps={{ input: { id: 'pack-tags' } }}
               value={pack.tags}
               placeholder={pack.tags.length ? '' : t('pack.tagsPlaceholder')}
@@ -856,7 +838,7 @@ const PackForm = ({ isNew, moduleId, start }) => {
         </Box>
         <Box sx={{ mt: 2 }}>
           <PackOptions
-            audience={pack.audience}
+            audience={audienceOf(pack.tags)}
             rest={pack.rest}
             selfId={pack.id}
             modules={(installed?.modules || []).filter(

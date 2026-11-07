@@ -361,3 +361,18 @@ test('a pack of the family keeps the level and the group of its chapters', () =>
   assert.equal(back.chapters[0].niveau, 'Automne')
   assert.equal(toDocument(back).chapitres[0].groupe, 'Mots en -ette')
 })
+
+test('the tags say who a pack is for', () => {
+  const pack = newPack('Vocabulaire pilote')
+  pack.id = 'famille-pilote'
+  assert.equal(toDocument(pack).public, 'enfant')
+  pack.tags = ['Adulte', 'Anglais']
+  const doc = toDocument(pack)
+  assert.equal(doc.public, 'adulte')
+  assert.equal(doc.lecture_voix_haute, undefined)
+  // Reading a pack written before the tags brings its audience back.
+  assert.deepEqual(fromDocument({ ...doc, niveaux: ['Anglais'] }).tags, [
+    'Anglais',
+    'Adulte',
+  ])
+})
