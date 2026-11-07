@@ -483,6 +483,20 @@ const whyUpToDate = (compiled, cards, open, options) => {
   }
 }
 
+// newOrder tells in which order the open chapters give their new questions.
+// A chapter that opens once the one before is known well enough comes
+// first, the latest of them before the others: the person moves on. The
+// chapters open from the start together, with no threshold between them,
+// come in the order of the list, as they are shown.
+export const newOrder = chapters => {
+  const steps = []
+  for (const chapter of chapters) {
+    if (!steps.length || chapter.openAfter > 0) steps.push([])
+    steps[steps.length - 1].push(chapter)
+  }
+  return steps.reverse().flat()
+}
+
 // pickQuestions makes a game: the cards due first (within options.dueLeft),
 // then a few new questions from the latest open chapter (within
 // options.newLeft, what the day still allows). A game with neither is not
@@ -510,12 +524,13 @@ export const pickQuestions = (compiled, cards, options = {}) => {
     if (add(itemForKey(open, card.key))) reviewed++
   }
 
-  // New questions, the latest chapter first; those the last game asked
-  // last, so that playing again asks others.
+  // New questions, the latest chapter first (newOrder); those the last game
+  // asked last, so that playing again asks others.
   const recent = options.recent || new Set()
+  const order = newOrder(open)
   const addNew = (limit, sibling = false) => {
     let added = 0
-    for (const chapter of [...open].reverse()) {
+    for (const chapter of order) {
       for (const source of chapter.sources) {
         if (added >= limit) break
         if (source.finite) {
