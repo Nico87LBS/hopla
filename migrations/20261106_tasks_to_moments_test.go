@@ -30,7 +30,7 @@ func TestTasksToMoments(t *testing.T) {
 	}
 	ptr := func(n int) *int { return &n }
 	tasks := []*chModel.Chore{
-		{Name: "Brosser", FrequencyType: chModel.FrequencyTypeDaily, IsActive: true, FamilyID: 1, NextDueDate: at(1, 8, 0), DeadlineMinutes: ptr(120), CompletionWindow: ptr(2)},
+		{Name: "Brosser", FrequencyType: chModel.FrequencyTypeDaily, IsActive: true, FamilyID: 1, NextDueDate: at(1, 8, 0), DeadlineMinutes: ptr(120)},
 		{Name: "Poubelles", FrequencyType: chModel.FrequencyTypeWeekly, IsActive: true, FamilyID: 1, NextDueDate: at(3, 18, 30)},
 		{Name: "En retard", FrequencyType: chModel.FrequencyTypeMonthly, IsActive: true, FamilyID: 1, NextDueDate: at(-4, 9, 0), DeadlineMinutes: ptr(2000)},
 		{Name: "Toujours", FrequencyType: chModel.FrequencyTypeAlways, IsActive: true, FamilyID: 1},
@@ -53,11 +53,10 @@ func TestTasksToMoments(t *testing.T) {
 	slot := daily.FrequencyMetadataV2.Slots[0]
 	require.Equal(t, "08:00", slot.Time)
 	require.Equal(t, "10:00", slot.Until)
-	require.Equal(t, 120, *slot.OpensBefore)
+	require.Equal(t, 8*60, *slot.OpensBefore, "opens from midnight")
 	require.NotEmpty(t, slot.ID)
 	require.Empty(t, daily.FrequencyMetadataV2.Day, "a daily task has moments every day")
 	require.Nil(t, daily.DeadlineMinutes)
-	require.Nil(t, daily.CompletionWindow)
 	require.True(t, daily.NextDueDate.Equal(*tasks[0].NextDueDate))
 
 	weekly := get(tasks[1].ID)
@@ -87,7 +86,6 @@ func TestTasksToMoments(t *testing.T) {
 	back := get(tasks[0].ID)
 	require.False(t, back.HasSlots())
 	require.Equal(t, 120, *back.DeadlineMinutes)
-	require.Equal(t, 2, *back.CompletionWindow)
 	weeklyBack := get(tasks[1].ID)
 	require.False(t, weeklyBack.HasSlots())
 }
