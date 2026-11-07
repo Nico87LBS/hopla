@@ -17,9 +17,8 @@ func MomentsApply(frequencyType FrequencyType, metadata *FrequencyMetadata) bool
 }
 
 // ToMoments gives a task saved before the moments the one moment that does the
-// same thing: its time of day, "jusqu'à" from its limit (deadlineMinutes),
-// "s'ouvre" from its window (completionWindow, in hours; none opens it at
-// midnight). It returns the task's new metadata and due date, or false when
+// same thing: its time of day, "jusqu'à" from its limit (deadlineMinutes);
+// it opens at midnight (the old window, completionWindow, is gone). It returns the task's new metadata and due date, or false when
 // the task has no moments to take (already on moments, or no due date to take
 // a time from). newID gives the identifier of a moment from its time of day.
 //
@@ -56,10 +55,7 @@ func ToMoments(chore *Chore, loc *time.Location, now time.Time, newID func(clock
 		end := due.Add(time.Duration(*chore.DeadlineMinutes) * time.Minute)
 		slot.Until = end.Format("15:04")
 	}
-	lead := minutes // no window: open from midnight
-	if chore.CompletionWindow != nil && *chore.CompletionWindow >= 0 {
-		lead = *chore.CompletionWindow * 60
-	}
+	lead := minutes // open from midnight
 	if lead > MaxSlotLead {
 		lead = MaxSlotLead
 	}

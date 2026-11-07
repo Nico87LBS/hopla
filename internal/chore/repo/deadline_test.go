@@ -23,8 +23,9 @@ func TestMissChore(t *testing.T) {
 	now := time.Now().UTC().Truncate(time.Second)
 	hour := 60
 	task := func(name string, frequency chModel.FrequencyType, due time.Time, strategy chModel.AssignmentStrategy, assignedTo *int, assignees ...int) *chModel.Chore {
+		hours := "hours"
 		chore := &chModel.Chore{Name: name, FamilyID: testFamilyID, IsActive: true, FrequencyType: frequency,
-			NextDueDate: &due, AssignedTo: assignedTo, AssignStrategy: strategy, DeadlineMinutes: &hour}
+			Frequency: 24, FrequencyMetadataV2: &chModel.FrequencyMetadata{Unit: &hours}, NextDueDate: &due, AssignedTo: assignedTo, AssignStrategy: strategy, DeadlineMinutes: &hour}
 		for _, id := range assignees {
 			chore.Assignees = append(chore.Assignees, chModel.ChoreAssignees{UserID: id})
 		}
@@ -33,11 +34,12 @@ func TestMissChore(t *testing.T) {
 	}
 	elena := testOtherID
 	gone := now.Add(-2 * time.Hour)
-	late := task("Faire son lit", "daily", gone, chModel.AssignmentStrategyRoundRobin, &elena, elena)
-	together := task("Ranger le salon", "daily", gone, chModel.AssignmentStrategyTogether, nil, elena, 3)
+	late := task("Faire son lit", "interval", gone, chModel.AssignmentStrategyRoundRobin, &elena, elena)
+	together := task("Ranger le salon", "interval", gone, chModel.AssignmentStrategyTogether, nil, elena, 3)
 	once := task("Rendre le livre", "once", gone, chModel.AssignmentStrategyRoundRobin, &elena, elena)
-	stillLate := task("Arroser", "daily", now.Add(-30*time.Minute), chModel.AssignmentStrategyRoundRobin, &elena, elena)
-	waiting := task("Vaisselle", "daily", gone, chModel.AssignmentStrategyRoundRobin, &elena, elena)
+	found0 := []*chModel.Chore{once}
+	stillLate := task("Arroser", "interval", now.Add(-30*time.Minute), chModel.AssignmentStrategyRoundRobin, &elena, elena)
+	waiting := task("Vaisselle", "interval", gone, chModel.AssignmentStrategyRoundRobin, &elena, elena)
 	require.NoError(t, db.Model(waiting).Update("status", chModel.ChoreStatusPendingApproval).Error)
 
 	found, err := repo.ChoresPastDeadline(ctx, now)
@@ -46,7 +48,8 @@ func TestMissChore(t *testing.T) {
 	for _, chore := range found {
 		ids = append(ids, chore.ID)
 	}
-	require.ElementsMatch(t, []int{late.ID, together.ID, once.ID}, ids, "not before the deadline, not waiting for a parent")
+	require.ElementsMatch(t, []int{late.ID, together.ID}, ids, "not before the deadline, not waiting for a parent, only an interval in hours")
+	found = append(found, found0...)
 
 	next := gone.Add(24 * time.Hour)
 	for _, chore := range found {

@@ -66,7 +66,6 @@ export const SHARED_FIELDS = [
   'deadlineMinutes',
   'requireApproval',
   'isPrivate',
-  'completionWindow',
   'deadlineOffset',
 ]
 

@@ -995,7 +995,6 @@ func (r *ChoreRepository) GetChoreDetailByID(c context.Context, choreID int, fam
         chores.assigned_to,
         chores.created_by,
 		chores.priority,
-		chores.completion_window,
 		chores.status,
 		chores.is_active,
 		chores.sync_version,

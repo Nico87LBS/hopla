@@ -31,12 +31,11 @@ func (m TasksToMoments20261106) Description() string {
 
 // momentsBackup is a task as it was before the migration.
 type momentsBackup struct {
-	ID               int                        `gorm:"column:id;primaryKey"`
-	FrequencyMeta    *chModel.FrequencyMetadata `gorm:"column:frequency_meta_v2;type:json"`
-	NextDueDate      *time.Time                 `gorm:"column:next_due_date"`
-	DeadlineMinutes  *int                       `gorm:"column:deadline_minutes"`
-	CompletionWindow *int                       `gorm:"column:completion_window"`
-	SavedAt          time.Time                  `gorm:"column:saved_at"`
+	ID              int                        `gorm:"column:id;primaryKey"`
+	FrequencyMeta   *chModel.FrequencyMetadata `gorm:"column:frequency_meta_v2;type:json"`
+	NextDueDate     *time.Time                 `gorm:"column:next_due_date"`
+	DeadlineMinutes *int                       `gorm:"column:deadline_minutes"`
+	SavedAt         time.Time                  `gorm:"column:saved_at"`
 }
 
 func (momentsBackup) TableName() string { return momentsBackupTable }
@@ -86,7 +85,7 @@ func (m TasksToMoments20261106) Up(ctx context.Context, db *gorm.DB) error {
 				continue
 			}
 			saved := momentsBackup{ID: task.ID, FrequencyMeta: task.FrequencyMetadataV2, NextDueDate: task.NextDueDate,
-				DeadlineMinutes: task.DeadlineMinutes, CompletionWindow: task.CompletionWindow, SavedAt: now}
+				DeadlineMinutes: task.DeadlineMinutes, SavedAt: now}
 			if err := tx.Save(&saved).Error; err != nil {
 				return err
 			}
@@ -102,7 +101,6 @@ func (m TasksToMoments20261106) Up(ctx context.Context, db *gorm.DB) error {
 				"frequency_meta_v2": metadata,
 				"next_due_date":     due,
 				"deadline_minutes":  nil,
-				"completion_window": nil,
 				"sync_version":      version,
 			}).Error; err != nil {
 				return err
@@ -133,7 +131,6 @@ func (m TasksToMoments20261106) Down(ctx context.Context, db *gorm.DB) error {
 				"frequency_meta_v2": meta,
 				"next_due_date":     s.NextDueDate,
 				"deadline_minutes":  s.DeadlineMinutes,
-				"completion_window": s.CompletionWindow,
 			}).Error; err != nil {
 				return err
 			}

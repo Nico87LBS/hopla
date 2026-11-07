@@ -295,7 +295,6 @@ type ChoreReq struct {
 	LabelsV2             *[]lModel.LabelReq            `json:"labelsV2" binding:"omitempty,unique=LabelID,dive"`
 	UpdatedAt            *time.Time                    `json:"updatedAt"`
 	Priority             *int                          `json:"priority" binding:"omitempty"`
-	CompletionWindow     *int                          `json:"completionWindow" binding:"omitempty"`
 	Points               *int                          `json:"points" binding:"omitempty"`
 	FlashPoints          *int                          `json:"flashPoints" binding:"omitempty,min=0,max=1000"`
 	FlashMinutes         *int                          `json:"flashMinutes" binding:"omitempty,min=1,max=720"`
@@ -515,7 +514,6 @@ func (h *Handler) CreateChore(c *gin.Context) {
 		FlashPoints:            choreReq.FlashPoints,
 		FlashMinutes:           choreReq.FlashMinutes,
 		DeadlineMinutes:        deadlineMinutes(choreReq),
-		CompletionWindow:       choreReq.CompletionWindow,
 		Description:            choreReq.Description,
 		Priority:               *choreReq.Priority,
 		RequireApproval:        choreReq.RequireApproval,
@@ -832,7 +830,6 @@ func (h *Handler) EditChore(c *gin.Context) {
 		FlashPoints:            choreReq.FlashPoints,
 		FlashMinutes:           choreReq.FlashMinutes,
 		DeadlineMinutes:        deadlineMinutes(choreReq),
-		CompletionWindow:       choreReq.CompletionWindow,
 		Description:            choreReq.Description,
 		Priority:               *choreReq.Priority,
 		RequireApproval:        choreReq.RequireApproval,
@@ -1722,16 +1719,6 @@ func (h *Handler) CompleteChore(c *gin.Context) {
 			"error": "User is not assigned to chore",
 		})
 		return
-	}
-
-	// confirm that the chore in completion window:
-	if chore.CompletionWindow != nil && !chore.HasSlots() && chore.NextDueDate != nil {
-		if completedDate.UTC().Before(chore.NextDueDate.UTC().Add(-time.Hour * time.Duration(*chore.CompletionWindow))) {
-			c.JSON(400, gin.H{
-				"error": "Chore is out of completion window",
-			})
-			return
-		}
 	}
 
 	if req.CompletedBy != nil {

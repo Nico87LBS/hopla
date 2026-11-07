@@ -9,21 +9,18 @@ import {
 } from '../src/utils/deadline.js'
 
 const task = {
-  frequencyType: 'once',
+  frequencyType: 'interval',
+  frequencyMetadata: { unit: 'hours' },
   nextDueDate: '2026-11-07T10:00:00Z',
   deadlineMinutes: 120,
 }
 
-test('a deadline only goes with a dated task without slots', () => {
-  assert.equal(deadlineApplies('once', {}), true)
-  assert.equal(deadlineApplies('days_of_the_week', { days: ['monday'] }), true)
-  for (const type of ['always', 'trigger', 'adaptive']) {
+test('a deadline only goes with an interval in hours', () => {
+  assert.equal(deadlineApplies('interval', { unit: 'hours' }), true)
+  for (const type of ['once', 'daily', 'weekly', 'always', 'trigger']) {
     assert.equal(deadlineApplies(type, {}), false, type)
   }
-  assert.equal(
-    deadlineApplies('daily', { slots: [{ name: 'Soir', time: '18:00' }] }),
-    false,
-  )
+  assert.equal(deadlineApplies('interval', { unit: 'days' }), false)
   assert.equal(deadlineOf({ ...task, nextDueDate: null }), null)
   assert.equal(deadlineOf({ ...task, deadlineMinutes: null }), null)
   assert.equal(deadlineOf(task).toISOString(), '2026-11-07T12:00:00.000Z')

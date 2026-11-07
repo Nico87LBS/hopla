@@ -81,7 +81,6 @@ type Chore struct {
 	UpdatedBy              int                        `json:"updatedBy" gorm:"column:updated_by"`                                                     // Who last updated the chore
 	Status                 Status                     `json:"status" gorm:"column:status"`                                                            //
 	Priority               int                        `json:"priority" gorm:"column:priority"`                                                        //
-	CompletionWindow       *int                       `json:"completionWindow,omitempty" gorm:"column:completion_window"`                             // Number seconds before the chore is due that it can be completed
 	Points                 *int                       `json:"points,omitempty" gorm:"column:points"`                                                  // Points for completing the chore
 	FlashPoints            *int                       `json:"flashPoints,omitempty" gorm:"column:flash_points"`                                       // Flash bonus: extra points when done in time
 	FlashMinutes           *int                       `json:"flashMinutes,omitempty" gorm:"column:flash_minutes"`                                     // Flash bonus: minutes after the due time it stays open
@@ -357,14 +356,11 @@ func (c *Chore) HasSlots() bool {
 const MaxDeadlineMinutes = 366 * 24 * 60
 
 // DeadlineAllowed reports whether a task of this frequency can have a
-// deadline: one with a due date that does not depend on when it is done, and
-// without slots, whose own times already close.
+// deadline, a delay after its due time past which this turn is missed. Every
+// rhythm with moments has the end of its moments instead ("jusqu'à"); only an
+// interval in hours has none.
 func DeadlineAllowed(frequencyType FrequencyType, metadata *FrequencyMetadata) bool {
-	switch frequencyType {
-	case FrequencyTypeAlways, FrequencyTypeTrigger, FrequencyTypeAdaptive:
-		return false
-	}
-	return metadata == nil || len(metadata.Slots) == 0
+	return frequencyType == FrequencyTypeInterval && !IsDatedType(frequencyType, metadata)
 }
 
 // DeadlineAt returns when the task's current passage is missed, or nil when
@@ -425,7 +421,6 @@ type ChoreDetail struct {
 	Priority            int                        `json:"priority" gorm:"column:priority"`
 	Notes               *string                    `json:"notes" gorm:"column:notes"`
 	CreatedBy           int                        `json:"createdBy" gorm:"column:created_by"`
-	CompletionWindow    *int                       `json:"completionWindow,omitempty" gorm:"column:completion_window"`
 	Subtasks            *[]stModel.SubTask         `json:"subTasks,omitempty" gorm:"foreignkey:ChoreID;references:ID"`
 	Assignees           []ChoreAssignees           `json:"assignees" gorm:"foreignkey:ChoreID;references:ID"`
 	Status              Status                     `json:"status" gorm:"column:status"`

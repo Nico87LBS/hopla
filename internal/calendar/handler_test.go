@@ -658,27 +658,6 @@ func TestBuildICalFeed_BasicChore(t *testing.T) {
 	}
 }
 
-func TestBuildICalFeed_CompletionWindow(t *testing.T) {
-	dueDate := time.Date(2025, 6, 15, 10, 0, 0, 0, time.UTC)
-	window := 3 // 3 hours
-
-	chores := []*chModel.Chore{
-		{
-			ID:               1,
-			Name:             "Test",
-			NextDueDate:      &dueDate,
-			CompletionWindow: &window,
-		},
-	}
-
-	result := buildICalFeed(chores, "Test", "")
-
-	// DTEND should be 3 hours after DTSTART
-	if !strings.Contains(result, "DTEND:20250615T130000Z") {
-		t.Errorf("expected DTEND 3 hours after start, got:\n%s", result)
-	}
-}
-
 func TestBuildICalFeed_DefaultDuration(t *testing.T) {
 	dueDate := time.Date(2025, 6, 15, 10, 0, 0, 0, time.UTC)
 

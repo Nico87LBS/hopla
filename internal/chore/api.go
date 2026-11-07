@@ -363,17 +363,6 @@ func (h *API) CompleteChore(c *gin.Context) {
 		return
 	}
 
-	// confirm that the chore in completion window:
-	if chore.CompletionWindow != nil {
-		if completedDate.Before(chore.NextDueDate.Add(time.Hour * time.Duration(-*chore.CompletionWindow))) {
-			log.Debugw("chore.api.CompleteChore chore is in completion window", "choreID", choreID, "completionWindow", chore.CompletionWindow)
-			c.JSON(400, gin.H{
-				"error": "Chore is out of completion window",
-			})
-			return
-		}
-	}
-
 	// A chore that requires approval waits for an admin, as it does in the app.
 	if chore.RequireApproval {
 		updatedChore, err := h.handler.submitForApproval(c, chore, nil, performer, completedDate, currentUser, currentUser)
