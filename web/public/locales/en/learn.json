@@ -114,8 +114,8 @@
     "moduleOwn": "Author",
     "catalogue": "Catalogue",
     "catalogueHelp": "The packs that come with Hopla. A pack installs all its levels, including those its updates add.",
-    "modulesCount_one": "{{count}} module",
-    "modulesCount_other": "{{count}} modules",
+    "modulesCount_one": "{{count}} group",
+    "modulesCount_other": "{{count}} groups",
     "levelsCount_one": "{{count}} level",
     "levelsCount_other": "{{count}} levels",
     "install": "Install",
@@ -133,7 +133,7 @@
     "noTotal": "No total cap",
     "totalShort_one": "{{count}} {{unit}} a day in total",
     "totalShort_other": "{{count}} {{units}} a day in total",
-    "capEach": "{{Units}} a day per module",
+    "capEach": "{{Units}} a day per group",
     "noTotalShort": "None",
     "questions": "Questions per game",
     "threshold": "1st star at (%)",
@@ -151,8 +151,8 @@
     "different": "different: {{values}}",
     "totalOf": "Total cap of {{name}}",
     "totalSettings": "Set the total cap of {{name}}",
-    "seeModules_one": "See its module",
-    "seeModules_other": "See its {{count}} modules",
+    "seeModules_one": "See its content",
+    "seeModules_other": "See its {{count}} groups",
     "seeLevels_one": "See its level",
     "seeLevels_other": "See its {{count}} levels",
     "seeDetail": "See the detail",
@@ -163,7 +163,7 @@
       "voices": "Voices"
     },
     "readAloud": "Read aloud",
-    "readAloudHelp": "What the device says in the modules made to be read aloud. Everything: the question, then each answer on the first tap (a second tap chooses it).",
+    "readAloudHelp": "What the device says in the packs made to be read aloud. Everything: the question, then each answer on the first tap (a second tap chooses it).",
     "readAloudFor": "Read aloud for {{name}}",
     "voice": {
       "tout": "Everything",
@@ -189,7 +189,7 @@
     "reviews": "Daily reviews",
     "reviewsShort": "At most {{most}} questions a day · {{bonus}} {{units}} bonus",
     "reviewsFor": "Set the daily reviews of {{name}}",
-    "reviewsHelp": "The daily reviews gather the questions due in every module. Past the most, the rest waits for the next day (handy after the holidays). The bonus comes once a day, when everything is reviewed. Leave empty to keep the default.",
+    "reviewsHelp": "The daily reviews gather the questions due in every pack. Past the most, the rest waits for the next day (handy after the holidays). The bonus comes once a day, when everything is reviewed. Leave empty to keep the default.",
     "byDefault": "{{value}} (default)",
     "searchPack": "Search a pack",
     "createPack": "Create a pack",
@@ -222,7 +222,7 @@
     "wrongCount_other": "{{count}} mistakes, {{right}} right",
     "recent": "Last games",
     "score": "{{correct}}/{{total}}",
-    "nobody": "Nobody plays this module yet.",
+    "nobody": "Nobody plays this pack yet.",
     "tough_one": "Tough question",
     "tough_other": "Tough questions ({{count}})",
     "toughHelp_one": "Forgotten at least {{count}} time.",
@@ -267,7 +267,7 @@
     "send": "Send",
     "thanks": "Thanks, noted!",
     "comment": "What is wrong (optional)",
-    "help": "Parents will see it in the module's detail.",
+    "help": "Parents will see it in the pack's detail.",
     "reasons": {
       "pas-claire": "Unclear question",
       "reponse-fausse": "Wrong answer",
@@ -292,7 +292,7 @@
     "spellings": "Other spellings accepted, one per line",
     "spellingsHelp": "For instance « there » for « their »",
     "keyHelp": "Key: {{key}}. What was already learned of this card is kept.",
-    "original": "Module's original",
+    "original": "Pack's original",
     "revert": "Back to the original",
     "instruction": "Instruction",
     "zone": "Zone “{{zone}}” of the picture “{{image}}”",
@@ -329,7 +329,7 @@
     "how": {
       "ipad": {
         "title": "iPad and iPhone",
-        "steps": "Settings › Accessibility › Spoken Content › Voices › French: tap a voice (Audrey, Thomas, Aurélie…) then download its Premium or Enhanced version. Same in English for the English modules."
+        "steps": "Settings › Accessibility › Spoken Content › Voices › French: tap a voice (Audrey, Thomas, Aurélie…) then download its Premium or Enhanced version. Same in English for the English packs."
       },
       "mac": {
         "title": "Mac",
@@ -353,13 +353,13 @@
     }
   },
   "list": {
-    "search": "Search a module",
+    "search": "Search a pack",
     "clearSearch": "Clear the search",
     "sortBy": "Sort by",
-    "shown_one": "{{count}} module shown",
-    "shown_other": "{{count}} modules shown",
+    "shown_one": "{{count}} pack shown",
+    "shown_other": "{{count}} packs shown",
     "clear": "Clear all",
-    "nothing": "No module matches the search or the filters.",
+    "nothing": "No pack matches the search or the filters.",
     "toReview_one": "{{count}} to review",
     "toReview_other": "{{count}} to review",
     "filter": {
@@ -389,7 +389,7 @@
     "none": "No reported question: all done.",
     "fix": "Correct",
     "generated": "Question made by the game: it can't be corrected here. Export it to have it corrected.",
-    "seeModule": "See the module",
+    "seeModule": "See the pack",
     "back": "Learn"
   },
   "recre": {
@@ -513,11 +513,11 @@
       "tous": "All ages"
     },
     "back": "Catalogue",
-    "notEditable": "This module can't be edited here: it holds exercises the editor can't write. Export it to change the file.",
+    "notEditable": "This pack can't be edited here: it holds exercises the editor can't write. Export it to change the file.",
     "name": "Pack name",
     "namePlaceholder": "This week's spelling",
     "forWho": "For whom",
-    "level": "Level",
+    "level": "Class",
     "subject": "Subject",
     "icon": "Icon",
     "iconAuto": "From the subject",
@@ -658,8 +658,8 @@
     "title": "My reviews",
     "count_one": "{{count}} question to review today",
     "count_other": "{{count}} questions to review today",
-    "modules_one": "{{count}} module",
-    "modules_other": "{{count}} modules",
+    "modules_one": "{{count}} pack",
+    "modules_other": "{{count}} packs",
     "go_one": "Review ({{count}} question)",
     "go_other": "Review ({{count}} questions)",
     "bonus_one": "Review everything today: +{{count}} {{unit}} bonus",
@@ -681,7 +681,7 @@
     "why": {
       "daily": "Today's new questions are done.",
       "chapter": "The next chapter opens when \"{{chapter}}\" is known at {{needed}}% (now: {{percent}}%). It rises with each right answer you review.",
-      "all": "Every question in this module has been seen."
+      "all": "Every question in this pack has been seen."
     }
   },
   "practice": {
@@ -864,10 +864,10 @@
     "colorHelp": "That of the cards and the game.",
     "colorAuto": "By subject",
     "prereqs": "Prerequisites",
-    "prereqsHelp": "The pack stays closed until these modules (or chapters) are known well enough.",
-    "prereqModule": "Module to know first",
+    "prereqsHelp": "The pack stays closed until these groups (or chapters) are known well enough.",
+    "prereqModule": "Group to know first",
     "prereqChapter": "Chapter",
-    "prereqWhole": "The whole module",
+    "prereqWhole": "The whole group",
     "prereqPercent": "Known at",
     "prereqRemove": "Remove the prerequisite",
     "prereqAdd": "A prerequisite",
