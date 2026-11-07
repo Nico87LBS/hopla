@@ -555,6 +555,7 @@
     "addChapter": "Add a chapter",
     "paste": "Paste a list",
     "settingsHint": "The settings of Manage › Learn, for the family or a person, come before those of the pack.",
+    "placesHint": "As in the Hopla packs, each group becomes a card of its own for the child, with its own hops cap, and each level opens once the one before is known. The first chapter of a group is open from the start.",
     "save": "Save",
     "saveNeeds": "A name and at least one card are needed.",
     "created": "{{name}} is created. Turn it on in By person for whoever plays it.",

@@ -26,8 +26,12 @@ type Module struct {
 	// Children are the modules a pack gathers; a pack has no questions.
 	Children []string `json:"children" gorm:"column:children;type:text;serializer:json"`
 	// Builtin modules come from the Hopla catalogue and follow its updates.
-	Builtin     bool      `json:"builtin" gorm:"column:builtin;not null;default:false"`
-	Content     string    `json:"-" gorm:"column:content;type:text;not null"`
+	Builtin bool   `json:"builtin" gorm:"column:builtin;not null;default:false"`
+	Content string `json:"-" gorm:"column:content;type:text;not null"`
+	// Editable tells a pack the family wrote in one file, Source, cut into
+	// its levels and modules (see familypack.go): the editor opens the file.
+	Editable    bool      `json:"editable" gorm:"column:editable;not null;default:false"`
+	Source      string    `json:"-" gorm:"column:source;type:text"`
 	InstalledAt time.Time `json:"installedAt" gorm:"column:installed_at"`
 	UpdatedAt   time.Time `json:"updatedAt" gorm:"column:updated_at"`
 }

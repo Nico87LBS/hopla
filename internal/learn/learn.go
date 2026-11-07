@@ -48,7 +48,7 @@ func save(tx *gorm.DB, module Module) error {
 	return tx.Clauses(clause.OnConflict{
 		Columns: []clause.Column{{Name: "family_id"}, {Name: "module_key"}},
 		DoUpdates: clause.AssignmentColumns([]string{"version", "name", "author", "subject", "icon", "levels", "audience",
-			"children", "builtin", "content", "updated_at"}),
+			"children", "builtin", "content", "editable", "source", "updated_at"}),
 	}).Create(&module).Error
 }
 
@@ -81,8 +81,10 @@ func install(tx *gorm.DB, entries map[string]Entry, familyID int, id string, now
 	return save(tx, moduleFrom(familyID, entry.Doc, entry.Raw, true, now))
 }
 
-// Import adds or replaces a module written by the family. A pack may gather
-// catalogue modules, which are installed with it, or modules already there.
+// Import adds or replaces a module written by the family. A module of
+// written cards no pack gathers, such as one from the editor, is installed
+// as a pack cut from it (see familypack.go). A pack may gather catalogue
+// modules, which are installed with it, or modules already there.
 func Import(db *gorm.DB, familyID int, raw []byte, now time.Time) (Module, error) {
 	doc, err := Parse(raw)
 	if err != nil {
@@ -95,9 +97,25 @@ func Import(db *gorm.DB, familyID int, raw []byte, now time.Time) (Module, error
 	if _, ok := entries[doc.ID]; ok {
 		return Module{}, ErrCatalogueID
 	}
+	if cuttable(doc) {
+		var count int64
+		if err := db.Model(&Module{}).Where("family_id = ? AND children LIKE ?", familyID,
+			"%"+`"`+doc.ID+`"`+"%").Count(&count).Error; err != nil {
+			return Module{}, err
+		}
+		if count == 0 {
+			var root Module
+			err := db.Transaction(func(tx *gorm.DB) error {
+				var err error
+				root, err = installFamilyFile(tx, familyID, raw, doc, entries, now)
+				return err
+			})
+			return root, err
+		}
+	}
 	module := moduleFrom(familyID, doc, raw, false, now)
 	err = db.Transaction(func(tx *gorm.DB) error {
-		if err := checkKeys(tx, familyID, doc, entries); err != nil {
+		if err := checkKeys(tx, familyID, doc, entries, nil); err != nil {
 			return err
 		}
 		if err := checkImportTree(tx, familyID, doc, entries); err != nil {
@@ -126,13 +144,17 @@ func Import(db *gorm.DB, familyID int, raw []byte, now time.Time) (Module, error
 
 // ModuleFile is the document of a module written by the family, as it was
 // imported or saved from the editor, to share it with another family or
-// change it. A catalogue module has no file of the family.
+// change it: for a pack cut from a file, that file. A catalogue module has
+// no file of the family.
 func ModuleFile(db *gorm.DB, familyID int, key string) (string, error) {
 	var module Module
 	err := db.Where("family_id = ? AND module_key = ? AND builtin = ?", familyID, key, false).
 		Take(&module).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return "", ErrNotFound
+	}
+	if module.Editable {
+		return module.Source, err
 	}
 	return module.Content, err
 }
@@ -169,8 +191,8 @@ func checkImportTree(tx *gorm.DB, familyID int, doc Document, entries map[string
 }
 
 // checkKeys refuses a module whose shared keys clash with the catalogue's or
-// with a module already in the family.
-func checkKeys(tx *gorm.DB, familyID int, doc Document, entries map[string]Entry) error {
+// with a module already in the family, but those of skip, which it replaces.
+func checkKeys(tx *gorm.DB, familyID int, doc Document, entries map[string]Entry, skip map[string]bool) error {
 	if len(doc.SharedKeys()) == 0 {
 		return nil
 	}
@@ -183,6 +205,9 @@ func checkKeys(tx *gorm.DB, familyID int, doc Document, entries map[string]Entry
 		return err
 	}
 	for _, module := range installed {
+		if skip[module.Key] {
+			continue
+		}
 		if other, err := Parse([]byte(module.Content)); err == nil {
 			others = append(others, other)
 		}
@@ -214,6 +239,15 @@ func freshModules(db *gorm.DB, familyID int, now time.Time) ([]Module, error) {
 	entries, err := Catalogue()
 	if err != nil {
 		return nil, err
+	}
+	// The modules the family wrote before packs were cut from their file.
+	if cut, err := cutFamilyModules(db, familyID, modules, entries, now); err != nil {
+		return nil, err
+	} else if cut {
+		modules = nil
+		if err := db.Where("family_id = ?", familyID).Order("name").Find(&modules).Error; err != nil {
+			return nil, err
+		}
 	}
 	have := map[string]bool{}
 	for _, module := range modules {

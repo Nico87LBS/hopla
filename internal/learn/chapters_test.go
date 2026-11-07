@@ -75,10 +75,10 @@ func TestATestPassedKeepsWhatAParentChoseAndNeverLowersTheLevel(t *testing.T) {
 	require.Equal(t, []string{"tables-8-9"}, multiplicationOf(t, player).Shut, "a test never undoes a parent's choice")
 }
 
-func TestAPackOfTheFamilyIsAPackOfOneLevel(t *testing.T) {
+func TestAPackOfTheFamilyWithOneGroupIsAPackOfOneModule(t *testing.T) {
 	db := setup(t)
 	now := time.Now().UTC()
-	raw := `{"format":"hopla-module/1","id":"famille-dictee","version":"1.0.0","nom":"Dictée","public":"enfant","niveaux":[],"langue":"fr","chapitres":[{"id":"a","nom":"Semaine 1","niveau":"Automne","groupe":"Mots en -ette"},{"id":"b","nom":"Semaine 2","ouvert_apres":80,"niveau":"Automne","groupe":"Mots en -ette"}],"fiches":[{"type":"saisie","question":"1+1","reponse":"2","id":"x","chapitre":"a"},{"type":"saisie","question":"2+2","reponse":"4","id":"y","chapitre":"b"}]}`
+	raw := `{"format":"hopla-module/1","id":"famille-dictee","version":"1.0.0","nom":"Dictée","public":"enfant","niveaux":[],"langue":"fr","chapitres":[{"id":"a","nom":"Semaine 1","groupe":"Mots en -ette"},{"id":"b","nom":"Semaine 2","ouvert_apres":80,"groupe":"Mots en -ette"}],"fiches":[{"type":"saisie","question":"1+1","reponse":"2","id":"x","chapitre":"a"},{"type":"saisie","question":"2+2","reponse":"4","id":"y","chapitre":"b"}]}`
 	_, err := Import(db, 1, []byte(raw), now)
 	require.NoError(t, err)
 
@@ -86,12 +86,13 @@ func TestAPackOfTheFamilyIsAPackOfOneLevel(t *testing.T) {
 	require.NoError(t, err)
 	require.Len(t, test.Levels, 1)
 	require.Len(t, test.Levels[0].Modules, 1)
+	require.Equal(t, "famille-dictee-mots-en-ette", test.Levels[0].Modules[0].ID)
 
 	require.NoError(t, SetPackPlayer(db, 1, anna, "famille-dictee", true, now))
 	player, err := PlayerFor(db, 1, anna, now)
 	require.NoError(t, err)
-	require.True(t, active(t, player)["famille-dictee"])
-	require.NoError(t, SetChapterAccess(db, 1, anna, "famille-dictee", []string{"famille-dictee/b"}, "open", now))
+	require.True(t, active(t, player)["famille-dictee-mots-en-ette"])
+	require.NoError(t, SetChapterAccess(db, 1, anna, "famille-dictee", []string{"famille-dictee-mots-en-ette/b"}, "open", now))
 
 	require.NoError(t, SetPackPlayer(db, 1, anna, "famille-dictee", false, now))
 	player, err = PlayerFor(db, 1, anna, now)

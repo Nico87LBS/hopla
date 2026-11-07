@@ -205,21 +205,3 @@ test('a parent closes a chapter, whatever a test or the progression say', () => 
   })
   assert.equal(both[1].open, false, 'closed wins')
 })
-
-test('a chapter carries its level and group titles', () => {
-  const compiled = compile({
-    id: 'famille-x',
-    nom: 'X',
-    chapitres: [
-      { id: 'a', nom: 'A', niveau: 'Automne', groupe: 'Mots' },
-      { id: 'b', nom: 'B' },
-    ],
-  })
-  assert.deepEqual(
-    compiled.chapters.map(c => [c.level, c.group]),
-    [
-      ['Automne', 'Mots'],
-      ['', ''],
-    ],
-  )
-})

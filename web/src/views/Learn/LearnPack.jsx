@@ -36,7 +36,6 @@ import { GetPlacementTest } from '../../utils/Fetcher'
 import {
   chapterAccessOf,
   creatorValue,
-  groupAccessOf,
   levelAccessOf,
   packRows,
   packStructure,
@@ -165,31 +164,6 @@ const ChaptersTab = ({
                 label={row.name}
                 value={levelAccessOf(excluded, row.id)}
                 onChange={mode => send({ key: row.id, mode })}
-              />
-            </Stack>
-          )
-        }
-        if (row.kind === 'niveau') {
-          return (
-            <Stack
-              key={`n-${i}`}
-              direction='row'
-              alignItems='center'
-              gap={1}
-              sx={{
-                borderTop: '1px solid',
-                borderColor: 'divider',
-                mt: 0.5,
-                pt: 1.25,
-              }}
-            >
-              <Typography level='title-md' sx={{ flex: 1, minWidth: 0 }}>
-                {row.name}
-              </Typography>
-              <AccessSelect
-                label={row.name}
-                value={groupAccessOf(excluded, row.keys)}
-                onChange={mode => chapters(row.keys, mode)}
               />
             </Stack>
           )
@@ -703,7 +677,7 @@ export const LearnPack = () => {
     )
   }
   const { pack } = entry
-  const editable = !pack.builtin && !pack.children?.length
+  const editable = pack.editable || (!pack.builtin && !pack.children?.length)
 
   const toggle = async on => {
     try {

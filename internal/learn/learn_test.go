@@ -337,11 +337,11 @@ func TestImportChecksTheDocumentAndKeepsCatalogueIds(t *testing.T) {
 	require.ErrorIs(t, err, ErrCatalogueID)
 
 	_, err = Import(db, 1, []byte(`{"format":"hopla-module/1","id":"mon-paquet","version":"1","nom":"Mon paquet","public":"tous",
-		"modules":["mots","maths-ce2-geometrie"]}`), now)
+		"modules":["mots-mots","maths-ce2-geometrie"]}`), now)
 	require.NoError(t, err, "a pack may gather a catalogue module, installed with it")
 	modules, err := Modules(db, 1, now)
 	require.NoError(t, err)
-	require.Len(t, modules, 3)
+	require.Len(t, modules, 4, "the pack, the family's pack cut from its file and its module, the catalogue module")
 
 	content, err := ModuleFile(db, 1, "mots")
 	require.NoError(t, err)
