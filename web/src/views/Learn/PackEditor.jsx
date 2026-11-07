@@ -6,6 +6,7 @@ import {
   FileDownloadRounded,
 } from '@mui/icons-material'
 import {
+  Autocomplete,
   Box,
   Button,
   Checkbox,
@@ -818,22 +819,19 @@ const PackForm = ({ isNew, moduleId, start }) => {
           }}
         >
           {field(
-            t('pack.level'),
-            <Select
-              slotProps={{ button: { id: 'pack-level' } }}
-              value={pack.level}
-              onChange={(_, level) => change({ level: level ?? '' })}
-            >
-              <Option value=''>{t('pack.none')}</Option>
-              {[...new Set([...LEVELS, pack.level].filter(Boolean))].map(
-                level => (
-                  <Option key={level} value={level}>
-                    {level}
-                  </Option>
-                ),
-              )}
-            </Select>,
-            'pack-level',
+            t('pack.tags'),
+            <Autocomplete
+              freeSolo
+              multiple
+              options={LEVELS}
+              slotProps={{ input: { id: 'pack-tags' } }}
+              value={pack.tags}
+              placeholder={pack.tags.length ? '' : t('pack.tagsPlaceholder')}
+              onChange={(_, tags) =>
+                change({ tags: tags.map(tag => tag.trim()).filter(Boolean) })
+              }
+            />,
+            'pack-tags',
           )}
           {field(
             t('pack.subject'),

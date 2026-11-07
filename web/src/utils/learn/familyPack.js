@@ -120,7 +120,7 @@ export const fromDocument = doc => {
     version,
     name: nom,
     audience,
-    level: niveaux[0] || '',
+    tags: niveaux,
     subject: matiere,
     icon: icone,
     chapters: chapitres.map(chapter => ({
@@ -146,7 +146,7 @@ export const newPack = name => ({
   version: '1.0.0',
   name: name || '',
   audience: 'enfant',
-  level: '',
+  tags: [],
   subject: '',
   icon: '',
   chapters: [newChapter()],
@@ -397,7 +397,11 @@ export const toDocument = pack => {
     version: pack.version,
     nom: clean(pack.name),
     public: pack.audience,
-    niveaux: pack.level ? [pack.level] : [],
+    niveaux: [
+      ...new Set(
+        (pack.tags || []).map(tag => clean(tag).slice(0, 30)).filter(Boolean),
+      ),
+    ].slice(0, 8),
     ...(pack.subject && { matiere: pack.subject }),
     ...(pack.icon && { icone: pack.icon }),
     langue: 'fr',
