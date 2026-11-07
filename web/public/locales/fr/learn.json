@@ -517,7 +517,7 @@
     "name": "Nom du paquet",
     "namePlaceholder": "Dictée de la semaine",
     "forWho": "Pour qui",
-    "level": "Classe",
+    "level": "Classe (pour filtrer la liste)",
     "subject": "Matière",
     "icon": "Icône",
     "iconAuto": "Selon la matière",

@@ -517,7 +517,7 @@
     "name": "Pack name",
     "namePlaceholder": "This week's spelling",
     "forWho": "For whom",
-    "level": "Class",
+    "level": "Class (to filter the list)",
     "subject": "Subject",
     "icon": "Icon",
     "iconAuto": "From the subject",
