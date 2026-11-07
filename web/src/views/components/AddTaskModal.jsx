@@ -207,7 +207,6 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
   const [hasSubTasks, setHasSubTasks] = useState(false)
   const [deadlineOffset, setDeadlineOffset] = useState(-1)
   const [requireApproval, setRequireApproval] = useState(false)
-  const [completionWindow, setCompletionWindow] = useState(-1)
   const [assignStrategy, setAssignStrategy] = useState('keep_last_assigned')
   const [isPrivate, setIsPrivate] = useState(false)
   const [showAdvanced, setShowAdvanced] = useState(false)
@@ -710,7 +709,6 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
     prevHighlightKeysRef.current = new Set()
     setDeadlineOffset(-1)
     setRequireApproval(false)
-    setCompletionWindow(-1)
     setAssignStrategy('keep_last_assigned')
     setIsPrivate(false)
     setShowAdvanced(false)
@@ -776,10 +774,6 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
       labelsV2: labelsV2,
       points: points > -1 ? points : null,
       deadlineOffset: deadlineOffset < 0 ? null : deadlineOffset,
-      completionWindow:
-        completionWindow < 0 || !dueDate || isAlwaysAvailable
-          ? null
-          : completionWindow,
       requireApproval: requireApproval,
       isPrivate: isPrivate,
       status: 0,
@@ -1154,12 +1148,9 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
               open={showAdvanced}
               onToggle={() => setShowAdvanced(v => !v)}
               activeCount={
-                [
-                  points > -1,
-                  requireApproval,
-                  completionWindow > -1,
-                  deadlineOffset > -1,
-                ].filter(Boolean).length
+                [points > -1, requireApproval, deadlineOffset > -1].filter(
+                  Boolean,
+                ).length
               }
               emptyDisplay={pickerEmptyDisplay}
             />
@@ -1171,13 +1162,8 @@ const TaskInput = ({ isModalOpen, onChoreUpdate, onClose }) => {
             onPointsChange={setPoints}
             requireApproval={requireApproval}
             onRequireApprovalChange={setRequireApproval}
-            completionWindow={completionWindow}
-            onCompletionWindowChange={setCompletionWindow}
-            deadlineOffset={deadlineOffset}
-            onDeadlineOffsetChange={setDeadlineOffset}
             assignStrategy={assignStrategy}
             onAssignStrategyChange={setAssignStrategy}
-            hasDueDate={!!dueDate}
             hasMultipleAssignees={assignees.length > 1}
             // Empty assignees still implicitly assigns the current user at
             // create time; only an "Anyone" task truly has no assignee

@@ -70,8 +70,6 @@ definitions:
         items:
           $ref: '#/definitions/model.ChoreAssignees'
         type: array
-      completionWindow:
-        type: integer
       deadlineMinutes:
         maximum: 527040
         minimum: 1
@@ -465,9 +463,6 @@ definitions:
         items:
           $ref: '#/definitions/model.StorageFile'
         type: array
-      completionWindow:
-        description: Number seconds before the chore is due that it can be completed
-        type: integer
       createdAt:
         description: When the chore was created
         type: string

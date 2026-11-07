@@ -82,7 +82,6 @@
     "unableChangeDueDate": "Impossible de modifier la date d'échéance",
     "failedDelegate": "Impossible de déléguer",
     "unableChangeAssignee": "Impossible de changer la personne assignée",
-    "availableToCompleteStarting": "Peut être terminée à partir du {{date}}",
     "delegateToSomeoneElse": "Déléguer à quelqu'un d'autre"
   },
   "toolbar": {
@@ -744,8 +743,6 @@
     "limitedVisibilityDescription": "Seules les personnes assignées et toi pouvez voir cette tâche",
     "assignStrategy": "Stratégie d'assignation",
     "assignStrategyDescription": "Comment choisir la prochaine personne assignée à chaque récurrence",
-    "availableFrom": "Disponible à partir de",
-    "availableFromDescription": "Nombre d'heures avant l'échéance à partir duquel la tâche devient disponible",
     "strategy": {
       "keep_last_assigned": "Conserver la même personne assignée",
       "random": "Aléatoire",
@@ -753,7 +750,6 @@
       "round_robin": "Tour de rôle"
     },
     "hrs": "h",
-    "setDueDateHint": "Choisis une échéance pour régler la fenêtre de fin",
     "more": "Plus"
   },
   "filterBuilder": {
@@ -1130,11 +1126,7 @@
       "reminderCount_one": "{{count}} rappel",
       "reminderCount_other": "{{count}} rappels",
       "remindersUnavailable": "Pas de rappel pour une tâche toujours disponible ou sur signal.",
-      "early": "Faisable en avance",
-      "earlyValue": "{{hours}} h avant",
       "no": "Non",
-      "earlyHelp": "Peut être cochée avant l'échéance",
-      "earlyHours": "heures avant l'échéance",
       "labelCount_one": "{{count}} étiquette",
       "labelCount_other": "{{count}} étiquettes",
       "visibility": "Visible par",

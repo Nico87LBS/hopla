@@ -5,7 +5,6 @@ import {
   LabelOutlined,
   MoreHoriz,
   NotificationsOutlined,
-  TimerOutlined,
   VisibilityOutlined,
 } from '@mui/icons-material'
 import {
@@ -25,7 +24,6 @@ import {
   Radio,
   RadioGroup,
   Sheet,
-  Switch,
   Typography,
 } from '@mui/joy'
 import { useMediaQuery } from '@mui/material'
@@ -40,10 +38,8 @@ import {
   useSearchParams,
 } from 'react-router-dom'
 
-import DurationInput from '../../components/common/DurationInput'
 import EmptyState from '../../components/common/EmptyState'
 import KeyboardShortcutHint from '../../components/common/KeyboardShortcutHint'
-import NumberInput from '../../components/common/NumberInput'
 import NotificationTemplate from '../../components/NotificationTemplate.jsx'
 import { usePageShortcutScope } from '../../contexts/KeyboardShortcutScopeContext'
 import {
@@ -57,7 +53,6 @@ import {
 } from '../../queries/ChoreQueries.jsx'
 import { useFamilyMembers, useUserProfile } from '../../queries/UserQueries.jsx'
 import { useNotification } from '../../service/NotificationProvider'
-import { readCompletionWindow } from '../../utils/completionWindow'
 import { deadlineApplies } from '../../utils/deadline'
 import { familyTimezone } from '../../utils/familyTime'
 import { GetAllFamilyMembers, GetChoreByID } from '../../utils/Fetcher'
@@ -157,7 +152,6 @@ const ChoreEdit = () => {
   const [deadlineMinutes, setDeadlineMinutes] = useState(null)
   const [isPrivate, setIsPrivate] = useState(false)
   const [subTasks, setSubTasks] = useState(null)
-  const [completionWindow, setCompletionWindow] = useState(-1)
   const [deadlineOffset, setDeadlineOffset] = useState(-1)
 
   const [notificationMetadata, setNotificationMetadata] = useState({})
@@ -290,7 +284,6 @@ const ChoreEdit = () => {
     isNotificable,
     notificationMetadata,
     isRolling,
-    completionWindow,
     deadlineOffset,
   })
   const latestSnapshot = useRef(snapshot)
@@ -614,9 +607,6 @@ const ChoreEdit = () => {
           : null,
       requireApproval: requireApproval,
       isPrivate: isPrivate,
-      completionWindow:
-        // if completionWindow is -1 then set it to null or dueDate is null
-        completionWindow < 0 || dueDate === null ? null : completionWindow,
       deadlineOffset: deadlineOffset < 0 ? null : deadlineOffset,
       draftId: newChoreId > 0 ? undefined : draftId,
     }
@@ -817,7 +807,6 @@ const ChoreEdit = () => {
         data.res.deadlineMinutes > 0 ? data.res.deadlineMinutes : null,
       )
       setIsPrivate(data.res.isPrivate || false)
-      setCompletionWindow(readCompletionWindow(data.res.completionWindow))
       setDeadlineOffset(
         data.res.deadlineOffset && data.res.deadlineOffset > -1
           ? data.res.deadlineOffset
@@ -1331,67 +1320,6 @@ const ChoreEdit = () => {
           />
         )}
       </OptionRow>
-      {dueDate && (
-        <OptionRow
-          icon={TimerOutlined}
-          title={t('editor.more.early')}
-          value={
-            completionWindow !== -1
-              ? t('editor.more.earlyValue', { hours: completionWindow })
-              : t('editor.more.no')
-          }
-        >
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.25 }}>
-            <Box
-              component='label'
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: 1.5,
-                minHeight: 44,
-                cursor: 'pointer',
-              }}
-            >
-              <Typography level='body-sm'>
-                {t('editor.more.earlyHelp')}
-              </Typography>
-              <Switch
-                checked={completionWindow !== -1}
-                onChange={e => setCompletionWindow(e.target.checked ? 1 : -1)}
-              />
-            </Box>
-            {completionWindow !== -1 && (
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <NumberInput
-                  aria-label={t('editor.more.earlyHours')}
-                  value={completionWindow}
-                  min={0}
-                  max={24 * 7}
-                  sx={{ width: 84 }}
-                  onValueChange={setCompletionWindow}
-                />
-                <Typography level='body-sm'>
-                  {t('editor.more.earlyHours')}
-                </Typography>
-              </Box>
-            )}
-            {deadlineOffset !== -1 && (
-              <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-                <DurationInput
-                  value={deadlineOffset}
-                  onChange={setDeadlineOffset}
-                  size='sm'
-                  minValue={0}
-                />
-                <Typography level='body-sm'>
-                  {t('choreEdit.afterDueDate')}
-                </Typography>
-              </Box>
-            )}
-          </Box>
-        </OptionRow>
-      )}
       <OptionRow
         icon={LabelOutlined}
         title={t('choreEdit.labels')}

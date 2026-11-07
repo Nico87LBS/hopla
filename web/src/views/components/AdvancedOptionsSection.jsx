@@ -131,15 +131,10 @@ export const AdvancedOptionsTrigger = ({
 // Panel — place this as a sibling below the description/subtask sections
 const AdvancedOptionsSection = ({
   assignStrategy,
-  completionWindow,
-  deadlineOffset,
   hasAssignees,
-  hasDueDate,
   hasMultipleAssignees,
   isPrivate,
   onAssignStrategyChange,
-  onCompletionWindowChange,
-  onDeadlineOffsetChange,
   onIsPrivateChange,
   onPointsChange,
   onRequireApprovalChange,
@@ -271,40 +266,6 @@ const AdvancedOptionsSection = ({
                 ))}
               </Select>
             </FieldRow>
-          )}
-
-          {/* Completion window and deadline — only when due date set */}
-          {hasDueDate ? (
-            <>
-              <FieldRow
-                label={t('advancedOptions.availableFrom')}
-                description={t('advancedOptions.availableFromDescription')}
-              >
-                <NumberInput
-                  size='sm'
-                  placeholder='—'
-                  value={completionWindow > -1 ? completionWindow : ''}
-                  allowEmpty
-                  emptyValue={-1}
-                  min={0}
-                  onValueChange={onCompletionWindowChange}
-                  endDecorator={
-                    <Typography level='body-xs' textColor='text.tertiary'>
-                      {t('advancedOptions.hrs')}
-                    </Typography>
-                  }
-                  sx={{ width: 96 }}
-                />
-              </FieldRow>
-            </>
-          ) : (
-            <Typography
-              level='body-xs'
-              textColor='text.tertiary'
-              sx={{ my: 0.5, fontStyle: 'italic' }}
-            >
-              {t('advancedOptions.setDueDateHint')}
-            </Typography>
           )}
         </Box>
       </Box>
