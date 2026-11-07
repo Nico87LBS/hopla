@@ -1,5 +1,4 @@
 import {
-  AutoAwesomeRounded,
   CheckCircleRounded,
   CheckRounded,
   ChevronRightRounded,
@@ -13,6 +12,7 @@ import {
   ReplayRounded,
   SchoolRounded,
   SportsEsportsRounded,
+  StarRounded,
 } from '@mui/icons-material'
 import {
   Box,
@@ -134,47 +134,61 @@ export const LearnChooser = () => {
 
 // The look of each chapter state: a round dot, the same as the faces on the
 // task lists, with an icon so colour is never the only sign, and the state
-// written beside it.
+// written beside it. The icons are white on a full dot (only « À découvrir »
+// keeps its violet ring, with a plain star) so they read at a glance, and the
+// state text has a lighter shade for the dark theme.
 const STATE_LOOK = {
   new: {
-    Icon: AutoAwesomeRounded,
+    Icon: StarRounded,
     bg: '#fff',
     color: HOPLA.violet,
     border: HOPLA.violet,
     text: HOPLA.blueberry,
+    textDark: '#B7AEFF',
   },
   learning: {
     Icon: EditRounded,
     bg: HOPLA.violet,
     color: '#fff',
     text: HOPLA.blueberry,
+    textDark: '#B7AEFF',
   },
   known: {
     Icon: CheckRounded,
     bg: HOPLA.green,
     color: '#fff',
     text: HOPLA.greenText,
+    textDark: '#7EDCA4',
   },
   review: {
     Icon: ReplayRounded,
     bg: HOPLA.carrot,
     color: '#fff',
     text: HOPLA.carrotText,
+    textDark: '#FFAE7A',
   },
   closed: {
     Icon: LockRounded,
-    bg: '#EEECE8',
-    color: '#6B6680',
-    border: '#B9B4AA',
+    bg: '#8A857B',
+    color: '#fff',
     text: '#6B6680',
+    textDark: '#C4BFB6',
   },
   shut: {
     Icon: LockRounded,
     bg: '#5E5A54',
     color: '#fff',
+    border: '#5E5A54',
     text: '#5E5A54',
+    textDark: '#D6D1C8',
   },
 }
+
+// stateText is the colour of the words beside a dot, in both themes.
+const stateText = state => ({
+  color: STATE_LOOK[state].text,
+  '[data-joy-color-scheme="dark"] &': { color: STATE_LOOK[state].textDark },
+})
 
 const StateDot = ({ size = 28, state }) => {
   const { Icon, bg, border, color } = STATE_LOOK[state]
@@ -193,9 +207,14 @@ const StateDot = ({ size = 28, state }) => {
         height: size,
         justifyContent: 'center',
         width: size,
+        // In the dark the grey locks would sink into the page: a thin light
+        // ring keeps the dot's edge.
+        '[data-joy-color-scheme="dark"] &': {
+          boxShadow: border ? 'none' : '0 0 0 1px rgba(255, 255, 255, 0.25)',
+        },
       }}
     >
-      <Icon sx={{ fontSize: size * 0.58 }} />
+      <Icon sx={{ color: 'inherit', fontSize: size * 0.64 }} />
     </Box>
   )
 }
@@ -459,21 +478,15 @@ const ChapterRows = ({ chapters, module, states, testTo }) => {
       }}
     >
       {chapters.map(({ by, chapter, open, placed, progress }, index) => (
-        <Stack
-          key={chapter.id}
-          direction='row'
-          gap={1.25}
-          alignItems='center'
-          sx={{ opacity: open ? 1 : 0.85 }}
-        >
+        <Stack key={chapter.id} direction='row' gap={1.25} alignItems='center'>
           <StateDot state={states[index]} />
-          <Box sx={{ flex: 1, minWidth: 0 }}>
+          <Box sx={{ flex: 1, minWidth: 0, opacity: open ? 1 : 0.85 }}>
             <Typography level='body-sm' sx={{ fontWeight: 600 }}>
               {chapter.name}
             </Typography>
             <Typography
               level='body-xs'
-              sx={{ color: STATE_LOOK[states[index]].text, fontWeight: 700 }}
+              sx={{ ...stateText(states[index]), fontWeight: 700 }}
             >
               {states[index] === 'shut'
                 ? t('home.chapterShut')
